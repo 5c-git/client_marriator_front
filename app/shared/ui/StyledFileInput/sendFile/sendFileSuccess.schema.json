@@ -1,0 +1,21 @@
+{
+  "$id": "sendFileSuccess",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Send File - SuccessResponse",
+  "type": "object",
+  "properties": {
+    "text1": {
+      "type": "string"
+    },
+    "fileName": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "resFile": {
+      "type": "string"
+    }
+  },
+  "required": ["text1", "fileName", "resFile"]
+}
