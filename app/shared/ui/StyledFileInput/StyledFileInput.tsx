@@ -455,7 +455,6 @@ export const StyledFileInput = ({
                     xhr.upload.addEventListener(
                       "progress",
                       function (event) {
-                        console.log(event);
                         if (event.lengthComputable) {
                           setProgress((event.loaded / event.total) * 100);
                         }
