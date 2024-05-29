@@ -11,7 +11,14 @@ import { theme } from "../app/theme/theme";
 import { ThemeProvider } from "@mui/material/styles";
 import { CssBaseline } from "@mui/material";
 
-const queryClient = new QueryClient();
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      retry: false,
+      staleTime: 100,
+    },
+  },
+});
 
 initialize({
   onUnhandledRequest: "bypass",

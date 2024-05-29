@@ -9,13 +9,42 @@ import {
 
 // MUI
 import { theme } from "./theme/theme";
-import { ThemeProvider } from "@mui/material/styles";
-import { CssBaseline } from "@mui/material";
+import { CssBaseline, ThemeProvider } from "@mui/material";
 // MUI
 
 import { QueryClient } from "@tanstack/react-query";
 
-export const queryClient = new QueryClient();
+export const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      // 3 minines
+      staleTime: 180000,
+    },
+  },
+});
+
+export function HydrateFallback() {
+  return <p>Загрузка...</p>;
+}
+
+export function ErrorBoundary() {
+  const error = useRouteError();
+  console.error(error);
+  return (
+    <html lang="en">
+      <head>
+        <title>Oh no!</title>
+        <Meta />
+        <Links />
+      </head>
+      <body>
+        <p>Root Error Boundry</p>
+        {/* add the UI you want your users to see */}
+        <Scripts />
+      </body>
+    </html>
+  );
+}
 
 export function Layout({ children }: { children: React.ReactNode }) {
   return (
@@ -32,25 +61,6 @@ export function Layout({ children }: { children: React.ReactNode }) {
           {children}
         </ThemeProvider>
         <ScrollRestoration />
-        <Scripts />
-      </body>
-    </html>
-  );
-}
-
-export function ErrorBoundary() {
-  const error = useRouteError();
-  console.error(error);
-  return (
-    <html lang="en">
-      <head>
-        <title>Oh no!</title>
-        <Meta />
-        <Links />
-      </head>
-      <body>
-        <p>pizes!</p>
-        {/* add the UI you want your users to see */}
         <Scripts />
       </body>
     </html>

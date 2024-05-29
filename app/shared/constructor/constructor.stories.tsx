@@ -11,16 +11,8 @@ import * as Yup from "yup";
 import { useEffect, useState } from "react";
 import Ajv from "ajv";
 
-import schema from "./constructor.schema.json";
-import textInputSchema from "../ui/StyledTextField/StyledTextField.schema.json";
-import selectInputSchema from "../ui/StyledSelect/StyledSelect.schema.json";
-import radioInputSchema from "../ui/StyledRadioButton/StyledRadioButton.schema.json";
-import checkboxMultipleSchema from "../ui/StyledCheckboxMultiple/StyledCheckboxMultiple.schema.json";
-import photoCheckboxSchema from "../ui/StyledPhotoCheckbox/StyledPhotoCheckbox.schema.json";
-import checkboxSchema from "../ui/StyledCheckbox/StyledCheckbox.schema.json";
-import fileSchema from "../ui/StyledFileInput/StyledFileInput.schema.json";
-
-import type { SchemaForConstructor } from "./constructor.type";
+import inputsSchema from "./inputs.schema.json";
+import { Inputs } from "./inputs";
 
 import {
   generateDefaultValues,
@@ -30,17 +22,9 @@ import {
 
 const ajv = new Ajv();
 
-ajv.addSchema(textInputSchema);
-ajv.addSchema(selectInputSchema);
-ajv.addSchema(radioInputSchema);
-ajv.addSchema(checkboxMultipleSchema);
-ajv.addSchema(photoCheckboxSchema);
-ajv.addSchema(checkboxSchema);
-ajv.addSchema(fileSchema);
+const validate = ajv.compile(inputsSchema);
 
-const validate = ajv.compile(schema);
-
-const Сonstructor = ({ data }: { data: SchemaForConstructor }) => {
+const Сonstructor = ({ data }: { data: Inputs }) => {
   const {
     control,
     handleSubmit,
@@ -85,14 +69,12 @@ const Сonstructor = ({ data }: { data: SchemaForConstructor }) => {
 };
 
 const DataLoader = ({ url }: { url: string }) => {
-  const [data, setData] = useState<SchemaForConstructor | undefined | null>(
-    undefined
-  );
+  const [data, setData] = useState<Inputs | undefined | null>(undefined);
 
   useEffect(() => {
     fetch(url)
       .then((res) => res.json())
-      .then((data: SchemaForConstructor) => {
+      .then((data: Inputs) => {
         if (validate(data)) {
           console.log("JSON SCHEMA VALID");
           setData(data);
@@ -156,7 +138,7 @@ const meta = {
           <h2>JSON Schema</h2>
           <DocBlock.Source
             language="json"
-            code={JSON.stringify(schema, null, 2)}
+            code={JSON.stringify(inputsSchema, null, 2)}
           />
           {/* <DocBlock.Canvas /> */}
           {/* <DocBlock.ArgTypes /> */}
@@ -390,174 +372,3 @@ export const Primary: Story = {
     },
   },
 };
-
-// {
-//   "$schema": "http://json-schema.org/draft-07/schema#",
-//   "title": "Schema for Constructor",
-//   "type": "array",
-//   "minItems": 1,
-//   "items": {
-//     "anyOf": [
-//       {
-//         "type": "object",
-//         "properties": {
-//           "inputtype": {
-//             "type": "string",
-//             "const": "select"
-//           },
-//           "name": {
-//             "type": "string"
-//           },
-//           "value": {
-//             "type": ["string", "null"]
-//           },
-//           "placeholder": {
-//             "type": "string"
-//           },
-//           "options": {
-//             "type": "array",
-//             "items": {
-//               "type": "object",
-//               "properties": {
-//                 "value": {
-//                   "type": "string"
-//                 },
-//                 "label": {
-//                   "type": "string"
-//                 },
-//                 "disabled": {
-//                   "type": "boolean"
-//                 }
-//               },
-//               "required": ["value", "label", "disabled"]
-//             }
-//           },
-//           "disabled": {
-//             "type": "boolean",
-//             "const": true
-//           },
-//           "validation": {
-//             "type": "string",
-//             "enum": ["none", "default"]
-//           },
-//           "heading": {
-//             "type": "string"
-//           },
-//           "error": {
-//             "type": "string"
-//           },
-//           "status": {
-//             "type": "string",
-//             "const": "warning"
-//           },
-//           "dividerTop": {
-//             "type": "boolean",
-//             "const": true
-//           },
-//           "dividerBottom": {
-//             "type": "boolean",
-//             "const": true
-//           },
-//           "helperInfo": {
-//             "type": "object",
-//             "minProperties": 1,
-//             "properties": {
-//               "text": {
-//                 "type": "string"
-//               },
-//               "link": {
-//                 "type": "object",
-//                 "properties": {
-//                   "text": {
-//                     "type": "string"
-//                   },
-//                   "path": {
-//                     "type": "string"
-//                   },
-//                   "type": {
-//                     "type": "string",
-//                     "enum": ["internal", "external"]
-//                   }
-//                 },
-//                 "required": ["text", "path", "type"]
-//               }
-//             },
-//             "additionalProperties": false
-//           }
-//         },
-//         "required": ["inputtype", "name", "value", "placeholder", "options", "validation"]
-//       },
-//       {
-//         "type": "object",
-//         "properties": {
-//           "inputtype": {
-//             "type": "string",
-//             "const": "text"
-//           },
-//           "name": {
-//             "type": "string"
-//           },
-//           "value": {
-//             "type": "string"
-//           },
-//           "placeholder": {
-//             "type": "string"
-//           },
-//           "validation": {
-//             "type": "string",
-//             "enum": ["none", "default"]
-//           },
-//           "disabled": {
-//             "type": "boolean",
-//             "const": true
-//           },
-//           "heading": {
-//             "type": "string"
-//           },
-//           "error": {
-//             "type": "string"
-//           },
-//           "status": {
-//             "type": "string",
-//             "const": "warning"
-//           },
-//           "dividerTop": {
-//             "type": "boolean",
-//             "const": true
-//           },
-//           "dividerBottom": {
-//             "type": "boolean",
-//             "const": true
-//           },
-//           "helperInfo": {
-//             "type": "object",
-//             "minProperties": 1,
-//             "properties": {
-//               "text": {
-//                 "type": "string"
-//               },
-//               "link": {
-//                 "type": "object",
-//                 "properties": {
-//                   "text": {
-//                     "type": "string"
-//                   },
-//                   "path": {
-//                     "type": "string"
-//                   },
-//                   "type": {
-//                     "type": "string",
-//                     "enum": ["internal", "external"]
-//                   }
-//                 },
-//                 "required": ["text", "path", "type"]
-//               }
-//             },
-//             "additionalProperties": false
-//           }
-//         },
-//         "required": ["inputtype", "name", "value", "placeholder", "validation"]
-//       }
-//     ]
-//   }
-// }

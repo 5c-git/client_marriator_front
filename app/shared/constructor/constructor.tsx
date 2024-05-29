@@ -77,13 +77,13 @@ const validationMap: {
       .test(
         "maxSize",
         "Размер одно из файлов превышает 6MB!",
-        (value) => value !== "maxSize",
+        (value) => value !== "maxSize"
       ),
   },
 };
 
 export const generateDefaultValues = (
-  items: { name: string; value: unknown }[],
+  items: { name: string; value: unknown }[]
 ) => {
   const defaultValues: {
     [key: string]: unknown;
@@ -103,7 +103,7 @@ export const generateValidationSchema = (
     // value: string;
     // error: string;
     validation: string;
-  }[],
+  }[]
 ) => {
   const validationSchema: Yup.ObjectShape = {};
 
@@ -135,7 +135,7 @@ export const generateInputsMarkup = (
   trigger: UseFormTrigger<{
     [x: string]: unknown;
     [x: number]: unknown;
-  }>,
+  }>
 ) =>
   items.map((item, index: number) => {
     // приходится делать отдельную проверку, так как в данном случае необходимо програмно установить значение в поле
@@ -158,7 +158,15 @@ export const generateInputsMarkup = (
           name={item.name}
           control={control}
           render={({ field }) => (
-            <Input {...item} error={errors[item.name]?.message} {...field} />
+            <Input
+              {...item}
+              error={errors[item.name]?.message}
+              inputStyles={{
+                paddingRight: "16px",
+                paddingLeft: "16px",
+              }}
+              {...field}
+            />
           )}
         />
       );
