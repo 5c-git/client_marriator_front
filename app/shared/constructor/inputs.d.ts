@@ -11,22 +11,17 @@
 export type Inputs = [
   (
     | {
-        inputtype: "file";
+        inputtype: "text";
         name: string;
         value: string;
         placeholder: string;
         validation: "none" | "default";
-        url?: string;
         disabled?: true;
         heading?: string;
         error?: string;
         status?: "warning";
         dividerTop?: true;
         dividerBottom?: true;
-        drawerInfo?: {
-          text?: string;
-          images?: string[];
-        };
         helperInfo?: {
           text?: string;
           link?: {
@@ -265,22 +260,17 @@ export type Inputs = [
   ),
   ...(
     | {
-        inputtype: "file";
+        inputtype: "text";
         name: string;
         value: string;
         placeholder: string;
         validation: "none" | "default";
-        url?: string;
         disabled?: true;
         heading?: string;
         error?: string;
         status?: "warning";
         dividerTop?: true;
         dividerBottom?: true;
-        drawerInfo?: {
-          text?: string;
-          images?: string[];
-        };
         helperInfo?: {
           text?: string;
           link?: {
