@@ -31,6 +31,7 @@ const Сonstructor = ({ data }: { data: Inputs }) => {
     setError,
     setValue,
     trigger,
+    getValues,
     formState: { errors },
   } = useForm({
     defaultValues: generateDefaultValues(data),
@@ -61,7 +62,9 @@ const Сonstructor = ({ data }: { data: Inputs }) => {
         rowGap: "16px",
       }}
     >
-      {generateInputsMarkup(data, errors, control, setValue, trigger)}
+      {generateInputsMarkup(data, errors, control, setValue, trigger, () => {
+        console.log(getValues());
+      })}
 
       <button type="submit">submit</button>
     </form>

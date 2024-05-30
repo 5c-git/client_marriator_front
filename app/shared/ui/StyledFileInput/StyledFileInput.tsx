@@ -43,6 +43,7 @@ type FileInputProps = {
     [x: string]: unknown;
     [x: number]: unknown;
   }>;
+  onImmediateChange: () => void;
   triggerValidation: (value: string) => void;
 
   placeholder: string;
@@ -469,6 +470,7 @@ export const StyledFileInput = ({
                         setProgress(100);
                         setValue(data.resFile);
                         onChange(props.name, data.resFile);
+                        props.onImmediateChange();
                       } else {
                         setValue("");
                         onChange(props.name, "");

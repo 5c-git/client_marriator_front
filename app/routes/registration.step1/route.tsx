@@ -36,6 +36,7 @@ export default function Step1() {
     handleSubmit,
     setValue,
     trigger,
+    getValues,
     formState: { errors },
   } = useForm({
     defaultValues: generateDefaultValues(data.inputs),
@@ -123,7 +124,16 @@ export default function Step1() {
           rowGap: "16px",
         }}
       >
-        {generateInputsMarkup(data.inputs, errors, control, setValue, trigger)}
+        {generateInputsMarkup(
+          data.inputs,
+          errors,
+          control,
+          setValue,
+          trigger,
+          () => {
+            console.log(getValues());
+          }
+        )}
 
         <Box
           sx={{

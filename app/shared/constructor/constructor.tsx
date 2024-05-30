@@ -135,7 +135,8 @@ export const generateInputsMarkup = (
   trigger: UseFormTrigger<{
     [x: string]: unknown;
     [x: number]: unknown;
-  }>
+  }>,
+  onImmediateChange: () => void
 ) =>
   items.map((item, index: number) => {
     // приходится делать отдельную проверку, так как в данном случае необходимо програмно установить значение в поле
@@ -146,6 +147,7 @@ export const generateInputsMarkup = (
           error={errors[item.name]?.message}
           onChange={setValue}
           triggerValidation={trigger}
+          onImmediateChange={onImmediateChange}
           {...item}
         />
       );
@@ -161,6 +163,7 @@ export const generateInputsMarkup = (
             <Input
               {...item}
               error={errors[item.name]?.message}
+              onImmediateChange={onImmediateChange}
               inputStyles={{
                 paddingRight: "16px",
                 paddingLeft: "16px",

@@ -37,6 +37,7 @@ type StyledCheckboxProps = {
   inputStyles?: SxProps<Theme>;
 
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  onImmediateChange: () => void;
 };
 
 export const StyledCheckbox = (props: StyledCheckboxProps) => {
@@ -123,7 +124,10 @@ export const StyledCheckbox = (props: StyledCheckboxProps) => {
               name={props.name}
               value={props.value}
               checked={props.value}
-              onChange={props.onChange}
+              onChange={(e) => {
+                props.onChange(e);
+                props.onImmediateChange();
+              }}
               size="small"
               color={
                 props.error
