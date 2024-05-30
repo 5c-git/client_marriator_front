@@ -10,7 +10,7 @@
         "properties": {
           "inputtype": {
             "type": "string",
-            "const": "file"
+            "const": "text"
           },
           "name": {
             "type": "string"
@@ -24,9 +24,6 @@
           "validation": {
             "type": "string",
             "enum": ["none", "default"]
-          },
-          "url": {
-            "type": "string"
           },
           "disabled": {
             "type": "boolean",
@@ -49,20 +46,6 @@
           "dividerBottom": {
             "type": "boolean",
             "const": true
-          },
-          "drawerInfo": {
-            "type": "object",
-            "minProperties": 1,
-            "properties": {
-              "text": {
-                "type": "string"
-              },
-              "images": {
-                "type": "array",
-                "items": { "type": "string" }
-              }
-            },
-            "additionalProperties": false
           },
           "helperInfo": {
             "type": "object",
