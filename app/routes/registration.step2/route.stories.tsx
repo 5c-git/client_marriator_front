@@ -4,17 +4,19 @@ import * as DocBlock from "@storybook/blocks";
 import { createRemixStub } from "@remix-run/testing";
 import { http, delay, HttpResponse } from "msw";
 
-import Step1 from "./route";
+import Step2 from "./route";
 import {
   mockResponseSuccess,
-  getRegStep1,
-} from "~/requests/getRegStep1/getRegStep1";
-
-import { postRegStep1 } from "~/requests/postRegStep1/postRegStep1";
+  getRegStep2,
+} from "~/requests/getRegStep2/getRegStep2";
+import {
+  postRegStep2,
+  mockResponseSuccess as postRegStep2MockResponseSuccess,
+} from "~/requests/postRegStep2/postRegStep2";
 
 const meta = {
-  title: "Страницы/Регистрация/Шаг1",
-  component: Step1,
+  title: "Страницы/Регистрация/Шаг2",
+  component: Step2,
   tags: ["autodocs"],
   parameters: {
     layout: {
@@ -24,19 +26,19 @@ const meta = {
       page: () => (
         <>
           <DocBlock.Title />
-          <h2>Адрес страницы: /registration/step1</h2>
+          <h2>Адрес страницы: /registration/step2</h2>
           <h3>Используемые запросы:</h3>
           <p>
-            getRegStep1() - VITE_REG_STEP_1 - {import.meta.env.VITE_REG_STEP_1}
+            getRegStep2() - VITE_REG_STEP_2 - {import.meta.env.VITE_REG_STEP_2}
           </p>
           <p>
-            postRegStep2() - VITE_REG_STEP_1 - {import.meta.env.VITE_REG_STEP_1}
+            postRegStep2() - VITE_REG_STEP_2 - {import.meta.env.VITE_REG_STEP_2}
           </p>
         </>
       ),
     },
   },
-} satisfies Meta<typeof Step1>;
+} satisfies Meta<typeof Step2>;
 
 export default meta;
 
@@ -51,12 +53,12 @@ export const Primary: Story = {
           path: "/",
           Component: Story,
           loader: async () => {
-            const data = await getRegStep1();
+            const data = await getRegStep2();
 
             return data;
           },
           action: async () => {
-            const data = await postRegStep1({ test: "test" });
+            const data = await postRegStep2({ test: "test" });
 
             return data;
           },
@@ -69,13 +71,13 @@ export const Primary: Story = {
   parameters: {
     msw: {
       handlers: [
-        http.get(import.meta.env.VITE_REG_STEP_1, async () => {
+        http.get(import.meta.env.VITE_REG_STEP_2, async () => {
           await delay(2000);
           return HttpResponse.json(mockResponseSuccess);
         }),
-        http.post(import.meta.env.VITE_REG_STEP_1, async () => {
+        http.post(import.meta.env.VITE_REG_STEP_2, async () => {
           await delay(2000);
-          return HttpResponse.json(mockResponseSuccess);
+          return HttpResponse.json(postRegStep2MockResponseSuccess);
         }),
       ],
     },
