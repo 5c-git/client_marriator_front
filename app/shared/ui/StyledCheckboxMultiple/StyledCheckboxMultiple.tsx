@@ -40,6 +40,7 @@ type StyledCheckboxMultipleProps = {
   inputStyles?: SxProps<Theme>;
 
   onChange: (values: string[]) => void;
+  onImmediateChange: () => void;
 };
 
 export const StyledCheckboxMultiple = (props: StyledCheckboxMultipleProps) => {
@@ -139,6 +140,7 @@ export const StyledCheckboxMultiple = (props: StyledCheckboxMultipleProps) => {
                     else _values.splice(_values.indexOf(evt.target.value), 1);
 
                     props.onChange(_values);
+                    props.onImmediateChange();
                   }}
                   size="small"
                   sx={{

@@ -49,6 +49,7 @@ type StyledRadioButtonProps = {
   inputStyles?: SxProps<Theme>;
 
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  onImmediateChange: () => void;
 };
 
 export const StyledRadioButton = (props: StyledRadioButtonProps) => {
@@ -167,7 +168,10 @@ export const StyledRadioButton = (props: StyledRadioButtonProps) => {
           aria-labelledby={props.name}
           value={props.value}
           name={props.name}
-          onChange={props.onChange}
+          onChange={(evt) => {
+            props.onChange(evt);
+            props.onImmediateChange();
+          }}
         >
           {" "}
           {props.options.map((item) => (

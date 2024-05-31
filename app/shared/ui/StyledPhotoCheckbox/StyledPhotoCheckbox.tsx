@@ -58,6 +58,7 @@ type StyledPhotoCheckboxProps = {
   inputStyles?: SxProps<Theme>;
 
   onChange: (values: string[]) => void;
+  onImmediateChange: () => void;
 };
 
 export const StyledPhotoCheckbox = forwardRef(
@@ -192,6 +193,7 @@ export const StyledPhotoCheckbox = forwardRef(
                           _values.splice(_values.indexOf(evt.target.value), 1);
 
                         props.onChange(_values);
+                        props.onImmediateChange();
                       }}
                       size="small"
                       color={props.error ? "error" : "corp"}

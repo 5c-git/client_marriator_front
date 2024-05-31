@@ -49,6 +49,7 @@ type StyledSelectProps = {
   inputStyles?: SxProps<Theme>;
 
   onChange: (e: SelectChangeEvent) => void;
+  onImmediateChange: () => void;
 };
 
 export const StyledSelect = (props: StyledSelectProps) => {
@@ -85,7 +86,10 @@ export const StyledSelect = (props: StyledSelectProps) => {
             id={props.name}
             name={props.name}
             value={props.value}
-            onChange={props.onChange}
+            onChange={(evt) => {
+              props.onChange(evt);
+              props.onImmediateChange();
+            }}
             IconComponent={KeyboardArrowDownIcon}
             MenuProps={{
               sx: {

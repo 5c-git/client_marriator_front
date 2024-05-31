@@ -37,7 +37,10 @@ type StyledTextFieldProps = {
   styles?: SxProps<Theme>;
   inputStyles?: SxProps<Theme>;
 
-  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  onChange: (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => void;
+  onImmediateChange: () => void;
 };
 
 export const StyledTextField = (props: StyledTextFieldProps) => {
@@ -74,7 +77,10 @@ export const StyledTextField = (props: StyledTextFieldProps) => {
             value={props.value}
             error={props.error ? true : false}
             label={props.placeholder}
-            onChange={props.onChange}
+            onChange={(evt) => {
+              props.onChange(evt);
+              props.onImmediateChange();
+            }}
             sx={{
               marginBottom: "4px",
 
