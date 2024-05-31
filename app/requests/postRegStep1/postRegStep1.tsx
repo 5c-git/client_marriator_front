@@ -25,16 +25,20 @@ ajv.addSchema(fileSchema);
 
 const validateSuccess = ajv.compile(schemaSuccess);
 
-export const getRegStep1Keys = ["getRegStep1"];
+export const postRegStep1Keys = ["postRegStep1"];
 
 type RegStep1 = {
   inputs: Inputs;
 };
 
-export const getRegStep1 = async (): Promise<RegStep1> => {
+// unknown из-за того, что мы не знаем какие пол нам прилетят с сервера и какую форму мы в итоге отдадим обратно
+export const postRegStep1 = async (body: unknown): Promise<RegStep1> => {
   const url = new URL(import.meta.env.VITE_REG_STEP_1);
 
-  const request = await fetch(url);
+  const request = await fetch(url, {
+    method: "POST",
+    body: JSON.stringify(body),
+  });
   const response = await request.json();
 
   let data: RegStep1;
@@ -42,7 +46,7 @@ export const getRegStep1 = async (): Promise<RegStep1> => {
   if (validateSuccess(response)) {
     data = response as RegStep1;
   } else {
-    throw new Response("Данные запроса getRegStep1 не валидны схеме");
+    throw new Response("Данные запроса postRegStep1 не валидны схеме");
   }
 
   return data;
@@ -141,12 +145,11 @@ export const mockResponseSuccess = {
     },
   ],
 };
-
 export const mockResponseError = {
   inputs: [],
 };
 
-export const getRegStep1MockResponse = http.get(
+export const postRegStep1MockResponse = http.post(
   `${import.meta.env.VITE_REG_STEP_1}`,
   async () => {
     const scenario = "success";

@@ -4,8 +4,13 @@ import * as DocBlock from "@storybook/blocks";
 import { createRemixStub } from "@remix-run/testing";
 import { http, delay, HttpResponse } from "msw";
 
-import Step1, { clientLoader } from "./route";
-import { mockResponseSuccess } from "~/requests/getRegStep1/getRegStep1";
+import Step1 from "./route";
+import {
+  mockResponseSuccess,
+  getRegStep1,
+} from "~/requests/getRegStep1/getRegStep1";
+
+import { postRegStep1 } from "~/requests/postRegStep1/postRegStep1";
 
 const meta = {
   title: "Страницы/Регистрация/Шаг1",
@@ -42,7 +47,16 @@ export const Primary: Story = {
         {
           path: "/",
           Component: Story,
-          loader: () => clientLoader(),
+          loader: async () => {
+            const data = await getRegStep1();
+
+            return data;
+          },
+          action: async () => {
+            const data = await postRegStep1({ test: "test" });
+
+            return data;
+          },
         },
       ]);
 
@@ -53,6 +67,10 @@ export const Primary: Story = {
     msw: {
       handlers: [
         http.get(import.meta.env.VITE_REG_STEP_1, async () => {
+          await delay(2000);
+          return HttpResponse.json(mockResponseSuccess);
+        }),
+        http.post(import.meta.env.VITE_REG_STEP_1, async () => {
           await delay(2000);
           return HttpResponse.json(mockResponseSuccess);
         }),
