@@ -4,6 +4,7 @@ const config: StorybookConfig = {
   stories: ["../app/**/*.mdx", "../app/**/*.stories.@(js|jsx|mjs|ts|tsx)"],
   staticDirs: [
     { from: "../public/client_marriator_front/mockImg/", to: "/mockImg/" },
+    "../public",
   ],
   addons: [
     "@storybook/addon-links",
