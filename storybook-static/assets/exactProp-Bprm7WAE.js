@@ -1,1 +1,0 @@
-import{_ as n}from"./extends-CTlStxOy.js";const p="exact-prop: ​";function a(r){return n({},r,{[p]:o=>{const t=Object.keys(o).filter(e=>!r.hasOwnProperty(e));return t.length>0?new Error(`The following props are not supported: ${t.map(e=>`\`${e}\``).join(", ")}. Please remove them.`):null}})}export{a as e};

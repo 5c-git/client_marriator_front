@@ -1,1 +1,0 @@
-import{r as e}from"./index-Bx7zHvXC.js";function x({props:t,states:u,muiFormControl:n}){return u.reduce((r,o)=>(r[o]=t[o],n&&typeof t[o]>"u"&&(r[o]=n[o]),r),{})}const f=e.createContext(void 0);f.displayName="FormControlContext";const C=f;function m(){return e.useContext(C)}export{C as F,x as f,m as u};

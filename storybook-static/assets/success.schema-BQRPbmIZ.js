@@ -1,1 +1,0 @@
-const e="Step1",t="http://json-schema.org/draft-07/schema#",s="Step1 inputs schema",c="object",r={inputs:{type:"array",minItems:1,items:{anyOf:[{$ref:"text"},{$ref:"select"},{$ref:"radio"},{$ref:"checkboxMultiple"},{$ref:"photoCheckbox"},{$ref:"checkbox"},{$ref:"file"}]}}},o=["inputs"],i={$id:e,$schema:t,title:s,type:c,properties:r,required:o};export{i as s};
