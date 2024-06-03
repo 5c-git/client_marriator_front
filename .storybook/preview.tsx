@@ -21,6 +21,9 @@ const queryClient = new QueryClient({
 });
 
 initialize({
+  serviceWorker: {
+    url: "/client_marriator_front/mockServiceWorker.js",
+  },
   onUnhandledRequest: "bypass",
   findWorker(scriptUrl, mockServiceWorkerUrl) {
     return scriptUrl.includes("mockServiceWorker");

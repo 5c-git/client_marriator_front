@@ -1,0 +1,1 @@
+const t="Step1",s="http://json-schema.org/draft-07/schema#",e="Step1 inputs schema",c="object",o={status:{type:"string"}},p=["status"],r={$id:t,$schema:s,title:e,type:c,properties:o,required:p};export{r as s};
