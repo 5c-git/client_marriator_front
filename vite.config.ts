@@ -9,6 +9,13 @@ export default defineConfig({
   plugins: [
     remix({
       ssr: false,
+      routes(defineRoutes) {
+        return defineRoutes((route) => {
+          route("/", "routes/_index/route.tsx", { index: true });
+          route("registration/step1", "routes/registration/step1/route.tsx");
+          route("registration/step2", "routes/registration/step2/route.tsx");
+        });
+      },
     }),
     tsconfigPaths(),
   ],

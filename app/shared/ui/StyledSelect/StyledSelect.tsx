@@ -1,3 +1,4 @@
+import { forwardRef } from "react";
 import { Link } from "@remix-run/react";
 
 import {
@@ -52,11 +53,11 @@ type StyledSelectProps = {
   onImmediateChange: () => void;
 };
 
-export const StyledSelect = (props: StyledSelectProps) => {
+export const StyledSelect = forwardRef((props: StyledSelectProps, ref) => {
   const theme = useTheme();
 
   return (
-    <Box sx={props.styles}>
+    <Box ref={ref} sx={props.styles}>
       {props.dividerTop ? <Divider sx={{ marginBottom: "16px" }} /> : null}
 
       <Box sx={props.inputStyles}>
@@ -176,4 +177,6 @@ export const StyledSelect = (props: StyledSelectProps) => {
       {props.dividerBottom ? <Divider sx={{ marginTop: "16px" }} /> : null}
     </Box>
   );
-};
+});
+
+StyledSelect.displayName = "StyledSelect";

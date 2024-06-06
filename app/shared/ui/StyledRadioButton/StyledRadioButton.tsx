@@ -1,3 +1,5 @@
+import { forwardRef } from "react";
+
 import {
   useTheme,
   SxProps,
@@ -52,84 +54,85 @@ type StyledRadioButtonProps = {
   onImmediateChange: () => void;
 };
 
-export const StyledRadioButton = (props: StyledRadioButtonProps) => {
-  const theme = useTheme();
+export const StyledRadioButton = forwardRef(
+  (props: StyledRadioButtonProps, ref) => {
+    const theme = useTheme();
 
-  return (
-    <Box sx={props.styles}>
-      {props.dividerTop ? <Divider sx={{ marginBottom: "16px" }} /> : null}
+    return (
+      <Box ref={ref} sx={props.styles}>
+        {props.dividerTop ? <Divider sx={{ marginBottom: "16px" }} /> : null}
 
-      <Box sx={props.inputStyles}>
-        {props.heading || props.error || props.helperInfo ? (
-          <Box
-            sx={{
-              marginBottom: "12px",
-            }}
-          >
-            {props.heading ? (
-              <Typography
-                component="p"
-                variant="Bold_14"
-                sx={{
-                  color: props.error
-                    ? theme.palette["Red"]
-                    : theme.palette["Black"],
-                }}
-              >
-                {props.heading}
-              </Typography>
-            ) : null}
+        <Box sx={props.inputStyles}>
+          {props.heading || props.error || props.helperInfo ? (
+            <Box
+              sx={{
+                marginBottom: "12px",
+              }}
+            >
+              {props.heading ? (
+                <Typography
+                  component="p"
+                  variant="Bold_14"
+                  sx={{
+                    color: props.error
+                      ? theme.palette["Red"]
+                      : theme.palette["Black"],
+                  }}
+                >
+                  {props.heading}
+                </Typography>
+              ) : null}
 
-            {props.error ? (
-              <Typography
-                component="p"
-                variant="Reg_12"
-                sx={{
-                  color: theme.palette["Red"],
-                }}
-              >
-                {props.error}
-              </Typography>
-            ) : null}
+              {props.error ? (
+                <Typography
+                  component="p"
+                  variant="Reg_12"
+                  sx={{
+                    color: theme.palette["Red"],
+                  }}
+                >
+                  {props.error}
+                </Typography>
+              ) : null}
 
-            {props.helperInfo ? (
-              <Typography
-                component="p"
-                variant="Reg_12"
-                sx={{
-                  color: theme.palette["Corp_1"],
-                }}
-              >
-                {props.helperInfo.text}{" "}
-                {props.helperInfo.link ? (
-                  <>
-                    {props.helperInfo.link.type === "internal" ? (
-                      <Link
-                        style={{
-                          textDecorationLine: "underline",
-                        }}
-                        to={props.helperInfo.link.path}
-                      >
-                        {props.helperInfo.link.text}
-                      </Link>
-                    ) : (
-                      <a
-                        style={{
-                          textDecorationLine: "underline",
-                        }}
-                        href={props.helperInfo.link.path}
-                      >
-                        {props.helperInfo.link.text}
-                      </a>
-                    )}
-                  </>
-                ) : null}
-              </Typography>
-            ) : null}
-          </Box>
-        ) : null}
+              {props.helperInfo ? (
+                <Typography
+                  component="p"
+                  variant="Reg_12"
+                  sx={{
+                    color: theme.palette["Corp_1"],
+                  }}
+                >
+                  {props.helperInfo.text}{" "}
+                  {props.helperInfo.link ? (
+                    <>
+                      {props.helperInfo.link.type === "internal" ? (
+                        <Link
+                          style={{
+                            textDecorationLine: "underline",
+                          }}
+                          to={props.helperInfo.link.path}
+                        >
+                          {props.helperInfo.link.text}
+                        </Link>
+                      ) : (
+                        <a
+                          style={{
+                            textDecorationLine: "underline",
+                          }}
+                          href={props.helperInfo.link.path}
+                        >
+                          {props.helperInfo.link.text}
+                        </a>
+                      )}
+                    </>
+                  ) : null}
+                </Typography>
+              ) : null}
+            </Box>
+          ) : null}
 
-        {/* <div className="grid gap-y-2">
+          {/* <div className="grid gap-y-2">
           {props.options.map((item) => (
             <div
               className={cn("relative flex items-center gap-x-2", {
@@ -164,67 +167,70 @@ export const StyledRadioButton = (props: StyledRadioButtonProps) => {
           ))}
         </div> */}
 
-        <RadioGroup
-          aria-labelledby={props.name}
-          value={props.value}
-          name={props.name}
-          onChange={(evt) => {
-            props.onChange(evt);
-            props.onImmediateChange();
-          }}
-        >
-          {" "}
-          {props.options.map((item) => (
-            <FormControlLabel
-              key={item.value}
-              value={item.value}
-              disabled={item.disabled ? true : false}
-              label={
-                <Box
-                  sx={{
-                    display: "flex",
-                    columnGap: "4px",
-                    alignItems: "center",
-                  }}
-                >
-                  {item.icon ? (
-                    <img
-                      style={{
-                        display: "block",
-                        width: "18px",
-                        height: "18px",
-                      }}
-                      src={iconMap[item.icon]}
-                      alt="socal network"
-                    />
-                  ) : null}{" "}
-                  {item.label}
-                </Box>
-              }
-              sx={{
-                marginLeft: "-6px",
-              }}
-              control={
-                <Radio
-                  size="small"
-                  sx={{
-                    padding: "4px",
-                  }}
-                  color={
-                    props.error
-                      ? "error"
-                      : props.status === "warning"
-                        ? "warning"
-                        : "corp"
-                  }
-                />
-              }
-            />
-          ))}
-        </RadioGroup>
-      </Box>
+          <RadioGroup
+            aria-labelledby={props.name}
+            value={props.value}
+            name={props.name}
+            onChange={(evt) => {
+              props.onChange(evt);
+              props.onImmediateChange();
+            }}
+          >
+            {" "}
+            {props.options.map((item) => (
+              <FormControlLabel
+                key={item.value}
+                value={item.value}
+                disabled={item.disabled ? true : false}
+                label={
+                  <Box
+                    sx={{
+                      display: "flex",
+                      columnGap: "4px",
+                      alignItems: "center",
+                    }}
+                  >
+                    {item.icon ? (
+                      <img
+                        style={{
+                          display: "block",
+                          width: "18px",
+                          height: "18px",
+                        }}
+                        src={iconMap[item.icon]}
+                        alt="socal network"
+                      />
+                    ) : null}{" "}
+                    {item.label}
+                  </Box>
+                }
+                sx={{
+                  marginLeft: "-6px",
+                }}
+                control={
+                  <Radio
+                    size="small"
+                    sx={{
+                      padding: "4px",
+                    }}
+                    color={
+                      props.error
+                        ? "error"
+                        : props.status === "warning"
+                          ? "warning"
+                          : "corp"
+                    }
+                  />
+                }
+              />
+            ))}
+          </RadioGroup>
+        </Box>
 
-      {props.dividerBottom ? <Divider sx={{ marginTop: "16px" }} /> : null}
-    </Box>
-  );
-};
+        {props.dividerBottom ? <Divider sx={{ marginTop: "16px" }} /> : null}
+      </Box>
+    );
+  }
+);
+
+StyledRadioButton.displayName = "StyledRadioButton";
