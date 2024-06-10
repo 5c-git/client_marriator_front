@@ -376,13 +376,13 @@ export const Primary: Story = {
         http.get("/photo", async () => {
           await delay(2000);
           return HttpResponse.json([
-            {
-              inputtype: "photo",
-              name: "photo",
-              value: "",
-              url: "http://preprod.marriator-api.fivecorners.ru/api/saveFile",
-              validation: "default",
-            },
+            // {
+            //   inputtype: "photo",
+            //   name: "photo",
+            //   value: "",
+            //   url: "http://preprod.marriator-api.fivecorners.ru/api/saveFile",
+            //   validation: "default",
+            // },
             {
               inputtype: "phone",
               name: "phone",
@@ -403,6 +403,13 @@ export const Primary: Story = {
               value: "",
               placeholder: "Укажите email",
               validation: "emailReq",
+            },
+            {
+              inputtype: "card",
+              name: "card",
+              value: "",
+              placeholder: "Введите номер карты",
+              validation: "default",
             },
           ]);
         }),

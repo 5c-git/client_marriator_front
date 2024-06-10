@@ -23,6 +23,7 @@ import { StyledTextField } from "../ui/StyledTextField/StyledTextField";
 import { StyledPhotoInput } from "../ui/StyledPhotoInput/StyledPhotoInput";
 import { StyledPhoneField } from "../ui/StyledPhoneField/StyledPhoneField";
 import { StyledDateField } from "../ui/StyledDateField/StyledDateField";
+import { StyledCardField } from "../ui/StyledCardField/StyledCardField";
 
 const inputMap = {
   text: StyledTextField,
@@ -35,6 +36,7 @@ const inputMap = {
   photo: StyledPhotoInput,
   phone: StyledPhoneField,
   date: StyledDateField,
+  card: StyledCardField,
 };
 
 const validationMap: {
@@ -103,6 +105,32 @@ const validationMap: {
   date: {
     none: Yup.string().default("").notRequired(),
     default: Yup.string().required("Обязатльное поле"),
+  },
+  card: {
+    none: Yup.string().default("").notRequired(),
+    default: Yup.string()
+      .test(
+        "is-card",
+        () => "Некорректны номер",
+        (value) => {
+          // accept only digits, dashes or spaces
+          // if (/[^0-9-\s]+/.test(value)) return false;
+
+          const arr = `${value}`
+            .split("")
+            .reverse()
+            .map((x) => Number.parseInt(x));
+          const lastDigit = arr.shift();
+          let sum = arr.reduce(
+            (acc, val, i) =>
+              i % 2 !== 0 ? acc + val : acc + ((val *= 2) > 9 ? val - 9 : val),
+            0
+          );
+          sum += lastDigit;
+          return sum % 10 === 0;
+        }
+      )
+      .required("Обязатльное поле"),
   },
 };
 
