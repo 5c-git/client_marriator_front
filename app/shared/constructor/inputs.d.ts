@@ -15,7 +15,7 @@ export type Inputs = [
         name: string;
         value: string;
         placeholder: string;
-        validation: "none" | "default";
+        validation: "none" | "default" | "email" | "emailReq";
         disabled?: true;
         heading?: string;
         error?: string;
@@ -333,7 +333,7 @@ export type Inputs = [
         name: string;
         value: string;
         placeholder: string;
-        validation: "none" | "default";
+        validation: "none" | "default" | "email" | "emailReq";
         disabled?: true;
         heading?: string;
         error?: string;

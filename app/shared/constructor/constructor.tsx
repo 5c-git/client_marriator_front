@@ -50,6 +50,14 @@ const validationMap: {
   text: {
     none: Yup.string().default("").notRequired(),
     default: Yup.string().required("Обязатльное поле"),
+    email: Yup.string()
+      .default("")
+      .email("Укажите корректный e-mail")
+      .notRequired(),
+    emailReq: Yup.string()
+      .default("")
+      .email("Укажите корректный e-mail")
+      .required("Обязатльное поле"),
     // wrongValue: (value: string, error: string) =>
     //   Yup.string().test(
     //     "wrong",

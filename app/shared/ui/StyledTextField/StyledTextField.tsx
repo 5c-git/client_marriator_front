@@ -21,7 +21,7 @@ type StyledTextFieldProps = {
   heading?: string;
   error?: string;
   status?: "warning";
-  validation?: "default" | "none";
+  validation?: "default" | "none" | "email";
 
   helperInfo?: {
     text?: string;

@@ -19,7 +19,7 @@
     },
     "validation": {
       "type": "string",
-      "enum": ["none", "default"]
+      "enum": ["none", "default", "email", "emailReq"]
     },
     "disabled": {
       "type": "boolean",

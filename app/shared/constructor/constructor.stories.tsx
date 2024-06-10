@@ -397,6 +397,13 @@ export const Primary: Story = {
               placeholder: "Укажите дату",
               validation: "default",
             },
+            {
+              inputtype: "text",
+              name: "email",
+              value: "",
+              placeholder: "Укажите email",
+              validation: "emailReq",
+            },
           ]);
         }),
       ],
