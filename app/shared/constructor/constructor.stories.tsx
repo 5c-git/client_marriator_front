@@ -10,6 +10,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import * as Yup from "yup";
 import { useEffect, useState } from "react";
 import Ajv from "ajv";
+import addFormats from "ajv-formats";
 
 import inputsSchema from "./inputs.schema.json";
 import { Inputs } from "./inputs";
@@ -21,6 +22,7 @@ import {
 } from "./constructor";
 
 const ajv = new Ajv();
+addFormats(ajv);
 
 const validate = ajv.compile(inputsSchema);
 
@@ -386,6 +388,13 @@ export const Primary: Story = {
               name: "phone",
               value: "",
               placeholder: "Номер телефона",
+              validation: "default",
+            },
+            {
+              inputtype: "date",
+              name: "date",
+              value: null,
+              placeholder: "Укажите дату",
               validation: "default",
             },
           ]);

@@ -22,6 +22,7 @@ import { StyledPhotoCheckbox } from "../ui/StyledPhotoCheckbox/StyledPhotoCheckb
 import { StyledTextField } from "../ui/StyledTextField/StyledTextField";
 import { StyledPhotoInput } from "../ui/StyledPhotoInput/StyledPhotoInput";
 import { StyledPhoneField } from "../ui/StyledPhoneField/StyledPhoneField";
+import { StyledDateField } from "../ui/StyledDateField/StyledDateField";
 
 const inputMap = {
   text: StyledTextField,
@@ -33,6 +34,7 @@ const inputMap = {
   file: StyledFileInput,
   photo: StyledPhotoInput,
   phone: StyledPhoneField,
+  date: StyledDateField,
 };
 
 const validationMap: {
@@ -87,6 +89,10 @@ const validationMap: {
     default: Yup.string().required("Обязатльное поле"),
   },
   photo: {
+    none: Yup.string().default("").notRequired(),
+    default: Yup.string().required("Обязатльное поле"),
+  },
+  date: {
     none: Yup.string().default("").notRequired(),
     default: Yup.string().required("Обязатльное поле"),
   },

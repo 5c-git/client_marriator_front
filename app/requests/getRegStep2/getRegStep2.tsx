@@ -1,5 +1,6 @@
 import { http, delay, HttpResponse } from "msw";
 import Ajv from "ajv";
+import addFormats from "ajv-formats";
 
 import textSchema from "../../shared/ui/StyledTextField/StyledTextField.schema.json";
 import selectSchema from "../../shared/ui/StyledSelect/StyledSelect.schema.json";
@@ -14,6 +15,7 @@ import schemaSuccess from "./success.schema.json";
 import { Inputs } from "~/shared/constructor/inputs";
 
 const ajv = new Ajv();
+addFormats(ajv);
 
 ajv.addSchema(textSchema);
 ajv.addSchema(selectSchema);

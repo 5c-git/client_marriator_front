@@ -558,6 +558,63 @@ export const theme = createTheme(baseTheme, {
         },
       },
     },
+    MuiPickersToolbar: {
+      styleOverrides: {
+        root: {
+          display: "none",
+        },
+      },
+    },
+    MuiPickersDay: {
+      styleOverrides: {
+        root: {
+          color: baseTheme.palette["Black"],
+          borderRadius: "50%",
+          backgroundColor: baseTheme.palette["White"],
+
+          "&:focus": {
+            backgroundColor: baseTheme.palette["White"],
+            "&.Mui-selected": {
+              backgroundColor: baseTheme.palette["Corp_1"],
+            },
+          },
+
+          "&.Mui-selected": {
+            backgroundColor: baseTheme.palette["Corp_1"],
+
+            "&:hover": {
+              backgroundColor: baseTheme.palette["Corp_1"],
+            },
+          },
+
+          "&:hover": {
+            backgroundColor: baseTheme.palette["White"],
+          },
+        },
+        today: {
+          color: baseTheme.palette["Black"],
+          borderRadius: "50%",
+          border: "1px solid",
+          borderColor: baseTheme.palette["Corp_1"],
+          backgroundColor: baseTheme.palette["White"],
+
+          "&:not(.Mui-selected)": {
+            borderColor: baseTheme.palette["Corp_1"],
+          },
+
+          "&.Mui-selected": {
+            backgroundColor: baseTheme.palette["Corp_1"],
+            "&:hover": {
+              backgroundColor: baseTheme.palette["Corp_1"],
+            },
+          },
+
+          "&:hover": {
+            backgroundColor: baseTheme.palette["White"],
+          },
+        },
+      },
+    },
     // MuiTabs: {
     //   styleOverrides: {
     //     // цвет бордера выбранного таба

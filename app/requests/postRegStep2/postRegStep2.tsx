@@ -1,9 +1,11 @@
 import { http, delay, HttpResponse } from "msw";
 import Ajv from "ajv";
+import addFormats from "ajv-formats";
 
 import schemaSuccess from "./success.schema.json";
 
 const ajv = new Ajv();
+addFormats(ajv);
 
 const validateSuccess = ajv.compile(schemaSuccess);
 
