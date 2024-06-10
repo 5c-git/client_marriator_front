@@ -381,6 +381,13 @@ export const Primary: Story = {
               url: "http://preprod.marriator-api.fivecorners.ru/api/saveFile",
               validation: "default",
             },
+            {
+              inputtype: "phone",
+              name: "phone",
+              value: "",
+              placeholder: "Номер телефона",
+              validation: "default",
+            },
           ]);
         }),
       ],

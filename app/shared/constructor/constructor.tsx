@@ -11,6 +11,8 @@ import {
   UseFormTrigger,
 } from "react-hook-form";
 
+import { phoneRegExp } from "../validators";
+
 import { StyledSelect } from "../ui/StyledSelect/StyledSelect";
 import { StyledCheckbox } from "../ui/StyledCheckbox/StyledCheckbox";
 import { StyledCheckboxMultiple } from "../ui/StyledCheckboxMultiple/StyledCheckboxMultiple";
@@ -19,6 +21,7 @@ import { StyledFileInput } from "../ui/StyledFileInput/StyledFileInput";
 import { StyledPhotoCheckbox } from "../ui/StyledPhotoCheckbox/StyledPhotoCheckbox";
 import { StyledTextField } from "../ui/StyledTextField/StyledTextField";
 import { StyledPhotoInput } from "../ui/StyledPhotoInput/StyledPhotoInput";
+import { StyledPhoneField } from "../ui/StyledPhoneField/StyledPhoneField";
 
 const inputMap = {
   text: StyledTextField,
@@ -29,6 +32,7 @@ const inputMap = {
   photoCheckbox: StyledPhotoCheckbox,
   file: StyledFileInput,
   photo: StyledPhotoInput,
+  phone: StyledPhoneField,
 };
 
 const validationMap: {
@@ -50,6 +54,12 @@ const validationMap: {
     //     error,
     //     (currentValue) => currentValue !== value,
     //   ),
+  },
+  phone: {
+    none: Yup.string().default("").notRequired(),
+    default: Yup.string()
+      .matches(phoneRegExp, "Укажите корректный номер телефона")
+      .required("Обязатльное поле"),
   },
   select: {
     none: Yup.string().default("").notRequired(),
