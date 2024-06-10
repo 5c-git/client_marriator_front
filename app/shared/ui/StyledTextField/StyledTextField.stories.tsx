@@ -48,11 +48,14 @@ export const Primary: Story = {
     placeholder: "Текстовое поле",
     validation: "none",
     onChange: () => {},
+    onImmediateChange: () => {},
   },
   render: function Render(args) {
     const [, updateArgs] = useArgs();
 
-    function onChange(evt: React.ChangeEvent<HTMLInputElement>) {
+    function onChange(
+      evt: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+    ) {
       updateArgs({ value: evt.target.value });
     }
 
@@ -63,6 +66,7 @@ export const Primary: Story = {
         placeholder={args.placeholder}
         value={args.value}
         onChange={onChange}
+        onImmediateChange={args.onImmediateChange}
         validation={args.validation}
       />
     );
@@ -79,11 +83,14 @@ export const PrimaryError: Story = {
     error: "Ошибка!",
     validation: "none",
     onChange: () => {},
+    onImmediateChange: () => {},
   },
   render: function Render(args) {
     const [, updateArgs] = useArgs();
 
-    function onChange(evt: React.ChangeEvent<HTMLInputElement>) {
+    function onChange(
+      evt: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+    ) {
       updateArgs({ value: evt.target.value });
     }
 
@@ -94,6 +101,7 @@ export const PrimaryError: Story = {
         placeholder={args.placeholder}
         value={args.value}
         onChange={onChange}
+        onImmediateChange={args.onImmediateChange}
         error={args.error}
         validation={args.validation}
       />
@@ -109,6 +117,7 @@ export const PrimaryText: Story = {
     value: "",
     placeholder: "Текстовое поле",
     onChange: () => {},
+    onImmediateChange: () => {},
     validation: "none",
     helperInfo: {
       text: "Вспомогательный текст",
@@ -117,7 +126,9 @@ export const PrimaryText: Story = {
   render: function Render(args) {
     const [, updateArgs] = useArgs();
 
-    function onChange(evt: React.ChangeEvent<HTMLInputElement>) {
+    function onChange(
+      evt: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+    ) {
       updateArgs({ value: evt.target.value });
     }
 
@@ -128,6 +139,7 @@ export const PrimaryText: Story = {
         placeholder={args.placeholder}
         value={args.value}
         onChange={onChange}
+        onImmediateChange={args.onImmediateChange}
         helperInfo={args.helperInfo}
         validation={args.validation}
       />
@@ -143,6 +155,7 @@ export const PrimaryLink: Story = {
     value: "",
     placeholder: "Текстовое поле",
     onChange: () => {},
+    onImmediateChange: () => {},
     validation: "none",
     helperInfo: {
       link: {
@@ -155,7 +168,9 @@ export const PrimaryLink: Story = {
   render: function Render(args) {
     const [, updateArgs] = useArgs();
 
-    function onChange(evt: React.ChangeEvent<HTMLInputElement>) {
+    function onChange(
+      evt: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+    ) {
       updateArgs({ value: evt.target.value });
     }
 
@@ -166,6 +181,7 @@ export const PrimaryLink: Story = {
         placeholder={args.placeholder}
         value={args.value}
         onChange={onChange}
+        onImmediateChange={args.onImmediateChange}
         helperInfo={args.helperInfo}
         validation={args.validation}
       />
@@ -181,6 +197,7 @@ export const PrimaryTextLink: Story = {
     value: "",
     placeholder: "Текстовое поле",
     onChange: () => {},
+    onImmediateChange: () => {},
     validation: "none",
     helperInfo: {
       text: "Вспомогательный текст и",
@@ -194,7 +211,9 @@ export const PrimaryTextLink: Story = {
   render: function Render(args) {
     const [, updateArgs] = useArgs();
 
-    function onChange(evt: React.ChangeEvent<HTMLInputElement>) {
+    function onChange(
+      evt: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+    ) {
       updateArgs({ value: evt.target.value });
     }
 
@@ -205,6 +224,7 @@ export const PrimaryTextLink: Story = {
         placeholder={args.placeholder}
         value={args.value}
         onChange={onChange}
+        onImmediateChange={args.onImmediateChange}
         helperInfo={args.helperInfo}
         validation={args.validation}
       />
@@ -220,6 +240,7 @@ export const PrimaryTextLinkError: Story = {
     value: "",
     placeholder: "Текстовое поле",
     onChange: () => {},
+    onImmediateChange: () => {},
     error: "Ошибка!",
     validation: "none",
     helperInfo: {
@@ -234,7 +255,9 @@ export const PrimaryTextLinkError: Story = {
   render: function Render(args) {
     const [, updateArgs] = useArgs();
 
-    function onChange(evt: React.ChangeEvent<HTMLInputElement>) {
+    function onChange(
+      evt: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+    ) {
       updateArgs({ value: evt.target.value });
     }
 
@@ -245,6 +268,7 @@ export const PrimaryTextLinkError: Story = {
         placeholder={args.placeholder}
         value={args.value}
         onChange={onChange}
+        onImmediateChange={args.onImmediateChange}
         error={args.error}
         helperInfo={args.helperInfo}
         validation={args.validation}
@@ -261,13 +285,16 @@ export const PrimaryTextStatus: Story = {
     value: "",
     placeholder: "Текстовое поле",
     onChange: () => {},
+    onImmediateChange: () => {},
     validation: "none",
     status: "warning",
   },
   render: function Render(args) {
     const [, updateArgs] = useArgs();
 
-    function onChange(evt: React.ChangeEvent<HTMLInputElement>) {
+    function onChange(
+      evt: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+    ) {
       updateArgs({ value: evt.target.value });
     }
 
@@ -278,6 +305,7 @@ export const PrimaryTextStatus: Story = {
         placeholder={args.placeholder}
         value={args.value}
         onChange={onChange}
+        onImmediateChange={args.onImmediateChange}
         status={args.status}
         validation={args.validation}
       />
@@ -293,13 +321,16 @@ export const PrimaryTextDisabled: Story = {
     value: "",
     placeholder: "Текстовое поле",
     onChange: () => {},
+    onImmediateChange: () => {},
     validation: "none",
     disabled: true,
   },
   render: function Render(args) {
     const [, updateArgs] = useArgs();
 
-    function onChange(evt: React.ChangeEvent<HTMLInputElement>) {
+    function onChange(
+      evt: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+    ) {
       updateArgs({ value: evt.target.value });
     }
 
@@ -310,6 +341,7 @@ export const PrimaryTextDisabled: Story = {
         placeholder={args.placeholder}
         value={args.value}
         onChange={onChange}
+        onImmediateChange={args.onImmediateChange}
         disabled={args.disabled}
         validation={args.validation}
       />
@@ -326,11 +358,14 @@ export const PrimaryTextValue: Story = {
     placeholder: "Текстовое поле",
     validation: "none",
     onChange: () => {},
+    onImmediateChange: () => {},
   },
   render: function Render(args) {
     const [, updateArgs] = useArgs();
 
-    function onChange(evt: React.ChangeEvent<HTMLInputElement>) {
+    function onChange(
+      evt: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+    ) {
       updateArgs({ value: evt.target.value });
     }
 
@@ -341,6 +376,7 @@ export const PrimaryTextValue: Story = {
         placeholder={args.placeholder}
         value={args.value}
         onChange={onChange}
+        onImmediateChange={args.onImmediateChange}
         validation={args.validation}
       />
     );
@@ -356,12 +392,15 @@ export const PrimaryTextheading: Story = {
     placeholder: "Текстовое поле",
     validation: "none",
     onChange: () => {},
+    onImmediateChange: () => {},
     heading: "Заголовок поля",
   },
   render: function Render(args) {
     const [, updateArgs] = useArgs();
 
-    function onChange(evt: React.ChangeEvent<HTMLInputElement>) {
+    function onChange(
+      evt: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+    ) {
       updateArgs({ value: evt.target.value });
     }
 
@@ -372,6 +411,7 @@ export const PrimaryTextheading: Story = {
         placeholder={args.placeholder}
         value={args.value}
         onChange={onChange}
+        onImmediateChange={args.onImmediateChange}
         heading={args.heading}
         validation={args.validation}
       />
@@ -388,6 +428,7 @@ export const PrimaryDividers: Story = {
     placeholder: "Текстовое поле",
     validation: "none",
     onChange: () => {},
+    onImmediateChange: () => {},
     dividerTop: true,
     dividerBottom: true,
     inputStyles: {
@@ -397,7 +438,9 @@ export const PrimaryDividers: Story = {
   render: function Render(args) {
     const [, updateArgs] = useArgs();
 
-    function onChange(evt: React.ChangeEvent<HTMLInputElement>) {
+    function onChange(
+      evt: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+    ) {
       updateArgs({ value: evt.target.value });
     }
 
@@ -408,6 +451,7 @@ export const PrimaryDividers: Story = {
         placeholder={args.placeholder}
         value={args.value}
         onChange={onChange}
+        onImmediateChange={args.onImmediateChange}
         validation={args.validation}
         dividerTop={args.dividerTop}
         dividerBottom={args.dividerBottom}

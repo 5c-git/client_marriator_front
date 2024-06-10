@@ -3,16 +3,16 @@ import type { StoryObj, Meta } from "@storybook/react";
 import { useArgs } from "@storybook/preview-api";
 import * as DocBlock from "@storybook/blocks";
 
-import { StyledFileInput } from "./StyledFileInput";
+import { StyledPhotoInput } from "./StyledPhotoInput";
 
-import schema from "./StyledFileInput.schema.json";
+import schema from "./StyledPhotoInput.schema.json";
 
 /**
- * тип - file
+ * тип - photo
  */
 const meta = {
-  title: "Общие компоненты/Поля ввода/file",
-  component: StyledFileInput,
+  title: "Общие компоненты/Поля ввода/photo",
+  component: StyledPhotoInput,
   tags: ["autodocs"],
   parameters: {
     docs: {
@@ -25,7 +25,6 @@ const meta = {
             language="json"
             code={JSON.stringify(schema, null, 2)}
           />
-
           <DocBlock.Canvas />
           <DocBlock.ArgTypes />
           <DocBlock.Stories />
@@ -33,20 +32,22 @@ const meta = {
       ),
     },
   },
-} satisfies Meta<typeof StyledFileInput>;
+} satisfies Meta<typeof StyledPhotoInput>;
 
 export default meta;
 
 type Story = StoryObj<typeof meta>;
 
 export const Primary: Story = {
-  name: "file",
+  name: "photo",
   args: {
-    inputtype: "file",
-    name: "file",
+    inputtype: "photo",
+    name: "photo",
+    // value: "https://mui.com/static/images/avatar/1.jpg",
     value: "",
     url: import.meta.env.VITE_SEND_FILE,
-    placeholder: "Приложи документ",
+    // url: "",
+    // placeholder: "Приложи документ",
     validation: "none",
     onChange: () => {},
     onImmediateChange: () => {},
@@ -58,15 +59,6 @@ export const Primary: Story = {
     // error: "Ошибка!",
     // status: "warning",
     // disabled: true,
-    drawerInfo: {
-      text: "Поясняющий текст, который может быть очень длинным, но не совсем уж очень сильно длинным, в общем 3 строки.",
-      images: [
-        "/client_marriator_front/mockImg/drawerImage.jpg",
-        "/client_marriator_front/mockImg/drawerImage.jpg",
-        "/client_marriator_front/mockImg/drawerImage.jpg",
-        "/client_marriator_front/mockImg/drawerImage.jpg",
-      ],
-    },
     // helperInfo: {
     //   text: "Текст и ",
     //   link: {
@@ -84,7 +76,7 @@ export const Primary: Story = {
     }
 
     return (
-      <StyledFileInput
+      <StyledPhotoInput
         inputtype={args.inputtype}
         name={args.name}
         value={args.value}
@@ -94,9 +86,63 @@ export const Primary: Story = {
         url={args.url}
         error={args.error}
         status={args.status}
-        placeholder={args.placeholder}
         validation={args.validation}
-        drawerInfo={args.drawerInfo}
+        dividerTop={args.dividerTop}
+        dividerBottom={args.dividerBottom}
+        heading={args.heading}
+        helperInfo={args.helperInfo}
+        disabled={args.disabled}
+      />
+    );
+  },
+};
+
+export const PrimaryFilled: Story = {
+  name: "photo (заполненный)",
+  args: {
+    inputtype: "photo",
+    name: "photo",
+    value: "https://mui.com/static/images/avatar/1.jpg",
+    url: import.meta.env.VITE_SEND_FILE,
+    validation: "none",
+    onChange: () => {},
+    onImmediateChange: () => {},
+    triggerValidation: () => {},
+
+    // dividerTop: true,
+    // dividerBottom: true,
+    // heading: "This is heading",
+    // error: "Ошибка!",
+    // status: "warning",
+    // disabled: true,
+    // helperInfo: {
+    //   text: "Текст и ",
+    //   link: {
+    //     type: "external",
+    //     path: "https://www.google.com/",
+    //     text: "cсылка",
+    //   },
+    // },
+  },
+  render: function Render(args) {
+    const [, updateArgs] = useArgs();
+
+    function onChange(name: string, value: unknown) {
+      updateArgs({ value });
+    }
+
+    return (
+      <StyledPhotoInput
+        inputtype={args.inputtype}
+        name={args.name}
+        value={args.value}
+        onChange={onChange}
+        onImmediateChange={args.onImmediateChange}
+        triggerValidation={args.triggerValidation}
+        url={args.url}
+        error={args.error}
+        status={args.status}
+        validation={args.validation}
         dividerTop={args.dividerTop}
         dividerBottom={args.dividerBottom}
         heading={args.heading}
@@ -108,13 +154,12 @@ export const Primary: Story = {
 };
 
 export const PrimaryDisabled: Story = {
-  name: "file (отключенный)",
+  name: "photo (отключенный)",
   args: {
-    inputtype: "file",
-    name: "file",
+    inputtype: "photo",
+    name: "photo",
     value: "",
     url: import.meta.env.VITE_SEND_FILE,
-    placeholder: "Приложи документ",
     validation: "none",
     onChange: () => {},
     onImmediateChange: () => {},
@@ -126,15 +171,6 @@ export const PrimaryDisabled: Story = {
     // error: "Ошибка!",
     // status: "warning",
     disabled: true,
-    drawerInfo: {
-      text: "Поясняющий текст, который может быть очень длинным, но не совсем уж очень сильно длинным, в общем 3 строки.",
-      images: [
-        "/client_marriator_front/mockImg/drawerImage.jpg",
-        "/client_marriator_front/mockImg/drawerImage.jpg",
-        "/client_marriator_front/mockImg/drawerImage.jpg",
-        "/client_marriator_front/mockImg/drawerImage.jpg",
-      ],
-    },
     // helperInfo: {
     //   text: "Текст и ",
     //   link: {
@@ -152,7 +188,7 @@ export const PrimaryDisabled: Story = {
     }
 
     return (
-      <StyledFileInput
+      <StyledPhotoInput
         inputtype={args.inputtype}
         name={args.name}
         value={args.value}
@@ -162,9 +198,7 @@ export const PrimaryDisabled: Story = {
         url={args.url}
         error={args.error}
         status={args.status}
-        placeholder={args.placeholder}
         validation={args.validation}
-        drawerInfo={args.drawerInfo}
         dividerTop={args.dividerTop}
         dividerBottom={args.dividerBottom}
         heading={args.heading}
@@ -175,213 +209,13 @@ export const PrimaryDisabled: Story = {
   },
 };
 
-export const PrimaryNothing: Story = {
-  name: "file (без доп информации)",
+export const PrimaryStatus: Story = {
+  name: "photo (статус)",
   args: {
-    inputtype: "file",
-    name: "file",
+    inputtype: "photo",
+    name: "photo",
     value: "",
     url: import.meta.env.VITE_SEND_FILE,
-    placeholder: "Приложи документ",
-    validation: "none",
-    onChange: () => {},
-    onImmediateChange: () => {},
-    triggerValidation: () => {},
-
-    // dividerTop: true,
-    // dividerBottom: true,
-    // heading: "This is heading",
-    // error: "Ошибка!",
-    // status: "warning",
-    // drawerInfo: {
-    //   text: "Поясняющий текст, который может быть очень длинным, но не совсем уж очень сильно длинным, в общем 3 строки.",
-    //   images: [
-    //     "/client_marriator_front/mockImg/drawerImage.jpg",
-    //     "/client_marriator_front/mockImg/drawerImage.jpg",
-    //     "/client_marriator_front/mockImg/drawerImage.jpg",
-    //     "/client_marriator_front/mockImg/drawerImage.jpg",
-    //   ],
-    // },
-    // helperInfo: {
-    //   text: "Текст и ",
-    //   link: {
-    //     type: "external",
-    //     path: "https://www.google.com/",
-    //     text: "cсылка",
-    //   },
-    // },
-  },
-  render: function Render(args) {
-    const [, updateArgs] = useArgs();
-
-    function onChange(name: string, value: unknown) {
-      updateArgs({ value });
-    }
-
-    return (
-      <StyledFileInput
-        inputtype={args.inputtype}
-        name={args.name}
-        value={args.value}
-        onChange={onChange}
-        onImmediateChange={args.onImmediateChange}
-        triggerValidation={args.triggerValidation}
-        url={args.url}
-        error={args.error}
-        status={args.status}
-        placeholder={args.placeholder}
-        validation={args.validation}
-        drawerInfo={args.drawerInfo}
-        dividerTop={args.dividerTop}
-        dividerBottom={args.dividerBottom}
-        heading={args.heading}
-        helperInfo={args.helperInfo}
-      />
-    );
-  },
-};
-
-export const PrimaryFilled: Story = {
-  name: "file (заполненный)",
-  args: {
-    inputtype: "file",
-    name: "file",
-    value: "{Номер телефона} - {Наименование документа}.pdf",
-    url: import.meta.env.VITE_SEND_FILE,
-    placeholder: "Приложи документ",
-    validation: "none",
-    onChange: () => {},
-    onImmediateChange: () => {},
-    triggerValidation: () => {},
-
-    // dividerTop: true,
-    // dividerBottom: true,
-    // heading: "This is heading",
-    // error: "Ошибка!",
-    // status: "warning",
-    drawerInfo: {
-      text: "Поясняющий текст, который может быть очень длинным, но не совсем уж очень сильно длинным, в общем 3 строки.",
-      images: [
-        "/client_marriator_front/mockImg/drawerImage.jpg",
-        "/client_marriator_front/mockImg/drawerImage.jpg",
-        "/client_marriator_front/mockImg/drawerImage.jpg",
-        "/client_marriator_front/mockImg/drawerImage.jpg",
-      ],
-    },
-    // helperInfo: {
-    //   text: "Текст и ",
-    //   link: {
-    //     type: "external",
-    //     path: "https://www.google.com/",
-    //     text: "cсылка",
-    //   },
-    // },
-  },
-  render: function Render(args) {
-    const [, updateArgs] = useArgs();
-
-    function onChange(name: string, value: unknown) {
-      updateArgs({ value });
-    }
-
-    return (
-      <StyledFileInput
-        inputtype={args.inputtype}
-        name={args.name}
-        value={args.value}
-        onChange={onChange}
-        onImmediateChange={args.onImmediateChange}
-        triggerValidation={args.triggerValidation}
-        url={args.url}
-        error={args.error}
-        status={args.status}
-        placeholder={args.placeholder}
-        validation={args.validation}
-        drawerInfo={args.drawerInfo}
-        dividerTop={args.dividerTop}
-        dividerBottom={args.dividerBottom}
-        heading={args.heading}
-        helperInfo={args.helperInfo}
-      />
-    );
-  },
-};
-
-export const PrimaryError: Story = {
-  name: "file (ошибка)",
-  args: {
-    inputtype: "file",
-    name: "file",
-    value: "",
-    url: import.meta.env.VITE_SEND_FILE,
-    placeholder: "Приложи документ",
-    validation: "none",
-    onChange: () => {},
-
-    onImmediateChange: () => {},
-    triggerValidation: () => {},
-
-    // dividerTop: true,
-    // dividerBottom: true,
-    // heading: "This is heading",
-    error: "Ошибка!",
-    // status: "warning",
-    drawerInfo: {
-      text: "Поясняющий текст, который может быть очень длинным, но не совсем уж очень сильно длинным, в общем 3 строки.",
-      images: [
-        "/client_marriator_front/mockImg/drawerImage.jpg",
-        "/client_marriator_front/mockImg/drawerImage.jpg",
-        "/client_marriator_front/mockImg/drawerImage.jpg",
-        "/client_marriator_front/mockImg/drawerImage.jpg",
-      ],
-    },
-    // helperInfo: {
-    //   text: "Текст и ",
-    //   link: {
-    //     type: "external",
-    //     path: "https://www.google.com/",
-    //     text: "cсылка",
-    //   },
-    // },
-  },
-  render: function Render(args) {
-    const [, updateArgs] = useArgs();
-
-    function onChange(name: string, value: unknown) {
-      updateArgs({ value });
-    }
-
-    return (
-      <StyledFileInput
-        inputtype={args.inputtype}
-        name={args.name}
-        value={args.value}
-        onChange={onChange}
-        onImmediateChange={args.onImmediateChange}
-        triggerValidation={args.triggerValidation}
-        url={args.url}
-        error={args.error}
-        status={args.status}
-        placeholder={args.placeholder}
-        validation={args.validation}
-        drawerInfo={args.drawerInfo}
-        dividerTop={args.dividerTop}
-        dividerBottom={args.dividerBottom}
-        heading={args.heading}
-        helperInfo={args.helperInfo}
-      />
-    );
-  },
-};
-
-export const PrimaryWarning: Story = {
-  name: "file (статус  - warning)",
-  args: {
-    inputtype: "file",
-    name: "file",
-    value: "",
-    url: import.meta.env.VITE_SEND_FILE,
-    placeholder: "Приложи документ",
     validation: "none",
     onChange: () => {},
     onImmediateChange: () => {},
@@ -392,15 +226,7 @@ export const PrimaryWarning: Story = {
     // heading: "This is heading",
     // error: "Ошибка!",
     status: "warning",
-    drawerInfo: {
-      text: "Поясняющий текст, который может быть очень длинным, но не совсем уж очень сильно длинным, в общем 3 строки.",
-      images: [
-        "/client_marriator_front/mockImg/drawerImage.jpg",
-        "/client_marriator_front/mockImg/drawerImage.jpg",
-        "/client_marriator_front/mockImg/drawerImage.jpg",
-        "/client_marriator_front/mockImg/drawerImage.jpg",
-      ],
-    },
+    // disabled: true,
     // helperInfo: {
     //   text: "Текст и ",
     //   link: {
@@ -418,7 +244,7 @@ export const PrimaryWarning: Story = {
     }
 
     return (
-      <StyledFileInput
+      <StyledPhotoInput
         inputtype={args.inputtype}
         name={args.name}
         value={args.value}
@@ -428,26 +254,80 @@ export const PrimaryWarning: Story = {
         url={args.url}
         error={args.error}
         status={args.status}
-        placeholder={args.placeholder}
         validation={args.validation}
-        drawerInfo={args.drawerInfo}
         dividerTop={args.dividerTop}
         dividerBottom={args.dividerBottom}
         heading={args.heading}
         helperInfo={args.helperInfo}
+        disabled={args.disabled}
+      />
+    );
+  },
+};
+
+export const PrimaryError: Story = {
+  name: "photo (ошибка)",
+  args: {
+    inputtype: "photo",
+    name: "photo",
+    value: "",
+    url: "http://preprod.marriator-api.fivecorners.ru/api/saveFile",
+    validation: "none",
+    onChange: () => {},
+    onImmediateChange: () => {},
+    triggerValidation: () => {},
+
+    // dividerTop: true,
+    // dividerBottom: true,
+    // heading: "This is heading",
+    error: "Ошибка!",
+    // status: "warning",
+    // disabled: true,
+    // helperInfo: {
+    //   text: "Текст и ",
+    //   link: {
+    //     type: "external",
+    //     path: "https://www.google.com/",
+    //     text: "cсылка",
+    //   },
+    // },
+  },
+  render: function Render(args) {
+    const [, updateArgs] = useArgs();
+
+    function onChange(name: string, value: unknown) {
+      updateArgs({ value });
+    }
+
+    return (
+      <StyledPhotoInput
+        inputtype={args.inputtype}
+        name={args.name}
+        value={args.value}
+        onChange={onChange}
+        onImmediateChange={args.onImmediateChange}
+        triggerValidation={args.triggerValidation}
+        url={args.url}
+        error={args.error}
+        status={args.status}
+        validation={args.validation}
+        dividerTop={args.dividerTop}
+        dividerBottom={args.dividerBottom}
+        heading={args.heading}
+        helperInfo={args.helperInfo}
+        disabled={args.disabled}
       />
     );
   },
 };
 
 export const PrimaryHeading: Story = {
-  name: "file (pаголовок)",
+  name: "photo (заголовок)",
   args: {
-    inputtype: "file",
-    name: "file",
+    inputtype: "photo",
+    name: "photo",
     value: "",
     url: import.meta.env.VITE_SEND_FILE,
-    placeholder: "Приложи документ",
     validation: "none",
     onChange: () => {},
     onImmediateChange: () => {},
@@ -455,18 +335,10 @@ export const PrimaryHeading: Story = {
 
     // dividerTop: true,
     // dividerBottom: true,
-    heading: "Заголовок инпута",
+    heading: "Это заголовок",
     // error: "Ошибка!",
     // status: "warning",
-    drawerInfo: {
-      text: "Поясняющий текст, который может быть очень длинным, но не совсем уж очень сильно длинным, в общем 3 строки.",
-      images: [
-        "/client_marriator_front/mockImg/drawerImage.jpg",
-        "/client_marriator_front/mockImg/drawerImage.jpg",
-        "/client_marriator_front/mockImg/drawerImage.jpg",
-        "/client_marriator_front/mockImg/drawerImage.jpg",
-      ],
-    },
+    // disabled: true,
     // helperInfo: {
     //   text: "Текст и ",
     //   link: {
@@ -484,7 +356,7 @@ export const PrimaryHeading: Story = {
     }
 
     return (
-      <StyledFileInput
+      <StyledPhotoInput
         inputtype={args.inputtype}
         name={args.name}
         value={args.value}
@@ -494,26 +366,24 @@ export const PrimaryHeading: Story = {
         url={args.url}
         error={args.error}
         status={args.status}
-        placeholder={args.placeholder}
         validation={args.validation}
-        drawerInfo={args.drawerInfo}
         dividerTop={args.dividerTop}
         dividerBottom={args.dividerBottom}
         heading={args.heading}
         helperInfo={args.helperInfo}
+        disabled={args.disabled}
       />
     );
   },
 };
 
 export const PrimaryHelper: Story = {
-  name: "file (вспомогательная информация)",
+  name: "photo (вспомогательная иформация)",
   args: {
-    inputtype: "file",
-    name: "file",
+    inputtype: "photo",
+    name: "photo",
     value: "",
     url: import.meta.env.VITE_SEND_FILE,
-    placeholder: "Приложи документ",
     validation: "none",
     onChange: () => {},
     onImmediateChange: () => {},
@@ -521,18 +391,10 @@ export const PrimaryHelper: Story = {
 
     // dividerTop: true,
     // dividerBottom: true,
-    // heading: "Заголовок инпута",
+    // heading: "Это заголовок",
     // error: "Ошибка!",
     // status: "warning",
-    drawerInfo: {
-      text: "Поясняющий текст, который может быть очень длинным, но не совсем уж очень сильно длинным, в общем 3 строки.",
-      images: [
-        "/client_marriator_front/mockImg/drawerImage.jpg",
-        "/client_marriator_front/mockImg/drawerImage.jpg",
-        "/client_marriator_front/mockImg/drawerImage.jpg",
-        "/client_marriator_front/mockImg/drawerImage.jpg",
-      ],
-    },
+    // disabled: true,
     helperInfo: {
       text: "Текст и ",
       link: {
@@ -550,7 +412,7 @@ export const PrimaryHelper: Story = {
     }
 
     return (
-      <StyledFileInput
+      <StyledPhotoInput
         inputtype={args.inputtype}
         name={args.name}
         value={args.value}
@@ -560,26 +422,24 @@ export const PrimaryHelper: Story = {
         url={args.url}
         error={args.error}
         status={args.status}
-        placeholder={args.placeholder}
         validation={args.validation}
-        drawerInfo={args.drawerInfo}
         dividerTop={args.dividerTop}
         dividerBottom={args.dividerBottom}
         heading={args.heading}
         helperInfo={args.helperInfo}
+        disabled={args.disabled}
       />
     );
   },
 };
 
 export const PrimaryDividers: Story = {
-  name: "file (разделители)",
+  name: "photo (разделители)",
   args: {
-    inputtype: "file",
-    name: "file",
+    inputtype: "photo",
+    name: "photo",
     value: "",
     url: import.meta.env.VITE_SEND_FILE,
-    placeholder: "Приложи документ",
     validation: "none",
     onChange: () => {},
     onImmediateChange: () => {},
@@ -587,26 +447,18 @@ export const PrimaryDividers: Story = {
 
     dividerTop: true,
     dividerBottom: true,
-    // heading: "Заголовок инпута",
+    // heading: "Это заголовок",
     // error: "Ошибка!",
     // status: "warning",
-    drawerInfo: {
-      text: "Поясняющий текст, который может быть очень длинным, но не совсем уж очень сильно длинным, в общем 3 строки.",
-      images: [
-        "/client_marriator_front/mockImg/drawerImage.jpg",
-        "/client_marriator_front/mockImg/drawerImage.jpg",
-        "/client_marriator_front/mockImg/drawerImage.jpg",
-        "/client_marriator_front/mockImg/drawerImage.jpg",
-      ],
-    },
-    helperInfo: {
-      text: "Текст и ",
-      link: {
-        type: "external",
-        path: "https://www.google.com/",
-        text: "cсылка",
-      },
-    },
+    // disabled: true,
+    // helperInfo: {
+    //   text: "Текст и ",
+    //   link: {
+    //     type: "external",
+    //     path: "https://www.google.com/",
+    //     text: "cсылка",
+    //   },
+    // },
   },
   render: function Render(args) {
     const [, updateArgs] = useArgs();
@@ -616,7 +468,7 @@ export const PrimaryDividers: Story = {
     }
 
     return (
-      <StyledFileInput
+      <StyledPhotoInput
         inputtype={args.inputtype}
         name={args.name}
         value={args.value}
@@ -626,13 +478,12 @@ export const PrimaryDividers: Story = {
         url={args.url}
         error={args.error}
         status={args.status}
-        placeholder={args.placeholder}
         validation={args.validation}
-        drawerInfo={args.drawerInfo}
         dividerTop={args.dividerTop}
         dividerBottom={args.dividerBottom}
         heading={args.heading}
         helperInfo={args.helperInfo}
+        disabled={args.disabled}
       />
     );
   },

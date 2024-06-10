@@ -633,6 +633,77 @@
           "validation",
           "url"
         ]
+      },
+      {
+        "type": "object",
+        "properties": {
+          "inputtype": {
+            "type": "string",
+            "const": "photo"
+          },
+          "name": {
+            "type": "string"
+          },
+          "value": {
+            "type": "string"
+          },
+          "validation": {
+            "type": "string",
+            "enum": ["none", "default"]
+          },
+          "url": {
+            "type": "string"
+          },
+          "disabled": {
+            "type": "boolean",
+            "const": true
+          },
+          "heading": {
+            "type": "string"
+          },
+          "error": {
+            "type": "string"
+          },
+          "status": {
+            "type": "string",
+            "const": "warning"
+          },
+          "dividerTop": {
+            "type": "boolean",
+            "const": true
+          },
+          "dividerBottom": {
+            "type": "boolean",
+            "const": true
+          },
+          "helperInfo": {
+            "type": "object",
+            "minProperties": 1,
+            "properties": {
+              "text": {
+                "type": "string"
+              },
+              "link": {
+                "type": "object",
+                "properties": {
+                  "text": {
+                    "type": "string"
+                  },
+                  "path": {
+                    "type": "string"
+                  },
+                  "type": {
+                    "type": "string",
+                    "enum": ["internal", "external"]
+                  }
+                },
+                "required": ["text", "path", "type"]
+              }
+            },
+            "additionalProperties": false
+          }
+        },
+        "required": ["inputtype", "name", "value", "validation", "url"]
       }
     ]
   }

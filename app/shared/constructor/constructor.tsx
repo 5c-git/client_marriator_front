@@ -18,15 +18,17 @@ import { StyledRadioButton } from "../ui/StyledRadioButton/StyledRadioButton";
 import { StyledFileInput } from "../ui/StyledFileInput/StyledFileInput";
 import { StyledPhotoCheckbox } from "../ui/StyledPhotoCheckbox/StyledPhotoCheckbox";
 import { StyledTextField } from "../ui/StyledTextField/StyledTextField";
+import { StyledPhotoInput } from "../ui/StyledPhotoInput/StyledPhotoInput";
 
 const inputMap = {
+  text: StyledTextField,
   select: StyledSelect,
   radio: StyledRadioButton,
   checkbox: StyledCheckbox,
   checkboxMultiple: StyledCheckboxMultiple,
   photoCheckbox: StyledPhotoCheckbox,
   file: StyledFileInput,
-  text: StyledTextField,
+  photo: StyledPhotoInput,
 };
 
 const validationMap: {
@@ -72,13 +74,11 @@ const validationMap: {
   },
   file: {
     none: Yup.string().default("").notRequired(),
-    default: Yup.string()
-      .required("Обязатльное поле")
-      .test(
-        "maxSize",
-        "Размер одно из файлов превышает 6MB!",
-        (value) => value !== "maxSize"
-      ),
+    default: Yup.string().required("Обязатльное поле"),
+  },
+  photo: {
+    none: Yup.string().default("").notRequired(),
+    default: Yup.string().required("Обязатльное поле"),
   },
 };
 
@@ -143,6 +143,18 @@ export const generateInputsMarkup = (
     if (item.inputtype === "file") {
       return (
         <StyledFileInput
+          key={index}
+          error={errors[item.name]?.message}
+          onChange={setValue}
+          triggerValidation={trigger}
+          onImmediateChange={onImmediateChange}
+          {...item}
+        />
+      );
+      // приходится делать отдельную проверку, так как в данном случае необходимо програмно установить значение в поле
+    } else if (item.inputtype === "photo") {
+      return (
+        <StyledPhotoInput
           key={index}
           error={errors[item.name]?.message}
           onChange={setValue}

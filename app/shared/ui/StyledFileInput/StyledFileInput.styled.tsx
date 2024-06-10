@@ -1,8 +1,9 @@
 import { styled, Box, SwipeableDrawer } from "@mui/material";
 
 export const S_Box = styled(Box, {
-  shouldForwardProp: (prop) => prop !== "error" && prop !== "status",
-})<{ error?: string; status?: "warning" }>((props) => ({
+  shouldForwardProp: (prop) =>
+    prop !== "error" && prop !== "status" && prop !== "disabled",
+})<{ error?: string; status?: "warning"; disabled?: boolean }>((props) => ({
   display: "flex",
   height: "58px",
   justifyContent: "space-between",
@@ -18,6 +19,8 @@ export const S_Box = styled(Box, {
       ? props.theme.palette["Yellow"]
       : props.theme.palette["Grey_5"],
   backgroundColor: props.theme.palette["Grey_5"],
+  opacity: props.disabled ? 0.6 : 1,
+  pointerEvents: props.disabled ? "none" : "initial",
 }));
 
 export const S_ButtonContainer = styled(Box)({
@@ -30,8 +33,9 @@ export const S_ButtonContainer = styled(Box)({
 });
 
 export const S_ActivationButton = styled("button", {
-  shouldForwardProp: (prop) => prop !== "error" && prop !== "value",
-})<{ error?: string; value: string }>((props) => ({
+  shouldForwardProp: (prop) =>
+    prop !== "error" && prop !== "value" && prop !== "disabled",
+})<{ error?: string; value: string; disabled?: boolean }>((props) => ({
   position: "relative",
   width: "100%",
   overflow: "hidden",
@@ -48,9 +52,11 @@ export const S_ActivationButton = styled("button", {
   backgroundColor: "transparent",
   color: props.error
     ? props.theme.palette["Red"]
-    : props.value !== ""
-      ? props.theme.palette["Black"]
-      : props.theme.palette["Grey_2"],
+    : props.disabled
+      ? props.theme.palette["Grey_4"]
+      : props.value !== ""
+        ? props.theme.palette["Black"]
+        : props.theme.palette["Grey_2"],
 }));
 
 export const S_SwipeableDrawer = styled(SwipeableDrawer)((props) => ({

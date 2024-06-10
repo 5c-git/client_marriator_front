@@ -371,6 +371,18 @@ export const Primary: Story = {
             },
           ]);
         }),
+        http.get("/photo", async () => {
+          await delay(2000);
+          return HttpResponse.json([
+            {
+              inputtype: "photo",
+              name: "photo",
+              value: "",
+              url: "http://preprod.marriator-api.fivecorners.ru/api/saveFile",
+              validation: "default",
+            },
+          ]);
+        }),
       ],
     },
   },

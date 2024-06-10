@@ -3,14 +3,9 @@ import { Link } from "@remix-run/react";
 import { UseFormSetValue } from "react-hook-form";
 import Swiper from "swiper";
 import "swiper/css";
-import { resizeFile } from "./resizeFile";
+import { resizeFile } from "~/shared/resizeFile/resizeFile";
 
-import Ajv from "ajv";
-
-import { SendFileErrorResponse } from "./sendFile/sendFileError";
-import { SendFileSuccessResponse } from "./sendFile/sendFileSuccess";
-import sendFileError from "./sendFile/sendFileError.schema.json";
-import sendFileSucess from "./sendFile/sendFileSuccess.schema.json";
+import { postSendFile } from "~/requests/postSendFile/postSendFile";
 
 import {
   useTheme,
@@ -77,11 +72,6 @@ type FileInputProps = {
 // (6 megabites)
 const MAX_FILE_SIZE = 6000000;
 
-const ajv = new Ajv();
-
-const validateResponseError = ajv.compile(sendFileError);
-const validateResponseSuccess = ajv.compile(sendFileSucess);
-
 export const StyledFileInput = ({
   onChange,
   triggerValidation,
@@ -93,7 +83,6 @@ export const StyledFileInput = ({
   const [value, setValue] = useState<string>("");
 
   const [open, setOpen] = useState<boolean>(false);
-  const [progress, setProgress] = useState<number>(0);
   const [loading, setLoading] = useState<boolean>(false);
   const [loaded, setLoaded] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
@@ -126,28 +115,20 @@ export const StyledFileInput = ({
   }, [open, swiperInstance, props.drawerInfo]);
 
   useEffect(() => {
-    if (progress === 100 && loaded) {
-      triggerValidation(props.name);
-      setTimeout(() => {
-        setLoading(false);
-      }, 800);
-    } else if (progress === 100 && loaded === false) {
-      setTimeout(() => {
-        setLoaded(true);
-      }, 800);
-    }
-  }, [props.name, triggerValidation, progress, loading, loaded]);
-
-  useEffect(() => {
     if (open === true) {
       setLoaded(false);
-      setProgress(0);
       setError(null);
       if (ref.current) {
         ref.current.value = "";
       }
     }
   }, [open, setError]);
+
+  useEffect(() => {
+    if (loaded === true) {
+      triggerValidation(props.name);
+    }
+  }, [triggerValidation, props.name, loaded]);
 
   return (
     <>
@@ -168,14 +149,20 @@ export const StyledFileInput = ({
             </Typography>
           ) : null}
 
-          <S_Box error={props.error} status={props.status}>
+          <S_Box
+            error={props.error}
+            disabled={props.disabled}
+            status={props.status}
+          >
             <S_ButtonContainer>
               {value !== "" ? (
                 <Typography
                   component="p"
                   variant="Reg_14"
                   sx={{
-                    color: theme.palette["Grey_2"],
+                    color: props.disabled
+                      ? theme.palette["Grey_4"]
+                      : theme.palette["Grey_2"],
                   }}
                   onClick={() => {
                     location.href = value;
@@ -190,6 +177,7 @@ export const StyledFileInput = ({
                   value === "" ? setOpen(true) : (location.href = value);
                 }}
                 error={props.error}
+                disabled={props.disabled}
                 value={props.value}
               >
                 {value === "" ? props.placeholder : value}
@@ -208,7 +196,11 @@ export const StyledFileInput = ({
             >
               <ClipIcon
                 htmlColor={
-                  props.error ? theme.palette["Red"] : theme.palette["Grey_2"]
+                  props.error
+                    ? theme.palette["Red"]
+                    : props.disabled
+                      ? theme.palette["Grey_4"]
+                      : theme.palette["Grey_2"]
                 }
                 sx={{
                   width: "18px",
@@ -449,71 +441,26 @@ export const StyledFileInput = ({
                       }
                     }
 
-                    // sendFiles
-                    const xhr = new XMLHttpRequest();
-                    xhr.responseType = "json";
-
-                    xhr.upload.addEventListener(
-                      "progress",
-                      function (event) {
-                        if (event.lengthComputable) {
-                          setProgress((event.loaded / event.total) * 100);
-                        }
-                      },
-                      false
-                    );
-
-                    xhr.addEventListener("load", function () {
-                      if (validateResponseSuccess(xhr.response)) {
-                        const data = xhr.response as SendFileSuccessResponse;
-
-                        setProgress(100);
-                        setValue(data.resFile);
-                        onChange(props.name, data.resFile);
-                        props.onImmediateChange();
-                      } else {
-                        setValue("");
-                        onChange(props.name, "");
-                        if (validateResponseError(xhr.response)) {
-                          const data = xhr.response as SendFileErrorResponse;
-
-                          setError(data.error);
-                        } else {
-                          setError(
-                            "Ошибка загрузки документа, допускается загрузка документов формата jpg, png, pdf не более 6MB."
-                          );
-                        }
-                      }
-                    });
-
-                    xhr.addEventListener("error", function () {
-                      if (validateResponseSuccess(xhr.response)) {
-                        const data = xhr.response as SendFileSuccessResponse;
-
-                        setProgress(100);
-                        setValue(data.resFile);
-                        onChange(props.name, data.resFile);
-                      } else {
-                        setValue("");
-                        onChange(props.name, "");
-                        if (validateResponseError(xhr.response)) {
-                          const data = xhr.response as SendFileErrorResponse;
-
-                          setError(data.error);
-                        } else {
-                          setError(
-                            "Ошибка загрузки документа, допускается загрузка документов формата jpg, png, pdf не более 6MB."
-                          );
-                        }
-                      }
-                    });
-
-                    xhr.open("POST", props.url);
-
-                    xhr.send(formData);
-
                     setOpen(false);
                     setLoading(true);
+
+                    // sendFiles
+                    postSendFile(
+                      props.url,
+                      formData,
+                      (data) => {
+                        setValue(data.resFile);
+                        setLoaded(true);
+                        setLoading(false);
+                        onChange(props.name, data.resFile);
+                        props.onImmediateChange();
+                      },
+                      (error) => {
+                        setValue("");
+                        onChange(props.name, "");
+                        setError(error);
+                      }
+                    );
                   }
                 }
               }}
@@ -601,7 +548,6 @@ export const StyledFileInput = ({
               onClick={() => {
                 setLoaded(false);
                 setLoading(false);
-                setProgress(0);
                 setError(null);
                 setOpen(true);
                 if (ref.current) {
