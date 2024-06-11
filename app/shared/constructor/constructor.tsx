@@ -26,6 +26,7 @@ import { StyledDateField } from "../ui/StyledDateField/StyledDateField";
 import { StyledCardField } from "../ui/StyledCardField/StyledCardField";
 import { StyledMonthField } from "../ui/StyledMonthField/StyledMonthField";
 import { StyledEmailField } from "../ui/StyledEmailField/StyledEmailField";
+import { StyledAccountField } from "../ui/StyledAccountField/StyledAccountField";
 
 const inputMap = {
   text: StyledTextField,
@@ -41,6 +42,7 @@ const inputMap = {
   card: StyledCardField,
   month: StyledMonthField,
   email: StyledEmailField,
+  account: StyledAccountField,
 };
 
 const validationMap: {
@@ -149,6 +151,13 @@ const validationMap: {
     default: Yup.string()
       .default("")
       .email("Укажите корректный e-mail")
+      .required("Обязатльное поле"),
+  },
+  account: {
+    none: Yup.string().default("").notRequired(),
+    default: Yup.string()
+      .default("")
+      .length(20, "Укажите корректное значение")
       .required("Обязатльное поле"),
   },
 };

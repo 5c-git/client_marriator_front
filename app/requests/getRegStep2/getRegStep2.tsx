@@ -15,6 +15,7 @@ import dateSchema from "../../shared/ui/StyledDateField/StyledDateField.schema.j
 import cardSchema from "../../shared/ui/StyledCardField/StyledCardField.schema.json";
 import monthSchema from "../../shared/ui/StyledMonthField/StyledMonthField.schema.json";
 import emailSchema from "../../shared/ui/StyledEmailField/StyledEmailField.schema.json";
+import accountSchema from "../../shared/ui/StyledAccountField/StyledAccountField.schema.json";
 
 import schemaSuccess from "./success.schema.json";
 
@@ -36,6 +37,7 @@ ajv.addSchema(dateSchema);
 ajv.addSchema(cardSchema);
 ajv.addSchema(monthSchema);
 ajv.addSchema(emailSchema);
+ajv.addSchema(accountSchema);
 
 const validateSuccess = ajv.compile(schemaSuccess);
 

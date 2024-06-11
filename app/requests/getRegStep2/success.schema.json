@@ -47,6 +47,9 @@
           },
           {
             "$ref": "email"
+          },
+          {
+            "$ref": "account"
           }
         ]
       }
