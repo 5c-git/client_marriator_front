@@ -200,6 +200,10 @@ export const generateInputsMarkup = (
           onChange={setValue}
           triggerValidation={trigger}
           onImmediateChange={onImmediateChange}
+          inputStyles={{
+            paddingRight: "16px",
+            paddingLeft: "16px",
+          }}
           {...item}
         />
       );
