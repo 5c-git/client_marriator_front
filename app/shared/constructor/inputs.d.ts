@@ -15,7 +15,7 @@ export type Inputs = [
         name: string;
         value: string;
         placeholder: string;
-        validation: "none" | "default" | "email" | "emailReq";
+        validation: "none" | "default";
         disabled?: true;
         heading?: string;
         error?: string;
@@ -353,6 +353,29 @@ export type Inputs = [
         inputtype: "month";
         name: string;
         value: string | null;
+        placeholder: string;
+        validation: "none" | "default";
+        disabled?: true;
+        heading?: string;
+        error?: string;
+        status?: "warning";
+        dividerTop?: true;
+        dividerBottom?: true;
+        helperInfo?: {
+          text?: string;
+          link?: {
+            text: string;
+            path: string;
+            type: "internal" | "external";
+            [k: string]: unknown;
+          };
+        };
+        [k: string]: unknown;
+      }
+    | {
+        inputtype: "email";
+        name: string;
+        value: string;
         placeholder: string;
         validation: "none" | "default";
         disabled?: true;
@@ -379,7 +402,7 @@ export type Inputs = [
         name: string;
         value: string;
         placeholder: string;
-        validation: "none" | "default" | "email" | "emailReq";
+        validation: "none" | "default";
         disabled?: true;
         heading?: string;
         error?: string;
@@ -717,6 +740,29 @@ export type Inputs = [
         inputtype: "month";
         name: string;
         value: string | null;
+        placeholder: string;
+        validation: "none" | "default";
+        disabled?: true;
+        heading?: string;
+        error?: string;
+        status?: "warning";
+        dividerTop?: true;
+        dividerBottom?: true;
+        helperInfo?: {
+          text?: string;
+          link?: {
+            text: string;
+            path: string;
+            type: "internal" | "external";
+            [k: string]: unknown;
+          };
+        };
+        [k: string]: unknown;
+      }
+    | {
+        inputtype: "email";
+        name: string;
+        value: string;
         placeholder: string;
         validation: "none" | "default";
         disabled?: true;

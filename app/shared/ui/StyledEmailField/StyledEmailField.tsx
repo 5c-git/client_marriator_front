@@ -12,8 +12,8 @@ import {
   TextField,
 } from "@mui/material";
 
-type StyledTextFieldProps = {
-  inputtype: "text";
+type StyledEmailFieldProps = {
+  inputtype: "email";
   name: string;
   value: string;
   placeholder: string;
@@ -44,8 +44,8 @@ type StyledTextFieldProps = {
   onImmediateChange: () => void;
 };
 
-export const StyledTextField = forwardRef(
-  (props: StyledTextFieldProps, ref) => {
+export const StyledEmailField = forwardRef(
+  (props: StyledEmailFieldProps, ref) => {
     const theme = useTheme();
 
     return (
@@ -148,4 +148,4 @@ export const StyledTextField = forwardRef(
   }
 );
 
-StyledTextField.displayName = "StyledTextField";
+StyledEmailField.displayName = "StyledEmailField";
