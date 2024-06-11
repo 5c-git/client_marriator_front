@@ -27,6 +27,9 @@ import { StyledCardField } from "../ui/StyledCardField/StyledCardField";
 import { StyledMonthField } from "../ui/StyledMonthField/StyledMonthField";
 import { StyledEmailField } from "../ui/StyledEmailField/StyledEmailField";
 import { StyledAccountField } from "../ui/StyledAccountField/StyledAccountField";
+import { StyledInnField } from "../ui/StyledInnField/StyledInnField";
+import { StyledSnilsField } from "../ui/StyledSnilsField/StyledSnilsField";
+import { StyledSmsField } from "../ui/StyledSmsField/StyledSmsField";
 
 const inputMap = {
   text: StyledTextField,
@@ -43,6 +46,9 @@ const inputMap = {
   month: StyledMonthField,
   email: StyledEmailField,
   account: StyledAccountField,
+  inn: StyledInnField,
+  snils: StyledSnilsField,
+  sms: StyledSmsField,
 };
 
 const validationMap: {
@@ -158,6 +164,27 @@ const validationMap: {
     default: Yup.string()
       .default("")
       .length(20, "Укажите корректное значение")
+      .required("Обязатльное поле"),
+  },
+  inn: {
+    none: Yup.string().default("").notRequired(),
+    default: Yup.string()
+      .default("")
+      .length(12, "Укажите корректное значение")
+      .required("Обязатльное поле"),
+  },
+  snils: {
+    none: Yup.string().default("").notRequired(),
+    default: Yup.string()
+      .default("")
+      .length(11, "Укажите корректное значение")
+      .required("Обязатльное поле"),
+  },
+  sms: {
+    none: Yup.string().default("").notRequired(),
+    default: Yup.string()
+      .default("")
+      .length(5, "Укажите корректное значение")
       .required("Обязатльное поле"),
   },
 };

@@ -418,6 +418,75 @@ export type Inputs = [
         };
         [k: string]: unknown;
       }
+    | {
+        inputtype: "inn";
+        name: string;
+        value: string;
+        placeholder: string;
+        validation: "none" | "default";
+        disabled?: true;
+        heading?: string;
+        error?: string;
+        status?: "warning";
+        dividerTop?: true;
+        dividerBottom?: true;
+        helperInfo?: {
+          text?: string;
+          link?: {
+            text: string;
+            path: string;
+            type: "internal" | "external";
+            [k: string]: unknown;
+          };
+        };
+        [k: string]: unknown;
+      }
+    | {
+        inputtype: "snils";
+        name: string;
+        value: string;
+        placeholder: string;
+        validation: "none" | "default";
+        disabled?: true;
+        heading?: string;
+        error?: string;
+        status?: "warning";
+        dividerTop?: true;
+        dividerBottom?: true;
+        helperInfo?: {
+          text?: string;
+          link?: {
+            text: string;
+            path: string;
+            type: "internal" | "external";
+            [k: string]: unknown;
+          };
+        };
+        [k: string]: unknown;
+      }
+    | {
+        inputtype: "sms";
+        name: string;
+        value: string;
+        placeholder: string;
+        validation: "none" | "default";
+        disabled?: true;
+        heading?: string;
+        error?: string;
+        status?: "warning";
+        dividerTop?: true;
+        dividerBottom?: true;
+        helperInfo?: {
+          text?: string;
+          link?: {
+            text: string;
+            path: string;
+            type: "internal" | "external";
+            [k: string]: unknown;
+          };
+        };
+        [k: string]: unknown;
+      }
   ),
   ...(
     | {
@@ -807,6 +876,75 @@ export type Inputs = [
       }
     | {
         inputtype: "account";
+        name: string;
+        value: string;
+        placeholder: string;
+        validation: "none" | "default";
+        disabled?: true;
+        heading?: string;
+        error?: string;
+        status?: "warning";
+        dividerTop?: true;
+        dividerBottom?: true;
+        helperInfo?: {
+          text?: string;
+          link?: {
+            text: string;
+            path: string;
+            type: "internal" | "external";
+            [k: string]: unknown;
+          };
+        };
+        [k: string]: unknown;
+      }
+    | {
+        inputtype: "inn";
+        name: string;
+        value: string;
+        placeholder: string;
+        validation: "none" | "default";
+        disabled?: true;
+        heading?: string;
+        error?: string;
+        status?: "warning";
+        dividerTop?: true;
+        dividerBottom?: true;
+        helperInfo?: {
+          text?: string;
+          link?: {
+            text: string;
+            path: string;
+            type: "internal" | "external";
+            [k: string]: unknown;
+          };
+        };
+        [k: string]: unknown;
+      }
+    | {
+        inputtype: "snils";
+        name: string;
+        value: string;
+        placeholder: string;
+        validation: "none" | "default";
+        disabled?: true;
+        heading?: string;
+        error?: string;
+        status?: "warning";
+        dividerTop?: true;
+        dividerBottom?: true;
+        helperInfo?: {
+          text?: string;
+          link?: {
+            text: string;
+            path: string;
+            type: "internal" | "external";
+            [k: string]: unknown;
+          };
+        };
+        [k: string]: unknown;
+      }
+    | {
+        inputtype: "sms";
         name: string;
         value: string;
         placeholder: string;

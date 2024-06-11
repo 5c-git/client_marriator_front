@@ -50,6 +50,15 @@
           },
           {
             "$ref": "account"
+          },
+          {
+            "$ref": "inn"
+          },
+          {
+            "$ref": "snils"
+          },
+          {
+            "$ref": "sms"
           }
         ]
       }

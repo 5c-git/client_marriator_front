@@ -3,17 +3,17 @@ import type { StoryObj, Meta } from "@storybook/react";
 import { useArgs } from "@storybook/preview-api";
 import * as DocBlock from "@storybook/blocks";
 
-import { StyledAccountField } from "./StyledAccountField";
+import { StyledSmsField } from "./StyledSmsField";
 
-import schema from "./StyledAccountField.schema.json";
+import schema from "./StyledSmsField.schema.json";
 
 /**
- * тип - account
+ * тип - sms
  * <p>Основан на https://mui.com/material-ui/react-text-field/</p>
  */
 const meta = {
-  title: "Общие компоненты/Поля ввода/account",
-  component: StyledAccountField,
+  title: "Общие компоненты/Поля ввода/sms",
+  component: StyledSmsField,
   tags: ["autodocs"],
   parameters: {
     docs: {
@@ -33,19 +33,19 @@ const meta = {
       ),
     },
   },
-} satisfies Meta<typeof StyledAccountField>;
+} satisfies Meta<typeof StyledSmsField>;
 
 export default meta;
 
 type Story = StoryObj<typeof meta>;
 
 export const Primary: Story = {
-  name: "account (базовый вид)",
+  name: "sms (базовый вид)",
   args: {
-    inputtype: "account",
+    inputtype: "sms",
     name: "text",
     value: "",
-    placeholder: "Лицевой счет",
+    placeholder: "Код из смс",
     validation: "none",
     onChange: () => {},
     onImmediateChange: () => {},
@@ -58,7 +58,7 @@ export const Primary: Story = {
     }
 
     return (
-      <StyledAccountField
+      <StyledSmsField
         inputtype={args.inputtype}
         name={args.name}
         placeholder={args.placeholder}
@@ -72,12 +72,12 @@ export const Primary: Story = {
 };
 
 export const PrimaryError: Story = {
-  name: "account (ошибка)",
+  name: "sms (ошибка)",
   args: {
-    inputtype: "account",
+    inputtype: "sms",
     name: "phone",
     value: "",
-    placeholder: "Лицевой счет",
+    placeholder: "Код из смс",
     error: "Ошибка!",
     validation: "none",
     onChange: () => {},
@@ -91,7 +91,7 @@ export const PrimaryError: Story = {
     }
 
     return (
-      <StyledAccountField
+      <StyledSmsField
         inputtype={args.inputtype}
         name={args.name}
         placeholder={args.placeholder}
@@ -105,13 +105,13 @@ export const PrimaryError: Story = {
   },
 };
 
-export const PrimaryAccount: Story = {
-  name: "account (вспомогательный текст)",
+export const PrimarySms: Story = {
+  name: "sms (вспомогательный текст)",
   args: {
-    inputtype: "account",
+    inputtype: "sms",
     name: "text",
     value: "",
-    placeholder: "Лицевой счет",
+    placeholder: "Код из смс",
     onChange: () => {},
     onImmediateChange: () => {},
     validation: "none",
@@ -127,7 +127,7 @@ export const PrimaryAccount: Story = {
     }
 
     return (
-      <StyledAccountField
+      <StyledSmsField
         inputtype={args.inputtype}
         name={args.name}
         placeholder={args.placeholder}
@@ -142,12 +142,12 @@ export const PrimaryAccount: Story = {
 };
 
 export const PrimaryLink: Story = {
-  name: "account (вспомогательная ссылка)",
+  name: "sms (вспомогательная ссылка)",
   args: {
-    inputtype: "account",
+    inputtype: "sms",
     name: "text",
     value: "",
-    placeholder: "Лицевой счет",
+    placeholder: "Код из смс",
     onChange: () => {},
     onImmediateChange: () => {},
     validation: "none",
@@ -167,7 +167,7 @@ export const PrimaryLink: Story = {
     }
 
     return (
-      <StyledAccountField
+      <StyledSmsField
         inputtype={args.inputtype}
         name={args.name}
         placeholder={args.placeholder}
@@ -181,13 +181,13 @@ export const PrimaryLink: Story = {
   },
 };
 
-export const PrimaryAccountLink: Story = {
-  name: "account (вспомогательные текст и ссылка)",
+export const PrimarySmsLink: Story = {
+  name: "sms (вспомогательные текст и ссылка)",
   args: {
-    inputtype: "account",
+    inputtype: "sms",
     name: "text",
     value: "",
-    placeholder: "Лицевой счет",
+    placeholder: "Код из смс",
     onChange: () => {},
     onImmediateChange: () => {},
     validation: "none",
@@ -208,7 +208,7 @@ export const PrimaryAccountLink: Story = {
     }
 
     return (
-      <StyledAccountField
+      <StyledSmsField
         inputtype={args.inputtype}
         name={args.name}
         placeholder={args.placeholder}
@@ -222,13 +222,13 @@ export const PrimaryAccountLink: Story = {
   },
 };
 
-export const PrimaryAccountLinkError: Story = {
-  name: "account (вспомогательные текст и ссылка и ошибка)",
+export const PrimarySmsLinkError: Story = {
+  name: "sms (вспомогательные текст и ссылка и ошибка)",
   args: {
-    inputtype: "account",
+    inputtype: "sms",
     name: "text",
     value: "",
-    placeholder: "Лицевой счет",
+    placeholder: "Код из смс",
     onChange: () => {},
     onImmediateChange: () => {},
     error: "Ошибка!",
@@ -250,7 +250,7 @@ export const PrimaryAccountLinkError: Story = {
     }
 
     return (
-      <StyledAccountField
+      <StyledSmsField
         inputtype={args.inputtype}
         name={args.name}
         placeholder={args.placeholder}
@@ -265,13 +265,13 @@ export const PrimaryAccountLinkError: Story = {
   },
 };
 
-export const PrimaryAccountStatus: Story = {
-  name: "account (статус поля)",
+export const PrimarySmsStatus: Story = {
+  name: "sms (статус поля)",
   args: {
-    inputtype: "account",
+    inputtype: "sms",
     name: "text",
     value: "",
-    placeholder: "Лицевой счет",
+    placeholder: "Код из смс",
     onChange: () => {},
     onImmediateChange: () => {},
     validation: "none",
@@ -285,7 +285,7 @@ export const PrimaryAccountStatus: Story = {
     }
 
     return (
-      <StyledAccountField
+      <StyledSmsField
         inputtype={args.inputtype}
         name={args.name}
         placeholder={args.placeholder}
@@ -299,13 +299,13 @@ export const PrimaryAccountStatus: Story = {
   },
 };
 
-export const PrimaryAccountDisabled: Story = {
-  name: "account (отключенное поле)",
+export const PrimarySmsDisabled: Story = {
+  name: "sms (отключенное поле)",
   args: {
-    inputtype: "account",
+    inputtype: "sms",
     name: "text",
     value: "",
-    placeholder: "Лицевой счет",
+    placeholder: "Код из смс",
     onChange: () => {},
     onImmediateChange: () => {},
     validation: "none",
@@ -319,7 +319,7 @@ export const PrimaryAccountDisabled: Story = {
     }
 
     return (
-      <StyledAccountField
+      <StyledSmsField
         inputtype={args.inputtype}
         name={args.name}
         placeholder={args.placeholder}
@@ -333,13 +333,13 @@ export const PrimaryAccountDisabled: Story = {
   },
 };
 
-export const PrimaryAccountValue: Story = {
-  name: "account (заполненное поле)",
+export const PrimarySmsValue: Story = {
+  name: "sms (заполненное поле)",
   args: {
-    inputtype: "account",
+    inputtype: "sms",
     name: "text",
-    value: "12345678901234567890",
-    placeholder: "Лицевой счет",
+    value: "123456123456",
+    placeholder: "Код из смс",
     validation: "none",
     onChange: () => {},
     onImmediateChange: () => {},
@@ -352,7 +352,7 @@ export const PrimaryAccountValue: Story = {
     }
 
     return (
-      <StyledAccountField
+      <StyledSmsField
         inputtype={args.inputtype}
         name={args.name}
         placeholder={args.placeholder}
@@ -365,13 +365,13 @@ export const PrimaryAccountValue: Story = {
   },
 };
 
-export const PrimaryAccountheading: Story = {
-  name: "account (заголовок)",
+export const PrimarySmsHeading: Story = {
+  name: "sms(заголовок)",
   args: {
-    inputtype: "account",
+    inputtype: "sms",
     name: "text",
     value: "",
-    placeholder: "Лицевой счет",
+    placeholder: "Код из смс",
     validation: "none",
     onChange: () => {},
     onImmediateChange: () => {},
@@ -385,7 +385,7 @@ export const PrimaryAccountheading: Story = {
     }
 
     return (
-      <StyledAccountField
+      <StyledSmsField
         inputtype={args.inputtype}
         name={args.name}
         placeholder={args.placeholder}
@@ -400,12 +400,12 @@ export const PrimaryAccountheading: Story = {
 };
 
 export const PrimaryDividers: Story = {
-  name: "account (разделители)",
+  name: "sms (разделители)",
   args: {
-    inputtype: "account",
+    inputtype: "sms",
     name: "text",
     value: "",
-    placeholder: "Лицевой счет",
+    placeholder: "Код из смс",
     validation: "none",
     onChange: () => {},
     onImmediateChange: () => {},
@@ -423,7 +423,7 @@ export const PrimaryDividers: Story = {
     }
 
     return (
-      <StyledAccountField
+      <StyledSmsField
         inputtype={args.inputtype}
         name={args.name}
         placeholder={args.placeholder}
