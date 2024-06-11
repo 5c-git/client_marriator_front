@@ -13,6 +13,7 @@ import photoSchema from "../../shared/ui/StyledPhotoInput/StyledPhotoInput.schem
 import phoneSchema from "../../shared/ui/StyledPhoneField/StyledPhoneField.schema.json";
 import dateSchema from "../../shared/ui/StyledDateField/StyledDateField.schema.json";
 import cardSchema from "../../shared/ui/StyledCardField/StyledCardField.schema.json";
+import monthSchema from "../../shared/ui/StyledMonthField/StyledMonthField.schema.json";
 
 import schemaSuccess from "./success.schema.json";
 
@@ -32,6 +33,7 @@ ajv.addSchema(photoSchema);
 ajv.addSchema(phoneSchema);
 ajv.addSchema(dateSchema);
 ajv.addSchema(cardSchema);
+ajv.addSchema(monthSchema);
 
 const validateSuccess = ajv.compile(schemaSuccess);
 

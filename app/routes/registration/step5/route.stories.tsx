@@ -124,7 +124,7 @@ export const Primary: Story = {
                 ],
               },
               {
-                inputtype: "date",
+                inputtype: "month",
                 name: "expireDate",
                 value: null,
                 placeholder: "Срок окончания действия карты",

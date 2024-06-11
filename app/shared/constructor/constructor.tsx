@@ -24,6 +24,7 @@ import { StyledPhotoInput } from "../ui/StyledPhotoInput/StyledPhotoInput";
 import { StyledPhoneField } from "../ui/StyledPhoneField/StyledPhoneField";
 import { StyledDateField } from "../ui/StyledDateField/StyledDateField";
 import { StyledCardField } from "../ui/StyledCardField/StyledCardField";
+import { StyledMonthField } from "../ui/StyledMonthField/StyledMonthField";
 
 const inputMap = {
   text: StyledTextField,
@@ -37,6 +38,7 @@ const inputMap = {
   phone: StyledPhoneField,
   date: StyledDateField,
   card: StyledCardField,
+  month: StyledMonthField,
 };
 
 const validationMap: {
@@ -105,6 +107,7 @@ const validationMap: {
   date: {
     none: Yup.string().default("").notRequired(),
     default: Yup.string().required("Обязатльное поле"),
+    "16years": Yup.string().required("Обязатльное поле"),
   },
   card: {
     none: Yup.string().default("").notRequired(),
@@ -131,6 +134,10 @@ const validationMap: {
         }
       )
       .required("Обязатльное поле"),
+  },
+  month: {
+    none: Yup.string().default("").notRequired(),
+    default: Yup.string().required("Обязатльное поле"),
   },
 };
 
