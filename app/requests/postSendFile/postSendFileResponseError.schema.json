@@ -1,7 +1,7 @@
 {
-  "$id": "sendFileError",
+  "$id": "postSendFileResponseError",
   "$schema": "http://json-schema.org/draft-07/schema#",
-  "title": "Send File - ErrorResponse",
+  "title": "Send File Response - Error",
   "type": "object",
   "properties": {
     "text1": {

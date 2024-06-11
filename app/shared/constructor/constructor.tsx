@@ -11,6 +11,8 @@ import {
   UseFormTrigger,
 } from "react-hook-form";
 
+import { phoneRegExp } from "../validators";
+
 import { StyledSelect } from "../ui/StyledSelect/StyledSelect";
 import { StyledCheckbox } from "../ui/StyledCheckbox/StyledCheckbox";
 import { StyledCheckboxMultiple } from "../ui/StyledCheckboxMultiple/StyledCheckboxMultiple";
@@ -18,15 +20,23 @@ import { StyledRadioButton } from "../ui/StyledRadioButton/StyledRadioButton";
 import { StyledFileInput } from "../ui/StyledFileInput/StyledFileInput";
 import { StyledPhotoCheckbox } from "../ui/StyledPhotoCheckbox/StyledPhotoCheckbox";
 import { StyledTextField } from "../ui/StyledTextField/StyledTextField";
+import { StyledPhotoInput } from "../ui/StyledPhotoInput/StyledPhotoInput";
+import { StyledPhoneField } from "../ui/StyledPhoneField/StyledPhoneField";
+import { StyledDateField } from "../ui/StyledDateField/StyledDateField";
+import { StyledCardField } from "../ui/StyledCardField/StyledCardField";
 
 const inputMap = {
+  text: StyledTextField,
   select: StyledSelect,
   radio: StyledRadioButton,
   checkbox: StyledCheckbox,
   checkboxMultiple: StyledCheckboxMultiple,
   photoCheckbox: StyledPhotoCheckbox,
   file: StyledFileInput,
-  text: StyledTextField,
+  photo: StyledPhotoInput,
+  phone: StyledPhoneField,
+  date: StyledDateField,
+  card: StyledCardField,
 };
 
 const validationMap: {
@@ -42,12 +52,26 @@ const validationMap: {
   text: {
     none: Yup.string().default("").notRequired(),
     default: Yup.string().required("Обязатльное поле"),
+    email: Yup.string()
+      .default("")
+      .email("Укажите корректный e-mail")
+      .notRequired(),
+    emailReq: Yup.string()
+      .default("")
+      .email("Укажите корректный e-mail")
+      .required("Обязатльное поле"),
     // wrongValue: (value: string, error: string) =>
     //   Yup.string().test(
     //     "wrong",
     //     error,
     //     (currentValue) => currentValue !== value,
     //   ),
+  },
+  phone: {
+    none: Yup.string().default("").notRequired(),
+    default: Yup.string()
+      .matches(phoneRegExp, "Укажите корректный номер телефона")
+      .required("Обязатльное поле"),
   },
   select: {
     none: Yup.string().default("").notRequired(),
@@ -72,13 +96,41 @@ const validationMap: {
   },
   file: {
     none: Yup.string().default("").notRequired(),
+    default: Yup.string().required("Обязатльное поле"),
+  },
+  photo: {
+    none: Yup.string().default("").notRequired(),
+    default: Yup.string().required("Обязатльное поле"),
+  },
+  date: {
+    none: Yup.string().default("").notRequired(),
+    default: Yup.string().required("Обязатльное поле"),
+  },
+  card: {
+    none: Yup.string().default("").notRequired(),
     default: Yup.string()
-      .required("Обязатльное поле")
       .test(
-        "maxSize",
-        "Размер одно из файлов превышает 6MB!",
-        (value) => value !== "maxSize"
-      ),
+        "is-card",
+        () => "Некорректны номер",
+        (value) => {
+          // accept only digits, dashes or spaces
+          // if (/[^0-9-\s]+/.test(value)) return false;
+
+          const arr = `${value}`
+            .split("")
+            .reverse()
+            .map((x) => Number.parseInt(x));
+          const lastDigit = arr.shift();
+          let sum = arr.reduce(
+            (acc, val, i) =>
+              i % 2 !== 0 ? acc + val : acc + ((val *= 2) > 9 ? val - 9 : val),
+            0
+          );
+          sum += lastDigit;
+          return sum % 10 === 0;
+        }
+      )
+      .required("Обязатльное поле"),
   },
 };
 
@@ -143,6 +195,22 @@ export const generateInputsMarkup = (
     if (item.inputtype === "file") {
       return (
         <StyledFileInput
+          key={index}
+          error={errors[item.name]?.message}
+          onChange={setValue}
+          triggerValidation={trigger}
+          onImmediateChange={onImmediateChange}
+          inputStyles={{
+            paddingRight: "16px",
+            paddingLeft: "16px",
+          }}
+          {...item}
+        />
+      );
+      // приходится делать отдельную проверку, так как в данном случае необходимо програмно установить значение в поле
+    } else if (item.inputtype === "photo") {
+      return (
+        <StyledPhotoInput
           key={index}
           error={errors[item.name]?.message}
           onChange={setValue}

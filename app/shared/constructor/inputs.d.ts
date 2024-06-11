@@ -15,7 +15,7 @@ export type Inputs = [
         name: string;
         value: string;
         placeholder: string;
-        validation: "none" | "default";
+        validation: "none" | "default" | "email" | "emailReq";
         disabled?: true;
         heading?: string;
         error?: string;
@@ -246,6 +246,98 @@ export type Inputs = [
           text?: string;
           images?: string[];
         };
+        helperInfo?: {
+          text?: string;
+          link?: {
+            text: string;
+            path: string;
+            type: "internal" | "external";
+            [k: string]: unknown;
+          };
+        };
+        [k: string]: unknown;
+      }
+    | {
+        inputtype: "photo";
+        name: string;
+        value: string;
+        validation: "none" | "default";
+        url: string;
+        disabled?: true;
+        heading?: string;
+        error?: string;
+        status?: "warning";
+        dividerTop?: true;
+        dividerBottom?: true;
+        helperInfo?: {
+          text?: string;
+          link?: {
+            text: string;
+            path: string;
+            type: "internal" | "external";
+            [k: string]: unknown;
+          };
+        };
+        [k: string]: unknown;
+      }
+    | {
+        inputtype: "phone";
+        name: string;
+        value: string;
+        placeholder: string;
+        validation: "none" | "default";
+        disabled?: true;
+        heading?: string;
+        error?: string;
+        status?: "warning";
+        dividerTop?: true;
+        dividerBottom?: true;
+        helperInfo?: {
+          text?: string;
+          link?: {
+            text: string;
+            path: string;
+            type: "internal" | "external";
+            [k: string]: unknown;
+          };
+        };
+        [k: string]: unknown;
+      }
+    | {
+        inputtype: "date";
+        name: string;
+        value: string | null;
+        placeholder: string;
+        validation: "none" | "default" | "16years";
+        disabled?: true;
+        heading?: string;
+        error?: string;
+        status?: "warning";
+        dividerTop?: true;
+        dividerBottom?: true;
+        helperInfo?: {
+          text?: string;
+          link?: {
+            text: string;
+            path: string;
+            type: "internal" | "external";
+            [k: string]: unknown;
+          };
+        };
+        [k: string]: unknown;
+      }
+    | {
+        inputtype: "card";
+        name: string;
+        value: string;
+        placeholder: string;
+        validation: "none" | "default";
+        disabled?: true;
+        heading?: string;
+        error?: string;
+        status?: "warning";
+        dividerTop?: true;
+        dividerBottom?: true;
         helperInfo?: {
           text?: string;
           link?: {
@@ -264,7 +356,7 @@ export type Inputs = [
         name: string;
         value: string;
         placeholder: string;
-        validation: "none" | "default";
+        validation: "none" | "default" | "email" | "emailReq";
         disabled?: true;
         heading?: string;
         error?: string;
@@ -495,6 +587,98 @@ export type Inputs = [
           text?: string;
           images?: string[];
         };
+        helperInfo?: {
+          text?: string;
+          link?: {
+            text: string;
+            path: string;
+            type: "internal" | "external";
+            [k: string]: unknown;
+          };
+        };
+        [k: string]: unknown;
+      }
+    | {
+        inputtype: "photo";
+        name: string;
+        value: string;
+        validation: "none" | "default";
+        url: string;
+        disabled?: true;
+        heading?: string;
+        error?: string;
+        status?: "warning";
+        dividerTop?: true;
+        dividerBottom?: true;
+        helperInfo?: {
+          text?: string;
+          link?: {
+            text: string;
+            path: string;
+            type: "internal" | "external";
+            [k: string]: unknown;
+          };
+        };
+        [k: string]: unknown;
+      }
+    | {
+        inputtype: "phone";
+        name: string;
+        value: string;
+        placeholder: string;
+        validation: "none" | "default";
+        disabled?: true;
+        heading?: string;
+        error?: string;
+        status?: "warning";
+        dividerTop?: true;
+        dividerBottom?: true;
+        helperInfo?: {
+          text?: string;
+          link?: {
+            text: string;
+            path: string;
+            type: "internal" | "external";
+            [k: string]: unknown;
+          };
+        };
+        [k: string]: unknown;
+      }
+    | {
+        inputtype: "date";
+        name: string;
+        value: string | null;
+        placeholder: string;
+        validation: "none" | "default" | "16years";
+        disabled?: true;
+        heading?: string;
+        error?: string;
+        status?: "warning";
+        dividerTop?: true;
+        dividerBottom?: true;
+        helperInfo?: {
+          text?: string;
+          link?: {
+            text: string;
+            path: string;
+            type: "internal" | "external";
+            [k: string]: unknown;
+          };
+        };
+        [k: string]: unknown;
+      }
+    | {
+        inputtype: "card";
+        name: string;
+        value: string;
+        placeholder: string;
+        validation: "none" | "default";
+        disabled?: true;
+        heading?: string;
+        error?: string;
+        status?: "warning";
+        dividerTop?: true;
+        dividerBottom?: true;
         helperInfo?: {
           text?: string;
           link?: {

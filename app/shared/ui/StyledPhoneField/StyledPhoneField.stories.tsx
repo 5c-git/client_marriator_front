@@ -3,17 +3,17 @@ import type { StoryObj, Meta } from "@storybook/react";
 import { useArgs } from "@storybook/preview-api";
 import * as DocBlock from "@storybook/blocks";
 
-import { StyledTextField } from "./StyledTextField";
+import { StyledPhoneField } from "./StyledPhoneField";
 
-import schema from "./StyledTextField.schema.json";
+import schema from "./StyledPhoneField.schema.json";
 
 /**
- * тип - text
+ * тип - phone
  * <p>Основан на https://mui.com/material-ui/react-text-field/</p>
  */
 const meta = {
-  title: "Общие компоненты/Поля ввода/text",
-  component: StyledTextField,
+  title: "Общие компоненты/Поля ввода/phone",
+  component: StyledPhoneField,
   tags: ["autodocs"],
   parameters: {
     docs: {
@@ -33,19 +33,19 @@ const meta = {
       ),
     },
   },
-} satisfies Meta<typeof StyledTextField>;
+} satisfies Meta<typeof StyledPhoneField>;
 
 export default meta;
 
 type Story = StoryObj<typeof meta>;
 
 export const Primary: Story = {
-  name: "text (базовый вид)",
+  name: "phone (базовый вид)",
   args: {
-    inputtype: "text",
+    inputtype: "phone",
     name: "text",
     value: "",
-    placeholder: "Текстовое поле",
+    placeholder: "Мобильный телефон",
     validation: "none",
     onChange: () => {},
     onImmediateChange: () => {},
@@ -60,8 +60,8 @@ export const Primary: Story = {
     }
 
     return (
-      <StyledTextField
-        inputtype="text"
+      <StyledPhoneField
+        inputtype="phone"
         name={args.name}
         placeholder={args.placeholder}
         value={args.value}
@@ -74,12 +74,12 @@ export const Primary: Story = {
 };
 
 export const PrimaryError: Story = {
-  name: "text (ошибка)",
+  name: "phone (ошибка)",
   args: {
-    inputtype: "text",
-    name: "text",
+    inputtype: "phone",
+    name: "phone",
     value: "",
-    placeholder: "Текстовое поле",
+    placeholder: "Мобильный телефон",
     error: "Ошибка!",
     validation: "none",
     onChange: () => {},
@@ -95,8 +95,8 @@ export const PrimaryError: Story = {
     }
 
     return (
-      <StyledTextField
-        inputtype="text"
+      <StyledPhoneField
+        inputtype="phone"
         name={args.name}
         placeholder={args.placeholder}
         value={args.value}
@@ -110,12 +110,12 @@ export const PrimaryError: Story = {
 };
 
 export const PrimaryText: Story = {
-  name: "text (вспомогательный текст)",
+  name: "phone (вспомогательный текст)",
   args: {
-    inputtype: "text",
+    inputtype: "phone",
     name: "text",
     value: "",
-    placeholder: "Текстовое поле",
+    placeholder: "Номер телефона",
     onChange: () => {},
     onImmediateChange: () => {},
     validation: "none",
@@ -133,8 +133,8 @@ export const PrimaryText: Story = {
     }
 
     return (
-      <StyledTextField
-        inputtype="text"
+      <StyledPhoneField
+        inputtype="phone"
         name={args.name}
         placeholder={args.placeholder}
         value={args.value}
@@ -148,12 +148,12 @@ export const PrimaryText: Story = {
 };
 
 export const PrimaryLink: Story = {
-  name: "text (вспомогательная ссылка)",
+  name: "phone (вспомогательная ссылка)",
   args: {
-    inputtype: "text",
+    inputtype: "phone",
     name: "text",
     value: "",
-    placeholder: "Текстовое поле",
+    placeholder: "Мобильный телефон",
     onChange: () => {},
     onImmediateChange: () => {},
     validation: "none",
@@ -175,8 +175,8 @@ export const PrimaryLink: Story = {
     }
 
     return (
-      <StyledTextField
-        inputtype="text"
+      <StyledPhoneField
+        inputtype="phone"
         name={args.name}
         placeholder={args.placeholder}
         value={args.value}
@@ -189,13 +189,13 @@ export const PrimaryLink: Story = {
   },
 };
 
-export const PrimaryTextLink: Story = {
-  name: "text (вспомогательные текст и ссылка)",
+export const PrimaryPhoneLink: Story = {
+  name: "phone (вспомогательные текст и ссылка)",
   args: {
-    inputtype: "text",
+    inputtype: "phone",
     name: "text",
     value: "",
-    placeholder: "Текстовое поле",
+    placeholder: "Мобильный телефон",
     onChange: () => {},
     onImmediateChange: () => {},
     validation: "none",
@@ -218,8 +218,8 @@ export const PrimaryTextLink: Story = {
     }
 
     return (
-      <StyledTextField
-        inputtype="text"
+      <StyledPhoneField
+        inputtype="phone"
         name={args.name}
         placeholder={args.placeholder}
         value={args.value}
@@ -232,13 +232,13 @@ export const PrimaryTextLink: Story = {
   },
 };
 
-export const PrimaryTextLinkError: Story = {
-  name: "text (вспомогательные текст и ссылка и ошибка)",
+export const PrimaryPhoneLinkError: Story = {
+  name: "phone (вспомогательные текст и ссылка и ошибка)",
   args: {
-    inputtype: "text",
+    inputtype: "phone",
     name: "text",
     value: "",
-    placeholder: "Текстовое поле",
+    placeholder: "Мобильный телефон",
     onChange: () => {},
     onImmediateChange: () => {},
     error: "Ошибка!",
@@ -262,8 +262,8 @@ export const PrimaryTextLinkError: Story = {
     }
 
     return (
-      <StyledTextField
-        inputtype="text"
+      <StyledPhoneField
+        inputtype="phone"
         name={args.name}
         placeholder={args.placeholder}
         value={args.value}
@@ -277,13 +277,13 @@ export const PrimaryTextLinkError: Story = {
   },
 };
 
-export const PrimaryTextStatus: Story = {
-  name: "text (статус поля)",
+export const PrimaryPhoneStatus: Story = {
+  name: "phone (статус поля)",
   args: {
-    inputtype: "text",
+    inputtype: "phone",
     name: "text",
     value: "",
-    placeholder: "Текстовое поле",
+    placeholder: "Мобильный телефон",
     onChange: () => {},
     onImmediateChange: () => {},
     validation: "none",
@@ -299,8 +299,8 @@ export const PrimaryTextStatus: Story = {
     }
 
     return (
-      <StyledTextField
-        inputtype="text"
+      <StyledPhoneField
+        inputtype="phone"
         name={args.name}
         placeholder={args.placeholder}
         value={args.value}
@@ -313,13 +313,13 @@ export const PrimaryTextStatus: Story = {
   },
 };
 
-export const PrimaryTextDisabled: Story = {
-  name: "text (отключенное поле)",
+export const PrimaryPhoneDisabled: Story = {
+  name: "phone (отключенное поле)",
   args: {
-    inputtype: "text",
+    inputtype: "phone",
     name: "text",
     value: "",
-    placeholder: "Текстовое поле",
+    placeholder: "Мобильный телефон",
     onChange: () => {},
     onImmediateChange: () => {},
     validation: "none",
@@ -335,8 +335,8 @@ export const PrimaryTextDisabled: Story = {
     }
 
     return (
-      <StyledTextField
-        inputtype="text"
+      <StyledPhoneField
+        inputtype="phone"
         name={args.name}
         placeholder={args.placeholder}
         value={args.value}
@@ -349,13 +349,13 @@ export const PrimaryTextDisabled: Story = {
   },
 };
 
-export const PrimaryTextValue: Story = {
-  name: "text (заполненное поле)",
+export const PrimaryPhoneValue: Story = {
+  name: "phone (заполненное поле)",
   args: {
-    inputtype: "text",
+    inputtype: "phone",
     name: "text",
-    value: "заполненное поле",
-    placeholder: "Текстовое поле",
+    value: "+79152142630",
+    placeholder: "Мобильный телефон",
     validation: "none",
     onChange: () => {},
     onImmediateChange: () => {},
@@ -370,8 +370,8 @@ export const PrimaryTextValue: Story = {
     }
 
     return (
-      <StyledTextField
-        inputtype="text"
+      <StyledPhoneField
+        inputtype="phone"
         name={args.name}
         placeholder={args.placeholder}
         value={args.value}
@@ -383,13 +383,13 @@ export const PrimaryTextValue: Story = {
   },
 };
 
-export const PrimaryTextheading: Story = {
-  name: "text (заголовок)",
+export const PrimaryPhoneheading: Story = {
+  name: "phone (заголовок)",
   args: {
-    inputtype: "text",
+    inputtype: "phone",
     name: "text",
     value: "",
-    placeholder: "Текстовое поле",
+    placeholder: "Мобильный телефон",
     validation: "none",
     onChange: () => {},
     onImmediateChange: () => {},
@@ -405,8 +405,8 @@ export const PrimaryTextheading: Story = {
     }
 
     return (
-      <StyledTextField
-        inputtype="text"
+      <StyledPhoneField
+        inputtype="phone"
         name={args.name}
         placeholder={args.placeholder}
         value={args.value}
@@ -420,12 +420,12 @@ export const PrimaryTextheading: Story = {
 };
 
 export const PrimaryDividers: Story = {
-  name: "text (разделители)",
+  name: "phone (разделители)",
   args: {
-    inputtype: "text",
+    inputtype: "phone",
     name: "text",
     value: "",
-    placeholder: "Текстовое поле",
+    placeholder: "Мобильный телефон",
     validation: "none",
     onChange: () => {},
     onImmediateChange: () => {},
@@ -445,8 +445,8 @@ export const PrimaryDividers: Story = {
     }
 
     return (
-      <StyledTextField
-        inputtype="text"
+      <StyledPhoneField
+        inputtype="phone"
         name={args.name}
         placeholder={args.placeholder}
         value={args.value}

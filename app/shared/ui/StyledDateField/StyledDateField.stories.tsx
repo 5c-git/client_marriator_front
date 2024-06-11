@@ -3,17 +3,17 @@ import type { StoryObj, Meta } from "@storybook/react";
 import { useArgs } from "@storybook/preview-api";
 import * as DocBlock from "@storybook/blocks";
 
-import { StyledTextField } from "./StyledTextField";
+import { StyledDateField } from "./StyledDateField";
 
-import schema from "./StyledTextField.schema.json";
+import schema from "./StyledDateField.schema.json";
 
 /**
- * тип - text
- * <p>Основан на https://mui.com/material-ui/react-text-field/</p>
+ * тип - date
+ * <p>Основан на https://mui.com/x/react-date-pickers/date-picker/</p>
  */
 const meta = {
-  title: "Общие компоненты/Поля ввода/text",
-  component: StyledTextField,
+  title: "Общие компоненты/Поля ввода/date",
+  component: StyledDateField,
   tags: ["autodocs"],
   parameters: {
     docs: {
@@ -33,19 +33,19 @@ const meta = {
       ),
     },
   },
-} satisfies Meta<typeof StyledTextField>;
+} satisfies Meta<typeof StyledDateField>;
 
 export default meta;
 
 type Story = StoryObj<typeof meta>;
 
 export const Primary: Story = {
-  name: "text (базовый вид)",
+  name: "date (базовый вид)",
   args: {
-    inputtype: "text",
-    name: "text",
-    value: "",
-    placeholder: "Текстовое поле",
+    inputtype: "date",
+    name: "date",
+    value: null,
+    placeholder: "Введите дату",
     validation: "none",
     onChange: () => {},
     onImmediateChange: () => {},
@@ -53,33 +53,33 @@ export const Primary: Story = {
   render: function Render(args) {
     const [, updateArgs] = useArgs();
 
-    function onChange(
-      evt: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-    ) {
-      updateArgs({ value: evt.target.value });
+    function onChange(newValue: string) {
+      updateArgs({ value: newValue });
     }
 
     return (
-      <StyledTextField
-        inputtype="text"
+      <StyledDateField
+        inputtype={args.inputtype}
         name={args.name}
         placeholder={args.placeholder}
         value={args.value}
         onChange={onChange}
         onImmediateChange={args.onImmediateChange}
         validation={args.validation}
+        status={args.status}
+        error={args.error}
       />
     );
   },
 };
 
-export const PrimaryError: Story = {
-  name: "text (ошибка)",
+export const PrimaryDateError: Story = {
+  name: "date (ошибка)",
   args: {
-    inputtype: "text",
-    name: "text",
-    value: "",
-    placeholder: "Текстовое поле",
+    inputtype: "date",
+    name: "phone",
+    value: "2024-04-27",
+    placeholder: "Введите дату",
     error: "Ошибка!",
     validation: "none",
     onChange: () => {},
@@ -88,15 +88,13 @@ export const PrimaryError: Story = {
   render: function Render(args) {
     const [, updateArgs] = useArgs();
 
-    function onChange(
-      evt: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-    ) {
-      updateArgs({ value: evt.target.value });
+    function onChange(newValue: string) {
+      updateArgs({ value: newValue });
     }
 
     return (
-      <StyledTextField
-        inputtype="text"
+      <StyledDateField
+        inputtype={args.inputtype}
         name={args.name}
         placeholder={args.placeholder}
         value={args.value}
@@ -109,13 +107,13 @@ export const PrimaryError: Story = {
   },
 };
 
-export const PrimaryText: Story = {
-  name: "text (вспомогательный текст)",
+export const PrimaryDateText: Story = {
+  name: "date (вспомогательный текст)",
   args: {
-    inputtype: "text",
+    inputtype: "date",
     name: "text",
-    value: "",
-    placeholder: "Текстовое поле",
+    value: null,
+    placeholder: "Номер телефона",
     onChange: () => {},
     onImmediateChange: () => {},
     validation: "none",
@@ -126,15 +124,13 @@ export const PrimaryText: Story = {
   render: function Render(args) {
     const [, updateArgs] = useArgs();
 
-    function onChange(
-      evt: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-    ) {
-      updateArgs({ value: evt.target.value });
+    function onChange(newValue: string) {
+      updateArgs({ value: newValue });
     }
 
     return (
-      <StyledTextField
-        inputtype="text"
+      <StyledDateField
+        inputtype={args.inputtype}
         name={args.name}
         placeholder={args.placeholder}
         value={args.value}
@@ -147,13 +143,13 @@ export const PrimaryText: Story = {
   },
 };
 
-export const PrimaryLink: Story = {
-  name: "text (вспомогательная ссылка)",
+export const PrimaryDateWithLink: Story = {
+  name: "date (вспомогательная ссылка)",
   args: {
-    inputtype: "text",
+    inputtype: "date",
     name: "text",
-    value: "",
-    placeholder: "Текстовое поле",
+    value: null,
+    placeholder: "Введите дату",
     onChange: () => {},
     onImmediateChange: () => {},
     validation: "none",
@@ -168,15 +164,13 @@ export const PrimaryLink: Story = {
   render: function Render(args) {
     const [, updateArgs] = useArgs();
 
-    function onChange(
-      evt: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-    ) {
-      updateArgs({ value: evt.target.value });
+    function onChange(newValue: string) {
+      updateArgs({ value: newValue });
     }
 
     return (
-      <StyledTextField
-        inputtype="text"
+      <StyledDateField
+        inputtype={args.inputtype}
         name={args.name}
         placeholder={args.placeholder}
         value={args.value}
@@ -189,13 +183,13 @@ export const PrimaryLink: Story = {
   },
 };
 
-export const PrimaryTextLink: Story = {
-  name: "text (вспомогательные текст и ссылка)",
+export const PrimaryDateLink: Story = {
+  name: "date (вспомогательные текст и ссылка)",
   args: {
-    inputtype: "text",
+    inputtype: "date",
     name: "text",
-    value: "",
-    placeholder: "Текстовое поле",
+    value: null,
+    placeholder: "Введите дату",
     onChange: () => {},
     onImmediateChange: () => {},
     validation: "none",
@@ -211,15 +205,13 @@ export const PrimaryTextLink: Story = {
   render: function Render(args) {
     const [, updateArgs] = useArgs();
 
-    function onChange(
-      evt: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-    ) {
-      updateArgs({ value: evt.target.value });
+    function onChange(newValue: string) {
+      updateArgs({ value: newValue });
     }
 
     return (
-      <StyledTextField
-        inputtype="text"
+      <StyledDateField
+        inputtype={args.inputtype}
         name={args.name}
         placeholder={args.placeholder}
         value={args.value}
@@ -232,13 +224,13 @@ export const PrimaryTextLink: Story = {
   },
 };
 
-export const PrimaryTextLinkError: Story = {
-  name: "text (вспомогательные текст и ссылка и ошибка)",
+export const PrimaryDateLinkError: Story = {
+  name: "date (вспомогательные текст и ссылка и ошибка)",
   args: {
-    inputtype: "text",
+    inputtype: "date",
     name: "text",
-    value: "",
-    placeholder: "Текстовое поле",
+    value: null,
+    placeholder: "Введите дату",
     onChange: () => {},
     onImmediateChange: () => {},
     error: "Ошибка!",
@@ -255,15 +247,13 @@ export const PrimaryTextLinkError: Story = {
   render: function Render(args) {
     const [, updateArgs] = useArgs();
 
-    function onChange(
-      evt: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-    ) {
-      updateArgs({ value: evt.target.value });
+    function onChange(newValue: string) {
+      updateArgs({ value: newValue });
     }
 
     return (
-      <StyledTextField
-        inputtype="text"
+      <StyledDateField
+        inputtype={args.inputtype}
         name={args.name}
         placeholder={args.placeholder}
         value={args.value}
@@ -277,13 +267,13 @@ export const PrimaryTextLinkError: Story = {
   },
 };
 
-export const PrimaryTextStatus: Story = {
-  name: "text (статус поля)",
+export const PrimaryDateStatus: Story = {
+  name: "date (статус поля)",
   args: {
-    inputtype: "text",
+    inputtype: "date",
     name: "text",
-    value: "",
-    placeholder: "Текстовое поле",
+    value: null,
+    placeholder: "Введите дату",
     onChange: () => {},
     onImmediateChange: () => {},
     validation: "none",
@@ -292,15 +282,13 @@ export const PrimaryTextStatus: Story = {
   render: function Render(args) {
     const [, updateArgs] = useArgs();
 
-    function onChange(
-      evt: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-    ) {
-      updateArgs({ value: evt.target.value });
+    function onChange(newValue: string) {
+      updateArgs({ value: newValue });
     }
 
     return (
-      <StyledTextField
-        inputtype="text"
+      <StyledDateField
+        inputtype={args.inputtype}
         name={args.name}
         placeholder={args.placeholder}
         value={args.value}
@@ -313,13 +301,13 @@ export const PrimaryTextStatus: Story = {
   },
 };
 
-export const PrimaryTextDisabled: Story = {
-  name: "text (отключенное поле)",
+export const PrimaryDateDisabled: Story = {
+  name: "date (отключенное поле)",
   args: {
-    inputtype: "text",
+    inputtype: "date",
     name: "text",
-    value: "",
-    placeholder: "Текстовое поле",
+    value: null,
+    placeholder: "Введите дату",
     onChange: () => {},
     onImmediateChange: () => {},
     validation: "none",
@@ -328,15 +316,13 @@ export const PrimaryTextDisabled: Story = {
   render: function Render(args) {
     const [, updateArgs] = useArgs();
 
-    function onChange(
-      evt: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-    ) {
-      updateArgs({ value: evt.target.value });
+    function onChange(newValue: string) {
+      updateArgs({ value: newValue });
     }
 
     return (
-      <StyledTextField
-        inputtype="text"
+      <StyledDateField
+        inputtype={args.inputtype}
         name={args.name}
         placeholder={args.placeholder}
         value={args.value}
@@ -349,13 +335,13 @@ export const PrimaryTextDisabled: Story = {
   },
 };
 
-export const PrimaryTextValue: Story = {
-  name: "text (заполненное поле)",
+export const PrimaryDateValue: Story = {
+  name: "date (заполненное поле)",
   args: {
-    inputtype: "text",
+    inputtype: "date",
     name: "text",
-    value: "заполненное поле",
-    placeholder: "Текстовое поле",
+    value: "2024-04-27",
+    placeholder: "Введите дату",
     validation: "none",
     onChange: () => {},
     onImmediateChange: () => {},
@@ -363,15 +349,13 @@ export const PrimaryTextValue: Story = {
   render: function Render(args) {
     const [, updateArgs] = useArgs();
 
-    function onChange(
-      evt: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-    ) {
-      updateArgs({ value: evt.target.value });
+    function onChange(newValue: string) {
+      updateArgs({ value: newValue });
     }
 
     return (
-      <StyledTextField
-        inputtype="text"
+      <StyledDateField
+        inputtype={args.inputtype}
         name={args.name}
         placeholder={args.placeholder}
         value={args.value}
@@ -383,13 +367,13 @@ export const PrimaryTextValue: Story = {
   },
 };
 
-export const PrimaryTextheading: Story = {
-  name: "text (заголовок)",
+export const PrimaryDateHeading: Story = {
+  name: "date (заголовок)",
   args: {
-    inputtype: "text",
+    inputtype: "date",
     name: "text",
-    value: "",
-    placeholder: "Текстовое поле",
+    value: null,
+    placeholder: "Введите дату",
     validation: "none",
     onChange: () => {},
     onImmediateChange: () => {},
@@ -398,15 +382,13 @@ export const PrimaryTextheading: Story = {
   render: function Render(args) {
     const [, updateArgs] = useArgs();
 
-    function onChange(
-      evt: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-    ) {
-      updateArgs({ value: evt.target.value });
+    function onChange(newValue: string) {
+      updateArgs({ value: newValue });
     }
 
     return (
-      <StyledTextField
-        inputtype="text"
+      <StyledDateField
+        inputtype={args.inputtype}
         name={args.name}
         placeholder={args.placeholder}
         value={args.value}
@@ -419,13 +401,13 @@ export const PrimaryTextheading: Story = {
   },
 };
 
-export const PrimaryDividers: Story = {
-  name: "text (разделители)",
+export const PrimaryDateDividers: Story = {
+  name: "date (разделители)",
   args: {
-    inputtype: "text",
+    inputtype: "date",
     name: "text",
-    value: "",
-    placeholder: "Текстовое поле",
+    value: null,
+    placeholder: "Введите дату",
     validation: "none",
     onChange: () => {},
     onImmediateChange: () => {},
@@ -438,15 +420,13 @@ export const PrimaryDividers: Story = {
   render: function Render(args) {
     const [, updateArgs] = useArgs();
 
-    function onChange(
-      evt: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-    ) {
-      updateArgs({ value: evt.target.value });
+    function onChange(newValue: string) {
+      updateArgs({ value: newValue });
     }
 
     return (
-      <StyledTextField
-        inputtype="text"
+      <StyledDateField
+        inputtype={args.inputtype}
         name={args.name}
         placeholder={args.placeholder}
         value={args.value}

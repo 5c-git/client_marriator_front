@@ -1,3 +1,4 @@
+import { forwardRef } from "react";
 import {
   useTheme,
   SxProps,
@@ -40,11 +41,11 @@ type StyledCheckboxProps = {
   onImmediateChange: () => void;
 };
 
-export const StyledCheckbox = (props: StyledCheckboxProps) => {
+export const StyledCheckbox = forwardRef((props: StyledCheckboxProps, ref) => {
   const theme = useTheme();
 
   return (
-    <Box sx={props.styles}>
+    <Box sx={props.styles} ref={ref}>
       {props.dividerTop ? <Divider sx={{ marginBottom: "16px" }} /> : null}
 
       <Box sx={props.inputStyles}>
@@ -145,4 +146,6 @@ export const StyledCheckbox = (props: StyledCheckboxProps) => {
       {props.dividerBottom ? <Divider sx={{ marginTop: "16px" }} /> : null}
     </Box>
   );
-};
+});
+
+StyledCheckbox.displayName = "StyledCheckbox";

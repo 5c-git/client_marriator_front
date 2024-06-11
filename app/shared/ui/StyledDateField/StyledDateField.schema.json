@@ -1,25 +1,33 @@
 {
-  "$id": "text",
+  "$id": "date",
   "$schema": "http://json-schema.org/draft-07/schema#",
-  "title": "Schema for Text Input",
+  "title": "Schema for date Input",
   "type": "object",
   "properties": {
     "inputtype": {
       "type": "string",
-      "const": "text"
+      "const": "date"
     },
     "name": {
       "type": "string"
     },
     "value": {
-      "type": "string"
+      "anyOf": [
+        {
+          "type": "string",
+          "format": "date"
+        },
+        {
+          "type": "null"
+        }
+      ]
     },
     "placeholder": {
       "type": "string"
     },
     "validation": {
       "type": "string",
-      "enum": ["none", "default", "email", "emailReq"]
+      "enum": ["none", "default", "16years"]
     },
     "disabled": {
       "type": "boolean",

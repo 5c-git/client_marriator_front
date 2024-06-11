@@ -3,6 +3,7 @@ import {
   useLoaderData,
   useFetcher,
   useSubmit,
+  useNavigate,
   useNavigation,
   ClientActionFunctionArgs,
 } from "@remix-run/react";
@@ -16,22 +17,22 @@ import {
   generateValidationSchema,
 } from "~/shared/constructor/constructor";
 
-import { getRegStep1 } from "~/requests/getRegStep1/getRegStep1";
-import { postRegStep1 } from "~/requests/postRegStep1/postRegStep1";
+import { getRegStep2 } from "~/requests/getRegStep2/getRegStep2";
+import { postRegStep2 } from "~/requests/postRegStep2/postRegStep2";
 
 import { useTheme, Box, Typography, Button } from "@mui/material";
 import { TopNavigation } from "~/shared/ui/TopNavigation/TopNavigation";
 import { Loader } from "~/shared/ui/Loader/Loader";
 
 export async function clientLoader() {
-  const data = await getRegStep1();
+  const data = await getRegStep2();
   return data;
 }
 
 export async function clientAction({ request }: ClientActionFunctionArgs) {
   const fields = await request.json();
 
-  const data = await postRegStep1(fields);
+  const data = await postRegStep2(fields);
 
   // if (data) {
   //   throw redirect("/");
@@ -40,11 +41,12 @@ export async function clientAction({ request }: ClientActionFunctionArgs) {
   return data;
 }
 
-export default function Step1() {
+export default function Step3() {
   const theme = useTheme();
 
   const submit = useSubmit();
   const fetcher = useFetcher();
+  const navigate = useNavigate();
   const navigation = useNavigation();
 
   const data = useLoaderData<typeof clientLoader>();
@@ -79,8 +81,12 @@ export default function Step1() {
       >
         <TopNavigation
           header={{
-            text: "Выбери своё направление",
-            bold: true,
+            text: "Уточни сведения",
+            bold: false,
+          }}
+          label="Шаг 3"
+          backAction={() => {
+            navigate(-1);
           }}
         />
 
@@ -97,49 +103,7 @@ export default function Step1() {
               paddingBottom: "14px",
             }}
           >
-            Наши задания может выполнить{" "}
-            <Typography
-              component="span"
-              variant="Reg_18"
-              sx={{
-                color: theme.palette["Corp_2"],
-              }}
-            >
-              любой желающий
-            </Typography>{" "}
-            — они не требуют особых компетенций или опыта.
-          </Typography>
-
-          <Typography
-            component="p"
-            variant="Reg_14"
-            sx={{
-              color: theme.palette["Grey_2"],
-              paddingBottom: "24px",
-            }}
-          >
-            Набор сфер очень широкий — от маркетинга и аналитики до простых
-            заданий в общепите и магазинах прямо рядом с вашим домом.
-          </Typography>
-
-          <Typography
-            component="p"
-            variant="Reg_14"
-            sx={{
-              color: theme.palette["Black"],
-              paddingBottom: "24px",
-            }}
-          >
-            Подумай и{" "}
-            <Typography
-              component="span"
-              variant="Reg_14"
-              sx={{
-                color: theme.palette["Corp_2"],
-              }}
-            >
-              сделай первый шаг.
-            </Typography>
+            По выбранным видам деятельности хотелось бы уточнить ряд вопросов
           </Typography>
         </Box>
 
@@ -173,6 +137,7 @@ export default function Step1() {
           <Box
             sx={{
               position: "fixed",
+              zIndex: 1,
               width: "100%",
               bottom: "0",
               left: "0",

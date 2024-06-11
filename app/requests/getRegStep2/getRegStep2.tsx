@@ -1,5 +1,6 @@
 import { http, delay, HttpResponse } from "msw";
 import Ajv from "ajv";
+import addFormats from "ajv-formats";
 
 import textSchema from "../../shared/ui/StyledTextField/StyledTextField.schema.json";
 import selectSchema from "../../shared/ui/StyledSelect/StyledSelect.schema.json";
@@ -8,12 +9,17 @@ import checkboxMultipleSchema from "../../shared/ui/StyledCheckboxMultiple/Style
 import photoCheckboxSchema from "../../shared/ui/StyledPhotoCheckbox/StyledPhotoCheckbox.schema.json";
 import checkboxSchema from "../../shared/ui/StyledCheckbox/StyledCheckbox.schema.json";
 import fileSchema from "../../shared/ui/StyledFileInput/StyledFileInput.schema.json";
+import photoSchema from "../../shared/ui/StyledPhotoInput/StyledPhotoInput.schema.json";
+import phoneSchema from "../../shared/ui/StyledPhoneField/StyledPhoneField.schema.json";
+import dateSchema from "../../shared/ui/StyledDateField/StyledDateField.schema.json";
+import cardSchema from "../../shared/ui/StyledCardField/StyledCardField.schema.json";
 
 import schemaSuccess from "./success.schema.json";
 
 import { Inputs } from "~/shared/constructor/inputs";
 
 const ajv = new Ajv();
+addFormats(ajv);
 
 ajv.addSchema(textSchema);
 ajv.addSchema(selectSchema);
@@ -22,6 +28,10 @@ ajv.addSchema(checkboxMultipleSchema);
 ajv.addSchema(photoCheckboxSchema);
 ajv.addSchema(checkboxSchema);
 ajv.addSchema(fileSchema);
+ajv.addSchema(photoSchema);
+ajv.addSchema(phoneSchema);
+ajv.addSchema(dateSchema);
+ajv.addSchema(cardSchema);
 
 const validateSuccess = ajv.compile(schemaSuccess);
 
@@ -42,6 +52,7 @@ export const getRegStep2 = async (): Promise<RegStep2> => {
   if (validateSuccess(response)) {
     data = response as RegStep2;
   } else {
+    console.log(validateSuccess.errors);
     throw new Response("Данные запроса getRegStep2 не валидны схеме");
   }
 

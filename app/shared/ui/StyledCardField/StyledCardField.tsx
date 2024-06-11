@@ -1,5 +1,6 @@
 import { forwardRef } from "react";
 import { Link } from "@remix-run/react";
+import InputMask from "react-input-mask";
 import {
   useTheme,
   SxProps,
@@ -12,8 +13,8 @@ import {
   TextField,
 } from "@mui/material";
 
-type StyledTextFieldProps = {
-  inputtype: "text";
+type StyledCardFieldProps = {
+  inputtype: "card";
   name: string;
   value: string;
   placeholder: string;
@@ -22,7 +23,7 @@ type StyledTextFieldProps = {
   heading?: string;
   error?: string;
   status?: "warning";
-  validation?: "default" | "none" | "email";
+  validation?: "default" | "none";
 
   helperInfo?: {
     text?: string;
@@ -38,18 +39,16 @@ type StyledTextFieldProps = {
   styles?: SxProps<Theme>;
   inputStyles?: SxProps<Theme>;
 
-  onChange: (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-  ) => void;
+  onChange: (e: string) => void;
   onImmediateChange: () => void;
 };
 
-export const StyledTextField = forwardRef(
-  (props: StyledTextFieldProps, ref) => {
+export const StyledCardField = forwardRef(
+  (props: StyledCardFieldProps, ref) => {
     const theme = useTheme();
 
     return (
-      <Box ref={ref} sx={props.styles}>
+      <Box sx={props.styles} ref={ref}>
         {props.dividerTop ? <Divider sx={{ marginBottom: "16px" }} /> : null}
 
         <Box sx={props.inputStyles}>
@@ -73,28 +72,46 @@ export const StyledTextField = forwardRef(
             disabled={props.disabled ? true : false}
             error={props.error ? true : false}
           >
-            <TextField
-              id={props.name}
-              name={props.name}
+            <InputMask
+              mask="9999 9999 9999 9999"
               value={props.value}
-              error={props.error ? true : false}
-              label={props.placeholder}
-              onChange={(evt) => {
-                props.onChange(evt);
+              onChange={(
+                evt: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+              ) => {
+                props.onChange(evt.target.value.replace(/[^\d]/g, ""));
                 props.onImmediateChange();
               }}
-              sx={{
-                marginBottom: "4px",
-
-                "& .MuiOutlinedInput-root": {
-                  borderColor:
-                    props.status === "warning"
-                      ? theme.palette["Yellow"]
-                      : "transparent",
-                },
-              }}
+              name={props.name}
               disabled={props.disabled ? true : false}
-            />
+            >
+              <TextField
+                id={props.name}
+                // name={props.name}
+                // value={props.value}
+                // onChange={(evt) => {
+                //   props.onChange(evt);
+                //   props.onImmediateChange();
+                // }}
+                disabled={props.disabled ? true : false}
+                error={props.error ? true : false}
+                label={props.placeholder}
+                //
+                sx={{
+                  marginBottom: "4px",
+
+                  "& .MuiOutlinedInput-root": {
+                    borderColor:
+                      props.status === "warning"
+                        ? theme.palette["Yellow"]
+                        : "transparent",
+                  },
+                }}
+                InputProps={{
+                  inputMode: "numeric",
+                  type: "tel",
+                }}
+              />
+            </InputMask>
             {props.error ? (
               <FormHelperText
                 sx={{
@@ -148,4 +165,4 @@ export const StyledTextField = forwardRef(
   }
 );
 
-StyledTextField.displayName = "StyledTextField";
+StyledCardField.displayName = "StyledCardField";

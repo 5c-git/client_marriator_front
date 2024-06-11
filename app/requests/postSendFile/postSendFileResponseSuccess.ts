@@ -5,7 +5,7 @@
  * and run json-schema-to-typescript to regenerate this file.
  */
 
-export interface SendFileSuccessResponse {
+export interface SendFileResponseSuccess {
   text1: string;
   fileName: string[];
   resFile: string;

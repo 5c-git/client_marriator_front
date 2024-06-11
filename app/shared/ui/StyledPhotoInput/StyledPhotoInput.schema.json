@@ -1,12 +1,12 @@
 {
-  "$id": "text",
+  "$id": "photo",
   "$schema": "http://json-schema.org/draft-07/schema#",
-  "title": "Schema for Text Input",
+  "title": "Schema for Photo Input",
   "type": "object",
   "properties": {
     "inputtype": {
       "type": "string",
-      "const": "text"
+      "const": "photo"
     },
     "name": {
       "type": "string"
@@ -14,12 +14,12 @@
     "value": {
       "type": "string"
     },
-    "placeholder": {
-      "type": "string"
-    },
     "validation": {
       "type": "string",
-      "enum": ["none", "default", "email", "emailReq"]
+      "enum": ["none", "default"]
+    },
+    "url": {
+      "type": "string"
     },
     "disabled": {
       "type": "boolean",
@@ -70,5 +70,5 @@
       "additionalProperties": false
     }
   },
-  "required": ["inputtype", "name", "value", "placeholder", "validation"]
+  "required": ["inputtype", "name", "value", "validation", "url"]
 }

@@ -1,12 +1,12 @@
 {
-  "$id": "text",
+  "$id": "phone",
   "$schema": "http://json-schema.org/draft-07/schema#",
-  "title": "Schema for Text Input",
+  "title": "Schema for phone Input",
   "type": "object",
   "properties": {
     "inputtype": {
       "type": "string",
-      "const": "text"
+      "const": "phone"
     },
     "name": {
       "type": "string"
@@ -19,7 +19,7 @@
     },
     "validation": {
       "type": "string",
-      "enum": ["none", "default", "email", "emailReq"]
+      "enum": ["none", "default"]
     },
     "disabled": {
       "type": "boolean",
