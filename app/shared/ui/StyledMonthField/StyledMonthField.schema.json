@@ -1,18 +1,26 @@
 {
-  "$id": "text",
+  "$id": "month",
   "$schema": "http://json-schema.org/draft-07/schema#",
-  "title": "Schema for Text Input",
+  "title": "Schema for month Input",
   "type": "object",
   "properties": {
     "inputtype": {
       "type": "string",
-      "const": "text"
+      "const": "month"
     },
     "name": {
       "type": "string"
     },
     "value": {
-      "type": "string"
+      "anyOf": [
+        {
+          "type": "string",
+          "format": "date"
+        },
+        {
+          "type": "null"
+        }
+      ]
     },
     "placeholder": {
       "type": "string"

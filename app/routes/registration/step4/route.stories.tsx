@@ -186,11 +186,11 @@ export const Primary: Story = {
                 heading: "Выбери мессенджер:",
               },
               {
-                inputtype: "text",
+                inputtype: "email",
                 name: "email",
                 value: "",
                 placeholder: "E-mail",
-                validation: "emailReq",
+                validation: "default",
                 helperInfo: {
                   text: "Будет отправлен код подтверждения",
                 },

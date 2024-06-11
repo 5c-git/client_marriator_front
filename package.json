@@ -27,6 +27,7 @@
     "ajv": "^8.13.0",
     "ajv-formats": "^3.0.1",
     "date-fns": "^3.6.0",
+    "input-otp": "^1.2.4",
     "isbot": "^4.1.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",

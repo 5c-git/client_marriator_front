@@ -1,12 +1,12 @@
 {
-  "$id": "text",
+  "$id": "inn",
   "$schema": "http://json-schema.org/draft-07/schema#",
-  "title": "Schema for Text Input",
+  "title": "Schema for inn Input",
   "type": "object",
   "properties": {
     "inputtype": {
       "type": "string",
-      "const": "text"
+      "const": "inn"
     },
     "name": {
       "type": "string"

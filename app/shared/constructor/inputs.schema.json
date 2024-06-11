@@ -23,7 +23,7 @@
           },
           "validation": {
             "type": "string",
-            "enum": ["none", "default", "email", "emailReq"]
+            "enum": ["none", "default"]
           },
           "disabled": {
             "type": "boolean",
@@ -861,6 +861,440 @@
           "inputtype": {
             "type": "string",
             "const": "card"
+          },
+          "name": {
+            "type": "string"
+          },
+          "value": {
+            "type": "string"
+          },
+          "placeholder": {
+            "type": "string"
+          },
+          "validation": {
+            "type": "string",
+            "enum": ["none", "default"]
+          },
+          "disabled": {
+            "type": "boolean",
+            "const": true
+          },
+          "heading": {
+            "type": "string"
+          },
+          "error": {
+            "type": "string"
+          },
+          "status": {
+            "type": "string",
+            "const": "warning"
+          },
+          "dividerTop": {
+            "type": "boolean",
+            "const": true
+          },
+          "dividerBottom": {
+            "type": "boolean",
+            "const": true
+          },
+          "helperInfo": {
+            "type": "object",
+            "minProperties": 1,
+            "properties": {
+              "text": {
+                "type": "string"
+              },
+              "link": {
+                "type": "object",
+                "properties": {
+                  "text": {
+                    "type": "string"
+                  },
+                  "path": {
+                    "type": "string"
+                  },
+                  "type": {
+                    "type": "string",
+                    "enum": ["internal", "external"]
+                  }
+                },
+                "required": ["text", "path", "type"]
+              }
+            },
+            "additionalProperties": false
+          }
+        },
+        "required": ["inputtype", "name", "value", "placeholder", "validation"]
+      },
+      {
+        "type": "object",
+        "properties": {
+          "inputtype": {
+            "type": "string",
+            "const": "month"
+          },
+          "name": {
+            "type": "string"
+          },
+          "value": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "placeholder": {
+            "type": "string"
+          },
+          "validation": {
+            "type": "string",
+            "enum": ["none", "default"]
+          },
+          "disabled": {
+            "type": "boolean",
+            "const": true
+          },
+          "heading": {
+            "type": "string"
+          },
+          "error": {
+            "type": "string"
+          },
+          "status": {
+            "type": "string",
+            "const": "warning"
+          },
+          "dividerTop": {
+            "type": "boolean",
+            "const": true
+          },
+          "dividerBottom": {
+            "type": "boolean",
+            "const": true
+          },
+          "helperInfo": {
+            "type": "object",
+            "minProperties": 1,
+            "properties": {
+              "text": {
+                "type": "string"
+              },
+              "link": {
+                "type": "object",
+                "properties": {
+                  "text": {
+                    "type": "string"
+                  },
+                  "path": {
+                    "type": "string"
+                  },
+                  "type": {
+                    "type": "string",
+                    "enum": ["internal", "external"]
+                  }
+                },
+                "required": ["text", "path", "type"]
+              }
+            },
+            "additionalProperties": false
+          }
+        },
+        "required": ["inputtype", "name", "value", "placeholder", "validation"]
+      },
+      {
+        "type": "object",
+        "properties": {
+          "inputtype": {
+            "type": "string",
+            "const": "email"
+          },
+          "name": {
+            "type": "string"
+          },
+          "value": {
+            "type": "string"
+          },
+          "placeholder": {
+            "type": "string"
+          },
+          "validation": {
+            "type": "string",
+            "enum": ["none", "default"]
+          },
+          "disabled": {
+            "type": "boolean",
+            "const": true
+          },
+          "heading": {
+            "type": "string"
+          },
+          "error": {
+            "type": "string"
+          },
+          "status": {
+            "type": "string",
+            "const": "warning"
+          },
+          "dividerTop": {
+            "type": "boolean",
+            "const": true
+          },
+          "dividerBottom": {
+            "type": "boolean",
+            "const": true
+          },
+          "helperInfo": {
+            "type": "object",
+            "minProperties": 1,
+            "properties": {
+              "text": {
+                "type": "string"
+              },
+              "link": {
+                "type": "object",
+                "properties": {
+                  "text": {
+                    "type": "string"
+                  },
+                  "path": {
+                    "type": "string"
+                  },
+                  "type": {
+                    "type": "string",
+                    "enum": ["internal", "external"]
+                  }
+                },
+                "required": ["text", "path", "type"]
+              }
+            },
+            "additionalProperties": false
+          }
+        },
+        "required": ["inputtype", "name", "value", "placeholder", "validation"]
+      },
+      {
+        "type": "object",
+        "properties": {
+          "inputtype": {
+            "type": "string",
+            "const": "account"
+          },
+          "name": {
+            "type": "string"
+          },
+          "value": {
+            "type": "string"
+          },
+          "placeholder": {
+            "type": "string"
+          },
+          "validation": {
+            "type": "string",
+            "enum": ["none", "default"]
+          },
+          "disabled": {
+            "type": "boolean",
+            "const": true
+          },
+          "heading": {
+            "type": "string"
+          },
+          "error": {
+            "type": "string"
+          },
+          "status": {
+            "type": "string",
+            "const": "warning"
+          },
+          "dividerTop": {
+            "type": "boolean",
+            "const": true
+          },
+          "dividerBottom": {
+            "type": "boolean",
+            "const": true
+          },
+          "helperInfo": {
+            "type": "object",
+            "minProperties": 1,
+            "properties": {
+              "text": {
+                "type": "string"
+              },
+              "link": {
+                "type": "object",
+                "properties": {
+                  "text": {
+                    "type": "string"
+                  },
+                  "path": {
+                    "type": "string"
+                  },
+                  "type": {
+                    "type": "string",
+                    "enum": ["internal", "external"]
+                  }
+                },
+                "required": ["text", "path", "type"]
+              }
+            },
+            "additionalProperties": false
+          }
+        },
+        "required": ["inputtype", "name", "value", "placeholder", "validation"]
+      },
+      {
+        "type": "object",
+        "properties": {
+          "inputtype": {
+            "type": "string",
+            "const": "inn"
+          },
+          "name": {
+            "type": "string"
+          },
+          "value": {
+            "type": "string"
+          },
+          "placeholder": {
+            "type": "string"
+          },
+          "validation": {
+            "type": "string",
+            "enum": ["none", "default"]
+          },
+          "disabled": {
+            "type": "boolean",
+            "const": true
+          },
+          "heading": {
+            "type": "string"
+          },
+          "error": {
+            "type": "string"
+          },
+          "status": {
+            "type": "string",
+            "const": "warning"
+          },
+          "dividerTop": {
+            "type": "boolean",
+            "const": true
+          },
+          "dividerBottom": {
+            "type": "boolean",
+            "const": true
+          },
+          "helperInfo": {
+            "type": "object",
+            "minProperties": 1,
+            "properties": {
+              "text": {
+                "type": "string"
+              },
+              "link": {
+                "type": "object",
+                "properties": {
+                  "text": {
+                    "type": "string"
+                  },
+                  "path": {
+                    "type": "string"
+                  },
+                  "type": {
+                    "type": "string",
+                    "enum": ["internal", "external"]
+                  }
+                },
+                "required": ["text", "path", "type"]
+              }
+            },
+            "additionalProperties": false
+          }
+        },
+        "required": ["inputtype", "name", "value", "placeholder", "validation"]
+      },
+      {
+        "type": "object",
+        "properties": {
+          "inputtype": {
+            "type": "string",
+            "const": "snils"
+          },
+          "name": {
+            "type": "string"
+          },
+          "value": {
+            "type": "string"
+          },
+          "placeholder": {
+            "type": "string"
+          },
+          "validation": {
+            "type": "string",
+            "enum": ["none", "default"]
+          },
+          "disabled": {
+            "type": "boolean",
+            "const": true
+          },
+          "heading": {
+            "type": "string"
+          },
+          "error": {
+            "type": "string"
+          },
+          "status": {
+            "type": "string",
+            "const": "warning"
+          },
+          "dividerTop": {
+            "type": "boolean",
+            "const": true
+          },
+          "dividerBottom": {
+            "type": "boolean",
+            "const": true
+          },
+          "helperInfo": {
+            "type": "object",
+            "minProperties": 1,
+            "properties": {
+              "text": {
+                "type": "string"
+              },
+              "link": {
+                "type": "object",
+                "properties": {
+                  "text": {
+                    "type": "string"
+                  },
+                  "path": {
+                    "type": "string"
+                  },
+                  "type": {
+                    "type": "string",
+                    "enum": ["internal", "external"]
+                  }
+                },
+                "required": ["text", "path", "type"]
+              }
+            },
+            "additionalProperties": false
+          }
+        },
+        "required": ["inputtype", "name", "value", "placeholder", "validation"]
+      },
+      {
+        "type": "object",
+        "properties": {
+          "inputtype": {
+            "type": "string",
+            "const": "sms"
           },
           "name": {
             "type": "string"

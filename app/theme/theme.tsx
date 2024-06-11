@@ -615,6 +615,58 @@ export const theme = createTheme(baseTheme, {
         },
       },
     },
+    MuiMonthCalendar: {
+      styleOverrides: {
+        root: {
+          "& .MuiPickersMonth-monthButton": {
+            "&.Mui-selected": {
+              backgroundColor: baseTheme.palette["Corp_1"],
+
+              "&:hover": {
+                backgroundColor: baseTheme.palette["Corp_1"],
+              },
+            },
+
+            "&:hover": {
+              backgroundColor: baseTheme.palette["White"],
+            },
+
+            "&:focus": {
+              backgroundColor: baseTheme.palette["White"],
+              "&.Mui-selected": {
+                backgroundColor: baseTheme.palette["Corp_1"],
+              },
+            },
+          },
+        },
+      },
+    },
+    MuiYearCalendar: {
+      styleOverrides: {
+        root: {
+          "& .MuiPickersYear-yearButton": {
+            "&.Mui-selected": {
+              backgroundColor: baseTheme.palette["Corp_1"],
+
+              "&:hover": {
+                backgroundColor: baseTheme.palette["Corp_1"],
+              },
+            },
+
+            "&:hover": {
+              backgroundColor: baseTheme.palette["White"],
+            },
+
+            "&:focus": {
+              backgroundColor: baseTheme.palette["White"],
+              "&.Mui-selected": {
+                backgroundColor: baseTheme.palette["Corp_1"],
+              },
+            },
+          },
+        },
+      },
+    },
     // MuiTabs: {
     //   styleOverrides: {
     //     // цвет бордера выбранного таба

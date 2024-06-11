@@ -41,6 +41,24 @@
           },
           {
             "$ref": "phone"
+          },
+          {
+            "$ref": "month"
+          },
+          {
+            "$ref": "email"
+          },
+          {
+            "$ref": "account"
+          },
+          {
+            "$ref": "inn"
+          },
+          {
+            "$ref": "snils"
+          },
+          {
+            "$ref": "sms"
           }
         ]
       }

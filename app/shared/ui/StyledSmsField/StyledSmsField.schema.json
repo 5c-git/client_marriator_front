@@ -1,12 +1,12 @@
 {
-  "$id": "text",
+  "$id": "sms",
   "$schema": "http://json-schema.org/draft-07/schema#",
-  "title": "Schema for Text Input",
+  "title": "Schema for sms Input",
   "type": "object",
   "properties": {
     "inputtype": {
       "type": "string",
-      "const": "text"
+      "const": "sms"
     },
     "name": {
       "type": "string"

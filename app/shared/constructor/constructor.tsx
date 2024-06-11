@@ -24,6 +24,12 @@ import { StyledPhotoInput } from "../ui/StyledPhotoInput/StyledPhotoInput";
 import { StyledPhoneField } from "../ui/StyledPhoneField/StyledPhoneField";
 import { StyledDateField } from "../ui/StyledDateField/StyledDateField";
 import { StyledCardField } from "../ui/StyledCardField/StyledCardField";
+import { StyledMonthField } from "../ui/StyledMonthField/StyledMonthField";
+import { StyledEmailField } from "../ui/StyledEmailField/StyledEmailField";
+import { StyledAccountField } from "../ui/StyledAccountField/StyledAccountField";
+import { StyledInnField } from "../ui/StyledInnField/StyledInnField";
+import { StyledSnilsField } from "../ui/StyledSnilsField/StyledSnilsField";
+import { StyledSmsField } from "../ui/StyledSmsField/StyledSmsField";
 
 const inputMap = {
   text: StyledTextField,
@@ -37,6 +43,12 @@ const inputMap = {
   phone: StyledPhoneField,
   date: StyledDateField,
   card: StyledCardField,
+  month: StyledMonthField,
+  email: StyledEmailField,
+  account: StyledAccountField,
+  inn: StyledInnField,
+  snils: StyledSnilsField,
+  sms: StyledSmsField,
 };
 
 const validationMap: {
@@ -105,6 +117,7 @@ const validationMap: {
   date: {
     none: Yup.string().default("").notRequired(),
     default: Yup.string().required("Обязатльное поле"),
+    "16years": Yup.string().required("Обязатльное поле"),
   },
   card: {
     none: Yup.string().default("").notRequired(),
@@ -130,6 +143,48 @@ const validationMap: {
           return sum % 10 === 0;
         }
       )
+      .required("Обязатльное поле"),
+  },
+  month: {
+    none: Yup.string().default("").notRequired(),
+    default: Yup.string().required("Обязатльное поле"),
+  },
+  email: {
+    none: Yup.string()
+      .default("")
+      .email("Укажите корректный e-mail")
+      .notRequired(),
+    default: Yup.string()
+      .default("")
+      .email("Укажите корректный e-mail")
+      .required("Обязатльное поле"),
+  },
+  account: {
+    none: Yup.string().default("").notRequired(),
+    default: Yup.string()
+      .default("")
+      .length(20, "Укажите корректное значение")
+      .required("Обязатльное поле"),
+  },
+  inn: {
+    none: Yup.string().default("").notRequired(),
+    default: Yup.string()
+      .default("")
+      .length(12, "Укажите корректное значение")
+      .required("Обязатльное поле"),
+  },
+  snils: {
+    none: Yup.string().default("").notRequired(),
+    default: Yup.string()
+      .default("")
+      .length(11, "Укажите корректное значение")
+      .required("Обязатльное поле"),
+  },
+  sms: {
+    none: Yup.string().default("").notRequired(),
+    default: Yup.string()
+      .default("")
+      .length(5, "Укажите корректное значение")
       .required("Обязатльное поле"),
   },
 };

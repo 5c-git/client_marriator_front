@@ -1,12 +1,12 @@
 {
-  "$id": "text",
+  "$id": "snils",
   "$schema": "http://json-schema.org/draft-07/schema#",
-  "title": "Schema for Text Input",
+  "title": "Schema for snils Input",
   "type": "object",
   "properties": {
     "inputtype": {
       "type": "string",
-      "const": "text"
+      "const": "snils"
     },
     "name": {
       "type": "string"

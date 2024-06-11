@@ -84,15 +84,27 @@ export const Primary: Story = {
                 validation: "default",
               },
               {
-                inputtype: "text",
+                inputtype: "select",
                 name: "bik",
                 value: "",
                 placeholder: "БИК",
                 validation: "default",
+                options: [
+                  {
+                    value: "123456789",
+                    label: "123456789",
+                    disabled: false,
+                  },
+                  {
+                    value: "987654321",
+                    label: "987654321",
+                    disabled: false,
+                  },
+                ],
               },
               {
-                inputtype: "text",
-                name: "lk",
+                inputtype: "account",
+                name: "account",
                 value: "",
                 placeholder: "Лицевой счет",
                 validation: "default",
@@ -124,7 +136,7 @@ export const Primary: Story = {
                 ],
               },
               {
-                inputtype: "date",
+                inputtype: "month",
                 name: "expireDate",
                 value: null,
                 placeholder: "Срок окончания действия карты",

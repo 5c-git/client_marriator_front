@@ -1,12 +1,12 @@
 {
-  "$id": "text",
+  "$id": "account",
   "$schema": "http://json-schema.org/draft-07/schema#",
-  "title": "Schema for Text Input",
+  "title": "Schema for account Input",
   "type": "object",
   "properties": {
     "inputtype": {
       "type": "string",
-      "const": "text"
+      "const": "account"
     },
     "name": {
       "type": "string"

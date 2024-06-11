@@ -70,7 +70,7 @@ export const Primary: Story = {
           return HttpResponse.json({
             inputs: [
               {
-                inputtype: "text",
+                inputtype: "inn",
                 name: "inn",
                 value: "",
                 placeholder: "ИНН",
@@ -82,7 +82,7 @@ export const Primary: Story = {
                 },
               },
               {
-                inputtype: "text",
+                inputtype: "snils",
                 name: "snils",
                 value: "",
                 placeholder: "СНИЛС",

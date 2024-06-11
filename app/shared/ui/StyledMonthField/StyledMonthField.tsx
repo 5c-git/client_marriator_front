@@ -1,5 +1,21 @@
 import { forwardRef } from "react";
 import { Link } from "@remix-run/react";
+
+import {
+  LocalizationProvider,
+  PickersLocaleText,
+  MobileDatePicker,
+} from "@mui/x-date-pickers";
+import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFnsV3";
+import { ru } from "date-fns/locale/ru";
+
+import { toDate, formatISO } from "date-fns";
+
+const localeActionsText: Partial<PickersLocaleText<Date>> = {
+  okButtonLabel: "Принять",
+  cancelButtonLabel: "Отменить",
+};
+
 import {
   useTheme,
   SxProps,
@@ -9,13 +25,12 @@ import {
   Divider,
   FormControl,
   FormHelperText,
-  TextField,
 } from "@mui/material";
 
-type StyledTextFieldProps = {
-  inputtype: "text";
+type StyledMonthFieldProps = {
+  inputtype: "month";
   name: string;
-  value: string;
+  value: null | string;
   placeholder: string;
 
   disabled?: true;
@@ -38,18 +53,16 @@ type StyledTextFieldProps = {
   styles?: SxProps<Theme>;
   inputStyles?: SxProps<Theme>;
 
-  onChange: (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-  ) => void;
+  onChange: (value: string) => void;
   onImmediateChange: () => void;
 };
 
-export const StyledTextField = forwardRef(
-  (props: StyledTextFieldProps, ref) => {
+export const StyledMonthField = forwardRef(
+  (props: StyledMonthFieldProps, ref) => {
     const theme = useTheme();
 
     return (
-      <Box ref={ref} sx={props.styles}>
+      <Box sx={props.styles} ref={ref}>
         {props.dividerTop ? <Divider sx={{ marginBottom: "16px" }} /> : null}
 
         <Box sx={props.inputStyles}>
@@ -73,28 +86,53 @@ export const StyledTextField = forwardRef(
             disabled={props.disabled ? true : false}
             error={props.error ? true : false}
           >
-            <TextField
-              id={props.name}
-              name={props.name}
-              value={props.value}
-              error={props.error ? true : false}
-              label={props.placeholder}
-              onChange={(evt) => {
-                props.onChange(evt);
-                props.onImmediateChange();
-              }}
-              sx={{
-                marginBottom: "4px",
+            <LocalizationProvider
+              dateAdapter={AdapterDateFns}
+              adapterLocale={ru}
+            >
+              <MobileDatePicker
+                views={["month", "year"]}
+                format="MM.y"
+                label={props.placeholder}
+                name={props.name}
+                value={props.value !== null ? toDate(props.value) : props.value}
+                disabled={props.disabled ? true : false}
+                closeOnSelect={true}
+                onChange={(newValue) => {
+                  if (newValue) {
+                    props.onChange(
+                      formatISO(new Date(newValue), {
+                        representation: "date",
+                      })
+                    );
+                    props.onImmediateChange();
+                  }
+                }}
+                localeText={localeActionsText}
+                sx={{
+                  marginBottom: "4px",
 
-                "& .MuiOutlinedInput-root": {
-                  borderColor:
-                    props.status === "warning"
-                      ? theme.palette["Yellow"]
-                      : "transparent",
-                },
-              }}
-              disabled={props.disabled ? true : false}
-            />
+                  "& .MuiOutlinedInput-root": {
+                    borderColor: props.error
+                      ? theme.palette["Red"]
+                      : props.status === "warning"
+                        ? theme.palette["Yellow"]
+                        : "transparent",
+                  },
+
+                  "& .MuiInputLabel-root": {
+                    color: props.error
+                      ? theme.palette["Red"]
+                      : theme.palette["Grey_2"],
+
+                    "&.MuiInputLabel-shrink": {
+                      color: theme.palette["Grey_2"],
+                    },
+                  },
+                }}
+              />
+            </LocalizationProvider>
+
             {props.error ? (
               <FormHelperText
                 sx={{
@@ -148,4 +186,4 @@ export const StyledTextField = forwardRef(
   }
 );
 
-StyledTextField.displayName = "StyledTextField";
+StyledMonthField.displayName = "StyledMonthField";
