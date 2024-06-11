@@ -1,3 +1,4 @@
+import { forwardRef } from "react";
 import { Link } from "@remix-run/react";
 import InputMask from "react-input-mask";
 import {
@@ -44,122 +45,126 @@ type StyledPhoneFieldProps = {
   onImmediateChange: () => void;
 };
 
-export const StyledPhoneField = (props: StyledPhoneFieldProps) => {
-  const theme = useTheme();
+export const StyledPhoneField = forwardRef(
+  (props: StyledPhoneFieldProps, ref) => {
+    const theme = useTheme();
 
-  return (
-    <Box sx={props.styles}>
-      {props.dividerTop ? <Divider sx={{ marginBottom: "16px" }} /> : null}
+    return (
+      <Box sx={props.styles} ref={ref}>
+        {props.dividerTop ? <Divider sx={{ marginBottom: "16px" }} /> : null}
 
-      <Box sx={props.inputStyles}>
-        {props.heading ? (
-          <Typography
-            component="p"
-            variant="Bold_14"
-            sx={{
-              color: theme.palette["Black"],
-              marginBottom: "8px",
-            }}
-          >
-            {props.heading}
-          </Typography>
-        ) : null}
-
-        <FormControl
-          sx={{
-            width: "100%",
-          }}
-          disabled={props.disabled ? true : false}
-          error={props.error ? true : false}
-        >
-          <InputMask
-            mask="+7 999 999-99-99"
-            value={props.value}
-            onChange={(
-              evt: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-            ) => {
-              props.onChange(evt);
-              props.onImmediateChange();
-            }}
-            name={props.name}
-            disabled={props.disabled ? true : false}
-          >
-            <TextField
-              id={props.name}
-              // name={props.name}
-              // value={props.value}
-              // onChange={(evt) => {
-              //   props.onChange(evt);
-              //   props.onImmediateChange();
-              // }}
-              disabled={props.disabled ? true : false}
-              error={props.error ? true : false}
-              label={props.placeholder}
-              //
+        <Box sx={props.inputStyles}>
+          {props.heading ? (
+            <Typography
+              component="p"
+              variant="Bold_14"
               sx={{
-                marginBottom: "4px",
-
-                "& .MuiOutlinedInput-root": {
-                  borderColor:
-                    props.status === "warning"
-                      ? theme.palette["Yellow"]
-                      : "transparent",
-                },
-              }}
-              InputProps={{
-                inputMode: "numeric",
-                type: "tel",
-              }}
-            />
-          </InputMask>
-          {props.error ? (
-            <FormHelperText
-              sx={{
-                margin: 0,
+                color: theme.palette["Black"],
+                marginBottom: "8px",
               }}
             >
-              {props.error}
-            </FormHelperText>
+              {props.heading}
+            </Typography>
           ) : null}
-        </FormControl>
 
-        {props.helperInfo ? (
-          <Typography
-            component="p"
-            variant="Reg_12"
+          <FormControl
             sx={{
-              color: theme.palette["Corp_1"],
+              width: "100%",
             }}
+            disabled={props.disabled ? true : false}
+            error={props.error ? true : false}
           >
-            {props.helperInfo.text}{" "}
-            {props.helperInfo.link ? (
-              <>
-                {props.helperInfo.link.type === "internal" ? (
-                  <Link
-                    style={{
-                      textDecorationLine: "underline",
-                    }}
-                    to={props.helperInfo.link.path}
-                  >
-                    {props.helperInfo.link.text}
-                  </Link>
-                ) : (
-                  <a
-                    style={{
-                      textDecorationLine: "underline",
-                    }}
-                    href={props.helperInfo.link.path}
-                  >
-                    {props.helperInfo.link.text}
-                  </a>
-                )}
-              </>
-            ) : null}
-          </Typography>
-        ) : null}
-      </Box>
+            <InputMask
+              mask="+7 999 999-99-99"
+              value={props.value}
+              onChange={(
+                evt: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+              ) => {
+                props.onChange(evt);
+                props.onImmediateChange();
+              }}
+              name={props.name}
+              disabled={props.disabled ? true : false}
+            >
+              <TextField
+                id={props.name}
+                // name={props.name}
+                // value={props.value}
+                // onChange={(evt) => {
+                //   props.onChange(evt);
+                //   props.onImmediateChange();
+                // }}
+                disabled={props.disabled ? true : false}
+                error={props.error ? true : false}
+                label={props.placeholder}
+                //
+                sx={{
+                  marginBottom: "4px",
 
-      {props.dividerBottom ? <Divider sx={{ marginTop: "16px" }} /> : null}
-    </Box>
-  );
-};
+                  "& .MuiOutlinedInput-root": {
+                    borderColor:
+                      props.status === "warning"
+                        ? theme.palette["Yellow"]
+                        : "transparent",
+                  },
+                }}
+                InputProps={{
+                  inputMode: "numeric",
+                  type: "tel",
+                }}
+              />
+            </InputMask>
+            {props.error ? (
+              <FormHelperText
+                sx={{
+                  margin: 0,
+                }}
+              >
+                {props.error}
+              </FormHelperText>
+            ) : null}
+          </FormControl>
+
+          {props.helperInfo ? (
+            <Typography
+              component="p"
+              variant="Reg_12"
+              sx={{
+                color: theme.palette["Corp_1"],
+              }}
+            >
+              {props.helperInfo.text}{" "}
+              {props.helperInfo.link ? (
+                <>
+                  {props.helperInfo.link.type === "internal" ? (
+                    <Link
+                      style={{
+                        textDecorationLine: "underline",
+                      }}
+                      to={props.helperInfo.link.path}
+                    >
+                      {props.helperInfo.link.text}
+                    </Link>
+                  ) : (
+                    <a
+                      style={{
+                        textDecorationLine: "underline",
+                      }}
+                      href={props.helperInfo.link.path}
+                    >
+                      {props.helperInfo.link.text}
+                    </a>
+                  )}
+                </>
+              ) : null}
+            </Typography>
+          ) : null}
+        </Box>
+
+        {props.dividerBottom ? <Divider sx={{ marginTop: "16px" }} /> : null}
+      </Box>
+    );
+  }
+);
+
+StyledPhoneField.displayName = "StyledPhoneField";

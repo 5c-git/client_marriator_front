@@ -29,6 +29,18 @@
           },
           {
             "$ref": "file"
+          },
+          {
+            "$ref": "photo"
+          },
+          {
+            "$ref": "date"
+          },
+          {
+            "$ref": "card"
+          },
+          {
+            "$ref": "phone"
           }
         ]
       }

@@ -13,6 +13,7 @@ export const S_Box = styled(Box, {
   borderWidth: "1px",
   paddingLeft: "12px",
   paddingRight: "12px",
+  border: "1px solid",
   borderColor: props.error
     ? props.theme.palette["Red"]
     : props.status === "warning"

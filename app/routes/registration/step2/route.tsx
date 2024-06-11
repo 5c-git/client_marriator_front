@@ -138,6 +138,7 @@ export default function Step2() {
           <Box
             sx={{
               position: "fixed",
+              zIndex: 1,
               width: "100%",
               bottom: "0",
               left: "0",

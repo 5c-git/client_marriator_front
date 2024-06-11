@@ -1,3 +1,4 @@
+import { forwardRef } from "react";
 import { Link } from "@remix-run/react";
 
 import {
@@ -56,149 +57,156 @@ type StyledDateFieldProps = {
   onImmediateChange: () => void;
 };
 
-export const StyledDateField = (props: StyledDateFieldProps) => {
-  const theme = useTheme();
+export const StyledDateField = forwardRef(
+  (props: StyledDateFieldProps, ref) => {
+    const theme = useTheme();
 
-  return (
-    <Box sx={props.styles}>
-      {props.dividerTop ? <Divider sx={{ marginBottom: "16px" }} /> : null}
+    return (
+      <Box sx={props.styles} ref={ref}>
+        {props.dividerTop ? <Divider sx={{ marginBottom: "16px" }} /> : null}
 
-      <Box sx={props.inputStyles}>
-        {props.heading ? (
-          <Typography
-            component="p"
-            variant="Bold_14"
-            sx={{
-              color: theme.palette["Black"],
-              marginBottom: "8px",
-            }}
-          >
-            {props.heading}
-          </Typography>
-        ) : null}
-
-        <FormControl
-          sx={{
-            width: "100%",
-          }}
-          disabled={props.disabled ? true : false}
-          error={props.error ? true : false}
-        >
-          <LocalizationProvider dateAdapter={AdapterDateFns} adapterLocale={ru}>
-            <MobileDatePicker
-              label={props.placeholder}
-              name={props.name}
-              value={props.value !== null ? toDate(props.value) : props.value}
-              disabled={props.disabled ? true : false}
-              closeOnSelect={true}
-              maxDate={
-                props.validation === "16years"
-                  ? sub(new Date(), {
-                      years: 16,
-                    })
-                  : undefined
-              }
-              onChange={(newValue) => {
-                if (newValue) {
-                  props.onChange(
-                    formatISO(new Date(newValue), {
-                      representation: "date",
-                    })
-                  );
-                  props.onImmediateChange();
-                }
-              }}
-              shouldDisableDate={(date) => {
-                let result = false;
-                if (props.error) {
-                  if (
-                    props.value !== null &&
-                    formatISO(new Date(date), { representation: "date" }) ===
-                      formatISO(new Date(props.value), {
-                        representation: "date",
-                      })
-                  ) {
-                    result = true;
-                  } else {
-                    result = false;
-                  }
-                }
-
-                return result;
-              }}
-              localeText={localeActionsText}
+        <Box sx={props.inputStyles}>
+          {props.heading ? (
+            <Typography
+              component="p"
+              variant="Bold_14"
               sx={{
-                marginBottom: "4px",
-
-                "& .MuiOutlinedInput-root": {
-                  borderColor: props.error
-                    ? theme.palette["Red"]
-                    : props.status === "warning"
-                      ? theme.palette["Yellow"]
-                      : "transparent",
-                },
-
-                "& .MuiInputLabel-root": {
-                  color: props.error
-                    ? theme.palette["Red"]
-                    : theme.palette["Grey_2"],
-
-                  "&.MuiInputLabel-shrink": {
-                    color: theme.palette["Grey_2"],
-                  },
-                },
-              }}
-            />
-          </LocalizationProvider>
-
-          {props.error ? (
-            <FormHelperText
-              sx={{
-                margin: 0,
+                color: theme.palette["Black"],
+                marginBottom: "8px",
               }}
             >
-              {props.error}
-            </FormHelperText>
+              {props.heading}
+            </Typography>
           ) : null}
-        </FormControl>
 
-        {props.helperInfo ? (
-          <Typography
-            component="p"
-            variant="Reg_12"
+          <FormControl
             sx={{
-              color: theme.palette["Corp_1"],
+              width: "100%",
             }}
+            disabled={props.disabled ? true : false}
+            error={props.error ? true : false}
           >
-            {props.helperInfo.text}{" "}
-            {props.helperInfo.link ? (
-              <>
-                {props.helperInfo.link.type === "internal" ? (
-                  <Link
-                    style={{
-                      textDecorationLine: "underline",
-                    }}
-                    to={props.helperInfo.link.path}
-                  >
-                    {props.helperInfo.link.text}
-                  </Link>
-                ) : (
-                  <a
-                    style={{
-                      textDecorationLine: "underline",
-                    }}
-                    href={props.helperInfo.link.path}
-                  >
-                    {props.helperInfo.link.text}
-                  </a>
-                )}
-              </>
-            ) : null}
-          </Typography>
-        ) : null}
-      </Box>
+            <LocalizationProvider
+              dateAdapter={AdapterDateFns}
+              adapterLocale={ru}
+            >
+              <MobileDatePicker
+                label={props.placeholder}
+                name={props.name}
+                value={props.value !== null ? toDate(props.value) : props.value}
+                disabled={props.disabled ? true : false}
+                closeOnSelect={true}
+                maxDate={
+                  props.validation === "16years"
+                    ? sub(new Date(), {
+                        years: 16,
+                      })
+                    : undefined
+                }
+                onChange={(newValue) => {
+                  if (newValue) {
+                    props.onChange(
+                      formatISO(new Date(newValue), {
+                        representation: "date",
+                      })
+                    );
+                    props.onImmediateChange();
+                  }
+                }}
+                shouldDisableDate={(date) => {
+                  let result = false;
+                  if (props.error) {
+                    if (
+                      props.value !== null &&
+                      formatISO(new Date(date), { representation: "date" }) ===
+                        formatISO(new Date(props.value), {
+                          representation: "date",
+                        })
+                    ) {
+                      result = true;
+                    } else {
+                      result = false;
+                    }
+                  }
 
-      {props.dividerBottom ? <Divider sx={{ marginTop: "16px" }} /> : null}
-    </Box>
-  );
-};
+                  return result;
+                }}
+                localeText={localeActionsText}
+                sx={{
+                  marginBottom: "4px",
+
+                  "& .MuiOutlinedInput-root": {
+                    borderColor: props.error
+                      ? theme.palette["Red"]
+                      : props.status === "warning"
+                        ? theme.palette["Yellow"]
+                        : "transparent",
+                  },
+
+                  "& .MuiInputLabel-root": {
+                    color: props.error
+                      ? theme.palette["Red"]
+                      : theme.palette["Grey_2"],
+
+                    "&.MuiInputLabel-shrink": {
+                      color: theme.palette["Grey_2"],
+                    },
+                  },
+                }}
+              />
+            </LocalizationProvider>
+
+            {props.error ? (
+              <FormHelperText
+                sx={{
+                  margin: 0,
+                }}
+              >
+                {props.error}
+              </FormHelperText>
+            ) : null}
+          </FormControl>
+
+          {props.helperInfo ? (
+            <Typography
+              component="p"
+              variant="Reg_12"
+              sx={{
+                color: theme.palette["Corp_1"],
+              }}
+            >
+              {props.helperInfo.text}{" "}
+              {props.helperInfo.link ? (
+                <>
+                  {props.helperInfo.link.type === "internal" ? (
+                    <Link
+                      style={{
+                        textDecorationLine: "underline",
+                      }}
+                      to={props.helperInfo.link.path}
+                    >
+                      {props.helperInfo.link.text}
+                    </Link>
+                  ) : (
+                    <a
+                      style={{
+                        textDecorationLine: "underline",
+                      }}
+                      href={props.helperInfo.link.path}
+                    >
+                      {props.helperInfo.link.text}
+                    </a>
+                  )}
+                </>
+              ) : null}
+            </Typography>
+          ) : null}
+        </Box>
+
+        {props.dividerBottom ? <Divider sx={{ marginTop: "16px" }} /> : null}
+      </Box>
+    );
+  }
+);
+
+StyledDateField.displayName = "StyledDateField";
