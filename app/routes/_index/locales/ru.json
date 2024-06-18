@@ -1,0 +1,6 @@
+{
+  "title": "Привет! Это remix-i18next (русский)",
+  "components": {
+    "Button": "Я кнопка"
+  }
+}
