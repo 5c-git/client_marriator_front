@@ -76,7 +76,8 @@
         }
       },
       "additionalProperties": false
-    }
+    },
+    "additionalProperties": false
   },
   "required": ["inputtype", "name", "value", "placeholder", "validation"]
 }

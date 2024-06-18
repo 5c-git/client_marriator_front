@@ -31,6 +31,7 @@ export type Inputs = [
             [k: string]: unknown;
           };
         };
+        additionalProperties?: never;
         [k: string]: unknown;
       }
     | {
@@ -38,12 +39,23 @@ export type Inputs = [
         name: string;
         value: string;
         placeholder: string;
-        options: {
-          value: string;
-          label: string;
-          disabled: boolean;
-          [k: string]: unknown;
-        }[];
+        /**
+         * @minItems 1
+         */
+        options: [
+          {
+            value: string;
+            label: string;
+            disabled: boolean;
+            [k: string]: unknown;
+          },
+          ...{
+            value: string;
+            label: string;
+            disabled: boolean;
+            [k: string]: unknown;
+          }[],
+        ];
         disabled?: true;
         validation: "none" | "default";
         heading?: string;
@@ -60,6 +72,7 @@ export type Inputs = [
             [k: string]: unknown;
           };
         };
+        additionalProperties?: never;
         [k: string]: unknown;
       }
     | {
@@ -100,6 +113,7 @@ export type Inputs = [
             [k: string]: unknown;
           }[],
         ];
+        additionalProperties?: never;
         [k: string]: unknown;
       }
     | {
@@ -138,6 +152,7 @@ export type Inputs = [
             [k: string]: unknown;
           }[],
         ];
+        additionalProperties?: never;
         [k: string]: unknown;
       }
     | {
@@ -204,6 +219,7 @@ export type Inputs = [
             [k: string]: unknown;
           }[],
         ];
+        additionalProperties?: never;
         [k: string]: unknown;
       }
     | {
@@ -227,6 +243,7 @@ export type Inputs = [
             [k: string]: unknown;
           };
         };
+        additionalProperties?: never;
         [k: string]: unknown;
       }
     | {
@@ -255,6 +272,7 @@ export type Inputs = [
             [k: string]: unknown;
           };
         };
+        additionalProperties?: never;
         [k: string]: unknown;
       }
     | {
@@ -278,6 +296,7 @@ export type Inputs = [
             [k: string]: unknown;
           };
         };
+        additionalProperties?: never;
         [k: string]: unknown;
       }
     | {
@@ -301,6 +320,7 @@ export type Inputs = [
             [k: string]: unknown;
           };
         };
+        additionalProperties?: never;
         [k: string]: unknown;
       }
     | {
@@ -324,6 +344,7 @@ export type Inputs = [
             [k: string]: unknown;
           };
         };
+        additionalProperties?: never;
         [k: string]: unknown;
       }
     | {
@@ -347,6 +368,7 @@ export type Inputs = [
             [k: string]: unknown;
           };
         };
+        additionalProperties?: never;
         [k: string]: unknown;
       }
     | {
@@ -370,6 +392,7 @@ export type Inputs = [
             [k: string]: unknown;
           };
         };
+        additionalProperties?: never;
         [k: string]: unknown;
       }
     | {
@@ -393,6 +416,7 @@ export type Inputs = [
             [k: string]: unknown;
           };
         };
+        additionalProperties?: never;
         [k: string]: unknown;
       }
     | {
@@ -416,6 +440,7 @@ export type Inputs = [
             [k: string]: unknown;
           };
         };
+        additionalProperties?: never;
         [k: string]: unknown;
       }
     | {
@@ -439,6 +464,7 @@ export type Inputs = [
             [k: string]: unknown;
           };
         };
+        additionalProperties?: never;
         [k: string]: unknown;
       }
     | {
@@ -462,6 +488,7 @@ export type Inputs = [
             [k: string]: unknown;
           };
         };
+        additionalProperties?: never;
         [k: string]: unknown;
       }
     | {
@@ -485,6 +512,7 @@ export type Inputs = [
             [k: string]: unknown;
           };
         };
+        additionalProperties?: never;
         [k: string]: unknown;
       }
   ),
@@ -510,6 +538,7 @@ export type Inputs = [
             [k: string]: unknown;
           };
         };
+        additionalProperties?: never;
         [k: string]: unknown;
       }
     | {
@@ -517,12 +546,23 @@ export type Inputs = [
         name: string;
         value: string;
         placeholder: string;
-        options: {
-          value: string;
-          label: string;
-          disabled: boolean;
-          [k: string]: unknown;
-        }[];
+        /**
+         * @minItems 1
+         */
+        options: [
+          {
+            value: string;
+            label: string;
+            disabled: boolean;
+            [k: string]: unknown;
+          },
+          ...{
+            value: string;
+            label: string;
+            disabled: boolean;
+            [k: string]: unknown;
+          }[],
+        ];
         disabled?: true;
         validation: "none" | "default";
         heading?: string;
@@ -539,6 +579,7 @@ export type Inputs = [
             [k: string]: unknown;
           };
         };
+        additionalProperties?: never;
         [k: string]: unknown;
       }
     | {
@@ -579,6 +620,7 @@ export type Inputs = [
             [k: string]: unknown;
           }[],
         ];
+        additionalProperties?: never;
         [k: string]: unknown;
       }
     | {
@@ -617,6 +659,7 @@ export type Inputs = [
             [k: string]: unknown;
           }[],
         ];
+        additionalProperties?: never;
         [k: string]: unknown;
       }
     | {
@@ -683,6 +726,7 @@ export type Inputs = [
             [k: string]: unknown;
           }[],
         ];
+        additionalProperties?: never;
         [k: string]: unknown;
       }
     | {
@@ -706,6 +750,7 @@ export type Inputs = [
             [k: string]: unknown;
           };
         };
+        additionalProperties?: never;
         [k: string]: unknown;
       }
     | {
@@ -734,6 +779,7 @@ export type Inputs = [
             [k: string]: unknown;
           };
         };
+        additionalProperties?: never;
         [k: string]: unknown;
       }
     | {
@@ -757,6 +803,7 @@ export type Inputs = [
             [k: string]: unknown;
           };
         };
+        additionalProperties?: never;
         [k: string]: unknown;
       }
     | {
@@ -780,6 +827,7 @@ export type Inputs = [
             [k: string]: unknown;
           };
         };
+        additionalProperties?: never;
         [k: string]: unknown;
       }
     | {
@@ -803,6 +851,7 @@ export type Inputs = [
             [k: string]: unknown;
           };
         };
+        additionalProperties?: never;
         [k: string]: unknown;
       }
     | {
@@ -826,6 +875,7 @@ export type Inputs = [
             [k: string]: unknown;
           };
         };
+        additionalProperties?: never;
         [k: string]: unknown;
       }
     | {
@@ -849,6 +899,7 @@ export type Inputs = [
             [k: string]: unknown;
           };
         };
+        additionalProperties?: never;
         [k: string]: unknown;
       }
     | {
@@ -872,6 +923,7 @@ export type Inputs = [
             [k: string]: unknown;
           };
         };
+        additionalProperties?: never;
         [k: string]: unknown;
       }
     | {
@@ -895,6 +947,7 @@ export type Inputs = [
             [k: string]: unknown;
           };
         };
+        additionalProperties?: never;
         [k: string]: unknown;
       }
     | {
@@ -918,6 +971,7 @@ export type Inputs = [
             [k: string]: unknown;
           };
         };
+        additionalProperties?: never;
         [k: string]: unknown;
       }
     | {
@@ -941,6 +995,7 @@ export type Inputs = [
             [k: string]: unknown;
           };
         };
+        additionalProperties?: never;
         [k: string]: unknown;
       }
     | {
@@ -964,6 +1019,7 @@ export type Inputs = [
             [k: string]: unknown;
           };
         };
+        additionalProperties?: never;
         [k: string]: unknown;
       }
   )[],

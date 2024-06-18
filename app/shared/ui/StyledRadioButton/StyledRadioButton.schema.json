@@ -72,7 +72,8 @@
             "type": "string"
           },
           "label": {
-            "type": "string"
+            "type": "string",
+            "minLength": 1
           },
           "disabled": {
             "type": "boolean"
@@ -84,7 +85,8 @@
         },
         "required": ["value", "label", "disabled"]
       }
-    }
+    },
+    "additionalProperties": false
   },
   "required": ["inputtype", "name", "value", "options", "validation"]
 }
