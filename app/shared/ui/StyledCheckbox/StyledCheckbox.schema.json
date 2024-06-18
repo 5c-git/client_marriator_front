@@ -15,7 +15,8 @@
       "type": "boolean"
     },
     "label": {
-      "type": "string"
+      "type": "string",
+      "minLength": 1
     },
     "validation": {
       "type": "string",
@@ -68,7 +69,8 @@
         }
       },
       "additionalProperties": false
-    }
+    },
+    "additionalProperties": false
   },
   "required": ["inputtype", "name", "value", "label", "validation"]
 }
