@@ -20,7 +20,7 @@ import { S_MenuItem } from "./StyledSelect.styled";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 
 type StyledSelectProps = {
-  inputtype: "select";
+  inputType: "select";
   name: string;
   value: string;
   placeholder: string;
@@ -30,7 +30,7 @@ type StyledSelectProps = {
     disabled: boolean;
   }[];
 
-  disabled?: true;
+  disabled?: boolean;
   validation?: "default" | "none";
   heading?: string;
   error?: string;
@@ -78,7 +78,7 @@ export const StyledSelect = forwardRef((props: StyledSelectProps, ref) => {
           sx={{
             width: "100%",
           }}
-          disabled={props.disabled ? true : false}
+          disabled={props.disabled}
           error={props.error ? true : false}
         >
           <InputLabel id={props.name}>{props.placeholder}</InputLabel>
@@ -115,7 +115,7 @@ export const StyledSelect = forwardRef((props: StyledSelectProps, ref) => {
                   ? theme.palette["Yellow"]
                   : "transparent",
             }}
-            disabled={props.disabled ? true : false}
+            disabled={props.disabled}
           >
             {props.options.map((option) => (
               <S_MenuItem

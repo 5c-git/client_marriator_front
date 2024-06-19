@@ -28,12 +28,12 @@ import {
 } from "@mui/material";
 
 type StyledDateFieldProps = {
-  inputtype: "date";
+  inputType: "date";
   name: string;
   value: null | string;
   placeholder: string;
 
-  disabled?: true;
+  disabled?: boolean;
   heading?: string;
   error?: string;
   status?: "warning";
@@ -83,7 +83,7 @@ export const StyledDateField = forwardRef(
             sx={{
               width: "100%",
             }}
-            disabled={props.disabled ? true : false}
+            disabled={props.disabled}
             error={props.error ? true : false}
           >
             <LocalizationProvider
@@ -94,7 +94,7 @@ export const StyledDateField = forwardRef(
                 label={props.placeholder}
                 name={props.name}
                 value={props.value !== null ? toDate(props.value) : props.value}
-                disabled={props.disabled ? true : false}
+                disabled={props.disabled}
                 closeOnSelect={true}
                 maxDate={
                   props.validation === "16years"

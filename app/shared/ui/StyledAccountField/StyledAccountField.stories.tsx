@@ -42,7 +42,7 @@ type Story = StoryObj<typeof meta>;
 export const Primary: Story = {
   name: "account (базовый вид)",
   args: {
-    inputtype: "account",
+    inputType: "account",
     name: "text",
     value: "",
     placeholder: "Лицевой счет",
@@ -59,7 +59,7 @@ export const Primary: Story = {
 
     return (
       <StyledAccountField
-        inputtype={args.inputtype}
+        inputType={args.inputType}
         name={args.name}
         placeholder={args.placeholder}
         value={args.value}
@@ -74,7 +74,7 @@ export const Primary: Story = {
 export const PrimaryError: Story = {
   name: "account (ошибка)",
   args: {
-    inputtype: "account",
+    inputType: "account",
     name: "phone",
     value: "",
     placeholder: "Лицевой счет",
@@ -92,7 +92,7 @@ export const PrimaryError: Story = {
 
     return (
       <StyledAccountField
-        inputtype={args.inputtype}
+        inputType={args.inputType}
         name={args.name}
         placeholder={args.placeholder}
         value={args.value}
@@ -108,7 +108,7 @@ export const PrimaryError: Story = {
 export const PrimaryAccount: Story = {
   name: "account (вспомогательный текст)",
   args: {
-    inputtype: "account",
+    inputType: "account",
     name: "text",
     value: "",
     placeholder: "Лицевой счет",
@@ -128,7 +128,7 @@ export const PrimaryAccount: Story = {
 
     return (
       <StyledAccountField
-        inputtype={args.inputtype}
+        inputType={args.inputType}
         name={args.name}
         placeholder={args.placeholder}
         value={args.value}
@@ -144,7 +144,7 @@ export const PrimaryAccount: Story = {
 export const PrimaryLink: Story = {
   name: "account (вспомогательная ссылка)",
   args: {
-    inputtype: "account",
+    inputType: "account",
     name: "text",
     value: "",
     placeholder: "Лицевой счет",
@@ -168,7 +168,7 @@ export const PrimaryLink: Story = {
 
     return (
       <StyledAccountField
-        inputtype={args.inputtype}
+        inputType={args.inputType}
         name={args.name}
         placeholder={args.placeholder}
         value={args.value}
@@ -184,7 +184,7 @@ export const PrimaryLink: Story = {
 export const PrimaryAccountLink: Story = {
   name: "account (вспомогательные текст и ссылка)",
   args: {
-    inputtype: "account",
+    inputType: "account",
     name: "text",
     value: "",
     placeholder: "Лицевой счет",
@@ -209,7 +209,7 @@ export const PrimaryAccountLink: Story = {
 
     return (
       <StyledAccountField
-        inputtype={args.inputtype}
+        inputType={args.inputType}
         name={args.name}
         placeholder={args.placeholder}
         value={args.value}
@@ -225,7 +225,7 @@ export const PrimaryAccountLink: Story = {
 export const PrimaryAccountLinkError: Story = {
   name: "account (вспомогательные текст и ссылка и ошибка)",
   args: {
-    inputtype: "account",
+    inputType: "account",
     name: "text",
     value: "",
     placeholder: "Лицевой счет",
@@ -251,7 +251,7 @@ export const PrimaryAccountLinkError: Story = {
 
     return (
       <StyledAccountField
-        inputtype={args.inputtype}
+        inputType={args.inputType}
         name={args.name}
         placeholder={args.placeholder}
         value={args.value}
@@ -268,7 +268,7 @@ export const PrimaryAccountLinkError: Story = {
 export const PrimaryAccountStatus: Story = {
   name: "account (статус поля)",
   args: {
-    inputtype: "account",
+    inputType: "account",
     name: "text",
     value: "",
     placeholder: "Лицевой счет",
@@ -286,7 +286,7 @@ export const PrimaryAccountStatus: Story = {
 
     return (
       <StyledAccountField
-        inputtype={args.inputtype}
+        inputType={args.inputType}
         name={args.name}
         placeholder={args.placeholder}
         value={args.value}
@@ -302,7 +302,7 @@ export const PrimaryAccountStatus: Story = {
 export const PrimaryAccountDisabled: Story = {
   name: "account (отключенное поле)",
   args: {
-    inputtype: "account",
+    inputType: "account",
     name: "text",
     value: "",
     placeholder: "Лицевой счет",
@@ -320,7 +320,7 @@ export const PrimaryAccountDisabled: Story = {
 
     return (
       <StyledAccountField
-        inputtype={args.inputtype}
+        inputType={args.inputType}
         name={args.name}
         placeholder={args.placeholder}
         value={args.value}
@@ -336,7 +336,7 @@ export const PrimaryAccountDisabled: Story = {
 export const PrimaryAccountValue: Story = {
   name: "account (заполненное поле)",
   args: {
-    inputtype: "account",
+    inputType: "account",
     name: "text",
     value: "12345678901234567890",
     placeholder: "Лицевой счет",
@@ -353,7 +353,7 @@ export const PrimaryAccountValue: Story = {
 
     return (
       <StyledAccountField
-        inputtype={args.inputtype}
+        inputType={args.inputType}
         name={args.name}
         placeholder={args.placeholder}
         value={args.value}
@@ -368,7 +368,7 @@ export const PrimaryAccountValue: Story = {
 export const PrimaryAccountheading: Story = {
   name: "account (заголовок)",
   args: {
-    inputtype: "account",
+    inputType: "account",
     name: "text",
     value: "",
     placeholder: "Лицевой счет",
@@ -386,7 +386,7 @@ export const PrimaryAccountheading: Story = {
 
     return (
       <StyledAccountField
-        inputtype={args.inputtype}
+        inputType={args.inputType}
         name={args.name}
         placeholder={args.placeholder}
         value={args.value}
@@ -402,7 +402,7 @@ export const PrimaryAccountheading: Story = {
 export const PrimaryDividers: Story = {
   name: "account (разделители)",
   args: {
-    inputtype: "account",
+    inputType: "account",
     name: "text",
     value: "",
     placeholder: "Лицевой счет",
@@ -424,7 +424,7 @@ export const PrimaryDividers: Story = {
 
     return (
       <StyledAccountField
-        inputtype={args.inputtype}
+        inputType={args.inputType}
         name={args.name}
         placeholder={args.placeholder}
         value={args.value}

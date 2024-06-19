@@ -28,12 +28,12 @@ import {
 } from "@mui/material";
 
 type StyledMonthFieldProps = {
-  inputtype: "month";
+  inputType: "month";
   name: string;
   value: null | string;
   placeholder: string;
 
-  disabled?: true;
+  disabled?: boolean;
   heading?: string;
   error?: string;
   status?: "warning";
@@ -83,7 +83,7 @@ export const StyledMonthField = forwardRef(
             sx={{
               width: "100%",
             }}
-            disabled={props.disabled ? true : false}
+            disabled={props.disabled}
             error={props.error ? true : false}
           >
             <LocalizationProvider
@@ -96,7 +96,7 @@ export const StyledMonthField = forwardRef(
                 label={props.placeholder}
                 name={props.name}
                 value={props.value !== null ? toDate(props.value) : props.value}
-                disabled={props.disabled ? true : false}
+                disabled={props.disabled}
                 closeOnSelect={true}
                 onChange={(newValue) => {
                   if (newValue) {

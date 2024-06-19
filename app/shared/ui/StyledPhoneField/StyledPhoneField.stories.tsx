@@ -42,7 +42,7 @@ type Story = StoryObj<typeof meta>;
 export const Primary: Story = {
   name: "phone (базовый вид)",
   args: {
-    inputtype: "phone",
+    inputType: "phone",
     name: "text",
     value: "",
     placeholder: "Мобильный телефон",
@@ -61,7 +61,7 @@ export const Primary: Story = {
 
     return (
       <StyledPhoneField
-        inputtype="phone"
+        inputType="phone"
         name={args.name}
         placeholder={args.placeholder}
         value={args.value}
@@ -76,7 +76,7 @@ export const Primary: Story = {
 export const PrimaryError: Story = {
   name: "phone (ошибка)",
   args: {
-    inputtype: "phone",
+    inputType: "phone",
     name: "phone",
     value: "",
     placeholder: "Мобильный телефон",
@@ -96,7 +96,7 @@ export const PrimaryError: Story = {
 
     return (
       <StyledPhoneField
-        inputtype="phone"
+        inputType="phone"
         name={args.name}
         placeholder={args.placeholder}
         value={args.value}
@@ -112,7 +112,7 @@ export const PrimaryError: Story = {
 export const PrimaryText: Story = {
   name: "phone (вспомогательный текст)",
   args: {
-    inputtype: "phone",
+    inputType: "phone",
     name: "text",
     value: "",
     placeholder: "Номер телефона",
@@ -134,7 +134,7 @@ export const PrimaryText: Story = {
 
     return (
       <StyledPhoneField
-        inputtype="phone"
+        inputType="phone"
         name={args.name}
         placeholder={args.placeholder}
         value={args.value}
@@ -150,7 +150,7 @@ export const PrimaryText: Story = {
 export const PrimaryLink: Story = {
   name: "phone (вспомогательная ссылка)",
   args: {
-    inputtype: "phone",
+    inputType: "phone",
     name: "text",
     value: "",
     placeholder: "Мобильный телефон",
@@ -176,7 +176,7 @@ export const PrimaryLink: Story = {
 
     return (
       <StyledPhoneField
-        inputtype="phone"
+        inputType="phone"
         name={args.name}
         placeholder={args.placeholder}
         value={args.value}
@@ -192,7 +192,7 @@ export const PrimaryLink: Story = {
 export const PrimaryPhoneLink: Story = {
   name: "phone (вспомогательные текст и ссылка)",
   args: {
-    inputtype: "phone",
+    inputType: "phone",
     name: "text",
     value: "",
     placeholder: "Мобильный телефон",
@@ -219,7 +219,7 @@ export const PrimaryPhoneLink: Story = {
 
     return (
       <StyledPhoneField
-        inputtype="phone"
+        inputType="phone"
         name={args.name}
         placeholder={args.placeholder}
         value={args.value}
@@ -235,7 +235,7 @@ export const PrimaryPhoneLink: Story = {
 export const PrimaryPhoneLinkError: Story = {
   name: "phone (вспомогательные текст и ссылка и ошибка)",
   args: {
-    inputtype: "phone",
+    inputType: "phone",
     name: "text",
     value: "",
     placeholder: "Мобильный телефон",
@@ -263,7 +263,7 @@ export const PrimaryPhoneLinkError: Story = {
 
     return (
       <StyledPhoneField
-        inputtype="phone"
+        inputType="phone"
         name={args.name}
         placeholder={args.placeholder}
         value={args.value}
@@ -280,7 +280,7 @@ export const PrimaryPhoneLinkError: Story = {
 export const PrimaryPhoneStatus: Story = {
   name: "phone (статус поля)",
   args: {
-    inputtype: "phone",
+    inputType: "phone",
     name: "text",
     value: "",
     placeholder: "Мобильный телефон",
@@ -300,7 +300,7 @@ export const PrimaryPhoneStatus: Story = {
 
     return (
       <StyledPhoneField
-        inputtype="phone"
+        inputType="phone"
         name={args.name}
         placeholder={args.placeholder}
         value={args.value}
@@ -316,7 +316,7 @@ export const PrimaryPhoneStatus: Story = {
 export const PrimaryPhoneDisabled: Story = {
   name: "phone (отключенное поле)",
   args: {
-    inputtype: "phone",
+    inputType: "phone",
     name: "text",
     value: "",
     placeholder: "Мобильный телефон",
@@ -336,7 +336,7 @@ export const PrimaryPhoneDisabled: Story = {
 
     return (
       <StyledPhoneField
-        inputtype="phone"
+        inputType="phone"
         name={args.name}
         placeholder={args.placeholder}
         value={args.value}
@@ -352,7 +352,7 @@ export const PrimaryPhoneDisabled: Story = {
 export const PrimaryPhoneValue: Story = {
   name: "phone (заполненное поле)",
   args: {
-    inputtype: "phone",
+    inputType: "phone",
     name: "text",
     value: "+79152142630",
     placeholder: "Мобильный телефон",
@@ -371,7 +371,7 @@ export const PrimaryPhoneValue: Story = {
 
     return (
       <StyledPhoneField
-        inputtype="phone"
+        inputType="phone"
         name={args.name}
         placeholder={args.placeholder}
         value={args.value}
@@ -386,7 +386,7 @@ export const PrimaryPhoneValue: Story = {
 export const PrimaryPhoneheading: Story = {
   name: "phone (заголовок)",
   args: {
-    inputtype: "phone",
+    inputType: "phone",
     name: "text",
     value: "",
     placeholder: "Мобильный телефон",
@@ -406,7 +406,7 @@ export const PrimaryPhoneheading: Story = {
 
     return (
       <StyledPhoneField
-        inputtype="phone"
+        inputType="phone"
         name={args.name}
         placeholder={args.placeholder}
         value={args.value}
@@ -422,7 +422,7 @@ export const PrimaryPhoneheading: Story = {
 export const PrimaryDividers: Story = {
   name: "phone (разделители)",
   args: {
-    inputtype: "phone",
+    inputType: "phone",
     name: "text",
     value: "",
     placeholder: "Мобильный телефон",
@@ -446,7 +446,7 @@ export const PrimaryDividers: Story = {
 
     return (
       <StyledPhoneField
-        inputtype="phone"
+        inputType="phone"
         name={args.name}
         placeholder={args.placeholder}
         value={args.value}

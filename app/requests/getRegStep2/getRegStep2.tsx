@@ -75,7 +75,7 @@ export const getRegStep2 = async (): Promise<RegStep2> => {
 export const mockResponseSuccess = {
   inputs: [
     {
-      inputtype: "select",
+      inputType: "select",
       name: "tax-status",
       value: "",
       placeholder: "Налоговый статус",
@@ -101,7 +101,7 @@ export const mockResponseSuccess = {
       },
     },
     {
-      inputtype: "select",
+      inputType: "select",
       name: "citizenship",
       value: "",
       placeholder: "Гржданство",
@@ -125,7 +125,7 @@ export const mockResponseSuccess = {
       ],
     },
     {
-      inputtype: "radio",
+      inputType: "radio",
       name: "status",
       value: "",
       placeholder: "Гржданство",
@@ -144,7 +144,7 @@ export const mockResponseSuccess = {
       ],
     },
     {
-      inputtype: "select",
+      inputType: "select",
       name: "region",
       value: "",
       placeholder: "Выбери регион",
@@ -168,7 +168,7 @@ export const mockResponseSuccess = {
       ],
     },
     {
-      inputtype: "select",
+      inputType: "select",
       name: "territory",
       value: "",
       placeholder: "Территория поиска предложений",
@@ -192,7 +192,7 @@ export const mockResponseSuccess = {
       ],
     },
     {
-      inputtype: "photoCheckbox",
+      inputType: "photoCheckbox",
       name: "activity",
       value: [],
       validation: "default",

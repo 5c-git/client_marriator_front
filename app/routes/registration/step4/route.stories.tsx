@@ -70,28 +70,28 @@ export const Primary: Story = {
           return HttpResponse.json({
             inputs: [
               {
-                inputtype: "photo",
+                inputType: "photo",
                 name: "photo",
                 value: "",
                 url: "http://preprod.marriator-api.fivecorners.ru/api/saveFile",
                 validation: "default",
               },
               {
-                inputtype: "text",
+                inputType: "text",
                 name: "lastName",
                 value: "",
                 placeholder: "Фамилия",
                 validation: "default",
               },
               {
-                inputtype: "text",
+                inputType: "text",
                 name: "name",
                 value: "",
                 placeholder: "Имя",
                 validation: "default",
               },
               {
-                inputtype: "radio",
+                inputType: "radio",
                 value: "",
                 name: "isMiddleName",
                 validation: "default",
@@ -109,14 +109,14 @@ export const Primary: Story = {
                 ],
               },
               {
-                inputtype: "text",
+                inputType: "text",
                 name: "middleName",
                 value: "",
                 placeholder: "Отчество",
                 validation: "default",
               },
               {
-                inputtype: "date",
+                inputType: "date",
                 name: "birthday",
                 value: null,
                 error: "tet",
@@ -124,7 +124,7 @@ export const Primary: Story = {
                 validation: "16years",
               },
               {
-                inputtype: "select",
+                inputType: "select",
                 name: "sex",
                 value: "",
                 placeholder: "Пол",
@@ -143,7 +143,7 @@ export const Primary: Story = {
                 ],
               },
               {
-                inputtype: "phone",
+                inputType: "phone",
                 name: "phone",
                 value: "",
                 placeholder: "Мобильный телефон",
@@ -154,7 +154,7 @@ export const Primary: Story = {
                 },
               },
               {
-                inputtype: "radio",
+                inputType: "radio",
                 value: "",
                 name: "messenger",
                 validation: "default",
@@ -186,7 +186,7 @@ export const Primary: Story = {
                 heading: "Выбери мессенджер:",
               },
               {
-                inputtype: "email",
+                inputType: "email",
                 name: "email",
                 value: "",
                 placeholder: "E-mail",
@@ -196,7 +196,7 @@ export const Primary: Story = {
                 },
               },
               {
-                inputtype: "radio",
+                inputType: "radio",
                 value: "",
                 name: "passport",
                 validation: "default",
@@ -219,7 +219,7 @@ export const Primary: Story = {
                 },
               },
               {
-                inputtype: "file",
+                inputType: "file",
                 name: "passportDoc",
                 value: "",
                 url: "http://preprod.marriator-api.fivecorners.ru/api/saveFile",
@@ -227,7 +227,7 @@ export const Primary: Story = {
                 validation: "default",
               },
               {
-                inputtype: "file",
+                inputType: "file",
                 name: "you",
                 value: "",
                 url: "http://preprod.marriator-api.fivecorners.ru/api/saveFile",
@@ -239,7 +239,7 @@ export const Primary: Story = {
                 },
               },
               {
-                inputtype: "file",
+                inputType: "file",
                 name: "parents",
                 value: "",
                 url: "http://preprod.marriator-api.fivecorners.ru/api/saveFile",
@@ -258,7 +258,7 @@ export const Primary: Story = {
               },
 
               {
-                inputtype: "select",
+                inputType: "select",
                 name: "clothes",
                 value: "",
                 placeholder: "Размер одежды",
@@ -282,7 +282,7 @@ export const Primary: Story = {
                 ],
               },
               {
-                inputtype: "select",
+                inputType: "select",
                 name: "hairColor",
                 value: "",
                 placeholder: "Цвет волос",
@@ -301,7 +301,7 @@ export const Primary: Story = {
                 ],
               },
               {
-                inputtype: "select",
+                inputType: "select",
                 name: "hairLenght",
                 value: "",
                 placeholder: "Длина волос",
@@ -325,7 +325,7 @@ export const Primary: Story = {
                 ],
               },
               {
-                inputtype: "file",
+                inputType: "file",
                 name: "driverLicence",
                 value: "",
                 url: "http://preprod.marriator-api.fivecorners.ru/api/saveFile",
@@ -338,7 +338,7 @@ export const Primary: Story = {
                 },
               },
               {
-                inputtype: "file",
+                inputType: "file",
                 name: "medicalDriverLicence",
                 value: "",
                 url: "http://preprod.marriator-api.fivecorners.ru/api/saveFile",
@@ -351,7 +351,7 @@ export const Primary: Story = {
                 },
               },
               {
-                inputtype: "file",
+                inputType: "file",
                 name: "anyLicence",
                 value: "",
                 url: "http://preprod.marriator-api.fivecorners.ru/api/saveFile",
@@ -363,7 +363,7 @@ export const Primary: Story = {
                 },
               },
               {
-                inputtype: "radio",
+                inputType: "radio",
                 value: "",
                 name: "medBook",
                 validation: "default",
@@ -383,7 +383,7 @@ export const Primary: Story = {
                 ],
               },
               {
-                inputtype: "file",
+                inputType: "file",
                 name: "medBookFile",
                 value: "",
                 url: "http://preprod.marriator-api.fivecorners.ru/api/saveFile",

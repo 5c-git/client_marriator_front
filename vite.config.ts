@@ -13,6 +13,9 @@ export default defineConfig({
       routes(defineRoutes) {
         return defineRoutes((route) => {
           route("/:lang?", "routes/_index/route.tsx", { index: true });
+
+          route("/:lang?/signin/phone", "routes/signin/phone/route.tsx");
+
           route(
             "/:lang?/registration/step1",
             "routes/registration/step1/route.tsx"

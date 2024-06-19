@@ -42,7 +42,7 @@ type Story = StoryObj<typeof meta>;
 export const Primary: Story = {
   name: "email (базовый вид)",
   args: {
-    inputtype: "email",
+    inputType: "email",
     name: "text",
     value: "",
     placeholder: "E-mail",
@@ -61,7 +61,7 @@ export const Primary: Story = {
 
     return (
       <StyledEmailField
-        inputtype="email"
+        inputType="email"
         name={args.name}
         placeholder={args.placeholder}
         value={args.value}
@@ -76,7 +76,7 @@ export const Primary: Story = {
 export const PrimaryError: Story = {
   name: "email (ошибка)",
   args: {
-    inputtype: "email",
+    inputType: "email",
     name: "text",
     value: "",
     placeholder: "E-mail",
@@ -96,7 +96,7 @@ export const PrimaryError: Story = {
 
     return (
       <StyledEmailField
-        inputtype="email"
+        inputType="email"
         name={args.name}
         placeholder={args.placeholder}
         value={args.value}
@@ -112,7 +112,7 @@ export const PrimaryError: Story = {
 export const PrimaryEmail: Story = {
   name: "email (вспомогательный текст)",
   args: {
-    inputtype: "email",
+    inputType: "email",
     name: "text",
     value: "",
     placeholder: "E-mail",
@@ -134,7 +134,7 @@ export const PrimaryEmail: Story = {
 
     return (
       <StyledEmailField
-        inputtype="email"
+        inputType="email"
         name={args.name}
         placeholder={args.placeholder}
         value={args.value}
@@ -150,7 +150,7 @@ export const PrimaryEmail: Story = {
 export const PrimaryLink: Story = {
   name: "email (вспомогательная ссылка)",
   args: {
-    inputtype: "email",
+    inputType: "email",
     name: "text",
     value: "",
     placeholder: "E-mail",
@@ -176,7 +176,7 @@ export const PrimaryLink: Story = {
 
     return (
       <StyledEmailField
-        inputtype="email"
+        inputType="email"
         name={args.name}
         placeholder={args.placeholder}
         value={args.value}
@@ -192,7 +192,7 @@ export const PrimaryLink: Story = {
 export const PrimaryEmailLink: Story = {
   name: "email (вспомогательные текст и ссылка)",
   args: {
-    inputtype: "email",
+    inputType: "email",
     name: "text",
     value: "",
     placeholder: "E-mail",
@@ -219,7 +219,7 @@ export const PrimaryEmailLink: Story = {
 
     return (
       <StyledEmailField
-        inputtype="email"
+        inputType="email"
         name={args.name}
         placeholder={args.placeholder}
         value={args.value}
@@ -235,7 +235,7 @@ export const PrimaryEmailLink: Story = {
 export const PrimaryEmailLinkError: Story = {
   name: "email (вспомогательные текст и ссылка и ошибка)",
   args: {
-    inputtype: "email",
+    inputType: "email",
     name: "text",
     value: "",
     placeholder: "E-mail",
@@ -263,7 +263,7 @@ export const PrimaryEmailLinkError: Story = {
 
     return (
       <StyledEmailField
-        inputtype="email"
+        inputType="email"
         name={args.name}
         placeholder={args.placeholder}
         value={args.value}
@@ -280,7 +280,7 @@ export const PrimaryEmailLinkError: Story = {
 export const PrimaryEmailStatus: Story = {
   name: "email (статус поля)",
   args: {
-    inputtype: "email",
+    inputType: "email",
     name: "text",
     value: "",
     placeholder: "E-mail",
@@ -300,7 +300,7 @@ export const PrimaryEmailStatus: Story = {
 
     return (
       <StyledEmailField
-        inputtype="email"
+        inputType="email"
         name={args.name}
         placeholder={args.placeholder}
         value={args.value}
@@ -316,7 +316,7 @@ export const PrimaryEmailStatus: Story = {
 export const PrimaryEmailDisabled: Story = {
   name: "email (отключенное поле)",
   args: {
-    inputtype: "email",
+    inputType: "email",
     name: "text",
     value: "",
     placeholder: "E-mail",
@@ -336,7 +336,7 @@ export const PrimaryEmailDisabled: Story = {
 
     return (
       <StyledEmailField
-        inputtype="email"
+        inputType="email"
         name={args.name}
         placeholder={args.placeholder}
         value={args.value}
@@ -352,7 +352,7 @@ export const PrimaryEmailDisabled: Story = {
 export const PrimaryEmailValue: Story = {
   name: "email (заполненное поле)",
   args: {
-    inputtype: "email",
+    inputType: "email",
     name: "text",
     value: "test@mail.ru",
     placeholder: "E-mail",
@@ -371,7 +371,7 @@ export const PrimaryEmailValue: Story = {
 
     return (
       <StyledEmailField
-        inputtype="email"
+        inputType="email"
         name={args.name}
         placeholder={args.placeholder}
         value={args.value}
@@ -386,7 +386,7 @@ export const PrimaryEmailValue: Story = {
 export const PrimaryEmailHeading: Story = {
   name: "email (заголовок)",
   args: {
-    inputtype: "email",
+    inputType: "email",
     name: "text",
     value: "",
     placeholder: "E-mail",
@@ -406,7 +406,7 @@ export const PrimaryEmailHeading: Story = {
 
     return (
       <StyledEmailField
-        inputtype="email"
+        inputType="email"
         name={args.name}
         placeholder={args.placeholder}
         value={args.value}
@@ -422,7 +422,7 @@ export const PrimaryEmailHeading: Story = {
 export const PrimaryDividers: Story = {
   name: "email (разделители)",
   args: {
-    inputtype: "email",
+    inputType: "email",
     name: "text",
     value: "",
     placeholder: "E-mail",
@@ -446,7 +446,7 @@ export const PrimaryDividers: Story = {
 
     return (
       <StyledEmailField
-        inputtype="email"
+        inputType="email"
         name={args.name}
         placeholder={args.placeholder}
         value={args.value}

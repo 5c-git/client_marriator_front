@@ -1,6 +1,6 @@
 import { forwardRef } from "react";
+
 import { Link } from "@remix-run/react";
-import InputMask from "react-input-mask";
 import {
   useTheme,
   SxProps,
@@ -13,13 +13,15 @@ import {
   TextField,
 } from "@mui/material";
 
+import { MaskedField } from "../MaskedField/MaskedField";
+
 type StyledPhoneFieldProps = {
-  inputtype: "phone";
+  inputType: "phone";
   name: string;
   value: string;
   placeholder: string;
 
-  disabled?: true;
+  disabled?: boolean;
   heading?: string;
   error?: string;
   status?: "warning";
@@ -39,9 +41,7 @@ type StyledPhoneFieldProps = {
   styles?: SxProps<Theme>;
   inputStyles?: SxProps<Theme>;
 
-  onChange: (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-  ) => void;
+  onChange: (e: string) => void;
   onImmediateChange: () => void;
 };
 
@@ -71,49 +71,40 @@ export const StyledPhoneField = forwardRef(
             sx={{
               width: "100%",
             }}
-            disabled={props.disabled ? true : false}
+            disabled={props.disabled}
             error={props.error ? true : false}
           >
-            <InputMask
-              mask="+7 999 999-99-99"
+            <TextField
+              id={props.name}
+              name={props.name}
               value={props.value}
-              onChange={(
-                evt: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-              ) => {
-                props.onChange(evt);
+              onChange={(evt) => {
+                props.onChange(evt.target.value.replace(/[^\d]/g, ""));
+                props.onChange(evt.target.value);
                 props.onImmediateChange();
               }}
-              name={props.name}
-              disabled={props.disabled ? true : false}
-            >
-              <TextField
-                id={props.name}
-                // name={props.name}
-                // value={props.value}
-                // onChange={(evt) => {
-                //   props.onChange(evt);
-                //   props.onImmediateChange();
-                // }}
-                disabled={props.disabled ? true : false}
-                error={props.error ? true : false}
-                label={props.placeholder}
-                //
-                sx={{
-                  marginBottom: "4px",
+              disabled={props.disabled}
+              error={props.error ? true : false}
+              label={props.placeholder}
+              sx={{
+                marginBottom: "4px",
 
-                  "& .MuiOutlinedInput-root": {
-                    borderColor:
-                      props.status === "warning"
-                        ? theme.palette["Yellow"]
-                        : "transparent",
-                  },
-                }}
-                InputProps={{
-                  inputMode: "numeric",
-                  type: "tel",
-                }}
-              />
-            </InputMask>
+                "& .MuiOutlinedInput-root": {
+                  borderColor:
+                    props.status === "warning"
+                      ? theme.palette["Yellow"]
+                      : "transparent",
+                },
+              }}
+              InputProps={{
+                inputComponent: MaskedField as never,
+                inputProps: {
+                  mask: "+{p} 000 000-00-00",
+                },
+                inputMode: "numeric",
+                type: "tel",
+              }}
+            />
             {props.error ? (
               <FormHelperText
                 sx={{

@@ -4,7 +4,7 @@
   "title": "Schema for radio input",
   "type": "object",
   "properties": {
-    "inputtype": {
+    "inputType": {
       "type": "string",
       "const": "radio"
     },
@@ -88,5 +88,5 @@
     },
     "additionalProperties": false
   },
-  "required": ["inputtype", "name", "value", "options", "validation"]
+  "required": ["inputType", "name", "value", "options", "validation"]
 }

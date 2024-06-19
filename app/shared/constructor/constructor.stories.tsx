@@ -170,7 +170,7 @@ export const Primary: Story = {
           await delay(2000);
           return HttpResponse.json([
             {
-              inputtype: "text",
+              inputType: "text",
               name: "place",
               value: "Воркута",
               validation: "none",
@@ -178,7 +178,7 @@ export const Primary: Story = {
               error: "В данный город доставка не осуществляется",
             },
             {
-              inputtype: "radio",
+              inputType: "radio",
               value: "",
               name: "radio",
               validation: "default",
@@ -206,14 +206,14 @@ export const Primary: Story = {
               ],
             },
             {
-              inputtype: "checkbox",
+              inputType: "checkbox",
               validation: "unchecked",
               name: "radioOne",
               value: false,
               label: "Моё доверенное лицо",
             },
             {
-              inputtype: "checkboxMultiple",
+              inputType: "checkboxMultiple",
               name: "chckbox",
               validation: "default",
               value: [],
@@ -241,7 +241,7 @@ export const Primary: Story = {
               ],
             },
             {
-              inputtype: "select",
+              inputType: "select",
               name: "developer",
               value: "Volkswagen",
               placeholder: "Выберете марку",
@@ -271,7 +271,7 @@ export const Primary: Story = {
               status: "warning",
             },
             {
-              inputtype: "select",
+              inputType: "select",
               name: "modelType",
               value: "",
               placeholder: "Выберете модель",
@@ -305,35 +305,35 @@ export const Primary: Story = {
           await delay(2000);
           return HttpResponse.json([
             {
-              inputtype: "text",
+              inputType: "text",
               name: "firstName",
               value: "",
               validation: "default",
               placeholder: "Укажите имя",
             },
             {
-              inputtype: "text",
+              inputType: "text",
               name: "middleName",
               value: "",
               validation: "default",
               placeholder: "Укажите отчество",
             },
             {
-              inputtype: "text",
+              inputType: "text",
               name: "lastName",
               value: "",
               validation: "default",
               placeholder: "Укажите фамилию",
             },
             {
-              inputtype: "text",
+              inputType: "text",
               name: "funnyName",
               value: "Косой",
               validation: "none",
               placeholder: "Укажите кличку",
             },
             {
-              inputtype: "select",
+              inputType: "select",
               name: "gender",
               value: "",
               placeholder: "Укажите пол",
@@ -363,9 +363,9 @@ export const Primary: Story = {
           await delay(2000);
           return HttpResponse.json([
             {
-              inputtype: "file",
+              inputType: "file",
               name: "filee",
-              value: "",
+              value: "+79152142630",
               // error: "ошибка!",
               url: "https://api.escuelajs.co/api/v1/files/upload",
               placeholder: "Приложи документ",
@@ -377,68 +377,68 @@ export const Primary: Story = {
           await delay(2000);
           return HttpResponse.json([
             // {
-            //   inputtype: "photo",
+            //   inputType: "photo",
             //   name: "photo",
             //   value: "",
             //   url: "http://preprod.marriator-api.fivecorners.ru/api/saveFile",
             //   validation: "default",
             // },
             {
-              inputtype: "phone",
+              inputType: "phone",
               name: "phone",
               value: "",
               placeholder: "Номер телефона",
               validation: "default",
             },
-            {
-              inputtype: "date",
-              name: "date",
-              value: null,
-              placeholder: "Укажите дату",
-              validation: "default",
-            },
-            {
-              inputtype: "email",
-              name: "email",
-              value: "",
-              placeholder: "Укажите email",
-              validation: "default",
-            },
-            {
-              inputtype: "card",
-              name: "card",
-              value: "",
-              placeholder: "Введите номер карты",
-              validation: "default",
-            },
+            // {
+            //   inputType: "date",
+            //   name: "date",
+            //   value: null,
+            //   placeholder: "Укажите дату",
+            //   validation: "default",
+            // },
+            // {
+            //   inputType: "email",
+            //   name: "email",
+            //   value: "",
+            //   placeholder: "Укажите email",
+            //   validation: "default",
+            // },
+            // {
+            //   inputType: "card",
+            //   name: "card",
+            //   value: "",
+            //   placeholder: "Введите номер карты",
+            //   validation: "default",
+            // },
           ]);
         }),
         http.get("/step4", async () => {
           await delay(2000);
           return HttpResponse.json([
             {
-              inputtype: "photo",
+              inputType: "photo",
               name: "photo",
               value: "",
               url: "http://preprod.marriator-api.fivecorners.ru/api/saveFile",
               validation: "default",
             },
             {
-              inputtype: "text",
+              inputType: "text",
               name: "lastName",
               value: "",
               placeholder: "Фамилия",
               validation: "default",
             },
             {
-              inputtype: "text",
+              inputType: "text",
               name: "name",
               value: "",
               placeholder: "Имя",
               validation: "default",
             },
             {
-              inputtype: "radio",
+              inputType: "radio",
               value: "",
               name: "isMiddleName",
               validation: "default",
@@ -456,21 +456,21 @@ export const Primary: Story = {
               ],
             },
             {
-              inputtype: "text",
+              inputType: "text",
               name: "middleName",
               value: "",
               placeholder: "Отчество",
               validation: "default",
             },
             {
-              inputtype: "date",
+              inputType: "date",
               name: "birthday",
               value: null,
               placeholder: "Дата рождения",
               validation: "16years",
             },
             {
-              inputtype: "select",
+              inputType: "select",
               name: "sex",
               value: "",
               placeholder: "Пол",
@@ -489,7 +489,7 @@ export const Primary: Story = {
               ],
             },
             {
-              inputtype: "phone",
+              inputType: "phone",
               name: "phone",
               value: "",
               placeholder: "Мобильный телефон",
@@ -500,7 +500,7 @@ export const Primary: Story = {
               },
             },
             {
-              inputtype: "radio",
+              inputType: "radio",
               value: "",
               name: "messenger",
               validation: "default",
@@ -532,7 +532,7 @@ export const Primary: Story = {
               heading: "Выбери мессенджер:",
             },
             {
-              inputtype: "email",
+              inputType: "email",
               name: "email",
               value: "",
               placeholder: "E-mail",
@@ -542,7 +542,7 @@ export const Primary: Story = {
               },
             },
             {
-              inputtype: "radio",
+              inputType: "radio",
               value: "",
               name: "passport",
               validation: "default",
@@ -565,7 +565,7 @@ export const Primary: Story = {
               },
             },
             {
-              inputtype: "file",
+              inputType: "file",
               name: "passportDoc",
               value: "",
               url: "http://preprod.marriator-api.fivecorners.ru/api/saveFile",
@@ -573,7 +573,7 @@ export const Primary: Story = {
               validation: "default",
             },
             {
-              inputtype: "file",
+              inputType: "file",
               name: "you",
               value: "",
               url: "http://preprod.marriator-api.fivecorners.ru/api/saveFile",
@@ -585,7 +585,7 @@ export const Primary: Story = {
               },
             },
             {
-              inputtype: "file",
+              inputType: "file",
               name: "parents",
               value: "",
               url: "http://preprod.marriator-api.fivecorners.ru/api/saveFile",
@@ -604,7 +604,7 @@ export const Primary: Story = {
             },
 
             {
-              inputtype: "select",
+              inputType: "select",
               name: "clothes",
               value: "",
               placeholder: "Размер одежды",
@@ -628,7 +628,7 @@ export const Primary: Story = {
               ],
             },
             {
-              inputtype: "select",
+              inputType: "select",
               name: "hairColor",
               value: "",
               placeholder: "Цвет волос",
@@ -647,7 +647,7 @@ export const Primary: Story = {
               ],
             },
             {
-              inputtype: "select",
+              inputType: "select",
               name: "hairLenght",
               value: "",
               placeholder: "Длина волос",
@@ -671,7 +671,7 @@ export const Primary: Story = {
               ],
             },
             {
-              inputtype: "file",
+              inputType: "file",
               name: "driverLicence",
               value: "",
               url: "http://preprod.marriator-api.fivecorners.ru/api/saveFile",
@@ -684,7 +684,7 @@ export const Primary: Story = {
               },
             },
             {
-              inputtype: "file",
+              inputType: "file",
               name: "medicalDriverLicence",
               value: "",
               url: "http://preprod.marriator-api.fivecorners.ru/api/saveFile",
@@ -697,7 +697,7 @@ export const Primary: Story = {
               },
             },
             {
-              inputtype: "file",
+              inputType: "file",
               name: "anyLicence",
               value: "",
               url: "http://preprod.marriator-api.fivecorners.ru/api/saveFile",
@@ -709,7 +709,7 @@ export const Primary: Story = {
               },
             },
             {
-              inputtype: "radio",
+              inputType: "radio",
               value: "",
               name: "medBook",
               validation: "default",
@@ -729,7 +729,7 @@ export const Primary: Story = {
               ],
             },
             {
-              inputtype: "file",
+              inputType: "file",
               name: "medBookFile",
               value: "",
               url: "http://preprod.marriator-api.fivecorners.ru/api/saveFile",
@@ -738,6 +738,32 @@ export const Primary: Story = {
               helperInfo: {
                 text: "Для подтверждения приложи фотографию документа",
               },
+            },
+          ]);
+        }),
+        http.get("/test", async () => {
+          await delay(2000);
+          return HttpResponse.json([
+            {
+              inputType: "photoCheckbox",
+              name: "testitem",
+              value: "directory_activities1",
+              options: [
+                {
+                  value: "directory_activities1",
+                  label: "Строитель",
+                  disabled: false,
+                  img: "/storage/source/directory/activities/2-img/Снимок экрана 2024-03-08 в 22.38.52.png",
+                },
+                {
+                  value: "directory_activities2",
+                  label: "Продавец",
+                  disabled: false,
+                  img: "/storage/source/directory/activities/2-img/Снимок экрана 2024-03-08 в 22.38.52.png",
+                },
+              ],
+              validation: "default",
+              dividerTop: true,
             },
           ]);
         }),

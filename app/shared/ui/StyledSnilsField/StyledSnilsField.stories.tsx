@@ -42,7 +42,7 @@ type Story = StoryObj<typeof meta>;
 export const Primary: Story = {
   name: "snils (базовый вид)",
   args: {
-    inputtype: "snils",
+    inputType: "snils",
     name: "text",
     value: "",
     placeholder: "СНИЛС",
@@ -59,7 +59,7 @@ export const Primary: Story = {
 
     return (
       <StyledSnilsField
-        inputtype={args.inputtype}
+        inputType={args.inputType}
         name={args.name}
         placeholder={args.placeholder}
         value={args.value}
@@ -74,7 +74,7 @@ export const Primary: Story = {
 export const PrimaryError: Story = {
   name: "snils (ошибка)",
   args: {
-    inputtype: "snils",
+    inputType: "snils",
     name: "phone",
     value: "",
     placeholder: "СНИЛС",
@@ -92,7 +92,7 @@ export const PrimaryError: Story = {
 
     return (
       <StyledSnilsField
-        inputtype={args.inputtype}
+        inputType={args.inputType}
         name={args.name}
         placeholder={args.placeholder}
         value={args.value}
@@ -108,7 +108,7 @@ export const PrimaryError: Story = {
 export const PrimarySnils: Story = {
   name: "snils (вспомогательный текст)",
   args: {
-    inputtype: "snils",
+    inputType: "snils",
     name: "text",
     value: "",
     placeholder: "СНИЛС",
@@ -128,7 +128,7 @@ export const PrimarySnils: Story = {
 
     return (
       <StyledSnilsField
-        inputtype={args.inputtype}
+        inputType={args.inputType}
         name={args.name}
         placeholder={args.placeholder}
         value={args.value}
@@ -144,7 +144,7 @@ export const PrimarySnils: Story = {
 export const PrimaryLink: Story = {
   name: "snils (вспомогательная ссылка)",
   args: {
-    inputtype: "snils",
+    inputType: "snils",
     name: "text",
     value: "",
     placeholder: "СНИЛС",
@@ -168,7 +168,7 @@ export const PrimaryLink: Story = {
 
     return (
       <StyledSnilsField
-        inputtype={args.inputtype}
+        inputType={args.inputType}
         name={args.name}
         placeholder={args.placeholder}
         value={args.value}
@@ -184,7 +184,7 @@ export const PrimaryLink: Story = {
 export const PrimarySnilsLink: Story = {
   name: "snils (вспомогательные текст и ссылка)",
   args: {
-    inputtype: "snils",
+    inputType: "snils",
     name: "text",
     value: "",
     placeholder: "СНИЛС",
@@ -209,7 +209,7 @@ export const PrimarySnilsLink: Story = {
 
     return (
       <StyledSnilsField
-        inputtype={args.inputtype}
+        inputType={args.inputType}
         name={args.name}
         placeholder={args.placeholder}
         value={args.value}
@@ -225,7 +225,7 @@ export const PrimarySnilsLink: Story = {
 export const PrimarySnilsLinkError: Story = {
   name: "snils (вспомогательные текст и ссылка и ошибка)",
   args: {
-    inputtype: "snils",
+    inputType: "snils",
     name: "text",
     value: "",
     placeholder: "СНИЛС",
@@ -251,7 +251,7 @@ export const PrimarySnilsLinkError: Story = {
 
     return (
       <StyledSnilsField
-        inputtype={args.inputtype}
+        inputType={args.inputType}
         name={args.name}
         placeholder={args.placeholder}
         value={args.value}
@@ -268,7 +268,7 @@ export const PrimarySnilsLinkError: Story = {
 export const PrimarySnilsStatus: Story = {
   name: "snils (статус поля)",
   args: {
-    inputtype: "snils",
+    inputType: "snils",
     name: "text",
     value: "",
     placeholder: "СНИЛС",
@@ -286,7 +286,7 @@ export const PrimarySnilsStatus: Story = {
 
     return (
       <StyledSnilsField
-        inputtype={args.inputtype}
+        inputType={args.inputType}
         name={args.name}
         placeholder={args.placeholder}
         value={args.value}
@@ -302,7 +302,7 @@ export const PrimarySnilsStatus: Story = {
 export const PrimarySnilsDisabled: Story = {
   name: "snils (отключенное поле)",
   args: {
-    inputtype: "snils",
+    inputType: "snils",
     name: "text",
     value: "",
     placeholder: "СНИЛС",
@@ -320,7 +320,7 @@ export const PrimarySnilsDisabled: Story = {
 
     return (
       <StyledSnilsField
-        inputtype={args.inputtype}
+        inputType={args.inputType}
         name={args.name}
         placeholder={args.placeholder}
         value={args.value}
@@ -336,7 +336,7 @@ export const PrimarySnilsDisabled: Story = {
 export const PrimarySnilsValue: Story = {
   name: "snils (заполненное поле)",
   args: {
-    inputtype: "snils",
+    inputType: "snils",
     name: "text",
     value: "123456123456",
     placeholder: "СНИЛС",
@@ -353,7 +353,7 @@ export const PrimarySnilsValue: Story = {
 
     return (
       <StyledSnilsField
-        inputtype={args.inputtype}
+        inputType={args.inputType}
         name={args.name}
         placeholder={args.placeholder}
         value={args.value}
@@ -368,7 +368,7 @@ export const PrimarySnilsValue: Story = {
 export const PrimarySnilsHeading: Story = {
   name: "snils(заголовок)",
   args: {
-    inputtype: "snils",
+    inputType: "snils",
     name: "text",
     value: "",
     placeholder: "СНИЛС",
@@ -386,7 +386,7 @@ export const PrimarySnilsHeading: Story = {
 
     return (
       <StyledSnilsField
-        inputtype={args.inputtype}
+        inputType={args.inputType}
         name={args.name}
         placeholder={args.placeholder}
         value={args.value}
@@ -402,7 +402,7 @@ export const PrimarySnilsHeading: Story = {
 export const PrimaryDividers: Story = {
   name: "snils (разделители)",
   args: {
-    inputtype: "snils",
+    inputType: "snils",
     name: "text",
     value: "",
     placeholder: "СНИЛС",
@@ -424,7 +424,7 @@ export const PrimaryDividers: Story = {
 
     return (
       <StyledSnilsField
-        inputtype={args.inputtype}
+        inputType={args.inputType}
         name={args.name}
         placeholder={args.placeholder}
         value={args.value}

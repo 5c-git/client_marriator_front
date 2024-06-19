@@ -42,7 +42,7 @@ type Story = StoryObj<typeof meta>;
 export const Primary: Story = {
   name: "photoCheckbox (базовый вид)",
   args: {
-    inputtype: "photoCheckbox",
+    inputType: "photoCheckbox",
     validation: "none",
     name: "radio",
     value: [],
@@ -106,7 +106,7 @@ export const Primary: Story = {
 
     return (
       <StyledPhotoCheckbox
-        inputtype={args.inputtype}
+        inputType={args.inputType}
         value={args.value}
         validation={args.validation}
         name={args.name}
@@ -127,7 +127,7 @@ export const Primary: Story = {
 export const PrimarySelected: Story = {
   name: "photoCheckbox (выбранный пункт)",
   args: {
-    inputtype: "photoCheckbox",
+    inputType: "photoCheckbox",
     name: "radio",
     value: ["winter"],
     validation: "none",
@@ -191,7 +191,7 @@ export const PrimarySelected: Story = {
 
     return (
       <StyledPhotoCheckbox
-        inputtype={args.inputtype}
+        inputType={args.inputType}
         value={args.value}
         name={args.name}
         validation={args.validation}
@@ -212,7 +212,7 @@ export const PrimarySelected: Story = {
 export const PrimaryDisabled: Story = {
   name: "photoCheckbox (отключенный пункт)",
   args: {
-    inputtype: "photoCheckbox",
+    inputType: "photoCheckbox",
     name: "radio",
     validation: "none",
     value: [],
@@ -276,7 +276,7 @@ export const PrimaryDisabled: Story = {
 
     return (
       <StyledPhotoCheckbox
-        inputtype={args.inputtype}
+        inputType={args.inputType}
         value={args.value}
         name={args.name}
         options={args.options}
@@ -297,7 +297,7 @@ export const PrimaryDisabled: Story = {
 export const PrimaryError: Story = {
   name: "photoCheckbox (ошибка)",
   args: {
-    inputtype: "photoCheckbox",
+    inputType: "photoCheckbox",
     name: "radio",
     value: [],
     validation: "none",
@@ -361,7 +361,7 @@ export const PrimaryError: Story = {
 
     return (
       <StyledPhotoCheckbox
-        inputtype={args.inputtype}
+        inputType={args.inputType}
         value={args.value}
         name={args.name}
         options={args.options}
@@ -382,7 +382,7 @@ export const PrimaryError: Story = {
 export const PrimaryHeading: Story = {
   name: "photoCheckbox (заголовок)",
   args: {
-    inputtype: "photoCheckbox",
+    inputType: "photoCheckbox",
     name: "radio",
     value: [],
     validation: "none",
@@ -446,7 +446,7 @@ export const PrimaryHeading: Story = {
 
     return (
       <StyledPhotoCheckbox
-        inputtype={args.inputtype}
+        inputType={args.inputType}
         value={args.value}
         name={args.name}
         options={args.options}
@@ -467,7 +467,7 @@ export const PrimaryHeading: Story = {
 export const PrimaryHelperInfo: Story = {
   name: "photoCheckbox (вспомогательная информация)",
   args: {
-    inputtype: "photoCheckbox",
+    inputType: "photoCheckbox",
     name: "radio",
     value: [],
     validation: "none",
@@ -531,7 +531,7 @@ export const PrimaryHelperInfo: Story = {
 
     return (
       <StyledPhotoCheckbox
-        inputtype={args.inputtype}
+        inputType={args.inputType}
         value={args.value}
         name={args.name}
         options={args.options}
@@ -552,7 +552,7 @@ export const PrimaryHelperInfo: Story = {
 export const PrimaryDividers: Story = {
   name: "photoCheckbox (разделители)",
   args: {
-    inputtype: "photoCheckbox",
+    inputType: "photoCheckbox",
     name: "radio",
     value: [],
     validation: "none",
@@ -611,7 +611,7 @@ export const PrimaryDividers: Story = {
 
     return (
       <StyledPhotoCheckbox
-        inputtype={args.inputtype}
+        inputType={args.inputType}
         value={args.value}
         name={args.name}
         options={args.options}

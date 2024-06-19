@@ -70,21 +70,21 @@ export const Primary: Story = {
           return HttpResponse.json({
             inputs: [
               {
-                inputtype: "checkbox",
+                inputType: "checkbox",
                 name: "trustPerson",
                 value: false,
                 label: "Моё доверенное лицо",
                 validation: "checked",
               },
               {
-                inputtype: "text",
+                inputType: "text",
                 name: "fio",
                 value: "",
                 placeholder: "ФИО получателя",
                 validation: "default",
               },
               {
-                inputtype: "select",
+                inputType: "select",
                 name: "bik",
                 value: "",
                 placeholder: "БИК",
@@ -103,21 +103,21 @@ export const Primary: Story = {
                 ],
               },
               {
-                inputtype: "account",
+                inputType: "account",
                 name: "account",
                 value: "",
                 placeholder: "Лицевой счет",
                 validation: "default",
               },
               {
-                inputtype: "card",
+                inputType: "card",
                 name: "card",
                 value: "",
                 placeholder: "Номер банковской карты",
                 validation: "default",
               },
               {
-                inputtype: "radio",
+                inputType: "radio",
                 value: "yes",
                 name: "payCard",
                 validation: "default",
@@ -136,7 +136,7 @@ export const Primary: Story = {
                 ],
               },
               {
-                inputtype: "month",
+                inputType: "month",
                 name: "expireDate",
                 value: null,
                 placeholder: "Срок окончания действия карты",

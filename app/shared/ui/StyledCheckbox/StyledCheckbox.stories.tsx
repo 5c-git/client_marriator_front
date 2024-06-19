@@ -42,7 +42,7 @@ type Story = StoryObj<typeof meta>;
 export const Primary: Story = {
   name: "checkbox",
   args: {
-    inputtype: "checkbox",
+    inputType: "checkbox",
     validation: "none",
     name: "radio",
     value: false,
@@ -71,7 +71,7 @@ export const Primary: Story = {
 
     return (
       <StyledCheckbox
-        inputtype={args.inputtype}
+        inputType={args.inputType}
         value={args.value}
         name={args.name}
         label={args.label}
@@ -94,7 +94,7 @@ export const Primary: Story = {
 export const PrimaryChecked: Story = {
   name: "checkbox (заполненный)",
   args: {
-    inputtype: "checkbox",
+    inputType: "checkbox",
     name: "radio",
     value: true,
     validation: "none",
@@ -123,7 +123,7 @@ export const PrimaryChecked: Story = {
 
     return (
       <StyledCheckbox
-        inputtype={args.inputtype}
+        inputType={args.inputType}
         value={args.value}
         name={args.name}
         label={args.label}
@@ -146,7 +146,7 @@ export const PrimaryChecked: Story = {
 export const PrimaryError: Story = {
   name: "checkbox (ошибка)",
   args: {
-    inputtype: "checkbox",
+    inputType: "checkbox",
     name: "radio",
     value: false,
     validation: "none",
@@ -175,7 +175,7 @@ export const PrimaryError: Story = {
 
     return (
       <StyledCheckbox
-        inputtype={args.inputtype}
+        inputType={args.inputType}
         value={args.value}
         name={args.name}
         label={args.label}
@@ -198,7 +198,7 @@ export const PrimaryError: Story = {
 export const PrimaryStatus: Story = {
   name: "checkbox (статус)",
   args: {
-    inputtype: "checkbox",
+    inputType: "checkbox",
     name: "radio",
     value: true,
     validation: "none",
@@ -227,7 +227,7 @@ export const PrimaryStatus: Story = {
 
     return (
       <StyledCheckbox
-        inputtype={args.inputtype}
+        inputType={args.inputType}
         value={args.value}
         name={args.name}
         label={args.label}
@@ -250,7 +250,7 @@ export const PrimaryStatus: Story = {
 export const PrimaryDisabled: Story = {
   name: "checkbox (отключенный)",
   args: {
-    inputtype: "checkbox",
+    inputType: "checkbox",
     name: "radio",
     value: false,
     validation: "none",
@@ -279,7 +279,7 @@ export const PrimaryDisabled: Story = {
 
     return (
       <StyledCheckbox
-        inputtype={args.inputtype}
+        inputType={args.inputType}
         value={args.value}
         name={args.name}
         label={args.label}
@@ -302,7 +302,7 @@ export const PrimaryDisabled: Story = {
 export const PrimaryHeading: Story = {
   name: "checkbox (заголовок)",
   args: {
-    inputtype: "checkbox",
+    inputType: "checkbox",
     name: "radio",
     value: false,
     validation: "none",
@@ -331,7 +331,7 @@ export const PrimaryHeading: Story = {
 
     return (
       <StyledCheckbox
-        inputtype={args.inputtype}
+        inputType={args.inputType}
         value={args.value}
         name={args.name}
         label={args.label}
@@ -354,7 +354,7 @@ export const PrimaryHeading: Story = {
 export const PrimaryText: Story = {
   name: "checkbox (вспомогательный текст)",
   args: {
-    inputtype: "checkbox",
+    inputType: "checkbox",
     name: "radio",
     value: false,
     validation: "none",
@@ -383,7 +383,7 @@ export const PrimaryText: Story = {
 
     return (
       <StyledCheckbox
-        inputtype={args.inputtype}
+        inputType={args.inputType}
         value={args.value}
         name={args.name}
         label={args.label}
@@ -406,7 +406,7 @@ export const PrimaryText: Story = {
 export const PrimaryTextAndLink: Story = {
   name: "checkbox (вспомогательный текст и ссылка)",
   args: {
-    inputtype: "checkbox",
+    inputType: "checkbox",
     name: "radio",
     value: false,
     validation: "none",
@@ -435,7 +435,7 @@ export const PrimaryTextAndLink: Story = {
 
     return (
       <StyledCheckbox
-        inputtype={args.inputtype}
+        inputType={args.inputType}
         value={args.value}
         name={args.name}
         label={args.label}
@@ -458,7 +458,7 @@ export const PrimaryTextAndLink: Story = {
 export const PrimaryTextDividers: Story = {
   name: "checkbox (разделители)",
   args: {
-    inputtype: "checkbox",
+    inputType: "checkbox",
     name: "radio",
     value: false,
     validation: "none",
@@ -487,7 +487,7 @@ export const PrimaryTextDividers: Story = {
 
     return (
       <StyledCheckbox
-        inputtype={args.inputtype}
+        inputType={args.inputType}
         value={args.value}
         validation={args.validation}
         name={args.name}

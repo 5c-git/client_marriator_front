@@ -11,6 +11,8 @@ import {
   UseFormTrigger,
 } from "react-hook-form";
 
+// import { t } from "i18next";
+
 import { phoneRegExp } from "../validators";
 
 import { StyledSelect } from "../ui/StyledSelect/StyledSelect";
@@ -205,7 +207,7 @@ export const generateDefaultValues = (
 
 export const generateValidationSchema = (
   items: {
-    inputtype: string;
+    inputType: string;
     name: string;
     // value: string;
     // error: string;
@@ -216,15 +218,15 @@ export const generateValidationSchema = (
 
   items.forEach((item) => {
     validationSchema[item.name] =
-      validationMap[item.inputtype][item.validation];
+      validationMap[item.inputType][item.validation];
 
     // if (item.validation === "wrongValue") {
-    //   validationSchema[item.name] = validationMap[item.inputtype][
+    //   validationSchema[item.name] = validationMap[item.inputType][
     //     item.validation
     //   ](item.value, item.error);
     // } else {
     //   validationSchema[item.name] =
-    //     validationMap[item.inputtype][item.validation];
+    //     validationMap[item.inputType][item.validation];
     // }
   });
 
@@ -232,7 +234,7 @@ export const generateValidationSchema = (
 };
 
 export const generateInputsMarkup = (
-  items: { inputtype: string; name: string; error?: string }[],
+  items: { inputType: string; name: string; error?: string }[],
   errors: FieldErrors,
   control: Control<FieldValues>,
   setValue: UseFormSetValue<{
@@ -247,7 +249,7 @@ export const generateInputsMarkup = (
 ) =>
   items.map((item, index: number) => {
     // приходится делать отдельную проверку, так как в данном случае необходимо програмно установить значение в поле
-    if (item.inputtype === "file") {
+    if (item.inputType === "file") {
       return (
         <StyledFileInput
           key={index}
@@ -263,7 +265,7 @@ export const generateInputsMarkup = (
         />
       );
       // приходится делать отдельную проверку, так как в данном случае необходимо програмно установить значение в поле
-    } else if (item.inputtype === "photo") {
+    } else if (item.inputType === "photo") {
       return (
         <StyledPhotoInput
           key={index}
@@ -275,7 +277,7 @@ export const generateInputsMarkup = (
         />
       );
     } else {
-      const Input = inputMap[item.inputtype as keyof typeof inputMap];
+      const Input = inputMap[item.inputType as keyof typeof inputMap];
 
       return (
         <Controller

@@ -19,7 +19,7 @@ import { Loader } from "../Loader/Loader";
 import profileIcon from "./icons/profileIcon.svg";
 
 type PhotoInputProps = {
-  inputtype: "photo";
+  inputType: "photo";
   name: string;
   value: string;
   onChange: UseFormSetValue<{
@@ -32,7 +32,7 @@ type PhotoInputProps = {
   validation: "default" | "none";
   url: string;
 
-  disabled?: true;
+  disabled?: boolean;
   heading?: string;
   error?: string;
   status?: "warning";

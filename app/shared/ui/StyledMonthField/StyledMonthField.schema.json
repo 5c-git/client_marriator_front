@@ -4,7 +4,7 @@
   "title": "Schema for month Input",
   "type": "object",
   "properties": {
-    "inputtype": {
+    "inputType": {
       "type": "string",
       "const": "month"
     },
@@ -30,8 +30,7 @@
       "enum": ["none", "default"]
     },
     "disabled": {
-      "type": "boolean",
-      "const": true
+      "type": "boolean"
     },
     "heading": {
       "type": "string"
@@ -79,5 +78,5 @@
     },
     "additionalProperties": false
   },
-  "required": ["inputtype", "name", "value", "placeholder", "validation"]
+  "required": ["inputType", "name", "value", "placeholder", "validation"]
 }

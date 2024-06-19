@@ -70,7 +70,7 @@ export const Primary: Story = {
           return HttpResponse.json({
             inputs: [
               {
-                inputtype: "radio",
+                inputType: "radio",
                 value: "no",
                 name: "unlimitedRequests",
                 validation: "default",
@@ -89,7 +89,7 @@ export const Primary: Story = {
                 ],
               },
               {
-                inputtype: "checkboxMultiple",
+                inputType: "checkboxMultiple",
                 name: "organization",
                 validation: "default",
                 value: [],

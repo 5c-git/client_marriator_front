@@ -17,7 +17,7 @@ import { Link } from "@remix-run/react";
 import CloseIcon from "@mui/icons-material/Close";
 
 type StyledPhotoCheckboxProps = {
-  inputtype: "photoCheckbox";
+  inputType: "photoCheckbox";
   name: string;
   value: string[];
   options: {
@@ -200,7 +200,7 @@ export const StyledPhotoCheckbox = forwardRef(
                       checked={props.value.includes(item.value)}
                       name={props.name}
                       value={item.value}
-                      disabled={item.disabled ? true : false}
+                      disabled={item.disabled}
                       // invalid={props.error ? true : false}
                       sx={{
                         position: "absolute",

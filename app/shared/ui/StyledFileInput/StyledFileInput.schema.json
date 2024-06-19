@@ -4,7 +4,7 @@
   "title": "Schema for File Input",
   "type": "object",
   "properties": {
-    "inputtype": {
+    "inputType": {
       "type": "string",
       "const": "file"
     },
@@ -25,8 +25,7 @@
       "type": "string"
     },
     "disabled": {
-      "type": "boolean",
-      "const": true
+      "type": "boolean"
     },
     "heading": {
       "type": "string"
@@ -88,5 +87,5 @@
     },
     "additionalProperties": false
   },
-  "required": ["inputtype", "name", "value", "placeholder", "validation", "url"]
+  "required": ["inputType", "name", "value", "placeholder", "validation", "url"]
 }
