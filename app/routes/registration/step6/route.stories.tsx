@@ -70,7 +70,7 @@ export const Primary: Story = {
           return HttpResponse.json({
             inputs: [
               {
-                inputtype: "inn",
+                inputType: "inn",
                 name: "inn",
                 value: "",
                 placeholder: "ИНН",
@@ -82,7 +82,7 @@ export const Primary: Story = {
                 },
               },
               {
-                inputtype: "snils",
+                inputType: "snils",
                 name: "snils",
                 value: "",
                 placeholder: "СНИЛС",
@@ -94,7 +94,7 @@ export const Primary: Story = {
                 },
               },
               {
-                inputtype: "file",
+                inputType: "file",
                 name: "registration",
                 value: "",
                 url: "http://preprod.marriator-api.fivecorners.ru/api/saveFile",
@@ -106,7 +106,7 @@ export const Primary: Story = {
                 },
               },
               {
-                inputtype: "file",
+                inputType: "file",
                 name: "migrationCard",
                 value: "",
                 url: "http://preprod.marriator-api.fivecorners.ru/api/saveFile",
@@ -118,7 +118,7 @@ export const Primary: Story = {
                 },
               },
               {
-                inputtype: "file",
+                inputType: "file",
                 name: "fingerprints",
                 value: "",
                 url: "http://preprod.marriator-api.fivecorners.ru/api/saveFile",
@@ -130,7 +130,7 @@ export const Primary: Story = {
                 },
               },
               {
-                inputtype: "file",
+                inputType: "file",
                 name: "arrivalNotice",
                 value: "",
                 url: "http://preprod.marriator-api.fivecorners.ru/api/saveFile",
@@ -142,7 +142,7 @@ export const Primary: Story = {
                 },
               },
               {
-                inputtype: "file",
+                inputType: "file",
                 name: "patent",
                 value: "",
                 url: "http://preprod.marriator-api.fivecorners.ru/api/saveFile",
@@ -155,7 +155,7 @@ export const Primary: Story = {
                 dividerTop: true,
               },
               {
-                inputtype: "file",
+                inputType: "file",
                 name: "patentPayment",
                 value: "",
                 url: "http://preprod.marriator-api.fivecorners.ru/api/saveFile",
@@ -167,7 +167,7 @@ export const Primary: Story = {
                 },
               },
               {
-                inputtype: "file",
+                inputType: "file",
                 name: "workPermit",
                 value: "",
                 url: "http://preprod.marriator-api.fivecorners.ru/api/saveFile",

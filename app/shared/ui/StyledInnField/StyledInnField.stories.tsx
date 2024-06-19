@@ -42,7 +42,7 @@ type Story = StoryObj<typeof meta>;
 export const Primary: Story = {
   name: "inn  (базовый вид)",
   args: {
-    inputtype: "inn",
+    inputType: "inn",
     name: "text",
     value: "",
     placeholder: "ИНН",
@@ -59,7 +59,7 @@ export const Primary: Story = {
 
     return (
       <StyledInnField
-        inputtype={args.inputtype}
+        inputType={args.inputType}
         name={args.name}
         placeholder={args.placeholder}
         value={args.value}
@@ -74,7 +74,7 @@ export const Primary: Story = {
 export const PrimaryError: Story = {
   name: "inn  (ошибка)",
   args: {
-    inputtype: "inn",
+    inputType: "inn",
     name: "phone",
     value: "",
     placeholder: "ИНН",
@@ -92,7 +92,7 @@ export const PrimaryError: Story = {
 
     return (
       <StyledInnField
-        inputtype={args.inputtype}
+        inputType={args.inputType}
         name={args.name}
         placeholder={args.placeholder}
         value={args.value}
@@ -108,7 +108,7 @@ export const PrimaryError: Story = {
 export const PrimaryInn: Story = {
   name: "inn (вспомогательный текст)",
   args: {
-    inputtype: "inn",
+    inputType: "inn",
     name: "text",
     value: "",
     placeholder: "ИНН",
@@ -128,7 +128,7 @@ export const PrimaryInn: Story = {
 
     return (
       <StyledInnField
-        inputtype={args.inputtype}
+        inputType={args.inputType}
         name={args.name}
         placeholder={args.placeholder}
         value={args.value}
@@ -144,7 +144,7 @@ export const PrimaryInn: Story = {
 export const PrimaryLink: Story = {
   name: "inn  (вспомогательная ссылка)",
   args: {
-    inputtype: "inn",
+    inputType: "inn",
     name: "text",
     value: "",
     placeholder: "ИНН",
@@ -168,7 +168,7 @@ export const PrimaryLink: Story = {
 
     return (
       <StyledInnField
-        inputtype={args.inputtype}
+        inputType={args.inputType}
         name={args.name}
         placeholder={args.placeholder}
         value={args.value}
@@ -184,7 +184,7 @@ export const PrimaryLink: Story = {
 export const PrimaryInnLink: Story = {
   name: "inn  (вспомогательные текст и ссылка)",
   args: {
-    inputtype: "inn",
+    inputType: "inn",
     name: "text",
     value: "",
     placeholder: "ИНН",
@@ -209,7 +209,7 @@ export const PrimaryInnLink: Story = {
 
     return (
       <StyledInnField
-        inputtype={args.inputtype}
+        inputType={args.inputType}
         name={args.name}
         placeholder={args.placeholder}
         value={args.value}
@@ -225,7 +225,7 @@ export const PrimaryInnLink: Story = {
 export const PrimaryInnLinkError: Story = {
   name: "inn  (вспомогательные текст и ссылка и ошибка)",
   args: {
-    inputtype: "inn",
+    inputType: "inn",
     name: "text",
     value: "",
     placeholder: "ИНН",
@@ -251,7 +251,7 @@ export const PrimaryInnLinkError: Story = {
 
     return (
       <StyledInnField
-        inputtype={args.inputtype}
+        inputType={args.inputType}
         name={args.name}
         placeholder={args.placeholder}
         value={args.value}
@@ -268,7 +268,7 @@ export const PrimaryInnLinkError: Story = {
 export const PrimaryInnStatus: Story = {
   name: "inn  (статус поля)",
   args: {
-    inputtype: "inn",
+    inputType: "inn",
     name: "text",
     value: "",
     placeholder: "ИНН",
@@ -286,7 +286,7 @@ export const PrimaryInnStatus: Story = {
 
     return (
       <StyledInnField
-        inputtype={args.inputtype}
+        inputType={args.inputType}
         name={args.name}
         placeholder={args.placeholder}
         value={args.value}
@@ -302,7 +302,7 @@ export const PrimaryInnStatus: Story = {
 export const PrimaryInnDisabled: Story = {
   name: "inn  (отключенное поле)",
   args: {
-    inputtype: "inn",
+    inputType: "inn",
     name: "text",
     value: "",
     placeholder: "ИНН",
@@ -320,7 +320,7 @@ export const PrimaryInnDisabled: Story = {
 
     return (
       <StyledInnField
-        inputtype={args.inputtype}
+        inputType={args.inputType}
         name={args.name}
         placeholder={args.placeholder}
         value={args.value}
@@ -336,7 +336,7 @@ export const PrimaryInnDisabled: Story = {
 export const PrimaryInnValue: Story = {
   name: "inn  (заполненное поле)",
   args: {
-    inputtype: "inn",
+    inputType: "inn",
     name: "text",
     value: "123456123456",
     placeholder: "ИНН",
@@ -353,7 +353,7 @@ export const PrimaryInnValue: Story = {
 
     return (
       <StyledInnField
-        inputtype={args.inputtype}
+        inputType={args.inputType}
         name={args.name}
         placeholder={args.placeholder}
         value={args.value}
@@ -368,7 +368,7 @@ export const PrimaryInnValue: Story = {
 export const PrimaryInnheading: Story = {
   name: "inn  (заголовок)",
   args: {
-    inputtype: "inn",
+    inputType: "inn",
     name: "text",
     value: "",
     placeholder: "ИНН",
@@ -386,7 +386,7 @@ export const PrimaryInnheading: Story = {
 
     return (
       <StyledInnField
-        inputtype={args.inputtype}
+        inputType={args.inputType}
         name={args.name}
         placeholder={args.placeholder}
         value={args.value}
@@ -402,7 +402,7 @@ export const PrimaryInnheading: Story = {
 export const PrimaryDividers: Story = {
   name: "inn  (разделители)",
   args: {
-    inputtype: "inn",
+    inputType: "inn",
     name: "text",
     value: "",
     placeholder: "ИНН",
@@ -424,7 +424,7 @@ export const PrimaryDividers: Story = {
 
     return (
       <StyledInnField
-        inputtype={args.inputtype}
+        inputType={args.inputType}
         name={args.name}
         placeholder={args.placeholder}
         value={args.value}

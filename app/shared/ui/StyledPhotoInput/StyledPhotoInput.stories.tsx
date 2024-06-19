@@ -41,7 +41,7 @@ type Story = StoryObj<typeof meta>;
 export const Primary: Story = {
   name: "photo",
   args: {
-    inputtype: "photo",
+    inputType: "photo",
     name: "photo",
     // value: "https://mui.com/static/images/avatar/1.jpg",
     value: "",
@@ -77,7 +77,7 @@ export const Primary: Story = {
 
     return (
       <StyledPhotoInput
-        inputtype={args.inputtype}
+        inputType={args.inputType}
         name={args.name}
         value={args.value}
         onChange={onChange}
@@ -100,7 +100,7 @@ export const Primary: Story = {
 export const PrimaryFilled: Story = {
   name: "photo (заполненный)",
   args: {
-    inputtype: "photo",
+    inputType: "photo",
     name: "photo",
     value: "https://mui.com/static/images/avatar/1.jpg",
     url: import.meta.env.VITE_SEND_FILE,
@@ -133,7 +133,7 @@ export const PrimaryFilled: Story = {
 
     return (
       <StyledPhotoInput
-        inputtype={args.inputtype}
+        inputType={args.inputType}
         name={args.name}
         value={args.value}
         onChange={onChange}
@@ -156,7 +156,7 @@ export const PrimaryFilled: Story = {
 export const PrimaryDisabled: Story = {
   name: "photo (отключенный)",
   args: {
-    inputtype: "photo",
+    inputType: "photo",
     name: "photo",
     value: "",
     url: import.meta.env.VITE_SEND_FILE,
@@ -189,7 +189,7 @@ export const PrimaryDisabled: Story = {
 
     return (
       <StyledPhotoInput
-        inputtype={args.inputtype}
+        inputType={args.inputType}
         name={args.name}
         value={args.value}
         onChange={onChange}
@@ -212,7 +212,7 @@ export const PrimaryDisabled: Story = {
 export const PrimaryStatus: Story = {
   name: "photo (статус)",
   args: {
-    inputtype: "photo",
+    inputType: "photo",
     name: "photo",
     value: "",
     url: import.meta.env.VITE_SEND_FILE,
@@ -245,7 +245,7 @@ export const PrimaryStatus: Story = {
 
     return (
       <StyledPhotoInput
-        inputtype={args.inputtype}
+        inputType={args.inputType}
         name={args.name}
         value={args.value}
         onChange={onChange}
@@ -268,7 +268,7 @@ export const PrimaryStatus: Story = {
 export const PrimaryError: Story = {
   name: "photo (ошибка)",
   args: {
-    inputtype: "photo",
+    inputType: "photo",
     name: "photo",
     value: "",
     url: "http://preprod.marriator-api.fivecorners.ru/api/saveFile",
@@ -301,7 +301,7 @@ export const PrimaryError: Story = {
 
     return (
       <StyledPhotoInput
-        inputtype={args.inputtype}
+        inputType={args.inputType}
         name={args.name}
         value={args.value}
         onChange={onChange}
@@ -324,7 +324,7 @@ export const PrimaryError: Story = {
 export const PrimaryHeading: Story = {
   name: "photo (заголовок)",
   args: {
-    inputtype: "photo",
+    inputType: "photo",
     name: "photo",
     value: "",
     url: import.meta.env.VITE_SEND_FILE,
@@ -357,7 +357,7 @@ export const PrimaryHeading: Story = {
 
     return (
       <StyledPhotoInput
-        inputtype={args.inputtype}
+        inputType={args.inputType}
         name={args.name}
         value={args.value}
         onChange={onChange}
@@ -380,7 +380,7 @@ export const PrimaryHeading: Story = {
 export const PrimaryHelper: Story = {
   name: "photo (вспомогательная иформация)",
   args: {
-    inputtype: "photo",
+    inputType: "photo",
     name: "photo",
     value: "",
     url: import.meta.env.VITE_SEND_FILE,
@@ -413,7 +413,7 @@ export const PrimaryHelper: Story = {
 
     return (
       <StyledPhotoInput
-        inputtype={args.inputtype}
+        inputType={args.inputType}
         name={args.name}
         value={args.value}
         onChange={onChange}
@@ -436,7 +436,7 @@ export const PrimaryHelper: Story = {
 export const PrimaryDividers: Story = {
   name: "photo (разделители)",
   args: {
-    inputtype: "photo",
+    inputType: "photo",
     name: "photo",
     value: "",
     url: import.meta.env.VITE_SEND_FILE,
@@ -469,7 +469,7 @@ export const PrimaryDividers: Story = {
 
     return (
       <StyledPhotoInput
-        inputtype={args.inputtype}
+        inputType={args.inputType}
         name={args.name}
         value={args.value}
         onChange={onChange}

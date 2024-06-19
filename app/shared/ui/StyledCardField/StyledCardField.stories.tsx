@@ -42,7 +42,7 @@ type Story = StoryObj<typeof meta>;
 export const Primary: Story = {
   name: "card (базовый вид)",
   args: {
-    inputtype: "card",
+    inputType: "card",
     name: "text",
     value: "",
     placeholder: "Номер банковской карты",
@@ -59,7 +59,7 @@ export const Primary: Story = {
 
     return (
       <StyledCardField
-        inputtype={args.inputtype}
+        inputType={args.inputType}
         name={args.name}
         placeholder={args.placeholder}
         value={args.value}
@@ -74,7 +74,7 @@ export const Primary: Story = {
 export const PrimaryError: Story = {
   name: "card (ошибка)",
   args: {
-    inputtype: "card",
+    inputType: "card",
     name: "phone",
     value: "",
     placeholder: "Номер банковской карты",
@@ -92,7 +92,7 @@ export const PrimaryError: Story = {
 
     return (
       <StyledCardField
-        inputtype={args.inputtype}
+        inputType={args.inputType}
         name={args.name}
         placeholder={args.placeholder}
         value={args.value}
@@ -108,7 +108,7 @@ export const PrimaryError: Story = {
 export const PrimaryText: Story = {
   name: "card (вспомогательный текст)",
   args: {
-    inputtype: "card",
+    inputType: "card",
     name: "text",
     value: "",
     placeholder: "Номер банковской карты",
@@ -128,7 +128,7 @@ export const PrimaryText: Story = {
 
     return (
       <StyledCardField
-        inputtype={args.inputtype}
+        inputType={args.inputType}
         name={args.name}
         placeholder={args.placeholder}
         value={args.value}
@@ -144,7 +144,7 @@ export const PrimaryText: Story = {
 export const PrimaryLink: Story = {
   name: "card (вспомогательная ссылка)",
   args: {
-    inputtype: "card",
+    inputType: "card",
     name: "text",
     value: "",
     placeholder: "Номер банковской карты",
@@ -168,7 +168,7 @@ export const PrimaryLink: Story = {
 
     return (
       <StyledCardField
-        inputtype={args.inputtype}
+        inputType={args.inputType}
         name={args.name}
         placeholder={args.placeholder}
         value={args.value}
@@ -184,7 +184,7 @@ export const PrimaryLink: Story = {
 export const PrimaryCardLink: Story = {
   name: "card (вспомогательные текст и ссылка)",
   args: {
-    inputtype: "card",
+    inputType: "card",
     name: "text",
     value: "",
     placeholder: "Номер банковской карты",
@@ -209,7 +209,7 @@ export const PrimaryCardLink: Story = {
 
     return (
       <StyledCardField
-        inputtype={args.inputtype}
+        inputType={args.inputType}
         name={args.name}
         placeholder={args.placeholder}
         value={args.value}
@@ -225,7 +225,7 @@ export const PrimaryCardLink: Story = {
 export const PrimaryCardLinkError: Story = {
   name: "card (вспомогательные текст и ссылка и ошибка)",
   args: {
-    inputtype: "card",
+    inputType: "card",
     name: "text",
     value: "",
     placeholder: "Номер банковской карты",
@@ -251,7 +251,7 @@ export const PrimaryCardLinkError: Story = {
 
     return (
       <StyledCardField
-        inputtype={args.inputtype}
+        inputType={args.inputType}
         name={args.name}
         placeholder={args.placeholder}
         value={args.value}
@@ -268,7 +268,7 @@ export const PrimaryCardLinkError: Story = {
 export const PrimaryCardStatus: Story = {
   name: "card (статус поля)",
   args: {
-    inputtype: "card",
+    inputType: "card",
     name: "text",
     value: "",
     placeholder: "Номер банковской карты",
@@ -286,7 +286,7 @@ export const PrimaryCardStatus: Story = {
 
     return (
       <StyledCardField
-        inputtype={args.inputtype}
+        inputType={args.inputType}
         name={args.name}
         placeholder={args.placeholder}
         value={args.value}
@@ -302,7 +302,7 @@ export const PrimaryCardStatus: Story = {
 export const PrimaryCardDisabled: Story = {
   name: "phone (отключенное поле)",
   args: {
-    inputtype: "card",
+    inputType: "card",
     name: "text",
     value: "",
     placeholder: "Номер банковской карты",
@@ -320,7 +320,7 @@ export const PrimaryCardDisabled: Story = {
 
     return (
       <StyledCardField
-        inputtype={args.inputtype}
+        inputType={args.inputType}
         name={args.name}
         placeholder={args.placeholder}
         value={args.value}
@@ -336,7 +336,7 @@ export const PrimaryCardDisabled: Story = {
 export const PrimaryCardValue: Story = {
   name: "card (заполненное поле)",
   args: {
-    inputtype: "card",
+    inputType: "card",
     name: "text",
     value: "2342342344234234",
     placeholder: "Номер банковской карты",
@@ -353,7 +353,7 @@ export const PrimaryCardValue: Story = {
 
     return (
       <StyledCardField
-        inputtype={args.inputtype}
+        inputType={args.inputType}
         name={args.name}
         placeholder={args.placeholder}
         value={args.value}
@@ -368,7 +368,7 @@ export const PrimaryCardValue: Story = {
 export const PrimaryCardheading: Story = {
   name: "card (заголовок)",
   args: {
-    inputtype: "card",
+    inputType: "card",
     name: "text",
     value: "",
     placeholder: "Номер банковской карты",
@@ -386,7 +386,7 @@ export const PrimaryCardheading: Story = {
 
     return (
       <StyledCardField
-        inputtype={args.inputtype}
+        inputType={args.inputType}
         name={args.name}
         placeholder={args.placeholder}
         value={args.value}
@@ -402,7 +402,7 @@ export const PrimaryCardheading: Story = {
 export const PrimaryDividers: Story = {
   name: "card (разделители)",
   args: {
-    inputtype: "card",
+    inputType: "card",
     name: "text",
     value: "",
     placeholder: "Номер банковской карты",
@@ -424,7 +424,7 @@ export const PrimaryDividers: Story = {
 
     return (
       <StyledCardField
-        inputtype={args.inputtype}
+        inputType={args.inputType}
         name={args.name}
         placeholder={args.placeholder}
         value={args.value}

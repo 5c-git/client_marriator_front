@@ -13,12 +13,12 @@ import {
 } from "@mui/material";
 
 type StyledTextFieldProps = {
-  inputtype: "text";
+  inputType: "text";
   name: string;
   value: string;
   placeholder: string;
 
-  disabled?: true;
+  disabled?: boolean;
   heading?: string;
   error?: string;
   status?: "warning";
@@ -70,7 +70,7 @@ export const StyledTextField = forwardRef(
             sx={{
               width: "100%",
             }}
-            disabled={props.disabled ? true : false}
+            disabled={props.disabled}
             error={props.error ? true : false}
           >
             <TextField
@@ -93,7 +93,7 @@ export const StyledTextField = forwardRef(
                       : "transparent",
                 },
               }}
-              disabled={props.disabled ? true : false}
+              disabled={props.disabled}
             />
             {props.error ? (
               <FormHelperText

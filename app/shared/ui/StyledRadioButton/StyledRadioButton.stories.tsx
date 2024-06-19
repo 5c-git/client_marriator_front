@@ -42,7 +42,7 @@ type Story = StoryObj<typeof meta>;
 export const Primary: Story = {
   name: "radio (Базовый)",
   args: {
-    inputtype: "radio",
+    inputType: "radio",
     value: "",
     name: "radio",
     validation: "none",
@@ -83,7 +83,7 @@ export const Primary: Story = {
 
     return (
       <StyledRadioButton
-        inputtype="radio"
+        inputType="radio"
         validation={args.validation}
         value={args.value}
         name={args.name}
@@ -103,7 +103,7 @@ export const Primary: Story = {
 export const PrimarySelected: Story = {
   name: "radio (выбранный)",
   args: {
-    inputtype: "radio",
+    inputType: "radio",
     value: "spring",
     name: "radio",
     validation: "none",
@@ -143,7 +143,7 @@ export const PrimarySelected: Story = {
 
     return (
       <StyledRadioButton
-        inputtype="radio"
+        inputType="radio"
         value={args.value}
         validation={args.validation}
         name={args.name}
@@ -163,7 +163,7 @@ export const PrimarySelected: Story = {
 export const PrimaryIcon: Story = {
   name: "radio (иконки)",
   args: {
-    inputtype: "radio",
+    inputType: "radio",
     value: "spring",
     name: "radio",
     validation: "none",
@@ -206,7 +206,7 @@ export const PrimaryIcon: Story = {
 
     return (
       <StyledRadioButton
-        inputtype="radio"
+        inputType="radio"
         value={args.value}
         validation={args.validation}
         name={args.name}
@@ -226,7 +226,7 @@ export const PrimaryIcon: Story = {
 export const PrimaryStatus: Story = {
   name: "radio (статус)",
   args: {
-    inputtype: "radio",
+    inputType: "radio",
     value: "",
     name: "radio",
     status: "warning",
@@ -266,7 +266,7 @@ export const PrimaryStatus: Story = {
 
     return (
       <StyledRadioButton
-        inputtype="radio"
+        inputType="radio"
         value={args.value}
         name={args.name}
         validation={args.validation}
@@ -286,7 +286,7 @@ export const PrimaryStatus: Story = {
 export const PrimaryError: Story = {
   name: "radio (ошибка)",
   args: {
-    inputtype: "radio",
+    inputType: "radio",
     value: "",
     name: "radio",
     // status: "warning",
@@ -326,7 +326,7 @@ export const PrimaryError: Story = {
 
     return (
       <StyledRadioButton
-        inputtype="radio"
+        inputType="radio"
         value={args.value}
         name={args.name}
         validation={args.validation}
@@ -346,7 +346,7 @@ export const PrimaryError: Story = {
 export const PrimaryDisabled: Story = {
   name: "radio (отключенный)",
   args: {
-    inputtype: "radio",
+    inputType: "radio",
     value: "",
     name: "radio",
     validation: "none",
@@ -386,7 +386,7 @@ export const PrimaryDisabled: Story = {
 
     return (
       <StyledRadioButton
-        inputtype="radio"
+        inputType="radio"
         value={args.value}
         name={args.name}
         validation={args.validation}
@@ -406,7 +406,7 @@ export const PrimaryDisabled: Story = {
 export const PrimaryHeading: Story = {
   name: "radio (заголовок)",
   args: {
-    inputtype: "radio",
+    inputType: "radio",
     value: "",
     name: "radio",
     validation: "none",
@@ -446,7 +446,7 @@ export const PrimaryHeading: Story = {
 
     return (
       <StyledRadioButton
-        inputtype="radio"
+        inputType="radio"
         value={args.value}
         name={args.name}
         validation={args.validation}
@@ -466,7 +466,7 @@ export const PrimaryHeading: Story = {
 export const PrimaryHeadingError: Story = {
   name: "radio (заголовок c ошибкой)",
   args: {
-    inputtype: "radio",
+    inputType: "radio",
     value: "",
     name: "radio",
     // status: "warning",
@@ -506,7 +506,7 @@ export const PrimaryHeadingError: Story = {
 
     return (
       <StyledRadioButton
-        inputtype="radio"
+        inputType="radio"
         value={args.value}
         name={args.name}
         validation={args.validation}
@@ -526,7 +526,7 @@ export const PrimaryHeadingError: Story = {
 export const PrimaryHelpingText: Story = {
   name: "radio (вспомогательный текст)",
   args: {
-    inputtype: "radio",
+    inputType: "radio",
     value: "",
     name: "radio",
     validation: "none",
@@ -566,7 +566,7 @@ export const PrimaryHelpingText: Story = {
 
     return (
       <StyledRadioButton
-        inputtype="radio"
+        inputType="radio"
         value={args.value}
         name={args.name}
         validation={args.validation}
@@ -586,7 +586,7 @@ export const PrimaryHelpingText: Story = {
 export const PrimaryHelpingTextLink: Story = {
   name: "radio (вспомогательный текст и ссылка)",
   args: {
-    inputtype: "radio",
+    inputType: "radio",
     value: "",
     name: "radio",
     validation: "none",
@@ -631,7 +631,7 @@ export const PrimaryHelpingTextLink: Story = {
 
     return (
       <StyledRadioButton
-        inputtype="radio"
+        inputType="radio"
         value={args.value}
         name={args.name}
         validation={args.validation}
@@ -651,7 +651,7 @@ export const PrimaryHelpingTextLink: Story = {
 export const PrimaryDivider: Story = {
   name: "radio (разделители)",
   args: {
-    inputtype: "radio",
+    inputType: "radio",
     value: "",
     name: "radio",
     validation: "none",
@@ -690,7 +690,7 @@ export const PrimaryDivider: Story = {
 
     return (
       <StyledRadioButton
-        inputtype="radio"
+        inputType="radio"
         value={args.value}
         name={args.name}
         validation={args.validation}

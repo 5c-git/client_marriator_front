@@ -58,7 +58,7 @@ export const postRegStep1 = async (body: unknown): Promise<RegStep1> => {
 export const mockResponseSuccess = {
   inputs: [
     {
-      inputtype: "photoCheckbox",
+      inputType: "photoCheckbox",
       name: "direction",
       value: [],
       validation: "default",

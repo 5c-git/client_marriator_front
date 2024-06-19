@@ -1,4 +1,7 @@
 import IndexRU from "../routes/_index/locales/ru.json";
+
+import PhoneRU from "../routes/signin/phone/locales/ru.json";
+
 import "i18next";
 declare module "i18next" {
   interface CustomTypeOptions {
@@ -6,7 +9,7 @@ declare module "i18next" {
     resources: {
       translation: {
         Index: typeof IndexRU;
-        test: typeof IndexRU;
+        Phone: typeof PhoneRU;
       };
     };
   }

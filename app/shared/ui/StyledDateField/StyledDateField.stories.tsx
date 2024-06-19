@@ -42,7 +42,7 @@ type Story = StoryObj<typeof meta>;
 export const Primary: Story = {
   name: "date (базовый вид)",
   args: {
-    inputtype: "date",
+    inputType: "date",
     name: "date",
     value: null,
     placeholder: "Введите дату",
@@ -59,7 +59,7 @@ export const Primary: Story = {
 
     return (
       <StyledDateField
-        inputtype={args.inputtype}
+        inputType={args.inputType}
         name={args.name}
         placeholder={args.placeholder}
         value={args.value}
@@ -76,7 +76,7 @@ export const Primary: Story = {
 export const PrimaryDateError: Story = {
   name: "date (ошибка)",
   args: {
-    inputtype: "date",
+    inputType: "date",
     name: "phone",
     value: "2024-04-27",
     placeholder: "Введите дату",
@@ -94,7 +94,7 @@ export const PrimaryDateError: Story = {
 
     return (
       <StyledDateField
-        inputtype={args.inputtype}
+        inputType={args.inputType}
         name={args.name}
         placeholder={args.placeholder}
         value={args.value}
@@ -110,7 +110,7 @@ export const PrimaryDateError: Story = {
 export const PrimaryDateText: Story = {
   name: "date (вспомогательный текст)",
   args: {
-    inputtype: "date",
+    inputType: "date",
     name: "text",
     value: null,
     placeholder: "Номер телефона",
@@ -130,7 +130,7 @@ export const PrimaryDateText: Story = {
 
     return (
       <StyledDateField
-        inputtype={args.inputtype}
+        inputType={args.inputType}
         name={args.name}
         placeholder={args.placeholder}
         value={args.value}
@@ -146,7 +146,7 @@ export const PrimaryDateText: Story = {
 export const PrimaryDateWithLink: Story = {
   name: "date (вспомогательная ссылка)",
   args: {
-    inputtype: "date",
+    inputType: "date",
     name: "text",
     value: null,
     placeholder: "Введите дату",
@@ -170,7 +170,7 @@ export const PrimaryDateWithLink: Story = {
 
     return (
       <StyledDateField
-        inputtype={args.inputtype}
+        inputType={args.inputType}
         name={args.name}
         placeholder={args.placeholder}
         value={args.value}
@@ -186,7 +186,7 @@ export const PrimaryDateWithLink: Story = {
 export const PrimaryDateLink: Story = {
   name: "date (вспомогательные текст и ссылка)",
   args: {
-    inputtype: "date",
+    inputType: "date",
     name: "text",
     value: null,
     placeholder: "Введите дату",
@@ -211,7 +211,7 @@ export const PrimaryDateLink: Story = {
 
     return (
       <StyledDateField
-        inputtype={args.inputtype}
+        inputType={args.inputType}
         name={args.name}
         placeholder={args.placeholder}
         value={args.value}
@@ -227,7 +227,7 @@ export const PrimaryDateLink: Story = {
 export const PrimaryDateLinkError: Story = {
   name: "date (вспомогательные текст и ссылка и ошибка)",
   args: {
-    inputtype: "date",
+    inputType: "date",
     name: "text",
     value: null,
     placeholder: "Введите дату",
@@ -253,7 +253,7 @@ export const PrimaryDateLinkError: Story = {
 
     return (
       <StyledDateField
-        inputtype={args.inputtype}
+        inputType={args.inputType}
         name={args.name}
         placeholder={args.placeholder}
         value={args.value}
@@ -270,7 +270,7 @@ export const PrimaryDateLinkError: Story = {
 export const PrimaryDateStatus: Story = {
   name: "date (статус поля)",
   args: {
-    inputtype: "date",
+    inputType: "date",
     name: "text",
     value: null,
     placeholder: "Введите дату",
@@ -288,7 +288,7 @@ export const PrimaryDateStatus: Story = {
 
     return (
       <StyledDateField
-        inputtype={args.inputtype}
+        inputType={args.inputType}
         name={args.name}
         placeholder={args.placeholder}
         value={args.value}
@@ -304,7 +304,7 @@ export const PrimaryDateStatus: Story = {
 export const PrimaryDateDisabled: Story = {
   name: "date (отключенное поле)",
   args: {
-    inputtype: "date",
+    inputType: "date",
     name: "text",
     value: null,
     placeholder: "Введите дату",
@@ -322,7 +322,7 @@ export const PrimaryDateDisabled: Story = {
 
     return (
       <StyledDateField
-        inputtype={args.inputtype}
+        inputType={args.inputType}
         name={args.name}
         placeholder={args.placeholder}
         value={args.value}
@@ -338,7 +338,7 @@ export const PrimaryDateDisabled: Story = {
 export const PrimaryDateValue: Story = {
   name: "date (заполненное поле)",
   args: {
-    inputtype: "date",
+    inputType: "date",
     name: "text",
     value: "2024-04-27",
     placeholder: "Введите дату",
@@ -355,7 +355,7 @@ export const PrimaryDateValue: Story = {
 
     return (
       <StyledDateField
-        inputtype={args.inputtype}
+        inputType={args.inputType}
         name={args.name}
         placeholder={args.placeholder}
         value={args.value}
@@ -370,7 +370,7 @@ export const PrimaryDateValue: Story = {
 export const PrimaryDateHeading: Story = {
   name: "date (заголовок)",
   args: {
-    inputtype: "date",
+    inputType: "date",
     name: "text",
     value: null,
     placeholder: "Введите дату",
@@ -388,7 +388,7 @@ export const PrimaryDateHeading: Story = {
 
     return (
       <StyledDateField
-        inputtype={args.inputtype}
+        inputType={args.inputType}
         name={args.name}
         placeholder={args.placeholder}
         value={args.value}
@@ -404,7 +404,7 @@ export const PrimaryDateHeading: Story = {
 export const PrimaryDateDividers: Story = {
   name: "date (разделители)",
   args: {
-    inputtype: "date",
+    inputType: "date",
     name: "text",
     value: null,
     placeholder: "Введите дату",
@@ -426,7 +426,7 @@ export const PrimaryDateDividers: Story = {
 
     return (
       <StyledDateField
-        inputtype={args.inputtype}
+        inputType={args.inputType}
         name={args.name}
         placeholder={args.placeholder}
         value={args.value}

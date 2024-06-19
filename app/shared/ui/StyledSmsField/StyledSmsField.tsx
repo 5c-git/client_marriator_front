@@ -1,6 +1,5 @@
 import { forwardRef } from "react";
 import { Link } from "@remix-run/react";
-import InputMask from "react-input-mask";
 import {
   useTheme,
   SxProps,
@@ -12,14 +11,15 @@ import {
   FormHelperText,
   TextField,
 } from "@mui/material";
+import { MaskedField } from "../MaskedField/MaskedField";
 
 type StyledSmsFieldProps = {
-  inputtype: "sms";
+  inputType: "sms";
   name: string;
   value: string;
   placeholder: string;
 
-  disabled?: true;
+  disabled?: boolean;
   heading?: string;
   error?: string;
   status?: "warning";
@@ -68,49 +68,41 @@ export const StyledSmsField = forwardRef((props: StyledSmsFieldProps, ref) => {
           sx={{
             width: "100%",
           }}
-          disabled={props.disabled ? true : false}
+          disabled={props.disabled}
           error={props.error ? true : false}
         >
-          <InputMask
-            mask="99999"
+          <TextField
+            id={props.name}
+            name={props.name}
             value={props.value}
-            onChange={(
-              evt: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-            ) => {
-              props.onChange(evt.target.value.replace(/[^\d]/g, ""));
+            onChange={(evt) => {
+              // props.onChange(evt.target.value.replace(/[^\d]/g, ""));
+              props.onChange(evt.target.value);
               props.onImmediateChange();
             }}
-            name={props.name}
-            disabled={props.disabled ? true : false}
-          >
-            <TextField
-              id={props.name}
-              // name={props.name}
-              // value={props.value}
-              // onChange={(evt) => {
-              //   props.onChange(evt);
-              //   props.onImmediateChange();
-              // }}
-              disabled={props.disabled ? true : false}
-              error={props.error ? true : false}
-              label={props.placeholder}
-              //
-              sx={{
-                marginBottom: "4px",
+            disabled={props.disabled}
+            error={props.error ? true : false}
+            label={props.placeholder}
+            //
+            sx={{
+              marginBottom: "4px",
 
-                "& .MuiOutlinedInput-root": {
-                  borderColor:
-                    props.status === "warning"
-                      ? theme.palette["Yellow"]
-                      : "transparent",
-                },
-              }}
-              InputProps={{
-                inputMode: "numeric",
-                type: "tel",
-              }}
-            />
-          </InputMask>
+              "& .MuiOutlinedInput-root": {
+                borderColor:
+                  props.status === "warning"
+                    ? theme.palette["Yellow"]
+                    : "transparent",
+              },
+            }}
+            InputProps={{
+              inputComponent: MaskedField as never,
+              inputProps: {
+                mask: "00000",
+              },
+              inputMode: "numeric",
+              type: "tel",
+            }}
+          />
           {props.error ? (
             <FormHelperText
               sx={{

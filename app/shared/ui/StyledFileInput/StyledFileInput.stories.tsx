@@ -42,7 +42,7 @@ type Story = StoryObj<typeof meta>;
 export const Primary: Story = {
   name: "file",
   args: {
-    inputtype: "file",
+    inputType: "file",
     name: "file",
     value: "",
     url: import.meta.env.VITE_SEND_FILE,
@@ -85,7 +85,7 @@ export const Primary: Story = {
 
     return (
       <StyledFileInput
-        inputtype={args.inputtype}
+        inputType={args.inputType}
         name={args.name}
         value={args.value}
         onChange={onChange}
@@ -110,7 +110,7 @@ export const Primary: Story = {
 export const PrimaryDisabled: Story = {
   name: "file (отключенный)",
   args: {
-    inputtype: "file",
+    inputType: "file",
     name: "file",
     value: "",
     url: import.meta.env.VITE_SEND_FILE,
@@ -153,7 +153,7 @@ export const PrimaryDisabled: Story = {
 
     return (
       <StyledFileInput
-        inputtype={args.inputtype}
+        inputType={args.inputType}
         name={args.name}
         value={args.value}
         onChange={onChange}
@@ -178,7 +178,7 @@ export const PrimaryDisabled: Story = {
 export const PrimaryNothing: Story = {
   name: "file (без доп информации)",
   args: {
-    inputtype: "file",
+    inputType: "file",
     name: "file",
     value: "",
     url: import.meta.env.VITE_SEND_FILE,
@@ -220,7 +220,7 @@ export const PrimaryNothing: Story = {
 
     return (
       <StyledFileInput
-        inputtype={args.inputtype}
+        inputType={args.inputType}
         name={args.name}
         value={args.value}
         onChange={onChange}
@@ -244,7 +244,7 @@ export const PrimaryNothing: Story = {
 export const PrimaryFilled: Story = {
   name: "file (заполненный)",
   args: {
-    inputtype: "file",
+    inputType: "file",
     name: "file",
     value: "{Номер телефона} - {Наименование документа}.pdf",
     url: import.meta.env.VITE_SEND_FILE,
@@ -286,7 +286,7 @@ export const PrimaryFilled: Story = {
 
     return (
       <StyledFileInput
-        inputtype={args.inputtype}
+        inputType={args.inputType}
         name={args.name}
         value={args.value}
         onChange={onChange}
@@ -310,7 +310,7 @@ export const PrimaryFilled: Story = {
 export const PrimaryError: Story = {
   name: "file (ошибка)",
   args: {
-    inputtype: "file",
+    inputType: "file",
     name: "file",
     value: "",
     url: import.meta.env.VITE_SEND_FILE,
@@ -353,7 +353,7 @@ export const PrimaryError: Story = {
 
     return (
       <StyledFileInput
-        inputtype={args.inputtype}
+        inputType={args.inputType}
         name={args.name}
         value={args.value}
         onChange={onChange}
@@ -377,7 +377,7 @@ export const PrimaryError: Story = {
 export const PrimaryWarning: Story = {
   name: "file (статус  - warning)",
   args: {
-    inputtype: "file",
+    inputType: "file",
     name: "file",
     value: "",
     url: import.meta.env.VITE_SEND_FILE,
@@ -419,7 +419,7 @@ export const PrimaryWarning: Story = {
 
     return (
       <StyledFileInput
-        inputtype={args.inputtype}
+        inputType={args.inputType}
         name={args.name}
         value={args.value}
         onChange={onChange}
@@ -443,7 +443,7 @@ export const PrimaryWarning: Story = {
 export const PrimaryHeading: Story = {
   name: "file (pаголовок)",
   args: {
-    inputtype: "file",
+    inputType: "file",
     name: "file",
     value: "",
     url: import.meta.env.VITE_SEND_FILE,
@@ -485,7 +485,7 @@ export const PrimaryHeading: Story = {
 
     return (
       <StyledFileInput
-        inputtype={args.inputtype}
+        inputType={args.inputType}
         name={args.name}
         value={args.value}
         onChange={onChange}
@@ -509,7 +509,7 @@ export const PrimaryHeading: Story = {
 export const PrimaryHelper: Story = {
   name: "file (вспомогательная информация)",
   args: {
-    inputtype: "file",
+    inputType: "file",
     name: "file",
     value: "",
     url: import.meta.env.VITE_SEND_FILE,
@@ -551,7 +551,7 @@ export const PrimaryHelper: Story = {
 
     return (
       <StyledFileInput
-        inputtype={args.inputtype}
+        inputType={args.inputType}
         name={args.name}
         value={args.value}
         onChange={onChange}
@@ -575,7 +575,7 @@ export const PrimaryHelper: Story = {
 export const PrimaryDividers: Story = {
   name: "file (разделители)",
   args: {
-    inputtype: "file",
+    inputType: "file",
     name: "file",
     value: "",
     url: import.meta.env.VITE_SEND_FILE,
@@ -617,7 +617,7 @@ export const PrimaryDividers: Story = {
 
     return (
       <StyledFileInput
-        inputtype={args.inputtype}
+        inputType={args.inputType}
         name={args.name}
         value={args.value}
         onChange={onChange}

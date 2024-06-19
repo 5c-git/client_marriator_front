@@ -1,0 +1,6 @@
+{
+  "inputPlaceholder": "Phone number",
+  "inputError": "Required field",
+  "inputRegExpError": "Please provide correct number",
+  "submitButton": "Login or register"
+}

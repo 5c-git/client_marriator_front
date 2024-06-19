@@ -70,14 +70,14 @@ export const Primary: Story = {
           return HttpResponse.json({
             inputs: [
               {
-                inputtype: "text",
+                inputType: "text",
                 name: "weight",
                 value: "",
                 placeholder: "Вес",
                 validation: "default",
               },
               {
-                inputtype: "select",
+                inputType: "select",
                 name: "height",
                 value: "",
                 placeholder: "Рост",
@@ -101,7 +101,7 @@ export const Primary: Story = {
                 ],
               },
               {
-                inputtype: "select",
+                inputType: "select",
                 name: "clothes",
                 value: "",
                 placeholder: "Размер одежды",
@@ -125,7 +125,7 @@ export const Primary: Story = {
                 ],
               },
               {
-                inputtype: "select",
+                inputType: "select",
                 name: "hairColor",
                 value: "",
                 placeholder: "Цвет волос",
@@ -144,7 +144,7 @@ export const Primary: Story = {
                 ],
               },
               {
-                inputtype: "select",
+                inputType: "select",
                 name: "hairLenght",
                 value: "",
                 placeholder: "Длина волос",
@@ -168,7 +168,7 @@ export const Primary: Story = {
                 ],
               },
               {
-                inputtype: "file",
+                inputType: "file",
                 name: "driverLicence",
                 value: "",
                 url: "http://preprod.marriator-api.fivecorners.ru/api/saveFile",
@@ -181,7 +181,7 @@ export const Primary: Story = {
                 },
               },
               {
-                inputtype: "file",
+                inputType: "file",
                 name: "medicalDriverLicence",
                 value: "",
                 url: "http://preprod.marriator-api.fivecorners.ru/api/saveFile",
@@ -194,7 +194,7 @@ export const Primary: Story = {
                 },
               },
               {
-                inputtype: "file",
+                inputType: "file",
                 name: "anyLicence",
                 value: "",
                 url: "http://preprod.marriator-api.fivecorners.ru/api/saveFile",
@@ -206,7 +206,7 @@ export const Primary: Story = {
                 },
               },
               {
-                inputtype: "radio",
+                inputType: "radio",
                 value: "",
                 name: "medBook",
                 validation: "default",
@@ -226,7 +226,7 @@ export const Primary: Story = {
                 ],
               },
               {
-                inputtype: "file",
+                inputType: "file",
                 name: "medBookFile",
                 value: "",
                 url: "http://preprod.marriator-api.fivecorners.ru/api/saveFile",

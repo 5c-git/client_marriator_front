@@ -4,7 +4,7 @@
   "title": "Schema for Select",
   "type": "object",
   "properties": {
-    "inputtype": {
+    "inputType": {
       "type": "string",
       "const": "select"
     },
@@ -38,8 +38,7 @@
       }
     },
     "disabled": {
-      "type": "boolean",
-      "const": true
+      "type": "boolean"
     },
     "validation": {
       "type": "string",
@@ -92,7 +91,7 @@
     "additionalProperties": false
   },
   "required": [
-    "inputtype",
+    "inputType",
     "name",
     "value",
     "placeholder",

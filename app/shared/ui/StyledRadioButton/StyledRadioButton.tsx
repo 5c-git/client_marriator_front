@@ -20,7 +20,7 @@ import viber from "./icons/viber.svg";
 const iconMap = { telegram, whatsapp, viber };
 
 type StyledRadioButtonProps = {
-  inputtype: "radio";
+  inputType: "radio";
   name: string;
   value: string;
 
@@ -181,7 +181,7 @@ export const StyledRadioButton = forwardRef(
               <FormControlLabel
                 key={item.value}
                 value={item.value}
-                disabled={item.disabled ? true : false}
+                disabled={item.disabled}
                 label={
                   <Box
                     sx={{

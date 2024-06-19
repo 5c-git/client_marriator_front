@@ -12,7 +12,7 @@ import {
 import { Link } from "@remix-run/react";
 
 type StyledCheckboxProps = {
-  inputtype: "checkbox";
+  inputType: "checkbox";
   name: string;
   value: boolean;
   label: string;
@@ -22,7 +22,7 @@ type StyledCheckboxProps = {
   heading?: string;
   error?: string;
   status?: "warning";
-  disabled?: true;
+  disabled?: boolean;
 
   helperInfo?: {
     text?: string;
@@ -119,7 +119,7 @@ export const StyledCheckbox = forwardRef((props: StyledCheckboxProps, ref) => {
         ) : null}
 
         <FormControlLabel
-          disabled={props.disabled ? true : false}
+          disabled={props.disabled}
           control={
             <Checkbox
               name={props.name}

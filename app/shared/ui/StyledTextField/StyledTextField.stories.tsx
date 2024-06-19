@@ -42,7 +42,7 @@ type Story = StoryObj<typeof meta>;
 export const Primary: Story = {
   name: "text (базовый вид)",
   args: {
-    inputtype: "text",
+    inputType: "text",
     name: "text",
     value: "",
     placeholder: "Текстовое поле",
@@ -61,7 +61,7 @@ export const Primary: Story = {
 
     return (
       <StyledTextField
-        inputtype="text"
+        inputType="text"
         name={args.name}
         placeholder={args.placeholder}
         value={args.value}
@@ -76,7 +76,7 @@ export const Primary: Story = {
 export const PrimaryError: Story = {
   name: "text (ошибка)",
   args: {
-    inputtype: "text",
+    inputType: "text",
     name: "text",
     value: "",
     placeholder: "Текстовое поле",
@@ -96,7 +96,7 @@ export const PrimaryError: Story = {
 
     return (
       <StyledTextField
-        inputtype="text"
+        inputType="text"
         name={args.name}
         placeholder={args.placeholder}
         value={args.value}
@@ -112,7 +112,7 @@ export const PrimaryError: Story = {
 export const PrimaryText: Story = {
   name: "text (вспомогательный текст)",
   args: {
-    inputtype: "text",
+    inputType: "text",
     name: "text",
     value: "",
     placeholder: "Текстовое поле",
@@ -134,7 +134,7 @@ export const PrimaryText: Story = {
 
     return (
       <StyledTextField
-        inputtype="text"
+        inputType="text"
         name={args.name}
         placeholder={args.placeholder}
         value={args.value}
@@ -150,7 +150,7 @@ export const PrimaryText: Story = {
 export const PrimaryLink: Story = {
   name: "text (вспомогательная ссылка)",
   args: {
-    inputtype: "text",
+    inputType: "text",
     name: "text",
     value: "",
     placeholder: "Текстовое поле",
@@ -176,7 +176,7 @@ export const PrimaryLink: Story = {
 
     return (
       <StyledTextField
-        inputtype="text"
+        inputType="text"
         name={args.name}
         placeholder={args.placeholder}
         value={args.value}
@@ -192,7 +192,7 @@ export const PrimaryLink: Story = {
 export const PrimaryTextLink: Story = {
   name: "text (вспомогательные текст и ссылка)",
   args: {
-    inputtype: "text",
+    inputType: "text",
     name: "text",
     value: "",
     placeholder: "Текстовое поле",
@@ -219,7 +219,7 @@ export const PrimaryTextLink: Story = {
 
     return (
       <StyledTextField
-        inputtype="text"
+        inputType="text"
         name={args.name}
         placeholder={args.placeholder}
         value={args.value}
@@ -235,7 +235,7 @@ export const PrimaryTextLink: Story = {
 export const PrimaryTextLinkError: Story = {
   name: "text (вспомогательные текст и ссылка и ошибка)",
   args: {
-    inputtype: "text",
+    inputType: "text",
     name: "text",
     value: "",
     placeholder: "Текстовое поле",
@@ -263,7 +263,7 @@ export const PrimaryTextLinkError: Story = {
 
     return (
       <StyledTextField
-        inputtype="text"
+        inputType="text"
         name={args.name}
         placeholder={args.placeholder}
         value={args.value}
@@ -280,7 +280,7 @@ export const PrimaryTextLinkError: Story = {
 export const PrimaryTextStatus: Story = {
   name: "text (статус поля)",
   args: {
-    inputtype: "text",
+    inputType: "text",
     name: "text",
     value: "",
     placeholder: "Текстовое поле",
@@ -300,7 +300,7 @@ export const PrimaryTextStatus: Story = {
 
     return (
       <StyledTextField
-        inputtype="text"
+        inputType="text"
         name={args.name}
         placeholder={args.placeholder}
         value={args.value}
@@ -316,7 +316,7 @@ export const PrimaryTextStatus: Story = {
 export const PrimaryTextDisabled: Story = {
   name: "text (отключенное поле)",
   args: {
-    inputtype: "text",
+    inputType: "text",
     name: "text",
     value: "",
     placeholder: "Текстовое поле",
@@ -336,7 +336,7 @@ export const PrimaryTextDisabled: Story = {
 
     return (
       <StyledTextField
-        inputtype="text"
+        inputType="text"
         name={args.name}
         placeholder={args.placeholder}
         value={args.value}
@@ -352,7 +352,7 @@ export const PrimaryTextDisabled: Story = {
 export const PrimaryTextValue: Story = {
   name: "text (заполненное поле)",
   args: {
-    inputtype: "text",
+    inputType: "text",
     name: "text",
     value: "заполненное поле",
     placeholder: "Текстовое поле",
@@ -371,7 +371,7 @@ export const PrimaryTextValue: Story = {
 
     return (
       <StyledTextField
-        inputtype="text"
+        inputType="text"
         name={args.name}
         placeholder={args.placeholder}
         value={args.value}
@@ -386,7 +386,7 @@ export const PrimaryTextValue: Story = {
 export const PrimaryTextheading: Story = {
   name: "text (заголовок)",
   args: {
-    inputtype: "text",
+    inputType: "text",
     name: "text",
     value: "",
     placeholder: "Текстовое поле",
@@ -406,7 +406,7 @@ export const PrimaryTextheading: Story = {
 
     return (
       <StyledTextField
-        inputtype="text"
+        inputType="text"
         name={args.name}
         placeholder={args.placeholder}
         value={args.value}
@@ -422,7 +422,7 @@ export const PrimaryTextheading: Story = {
 export const PrimaryDividers: Story = {
   name: "text (разделители)",
   args: {
-    inputtype: "text",
+    inputType: "text",
     name: "text",
     value: "",
     placeholder: "Текстовое поле",
@@ -446,7 +446,7 @@ export const PrimaryDividers: Story = {
 
     return (
       <StyledTextField
-        inputtype="text"
+        inputType="text"
         name={args.name}
         placeholder={args.placeholder}
         value={args.value}

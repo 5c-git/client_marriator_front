@@ -42,7 +42,7 @@ type Story = StoryObj<typeof meta>;
 export const Primary: Story = {
   name: "sms (базовый вид)",
   args: {
-    inputtype: "sms",
+    inputType: "sms",
     name: "text",
     value: "",
     placeholder: "Код из смс",
@@ -59,7 +59,7 @@ export const Primary: Story = {
 
     return (
       <StyledSmsField
-        inputtype={args.inputtype}
+        inputType={args.inputType}
         name={args.name}
         placeholder={args.placeholder}
         value={args.value}
@@ -74,7 +74,7 @@ export const Primary: Story = {
 export const PrimaryError: Story = {
   name: "sms (ошибка)",
   args: {
-    inputtype: "sms",
+    inputType: "sms",
     name: "phone",
     value: "",
     placeholder: "Код из смс",
@@ -92,7 +92,7 @@ export const PrimaryError: Story = {
 
     return (
       <StyledSmsField
-        inputtype={args.inputtype}
+        inputType={args.inputType}
         name={args.name}
         placeholder={args.placeholder}
         value={args.value}
@@ -108,7 +108,7 @@ export const PrimaryError: Story = {
 export const PrimarySms: Story = {
   name: "sms (вспомогательный текст)",
   args: {
-    inputtype: "sms",
+    inputType: "sms",
     name: "text",
     value: "",
     placeholder: "Код из смс",
@@ -128,7 +128,7 @@ export const PrimarySms: Story = {
 
     return (
       <StyledSmsField
-        inputtype={args.inputtype}
+        inputType={args.inputType}
         name={args.name}
         placeholder={args.placeholder}
         value={args.value}
@@ -144,7 +144,7 @@ export const PrimarySms: Story = {
 export const PrimaryLink: Story = {
   name: "sms (вспомогательная ссылка)",
   args: {
-    inputtype: "sms",
+    inputType: "sms",
     name: "text",
     value: "",
     placeholder: "Код из смс",
@@ -168,7 +168,7 @@ export const PrimaryLink: Story = {
 
     return (
       <StyledSmsField
-        inputtype={args.inputtype}
+        inputType={args.inputType}
         name={args.name}
         placeholder={args.placeholder}
         value={args.value}
@@ -184,7 +184,7 @@ export const PrimaryLink: Story = {
 export const PrimarySmsLink: Story = {
   name: "sms (вспомогательные текст и ссылка)",
   args: {
-    inputtype: "sms",
+    inputType: "sms",
     name: "text",
     value: "",
     placeholder: "Код из смс",
@@ -209,7 +209,7 @@ export const PrimarySmsLink: Story = {
 
     return (
       <StyledSmsField
-        inputtype={args.inputtype}
+        inputType={args.inputType}
         name={args.name}
         placeholder={args.placeholder}
         value={args.value}
@@ -225,7 +225,7 @@ export const PrimarySmsLink: Story = {
 export const PrimarySmsLinkError: Story = {
   name: "sms (вспомогательные текст и ссылка и ошибка)",
   args: {
-    inputtype: "sms",
+    inputType: "sms",
     name: "text",
     value: "",
     placeholder: "Код из смс",
@@ -251,7 +251,7 @@ export const PrimarySmsLinkError: Story = {
 
     return (
       <StyledSmsField
-        inputtype={args.inputtype}
+        inputType={args.inputType}
         name={args.name}
         placeholder={args.placeholder}
         value={args.value}
@@ -268,7 +268,7 @@ export const PrimarySmsLinkError: Story = {
 export const PrimarySmsStatus: Story = {
   name: "sms (статус поля)",
   args: {
-    inputtype: "sms",
+    inputType: "sms",
     name: "text",
     value: "",
     placeholder: "Код из смс",
@@ -286,7 +286,7 @@ export const PrimarySmsStatus: Story = {
 
     return (
       <StyledSmsField
-        inputtype={args.inputtype}
+        inputType={args.inputType}
         name={args.name}
         placeholder={args.placeholder}
         value={args.value}
@@ -302,7 +302,7 @@ export const PrimarySmsStatus: Story = {
 export const PrimarySmsDisabled: Story = {
   name: "sms (отключенное поле)",
   args: {
-    inputtype: "sms",
+    inputType: "sms",
     name: "text",
     value: "",
     placeholder: "Код из смс",
@@ -320,7 +320,7 @@ export const PrimarySmsDisabled: Story = {
 
     return (
       <StyledSmsField
-        inputtype={args.inputtype}
+        inputType={args.inputType}
         name={args.name}
         placeholder={args.placeholder}
         value={args.value}
@@ -336,7 +336,7 @@ export const PrimarySmsDisabled: Story = {
 export const PrimarySmsValue: Story = {
   name: "sms (заполненное поле)",
   args: {
-    inputtype: "sms",
+    inputType: "sms",
     name: "text",
     value: "123456123456",
     placeholder: "Код из смс",
@@ -353,7 +353,7 @@ export const PrimarySmsValue: Story = {
 
     return (
       <StyledSmsField
-        inputtype={args.inputtype}
+        inputType={args.inputType}
         name={args.name}
         placeholder={args.placeholder}
         value={args.value}
@@ -368,7 +368,7 @@ export const PrimarySmsValue: Story = {
 export const PrimarySmsHeading: Story = {
   name: "sms(заголовок)",
   args: {
-    inputtype: "sms",
+    inputType: "sms",
     name: "text",
     value: "",
     placeholder: "Код из смс",
@@ -386,7 +386,7 @@ export const PrimarySmsHeading: Story = {
 
     return (
       <StyledSmsField
-        inputtype={args.inputtype}
+        inputType={args.inputType}
         name={args.name}
         placeholder={args.placeholder}
         value={args.value}
@@ -402,7 +402,7 @@ export const PrimarySmsHeading: Story = {
 export const PrimaryDividers: Story = {
   name: "sms (разделители)",
   args: {
-    inputtype: "sms",
+    inputType: "sms",
     name: "text",
     value: "",
     placeholder: "Код из смс",
@@ -424,7 +424,7 @@ export const PrimaryDividers: Story = {
 
     return (
       <StyledSmsField
-        inputtype={args.inputtype}
+        inputType={args.inputType}
         name={args.name}
         placeholder={args.placeholder}
         value={args.value}

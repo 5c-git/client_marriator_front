@@ -43,7 +43,7 @@ type Story = StoryObj<typeof meta>;
 export const Primary: Story = {
   name: "select (базовый вид)",
   args: {
-    inputtype: "select",
+    inputType: "select",
     name: "select",
     value: "",
     placeholder: "Выберете пункт",
@@ -99,7 +99,7 @@ export const Primary: Story = {
 
     return (
       <StyledSelect
-        inputtype="select"
+        inputType="select"
         name={args.name}
         value={args.value}
         placeholder={args.placeholder}
@@ -119,7 +119,7 @@ export const Primary: Story = {
 export const PrimaryDisabled: Story = {
   name: "select (отключенный)",
   args: {
-    inputtype: "select",
+    inputType: "select",
     name: "select",
     value: "",
     placeholder: "Выберете пункт",
@@ -162,7 +162,7 @@ export const PrimaryDisabled: Story = {
 
     return (
       <StyledSelect
-        inputtype="select"
+        inputType="select"
         name={args.name}
         value={args.value}
         placeholder={args.placeholder}
@@ -177,7 +177,7 @@ export const PrimaryDisabled: Story = {
 export const PrimaryHeading: Story = {
   name: "select (с заголовком)",
   args: {
-    inputtype: "select",
+    inputType: "select",
     name: "select",
     value: "",
     placeholder: "Выберете пункт",
@@ -220,7 +220,7 @@ export const PrimaryHeading: Story = {
 
     return (
       <StyledSelect
-        inputtype="select"
+        inputType="select"
         name={args.name}
         value={args.value}
         placeholder={args.placeholder}
@@ -235,7 +235,7 @@ export const PrimaryHeading: Story = {
 export const PrimaryError: Story = {
   name: "select (ошибка)",
   args: {
-    inputtype: "select",
+    inputType: "select",
     name: "select",
     value: "",
     placeholder: "Выберете пункт",
@@ -278,7 +278,7 @@ export const PrimaryError: Story = {
 
     return (
       <StyledSelect
-        inputtype="select"
+        inputType="select"
         name={args.name}
         value={args.value}
         placeholder={args.placeholder}
@@ -293,7 +293,7 @@ export const PrimaryError: Story = {
 export const PrimaryStatus: Story = {
   name: "select (статус)",
   args: {
-    inputtype: "select",
+    inputType: "select",
     name: "select",
     value: "",
     placeholder: "Выберете пункт",
@@ -336,7 +336,7 @@ export const PrimaryStatus: Story = {
 
     return (
       <StyledSelect
-        inputtype="select"
+        inputType="select"
         name={args.name}
         value={args.value}
         placeholder={args.placeholder}
@@ -351,7 +351,7 @@ export const PrimaryStatus: Story = {
 export const PrimaryHelper: Story = {
   name: "select (вспомогательная информация)",
   args: {
-    inputtype: "select",
+    inputType: "select",
     name: "select",
     value: "",
     placeholder: "Выберете пункт",
@@ -401,7 +401,7 @@ export const PrimaryHelper: Story = {
 
     return (
       <StyledSelect
-        inputtype="select"
+        inputType="select"
         name={args.name}
         value={args.value}
         placeholder={args.placeholder}
@@ -416,7 +416,7 @@ export const PrimaryHelper: Story = {
 export const PrimaryDividers: Story = {
   name: "select (разделители)",
   args: {
-    inputtype: "select",
+    inputType: "select",
     name: "select",
     value: "",
     placeholder: "Выберете пункт",
@@ -460,7 +460,7 @@ export const PrimaryDividers: Story = {
 
     return (
       <StyledSelect
-        inputtype="select"
+        inputType="select"
         name={args.name}
         value={args.value}
         placeholder={args.placeholder}

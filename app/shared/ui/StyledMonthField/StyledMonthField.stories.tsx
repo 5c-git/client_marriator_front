@@ -42,7 +42,7 @@ type Story = StoryObj<typeof meta>;
 export const Primary: Story = {
   name: "month (базовый вид)",
   args: {
-    inputtype: "month",
+    inputType: "month",
     name: "month",
     value: null,
     placeholder: "Срок окончания действия карты",
@@ -59,7 +59,7 @@ export const Primary: Story = {
 
     return (
       <StyledMonthField
-        inputtype={args.inputtype}
+        inputType={args.inputType}
         name={args.name}
         placeholder={args.placeholder}
         value={args.value}
@@ -76,7 +76,7 @@ export const Primary: Story = {
 export const PrimaryDateError: Story = {
   name: "month (ошибка)",
   args: {
-    inputtype: "month",
+    inputType: "month",
     name: "phone",
     value: "2024-04-27",
     placeholder: "Введите дату",
@@ -94,7 +94,7 @@ export const PrimaryDateError: Story = {
 
     return (
       <StyledMonthField
-        inputtype={args.inputtype}
+        inputType={args.inputType}
         name={args.name}
         placeholder={args.placeholder}
         value={args.value}
@@ -110,7 +110,7 @@ export const PrimaryDateError: Story = {
 export const PrimaryMonthText: Story = {
   name: "month (вспомогательный текст)",
   args: {
-    inputtype: "month",
+    inputType: "month",
     name: "text",
     value: null,
     placeholder: "Номер телефона",
@@ -130,7 +130,7 @@ export const PrimaryMonthText: Story = {
 
     return (
       <StyledMonthField
-        inputtype={args.inputtype}
+        inputType={args.inputType}
         name={args.name}
         placeholder={args.placeholder}
         value={args.value}
@@ -146,7 +146,7 @@ export const PrimaryMonthText: Story = {
 export const PrimaryMonhWithLink: Story = {
   name: "month (вспомогательная ссылка)",
   args: {
-    inputtype: "month",
+    inputType: "month",
     name: "text",
     value: null,
     placeholder: "Введите дату",
@@ -170,7 +170,7 @@ export const PrimaryMonhWithLink: Story = {
 
     return (
       <StyledMonthField
-        inputtype={args.inputtype}
+        inputType={args.inputType}
         name={args.name}
         placeholder={args.placeholder}
         value={args.value}
@@ -186,7 +186,7 @@ export const PrimaryMonhWithLink: Story = {
 export const PrimaryMonthLink: Story = {
   name: "month (вспомогательные текст и ссылка)",
   args: {
-    inputtype: "month",
+    inputType: "month",
     name: "text",
     value: null,
     placeholder: "Введите дату",
@@ -211,7 +211,7 @@ export const PrimaryMonthLink: Story = {
 
     return (
       <StyledMonthField
-        inputtype={args.inputtype}
+        inputType={args.inputType}
         name={args.name}
         placeholder={args.placeholder}
         value={args.value}
@@ -227,7 +227,7 @@ export const PrimaryMonthLink: Story = {
 export const PrimaryMonthLinkError: Story = {
   name: "month (вспомогательные текст и ссылка и ошибка)",
   args: {
-    inputtype: "month",
+    inputType: "month",
     name: "text",
     value: null,
     placeholder: "Введите дату",
@@ -253,7 +253,7 @@ export const PrimaryMonthLinkError: Story = {
 
     return (
       <StyledMonthField
-        inputtype={args.inputtype}
+        inputType={args.inputType}
         name={args.name}
         placeholder={args.placeholder}
         value={args.value}
@@ -270,7 +270,7 @@ export const PrimaryMonthLinkError: Story = {
 export const PrimaryMonthStatus: Story = {
   name: "month (статус поля)",
   args: {
-    inputtype: "month",
+    inputType: "month",
     name: "text",
     value: null,
     placeholder: "Введите дату",
@@ -288,7 +288,7 @@ export const PrimaryMonthStatus: Story = {
 
     return (
       <StyledMonthField
-        inputtype={args.inputtype}
+        inputType={args.inputType}
         name={args.name}
         placeholder={args.placeholder}
         value={args.value}
@@ -304,7 +304,7 @@ export const PrimaryMonthStatus: Story = {
 export const PrimaryMonthDisabled: Story = {
   name: "month (отключенное поле)",
   args: {
-    inputtype: "month",
+    inputType: "month",
     name: "text",
     value: null,
     placeholder: "Введите дату",
@@ -322,7 +322,7 @@ export const PrimaryMonthDisabled: Story = {
 
     return (
       <StyledMonthField
-        inputtype={args.inputtype}
+        inputType={args.inputType}
         name={args.name}
         placeholder={args.placeholder}
         value={args.value}
@@ -338,7 +338,7 @@ export const PrimaryMonthDisabled: Story = {
 export const PrimaryMonthValue: Story = {
   name: "month (заполненное поле)",
   args: {
-    inputtype: "month",
+    inputType: "month",
     name: "text",
     value: "2024-04-27",
     placeholder: "Введите дату",
@@ -355,7 +355,7 @@ export const PrimaryMonthValue: Story = {
 
     return (
       <StyledMonthField
-        inputtype={args.inputtype}
+        inputType={args.inputType}
         name={args.name}
         placeholder={args.placeholder}
         value={args.value}
@@ -370,7 +370,7 @@ export const PrimaryMonthValue: Story = {
 export const PrimaryMonthHeading: Story = {
   name: "month (заголовок)",
   args: {
-    inputtype: "month",
+    inputType: "month",
     name: "text",
     value: null,
     placeholder: "Введите дату",
@@ -388,7 +388,7 @@ export const PrimaryMonthHeading: Story = {
 
     return (
       <StyledMonthField
-        inputtype={args.inputtype}
+        inputType={args.inputType}
         name={args.name}
         placeholder={args.placeholder}
         value={args.value}
@@ -404,7 +404,7 @@ export const PrimaryMonthHeading: Story = {
 export const PrimaryMonthDividers: Story = {
   name: "month (разделители)",
   args: {
-    inputtype: "month",
+    inputType: "month",
     name: "text",
     value: null,
     placeholder: "Введите дату",
@@ -426,7 +426,7 @@ export const PrimaryMonthDividers: Story = {
 
     return (
       <StyledMonthField
-        inputtype={args.inputtype}
+        inputType={args.inputType}
         name={args.name}
         placeholder={args.placeholder}
         value={args.value}

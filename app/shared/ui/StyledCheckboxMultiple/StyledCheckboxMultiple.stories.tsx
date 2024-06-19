@@ -42,7 +42,7 @@ type Story = StoryObj<typeof meta>;
 export const Primary: Story = {
   name: "checkboxMultiple (базовый)",
   args: {
-    inputtype: "checkboxMultiple",
+    inputType: "checkboxMultiple",
     name: "radio",
     value: [],
     options: [
@@ -84,7 +84,7 @@ export const Primary: Story = {
 
     return (
       <StyledCheckboxMultiple
-        inputtype={args.inputtype}
+        inputType={args.inputType}
         value={args.value}
         name={args.name}
         options={args.options}
@@ -105,7 +105,7 @@ export const Primary: Story = {
 export const PrimaryFilled: Story = {
   name: "checkboxMultiple (заполенный)",
   args: {
-    inputtype: "checkboxMultiple",
+    inputType: "checkboxMultiple",
     name: "radio",
     value: ["spring"],
     options: [
@@ -147,7 +147,7 @@ export const PrimaryFilled: Story = {
 
     return (
       <StyledCheckboxMultiple
-        inputtype={args.inputtype}
+        inputType={args.inputType}
         value={args.value}
         name={args.name}
         options={args.options}
@@ -168,7 +168,7 @@ export const PrimaryFilled: Story = {
 export const PrimaryDisabled: Story = {
   name: "checkboxMultiple (отключенный)",
   args: {
-    inputtype: "checkboxMultiple",
+    inputType: "checkboxMultiple",
     name: "radio",
     value: ["summer"],
     options: [
@@ -210,7 +210,7 @@ export const PrimaryDisabled: Story = {
 
     return (
       <StyledCheckboxMultiple
-        inputtype={args.inputtype}
+        inputType={args.inputType}
         value={args.value}
         name={args.name}
         options={args.options}
@@ -231,7 +231,7 @@ export const PrimaryDisabled: Story = {
 export const PrimaryError: Story = {
   name: "checkboxMultiple (ошибка)",
   args: {
-    inputtype: "checkboxMultiple",
+    inputType: "checkboxMultiple",
     name: "radio",
     value: ["summer"],
     options: [
@@ -273,7 +273,7 @@ export const PrimaryError: Story = {
 
     return (
       <StyledCheckboxMultiple
-        inputtype={args.inputtype}
+        inputType={args.inputType}
         value={args.value}
         name={args.name}
         options={args.options}
@@ -294,7 +294,7 @@ export const PrimaryError: Story = {
 export const PrimaryStatus: Story = {
   name: "checkboxMultiple (статус)",
   args: {
-    inputtype: "checkboxMultiple",
+    inputType: "checkboxMultiple",
     name: "radio",
     value: ["summer"],
     options: [
@@ -336,7 +336,7 @@ export const PrimaryStatus: Story = {
 
     return (
       <StyledCheckboxMultiple
-        inputtype={args.inputtype}
+        inputType={args.inputType}
         value={args.value}
         name={args.name}
         options={args.options}
@@ -357,7 +357,7 @@ export const PrimaryStatus: Story = {
 export const PrimaryHeading: Story = {
   name: "checkboxMultiple (заголовок)",
   args: {
-    inputtype: "checkboxMultiple",
+    inputType: "checkboxMultiple",
     name: "radio",
     value: ["summer"],
     options: [
@@ -399,7 +399,7 @@ export const PrimaryHeading: Story = {
 
     return (
       <StyledCheckboxMultiple
-        inputtype={args.inputtype}
+        inputType={args.inputType}
         value={args.value}
         name={args.name}
         options={args.options}
@@ -420,7 +420,7 @@ export const PrimaryHeading: Story = {
 export const PrimaryHelpingText: Story = {
   name: "checkboxMultiple (вспомогательный текст)",
   args: {
-    inputtype: "checkboxMultiple",
+    inputType: "checkboxMultiple",
     name: "radio",
     value: ["summer"],
     options: [
@@ -462,7 +462,7 @@ export const PrimaryHelpingText: Story = {
 
     return (
       <StyledCheckboxMultiple
-        inputtype={args.inputtype}
+        inputType={args.inputType}
         value={args.value}
         name={args.name}
         options={args.options}
@@ -483,7 +483,7 @@ export const PrimaryHelpingText: Story = {
 export const PrimaryHelpingTextLink: Story = {
   name: "checkboxMultiple (вспомогательный текст и ссылка)",
   args: {
-    inputtype: "checkboxMultiple",
+    inputType: "checkboxMultiple",
     name: "radio",
     value: ["summer"],
     options: [
@@ -530,7 +530,7 @@ export const PrimaryHelpingTextLink: Story = {
 
     return (
       <StyledCheckboxMultiple
-        inputtype={args.inputtype}
+        inputType={args.inputType}
         value={args.value}
         name={args.name}
         options={args.options}
@@ -551,7 +551,7 @@ export const PrimaryHelpingTextLink: Story = {
 export const PrimaryDivider: Story = {
   name: "checkboxMultiple (разделители)",
   args: {
-    inputtype: "checkboxMultiple",
+    inputType: "checkboxMultiple",
     name: "radio",
     value: ["summer"],
     options: [
@@ -598,7 +598,7 @@ export const PrimaryDivider: Story = {
 
     return (
       <StyledCheckboxMultiple
-        inputtype={args.inputtype}
+        inputType={args.inputType}
         value={args.value}
         name={args.name}
         options={args.options}

@@ -31,7 +31,7 @@ import { ClipIcon } from "./icons/ClipIcon";
 import { DownloadIcon } from "./icons/DownloadIcon";
 
 type FileInputProps = {
-  inputtype: "file";
+  inputType: "file";
   name: string;
   value: string;
   onChange: UseFormSetValue<{
@@ -45,7 +45,7 @@ type FileInputProps = {
   validation: "default" | "none";
   url: string;
 
-  disabled?: true;
+  disabled?: boolean;
   heading?: string;
   error?: string;
   status?: "warning";

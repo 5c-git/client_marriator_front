@@ -11,12 +11,12 @@
 export type Inputs = [
   (
     | {
-        inputtype: "text";
+        inputType: "text";
         name: string;
         value: string;
         placeholder: string;
         validation: "none" | "default";
-        disabled?: true;
+        disabled?: boolean;
         heading?: string;
         error?: string;
         status?: "warning";
@@ -35,7 +35,55 @@ export type Inputs = [
         [k: string]: unknown;
       }
     | {
-        inputtype: "select";
+        inputType: "snils";
+        name: string;
+        value: string;
+        placeholder: string;
+        validation: "none" | "default";
+        disabled?: boolean;
+        heading?: string;
+        error?: string;
+        status?: "warning";
+        dividerTop?: true;
+        dividerBottom?: true;
+        helperInfo?: {
+          text?: string;
+          link?: {
+            text: string;
+            path: string;
+            type: "internal" | "external";
+            [k: string]: unknown;
+          };
+        };
+        additionalProperties?: never;
+        [k: string]: unknown;
+      }
+    | {
+        inputType: "sms";
+        name: string;
+        value: string;
+        placeholder: string;
+        validation: "none" | "default";
+        disabled?: boolean;
+        heading?: string;
+        error?: string;
+        status?: "warning";
+        dividerTop?: true;
+        dividerBottom?: true;
+        helperInfo?: {
+          text?: string;
+          link?: {
+            text: string;
+            path: string;
+            type: "internal" | "external";
+            [k: string]: unknown;
+          };
+        };
+        additionalProperties?: never;
+        [k: string]: unknown;
+      }
+    | {
+        inputType: "select";
         name: string;
         value: string;
         placeholder: string;
@@ -56,7 +104,7 @@ export type Inputs = [
             [k: string]: unknown;
           }[],
         ];
-        disabled?: true;
+        disabled?: boolean;
         validation: "none" | "default";
         heading?: string;
         error?: string;
@@ -76,7 +124,7 @@ export type Inputs = [
         [k: string]: unknown;
       }
     | {
-        inputtype: "radio";
+        inputType: "radio";
         name: string;
         value: string;
         validation: "none" | "default";
@@ -117,10 +165,12 @@ export type Inputs = [
         [k: string]: unknown;
       }
     | {
-        inputtype: "checkboxMultiple";
+        inputType: "photo";
         name: string;
-        value: string[];
+        value: string;
         validation: "none" | "default";
+        url: string;
+        disabled?: boolean;
         heading?: string;
         error?: string;
         status?: "warning";
@@ -135,28 +185,11 @@ export type Inputs = [
             [k: string]: unknown;
           };
         };
-        /**
-         * @minItems 1
-         */
-        options: [
-          {
-            value: string;
-            label: string;
-            disabled: boolean;
-            [k: string]: unknown;
-          },
-          ...{
-            value: string;
-            label: string;
-            disabled: boolean;
-            [k: string]: unknown;
-          }[],
-        ];
         additionalProperties?: never;
         [k: string]: unknown;
       }
     | {
-        inputtype: "photoCheckbox";
+        inputType: "photoCheckbox";
         name: string;
         value: string[];
         validation: "none" | "default";
@@ -223,15 +256,15 @@ export type Inputs = [
         [k: string]: unknown;
       }
     | {
-        inputtype: "checkbox";
+        inputType: "phone";
         name: string;
-        value: boolean;
-        label: string;
-        validation: "none" | "checked" | "unchecked";
+        value: string;
+        placeholder: string;
+        validation: "none" | "default";
+        disabled?: boolean;
         heading?: string;
         error?: string;
         status?: "warning";
-        disabled?: true;
         dividerTop?: true;
         dividerBottom?: true;
         helperInfo?: {
@@ -247,13 +280,61 @@ export type Inputs = [
         [k: string]: unknown;
       }
     | {
-        inputtype: "file";
+        inputType: "month";
+        name: string;
+        value: string | null;
+        placeholder: string;
+        validation: "none" | "default";
+        disabled?: boolean;
+        heading?: string;
+        error?: string;
+        status?: "warning";
+        dividerTop?: true;
+        dividerBottom?: true;
+        helperInfo?: {
+          text?: string;
+          link?: {
+            text: string;
+            path: string;
+            type: "internal" | "external";
+            [k: string]: unknown;
+          };
+        };
+        additionalProperties?: never;
+        [k: string]: unknown;
+      }
+    | {
+        inputType: "inn";
+        name: string;
+        value: string;
+        placeholder: string;
+        validation: "none" | "default";
+        disabled?: boolean;
+        heading?: string;
+        error?: string;
+        status?: "warning";
+        dividerTop?: true;
+        dividerBottom?: true;
+        helperInfo?: {
+          text?: string;
+          link?: {
+            text: string;
+            path: string;
+            type: "internal" | "external";
+            [k: string]: unknown;
+          };
+        };
+        additionalProperties?: never;
+        [k: string]: unknown;
+      }
+    | {
+        inputType: "file";
         name: string;
         value: string;
         placeholder: string;
         validation: "none" | "default";
         url: string;
-        disabled?: true;
+        disabled?: boolean;
         heading?: string;
         error?: string;
         status?: "warning";
@@ -276,36 +357,12 @@ export type Inputs = [
         [k: string]: unknown;
       }
     | {
-        inputtype: "photo";
-        name: string;
-        value: string;
-        validation: "none" | "default";
-        url: string;
-        disabled?: true;
-        heading?: string;
-        error?: string;
-        status?: "warning";
-        dividerTop?: true;
-        dividerBottom?: true;
-        helperInfo?: {
-          text?: string;
-          link?: {
-            text: string;
-            path: string;
-            type: "internal" | "external";
-            [k: string]: unknown;
-          };
-        };
-        additionalProperties?: never;
-        [k: string]: unknown;
-      }
-    | {
-        inputtype: "phone";
+        inputType: "email";
         name: string;
         value: string;
         placeholder: string;
         validation: "none" | "default";
-        disabled?: true;
+        disabled?: boolean;
         heading?: string;
         error?: string;
         status?: "warning";
@@ -324,12 +381,12 @@ export type Inputs = [
         [k: string]: unknown;
       }
     | {
-        inputtype: "date";
+        inputType: "date";
         name: string;
         value: string | null;
         placeholder: string;
         validation: "none" | "default" | "16years";
-        disabled?: true;
+        disabled?: boolean;
         heading?: string;
         error?: string;
         status?: "warning";
@@ -348,12 +405,75 @@ export type Inputs = [
         [k: string]: unknown;
       }
     | {
-        inputtype: "card";
+        inputType: "checkboxMultiple";
+        name: string;
+        value: string[];
+        validation: "none" | "default";
+        heading?: string;
+        error?: string;
+        status?: "warning";
+        dividerTop?: true;
+        dividerBottom?: true;
+        helperInfo?: {
+          text?: string;
+          link?: {
+            text: string;
+            path: string;
+            type: "internal" | "external";
+            [k: string]: unknown;
+          };
+        };
+        /**
+         * @minItems 1
+         */
+        options: [
+          {
+            value: string;
+            label: string;
+            disabled: boolean;
+            [k: string]: unknown;
+          },
+          ...{
+            value: string;
+            label: string;
+            disabled: boolean;
+            [k: string]: unknown;
+          }[],
+        ];
+        additionalProperties?: never;
+        [k: string]: unknown;
+      }
+    | {
+        inputType: "checkbox";
+        name: string;
+        value: boolean;
+        label: string;
+        validation: "none" | "checked" | "unchecked";
+        heading?: string;
+        error?: string;
+        status?: "warning";
+        disabled?: boolean;
+        dividerTop?: true;
+        dividerBottom?: true;
+        helperInfo?: {
+          text?: string;
+          link?: {
+            text: string;
+            path: string;
+            type: "internal" | "external";
+            [k: string]: unknown;
+          };
+        };
+        additionalProperties?: never;
+        [k: string]: unknown;
+      }
+    | {
+        inputType: "card";
         name: string;
         value: string;
         placeholder: string;
         validation: "none" | "default";
-        disabled?: true;
+        disabled?: boolean;
         heading?: string;
         error?: string;
         status?: "warning";
@@ -372,132 +492,12 @@ export type Inputs = [
         [k: string]: unknown;
       }
     | {
-        inputtype: "month";
-        name: string;
-        value: string | null;
-        placeholder: string;
-        validation: "none" | "default";
-        disabled?: true;
-        heading?: string;
-        error?: string;
-        status?: "warning";
-        dividerTop?: true;
-        dividerBottom?: true;
-        helperInfo?: {
-          text?: string;
-          link?: {
-            text: string;
-            path: string;
-            type: "internal" | "external";
-            [k: string]: unknown;
-          };
-        };
-        additionalProperties?: never;
-        [k: string]: unknown;
-      }
-    | {
-        inputtype: "email";
+        inputType: "account";
         name: string;
         value: string;
         placeholder: string;
         validation: "none" | "default";
-        disabled?: true;
-        heading?: string;
-        error?: string;
-        status?: "warning";
-        dividerTop?: true;
-        dividerBottom?: true;
-        helperInfo?: {
-          text?: string;
-          link?: {
-            text: string;
-            path: string;
-            type: "internal" | "external";
-            [k: string]: unknown;
-          };
-        };
-        additionalProperties?: never;
-        [k: string]: unknown;
-      }
-    | {
-        inputtype: "account";
-        name: string;
-        value: string;
-        placeholder: string;
-        validation: "none" | "default";
-        disabled?: true;
-        heading?: string;
-        error?: string;
-        status?: "warning";
-        dividerTop?: true;
-        dividerBottom?: true;
-        helperInfo?: {
-          text?: string;
-          link?: {
-            text: string;
-            path: string;
-            type: "internal" | "external";
-            [k: string]: unknown;
-          };
-        };
-        additionalProperties?: never;
-        [k: string]: unknown;
-      }
-    | {
-        inputtype: "inn";
-        name: string;
-        value: string;
-        placeholder: string;
-        validation: "none" | "default";
-        disabled?: true;
-        heading?: string;
-        error?: string;
-        status?: "warning";
-        dividerTop?: true;
-        dividerBottom?: true;
-        helperInfo?: {
-          text?: string;
-          link?: {
-            text: string;
-            path: string;
-            type: "internal" | "external";
-            [k: string]: unknown;
-          };
-        };
-        additionalProperties?: never;
-        [k: string]: unknown;
-      }
-    | {
-        inputtype: "snils";
-        name: string;
-        value: string;
-        placeholder: string;
-        validation: "none" | "default";
-        disabled?: true;
-        heading?: string;
-        error?: string;
-        status?: "warning";
-        dividerTop?: true;
-        dividerBottom?: true;
-        helperInfo?: {
-          text?: string;
-          link?: {
-            text: string;
-            path: string;
-            type: "internal" | "external";
-            [k: string]: unknown;
-          };
-        };
-        additionalProperties?: never;
-        [k: string]: unknown;
-      }
-    | {
-        inputtype: "sms";
-        name: string;
-        value: string;
-        placeholder: string;
-        validation: "none" | "default";
-        disabled?: true;
+        disabled?: boolean;
         heading?: string;
         error?: string;
         status?: "warning";
@@ -518,12 +518,12 @@ export type Inputs = [
   ),
   ...(
     | {
-        inputtype: "text";
+        inputType: "text";
         name: string;
         value: string;
         placeholder: string;
         validation: "none" | "default";
-        disabled?: true;
+        disabled?: boolean;
         heading?: string;
         error?: string;
         status?: "warning";
@@ -542,7 +542,55 @@ export type Inputs = [
         [k: string]: unknown;
       }
     | {
-        inputtype: "select";
+        inputType: "snils";
+        name: string;
+        value: string;
+        placeholder: string;
+        validation: "none" | "default";
+        disabled?: boolean;
+        heading?: string;
+        error?: string;
+        status?: "warning";
+        dividerTop?: true;
+        dividerBottom?: true;
+        helperInfo?: {
+          text?: string;
+          link?: {
+            text: string;
+            path: string;
+            type: "internal" | "external";
+            [k: string]: unknown;
+          };
+        };
+        additionalProperties?: never;
+        [k: string]: unknown;
+      }
+    | {
+        inputType: "sms";
+        name: string;
+        value: string;
+        placeholder: string;
+        validation: "none" | "default";
+        disabled?: boolean;
+        heading?: string;
+        error?: string;
+        status?: "warning";
+        dividerTop?: true;
+        dividerBottom?: true;
+        helperInfo?: {
+          text?: string;
+          link?: {
+            text: string;
+            path: string;
+            type: "internal" | "external";
+            [k: string]: unknown;
+          };
+        };
+        additionalProperties?: never;
+        [k: string]: unknown;
+      }
+    | {
+        inputType: "select";
         name: string;
         value: string;
         placeholder: string;
@@ -563,7 +611,7 @@ export type Inputs = [
             [k: string]: unknown;
           }[],
         ];
-        disabled?: true;
+        disabled?: boolean;
         validation: "none" | "default";
         heading?: string;
         error?: string;
@@ -583,7 +631,7 @@ export type Inputs = [
         [k: string]: unknown;
       }
     | {
-        inputtype: "radio";
+        inputType: "radio";
         name: string;
         value: string;
         validation: "none" | "default";
@@ -624,10 +672,12 @@ export type Inputs = [
         [k: string]: unknown;
       }
     | {
-        inputtype: "checkboxMultiple";
+        inputType: "photo";
         name: string;
-        value: string[];
+        value: string;
         validation: "none" | "default";
+        url: string;
+        disabled?: boolean;
         heading?: string;
         error?: string;
         status?: "warning";
@@ -642,28 +692,11 @@ export type Inputs = [
             [k: string]: unknown;
           };
         };
-        /**
-         * @minItems 1
-         */
-        options: [
-          {
-            value: string;
-            label: string;
-            disabled: boolean;
-            [k: string]: unknown;
-          },
-          ...{
-            value: string;
-            label: string;
-            disabled: boolean;
-            [k: string]: unknown;
-          }[],
-        ];
         additionalProperties?: never;
         [k: string]: unknown;
       }
     | {
-        inputtype: "photoCheckbox";
+        inputType: "photoCheckbox";
         name: string;
         value: string[];
         validation: "none" | "default";
@@ -730,15 +763,15 @@ export type Inputs = [
         [k: string]: unknown;
       }
     | {
-        inputtype: "checkbox";
+        inputType: "phone";
         name: string;
-        value: boolean;
-        label: string;
-        validation: "none" | "checked" | "unchecked";
+        value: string;
+        placeholder: string;
+        validation: "none" | "default";
+        disabled?: boolean;
         heading?: string;
         error?: string;
         status?: "warning";
-        disabled?: true;
         dividerTop?: true;
         dividerBottom?: true;
         helperInfo?: {
@@ -754,13 +787,61 @@ export type Inputs = [
         [k: string]: unknown;
       }
     | {
-        inputtype: "file";
+        inputType: "month";
+        name: string;
+        value: string | null;
+        placeholder: string;
+        validation: "none" | "default";
+        disabled?: boolean;
+        heading?: string;
+        error?: string;
+        status?: "warning";
+        dividerTop?: true;
+        dividerBottom?: true;
+        helperInfo?: {
+          text?: string;
+          link?: {
+            text: string;
+            path: string;
+            type: "internal" | "external";
+            [k: string]: unknown;
+          };
+        };
+        additionalProperties?: never;
+        [k: string]: unknown;
+      }
+    | {
+        inputType: "inn";
+        name: string;
+        value: string;
+        placeholder: string;
+        validation: "none" | "default";
+        disabled?: boolean;
+        heading?: string;
+        error?: string;
+        status?: "warning";
+        dividerTop?: true;
+        dividerBottom?: true;
+        helperInfo?: {
+          text?: string;
+          link?: {
+            text: string;
+            path: string;
+            type: "internal" | "external";
+            [k: string]: unknown;
+          };
+        };
+        additionalProperties?: never;
+        [k: string]: unknown;
+      }
+    | {
+        inputType: "file";
         name: string;
         value: string;
         placeholder: string;
         validation: "none" | "default";
         url: string;
-        disabled?: true;
+        disabled?: boolean;
         heading?: string;
         error?: string;
         status?: "warning";
@@ -783,36 +864,12 @@ export type Inputs = [
         [k: string]: unknown;
       }
     | {
-        inputtype: "photo";
-        name: string;
-        value: string;
-        validation: "none" | "default";
-        url: string;
-        disabled?: true;
-        heading?: string;
-        error?: string;
-        status?: "warning";
-        dividerTop?: true;
-        dividerBottom?: true;
-        helperInfo?: {
-          text?: string;
-          link?: {
-            text: string;
-            path: string;
-            type: "internal" | "external";
-            [k: string]: unknown;
-          };
-        };
-        additionalProperties?: never;
-        [k: string]: unknown;
-      }
-    | {
-        inputtype: "phone";
+        inputType: "email";
         name: string;
         value: string;
         placeholder: string;
         validation: "none" | "default";
-        disabled?: true;
+        disabled?: boolean;
         heading?: string;
         error?: string;
         status?: "warning";
@@ -831,12 +888,12 @@ export type Inputs = [
         [k: string]: unknown;
       }
     | {
-        inputtype: "date";
+        inputType: "date";
         name: string;
         value: string | null;
         placeholder: string;
         validation: "none" | "default" | "16years";
-        disabled?: true;
+        disabled?: boolean;
         heading?: string;
         error?: string;
         status?: "warning";
@@ -855,12 +912,75 @@ export type Inputs = [
         [k: string]: unknown;
       }
     | {
-        inputtype: "card";
+        inputType: "checkboxMultiple";
+        name: string;
+        value: string[];
+        validation: "none" | "default";
+        heading?: string;
+        error?: string;
+        status?: "warning";
+        dividerTop?: true;
+        dividerBottom?: true;
+        helperInfo?: {
+          text?: string;
+          link?: {
+            text: string;
+            path: string;
+            type: "internal" | "external";
+            [k: string]: unknown;
+          };
+        };
+        /**
+         * @minItems 1
+         */
+        options: [
+          {
+            value: string;
+            label: string;
+            disabled: boolean;
+            [k: string]: unknown;
+          },
+          ...{
+            value: string;
+            label: string;
+            disabled: boolean;
+            [k: string]: unknown;
+          }[],
+        ];
+        additionalProperties?: never;
+        [k: string]: unknown;
+      }
+    | {
+        inputType: "checkbox";
+        name: string;
+        value: boolean;
+        label: string;
+        validation: "none" | "checked" | "unchecked";
+        heading?: string;
+        error?: string;
+        status?: "warning";
+        disabled?: boolean;
+        dividerTop?: true;
+        dividerBottom?: true;
+        helperInfo?: {
+          text?: string;
+          link?: {
+            text: string;
+            path: string;
+            type: "internal" | "external";
+            [k: string]: unknown;
+          };
+        };
+        additionalProperties?: never;
+        [k: string]: unknown;
+      }
+    | {
+        inputType: "card";
         name: string;
         value: string;
         placeholder: string;
         validation: "none" | "default";
-        disabled?: true;
+        disabled?: boolean;
         heading?: string;
         error?: string;
         status?: "warning";
@@ -879,132 +999,12 @@ export type Inputs = [
         [k: string]: unknown;
       }
     | {
-        inputtype: "month";
-        name: string;
-        value: string | null;
-        placeholder: string;
-        validation: "none" | "default";
-        disabled?: true;
-        heading?: string;
-        error?: string;
-        status?: "warning";
-        dividerTop?: true;
-        dividerBottom?: true;
-        helperInfo?: {
-          text?: string;
-          link?: {
-            text: string;
-            path: string;
-            type: "internal" | "external";
-            [k: string]: unknown;
-          };
-        };
-        additionalProperties?: never;
-        [k: string]: unknown;
-      }
-    | {
-        inputtype: "email";
+        inputType: "account";
         name: string;
         value: string;
         placeholder: string;
         validation: "none" | "default";
-        disabled?: true;
-        heading?: string;
-        error?: string;
-        status?: "warning";
-        dividerTop?: true;
-        dividerBottom?: true;
-        helperInfo?: {
-          text?: string;
-          link?: {
-            text: string;
-            path: string;
-            type: "internal" | "external";
-            [k: string]: unknown;
-          };
-        };
-        additionalProperties?: never;
-        [k: string]: unknown;
-      }
-    | {
-        inputtype: "account";
-        name: string;
-        value: string;
-        placeholder: string;
-        validation: "none" | "default";
-        disabled?: true;
-        heading?: string;
-        error?: string;
-        status?: "warning";
-        dividerTop?: true;
-        dividerBottom?: true;
-        helperInfo?: {
-          text?: string;
-          link?: {
-            text: string;
-            path: string;
-            type: "internal" | "external";
-            [k: string]: unknown;
-          };
-        };
-        additionalProperties?: never;
-        [k: string]: unknown;
-      }
-    | {
-        inputtype: "inn";
-        name: string;
-        value: string;
-        placeholder: string;
-        validation: "none" | "default";
-        disabled?: true;
-        heading?: string;
-        error?: string;
-        status?: "warning";
-        dividerTop?: true;
-        dividerBottom?: true;
-        helperInfo?: {
-          text?: string;
-          link?: {
-            text: string;
-            path: string;
-            type: "internal" | "external";
-            [k: string]: unknown;
-          };
-        };
-        additionalProperties?: never;
-        [k: string]: unknown;
-      }
-    | {
-        inputtype: "snils";
-        name: string;
-        value: string;
-        placeholder: string;
-        validation: "none" | "default";
-        disabled?: true;
-        heading?: string;
-        error?: string;
-        status?: "warning";
-        dividerTop?: true;
-        dividerBottom?: true;
-        helperInfo?: {
-          text?: string;
-          link?: {
-            text: string;
-            path: string;
-            type: "internal" | "external";
-            [k: string]: unknown;
-          };
-        };
-        additionalProperties?: never;
-        [k: string]: unknown;
-      }
-    | {
-        inputtype: "sms";
-        name: string;
-        value: string;
-        placeholder: string;
-        validation: "none" | "default";
-        disabled?: true;
+        disabled?: boolean;
         heading?: string;
         error?: string;
         status?: "warning";
