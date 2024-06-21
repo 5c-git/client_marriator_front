@@ -16,6 +16,12 @@ import { Box, Button } from "@mui/material";
 import { StyledPhoneField } from "~/shared/ui/StyledPhoneField/StyledPhoneField";
 import { Loader } from "~/shared/ui/Loader/Loader";
 
+const validationSchema = Yup.object().shape({
+  phone: Yup.string()
+    .matches(phoneRegExp, t("Phone.inputRegExpError"))
+    .required(t("Phone.inputError")),
+});
+
 // export async function clientAction({ request }: ClientActionFunctionArgs) {
 //   const fields = await request.json();
 
@@ -27,12 +33,6 @@ import { Loader } from "~/shared/ui/Loader/Loader";
 
 //   return data;
 // }
-
-const validationSchema = Yup.object().shape({
-  phone: Yup.string()
-    .matches(phoneRegExp, t("Phone.inputRegExpError"))
-    .required(t("Phone.inputError")),
-});
 
 export default function Phone() {
   // const theme = useTheme();
