@@ -1,0 +1,8 @@
+{
+  "header": "Welcome",
+  "intro": "Personal privacy settings",
+  "text": "Enter your unique pin-code",
+  "forgetPin": "Forgot pin-code?",
+  "restorePin": "Restore",
+  "pinError": "Wrong pin-code!"
+}

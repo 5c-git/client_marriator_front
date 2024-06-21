@@ -4,6 +4,15 @@ import IndexEN from "../routes/_index/locales/en.json";
 import PhoneRU from "../routes/signin/phone/locales/ru.json";
 import PhoneEN from "../routes/signin/phone/locales/en.json";
 
+import SmsRU from "../routes/signin/sms/locales/ru.json";
+import SmsEN from "../routes/signin/sms/locales/en.json";
+
+import CreatePinRU from "../routes/signin/createPin/locales/ru.json";
+import CreatePinEN from "../routes/signin/createPin/locales/en.json";
+
+import PinRU from "../routes/signin/pin/locales/ru.json";
+import PinEN from "../routes/signin/pin/locales/en.json";
+
 // This is the list of languages your application supports
 export const supportedLngs = ["ru", "en"];
 
@@ -16,12 +25,18 @@ export const resources = {
     translation: {
       Index: IndexRU,
       Phone: PhoneRU,
+      Sms: SmsRU,
+      Pin: PinRU,
+      CreatePin: CreatePinRU,
     },
   },
   en: {
     translation: {
       Index: IndexEN,
       Phone: PhoneEN,
+      Sms: SmsEN,
+      Pin: PinEN,
+      CreatePin: CreatePinEN,
     },
   },
 };
