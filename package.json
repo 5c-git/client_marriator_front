@@ -67,7 +67,6 @@
     "msw-storybook-addon": "^2.0.0",
     "storybook": "^8.0.8",
     "storybook-addon-remix-react-router": "^3.0.0",
-    "storybook-addon-theme-provider": "^0.2.1",
     "typescript": "^5.1.6",
     "vite": "^5.1.0",
     "vite-tsconfig-paths": "^4.2.1"

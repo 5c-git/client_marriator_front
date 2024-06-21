@@ -16,6 +16,14 @@ import { Box, Button } from "@mui/material";
 import { StyledPhoneField } from "~/shared/ui/StyledPhoneField/StyledPhoneField";
 import { Loader } from "~/shared/ui/Loader/Loader";
 
+import marriator from "./marriator.svg";
+
+const validationSchema = Yup.object().shape({
+  phone: Yup.string()
+    .matches(phoneRegExp, t("Phone.inputValidation", { context: "regExp" }))
+    .required(t("Phone.inputValidation")),
+});
+
 // export async function clientAction({ request }: ClientActionFunctionArgs) {
 //   const fields = await request.json();
 
@@ -27,12 +35,6 @@ import { Loader } from "~/shared/ui/Loader/Loader";
 
 //   return data;
 // }
-
-const validationSchema = Yup.object().shape({
-  phone: Yup.string()
-    .matches(phoneRegExp, t("Phone.inputRegExpError"))
-    .required(t("Phone.inputError")),
-});
 
 export default function Phone() {
   // const theme = useTheme();
@@ -56,9 +58,28 @@ export default function Phone() {
 
       <Box
         sx={{
+          paddingRight: "16px",
+          paddingLeft: "16px",
           paddingTop: "60px",
         }}
       >
+        <Box
+          sx={{
+            width: "164px",
+            height: "78px",
+            margin: "0 auto",
+          }}
+        >
+          <img
+            src={marriator}
+            style={{
+              height: "100%",
+              width: "100%",
+              objectFit: "cover",
+            }}
+            alt="marriator"
+          />
+        </Box>
         <form
           onSubmit={handleSubmit((values) => {
             submit(JSON.stringify(values), {
@@ -76,16 +97,16 @@ export default function Phone() {
                 error={errors.phone?.message}
                 placeholder={t("Phone.inputPlaceholder")}
                 onImmediateChange={() => {}}
-                // inputStyles={{
-                //   paddingRight: "16px",
-                //   paddingLeft: "16px",
-                // }}
+                styles={{
+                  paddingBottom: "16px",
+                  paddingTop: "38px",
+                }}
                 {...field}
               />
             )}
           />
 
-          <Button type="submit" variant="contained">
+          <Button type="submit" variant="outlined">
             {t("Phone.submitButton")}
           </Button>
         </form>

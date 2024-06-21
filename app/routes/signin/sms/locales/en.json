@@ -1,0 +1,11 @@
+{
+  "header": "Confirm phone",
+  "sendAgain": "Resend code",
+  "timer": "Resend available after",
+  "notification": "Sms code has been sent to provided phone number!",
+  "errorNotifivation": "Wrong code!",
+  "inputPlaceholder": "Sms code",
+
+  "inputValidation": "Required field",
+  "inputValidation_lenght": "Please provide correct value"
+}
