@@ -1,12 +1,12 @@
 import type { StoryObj, Meta } from "@storybook/react";
 import * as DocBlock from "@storybook/blocks";
 
-import successSchema from "./success.schema.json";
+import schema from "./postSaveForm.schema.json";
 
 const Mock = () => <></>;
 
 const meta = {
-  title: "Сетевые запросы/Регистрация/getRegStep2",
+  title: "Сетевые запросы/Регистрация/postSaveForm",
   component: Mock,
   tags: ["autodocs"],
 } satisfies Meta<typeof Mock>;
@@ -22,29 +22,31 @@ export const Basic: Story = {
           <DocBlock.Title />
           <DocBlock.Description />
 
-          <h1>method: GET</h1>
-          <h3>переменная: VITE_REG_STEP_2</h3>
-          <h3>адрес: {import.meta.env.VITE_REG_STEP_2}</h3>
+          <h1>method: POST</h1>
+          <h3>переменная: VITE_SAVE_FORM</h3>
+          <h3>адрес: {import.meta.env.VITE_SAVE_FORM}</h3>
 
-          <h2>Принимаемые парметры</h2>
-          <p>—</p>
-          {/* <DocBlock.Source
+          <h2>Payload</h2>
+          <DocBlock.Source
             language="json"
             code={JSON.stringify(
               {
-                urlSearchParams: {
-                  login: "string",
+                body: {
+                  JSON: {
+                    step: "number",
+                    formData: "JS объект полей формы",
+                  },
                 },
               },
               null,
               2
             )}
-          /> */}
+          />
 
-          <h2>Success JSON Schema (ВРЕМЕННАЯ НЕПОЛНАЯ)</h2>
+          <h2>Response JSON Schema</h2>
           <DocBlock.Source
             language="json"
-            code={JSON.stringify(successSchema, null, 2)}
+            code={JSON.stringify(schema, null, 2)}
           />
         </>
       ),

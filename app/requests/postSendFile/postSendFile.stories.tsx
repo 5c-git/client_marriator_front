@@ -27,7 +27,7 @@ export const Basic: Story = {
           <h3>переменная: VITE_SEND_FILE</h3>
           <h3>адрес: {import.meta.env.VITE_SEND_FILE}</h3>
 
-          <h2>Принимаемые парметры</h2>
+          <h2>Payload</h2>
           <DocBlock.Source
             language="json"
             code={JSON.stringify(
@@ -47,13 +47,13 @@ export const Basic: Story = {
             )}
           />
 
-          <h2>Success JSON Schema</h2>
+          <h2>Response Success JSON Schema</h2>
           <DocBlock.Source
             language="json"
             code={JSON.stringify(responseSchemaSuccess, null, 2)}
           />
 
-          <h2>Error JSON Schema</h2>
+          <h2>Response Error JSON Schema</h2>
           <DocBlock.Source
             language="json"
             code={JSON.stringify(responseSchemaError, null, 2)}

@@ -5,8 +5,14 @@ import { createRemixStub } from "@remix-run/testing";
 import { http, delay, HttpResponse } from "msw";
 
 import Step7 from "./route";
-import { getRegStep2 } from "~/requests/getRegStep2/getRegStep2";
-import { postRegStep2 } from "~/requests/postRegStep2/postRegStep2";
+
+import { getForm } from "~/requests/getForm/getForm";
+import {
+  postSaveForm,
+  // mockResponseNeedRequired,
+  mockResponseAllowedNewStep,
+} from "~/requests/postSaveForm/postSaveForm";
+import { json } from "@remix-run/react";
 
 const meta = {
   title: "Страницы/Регистрация/Шаг7",
@@ -22,11 +28,9 @@ const meta = {
           <DocBlock.Title />
           <h2>Адрес страницы: /registration/step7</h2>
           <h3>Используемые запросы:</h3>
+          <p>getForm() - VITE_GET_FORM - {import.meta.env.VITE_GET_FORM}</p>
           <p>
-            getRegStep7() - VITE_REG_STEP_7 - {import.meta.env.VITE_REG_STEP_7}
-          </p>
-          <p>
-            postRegStep7() - VITE_REG_STEP_7 - {import.meta.env.VITE_REG_STEP_7}
+            postSaveForm() - VITE_SAVE_FORM - {import.meta.env.VITE_SAVE_FORM}
           </p>
         </>
       ),
@@ -47,12 +51,21 @@ export const Primary: Story = {
           path: "/",
           Component: Story,
           loader: async () => {
-            const data = await getRegStep2();
+            const data = await getForm(7);
 
-            return data;
+            return json({
+              formFields: data.result.formData,
+              formStatus: data.result.type,
+            });
           },
-          action: async () => {
-            const data = await postRegStep2({ test: "test" });
+          action: async ({ request }) => {
+            const fields = await request.json();
+
+            const data = await postSaveForm(7, fields);
+
+            if (data.result.type === "allowedNewStep") {
+              alert("Переходим на следующий шаг!");
+            }
 
             return data;
           },
@@ -65,60 +78,63 @@ export const Primary: Story = {
   parameters: {
     msw: {
       handlers: [
-        http.get(import.meta.env.VITE_REG_STEP_2, async () => {
+        http.get(import.meta.env.VITE_GET_FORM, async () => {
           await delay(2000);
           return HttpResponse.json({
-            inputs: [
-              {
-                inputType: "radio",
-                value: "no",
-                name: "unlimitedRequests",
-                validation: "default",
-                heading: "Принимать заявки без ограничений?",
-                options: [
-                  {
-                    value: "yes",
-                    label: "Да",
-                    disabled: false,
-                  },
-                  {
-                    value: "no",
-                    label: "Нет",
-                    disabled: false,
-                  },
-                ],
-              },
-              {
-                inputType: "checkboxMultiple",
-                name: "organization",
-                validation: "default",
-                value: [],
-                options: [
-                  {
-                    value: "organization1",
-                    label: "Организация 1",
-                    disabled: false,
-                  },
-                  {
-                    value: "organization2",
-                    label: "Организация 2",
-                    disabled: false,
-                  },
-                  {
-                    value: "organization3",
-                    label: "Организация 3",
-                    disabled: false,
-                  },
-                ],
-              },
-            ],
+            result: {
+              formData: [
+                {
+                  inputType: "radio",
+                  value: "no",
+                  name: "unlimitedRequests",
+                  validation: "default",
+                  heading: "Принимать заявки без ограничений?",
+                  options: [
+                    {
+                      value: "yes",
+                      label: "Да",
+                      disabled: false,
+                    },
+                    {
+                      value: "no",
+                      label: "Нет",
+                      disabled: false,
+                    },
+                  ],
+                },
+                {
+                  inputType: "checkboxMultiple",
+                  name: "organization",
+                  validation: "default",
+                  value: [],
+                  options: [
+                    {
+                      value: "organization1",
+                      label: "Организация 1",
+                      disabled: false,
+                    },
+                    {
+                      value: "organization2",
+                      label: "Организация 2",
+                      disabled: false,
+                    },
+                    {
+                      value: "organization3",
+                      label: "Организация 3",
+                      disabled: false,
+                    },
+                  ],
+                },
+              ],
+              step: 7,
+              type: "needRequired",
+            },
+            status: "success",
           });
         }),
-        http.post(import.meta.env.VITE_REG_STEP_2, async () => {
+        http.post(import.meta.env.VITE_SAVE_FORM, async () => {
           await delay(2000);
-          return HttpResponse.json({
-            status: "Success",
-          });
+          return HttpResponse.json(mockResponseAllowedNewStep);
         }),
       ],
     },

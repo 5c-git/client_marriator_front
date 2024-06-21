@@ -6,6 +6,8 @@ import {
   useNavigate,
   useNavigation,
   ClientActionFunctionArgs,
+  json,
+  redirect,
 } from "@remix-run/react";
 import * as Yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -17,26 +19,30 @@ import {
   generateValidationSchema,
 } from "~/shared/constructor/constructor";
 
-import { getRegStep2 } from "~/requests/getRegStep2/getRegStep2";
-import { postRegStep2 } from "~/requests/postRegStep2/postRegStep2";
+import { getForm } from "~/requests/getForm/getForm";
+import { postSaveForm } from "~/requests/postSaveForm/postSaveForm";
 
 import { useTheme, Box, Typography, Button } from "@mui/material";
 import { TopNavigation } from "~/shared/ui/TopNavigation/TopNavigation";
 import { Loader } from "~/shared/ui/Loader/Loader";
 
 export async function clientLoader() {
-  const data = await getRegStep2();
-  return data;
+  const data = await getForm(5);
+
+  return json({
+    formFields: data.result.formData,
+    formStatus: data.result.type,
+  });
 }
 
 export async function clientAction({ request }: ClientActionFunctionArgs) {
   const fields = await request.json();
 
-  const data = await postRegStep2(fields);
+  const data = await postSaveForm(5, fields);
 
-  // if (data) {
-  //   throw redirect("/");
-  // }
+  if (data.result.type === "allowedNewStep") {
+    throw redirect("/registration/step6");
+  }
 
   return data;
 }
@@ -49,7 +55,7 @@ export default function Step5() {
   const navigate = useNavigate();
   const navigation = useNavigation();
 
-  const data = useLoaderData<typeof clientLoader>();
+  const { formFields, formStatus } = useLoaderData<typeof clientLoader>();
 
   const {
     control,
@@ -60,15 +66,15 @@ export default function Step5() {
     formState: { errors },
     reset,
   } = useForm({
-    defaultValues: generateDefaultValues(data.inputs),
-    resolver: yupResolver(Yup.object(generateValidationSchema(data.inputs))),
+    defaultValues: generateDefaultValues(formFields),
+    resolver: yupResolver(Yup.object(generateValidationSchema(formFields))),
     mode: "onChange",
     shouldUnregister: true,
   });
 
   useEffect(() => {
-    reset(generateDefaultValues(data.inputs));
-  }, [data.inputs, reset]);
+    reset(generateDefaultValues(formFields));
+  }, [formFields, reset]);
 
   return (
     <>
@@ -122,7 +128,7 @@ export default function Step5() {
           }}
         >
           {generateInputsMarkup(
-            data.inputs,
+            formFields,
             errors,
             control,
             setValue,
@@ -146,7 +152,11 @@ export default function Step5() {
               backgroundColor: theme.palette["White"],
             }}
           >
-            <Button type="submit" variant="contained">
+            <Button
+              type="submit"
+              disabled={formStatus !== "allowedNewStep"}
+              variant="contained"
+            >
               Продолжить
             </Button>
           </Box>

@@ -9,7 +9,7 @@ export const Loader = () => (
   <Box
     sx={{
       position: "fixed",
-      zIndex: 1,
+      zIndex: 2,
       top: 0,
       left: 0,
       display: "flex",
