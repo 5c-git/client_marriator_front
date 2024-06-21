@@ -60,7 +60,7 @@ export const Primary: Story = {
   parameters: {
     msw: {
       handlers: [
-        http.post(import.meta.env.VITE_REG_STEP_2, async () => {
+        http.post(import.meta.env.VITE_GET_FORM, async () => {
           await delay(2000);
           return HttpResponse.json(postRegStep2MockResponseSuccess);
         }),

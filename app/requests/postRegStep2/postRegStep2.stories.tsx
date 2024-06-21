@@ -6,7 +6,7 @@ import successSchema from "./success.schema.json";
 const Mock = () => <></>;
 
 const meta = {
-  title: "Сетевые запросы/Регистрация/postRegStep2",
+  title: "Сетевые запросы/Регистрация/ТЕСТОВЫЙ",
   component: Mock,
   tags: ["autodocs"],
 } satisfies Meta<typeof Mock>;
@@ -23,16 +23,12 @@ export const Basic: Story = {
           <DocBlock.Description />
 
           <h1>method: POST</h1>
-          <h3>переменная: VITE_REG_STEP_2</h3>
-          <h3>адрес: {import.meta.env.VITE_REG_STEP_2}</h3>
+          {/* <h3>переменная: VITE_REG_STEP_2</h3> */}
+          {/* <h3>адрес: {import.meta.env.VITE_GET_FORM}</h3> */}
 
           <h2>Принимаемые парметры</h2>
           {/* <p>—</p> */}
-          <p>
-            Принимается JSON с заполненными полями формы. Форму сложно описать,
-            так как она напрямую зависит от полей, которые сервер пришлёт на
-            отрисовку
-          </p>
+
           {/* <DocBlock.Source
             language="json"
             code={JSON.stringify(

@@ -17,7 +17,7 @@ type RegStep2 = {
 
 // unknown из-за того, что мы не знаем какие пол нам прилетят с сервера и какую форму мы в итоге отдадим обратно
 export const postRegStep2 = async (body: unknown): Promise<RegStep2> => {
-  const url = new URL(import.meta.env.VITE_REG_STEP_2);
+  const url = new URL(import.meta.env.VITE_GET_FORM);
 
   const request = await fetch(url, {
     method: "POST",
@@ -45,7 +45,7 @@ export const mockResponseError = {
 };
 
 export const postRegStep2MockResponse = http.post(
-  `${import.meta.env.VITE_REG_STEP_2}`,
+  `${import.meta.env.VITE_GET_FORM}`,
   async () => {
     const scenario = "success";
     // const scenario = "error";

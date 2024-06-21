@@ -1,12 +1,12 @@
 import type { StoryObj, Meta } from "@storybook/react";
 import * as DocBlock from "@storybook/blocks";
 
-import successSchema from "./success.schema.json";
+import schema from "./getForm.schema.json";
 
 const Mock = () => <></>;
 
 const meta = {
-  title: "Сетевые запросы/Регистрация/getRegStep1",
+  title: "Сетевые запросы/Регистрация/getForm",
   component: Mock,
   tags: ["autodocs"],
 } satisfies Meta<typeof Mock>;
@@ -23,28 +23,27 @@ export const Basic: Story = {
           <DocBlock.Description />
 
           <h1>method: GET</h1>
-          <h3>переменная: VITE_REG_STEP_1</h3>
-          <h3>адрес: {import.meta.env.VITE_REG_STEP_1}</h3>
+          <h3>переменная: VITE_GET_FORM</h3>
+          <h3>адрес: {import.meta.env.VITE_GET_FORM}</h3>
 
-          <h2>Принимаемые парметры</h2>
-          <p>—</p>
-          {/* <DocBlock.Source
+          <h2>Payload</h2>
+          <DocBlock.Source
             language="json"
             code={JSON.stringify(
               {
                 urlSearchParams: {
-                  login: "string",
+                  step: "string",
                 },
               },
               null,
               2
             )}
-          /> */}
+          />
 
-          <h2>Success JSON Schema (ВРЕМЕННАЯ НЕПОЛНАЯ)</h2>
+          <h2>Response JSON Schema</h2>
           <DocBlock.Source
             language="json"
-            code={JSON.stringify(successSchema, null, 2)}
+            code={JSON.stringify(schema, null, 2)}
           />
         </>
       ),

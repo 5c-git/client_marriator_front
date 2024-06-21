@@ -5,14 +5,14 @@ import { createRemixStub } from "@remix-run/testing";
 import { http, delay, HttpResponse } from "msw";
 
 import Step2 from "./route";
+
+import { getForm, mockStep2ResponseSuccess } from "~/requests/getForm/getForm";
 import {
-  mockResponseSuccess,
-  getRegStep2,
-} from "~/requests/getRegStep2/getRegStep2";
-import {
-  postRegStep2,
-  mockResponseSuccess as postRegStep2MockResponseSuccess,
-} from "~/requests/postRegStep2/postRegStep2";
+  postSaveForm,
+  // mockResponseNeedRequired,
+  mockResponseAllowedNewStep,
+} from "~/requests/postSaveForm/postSaveForm";
+import { json } from "@remix-run/react";
 
 const meta = {
   title: "Страницы/Регистрация/Шаг2",
@@ -28,11 +28,9 @@ const meta = {
           <DocBlock.Title />
           <h2>Адрес страницы: /registration/step2</h2>
           <h3>Используемые запросы:</h3>
+          <p>getForm() - VITE_GET_FORM - {import.meta.env.VITE_GET_FORM}</p>
           <p>
-            getRegStep2() - VITE_REG_STEP_2 - {import.meta.env.VITE_REG_STEP_2}
-          </p>
-          <p>
-            postRegStep2() - VITE_REG_STEP_2 - {import.meta.env.VITE_REG_STEP_2}
+            postSaveForm() - VITE_SAVE_FORM - {import.meta.env.VITE_SAVE_FORM}
           </p>
         </>
       ),
@@ -53,12 +51,21 @@ export const Primary: Story = {
           path: "/",
           Component: Story,
           loader: async () => {
-            const data = await getRegStep2();
+            const data = await getForm(2);
 
-            return data;
+            return json({
+              formFields: data.result.formData,
+              formStatus: data.result.type,
+            });
           },
-          action: async () => {
-            const data = await postRegStep2({ test: "test" });
+          action: async ({ request }) => {
+            const fields = await request.json();
+
+            const data = await postSaveForm(2, fields);
+
+            if (data.result.type === "allowedNewStep") {
+              alert("Переходим на следующий шаг!");
+            }
 
             return data;
           },
@@ -71,13 +78,13 @@ export const Primary: Story = {
   parameters: {
     msw: {
       handlers: [
-        http.get(import.meta.env.VITE_REG_STEP_2, async () => {
+        http.get(import.meta.env.VITE_GET_FORM, async () => {
           await delay(2000);
-          return HttpResponse.json(mockResponseSuccess);
+          return HttpResponse.json(mockStep2ResponseSuccess);
         }),
-        http.post(import.meta.env.VITE_REG_STEP_2, async () => {
+        http.post(import.meta.env.VITE_SAVE_FORM, async () => {
           await delay(2000);
-          return HttpResponse.json(postRegStep2MockResponseSuccess);
+          return HttpResponse.json(mockResponseAllowedNewStep);
         }),
       ],
     },
