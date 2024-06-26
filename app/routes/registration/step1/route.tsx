@@ -190,6 +190,9 @@ export default function Step1() {
               type="submit"
               disabled={formStatus !== "allowedNewStep"}
               variant="contained"
+              onClick={() => {
+                Navigate();
+              }}
             >
               Продолжить
             </Button>

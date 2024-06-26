@@ -12,6 +12,8 @@ async function enableMocking() {
     return;
   }
 
+  // return;
+
   const { worker } = await import("./mockWorker/mockWorker");
 
   // `worker.start()` returns a Promise that resolves
