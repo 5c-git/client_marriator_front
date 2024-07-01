@@ -1,23 +1,28 @@
 import { http, delay, HttpResponse } from "msw";
 import Ajv from "ajv";
-import { PostSaveFormInputsSchema } from "./postSaveForm.type";
+import { PostSaveFormSuccessInputsSchema } from "./postSaveFormSuccess.type";
 
-import schema from "./postSaveForm.schema.json";
+import schemaSuccess from "./postSaveFormSuccess.schema.json";
 
 const ajv = new Ajv();
 
-const validateSuccess = ajv.compile(schema);
+const validateSuccess = ajv.compile(schemaSuccess);
 
 export const postSaveFormKeys = ["postSaveForm"];
 
 export const postSaveForm = async (
+  accessToken: string,
   step: number,
   formData: unknown
-): Promise<PostSaveFormInputsSchema> => {
+): Promise<PostSaveFormSuccessInputsSchema> => {
   const url = new URL(import.meta.env.VITE_SAVE_FORM);
 
   const request = await fetch(url, {
     method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${accessToken}`,
+    },
     body: JSON.stringify({
       step,
       formData,
@@ -25,10 +30,16 @@ export const postSaveForm = async (
   });
   const response = await request.json();
 
-  let data: PostSaveFormInputsSchema;
+  let data: PostSaveFormSuccessInputsSchema;
+
+  if (request.status === 401) {
+    throw new Response("Unauthorized", {
+      status: 401,
+    });
+  }
 
   if (validateSuccess(response)) {
-    data = response as PostSaveFormInputsSchema;
+    data = response as PostSaveFormSuccessInputsSchema;
   } else {
     throw new Response(
       `Данные запроса saveForm, шаг - ${step} не валидны схеме`

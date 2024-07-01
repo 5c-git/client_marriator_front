@@ -1,10 +1,14 @@
 import { getFormMockResponse } from "~/requests/getForm/getForm";
 import { postSaveFormMockResponse } from "~/requests/postSaveForm/postSaveForm";
 
-import { postRegStep2MockResponse } from "~/requests/postRegStep2/postRegStep2";
+import { postSendPhoneMockResponse } from "~/requests/postSendPhone/postSendPhone";
+import { mockPostCheckCodeMockResponse } from "~/requests/postCheckCode/postCheckCode";
+import { mockPostSetUserPinMockResponse } from "~/requests/postSetUserPin/postSetUserPin";
 
 export const handlers = [
   getFormMockResponse,
   postSaveFormMockResponse,
-  postRegStep2MockResponse,
+  postSendPhoneMockResponse,
+  mockPostCheckCodeMockResponse,
+  mockPostSetUserPinMockResponse,
 ];

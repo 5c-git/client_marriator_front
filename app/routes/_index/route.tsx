@@ -1,7 +1,7 @@
 import type { MetaFunction } from "@remix-run/node";
 import { Link } from "@remix-run/react";
 
-import { useTranslation } from "react-i18next";
+// import { useTranslation } from "react-i18next";
 
 export const meta: MetaFunction = () => {
   return [
@@ -11,13 +11,12 @@ export const meta: MetaFunction = () => {
 };
 
 export default function Index() {
-  const { t, i18n } = useTranslation();
+  // const { t, i18n } = useTranslation();
 
   return (
     <div style={{ fontFamily: "system-ui, sans-serif", lineHeight: "1.8" }}>
-      <h1>Welcome to Remix and Storybook</h1>
-      <h2>{t("Index.title")}</h2>
-      {/* <h2>{t("Index.title")}</h2> */}
+      <h1>Marriator _dev</h1>
+      {/* <h2>{t("Index.title")}</h2>
 
       <Link
         to={`/ru`}
@@ -37,7 +36,9 @@ export default function Index() {
         english
       </Link>
       <div>-----------</div>
-      <Link to="registration/step1">Registration Step 1</Link>
+      <Link to="registration/step1">Registration Step 1</Link> */}
+
+      <Link to="signin/phone">Authentication</Link>
     </div>
   );
 }

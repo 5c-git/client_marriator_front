@@ -3,7 +3,11 @@ import {
   useSubmit,
   useNavigation,
   useNavigate,
-  // ClientActionFunctionArgs,
+  useLoaderData,
+  json,
+  ClientActionFunctionArgs,
+  redirect,
+  useSearchParams,
 } from "@remix-run/react";
 
 import { t } from "i18next";
@@ -25,24 +29,72 @@ import { StyledSmsField } from "~/shared/ui/StyledSmsField/StyledSmsField";
 import { TopNavigation } from "~/shared/ui/TopNavigation/TopNavigation";
 import { Loader } from "~/shared/ui/Loader/Loader";
 
+import { getUserPhone } from "~/preferences/userPhone/userPhone";
+import { setAccessToken } from "~/preferences/accessToken/accessToken";
+import { setRefreshToken } from "~/preferences/refreshToken/refreshToken";
+
+import { postSendPhone } from "~/requests/postSendPhone/postSendPhone";
+import { postCheckCode } from "~/requests/postCheckCode/postCheckCode";
+
 const validationSchema = Yup.object().shape({
+  phone: Yup.string().notRequired(),
   sms: Yup.string()
     .default("")
-    .length(5, t("Sms.inputValidation", { context: "lenght" }))
+    .length(4, t("Sms.inputValidation", { context: "lenght" }))
     .required(t("Sms.inputValidation")),
 });
 
-// export async function clientAction({ request }: ClientActionFunctionArgs) {
-//   const fields = await request.json();
+export async function clientLoader({ request }: ClientActionFunctionArgs) {
+  const currentURL = new URL(request.url);
 
-//   const data = await request(fields);
+  const phone = await getUserPhone();
+  const ttl = currentURL.searchParams.get("ttl");
 
-//   // if (data) {
-//   //   throw redirect("/");
-//   // }
+  if (!phone || !ttl) {
+    throw new Response("Получены некорректные данные!");
+  }
 
-//   return data;
-// }
+  return json({ phone, ttl });
+}
+
+export async function clientAction({ request }: ClientActionFunctionArgs) {
+  const currentURL = new URL(request.url);
+  const params = new URLSearchParams();
+
+  const { _action, ...fields } = await request.json();
+
+  if (_action === "sendAgain") {
+    const data = await postSendPhone(fields.phone);
+
+    if (data.result.code.status !== "errorSend") {
+      params.set("ttl", data.result.code.ttl.toString());
+      params.set("type", data.result.type);
+
+      throw redirect(currentURL.toString());
+    } else {
+      currentURL.searchParams.set("error", "error");
+
+      throw redirect(currentURL.toString());
+    }
+  } else if (_action === "sendSms") {
+    const data = await postCheckCode(fields.phone, fields.sms);
+
+    if (data.status === "error") {
+      currentURL.searchParams.set("error", "error");
+
+      throw redirect(currentURL.toString());
+    } else {
+      await setAccessToken(data.result.token.access_token);
+      await setRefreshToken(data.result.token.refresh_token);
+
+      if (currentURL.searchParams.has("type", "register")) {
+        throw redirect("/signin/createPin");
+      } else if (currentURL.searchParams.has("type", "auth")) {
+        throw redirect("/signin/pin");
+      }
+    }
+  }
+}
 
 export default function Sms() {
   const theme = useTheme();
@@ -50,9 +102,14 @@ export default function Sms() {
   const navigation = useNavigation();
   const navigate = useNavigate();
 
-  const [seconds, setSeconds] = useState<number>(59);
+  const { phone, ttl } = useLoaderData<typeof clientLoader>();
+
+  const [seconds, setSeconds] = useState<number>(Number(ttl));
   const [open, setOpen] = useState<boolean>(true);
-  const [error, setError] = useState<boolean>(false);
+
+  const [searchParams, setSearchParams] = useSearchParams();
+
+  const error = searchParams.get("error");
 
   const {
     control,
@@ -60,6 +117,7 @@ export default function Sms() {
     formState: { errors },
   } = useForm({
     defaultValues: {
+      phone: phone,
       sms: "",
     },
     resolver: yupResolver(validationSchema),
@@ -110,7 +168,7 @@ export default function Sms() {
                   error={errors.sms?.message}
                   placeholder={t("Sms.inputPlaceholder")}
                   onImmediateChange={handleSubmit((values) => {
-                    submit(JSON.stringify(values), {
+                    submit(JSON.stringify({ _action: "sendSms", ...values }), {
                       method: "POST",
                       encType: "application/json",
                     });
@@ -119,45 +177,57 @@ export default function Sms() {
                 />
               )}
             />
+          </form>
 
-            <Button
-              type="button"
-              variant="text"
-              disabled={seconds > 0 ? true : false}
+          <Button
+            type="button"
+            variant="text"
+            disabled={seconds > 0 ? true : false}
+            sx={{
+              fontSize: "1rem",
+              lineHeight: "1.25rem",
+            }}
+            onClick={() => {
+              setSeconds(10);
+              submit(
+                JSON.stringify({
+                  _action: "sendAgain",
+                  phone: phone,
+                }),
+                {
+                  method: "POST",
+                  encType: "application/json",
+                }
+              );
+            }}
+          >
+            {t("Sms.sendAgain")}
+          </Button>
+
+          {seconds !== 0 ? (
+            <Typography
+              component="p"
+              variant="Reg_12"
               sx={{
-                fontSize: "1rem",
-                lineHeight: "1.25rem",
-              }}
-              onClick={() => {
-                setSeconds(59);
+                color: theme.palette["Black"],
+                textAlign: "center",
               }}
             >
-              {t("Sms.sendAgain")}
-            </Button>
-
-            {seconds !== 0 ? (
+              {t("Sms.timer")}{" "}
               <Typography
-                component="p"
-                variant="Reg_12"
+                component="span"
+                variant="Bold_12"
                 sx={{
                   color: theme.palette["Black"],
-                  textAlign: "center",
                 }}
               >
-                {t("Sms.timer")}{" "}
-                <Typography
-                  component="span"
-                  variant="Bold_12"
-                  sx={{
-                    color: theme.palette["Black"],
-                  }}
-                >
-                  00:{seconds < 10 ? "0" : null}
-                  {seconds}
-                </Typography>
+                {Math.floor(seconds / 60) < 10
+                  ? `0${Math.floor(seconds / 60)}`
+                  : Math.floor(seconds / 60)}
+                :{seconds % 60 < 10 ? `0${seconds % 60}` : seconds % 60}
               </Typography>
-            ) : null}
-          </form>
+            </Typography>
+          ) : null}
         </Box>
       </Box>
 
@@ -181,10 +251,13 @@ export default function Sms() {
       </Snackbar>
 
       <Snackbar
-        open={error}
+        open={error ? true : false}
         autoHideDuration={3000}
         onClose={() => {
-          setError(false);
+          setSearchParams((prev) => {
+            prev.delete("error");
+            return prev;
+          });
         }}
       >
         <Alert

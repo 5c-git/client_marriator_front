@@ -97,7 +97,7 @@ export const StyledSmsField = forwardRef((props: StyledSmsFieldProps, ref) => {
             InputProps={{
               inputComponent: MaskedField as never,
               inputProps: {
-                mask: "00000",
+                mask: "0000",
               },
               inputMode: "numeric",
               type: "tel",

@@ -1,0 +1,72 @@
+{
+  "$id": "postSendPhoneSuccess",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Post Send Phone Success Schema",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "status": {
+      "type": "string",
+      "const": "success"
+    },
+    "result": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": ["auth", "register"]
+        },
+        "code": {
+          "type": "object",
+          "anyOf": [
+            {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "status": {
+                  "type": "string",
+                  "const": "errorSend"
+                }
+              },
+              "required": ["status"]
+            },
+            {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "status": {
+                  "type": "string",
+                  "enum": ["exists"]
+                },
+                "ttl": {
+                  "type": "number"
+                }
+              },
+              "required": ["status", "ttl"]
+            },
+            {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "status": {
+                  "type": "string",
+                  "const": "success"
+                },
+                "ttl": {
+                  "type": "number"
+                },
+                "code": {
+                  "type": "number"
+                }
+              },
+              "required": ["status", "ttl", "code"]
+            }
+          ]
+        }
+      },
+      "required": ["type", "code"]
+    }
+  },
+  "required": ["status", "result"]
+}

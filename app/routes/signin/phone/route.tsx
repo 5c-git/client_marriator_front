@@ -1,7 +1,10 @@
 import {
   useSubmit,
   useNavigation,
-  // ClientActionFunctionArgs,
+  ClientActionFunctionArgs,
+  useSearchParams,
+  redirect,
+  // useRouteError,
 } from "@remix-run/react";
 
 import { t } from "i18next";
@@ -12,11 +15,15 @@ import { phoneRegExp } from "~/shared/validators";
 
 import { useForm, Controller } from "react-hook-form";
 
-import { Box, Button } from "@mui/material";
+import { Alert, Box, Button, Snackbar } from "@mui/material";
 import { StyledPhoneField } from "~/shared/ui/StyledPhoneField/StyledPhoneField";
 import { Loader } from "~/shared/ui/Loader/Loader";
 
 import marriator from "./marriator.svg";
+
+import { setUserPhone } from "~/preferences/userPhone/userPhone";
+
+import { postSendPhone } from "~/requests/postSendPhone/postSendPhone";
 
 const validationSchema = Yup.object().shape({
   phone: Yup.string()
@@ -24,22 +31,36 @@ const validationSchema = Yup.object().shape({
     .required(t("Phone.inputValidation")),
 });
 
-// export async function clientAction({ request }: ClientActionFunctionArgs) {
-//   const fields = await request.json();
+export async function clientAction({ request }: ClientActionFunctionArgs) {
+  const currentURL = new URL(request.url);
+  const params = new URLSearchParams();
 
-//   const data = await request(fields);
+  const fields = await request.json();
+  await setUserPhone(fields.phone);
 
-//   // if (data) {
-//   //   throw redirect("/");
-//   // }
+  const data = await postSendPhone(fields.phone);
 
-//   return data;
-// }
+  if (data.result.code.status !== "errorSend") {
+    params.set("ttl", data.result.code.ttl.toString());
+    params.set("type", data.result.type);
+
+    throw redirect(`/signin/sms?${params}`);
+  } else {
+    currentURL.searchParams.set("error", "error");
+
+    throw redirect(currentURL.toString());
+  }
+}
 
 export default function Phone() {
   // const theme = useTheme();
+
   const submit = useSubmit();
   const navigation = useNavigation();
+
+  const [searchParams, setSearchParams] = useSearchParams();
+
+  const error = searchParams.get("error");
 
   const {
     control,
@@ -111,6 +132,25 @@ export default function Phone() {
           </Button>
         </form>
       </Box>
+
+      <Snackbar
+        open={error !== null ? true : false}
+        onClose={() => {
+          setSearchParams("");
+        }}
+        autoHideDuration={3000}
+      >
+        <Alert
+          severity="info"
+          variant="small"
+          color="Banner_Error"
+          sx={{
+            width: "100%",
+          }}
+        >
+          {error}
+        </Alert>
+      </Snackbar>
     </>
   );
 }

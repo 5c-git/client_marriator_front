@@ -1,7 +1,8 @@
 import type { StoryObj, Meta } from "@storybook/react";
 import * as DocBlock from "@storybook/blocks";
 
-import schema from "./postSaveForm.schema.json";
+import schemaSuccess from "./postSaveFormSuccess.schema.json";
+import schemaError from "./postSaveFormError.schema.json";
 
 const Mock = () => <></>;
 
@@ -31,6 +32,9 @@ export const Basic: Story = {
             language="json"
             code={JSON.stringify(
               {
+                headers: {
+                  Authorization: "Bearer ${accessToken}",
+                },
                 body: {
                   JSON: {
                     step: "number",
@@ -43,10 +47,16 @@ export const Basic: Story = {
             )}
           />
 
-          <h2>Response JSON Schema</h2>
+          <h2>Response Success JSON Schema</h2>
           <DocBlock.Source
             language="json"
-            code={JSON.stringify(schema, null, 2)}
+            code={JSON.stringify(schemaSuccess, null, 2)}
+          />
+
+          <h2>Response Error JSON Schema</h2>
+          <DocBlock.Source
+            language="json"
+            code={JSON.stringify(schemaError, null, 2)}
           />
         </>
       ),

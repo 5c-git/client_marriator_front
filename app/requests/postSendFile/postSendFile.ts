@@ -4,8 +4,8 @@ import Ajv from "ajv";
 import responseSuccess from "./postSendFileResponseSuccess.schema.json";
 import responseError from "./postSendFileResponseError.schema.json";
 
-import { SendFileResponseSuccess } from "./postSendFileResponseSuccess";
-import { SendFileResponseError } from "./postSendFileResponseError";
+import { SendFileResponseSuccess } from "./postSendFileResponseSuccess.type";
+import { SendFileResponseError } from "./postSendFileResponseError.type";
 
 const ajv = new Ajv();
 

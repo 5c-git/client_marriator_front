@@ -1,0 +1,17 @@
+{
+  "$id": "postSendPhoneErrorSchema",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Post Send Phone Error Schema",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "status": {
+      "type": "string",
+      "const": "error"
+    },
+    "error": {
+      "type": "string"
+    }
+  },
+  "required": ["status", "error"]
+}
