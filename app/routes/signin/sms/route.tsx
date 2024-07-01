@@ -30,8 +30,7 @@ import { TopNavigation } from "~/shared/ui/TopNavigation/TopNavigation";
 import { Loader } from "~/shared/ui/Loader/Loader";
 
 import { getUserPhone } from "~/preferences/userPhone/userPhone";
-import { setAccessToken } from "~/preferences/accessToken/accessToken";
-import { setRefreshToken } from "~/preferences/refreshToken/refreshToken";
+import { setAccessToken, setRefreshToken } from "~/preferences/token/token";
 
 import { postSendPhone } from "~/requests/postSendPhone/postSendPhone";
 import { postCheckCode } from "~/requests/postCheckCode/postCheckCode";
