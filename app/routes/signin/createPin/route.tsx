@@ -27,8 +27,8 @@ import { StyledOptField } from "~/shared/ui/StyledOtpField/StyledOtpField";
 import { TopNavigation } from "~/shared/ui/TopNavigation/TopNavigation";
 import { Loader } from "~/shared/ui/Loader/Loader";
 
-import { getAccessToken } from "~/preferences/accessToken/accessToken";
 import { postSetUserPin } from "~/requests/postSetUserPin/postSetUserPin";
+import { validateToken } from "~/preferences/token/token";
 
 const validationSchema = Yup.object().shape({
   pin: Yup.string().min(4).max(4).required(),
@@ -39,7 +39,7 @@ export async function clientAction({ request }: ClientActionFunctionArgs) {
   const currentURL = new URL(request.url);
 
   const fields = await request.json();
-  const accessToken = await getAccessToken();
+  const accessToken = await validateToken();
 
   if (accessToken) {
     const data = await postSetUserPin(accessToken, fields.pin);
