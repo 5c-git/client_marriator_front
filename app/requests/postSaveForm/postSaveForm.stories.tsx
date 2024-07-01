@@ -32,6 +32,9 @@ export const Basic: Story = {
             language="json"
             code={JSON.stringify(
               {
+                headers: {
+                  Authorization: "Bearer ${accessToken}",
+                },
                 body: {
                   JSON: {
                     step: "number",

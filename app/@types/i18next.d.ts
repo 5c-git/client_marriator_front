@@ -1,4 +1,5 @@
 import IndexRU from "../routes/_index/locales/ru.json";
+import RootErrorBoundryRU from "../routes/rootErrorBoundry/locales/ru.json";
 
 import PhoneRU from "../routes/signin/phone/locales/ru.json";
 import SmsRU from "../routes/signin/sms/locales/ru.json";
@@ -12,6 +13,7 @@ declare module "i18next" {
     resources: {
       translation: {
         Index: typeof IndexRU;
+        RootErrorBoundry: typeof RootErrorBoundryRU;
         Phone: typeof PhoneRU;
         Sms: typeof SmsRU;
         Pin: typeof PinRU;

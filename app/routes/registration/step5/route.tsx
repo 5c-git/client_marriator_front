@@ -21,30 +21,42 @@ import {
 
 import { getForm } from "~/requests/getForm/getForm";
 import { postSaveForm } from "~/requests/postSaveForm/postSaveForm";
+import { getAccessToken } from "~/preferences/accessToken/accessToken";
 
 import { useTheme, Box, Typography, Button } from "@mui/material";
 import { TopNavigation } from "~/shared/ui/TopNavigation/TopNavigation";
 import { Loader } from "~/shared/ui/Loader/Loader";
 
 export async function clientLoader() {
-  const data = await getForm(5);
+  const accessToken = await getAccessToken();
 
-  return json({
-    formFields: data.result.formData,
-    formStatus: data.result.type,
-  });
+  if (accessToken) {
+    const data = await getForm(accessToken, 5);
+
+    return json({
+      formFields: data.result.formData,
+      formStatus: data.result.type,
+    });
+  } else {
+    throw new Response("Токен авторизации не обнаружен!", { status: 401 });
+  }
 }
 
 export async function clientAction({ request }: ClientActionFunctionArgs) {
   const fields = await request.json();
+  const accessToken = await getAccessToken();
 
-  const data = await postSaveForm(5, fields);
+  if (accessToken) {
+    const data = await postSaveForm(accessToken, 5, fields);
 
-  if (data.result.type === "allowedNewStep") {
-    throw redirect("/registration/step6");
+    if (data.result.type === "allowedNewStep") {
+      throw redirect("/registration/step6");
+    }
+
+    return data;
+  } else {
+    throw new Response("Токен авторизации не обнаружен!", { status: 401 });
   }
-
-  return data;
 }
 
 export default function Step5() {
@@ -120,7 +132,6 @@ export default function Step5() {
               method: "POST",
               encType: "application/json",
             });
-            alert("Форма корректно заполнена");
           })}
           style={{
             display: "grid",

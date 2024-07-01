@@ -24,26 +24,38 @@ import { Loader } from "~/shared/ui/Loader/Loader";
 
 import { getForm } from "~/requests/getForm/getForm";
 import { postSaveForm } from "~/requests/postSaveForm/postSaveForm";
+import { getAccessToken } from "~/preferences/accessToken/accessToken";
 
 export async function clientLoader() {
-  const data = await getForm(1);
+  const accessToken = await getAccessToken();
 
-  return json({
-    formFields: data.result.formData,
-    formStatus: data.result.type,
-  });
+  if (accessToken) {
+    const data = await getForm(accessToken, 1);
+
+    return json({
+      formFields: data.result.formData,
+      formStatus: data.result.type,
+    });
+  } else {
+    throw new Response("Токен авторизации не обнаружен!", { status: 401 });
+  }
 }
 
 export async function clientAction({ request }: ClientActionFunctionArgs) {
   const fields = await request.json();
+  const accessToken = await getAccessToken();
 
-  const data = await postSaveForm(1, fields);
+  if (accessToken) {
+    const data = await postSaveForm(accessToken, 1, fields);
 
-  if (data.result.type === "allowedNewStep") {
-    throw redirect("/registration/step2");
+    if (data.result.type === "allowedNewStep") {
+      throw redirect("/registration/step2");
+    }
+
+    return data;
+  } else {
+    throw new Response("Токен авторизации не обнаружен!", { status: 401 });
   }
-
-  return data;
 }
 
 export default function Step1() {
@@ -190,9 +202,6 @@ export default function Step1() {
               type="submit"
               disabled={formStatus !== "allowedNewStep"}
               variant="contained"
-              onClick={() => {
-                Navigate();
-              }}
             >
               Продолжить
             </Button>

@@ -3,7 +3,9 @@ import {
   useSubmit,
   useNavigation,
   useNavigate,
-  // ClientActionFunctionArgs,
+  ClientActionFunctionArgs,
+  redirect,
+  useSearchParams,
 } from "@remix-run/react";
 
 import { t } from "i18next";
@@ -25,28 +27,43 @@ import { StyledOptField } from "~/shared/ui/StyledOtpField/StyledOtpField";
 import { TopNavigation } from "~/shared/ui/TopNavigation/TopNavigation";
 import { Loader } from "~/shared/ui/Loader/Loader";
 
+import { getAccessToken } from "~/preferences/accessToken/accessToken";
+import { postSetUserPin } from "~/requests/postSetUserPin/postSetUserPin";
+
 const validationSchema = Yup.object().shape({
   pin: Yup.string().min(4).max(4).required(),
   confirmPin: Yup.string().oneOf([Yup.ref("pin")], "Pins must match"),
 });
 
-// export async function clientAction({ request }: ClientActionFunctionArgs) {
-//   const fields = await request.json();
+export async function clientAction({ request }: ClientActionFunctionArgs) {
+  const currentURL = new URL(request.url);
 
-//   const data = await request(fields);
+  const fields = await request.json();
+  const accessToken = await getAccessToken();
 
-//   // if (data) {
-//   //   throw redirect("/");
-//   // }
+  if (accessToken) {
+    const data = await postSetUserPin(accessToken, fields.pin);
 
-//   return data;
-// }
+    if ("status" in data) {
+      throw redirect("/registration/step1");
+    } else {
+      currentURL.searchParams.set("error", "unAuth");
+      throw redirect(currentURL.toString());
+    }
+  } else {
+    currentURL.searchParams.set("error", "noToken");
+    throw redirect(currentURL.toString());
+  }
+}
 
 export default function CreatePin() {
   const theme = useTheme();
   const submit = useSubmit();
   const navigation = useNavigation();
   const navigate = useNavigate();
+
+  const [searchParams, setSearchParams] = useSearchParams();
+  const error = searchParams.get("error");
 
   const [step, setStep] = useState<1 | 2>(1);
 
@@ -183,7 +200,28 @@ export default function CreatePin() {
             width: "100%",
           }}
         >
-          {t("CreatePin.pinError")}
+          {t("CreatePin.error")}
+        </Alert>
+      </Snackbar>
+
+      <Snackbar
+        open={error !== null ? true : false}
+        onClose={() => {
+          setSearchParams("");
+        }}
+        autoHideDuration={3000}
+      >
+        <Alert
+          severity="info"
+          variant="small"
+          color="Banner_Error"
+          sx={{
+            width: "100%",
+          }}
+        >
+          {error === "noToken"
+            ? t("CreatePin.error", { context: "token" })
+            : t("CreatePin.error", { context: "auth" })}
         </Alert>
       </Snackbar>
     </>

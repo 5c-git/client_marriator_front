@@ -50,7 +50,7 @@ export const Primary: Story = {
           path: "/",
           Component: Story,
           loader: async () => {
-            const data = await getForm(5);
+            const data = await getForm("token", 5);
 
             return json({
               formFields: data.result.formData,
@@ -60,7 +60,7 @@ export const Primary: Story = {
           action: async ({ request }) => {
             const fields = await request.json();
 
-            const data = await postSaveForm(5, fields);
+            const data = await postSaveForm("token", 5, fields);
 
             if (data.result.type === "allowedNewStep") {
               alert("Переходим на следующий шаг!");

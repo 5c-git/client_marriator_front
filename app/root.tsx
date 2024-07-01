@@ -5,7 +5,6 @@ import {
   Scripts,
   ScrollRestoration,
   useLoaderData,
-  useRouteError,
 } from "@remix-run/react";
 
 // MUI
@@ -29,26 +28,7 @@ export const queryClient = new QueryClient({
 });
 
 export function HydrateFallback() {
-  return <p>Загрузка...</p>;
-}
-
-export function ErrorBoundary() {
-  const error = useRouteError();
-  console.error(error);
-  return (
-    <html lang="en">
-      <head>
-        <title>Oh no!</title>
-        <Meta />
-        <Links />
-      </head>
-      <body>
-        <p>Root Error Boundry</p>
-        {/* add the UI you want your users to see */}
-        <Scripts />
-      </body>
-    </html>
-  );
+  return <div></div>;
 }
 
 export async function clientLoader({ params }: LoaderFunctionArgs) {

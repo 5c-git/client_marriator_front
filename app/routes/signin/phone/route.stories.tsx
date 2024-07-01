@@ -7,9 +7,9 @@ import { http, delay, HttpResponse } from "msw";
 import Phone from "./route";
 
 import {
-  postRegStep2,
-  mockResponseSuccess as postRegStep2MockResponseSuccess,
-} from "~/requests/postRegStep2/postRegStep2";
+  postSendPhone,
+  mockPostSendPhoneResponseRegister,
+} from "~/requests/postSendPhone/postSendPhone";
 
 const meta = {
   title: "Страницы/Вход/Телефон",
@@ -25,9 +25,10 @@ const meta = {
           <DocBlock.Title />
           <h2>Адрес страницы: /signin/phone</h2>
           <h3>Используемые запросы:</h3>
-          {/* <p>
-            getRegStep2() - VITE_REG_STEP_2 - {import.meta.env.VITE_REG_STEP_2}
-          </p> */}
+          <p>
+            postSendPhone() - VITE_SEND_PHONE -{" "}
+            {import.meta.env.VITE_SEND_PHONE}
+          </p>
         </>
       ),
     },
@@ -39,15 +40,21 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Primary: Story = {
-  name: "Страница",
+  name: "Страница (переход на регистрацию)",
   decorators: [
     (Story) => {
       const RemixStub = createRemixStub([
         {
           path: "/",
           Component: Story,
-          action: async () => {
-            const data = await postRegStep2({ test: "test" });
+          action: async ({ request }) => {
+            const fields = await request.json();
+
+            const data = await postSendPhone(fields.phone);
+
+            // if (data) {
+            //   throw redirect("/");
+            // }
 
             return data;
           },
@@ -60,9 +67,9 @@ export const Primary: Story = {
   parameters: {
     msw: {
       handlers: [
-        http.post(import.meta.env.VITE_GET_FORM, async () => {
+        http.post(import.meta.env.VITE_SEND_PHONE, async () => {
           await delay(2000);
-          return HttpResponse.json(postRegStep2MockResponseSuccess);
+          return HttpResponse.json(mockPostSendPhoneResponseRegister);
         }),
       ],
     },

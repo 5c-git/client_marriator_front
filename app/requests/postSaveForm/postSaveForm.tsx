@@ -11,6 +11,7 @@ const validateSuccess = ajv.compile(schemaSuccess);
 export const postSaveFormKeys = ["postSaveForm"];
 
 export const postSaveForm = async (
+  accessToken: string,
   step: number,
   formData: unknown
 ): Promise<PostSaveFormSuccessInputsSchema> => {
@@ -20,6 +21,7 @@ export const postSaveForm = async (
     method: "POST",
     headers: {
       "Content-Type": "application/json",
+      Authorization: `Bearer ${accessToken}`,
     },
     body: JSON.stringify({
       step,
@@ -29,6 +31,12 @@ export const postSaveForm = async (
   const response = await request.json();
 
   let data: PostSaveFormSuccessInputsSchema;
+
+  if (request.status === 401) {
+    throw new Response("Unauthorized", {
+      status: 401,
+    });
+  }
 
   if (validateSuccess(response)) {
     data = response as PostSaveFormSuccessInputsSchema;

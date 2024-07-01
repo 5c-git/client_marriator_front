@@ -365,9 +365,9 @@ export const Primary: Story = {
             {
               inputType: "file",
               name: "filee",
-              value: "+79152142630",
+              value: "",
               // error: "ошибка!",
-              url: "https://api.escuelajs.co/api/v1/files/upload",
+              url: "http://preprod.marriator-api.fivecorners.ru/api/saveFile",
               placeholder: "Приложи документ",
               validation: "default",
             },

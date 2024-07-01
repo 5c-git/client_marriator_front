@@ -186,7 +186,7 @@ const validationMap: {
     none: Yup.string().default("").notRequired(),
     default: Yup.string()
       .default("")
-      .length(5, "Укажите корректное значение")
+      .length(4, "Укажите корректное значение")
       .required("Обязатльное поле"),
   },
 };

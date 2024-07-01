@@ -1,6 +1,9 @@
 import IndexRU from "../routes/_index/locales/ru.json";
 import IndexEN from "../routes/_index/locales/en.json";
 
+import RootErrorBoundryRU from "../routes/rootErrorBoundry/locales/ru.json";
+import RootErrorBoundryEN from "../routes/rootErrorBoundry/locales/en.json";
+
 import PhoneRU from "../routes/signin/phone/locales/ru.json";
 import PhoneEN from "../routes/signin/phone/locales/en.json";
 
@@ -24,6 +27,7 @@ export const resources = {
   ru: {
     translation: {
       Index: IndexRU,
+      RootErrorBoundry: RootErrorBoundryRU,
       Phone: PhoneRU,
       Sms: SmsRU,
       Pin: PinRU,
@@ -33,6 +37,7 @@ export const resources = {
   en: {
     translation: {
       Index: IndexEN,
+      RootErrorBoundry: RootErrorBoundryEN,
       Phone: PhoneEN,
       Sms: SmsEN,
       Pin: PinEN,

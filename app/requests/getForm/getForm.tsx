@@ -48,15 +48,30 @@ const validateSuccess = ajv.compile(getFormSchema);
 
 export const getFormKeys = ["getForm"];
 
-export const getForm = async (step: number): Promise<GetFormInputsSchema> => {
+export const getForm = async (
+  accessToken: string,
+  step: number
+): Promise<GetFormInputsSchema> => {
   const url = new URL(import.meta.env.VITE_GET_FORM);
 
   url.searchParams.append("step", step.toString());
 
-  const request = await fetch(url);
+  const request = await fetch(url, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${accessToken}`,
+    },
+  });
   const response = await request.json();
 
-  let data: GetFormInputsSchema;
+  let data;
+
+  if (request.status === 401) {
+    throw new Response("Unauthorized", {
+      status: 401,
+    });
+  }
 
   if (validateSuccess(response)) {
     data = response as GetFormInputsSchema;

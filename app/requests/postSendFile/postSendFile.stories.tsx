@@ -7,7 +7,7 @@ import responseSchemaError from "./postSendFileResponseError.schema.json";
 const Mock = () => <></>;
 
 const meta = {
-  title: "Сетевые запросы/Отправка файлов",
+  title: "Сетевые запросы/Отправка файлов/postSendFile",
   component: Mock,
   tags: ["autodocs"],
 } satisfies Meta<typeof Mock>;

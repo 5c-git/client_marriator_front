@@ -6,11 +6,6 @@ import { http, delay, HttpResponse } from "msw";
 
 import Pin from "./route";
 
-import {
-  postRegStep2,
-  mockResponseSuccess as postRegStep2MockResponseSuccess,
-} from "~/requests/postRegStep2/postRegStep2";
-
 const meta = {
   title: "Страницы/Вход/Пин",
   component: Pin,
@@ -62,7 +57,9 @@ export const Primary: Story = {
       handlers: [
         http.post(import.meta.env.VITE_GET_FORM, async () => {
           await delay(2000);
-          return HttpResponse.json(postRegStep2MockResponseSuccess);
+          return HttpResponse.json({
+            status: "Success",
+          });
         }),
       ],
     },

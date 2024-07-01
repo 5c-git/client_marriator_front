@@ -25,26 +25,38 @@ import { Loader } from "~/shared/ui/Loader/Loader";
 
 import { getForm } from "~/requests/getForm/getForm";
 import { postSaveForm } from "~/requests/postSaveForm/postSaveForm";
+import { getAccessToken } from "~/preferences/accessToken/accessToken";
 
 export async function clientLoader() {
-  const data = await getForm(7);
+  const accessToken = await getAccessToken();
 
-  return json({
-    formFields: data.result.formData,
-    formStatus: data.result.type,
-  });
+  if (accessToken) {
+    const data = await getForm(accessToken, 7);
+
+    return json({
+      formFields: data.result.formData,
+      formStatus: data.result.type,
+    });
+  } else {
+    throw new Response("Токен авторизации не обнаружен!", { status: 401 });
+  }
 }
 
 export async function clientAction({ request }: ClientActionFunctionArgs) {
+  const accesstoken = await getAccessToken();
   const fields = await request.json();
 
-  const data = await postSaveForm(7, fields);
+  if (accesstoken) {
+    const data = await postSaveForm(accesstoken, 7, fields);
 
-  if (data.result.type === "allowedNewStep") {
-    throw redirect("/");
+    if (data.result.type === "allowedNewStep") {
+      throw redirect("/");
+    }
+
+    return data;
+  } else {
+    throw new Response("Токен авторизации не обнаружен!", { status: 401 });
   }
-
-  return data;
 }
 
 export default function Step7() {
@@ -119,7 +131,6 @@ export default function Step7() {
               method: "POST",
               encType: "application/json",
             });
-            alert("Форма корректно заполнена");
           })}
           style={{
             display: "grid",

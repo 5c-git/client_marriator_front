@@ -12,18 +12,51 @@ export default defineConfig({
       ssr: false,
       routes(defineRoutes) {
         return defineRoutes((route) => {
-          route("/:lang?", "routes/_index/route.tsx", { index: true });
+          route("", "routes/rootErrorBoundry/route.tsx", () => {
+            route("/:lang?", "routes/_index/route.tsx", { index: true });
 
-          route("/:lang?/signin/phone", "routes/signin/phone/route.tsx");
+            //signin
+            route("/:lang?/signin/phone", "routes/signin/phone/route.tsx");
+            route("/:lang?/signin/sms", "routes/signin/sms/route.tsx");
+            route(
+              "/:lang?/signin/createPin",
+              "routes/signin/createPin/route.tsx"
+            );
+            route("/:lang?/signin/pin", "routes/signin/pin/route.tsx");
+            //signin
 
-          route(
-            "/:lang?/registration/step1",
-            "routes/registration/step1/route.tsx"
-          );
-          route(
-            "/:lang?/registration/step2",
-            "routes/registration/step2/route.tsx"
-          );
+            //registration
+            route(
+              "/:lang?/registration/step1",
+              "routes/registration/step1/route.tsx"
+            );
+            route(
+              "/:lang?/registration/step2",
+              "routes/registration/step2/route.tsx"
+            );
+
+            route(
+              "/:lang?/registration/step3",
+              "routes/registration/step3/route.tsx"
+            );
+            route(
+              "/:lang?/registration/step4",
+              "routes/registration/step4/route.tsx"
+            );
+            route(
+              "/:lang?/registration/step5",
+              "routes/registration/step5/route.tsx"
+            );
+            route(
+              "/:lang?/registration/step6",
+              "routes/registration/step6/route.tsx"
+            );
+            route(
+              "/:lang?/registration/step7",
+              "routes/registration/step7/route.tsx"
+            );
+            //registration
+          });
         });
       },
     }),

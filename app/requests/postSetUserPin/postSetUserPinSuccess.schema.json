@@ -1,0 +1,14 @@
+{
+  "$id": "postSetUserPinSuccessSchema",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Post Set User Pin Success Schema",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "status": {
+      "type": "string",
+      "const": "success"
+    }
+  },
+  "required": ["status"]
+}
