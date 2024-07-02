@@ -25,7 +25,7 @@ export const ErrorBoundary = () => {
         if ("token_type" in newTokens.result.token) {
           await setAccessToken(newTokens.result.token.access_token);
           await setRefreshToken(newTokens.result.token.refresh_token);
-          navigate(0);
+          navigate("/signin/pin");
         } else {
           await clearPreferences();
           navigate("/signin/phone");

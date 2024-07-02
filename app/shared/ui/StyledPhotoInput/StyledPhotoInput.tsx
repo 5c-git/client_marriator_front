@@ -31,6 +31,7 @@ type PhotoInputProps = {
 
   validation: "default" | "none";
   url: string;
+  token: string;
 
   disabled?: boolean;
   heading?: string;
@@ -168,6 +169,7 @@ export const StyledPhotoInput = ({
                     formData.append(`file`, image as File);
 
                     postSendFile(
+                      props.token,
                       props.url,
                       formData,
                       (data) => {

@@ -33,6 +33,7 @@ export async function clientLoader() {
     const data = await getForm(accessToken, 3);
 
     return json({
+      accessToken,
       formFields: data.result.formData,
       formStatus: data.result.type,
     });
@@ -61,7 +62,8 @@ export default function Step3() {
   const navigate = useNavigate();
   const navigation = useNavigation();
 
-  const { formFields, formStatus } = useLoaderData<typeof clientLoader>();
+  const { accessToken, formFields, formStatus } =
+    useLoaderData<typeof clientLoader>();
 
   const {
     control,
@@ -135,7 +137,8 @@ export default function Step3() {
                 method: "POST",
                 encType: "application/json",
               });
-            }
+            },
+            accessToken
           )}
 
           <Box
