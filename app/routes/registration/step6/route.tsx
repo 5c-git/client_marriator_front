@@ -2,12 +2,11 @@ import { useEffect } from "react";
 import {
   useLoaderData,
   useFetcher,
-  useSubmit,
   useNavigate,
   useNavigation,
   ClientActionFunctionArgs,
   json,
-  redirect,
+  Link,
 } from "@remix-run/react";
 import * as Yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -49,10 +48,6 @@ export async function clientAction({ request }: ClientActionFunctionArgs) {
   if (accessToken) {
     const data = await postSaveForm(accessToken, 6, fields);
 
-    if (data.result.type === "allowedNewStep") {
-      throw redirect("/registration/step7");
-    }
-
     return data;
   } else {
     throw new Response("Токен авторизации не обнаружен!", { status: 401 });
@@ -62,7 +57,6 @@ export async function clientAction({ request }: ClientActionFunctionArgs) {
 export default function Step6() {
   const theme = useTheme();
 
-  const submit = useSubmit();
   const fetcher = useFetcher();
   const navigate = useNavigate();
   const navigation = useNavigation();
@@ -71,7 +65,6 @@ export default function Step6() {
 
   const {
     control,
-    handleSubmit,
     setValue,
     trigger,
     getValues,
@@ -126,12 +119,6 @@ export default function Step6() {
         </Box>
 
         <form
-          onSubmit={handleSubmit((values) => {
-            submit(JSON.stringify(values), {
-              method: "POST",
-              encType: "application/json",
-            });
-          })}
           style={{
             display: "grid",
             rowGap: "16px",
@@ -163,7 +150,8 @@ export default function Step6() {
             }}
           >
             <Button
-              type="submit"
+              component={Link}
+              to="/registration/step7"
               disabled={formStatus !== "allowedNewStep"}
               variant="contained"
             >

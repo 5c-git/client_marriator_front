@@ -252,28 +252,30 @@ export const generateInputsMarkup = (
     if (item.inputType === "file") {
       return (
         <StyledFileInput
+          {...item}
           key={index}
           error={errors[item.name]?.message}
           onChange={setValue}
           triggerValidation={trigger}
           onImmediateChange={onImmediateChange}
+          url={import.meta.env.VITE_SEND_FILE}
           inputStyles={{
             paddingRight: "16px",
             paddingLeft: "16px",
           }}
-          {...item}
         />
       );
       // приходится делать отдельную проверку, так как в данном случае необходимо програмно установить значение в поле
     } else if (item.inputType === "photo") {
       return (
         <StyledPhotoInput
+          {...item}
           key={index}
           error={errors[item.name]?.message}
           onChange={setValue}
           triggerValidation={trigger}
+          url={import.meta.env.VITE_SEND_FILE}
           onImmediateChange={onImmediateChange}
-          {...item}
         />
       );
     } else {
