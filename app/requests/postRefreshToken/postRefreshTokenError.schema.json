@@ -1,0 +1,41 @@
+{
+  "$id": "postRefreshTokenErrorSchema",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "postRefreshTokenErrorSchema",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "status": {
+      "type": "string",
+      "const": "success"
+    },
+    "result": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "token": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "error": {
+              "type": "string",
+              "const": "invalid_request"
+            },
+            "error_description": {
+              "type": "string"
+            },
+            "hint": {
+              "type": "string"
+            },
+            "message": {
+              "type": "string"
+            }
+          },
+          "required": ["error", "error_description", "hint", "message"]
+        }
+      },
+      "required": ["token"]
+    }
+  },
+  "required": ["status", "result"]
+}

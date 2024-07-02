@@ -7,6 +7,7 @@ interface ImportMetaEnv {
   readonly VITE_SEND_PHONE: string;
   readonly VITE_CHECK_CODE: string;
   readonly VITE_SET_USER_PIN: string;
+  readonly VITE_REFRESH_TOKEN: string;
   // more env variables...
 }
 

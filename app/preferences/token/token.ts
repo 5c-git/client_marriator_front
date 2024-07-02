@@ -14,22 +14,14 @@ export const setRefreshToken = async (refreshToken: string) => {
   });
 };
 
-export const validateToken = async () => {
+export const getAccessToken = async () => {
   const { value } = await Preferences.get({ key: "accessToken" });
 
-  if (value === null) {
-    // const { value } = await Preferences.get({ key: "refreshToken" });
+  return value;
+};
 
-    // const newAccessToken = await updateToken(value);
-
-    // await setAccessToken(newAccessToken);
-
-    const { value: updatedAccessToken } = await Preferences.get({
-      key: "accessToken",
-    });
-
-    return updatedAccessToken;
-  }
+export const getRefreshToken = async () => {
+  const { value } = await Preferences.get({ key: "refreshToken" });
 
   return value;
 };
