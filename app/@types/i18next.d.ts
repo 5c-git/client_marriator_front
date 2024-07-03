@@ -1,4 +1,4 @@
-import IndexRU from "../routes/_index/locales/ru.json";
+import IndexRU from "../routes/home/locales/ru.json";
 import RootErrorBoundryRU from "../routes/rootErrorBoundry/locales/ru.json";
 
 import PhoneRU from "../routes/signin/phone/locales/ru.json";

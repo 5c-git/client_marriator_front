@@ -5,7 +5,14 @@
  * and run json-schema-to-typescript to regenerate this file.
  */
 
-export interface PostSaveUserImgError {
-  status: "error";
-  error: string;
+export interface PostFinishRegisterSuccess {
+  status: "success";
+  result: {
+    token: {
+      token_type: "Bearer";
+      expires_in: number;
+      access_token: string;
+      refresh_token: string;
+    };
+  };
 }

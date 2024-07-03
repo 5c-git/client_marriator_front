@@ -7,7 +7,7 @@ import responseSchemaError from "./postRefreshTokenError.schema.json";
 const Mock = () => <></>;
 
 const meta = {
-  title: "Сетевые запросы/Вход/refreshToken/",
+  title: "Сетевые запросы/Вход/refreshToken",
   component: Mock,
   tags: ["autodocs"],
 } satisfies Meta<typeof Mock>;

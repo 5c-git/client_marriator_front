@@ -1,13 +1,13 @@
 import type { StoryObj, Meta } from "@storybook/react";
 import * as DocBlock from "@storybook/blocks";
 
-import responseSchemaSuccess from "./postSaveUserImgSuccess.schema.json";
-import responseSchemaError from "./postSaveUserImgError.schema.json";
+import schemaSuccess from "./postCheckPinSuccess.schema.json";
+import schemaError from "./postCheckPinError.schema.json";
 
 const Mock = () => <></>;
 
 const meta = {
-  title: "Сетевые запросы/Отправка файлов/postSaveUserImg",
+  title: "Сетевые запросы/Внутренние/postCheckPin",
   component: Mock,
   tags: ["autodocs"],
 } satisfies Meta<typeof Mock>;
@@ -24,8 +24,8 @@ export const Basic: Story = {
           <DocBlock.Description />
 
           <h1>method: POST</h1>
-          <h3>переменная: VITE_SEND_PHOTO</h3>
-          <h3>адрес: {import.meta.env.VITE_SEND_PHOTO}</h3>
+          <h3>переменная: VITE_CHECK_PIN</h3>
+          <h3>адрес: {import.meta.env.VITE_CHECK_PIN}</h3>
 
           <h2>Payload</h2>
           <DocBlock.Source
@@ -35,7 +35,9 @@ export const Basic: Story = {
                 headers: {
                   Authorization: "Bearer ${accessToken}",
                 },
-                body: "formData",
+                body: {
+                  pin: "string",
+                },
               },
               null,
               2
@@ -45,13 +47,13 @@ export const Basic: Story = {
           <h2>Response Success JSON Schema</h2>
           <DocBlock.Source
             language="json"
-            code={JSON.stringify(responseSchemaSuccess, null, 2)}
+            code={JSON.stringify(schemaSuccess, null, 2)}
           />
 
           <h2>Response Error JSON Schema</h2>
           <DocBlock.Source
             language="json"
-            code={JSON.stringify(responseSchemaError, null, 2)}
+            code={JSON.stringify(schemaError, null, 2)}
           />
         </>
       ),

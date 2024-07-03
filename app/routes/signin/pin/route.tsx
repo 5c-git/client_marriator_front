@@ -2,7 +2,10 @@ import {
   useSubmit,
   useNavigation,
   Link,
-  // ClientActionFunctionArgs,
+  ClientActionFunctionArgs,
+  useActionData,
+  json,
+  redirect,
 } from "@remix-run/react";
 
 import { t } from "i18next";
@@ -16,26 +19,41 @@ import { Box, Typography, Snackbar, Alert, useTheme } from "@mui/material";
 import { StyledOptField } from "~/shared/ui/StyledOtpField/StyledOtpField";
 import { Loader } from "~/shared/ui/Loader/Loader";
 
+import { postCheckPin } from "~/requests/postCheckPin/postCheckPin";
+import {
+  getAccessToken,
+  setAccessToken,
+  setRefreshToken,
+} from "~/preferences/token/token";
+
 const validationSchema = Yup.object().shape({
   pin: Yup.string().min(4).max(4).required(),
 });
 
-// export async function clientAction({ request }: ClientActionFunctionArgs) {
-//   const fields = await request.json();
+export async function clientAction({ request }: ClientActionFunctionArgs) {
+  const fields = await request.json();
+  const accessToken = await getAccessToken();
 
-//   const data = await request(fields);
-
-//   // if (data) {
-//   //   throw redirect("/");
-//   // }
-
-//   return data;
-// }
+  if (accessToken) {
+    const data = await postCheckPin(accessToken, fields.pin);
+    if (data.status === "success") {
+      await setAccessToken(data.result.token.access_token);
+      await setRefreshToken(data.result.token.refresh_token);
+      throw redirect("/");
+    } else if (data.status === "error") {
+      return json({ error: t("Pin.pinError") });
+    }
+  } else {
+    throw new Response("Токен авторизации не обнаружен!", { status: 401 });
+  }
+}
 
 export default function Pin() {
   const theme = useTheme();
   const submit = useSubmit();
   const navigation = useNavigation();
+
+  const actionData = useActionData<typeof clientAction>();
 
   const {
     control,
@@ -158,7 +176,7 @@ export default function Pin() {
         </Box>
       </Box>
 
-      <Snackbar open={errors.pin ? true : false} autoHideDuration={3000}>
+      <Snackbar open={actionData ? true : false} autoHideDuration={3000}>
         <Alert
           severity="info"
           variant="small"

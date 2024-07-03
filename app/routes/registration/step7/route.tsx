@@ -6,7 +6,7 @@ import {
   useNavigation,
   ClientActionFunctionArgs,
   json,
-  Link,
+  redirect,
 } from "@remix-run/react";
 import * as Yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -24,7 +24,12 @@ import { Loader } from "~/shared/ui/Loader/Loader";
 
 import { getForm } from "~/requests/getForm/getForm";
 import { postSaveForm } from "~/requests/postSaveForm/postSaveForm";
-import { getAccessToken } from "~/preferences/token/token";
+import { postFinishRegister } from "~/requests/postFinishRegister/postFinishRegister";
+import {
+  getAccessToken,
+  setAccessToken,
+  setRefreshToken,
+} from "~/preferences/token/token";
 
 export async function clientLoader() {
   const accessToken = await getAccessToken();
@@ -43,13 +48,22 @@ export async function clientLoader() {
 }
 
 export async function clientAction({ request }: ClientActionFunctionArgs) {
-  const accesstoken = await getAccessToken();
-  const fields = await request.json();
+  const accessToken = await getAccessToken();
+  const { _action, ...fields } = await request.json();
 
-  if (accesstoken) {
-    const data = await postSaveForm(accesstoken, 7, fields);
+  if (accessToken) {
+    if (_action === "finishRegister") {
+      const data = await postFinishRegister(accessToken);
 
-    return data;
+      await setAccessToken(data.result.token.access_token);
+      await setRefreshToken(data.result.token.refresh_token);
+
+      throw redirect("/signin/pin");
+    } else {
+      const data = await postSaveForm(accessToken, 7, fields);
+
+      return data;
+    }
   } else {
     throw new Response("Токен авторизации не обнаружен!", { status: 401 });
   }
@@ -151,10 +165,14 @@ export default function Step7() {
             }}
           >
             <Button
-              component={Link}
-              to="/"
               disabled={formStatus !== "allowedNewStep"}
               variant="contained"
+              onClick={() => {
+                fetcher.submit(JSON.stringify({ _action: "finishRegister" }), {
+                  method: "POST",
+                  encType: "application/json",
+                });
+              }}
             >
               Подписать договор
             </Button>

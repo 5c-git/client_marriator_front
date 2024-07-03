@@ -5,10 +5,17 @@ import { postSendPhoneMockResponse } from "~/requests/postSendPhone/postSendPhon
 import { mockPostCheckCodeMockResponse } from "~/requests/postCheckCode/postCheckCode";
 import { mockPostSetUserPinMockResponse } from "~/requests/postSetUserPin/postSetUserPin";
 
+import { postFinishRegisterResponse } from "~/requests/postFinishRegister/postFinishRegister";
+import { postCheckPinResponse } from "~/requests/postCheckPin/postCheckPin";
+import { getUserInfoMockResponse } from "~/requests/getUserInfo/getUserInfo";
+
 export const handlers = [
   getFormMockResponse,
   postSaveFormMockResponse,
   postSendPhoneMockResponse,
   mockPostCheckCodeMockResponse,
   mockPostSetUserPinMockResponse,
+  postFinishRegisterResponse,
+  postCheckPinResponse,
+  getUserInfoMockResponse,
 ];

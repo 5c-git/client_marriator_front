@@ -185,7 +185,12 @@ export const StyledPhotoInput = ({
                         setError(error);
                         setLoading(false);
                       }
-                    );
+                    ).catch(() => {
+                      setValue("");
+                      onChange(props.name, "");
+                      setError("Что-то пошло не так, попробуйте ещё раз");
+                      setLoading(false);
+                    });
                   }
                 }
               }}

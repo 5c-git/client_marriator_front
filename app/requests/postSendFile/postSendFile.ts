@@ -26,12 +26,10 @@ export const postSendFile = async (
   const request = await fetch(url, {
     method: "POST",
     headers: {
-      "Content-Type": "application/json",
       Authorization: `Bearer ${accessToken}`,
     },
     body: body,
   });
-  const response = await request.json();
 
   if (request.status === 401) {
     throw new Response("Unauthorized", {
@@ -39,12 +37,14 @@ export const postSendFile = async (
     });
   }
 
+  const response = await request.json();
+
   if (validateResponseSuccess(response)) {
-    const data = response as SendFileResponseSuccess;
+    const data = response as unknown as SendFileResponseSuccess;
 
     onSuccess(data);
   } else if (validateResponseError(response)) {
-    const error = response as SendFileResponseError;
+    const error = response as unknown as SendFileResponseError;
 
     onError(error.error);
   } else {

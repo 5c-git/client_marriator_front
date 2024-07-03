@@ -276,7 +276,8 @@ export const generateInputsMarkup = (
           error={errors[item.name]?.message}
           onChange={setValue}
           triggerValidation={trigger}
-          url={import.meta.env.VITE_SEND_FILE}
+          url={import.meta.env.VITE_SEND_PHOTO}
+          token={token}
           onImmediateChange={onImmediateChange}
         />
       );

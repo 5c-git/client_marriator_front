@@ -6,8 +6,6 @@
  */
 
 export interface SendFileResponseError {
-  text1: string;
-  fileName: string[];
+  status: "error";
   error: string;
-  [k: string]: unknown;
 }
