@@ -1,5 +1,5 @@
-import IndexRU from "../routes/_index/locales/ru.json";
-import IndexEN from "../routes/_index/locales/en.json";
+import IndexRU from "../routes/home/locales/ru.json";
+import IndexEN from "../routes/home/locales/en.json";
 
 import RootErrorBoundryRU from "../routes/rootErrorBoundry/locales/ru.json";
 import RootErrorBoundryEN from "../routes/rootErrorBoundry/locales/en.json";

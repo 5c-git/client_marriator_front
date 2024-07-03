@@ -6,8 +6,6 @@
  */
 
 export interface SendFileResponseSuccess {
-  text1: string;
-  fileName: string[];
   resFile: string;
-  [k: string]: unknown;
+  status: "success";
 }

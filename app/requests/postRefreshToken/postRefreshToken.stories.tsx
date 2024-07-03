@@ -1,13 +1,13 @@
 import type { StoryObj, Meta } from "@storybook/react";
 import * as DocBlock from "@storybook/blocks";
 
-import responseSchemaSuccess from "./postSaveUserImgSuccess.schema.json";
-import responseSchemaError from "./postSaveUserImgError.schema.json";
+import responseSchemaSuccess from "./postRefreshTokenSuccess.schema.json";
+import responseSchemaError from "./postRefreshTokenError.schema.json";
 
 const Mock = () => <></>;
 
 const meta = {
-  title: "Сетевые запросы/Отправка файлов/postSaveUserImg",
+  title: "Сетевые запросы/Вход/refreshToken",
   component: Mock,
   tags: ["autodocs"],
 } satisfies Meta<typeof Mock>;
@@ -24,18 +24,19 @@ export const Basic: Story = {
           <DocBlock.Description />
 
           <h1>method: POST</h1>
-          <h3>переменная: VITE_SEND_PHOTO</h3>
-          <h3>адрес: {import.meta.env.VITE_SEND_PHOTO}</h3>
+          <h3>переменная: VITE_REFRESH_TOKEN</h3>
+          <h3>адрес: {import.meta.env.VITE_REFRESH_TOKEN}</h3>
 
           <h2>Payload</h2>
           <DocBlock.Source
             language="json"
             code={JSON.stringify(
               {
-                headers: {
-                  Authorization: "Bearer ${accessToken}",
+                body: {
+                  JSON: {
+                    refreshToken: "string",
+                  },
                 },
-                body: "formData",
               },
               null,
               2

@@ -1,10 +1,14 @@
-import { useTheme, Box, Button, Typography } from "@mui/material";
+import { useEffect } from "react";
 import { Outlet, useRouteError, useNavigate } from "@remix-run/react";
-
 import { t } from "i18next";
 
+import { postRefreshToken } from "~/requests/postRefreshToken/postRefreshToken";
+
+import { setAccessToken, setRefreshToken } from "~/preferences/token/token";
+import { clearPreferences } from "~/preferences/preferences";
+
+import { useTheme, Box, Button, Typography } from "@mui/material";
 import logoTurnOff from "./logo-turnoff.svg";
-import { useEffect } from "react";
 
 export const ErrorBoundary = () => {
   const theme = useTheme();
@@ -12,11 +16,24 @@ export const ErrorBoundary = () => {
 
   const error = useRouteError() as { status: number; data: string };
 
+  ///// логика обновления accessToken с сервера через refreshToken, если обновление неуспешно - значит ссессия протухла совсем, удяляем токены из кранилища и переводим пользователя на авторизацию
   useEffect(() => {
     if (error.status === 401) {
-      navigate("/signin/phone");
+      (async () => {
+        const newTokens = await postRefreshToken("old_token");
+
+        if ("token_type" in newTokens.result.token) {
+          await setAccessToken(newTokens.result.token.access_token);
+          await setRefreshToken(newTokens.result.token.refresh_token);
+          navigate("/signin/pin");
+        } else {
+          await clearPreferences();
+          navigate("/signin/phone");
+        }
+      })();
     }
   }, [error.status, navigate]);
+  ////
 
   return (
     <>

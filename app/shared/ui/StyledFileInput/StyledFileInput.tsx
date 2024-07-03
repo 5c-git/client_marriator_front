@@ -44,6 +44,7 @@ type FileInputProps = {
   placeholder: string;
   validation: "default" | "none";
   url: string;
+  token: string;
 
   disabled?: boolean;
   heading?: string;
@@ -173,6 +174,7 @@ export const StyledFileInput = ({
               ) : null}
 
               <S_ActivationButton
+                type="button"
                 onClick={() => {
                   value === "" ? setOpen(true) : (location.href = value);
                 }}
@@ -185,6 +187,7 @@ export const StyledFileInput = ({
             </S_ButtonContainer>
 
             <IconButton
+              type="button"
               sx={{
                 padding: 0,
                 width: "24px",
@@ -446,6 +449,7 @@ export const StyledFileInput = ({
 
                     // sendFiles
                     postSendFile(
+                      props.token,
                       props.url,
                       formData,
                       (data) => {
@@ -460,7 +464,11 @@ export const StyledFileInput = ({
                         onChange(props.name, "");
                         setError(error);
                       }
-                    );
+                    ).catch(() => {
+                      setValue("");
+                      onChange(props.name, "");
+                      setError("Что-то пошло не так, попробуйте ещё раз");
+                    });
                   }
                 }
               }}

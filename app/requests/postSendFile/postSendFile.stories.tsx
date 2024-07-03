@@ -40,6 +40,9 @@ export const Basic: Story = {
                 //     field: "value",
                 //   },
                 // },
+                headers: {
+                  Authorization: "Bearer ${accessToken}",
+                },
                 body: "formData",
               },
               null,

@@ -2,11 +2,11 @@ import { useEffect } from "react";
 import {
   useLoaderData,
   useFetcher,
-  useSubmit,
   useNavigation,
   ClientActionFunctionArgs,
   json,
-  redirect,
+  Link,
+  // redirect,
 } from "@remix-run/react";
 import * as Yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -24,15 +24,16 @@ import { Loader } from "~/shared/ui/Loader/Loader";
 
 import { getForm } from "~/requests/getForm/getForm";
 import { postSaveForm } from "~/requests/postSaveForm/postSaveForm";
-import { validateToken } from "~/preferences/token/token";
+import { getAccessToken } from "~/preferences/token/token";
 
 export async function clientLoader() {
-  const accessToken = await validateToken();
+  const accessToken = await getAccessToken();
 
   if (accessToken) {
     const data = await getForm(accessToken, 1);
 
     return json({
+      accessToken,
       formFields: data.result.formData,
       formStatus: data.result.type,
     });
@@ -43,14 +44,10 @@ export async function clientLoader() {
 
 export async function clientAction({ request }: ClientActionFunctionArgs) {
   const fields = await request.json();
-  const accessToken = await validateToken();
+  const accessToken = await getAccessToken();
 
   if (accessToken) {
     const data = await postSaveForm(accessToken, 1, fields);
-
-    if (data.result.type === "allowedNewStep") {
-      throw redirect("/registration/step2");
-    }
 
     return data;
   } else {
@@ -61,15 +58,14 @@ export async function clientAction({ request }: ClientActionFunctionArgs) {
 export default function Step1() {
   const theme = useTheme();
 
-  const submit = useSubmit();
   const fetcher = useFetcher();
   const navigation = useNavigation();
 
-  const { formFields, formStatus } = useLoaderData<typeof clientLoader>();
+  const { accessToken, formFields, formStatus } =
+    useLoaderData<typeof clientLoader>();
 
   const {
     control,
-    handleSubmit,
     setValue,
     trigger,
     getValues,
@@ -162,12 +158,6 @@ export default function Step1() {
         </Box>
 
         <form
-          onSubmit={handleSubmit((values) => {
-            submit(JSON.stringify(values), {
-              method: "POST",
-              encType: "application/json",
-            });
-          })}
           style={{
             display: "grid",
             rowGap: "16px",
@@ -184,7 +174,8 @@ export default function Step1() {
                 method: "POST",
                 encType: "application/json",
               });
-            }
+            },
+            accessToken
           )}
 
           <Box
@@ -199,7 +190,8 @@ export default function Step1() {
             }}
           >
             <Button
-              type="submit"
+              component={Link}
+              to="/registration/step2"
               disabled={formStatus !== "allowedNewStep"}
               variant="contained"
             >

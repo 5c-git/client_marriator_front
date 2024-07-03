@@ -96,7 +96,7 @@ export const postSendPhoneMockResponse = http.post(
     const scenario = url.searchParams.get("scenario");
 
     await delay(2000);
-    return HttpResponse.json(mockPostSendPhoneResponseRegister);
+    return HttpResponse.json(mockResponseError);
 
     if (scenario === "reg") {
       await delay(2000);

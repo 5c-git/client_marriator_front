@@ -1,0 +1,46 @@
+{
+  "$id": "postRefreshTokenSuccessSchema",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "postRefreshTokenSuccessSchema",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "status": {
+      "type": "string",
+      "const": "success"
+    },
+    "result": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "token": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "token_type": {
+              "type": "string",
+              "const": "Bearer"
+            },
+            "expires_in": {
+              "type": "number"
+            },
+            "access_token": {
+              "type": "string"
+            },
+            "refresh_token": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "token_type",
+            "expires_in",
+            "access_token",
+            "refresh_token"
+          ]
+        }
+      },
+      "required": ["token"]
+    }
+  },
+  "required": ["status", "result"]
+}

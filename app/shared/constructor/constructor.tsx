@@ -245,35 +245,40 @@ export const generateInputsMarkup = (
     [x: string]: unknown;
     [x: number]: unknown;
   }>,
-  onImmediateChange: () => void
+  onImmediateChange: () => void,
+  token: string
 ) =>
   items.map((item, index: number) => {
     // приходится делать отдельную проверку, так как в данном случае необходимо програмно установить значение в поле
     if (item.inputType === "file") {
       return (
         <StyledFileInput
+          {...item}
           key={index}
           error={errors[item.name]?.message}
           onChange={setValue}
           triggerValidation={trigger}
           onImmediateChange={onImmediateChange}
+          url={import.meta.env.VITE_SEND_FILE}
+          token={token}
           inputStyles={{
             paddingRight: "16px",
             paddingLeft: "16px",
           }}
-          {...item}
         />
       );
       // приходится делать отдельную проверку, так как в данном случае необходимо програмно установить значение в поле
     } else if (item.inputType === "photo") {
       return (
         <StyledPhotoInput
+          {...item}
           key={index}
           error={errors[item.name]?.message}
           onChange={setValue}
           triggerValidation={trigger}
+          url={import.meta.env.VITE_SEND_PHOTO}
+          token={token}
           onImmediateChange={onImmediateChange}
-          {...item}
         />
       );
     } else {

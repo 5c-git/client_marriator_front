@@ -15,6 +15,7 @@ const validateResponseError = ajv.compile(responseError);
 export const postSendFileKeys = ["postSendFile"];
 
 export const postSendFile = async (
+  accessToken: string,
   urlString: string,
   body: FormData,
   onSuccess: (data: SendFileResponseSuccess) => void,
@@ -24,16 +25,26 @@ export const postSendFile = async (
 
   const request = await fetch(url, {
     method: "POST",
+    headers: {
+      Authorization: `Bearer ${accessToken}`,
+    },
     body: body,
   });
+
+  if (request.status === 401) {
+    throw new Response("Unauthorized", {
+      status: 401,
+    });
+  }
+
   const response = await request.json();
 
   if (validateResponseSuccess(response)) {
-    const data = response as SendFileResponseSuccess;
+    const data = response as unknown as SendFileResponseSuccess;
 
     onSuccess(data);
   } else if (validateResponseError(response)) {
-    const error = response as SendFileResponseError;
+    const error = response as unknown as SendFileResponseError;
 
     onError(error.error);
   } else {

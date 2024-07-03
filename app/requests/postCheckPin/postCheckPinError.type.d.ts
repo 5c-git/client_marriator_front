@@ -5,7 +5,6 @@
  * and run json-schema-to-typescript to regenerate this file.
  */
 
-export interface PostSaveUserImgError {
+export interface PostCheckPinError {
   status: "error";
-  error: string;
 }
