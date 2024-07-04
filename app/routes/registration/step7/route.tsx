@@ -76,14 +76,14 @@ export default function Step7() {
   const navigate = useNavigate();
   const navigation = useNavigation();
 
-  const { accessToken, formFields, formStatus } =
-    useLoaderData<typeof clientLoader>();
+  const { accessToken, formFields } = useLoaderData<typeof clientLoader>();
 
   const {
     control,
     setValue,
     trigger,
     getValues,
+    handleSubmit,
     formState: { errors },
     reset,
   } = useForm({
@@ -165,13 +165,18 @@ export default function Step7() {
             }}
           >
             <Button
-              disabled={formStatus !== "allowedNewStep"}
               variant="contained"
               onClick={() => {
-                fetcher.submit(JSON.stringify({ _action: "finishRegister" }), {
-                  method: "POST",
-                  encType: "application/json",
-                });
+                trigger();
+                handleSubmit(() => {
+                  fetcher.submit(
+                    JSON.stringify({ _action: "finishRegister" }),
+                    {
+                      method: "POST",
+                      encType: "application/json",
+                    }
+                  );
+                })();
               }}
             >
               Подписать договор

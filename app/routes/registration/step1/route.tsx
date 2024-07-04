@@ -5,7 +5,7 @@ import {
   useNavigation,
   ClientActionFunctionArgs,
   json,
-  Link,
+  useNavigate,
   // redirect,
 } from "@remix-run/react";
 import * as Yup from "yup";
@@ -60,6 +60,7 @@ export default function Step1() {
 
   const fetcher = useFetcher();
   const navigation = useNavigation();
+  const navigate = useNavigate();
 
   const { accessToken, formFields, formStatus } =
     useLoaderData<typeof clientLoader>();
@@ -69,6 +70,7 @@ export default function Step1() {
     setValue,
     trigger,
     getValues,
+    handleSubmit,
     formState: { errors },
     reset,
   } = useForm({
@@ -81,6 +83,8 @@ export default function Step1() {
   useEffect(() => {
     reset(generateDefaultValues(formFields));
   }, [formFields, reset]);
+
+  console.log(errors);
 
   return (
     <>
@@ -190,10 +194,15 @@ export default function Step1() {
             }}
           >
             <Button
-              component={Link}
-              to="/registration/step2"
-              disabled={formStatus !== "allowedNewStep"}
               variant="contained"
+              onClick={() => {
+                trigger();
+                handleSubmit(() => {
+                  if (formStatus === "allowedNewStep") {
+                    navigate("/registration/step2");
+                  }
+                })();
+              }}
             >
               Продолжить
             </Button>
