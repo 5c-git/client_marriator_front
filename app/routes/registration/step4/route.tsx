@@ -6,7 +6,6 @@ import {
   useNavigation,
   ClientActionFunctionArgs,
   json,
-  Link,
 } from "@remix-run/react";
 import * as Yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -69,6 +68,7 @@ export default function Step4() {
     setValue,
     trigger,
     getValues,
+    handleSubmit,
     formState: { errors },
     reset,
   } = useForm({
@@ -153,10 +153,15 @@ export default function Step4() {
             }}
           >
             <Button
-              component={Link}
-              to="/registration/step5"
-              disabled={formStatus !== "allowedNewStep"}
               variant="contained"
+              onClick={() => {
+                trigger();
+                handleSubmit(() => {
+                  if (formStatus === "allowedNewStep") {
+                    navigate("/registration/step5");
+                  }
+                })();
+              }}
             >
               Продолжить
             </Button>
