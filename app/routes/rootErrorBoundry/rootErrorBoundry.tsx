@@ -63,6 +63,17 @@ export const ErrorBoundary = () => {
             />
           </Box>
           <Typography
+            component="h1"
+            variant="Bold_28"
+            sx={{
+              color: theme.palette["Red"],
+              textAlign: "center",
+              paddingTop: "40px",
+            }}
+          >
+            {t("RootErrorBoundry.error")}
+          </Typography>
+          <Typography
             component="p"
             variant="Reg_14"
             sx={{
@@ -72,7 +83,7 @@ export const ErrorBoundary = () => {
               paddingBottom: "40px",
             }}
           >
-            {error.data}
+            {error.data} asdfsdf
           </Typography>
           <Button
             variant="outlined"

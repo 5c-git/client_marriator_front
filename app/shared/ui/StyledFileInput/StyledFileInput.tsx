@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, forwardRef } from "react";
 import { Link } from "@remix-run/react";
 import { UseFormSetValue } from "react-hook-form";
 import Swiper from "swiper";
@@ -73,14 +73,10 @@ type FileInputProps = {
 // (6 megabites)
 const MAX_FILE_SIZE = 6000000;
 
-export const StyledFileInput = ({
-  onChange,
-  triggerValidation,
-  ...props
-}: FileInputProps) => {
+export const StyledFileInput = forwardRef((props: FileInputProps, ref) => {
   const theme = useTheme();
 
-  const ref = useRef<HTMLInputElement>(null);
+  const inputRef = useRef<HTMLInputElement>(null);
   const [value, setValue] = useState<string>("");
 
   const [open, setOpen] = useState<boolean>(false);
@@ -119,21 +115,21 @@ export const StyledFileInput = ({
     if (open === true) {
       setLoaded(false);
       setError(null);
-      if (ref.current) {
-        ref.current.value = "";
+      if (inputRef.current) {
+        inputRef.current.value = "";
       }
     }
   }, [open, setError]);
 
   useEffect(() => {
     if (loaded === true) {
-      triggerValidation(props.name);
+      props.triggerValidation(props.name);
     }
-  }, [triggerValidation, props.name, loaded]);
+  }, [props, loaded]);
 
   return (
     <>
-      <Box sx={props.styles}>
+      <Box sx={props.styles} ref={ref}>
         {props.dividerTop ? <Divider sx={{ marginBottom: "16px" }} /> : null}
 
         <Box sx={props.inputStyles}>
@@ -414,7 +410,7 @@ export const StyledFileInput = ({
               id={props.name}
               name={props.name}
               multiple
-              ref={ref}
+              ref={inputRef}
               onChange={async (evt) => {
                 if (evt.target.files) {
                   const fileArray = Array.from(evt.target.files);
@@ -456,17 +452,17 @@ export const StyledFileInput = ({
                         setValue(data.resFile);
                         setLoaded(true);
                         setLoading(false);
-                        onChange(props.name, data.resFile);
+                        props.onChange(props.name, data.resFile);
                         props.onImmediateChange();
                       },
                       (error) => {
                         setValue("");
-                        onChange(props.name, "");
+                        props.onChange(props.name, "");
                         setError(error);
                       }
                     ).catch(() => {
                       setValue("");
-                      onChange(props.name, "");
+                      props.onChange(props.name, "");
                       setError("Что-то пошло не так, попробуйте ещё раз");
                     });
                   }
@@ -558,8 +554,8 @@ export const StyledFileInput = ({
                 setLoading(false);
                 setError(null);
                 setOpen(true);
-                if (ref.current) {
-                  ref.current.value = "";
+                if (inputRef.current) {
+                  inputRef.current.value = "";
                 }
               }}
             >
@@ -570,4 +566,6 @@ export const StyledFileInput = ({
       </S_SwipeableDrawer>
     </>
   );
-};
+});
+
+StyledFileInput.displayName = "StyledFileInput";

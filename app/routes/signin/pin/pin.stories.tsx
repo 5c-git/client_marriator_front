@@ -4,11 +4,11 @@ import * as DocBlock from "@storybook/blocks";
 import { createRemixStub } from "@remix-run/testing";
 import { http, delay, HttpResponse } from "msw";
 
-import CreatePin from "./route";
+import Pin from "./pin";
 
 const meta = {
-  title: "Страницы/Вход/Создание пина",
-  component: CreatePin,
+  title: "Страницы/Вход/Пин",
+  component: Pin,
   tags: ["autodocs"],
   parameters: {
     layout: {
@@ -18,17 +18,16 @@ const meta = {
       page: () => (
         <>
           <DocBlock.Title />
-          <h2>Адрес страницы: /signin/createPin</h2>
+          <h2>Адрес страницы: /signin/pin</h2>
           <h3>Используемые запросы:</h3>
-          <p>
-            postSetUserPin() - VITE_SET_USER_PIN -{" "}
-            {import.meta.env.VITE_SET_USER_PIN}
-          </p>
+          {/* <p>
+            getRegStep2() - VITE_REG_STEP_2 - {import.meta.env.VITE_REG_STEP_2}
+          </p> */}
         </>
       ),
     },
   },
-} satisfies Meta<typeof CreatePin>;
+} satisfies Meta<typeof Pin>;
 
 export default meta;
 
@@ -43,8 +42,9 @@ export const Primary: Story = {
           path: "/",
           Component: Story,
           action: async () => {
-            // const data = await postRegStep2({ test: "test" });
-            // return data;
+            const data = await postRegStep2({ test: "test" });
+
+            return data;
           },
         },
       ]);

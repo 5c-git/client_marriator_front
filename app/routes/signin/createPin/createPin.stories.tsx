@@ -4,16 +4,11 @@ import * as DocBlock from "@storybook/blocks";
 import { createRemixStub } from "@remix-run/testing";
 import { http, delay, HttpResponse } from "msw";
 
-import Phone from "./route";
-
-import {
-  postSendPhone,
-  mockPostSendPhoneResponseRegister,
-} from "~/requests/postSendPhone/postSendPhone";
+import CreatePin from "./createPin";
 
 const meta = {
-  title: "Страницы/Вход/Телефон",
-  component: Phone,
+  title: "Страницы/Вход/Создание пина",
+  component: CreatePin,
   tags: ["autodocs"],
   parameters: {
     layout: {
@@ -23,40 +18,33 @@ const meta = {
       page: () => (
         <>
           <DocBlock.Title />
-          <h2>Адрес страницы: /signin/phone</h2>
+          <h2>Адрес страницы: /signin/createPin</h2>
           <h3>Используемые запросы:</h3>
           <p>
-            postSendPhone() - VITE_SEND_PHONE -{" "}
-            {import.meta.env.VITE_SEND_PHONE}
+            postSetUserPin() - VITE_SET_USER_PIN -{" "}
+            {import.meta.env.VITE_SET_USER_PIN}
           </p>
         </>
       ),
     },
   },
-} satisfies Meta<typeof Phone>;
+} satisfies Meta<typeof CreatePin>;
 
 export default meta;
 
 type Story = StoryObj<typeof meta>;
 
 export const Primary: Story = {
-  name: "Страница (переход на регистрацию)",
+  name: "Страница",
   decorators: [
     (Story) => {
       const RemixStub = createRemixStub([
         {
           path: "/",
           Component: Story,
-          action: async ({ request }) => {
-            const fields = await request.json();
-
-            const data = await postSendPhone(fields.phone);
-
-            // if (data) {
-            //   throw redirect("/");
-            // }
-
-            return data;
+          action: async () => {
+            // const data = await postRegStep2({ test: "test" });
+            // return data;
           },
         },
       ]);
@@ -67,9 +55,11 @@ export const Primary: Story = {
   parameters: {
     msw: {
       handlers: [
-        http.post(import.meta.env.VITE_SEND_PHONE, async () => {
+        http.post(import.meta.env.VITE_GET_FORM, async () => {
           await delay(2000);
-          return HttpResponse.json(mockPostSendPhoneResponseRegister);
+          return HttpResponse.json({
+            status: "Success",
+          });
         }),
       ],
     },

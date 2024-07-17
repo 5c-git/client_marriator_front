@@ -1,5 +1,5 @@
 import { Link } from "@remix-run/react";
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, forwardRef } from "react";
 import { UseFormSetValue } from "react-hook-form";
 
 import { resizeFile } from "~/shared/resizeFile/resizeFile";
@@ -56,14 +56,10 @@ type PhotoInputProps = {
 // (6 megabites)
 const MAX_FILE_SIZE = 6000000;
 
-export const StyledPhotoInput = ({
-  onChange,
-  triggerValidation,
-  ...props
-}: PhotoInputProps) => {
+export const StyledPhotoInput = forwardRef((props: PhotoInputProps, ref) => {
   const theme = useTheme();
 
-  const ref = useRef<HTMLInputElement>(null);
+  const inputRef = useRef<HTMLInputElement>(null);
   const [value, setValue] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(false);
   const [loaded, setLoaded] = useState<boolean>(false);
@@ -81,14 +77,14 @@ export const StyledPhotoInput = ({
 
   useEffect(() => {
     if (loaded === true) {
-      triggerValidation(props.name);
+      props.triggerValidation(props.name);
       setLoaded(false);
     }
-  }, [triggerValidation, props.name, loaded]);
+  }, [props, loaded]);
 
   return (
     <>
-      <Box sx={props.styles}>
+      <Box sx={props.styles} ref={ref}>
         {props.dividerTop ? <Divider sx={{ marginBottom: "16px" }} /> : null}
 
         <Box sx={props.inputStyles}>
@@ -146,7 +142,7 @@ export const StyledPhotoInput = ({
             <input
               type="file"
               id={props.name}
-              ref={ref}
+              ref={inputRef}
               disabled={props.disabled}
               onChange={async (evt) => {
                 if (evt.target.files) {
@@ -174,20 +170,20 @@ export const StyledPhotoInput = ({
                       formData,
                       (data) => {
                         setValue(data.resFile);
-                        onChange(props.name, data.resFile);
+                        props.onChange(props.name, data.resFile);
                         props.onImmediateChange();
                         setLoading(false);
                         setLoaded(true);
                       },
                       (error) => {
                         setValue("");
-                        onChange(props.name, "");
+                        props.onChange(props.name, "");
                         setError(error);
                         setLoading(false);
                       }
                     ).catch(() => {
                       setValue("");
-                      onChange(props.name, "");
+                      props.onChange(props.name, "");
                       setError("Что-то пошло не так, попробуйте ещё раз");
                       setLoading(false);
                     });
@@ -267,4 +263,6 @@ export const StyledPhotoInput = ({
       {loading ? <Loader /> : null}
     </>
   );
-};
+});
+
+StyledPhotoInput.displayName = "StyledPhotoInput";

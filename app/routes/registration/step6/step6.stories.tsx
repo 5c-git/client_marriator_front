@@ -4,7 +4,7 @@ import * as DocBlock from "@storybook/blocks";
 import { createRemixStub } from "@remix-run/testing";
 import { http, delay, HttpResponse } from "msw";
 
-import Step3 from "./route";
+import Step6 from "./step6";
 
 import { getForm } from "~/requests/getForm/getForm";
 import {
@@ -15,8 +15,8 @@ import {
 import { json } from "@remix-run/react";
 
 const meta = {
-  title: "Страницы/Регистрация/Шаг3",
-  component: Step3,
+  title: "Страницы/Регистрация/Шаг6",
+  component: Step6,
   tags: ["autodocs"],
   parameters: {
     layout: {
@@ -26,7 +26,7 @@ const meta = {
       page: () => (
         <>
           <DocBlock.Title />
-          <h2>Адрес страницы: /registration/step3</h2>
+          <h2>Адрес страницы: /registration/step6</h2>
           <h3>Используемые запросы:</h3>
           <p>getForm() - VITE_GET_FORM - {import.meta.env.VITE_GET_FORM}</p>
           <p>
@@ -36,7 +36,7 @@ const meta = {
       ),
     },
   },
-} satisfies Meta<typeof Step3>;
+} satisfies Meta<typeof Step6>;
 
 export default meta;
 
@@ -51,7 +51,7 @@ export const Primary: Story = {
           path: "/",
           Component: Story,
           loader: async () => {
-            const data = await getForm("token", 3);
+            const data = await getForm("token", 6);
 
             return json({
               formFields: data.result.formData,
@@ -61,7 +61,7 @@ export const Primary: Story = {
           action: async ({ request }) => {
             const fields = await request.json();
 
-            const data = await postSaveForm("token", 3, fields);
+            const data = await postSaveForm("token", 6, fields);
 
             if (data.result.type === "allowedNewStep") {
               alert("Переходим на следующий шаг!");
@@ -84,174 +84,116 @@ export const Primary: Story = {
             result: {
               formData: [
                 {
-                  inputType: "text",
-                  name: "weight",
+                  inputType: "inn",
+                  name: "inn",
                   value: "",
-                  placeholder: "Вес",
+                  placeholder: "ИНН",
                   validation: "default",
+                  link: {
+                    type: "external",
+                    path: "https://www.google.com/",
+                    text: "Узнай свой ИНН",
+                  },
                 },
                 {
-                  inputType: "select",
-                  name: "height",
+                  inputType: "snils",
+                  name: "snils",
                   value: "",
-                  placeholder: "Рост",
+                  placeholder: "СНИЛС",
                   validation: "default",
-                  options: [
-                    {
-                      value: "35.5",
-                      label: "35.5",
-                      disabled: false,
-                    },
-                    {
-                      value: "41",
-                      label: "41",
-                      disabled: false,
-                    },
-                    {
-                      value: "45",
-                      label: "45",
-                      disabled: false,
-                    },
-                  ],
-                },
-                {
-                  inputType: "select",
-                  name: "clothes",
-                  value: "",
-                  placeholder: "Размер одежды",
-                  validation: "default",
-                  options: [
-                    {
-                      value: "44-46",
-                      label: "44-46",
-                      disabled: false,
-                    },
-                    {
-                      value: "46-48",
-                      label: "46-48",
-                      disabled: false,
-                    },
-                    {
-                      value: "48-50",
-                      label: "48-50",
-                      disabled: false,
-                    },
-                  ],
-                },
-                {
-                  inputType: "select",
-                  name: "hairColor",
-                  value: "",
-                  placeholder: "Цвет волос",
-                  validation: "default",
-                  options: [
-                    {
-                      value: "light",
-                      label: "светлые",
-                      disabled: false,
-                    },
-                    {
-                      value: "dark",
-                      label: "тёмные",
-                      disabled: false,
-                    },
-                  ],
-                },
-                {
-                  inputType: "select",
-                  name: "hairLenght",
-                  value: "",
-                  placeholder: "Длина волос",
-                  validation: "default",
-                  options: [
-                    {
-                      value: "short",
-                      label: "Короткие",
-                      disabled: false,
-                    },
-                    {
-                      value: "normal",
-                      label: "Средние",
-                      disabled: false,
-                    },
-                    {
-                      value: "long",
-                      label: "Длинные",
-                      disabled: false,
-                    },
-                  ],
+                  link: {
+                    type: "external",
+                    path: "https://www.google.com/",
+                    text: "Электронные услуги и сервисы СФР",
+                  },
                 },
                 {
                   inputType: "file",
-                  name: "driverLicence",
+                  name: "registration",
                   value: "",
                   url: "http://preprod.marriator-api.fivecorners.ru/api/saveFile",
                   placeholder: "Приложи документ",
                   validation: "default",
-                  heading: "Водительское удостоверение",
+                  heading: "Адрес регистрации",
+                  helperInfo: {
+                    text: "Для подтверждения приложи фотографию документа",
+                  },
+                },
+                {
+                  inputType: "file",
+                  name: "migrationCard",
+                  value: "",
+                  url: "http://preprod.marriator-api.fivecorners.ru/api/saveFile",
+                  placeholder: "Приложи документ",
+                  validation: "default",
+                  heading: "Миграционная карта",
+                  helperInfo: {
+                    text: "Для подтверждения приложи фотографию документа",
+                  },
+                },
+                {
+                  inputType: "file",
+                  name: "fingerprints",
+                  value: "",
+                  url: "http://preprod.marriator-api.fivecorners.ru/api/saveFile",
+                  placeholder: "Приложи документ",
+                  validation: "default",
+                  heading: "Дактилоскопия",
+                  helperInfo: {
+                    text: "Для подтверждения приложи фотографию документа",
+                  },
+                },
+                {
+                  inputType: "file",
+                  name: "arrivalNotice",
+                  value: "",
+                  url: "http://preprod.marriator-api.fivecorners.ru/api/saveFile",
+                  placeholder: "Приложи документ",
+                  validation: "default",
+                  heading: "Уведомление о прибытии",
+                  helperInfo: {
+                    text: "Для подтверждения приложи фотографию документа",
+                  },
+                },
+                {
+                  inputType: "file",
+                  name: "patent",
+                  value: "",
+                  url: "http://preprod.marriator-api.fivecorners.ru/api/saveFile",
+                  placeholder: "Приложи документ",
+                  validation: "default",
+                  heading: "Патент",
+                  helperInfo: {
+                    text: "Для подтверждения приложи фотографию документа",
+                  },
                   dividerTop: true,
+                },
+                {
+                  inputType: "file",
+                  name: "patentPayment",
+                  value: "",
+                  url: "http://preprod.marriator-api.fivecorners.ru/api/saveFile",
+                  placeholder: "Приложи документ",
+                  validation: "default",
+                  heading: "Квитанция оплаты патента",
                   helperInfo: {
                     text: "Для подтверждения приложи фотографию документа",
                   },
                 },
                 {
                   inputType: "file",
-                  name: "medicalDriverLicence",
+                  name: "workPermit",
                   value: "",
                   url: "http://preprod.marriator-api.fivecorners.ru/api/saveFile",
                   placeholder: "Приложи документ",
                   validation: "default",
-                  heading: "Медицинский допуск к управлению ТС",
-
-                  helperInfo: {
-                    text: "Для подтверждения приложи фотографию документа",
-                  },
-                },
-                {
-                  inputType: "file",
-                  name: "anyLicence",
-                  value: "",
-                  url: "http://preprod.marriator-api.fivecorners.ru/api/saveFile",
-                  placeholder: "Приложи документ",
-                  validation: "default",
-                  heading: "Пример любого допуска к работе",
-                  helperInfo: {
-                    text: "Для подтверждения приложи фотографию документа",
-                  },
-                },
-                {
-                  inputType: "radio",
-                  value: "",
-                  name: "medBook",
-                  validation: "default",
-                  dividerTop: true,
-                  heading: "Медкнижка",
-                  options: [
-                    {
-                      value: "have",
-                      label: "В наличии",
-                      disabled: false,
-                    },
-                    {
-                      value: "dontHave",
-                      label: "На оформлении",
-                      disabled: false,
-                    },
-                  ],
-                },
-                {
-                  inputType: "file",
-                  name: "medBookFile",
-                  value: "",
-                  url: "http://preprod.marriator-api.fivecorners.ru/api/saveFile",
-                  placeholder: "Приложи документ",
-                  validation: "default",
+                  heading: "Разрешение на работу",
                   helperInfo: {
                     text: "Для подтверждения приложи фотографию документа",
                   },
                 },
               ],
-              step: 3,
+              step: 6,
               type: "needRequired",
             },
             status: "success",

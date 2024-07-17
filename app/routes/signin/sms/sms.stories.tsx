@@ -4,11 +4,12 @@ import * as DocBlock from "@storybook/blocks";
 import { createRemixStub } from "@remix-run/testing";
 import { http, delay, HttpResponse } from "msw";
 
-import Pin from "./route";
+import Sms from "./sms";
+import { json } from "@remix-run/react";
 
 const meta = {
-  title: "Страницы/Вход/Пин",
-  component: Pin,
+  title: "Страницы/Вход/Смс-код",
+  component: Sms,
   tags: ["autodocs"],
   parameters: {
     layout: {
@@ -18,16 +19,21 @@ const meta = {
       page: () => (
         <>
           <DocBlock.Title />
-          <h2>Адрес страницы: /signin/pin</h2>
+          <h2>Адрес страницы: /signin/sms</h2>
           <h3>Используемые запросы:</h3>
-          {/* <p>
-            getRegStep2() - VITE_REG_STEP_2 - {import.meta.env.VITE_REG_STEP_2}
-          </p> */}
+          <p>
+            postSendPhone() - VITE_SEND_PHONE -{" "}
+            {import.meta.env.VITE_SEND_PHONE}
+          </p>
+          <p>
+            postCheckCode() - VITE_CHECK_CODE -{" "}
+            {import.meta.env.VITE_CHECK_CODE}
+          </p>
         </>
       ),
     },
   },
-} satisfies Meta<typeof Pin>;
+} satisfies Meta<typeof Sms>;
 
 export default meta;
 
@@ -41,10 +47,18 @@ export const Primary: Story = {
         {
           path: "/",
           Component: Story,
-          action: async () => {
-            const data = await postRegStep2({ test: "test" });
+          loader: async ({ request }) => {
+            const currentURL = new URL(request.url);
 
-            return data;
+            const ttl = currentURL.searchParams.get("ttl");
+
+            return json({ phone: "+79123152151", ttl });
+          },
+          action: async () => {
+            // const data = await postRegStep2({ test: "test" });
+            // return data;
+
+            return null;
           },
         },
       ]);

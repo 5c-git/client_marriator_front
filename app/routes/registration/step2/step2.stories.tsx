@@ -4,7 +4,7 @@ import * as DocBlock from "@storybook/blocks";
 import { createRemixStub } from "@remix-run/testing";
 import { http, delay, HttpResponse } from "msw";
 
-import Step2 from "./route";
+import Step2 from "./step2";
 
 import { getForm, mockStep2ResponseSuccess } from "~/requests/getForm/getForm";
 import {
