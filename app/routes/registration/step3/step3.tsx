@@ -83,6 +83,8 @@ export default function Step3() {
     reset(generateDefaultValues(formFields));
   }, [formFields, reset]);
 
+  console.log(errors);
+
   return (
     <>
       {navigation.state !== "idle" ? <Loader /> : null}

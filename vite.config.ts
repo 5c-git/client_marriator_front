@@ -12,51 +12,58 @@ export default defineConfig({
       ssr: false,
       routes(defineRoutes) {
         return defineRoutes((route) => {
-          route("/:lang?", "routes/rootErrorBoundry/route.tsx", () => {
-            route("", "routes/home/route.tsx", { index: true });
+          route(
+            undefined,
+            "routes/rootErrorBoundry/rootErrorBoundry.tsx",
+            () => {
+              route(undefined, "routes/menuLayout/menuLayout.tsx", () => {
+                route(":lang?/", "routes/home/home.tsx");
+                route(":lang?/profile", "routes/profile/profile.tsx");
+              });
 
-            //signin
-            route(":lang?/signin/phone", "routes/signin/phone/route.tsx");
-            route(":lang?/signin/sms", "routes/signin/sms/route.tsx");
-            route(
-              ":lang?/signin/createPin",
-              "routes/signin/createPin/route.tsx"
-            );
-            route(":lang?/signin/pin", "routes/signin/pin/route.tsx");
-            //signin
+              //signin
+              route(":lang?/signin/phone", "routes/signin/phone/phone.tsx");
+              route(":lang?/signin/sms", "routes/signin/sms/sms.tsx");
+              route(
+                ":lang?/signin/createPin",
+                "routes/signin/createPin/createPin.tsx"
+              );
+              route(":lang?/signin/pin", "routes/signin/pin/pin.tsx");
+              //signin
 
-            //registration
-            route(
-              ":lang?/registration/step1",
-              "routes/registration/step1/route.tsx"
-            );
-            route(
-              ":lang?/registration/step2",
-              "routes/registration/step2/route.tsx"
-            );
+              //registration
+              route(
+                ":lang?/registration/step1",
+                "routes/registration/step1/step1.tsx"
+              );
+              route(
+                ":lang?/registration/step2",
+                "routes/registration/step2/step2.tsx"
+              );
 
-            route(
-              ":lang?/registration/step3",
-              "routes/registration/step3/route.tsx"
-            );
-            route(
-              ":lang?/registration/step4",
-              "routes/registration/step4/route.tsx"
-            );
-            route(
-              ":lang?/registration/step5",
-              "routes/registration/step5/route.tsx"
-            );
-            route(
-              ":lang?/registration/step6",
-              "routes/registration/step6/route.tsx"
-            );
-            route(
-              ":lang?/registration/step7",
-              "routes/registration/step7/route.tsx"
-            );
-            //registration
-          });
+              route(
+                ":lang?/registration/step3",
+                "routes/registration/step3/step3.tsx"
+              );
+              route(
+                ":lang?/registration/step4",
+                "routes/registration/step4/step4.tsx"
+              );
+              route(
+                ":lang?/registration/step5",
+                "routes/registration/step5/step5.tsx"
+              );
+              route(
+                ":lang?/registration/step6",
+                "routes/registration/step6/step6.tsx"
+              );
+              route(
+                ":lang?/registration/step7",
+                "routes/registration/step7/step7.tsx"
+              );
+              // registration;
+            }
+          );
         });
       },
     }),
