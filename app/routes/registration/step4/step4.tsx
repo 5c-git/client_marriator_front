@@ -19,6 +19,7 @@ import {
   generateInputsMarkup,
   generateValidationSchema,
 } from "~/shared/constructor/constructor";
+import { emailRegExp } from "~/shared/validators";
 
 import { useTheme, Box, Typography, Button } from "@mui/material";
 import { TopNavigation } from "~/shared/ui/TopNavigation/TopNavigation";
@@ -88,7 +89,8 @@ export default function Step4() {
         staticPhoto: Yup.string().required(t("Constructor.photo")),
         staticEmail: Yup.string()
           .default("")
-          .email(t("Constructor.email_wrongValue"))
+          // .email(t("Constructor.email", { context: "wrongVaue" }))
+          .matches(emailRegExp, t("Constructor.email_wrongValue"))
           .required(t("Constructor.email")),
         ...generateValidationSchema(formFields),
       })
@@ -106,6 +108,8 @@ export default function Step4() {
       });
     });
   }, [formFields, reset, getValues]);
+
+  console.log(getValues());
 
   return (
     <>
@@ -150,28 +154,37 @@ export default function Step4() {
             rowGap: "16px",
           }}
         >
-          <Controller
-            name="staticPhoto"
-            control={control}
-            render={({ field }) => (
-              <StyledPhotoInput
-                inputType="photo"
-                onImmediateChange={() => {
-                  fetcher.submit(JSON.stringify(getValues()), {
-                    method: "POST",
-                    encType: "application/json",
-                  });
-                }}
-                validation="default"
-                url={import.meta.env.VITE_SEND_PHOTO}
-                token={accessToken}
-                // @ts-expect-error wrong automatic type narroing
-                triggerValidation={trigger}
-                error={errors.staticPhoto?.message}
-                {...field}
-              />
-            )}
-          />
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "center",
+            }}
+          >
+            <Controller
+              name="staticPhoto"
+              control={control}
+              render={({ field }) => (
+                <StyledPhotoInput
+                  inputType="photo"
+                  {...field}
+                  // @ts-expect-error wrong automatic type narroing
+                  onChange={setValue}
+                  onImmediateChange={() => {
+                    fetcher.submit(JSON.stringify(getValues()), {
+                      method: "POST",
+                      encType: "application/json",
+                    });
+                  }}
+                  validation="default"
+                  url={import.meta.env.VITE_SEND_PHOTO}
+                  token={accessToken}
+                  // @ts-expect-error wrong automatic type narroing
+                  triggerValidation={trigger}
+                  error={errors.staticPhoto?.message}
+                />
+              )}
+            />
+          </Box>
 
           <Controller
             name="staticEmail"
