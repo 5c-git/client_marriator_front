@@ -306,6 +306,9 @@ export const theme = createTheme(baseTheme, {
             color: baseTheme.palette["Grey_4"],
           },
         },
+        select: {
+          whiteSpace: "normal",
+        },
       },
     },
     MuiOutlinedInput: {
@@ -326,6 +329,7 @@ export const theme = createTheme(baseTheme, {
         input: {
           paddingTop: "23px",
           paddingBottom: "12px",
+          maxWidth: "100%",
         },
 
         notchedOutline: {
@@ -353,6 +357,57 @@ export const theme = createTheme(baseTheme, {
           "& .MuiTypography-root": {
             ...baseTheme.typography["Reg_14"],
             color: baseTheme.palette["Black"],
+          },
+        },
+      },
+    },
+    MuiAutocomplete: {
+      styleOverrides: {
+        root: {
+          "& .MuiOutlinedInput-root": {
+            padding: "16.5px 14px",
+            paddingTop: "23px",
+            paddingBottom: "12px",
+
+            "& .MuiAutocomplete-input": {
+              padding: 0,
+            },
+          },
+        },
+
+        paper: {
+          backgroundColor: baseTheme.palette["Grey_5"],
+          marginTop: "4px",
+        },
+
+        listbox: {
+          display: "grid",
+          rowGap: "12px",
+
+          "& .MuiAutocomplete-option": {
+            padding: 0,
+            paddingRight: "16px",
+            paddingLeft: "16px",
+            minHeight: "unset",
+
+            "&[aria-selected='true']": {
+              backgroundColor: "rgba(199, 50, 155, 0.1)",
+
+              "&.Mui-focused": {
+                backgroundColor: "rgba(199, 50, 155, 0.1)",
+              },
+            },
+
+            "&.Mui-focused": {
+              backgroundColor: "rgba(199, 50, 155, 0.3)",
+            },
+
+            "&:hover": {
+              backgroundColor: "rgba(199, 50, 155, 0.3)",
+            },
+            "&:focus": {
+              backgroundColor: "rgba(199, 50, 155, 0.1)",
+            },
           },
         },
       },

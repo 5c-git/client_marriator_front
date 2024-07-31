@@ -76,7 +76,6 @@ export const getForm = async (
   if (validateSuccess(response)) {
     data = response as GetFormInputsSchema;
   } else {
-    console.log(validateSuccess.errors);
     throw new Response(
       `Данные запроса getForm, шаг - ${step} не валидны схеме`
     );

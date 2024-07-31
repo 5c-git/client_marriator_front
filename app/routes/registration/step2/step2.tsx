@@ -11,6 +11,9 @@ import * as Yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useForm } from "react-hook-form";
 
+import { t } from "i18next";
+import { withLocale } from "~/shared/withLocale";
+
 import {
   generateDefaultValues,
   generateInputsMarkup,
@@ -48,7 +51,7 @@ export async function clientAction({ request }: ClientActionFunctionArgs) {
   if (accessToken) {
     const data = await postSaveForm(accessToken, 2, fields);
 
-    return data;
+    return json(data);
   } else {
     throw new Response("Токен авторизации не обнаружен!", { status: 401 });
   }
@@ -81,6 +84,9 @@ export default function Step2() {
 
   useEffect(() => {
     reset(generateDefaultValues(formFields));
+    setTimeout(() => {
+      reset(generateDefaultValues(formFields));
+    });
   }, [formFields, reset]);
 
   return (
@@ -94,10 +100,10 @@ export default function Step2() {
       >
         <TopNavigation
           header={{
-            text: "Выбери виды деятельности",
+            text: t("RegistrationStep2.header"),
             bold: false,
           }}
-          label="Шаг 2"
+          label={t("RegistrationStep2.step")}
           backAction={() => {
             navigate(-1);
           }}
@@ -116,8 +122,7 @@ export default function Step2() {
               paddingBottom: "14px",
             }}
           >
-            У нас точно найдется предложение, подходящее под твои пожелания и
-            компетенции.
+            {t("RegistrationStep2.intro")}
           </Typography>
         </Box>
 
@@ -159,12 +164,12 @@ export default function Step2() {
                 trigger();
                 handleSubmit(() => {
                   if (formStatus === "allowedNewStep") {
-                    navigate("/registration/step3");
+                    navigate(withLocale("/registration/step3"));
                   }
                 })();
               }}
             >
-              Продолжить
+              {t("RegistrationStep2.finishButton")}
             </Button>
           </Box>
         </form>

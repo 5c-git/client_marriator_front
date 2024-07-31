@@ -1,6 +1,7 @@
 {
-  "title": "Hello! This is remix-i18next (english)",
-  "components": {
-    "Button": "I am button"
-  }
+  "header": "Profile",
+  "profile": "My profile",
+  "settings": "Settings",
+  "documents": "Documents",
+  "exit": "Log out"
 }

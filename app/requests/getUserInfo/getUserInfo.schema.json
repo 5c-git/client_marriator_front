@@ -1,0 +1,96 @@
+{
+  "$id": "getUserInfoSuccess",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "getUserInfoSuccess",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "result": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "userData": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "id": {
+              "type": "number"
+            },
+            "name": {
+              "type": "null"
+            },
+            "email": {
+              "type": "string"
+            },
+            "email_verified_at": {
+              "type": "null"
+            },
+            "created_at": {
+              "type": "string"
+            },
+            "updated_at": {
+              "type": "string"
+            },
+            "api_token": {
+              "type": "null"
+            },
+            "phone": {
+              "type": "number"
+            },
+            "data": {
+              "type": "string"
+            },
+            "img": {
+              "type": "string"
+            },
+            "confirmRegister": {
+              "type": "number"
+            },
+            "pin": {
+              "type": "number"
+            },
+            "finishRegister": {
+              "type": "number"
+            },
+            "expansionData": {
+              "type": ["string", "null"]
+            },
+            "errorData": {
+              "type": ["string", "null"]
+            },
+            "estateData": {
+              "type": ["string", "null"]
+            },
+            "requisitesData": {
+              "type": ["string", "null"]
+            }
+          },
+          "required": [
+            "id",
+            "name",
+            "email",
+            "email_verified_at",
+            "created_at",
+            "updated_at",
+            "api_token",
+            "phone",
+            "data",
+            "img",
+            "confirmRegister",
+            "pin",
+            "finishRegister",
+            "expansionData",
+            "errorData",
+            "estateData",
+            "requisitesData"
+          ]
+        }
+      },
+      "required": ["userData"]
+    },
+    "status": {
+      "type": "string"
+    }
+  },
+  "required": ["result", "status"]
+}

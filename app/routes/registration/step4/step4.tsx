@@ -9,7 +9,10 @@ import {
 } from "@remix-run/react";
 import * as Yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { useForm } from "react-hook-form";
+import { useForm, Controller } from "react-hook-form";
+
+import { t } from "i18next";
+import { withLocale } from "~/shared/withLocale";
 
 import {
   generateDefaultValues,
@@ -20,6 +23,9 @@ import {
 import { useTheme, Box, Typography, Button } from "@mui/material";
 import { TopNavigation } from "~/shared/ui/TopNavigation/TopNavigation";
 import { Loader } from "~/shared/ui/Loader/Loader";
+
+import { StyledPhotoInput } from "~/shared/ui/StyledPhotoInput/StyledPhotoInput";
+import { StyledEmailField } from "~/shared/ui/StyledEmailField/StyledEmailField";
 
 import { getForm } from "~/requests/getForm/getForm";
 import { postSaveForm } from "~/requests/postSaveForm/postSaveForm";
@@ -72,15 +78,34 @@ export default function Step4() {
     formState: { errors },
     reset,
   } = useForm({
-    defaultValues: generateDefaultValues(formFields),
-    resolver: yupResolver(Yup.object(generateValidationSchema(formFields))),
+    defaultValues: {
+      staticPhoto: "",
+      staticEmail: "",
+      ...generateDefaultValues(formFields),
+    },
+    resolver: yupResolver(
+      Yup.object({
+        staticPhoto: Yup.string().required(t("Constructor.photo")),
+        staticEmail: Yup.string()
+          .default("")
+          .email(t("Constructor.email_wrongValue"))
+          .required(t("Constructor.email")),
+        ...generateValidationSchema(formFields),
+      })
+    ),
     mode: "onChange",
     shouldUnregister: true,
   });
 
   useEffect(() => {
-    reset(generateDefaultValues(formFields));
-  }, [formFields, reset]);
+    setTimeout(() => {
+      reset({
+        staticPhoto: getValues("staticPhoto"),
+        staticEmail: getValues("staticEmail"),
+        ...generateDefaultValues(formFields),
+      });
+    });
+  }, [formFields, reset, getValues]);
 
   return (
     <>
@@ -93,10 +118,10 @@ export default function Step4() {
       >
         <TopNavigation
           header={{
-            text: "Заполни личные данные",
+            text: t("RegistrationStep4.header"),
             bold: false,
           }}
-          label="Шаг 4"
+          label={t("RegistrationStep4.step")}
           backAction={() => {
             navigate(-1);
           }}
@@ -115,8 +140,7 @@ export default function Step4() {
               paddingBottom: "14px",
             }}
           >
-            Нам требуется минимум информации для заключения договора и
-            продолжения общения
+            {t("RegistrationStep4.intro")}
           </Typography>
         </Box>
 
@@ -126,9 +150,57 @@ export default function Step4() {
             rowGap: "16px",
           }}
         >
+          <Controller
+            name="staticPhoto"
+            control={control}
+            render={({ field }) => (
+              <StyledPhotoInput
+                inputType="photo"
+                onImmediateChange={() => {
+                  fetcher.submit(JSON.stringify(getValues()), {
+                    method: "POST",
+                    encType: "application/json",
+                  });
+                }}
+                validation="default"
+                url={import.meta.env.VITE_SEND_PHOTO}
+                token={accessToken}
+                // @ts-expect-error wrong automatic type narroing
+                triggerValidation={trigger}
+                error={errors.staticPhoto?.message}
+                {...field}
+              />
+            )}
+          />
+
+          <Controller
+            name="staticEmail"
+            control={control}
+            render={({ field }) => (
+              <StyledEmailField
+                inputType="email"
+                placeholder="E-mail"
+                onImmediateChange={() => {
+                  fetcher.submit(JSON.stringify(getValues()), {
+                    method: "POST",
+                    encType: "application/json",
+                  });
+                }}
+                validation="default"
+                inputStyles={{
+                  paddingRight: "16px",
+                  paddingLeft: "16px",
+                }}
+                error={errors.staticEmail?.message}
+                {...field}
+              />
+            )}
+          />
+
           {generateInputsMarkup(
             formFields,
             errors,
+            // @ts-expect-error wrong automatic type narroing
             control,
             setValue,
             trigger,
@@ -158,12 +230,12 @@ export default function Step4() {
                 trigger();
                 handleSubmit(() => {
                   if (formStatus === "allowedNewStep") {
-                    navigate("/registration/step5");
+                    navigate(withLocale("/registration/step5"));
                   }
                 })();
               }}
             >
-              Продолжить
+              {t("RegistrationStep4.finishButton")}
             </Button>
           </Box>
         </form>

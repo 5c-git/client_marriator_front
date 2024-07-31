@@ -96,6 +96,7 @@ export const StyledCheckbox = forwardRef((props: StyledCheckboxProps, ref) => {
                       <Link
                         style={{
                           textDecorationLine: "underline",
+                          color: theme.palette["Corp_1"],
                         }}
                         to={props.helperInfo.link.path}
                       >
@@ -105,6 +106,7 @@ export const StyledCheckbox = forwardRef((props: StyledCheckboxProps, ref) => {
                       <a
                         style={{
                           textDecorationLine: "underline",
+                          color: theme.palette["Corp_1"],
                         }}
                         href={props.helperInfo.link.path}
                       >

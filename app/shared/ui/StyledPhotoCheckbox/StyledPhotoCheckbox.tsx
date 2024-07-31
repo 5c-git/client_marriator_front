@@ -14,6 +14,8 @@ import {
 } from "@mui/material";
 import { Link } from "@remix-run/react";
 
+import { t } from "i18next";
+
 import CloseIcon from "@mui/icons-material/Close";
 
 type StyledPhotoCheckboxProps = {
@@ -121,6 +123,7 @@ export const StyledPhotoCheckbox = forwardRef(
                         <Link
                           style={{
                             textDecorationLine: "underline",
+                            color: theme.palette["Corp_1"],
                           }}
                           to={props.helperInfo.link.path}
                         >
@@ -130,6 +133,7 @@ export const StyledPhotoCheckbox = forwardRef(
                         <a
                           style={{
                             textDecorationLine: "underline",
+                            color: theme.palette["Corp_1"],
                           }}
                           href={props.helperInfo.link.path}
                         >
@@ -232,9 +236,9 @@ export const StyledPhotoCheckbox = forwardRef(
                         marginTop: "4px",
                         color: theme.palette["Black"],
                         overflow: "hidden",
-                        display: "-webkit-box",
-                        "-webkit-box-orient": "vertical",
-                        "-webkit-line-clamp": "2",
+                        display: "-WebKit-box",
+                        WebkitBoxOrient: "vertical",
+                        WebkitLineClamp: "2",
                       }}
                     >
                       {item.text}
@@ -253,7 +257,7 @@ export const StyledPhotoCheckbox = forwardRef(
                       marginTop: "14px",
                     }}
                   >
-                    Подробнее
+                    {t("StyledPhotoCheckbox.more")}
                   </Button>
                 ) : null}
               </Box>
@@ -393,7 +397,7 @@ export const StyledPhotoCheckbox = forwardRef(
                       setOpen(false);
                     }}
                   >
-                    Выбрать
+                    {t("StyledPhotoCheckbox.select")}
                   </Button>
                 ) : (
                   <Box>
@@ -406,7 +410,7 @@ export const StyledPhotoCheckbox = forwardRef(
                         color: theme.palette["Black"],
                       }}
                     >
-                      Отменить выбор ?
+                      {t("StyledPhotoCheckbox.cancel")}
                     </Typography>
 
                     <Box
@@ -421,7 +425,7 @@ export const StyledPhotoCheckbox = forwardRef(
                           setOpen(false);
                         }}
                       >
-                        Нет
+                        {t("StyledPhotoCheckbox.no")}
                       </Button>
                       <Button
                         variant="contained"
@@ -435,7 +439,7 @@ export const StyledPhotoCheckbox = forwardRef(
                           setOpen(false);
                         }}
                       >
-                        Да
+                        {t("StyledPhotoCheckbox.yes")}
                       </Button>
                     </Box>
                   </Box>

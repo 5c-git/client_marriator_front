@@ -7,5 +7,6 @@
   "inputPlaceholder": "Sms code",
 
   "inputValidation": "Required field",
-  "inputValidation_lenght": "Please provide correct value"
+  "inputValidation_lenght": "Please provide correct value",
+  "wrongData": "Wrong data revieved!"
 }

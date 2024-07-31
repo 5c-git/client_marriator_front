@@ -131,6 +131,7 @@ export const StyledCardField = forwardRef(
                     <Link
                       style={{
                         textDecorationLine: "underline",
+                        color: theme.palette["Corp_1"],
                       }}
                       to={props.helperInfo.link.path}
                     >
@@ -140,6 +141,7 @@ export const StyledCardField = forwardRef(
                     <a
                       style={{
                         textDecorationLine: "underline",
+                        color: theme.palette["Corp_1"],
                       }}
                       href={props.helperInfo.link.path}
                     >

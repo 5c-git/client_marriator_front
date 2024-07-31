@@ -16,6 +16,7 @@ import {
 import { phoneRegExp } from "../validators";
 
 import { StyledSelect } from "../ui/StyledSelect/StyledSelect";
+import { StyledSelectMultiple } from "../ui/StyledSelectMultiple/StyledSelectMultiple";
 import { StyledCheckbox } from "../ui/StyledCheckbox/StyledCheckbox";
 import { StyledCheckboxMultiple } from "../ui/StyledCheckboxMultiple/StyledCheckboxMultiple";
 import { StyledRadioButton } from "../ui/StyledRadioButton/StyledRadioButton";
@@ -32,10 +33,14 @@ import { StyledAccountField } from "../ui/StyledAccountField/StyledAccountField"
 import { StyledInnField } from "../ui/StyledInnField/StyledInnField";
 import { StyledSnilsField } from "../ui/StyledSnilsField/StyledSnilsField";
 import { StyledSmsField } from "../ui/StyledSmsField/StyledSmsField";
+import { StyledAutocomplete } from "../ui/StyledAutocomplete/StyledAutocomplete";
+
+import { t } from "i18next";
 
 const inputMap = {
   text: StyledTextField,
   select: StyledSelect,
+  selectMultiple: StyledSelectMultiple,
   radio: StyledRadioButton,
   checkbox: StyledCheckbox,
   checkboxMultiple: StyledCheckboxMultiple,
@@ -51,6 +56,7 @@ const inputMap = {
   inn: StyledInnField,
   snils: StyledSnilsField,
   sms: StyledSmsField,
+  autocomplete: StyledAutocomplete,
 };
 
 const validationMap: {
@@ -65,15 +71,8 @@ const validationMap: {
 } = {
   text: {
     none: Yup.string().default("").notRequired(),
-    default: Yup.string().required("Обязатльное поле"),
-    email: Yup.string()
-      .default("")
-      .email("Укажите корректный e-mail")
-      .notRequired(),
-    emailReq: Yup.string()
-      .default("")
-      .email("Укажите корректный e-mail")
-      .required("Обязатльное поле"),
+    default: Yup.string().required(t("Constructor.text")),
+
     // wrongValue: (value: string, error: string) =>
     //   Yup.string().test(
     //     "wrong",
@@ -84,49 +83,56 @@ const validationMap: {
   phone: {
     none: Yup.string().default("").notRequired(),
     default: Yup.string()
-      .matches(phoneRegExp, "Укажите корректный номер телефона")
-      .required("Обязатльное поле"),
+      .matches(phoneRegExp, t("Constructor.phone", { context: "wrongVaue" }))
+      .required(t("Constructor.phone")),
   },
   select: {
     none: Yup.string().default("").notRequired(),
-    default: Yup.string().required("Обязатльное поле"),
+    default: Yup.string().required(t("Constructor.select")),
+  },
+  selectMultiple: {
+    none: Yup.array().notRequired(),
+    default: Yup.array().min(1, t("Constructor.selectMultiple")),
   },
   radio: {
     none: Yup.string().default("").notRequired(),
-    default: Yup.string().required("Обязатльное поле"),
+    default: Yup.string().required(t("Constructor.radio")),
   },
   checkbox: {
     none: Yup.boolean(),
-    checked: Yup.boolean().oneOf([true], "Поле должно быть отмечено"),
-    unchecked: Yup.boolean().oneOf([false], "Поле не должно быть отмечено"),
+    checked: Yup.boolean().oneOf([true], t("Constructor.checkbox_checked")),
+    unchecked: Yup.boolean().oneOf(
+      [false],
+      t("Constructor.checkbox_unchecked")
+    ),
   },
   checkboxMultiple: {
     none: Yup.array().notRequired(),
-    default: Yup.array().min(1, "Обязатльное полe"),
+    default: Yup.array().min(1, t("Constructor.checkboxMultiple")),
   },
   photoCheckbox: {
     none: Yup.array().notRequired(),
-    default: Yup.array().min(1, "Обязатльное полe"),
+    default: Yup.array().min(1, t("Constructor.photoCheckbox")),
   },
   file: {
     none: Yup.string().default("").notRequired(),
-    default: Yup.string().required("Обязатльное поле"),
+    default: Yup.string().required(t("Constructor.file")),
   },
   photo: {
     none: Yup.string().default("").notRequired(),
-    default: Yup.string().required("Обязатльное поле"),
+    default: Yup.string().required(t("Constructor.photo")),
   },
   date: {
     none: Yup.string().default("").notRequired(),
-    default: Yup.string().required("Обязатльное поле"),
-    "16years": Yup.string().required("Обязатльное поле"),
+    default: Yup.string().required(t("Constructor.date")),
+    "16years": Yup.string().required(t("Constructor.date")),
   },
   card: {
     none: Yup.string().default("").notRequired(),
     default: Yup.string()
       .test(
         "is-card",
-        () => "Некорректны номер",
+        () => t("Constructor.card", { context: "wrongVaue" }),
         (value) => {
           // accept only digits, dashes or spaces
           // if (/[^0-9-\s]+/.test(value)) return false;
@@ -145,49 +151,53 @@ const validationMap: {
           return sum % 10 === 0;
         }
       )
-      .required("Обязатльное поле"),
+      .required(t("Constructor.card")),
   },
   month: {
     none: Yup.string().default("").notRequired(),
-    default: Yup.string().required("Обязатльное поле"),
+    default: Yup.string().required(t("Constructor.month")),
   },
   email: {
-    none: Yup.string()
-      .default("")
-      .email("Укажите корректный e-mail")
-      .notRequired(),
+    // none: Yup.string()
+    //   .default("")
+    //   .email(t("Constructor.email", { context: "wrongVaue" }))
+    //   .notRequired(),
     default: Yup.string()
       .default("")
-      .email("Укажите корректный e-mail")
-      .required("Обязатльное поле"),
+      .email(t("Constructor.email", { context: "wrongVaue" }))
+      .required(t("Constructor.email")),
   },
   account: {
     none: Yup.string().default("").notRequired(),
     default: Yup.string()
       .default("")
-      .length(20, "Укажите корректное значение")
-      .required("Обязатльное поле"),
+      .length(20, t("Constructor.account", { context: "wrongVaue" }))
+      .required(t("Constructor.account")),
   },
   inn: {
     none: Yup.string().default("").notRequired(),
     default: Yup.string()
       .default("")
-      .length(12, "Укажите корректное значение")
-      .required("Обязатльное поле"),
+      .length(12, t("Constructor.inn", { context: "wrongVaue" }))
+      .required(t("Constructor.inn")),
   },
   snils: {
     none: Yup.string().default("").notRequired(),
     default: Yup.string()
       .default("")
-      .length(11, "Укажите корректное значение")
-      .required("Обязатльное поле"),
+      .length(11, t("Constructor.snils", { context: "wrongVaue" }))
+      .required(t("Constructor.snils")),
   },
   sms: {
     none: Yup.string().default("").notRequired(),
     default: Yup.string()
       .default("")
-      .length(4, "Укажите корректное значение")
-      .required("Обязатльное поле"),
+      .length(4, t("Constructor.sms", { context: "wrongVaue" }))
+      .required(t("Constructor.sms")),
+  },
+  autocomplete: {
+    none: Yup.string().default("").notRequired(),
+    default: Yup.string().required(t("Constructor.autocomplete")),
   },
 };
 
@@ -248,18 +258,17 @@ export const generateInputsMarkup = (
   onImmediateChange: () => void,
   token: string
 ) =>
-  items.map((item, index: number) => {
+  items.map((item) => {
     // приходится делать отдельную проверку, так как в данном случае необходимо програмно установить значение в поле
     if (item.inputType === "file") {
       return (
         <Controller
-          key={index}
+          key={item.name}
           name={item.name}
           control={control}
           render={({ field }) => (
             <StyledFileInput
-              {...item}
-              key={index}
+              {...field}
               error={errors[item.name]?.message}
               onChange={setValue}
               triggerValidation={trigger}
@@ -270,7 +279,7 @@ export const generateInputsMarkup = (
                 paddingRight: "16px",
                 paddingLeft: "16px",
               }}
-              {...field}
+              {...item}
             />
           )}
         />
@@ -280,20 +289,20 @@ export const generateInputsMarkup = (
     } else if (item.inputType === "photo") {
       return (
         <Controller
-          key={index}
+          key={item.name}
           name={item.name}
           control={control}
+          defaultValue={item.value}
           render={({ field }) => (
             <StyledPhotoInput
-              {...item}
-              key={index}
+              {...field}
               error={errors[item.name]?.message}
               onChange={setValue}
               triggerValidation={trigger}
               url={import.meta.env.VITE_SEND_PHOTO}
               token={token}
               onImmediateChange={onImmediateChange}
-              {...field}
+              {...item}
             />
           )}
         />
@@ -303,21 +312,24 @@ export const generateInputsMarkup = (
 
       return (
         <Controller
-          key={index}
+          key={item.name}
           name={item.name}
           control={control}
-          render={({ field }) => (
-            <Input
-              {...item}
-              error={errors[item.name]?.message}
-              onImmediateChange={onImmediateChange}
-              inputStyles={{
-                paddingRight: "16px",
-                paddingLeft: "16px",
-              }}
-              {...field}
-            />
-          )}
+          defaultValue={item.value}
+          render={({ field }) => {
+            return (
+              <Input
+                error={errors[item.name]?.message}
+                onImmediateChange={onImmediateChange}
+                inputStyles={{
+                  paddingRight: "16px",
+                  paddingLeft: "16px",
+                }}
+                {...item}
+                {...field}
+              />
+            );
+          }}
         />
       );
     }

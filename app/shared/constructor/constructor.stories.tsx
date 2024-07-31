@@ -64,9 +64,17 @@ const Сonstructor = ({ data }: { data: Inputs }) => {
         rowGap: "16px",
       }}
     >
-      {generateInputsMarkup(data, errors, control, setValue, trigger, () => {
-        console.log(getValues());
-      })}
+      {generateInputsMarkup(
+        data,
+        errors,
+        control,
+        setValue,
+        trigger,
+        () => {
+          console.log(getValues());
+        },
+        "token"
+      )}
 
       <button type="submit">submit</button>
     </form>
@@ -161,7 +169,7 @@ type Story = StoryObj<typeof meta>;
 export const Primary: Story = {
   name: "Конструктор",
   args: {
-    url: "/auto",
+    url: "/new",
   },
   parameters: {
     msw: {
@@ -764,6 +772,70 @@ export const Primary: Story = {
               ],
               validation: "default",
               dividerTop: true,
+            },
+          ]);
+        }),
+        http.get("/new", async () => {
+          await delay(2000);
+          return HttpResponse.json([
+            {
+              inputType: "selectMultiple",
+              name: "developer",
+              value: [],
+              placeholder: "Выберете марку",
+              validation: "default",
+              options: [
+                {
+                  value: "mercedes",
+                  label: "Мерседес",
+                  disabled: false,
+                },
+                {
+                  value: "audi",
+                  label: "Ауди",
+                  disabled: false,
+                },
+                {
+                  value: "vas",
+                  label: "АвтоВаз",
+                  disabled: true,
+                },
+                {
+                  value: "Volkswagen",
+                  label: "Фольксваген",
+                  disabled: false,
+                },
+              ],
+              status: "warning",
+            },
+            {
+              inputType: "autocomplete",
+              name: "modelType",
+              value: "",
+              placeholder: "Выберете модель",
+              validation: "default",
+              options: [
+                {
+                  value: "S-Class",
+                  label: "S-Class",
+                  disabled: false,
+                },
+                {
+                  value: "audiA4",
+                  label: "Ауди A4",
+                  disabled: false,
+                },
+                {
+                  value: "vesta",
+                  label: "Веста",
+                  disabled: true,
+                },
+                {
+                  value: "Passat",
+                  label: "Пассат",
+                  disabled: false,
+                },
+              ],
             },
           ]);
         }),

@@ -11,6 +11,9 @@ import * as Yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useForm } from "react-hook-form";
 
+import { t } from "i18next";
+import { withLocale } from "~/shared/withLocale";
+
 import {
   generateDefaultValues,
   generateInputsMarkup,
@@ -80,7 +83,9 @@ export default function Step5() {
   });
 
   useEffect(() => {
-    reset(generateDefaultValues(formFields));
+    setTimeout(() => {
+      reset(generateDefaultValues(formFields));
+    });
   }, [formFields, reset]);
 
   return (
@@ -94,10 +99,10 @@ export default function Step5() {
       >
         <TopNavigation
           header={{
-            text: "Привяжи банковскую карту",
+            text: t("RegistrationStep5.header"),
             bold: false,
           }}
-          label="Шаг 5"
+          label={t("RegistrationStep5.step")}
           backAction={() => {
             navigate(-1);
           }}
@@ -116,8 +121,7 @@ export default function Step5() {
               paddingBottom: "14px",
             }}
           >
-            Переводы за услуги выполняем через проверенные сервисы Сбербанка.
-            Все платежи защищены
+            {t("RegistrationStep5.intro")}
           </Typography>
         </Box>
 
@@ -159,12 +163,12 @@ export default function Step5() {
                 trigger();
                 handleSubmit(() => {
                   if (formStatus === "allowedNewStep") {
-                    navigate("/registration/step6");
+                    navigate(withLocale("/registration/step6"));
                   }
                 })();
               }}
             >
-              Продолжить
+              {t("RegistrationStep5.finishButton")}
             </Button>
           </Box>
         </form>

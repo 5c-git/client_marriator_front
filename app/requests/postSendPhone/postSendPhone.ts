@@ -42,8 +42,6 @@ export const postSendPhone = async (
   } else if (validateResponseError(response)) {
     throw new Response("Поле телефон обязательно для заполнения");
   } else {
-    console.log(validateResponseSuccess.errors);
-
     throw new Response("Данные запроса postSendPhone не соответствуют схеме");
   }
 

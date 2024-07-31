@@ -83,13 +83,13 @@ export const Primary: Story = {
           return HttpResponse.json({
             result: {
               formData: [
-                {
-                  inputType: "photo",
-                  name: "photo",
-                  value: "",
-                  url: "http://preprod.marriator-api.fivecorners.ru/api/saveFile",
-                  validation: "default",
-                },
+                // {
+                //   inputType: "photo",
+                //   name: "photo",
+                //   value: "",
+                //   url: "http://preprod.marriator-api.fivecorners.ru/api/saveFile",
+                //   validation: "default",
+                // },
                 {
                   inputType: "text",
                   name: "lastName",

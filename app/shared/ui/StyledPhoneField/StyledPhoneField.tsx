@@ -80,7 +80,7 @@ export const StyledPhoneField = forwardRef(
               value={props.value}
               onChange={(evt) => {
                 props.onChange(evt.target.value.replace(/[^\d]/g, ""));
-                props.onChange(evt.target.value);
+                // props.onChange(evt.target.value);
                 props.onImmediateChange();
               }}
               disabled={props.disabled}
@@ -131,6 +131,7 @@ export const StyledPhoneField = forwardRef(
                     <Link
                       style={{
                         textDecorationLine: "underline",
+                        color: theme.palette["Corp_1"],
                       }}
                       to={props.helperInfo.link.path}
                     >
@@ -140,6 +141,7 @@ export const StyledPhoneField = forwardRef(
                     <a
                       style={{
                         textDecorationLine: "underline",
+                        color: theme.palette["Corp_1"],
                       }}
                       href={props.helperInfo.link.path}
                     >

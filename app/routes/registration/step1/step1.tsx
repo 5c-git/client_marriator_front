@@ -12,6 +12,9 @@ import * as Yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useForm } from "react-hook-form";
 
+import { t } from "i18next";
+import { withLocale } from "~/shared/withLocale";
+
 import {
   generateDefaultValues,
   generateInputsMarkup,
@@ -81,10 +84,10 @@ export default function Step1() {
   });
 
   useEffect(() => {
-    reset(generateDefaultValues(formFields));
+    setTimeout(() => {
+      reset(generateDefaultValues(formFields));
+    });
   }, [formFields, reset]);
-
-  console.log(errors);
 
   return (
     <>
@@ -97,9 +100,10 @@ export default function Step1() {
       >
         <TopNavigation
           header={{
-            text: "Выбери своё направление",
+            text: t("RegistrationStep1.header"),
             bold: true,
           }}
+          label={t("RegistrationStep1.step")}
         />
 
         <Box
@@ -115,7 +119,7 @@ export default function Step1() {
               paddingBottom: "14px",
             }}
           >
-            Наши задания может выполнить{" "}
+            {t("RegistrationStep1.intro")}{" "}
             <Typography
               component="span"
               variant="Reg_18"
@@ -123,9 +127,9 @@ export default function Step1() {
                 color: theme.palette["Corp_2"],
               }}
             >
-              любой желающий
+              {t("RegistrationStep1.intro_marker")}
             </Typography>{" "}
-            — они не требуют особых компетенций или опыта.
+            {t("RegistrationStep1.intro_end")}
           </Typography>
 
           <Typography
@@ -136,8 +140,7 @@ export default function Step1() {
               paddingBottom: "24px",
             }}
           >
-            Набор сфер очень широкий — от маркетинга и аналитики до простых
-            заданий в общепите и магазинах прямо рядом с вашим домом.
+            {t("RegistrationStep1.text")}
           </Typography>
 
           <Typography
@@ -148,7 +151,7 @@ export default function Step1() {
               paddingBottom: "24px",
             }}
           >
-            Подумай и{" "}
+            {t("RegistrationStep1.action")}{" "}
             <Typography
               component="span"
               variant="Reg_14"
@@ -156,7 +159,7 @@ export default function Step1() {
                 color: theme.palette["Corp_2"],
               }}
             >
-              сделай первый шаг.
+              {t("RegistrationStep1.action_marker")}
             </Typography>
           </Typography>
         </Box>
@@ -199,12 +202,12 @@ export default function Step1() {
                 trigger();
                 handleSubmit(() => {
                   if (formStatus === "allowedNewStep") {
-                    navigate("/registration/step2");
+                    navigate(withLocale("/registration/step2"));
                   }
                 })();
               }}
             >
-              Продолжить
+              {t("RegistrationStep1.finishButton")}
             </Button>
           </Box>
         </form>

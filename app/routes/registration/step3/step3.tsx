@@ -11,6 +11,9 @@ import * as Yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useForm } from "react-hook-form";
 
+import { t } from "i18next";
+import { withLocale } from "~/shared/withLocale";
+
 import {
   generateDefaultValues,
   generateInputsMarkup,
@@ -80,10 +83,10 @@ export default function Step3() {
   });
 
   useEffect(() => {
-    reset(generateDefaultValues(formFields));
+    setTimeout(() => {
+      reset(generateDefaultValues(formFields));
+    });
   }, [formFields, reset]);
-
-  console.log(errors);
 
   return (
     <>
@@ -96,10 +99,10 @@ export default function Step3() {
       >
         <TopNavigation
           header={{
-            text: "Уточни сведения",
+            text: t("RegistrationStep3.header"),
             bold: false,
           }}
-          label="Шаг 3"
+          label={t("RegistrationStep3.step")}
           backAction={() => {
             navigate(-1);
           }}
@@ -118,7 +121,7 @@ export default function Step3() {
               paddingBottom: "14px",
             }}
           >
-            По выбранным видам деятельности хотелось бы уточнить ряд вопросов
+            {t("RegistrationStep3.intro")}
           </Typography>
         </Box>
 
@@ -160,12 +163,12 @@ export default function Step3() {
                 trigger();
                 handleSubmit(() => {
                   if (formStatus === "allowedNewStep") {
-                    navigate("/registration/step4");
+                    navigate(withLocale("/registration/step4"));
                   }
                 })();
               }}
             >
-              Продолжить
+              {t("RegistrationStep3.finishButton")}
             </Button>
           </Box>
         </form>

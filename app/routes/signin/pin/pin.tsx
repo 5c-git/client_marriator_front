@@ -9,6 +9,7 @@ import {
 } from "@remix-run/react";
 
 import { t } from "i18next";
+import { withLocale } from "~/shared/withLocale";
 
 import * as Yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -39,7 +40,7 @@ export async function clientAction({ request }: ClientActionFunctionArgs) {
     if (data.status === "success") {
       await setAccessToken(data.result.token.access_token);
       await setRefreshToken(data.result.token.refresh_token);
-      throw redirect("/");
+      throw redirect(withLocale("/"));
     } else if (data.status === "error") {
       return json({ error: t("Pin.pinError") });
     }
