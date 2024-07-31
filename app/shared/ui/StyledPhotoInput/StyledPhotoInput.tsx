@@ -68,9 +68,9 @@ export const StyledPhotoInput = forwardRef(
     const [loaded, setLoaded] = useState<boolean>(false);
     const [error, setError] = useState<string>("");
 
-    useEffect(() => {
-      setValue(props.value);
-    }, [props.value]);
+    // useEffect(() => {
+    //   setValue(props.value);
+    // }, [props.value]);
 
     useEffect(() => {
       if (props.error) {

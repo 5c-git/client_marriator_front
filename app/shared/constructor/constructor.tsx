@@ -13,7 +13,7 @@ import {
 
 // import { t } from "i18next";
 
-import { phoneRegExp } from "../validators";
+import { phoneRegExp, emailRegExp } from "../validators";
 
 import { StyledSelect } from "../ui/StyledSelect/StyledSelect";
 import { StyledSelectMultiple } from "../ui/StyledSelectMultiple/StyledSelectMultiple";
@@ -164,7 +164,8 @@ const validationMap: {
     //   .notRequired(),
     default: Yup.string()
       .default("")
-      .email(t("Constructor.email", { context: "wrongVaue" }))
+      // .email(t("Constructor.email", { context: "wrongVaue" }))
+      .matches(emailRegExp, t("Constructor.email", { context: "wrongVaue" }))
       .required(t("Constructor.email")),
   },
   account: {
