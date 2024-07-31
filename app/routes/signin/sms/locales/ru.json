@@ -5,6 +5,7 @@
   "notification": "Код был отправлен в СМС-сообщении на указанный телефон!",
   "errorNotifivation": "Неверный код подтверждения!",
   "inputPlaceholder": "Код из смс",
-  "inputValidation": "Обязатльное поле",
-  "inputValidation_lenght": "Укажите корректный код"
+  "inputValidation": "Обязательное поле",
+  "inputValidation_lenght": "Укажите корректный код",
+  "wrongData": "Получены некорректные данные!"
 }

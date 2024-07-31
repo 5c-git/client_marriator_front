@@ -1,6 +1,7 @@
 {
-  "title": "Привет! Это remix-i18next (русский)",
-  "components": {
-    "Button": "Я кнопка"
-  }
+  "header": "Профиль",
+  "profile": "Мой профиль",
+  "settings": "Настройки",
+  "documents": "Документы",
+  "exit": "Выход"
 }

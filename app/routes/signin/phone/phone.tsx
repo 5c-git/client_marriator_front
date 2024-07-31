@@ -4,10 +4,10 @@ import {
   ClientActionFunctionArgs,
   useSearchParams,
   redirect,
-  // useRouteError,
 } from "@remix-run/react";
 
 import { t } from "i18next";
+import { withLocale } from "~/shared/withLocale";
 
 import * as Yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -44,7 +44,7 @@ export async function clientAction({ request }: ClientActionFunctionArgs) {
     params.set("ttl", data.result.code.ttl.toString());
     params.set("type", data.result.type);
 
-    throw redirect(`/signin/sms?${params}`);
+    throw redirect(withLocale(`/signin/sms?${params}`));
   } else {
     currentURL.searchParams.set("error", "error");
 

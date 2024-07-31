@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import { Outlet, useRouteError, useNavigate } from "@remix-run/react";
 import { t } from "i18next";
+import { withLocale } from "~/shared/withLocale";
 
 import { postRefreshToken } from "~/requests/postRefreshToken/postRefreshToken";
 
@@ -25,10 +26,10 @@ export const ErrorBoundary = () => {
         if ("token_type" in newTokens.result.token) {
           await setAccessToken(newTokens.result.token.access_token);
           await setRefreshToken(newTokens.result.token.refresh_token);
-          navigate("/signin/pin");
+          navigate(withLocale("/signin/pin"));
         } else {
           await clearPreferences();
-          navigate("/signin/phone");
+          navigate(withLocale("/signin/phone"));
         }
       })();
     }
@@ -83,7 +84,7 @@ export const ErrorBoundary = () => {
               paddingBottom: "40px",
             }}
           >
-            {error.data} asdfsdf
+            {error.data}
           </Typography>
           <Button
             variant="outlined"

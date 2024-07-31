@@ -129,6 +129,7 @@ export const StyledSmsField = forwardRef((props: StyledSmsFieldProps, ref) => {
                   <Link
                     style={{
                       textDecorationLine: "underline",
+                      color: theme.palette["Corp_1"],
                     }}
                     to={props.helperInfo.link.path}
                   >
@@ -138,6 +139,7 @@ export const StyledSmsField = forwardRef((props: StyledSmsFieldProps, ref) => {
                   <a
                     style={{
                       textDecorationLine: "underline",
+                      color: theme.palette["Corp_1"],
                     }}
                     href={props.helperInfo.link.path}
                   >

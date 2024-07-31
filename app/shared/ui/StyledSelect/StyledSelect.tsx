@@ -57,7 +57,7 @@ export const StyledSelect = forwardRef((props: StyledSelectProps, ref) => {
   const theme = useTheme();
 
   return (
-    <Box ref={ref} sx={props.styles}>
+    <Box sx={props.styles}>
       {props.dividerTop ? <Divider sx={{ marginBottom: "16px" }} /> : null}
 
       <Box sx={props.inputStyles}>
@@ -83,6 +83,7 @@ export const StyledSelect = forwardRef((props: StyledSelectProps, ref) => {
         >
           <InputLabel id={props.name}>{props.placeholder}</InputLabel>
           <Select
+            ref={ref}
             labelId={props.name}
             id={props.name}
             name={props.name}
@@ -153,6 +154,7 @@ export const StyledSelect = forwardRef((props: StyledSelectProps, ref) => {
                   <Link
                     style={{
                       textDecorationLine: "underline",
+                      color: theme.palette["Corp_1"],
                     }}
                     to={props.helperInfo.link.path}
                   >
@@ -162,6 +164,7 @@ export const StyledSelect = forwardRef((props: StyledSelectProps, ref) => {
                   <a
                     style={{
                       textDecorationLine: "underline",
+                      color: theme.palette["Corp_1"],
                     }}
                     href={props.helperInfo.link.path}
                   >

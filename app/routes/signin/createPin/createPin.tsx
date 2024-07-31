@@ -9,6 +9,7 @@ import {
 } from "@remix-run/react";
 
 import { t } from "i18next";
+import { withLocale } from "~/shared/withLocale";
 
 import * as Yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -45,7 +46,7 @@ export async function clientAction({ request }: ClientActionFunctionArgs) {
     const data = await postSetUserPin(accessToken, fields.pin);
 
     if ("status" in data) {
-      throw redirect("/registration/step1");
+      throw redirect(withLocale("/registration/step1"));
     } else {
       currentURL.searchParams.set("error", "unAuth");
       throw redirect(currentURL.toString());

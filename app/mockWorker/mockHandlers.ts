@@ -7,6 +7,7 @@ import { mockPostSetUserPinMockResponse } from "~/requests/postSetUserPin/postSe
 
 import { postFinishRegisterResponse } from "~/requests/postFinishRegister/postFinishRegister";
 import { postCheckPinResponse } from "~/requests/postCheckPin/postCheckPin";
+
 import { getUserInfoMockResponse } from "~/requests/getUserInfo/getUserInfo";
 
 export const handlers = [

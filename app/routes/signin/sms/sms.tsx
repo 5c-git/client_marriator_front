@@ -11,6 +11,7 @@ import {
 } from "@remix-run/react";
 
 import { t } from "i18next";
+import { withLocale } from "~/shared/withLocale";
 
 import * as Yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -50,7 +51,7 @@ export async function clientLoader({ request }: ClientActionFunctionArgs) {
   const ttl = currentURL.searchParams.get("ttl");
 
   if (!phone || !ttl) {
-    throw new Response("Получены некорректные данные!");
+    throw new Response(t("Sms.wrongData"));
   }
 
   return json({ phone, ttl });
@@ -87,9 +88,9 @@ export async function clientAction({ request }: ClientActionFunctionArgs) {
       await setRefreshToken(data.result.token.refresh_token);
 
       if (currentURL.searchParams.has("type", "register")) {
-        throw redirect("/signin/createPin");
+        throw redirect(withLocale("/signin/createPin"));
       } else if (currentURL.searchParams.has("type", "auth")) {
-        throw redirect("/signin/pin");
+        throw redirect(withLocale("/signin/pin"));
       }
     }
   }

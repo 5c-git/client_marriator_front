@@ -1,27 +1,18 @@
-// import { json, useLoaderData } from "@remix-run/react";
+import { ClientActionFunctionArgs, redirect } from "@remix-run/react";
 
-// import { getAccessToken } from "~/preferences/token/token";
-// import { getUserInfo } from "~/requests/getUserInfo/getUserInfo";
+import i18next from "i18next";
 
-// export async function clientLoader() {
-//   const accessToken = await getAccessToken();
+const activeLocale = i18next.language;
 
-//   if (accessToken) {
-//     const data = await getUserInfo(accessToken);
+export async function clientLoader({ request }: ClientActionFunctionArgs) {
+  const currentURL = new URL(request.url);
+  if (!currentURL.pathname.endsWith("/")) {
+    throw redirect(`/${activeLocale}/`);
+  }
 
-//     console.log("here");
-
-//     return json(data);
-//   } else {
-//     throw new Response("Токен авторизации не обнаружен!", { status: 401 });
-//   }
-// }
+  return null;
+}
 
 export default function Home() {
-  // const data = useLoaderData<typeof clientLoader>();
-
-  return (
-    // <p>{/* {JSON.stringify(data, null, 2)} */}</p>
-    <p>home</p>
-  );
+  return <p>home</p>;
 }

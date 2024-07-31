@@ -1,0 +1,6 @@
+{
+  "photo": "Load photo",
+  "photo_replace": "Replace photo",
+  "error": "Error loading files, documents in jpg, png, pdf formats no more than 6MB are allowed",
+  "error_unexpected": "Something went wrong, try again"
+}

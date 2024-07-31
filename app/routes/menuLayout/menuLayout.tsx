@@ -1,4 +1,4 @@
-import { Outlet } from "@remix-run/react";
+import { json, Outlet } from "@remix-run/react";
 
 import { Stack } from "@mui/material";
 import { Menu } from "~/shared/ui/Menu/Menu";
@@ -6,6 +6,29 @@ import { Menu } from "~/shared/ui/Menu/Menu";
 import { ListIcon } from "~/shared/ui/Menu/icons/ListIcon";
 import { WalletIcon } from "~/shared/ui/Menu/icons/WalletIcon";
 import { ProfileIcon } from "~/shared/ui/Menu/icons/ProfileIcon";
+
+import { queryClient } from "~/root";
+import { getAccessToken } from "~/preferences/token/token";
+import {
+  getUserInfo,
+  getUserInfoKeys,
+} from "~/requests/getUserInfo/getUserInfo";
+
+export async function clientLoader() {
+  const accessToken = await getAccessToken();
+
+  if (accessToken) {
+    const data = await queryClient.fetchQuery({
+      queryKey: [getUserInfoKeys[0]],
+      queryFn: () => getUserInfo(accessToken),
+      staleTime: 60000,
+    });
+
+    return json(data);
+  } else {
+    throw new Response("Токен авторизации не обнаружен!", { status: 401 });
+  }
+}
 
 export default function MenuLayout() {
   return (
@@ -29,35 +52,21 @@ export default function MenuLayout() {
         links={[
           {
             to: "/",
-            match: "index",
             notification: false,
-            disabled: true,
+            disabled: false,
             icon: <ListIcon sx={{ width: "30px", height: "30px" }} />,
           },
           {
             to: "/wallet",
-            match: "/wallet",
             notification: false,
             disabled: true,
             icon: <WalletIcon sx={{ width: "30px", height: "30px" }} />,
           },
           {
             to: "/profile",
-            match: "profile",
             notification: false,
             disabled: false,
-            icon: (
-              // <Avatar
-              //   src="https://mui.com/static/images/avatar/3.jpg"
-              //   sx={{
-              //     width: 30,
-              //     height: 30,
-              //     border: "1px solid",
-              //     borderColor: "inherit",
-              //   }}
-              // />
-              <ProfileIcon sx={{ width: "30px", height: "30px" }} />
-            ),
+            icon: <ProfileIcon sx={{ width: "30px", height: "30px" }} />,
           },
         ]}
       />

@@ -110,6 +110,7 @@ export const StyledRadioButton = forwardRef(
                         <Link
                           style={{
                             textDecorationLine: "underline",
+                            color: theme.palette["Corp_1"],
                           }}
                           to={props.helperInfo.link.path}
                         >
@@ -119,6 +120,7 @@ export const StyledRadioButton = forwardRef(
                         <a
                           style={{
                             textDecorationLine: "underline",
+                            color: theme.palette["Corp_1"],
                           }}
                           href={props.helperInfo.link.path}
                         >

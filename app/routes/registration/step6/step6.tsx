@@ -11,6 +11,9 @@ import * as Yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useForm } from "react-hook-form";
 
+import { t } from "i18next";
+import { withLocale } from "~/shared/withLocale";
+
 import {
   generateDefaultValues,
   generateInputsMarkup,
@@ -80,7 +83,9 @@ export default function Step6() {
   });
 
   useEffect(() => {
-    reset(generateDefaultValues(formFields));
+    setTimeout(() => {
+      reset(generateDefaultValues(formFields));
+    });
   }, [formFields, reset]);
 
   return (
@@ -94,10 +99,10 @@ export default function Step6() {
       >
         <TopNavigation
           header={{
-            text: "Дополни личные данные",
+            text: t("RegistrationStep6.header"),
             bold: false,
           }}
-          label="Шаг 6"
+          label={t("RegistrationStep6.step")}
           backAction={() => {
             navigate(-1);
           }}
@@ -116,7 +121,7 @@ export default function Step6() {
               paddingBottom: "14px",
             }}
           >
-            Для ускорения оплат уточни сведения для бухгалтерии
+            {t("RegistrationStep6.intro")}
           </Typography>
         </Box>
 
@@ -158,12 +163,12 @@ export default function Step6() {
                 trigger();
                 handleSubmit(() => {
                   if (formStatus === "allowedNewStep") {
-                    navigate("/registration/step7");
+                    navigate(withLocale("/registration/step7"));
                   }
                 })();
               }}
             >
-              Продолжить
+              {t("RegistrationStep6.finishButton")}
             </Button>
           </Box>
         </form>

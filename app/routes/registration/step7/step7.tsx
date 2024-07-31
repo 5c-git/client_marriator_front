@@ -12,6 +12,9 @@ import * as Yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useForm } from "react-hook-form";
 
+import { t } from "i18next";
+import { withLocale } from "~/shared/withLocale";
+
 import {
   generateDefaultValues,
   generateInputsMarkup,
@@ -58,7 +61,7 @@ export async function clientAction({ request }: ClientActionFunctionArgs) {
       await setAccessToken(data.result.token.access_token);
       await setRefreshToken(data.result.token.refresh_token);
 
-      throw redirect("/signin/pin");
+      throw redirect(withLocale("/signin/pin"));
     } else {
       const data = await postSaveForm(accessToken, 7, fields);
 
@@ -84,7 +87,7 @@ export default function Step7() {
     trigger,
     getValues,
     handleSubmit,
-    formState: { errors },
+    formState: { errors, isValid },
     reset,
   } = useForm({
     defaultValues: generateDefaultValues(formFields),
@@ -94,7 +97,9 @@ export default function Step7() {
   });
 
   useEffect(() => {
-    reset(generateDefaultValues(formFields));
+    setTimeout(() => {
+      reset(generateDefaultValues(formFields));
+    });
   }, [formFields, reset]);
 
   return (
@@ -108,10 +113,10 @@ export default function Step7() {
       >
         <TopNavigation
           header={{
-            text: "Подпиши договор",
+            text: t("RegistrationStep7.header"),
             bold: false,
           }}
-          label="Шаг 7"
+          label={t("RegistrationStep7.step")}
           backAction={() => {
             navigate(-1);
           }}
@@ -130,7 +135,7 @@ export default function Step7() {
               paddingBottom: "14px",
             }}
           >
-            Оформи отношения и начни получать задания
+            {t("RegistrationStep7.intro")}
           </Typography>
         </Box>
 
@@ -166,6 +171,7 @@ export default function Step7() {
           >
             <Button
               variant="contained"
+              disabled={!isValid}
               onClick={() => {
                 trigger();
                 handleSubmit(() => {
@@ -179,7 +185,7 @@ export default function Step7() {
                 })();
               }}
             >
-              Подписать договор
+              {t("RegistrationStep7.finishButton")}
             </Button>
 
             <Typography
@@ -189,8 +195,7 @@ export default function Step7() {
                 color: theme.palette["Black"],
               }}
             >
-              Нажатие кнопки «Подписать договор» означает согласие с политикой в
-              отношении{" "}
+              {t("RegistrationStep7.deal")}{" "}
               <Typography
                 component="a"
                 title="legal"
@@ -201,9 +206,9 @@ export default function Step7() {
                   textDecoration: "underline",
                 }}
               >
-                персональных данных
+                {t("RegistrationStep7.deal_personal")}
               </Typography>{" "}
-              и{" "}
+              {t("RegistrationStep7.deal_and")}{" "}
               <Typography
                 component="a"
                 variant="Reg_12"
@@ -214,9 +219,8 @@ export default function Step7() {
                   textDecoration: "underline",
                 }}
               >
-                пользовательским соглашением
+                {t("RegistrationStep7.deal_agreement")}
               </Typography>
-              .
             </Typography>
           </Box>
         </form>
