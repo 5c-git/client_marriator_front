@@ -19,6 +19,8 @@ import accountSchema from "../../shared/ui/StyledAccountField/StyledAccountField
 import innSchema from "../../shared/ui/StyledInnField/StyledInnField.schema.json";
 import snilsSchema from "../../shared/ui/StyledSnilsField/StyledSnilsField.schema.json";
 import smsSchema from "../../shared/ui/StyledSmsField/StyledSmsField.schema.json";
+import autocompleteSchema from "../../shared/ui/StyledAutocomplete/StyledAutocomplete.schema.json";
+import selectMultipleSchema from "../../shared/ui/StyledSelectMultiple/StyledSelectMultiple.schema.json";
 
 import getFormSchema from "./getForm.schema.json";
 import { GetFormInputsSchema } from "./getForm.type";
@@ -43,6 +45,8 @@ ajv.addSchema(accountSchema);
 ajv.addSchema(innSchema);
 ajv.addSchema(snilsSchema);
 ajv.addSchema(smsSchema);
+ajv.addSchema(autocompleteSchema);
+ajv.addSchema(selectMultipleSchema);
 
 const validateSuccess = ajv.compile(getFormSchema);
 
