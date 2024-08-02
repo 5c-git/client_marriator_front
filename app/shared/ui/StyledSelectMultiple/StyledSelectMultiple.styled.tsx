@@ -7,7 +7,10 @@ export const S_MenuItem = styled(MenuItem)({
   minHeight: "unset",
 
   "&:hover": {
-    backgroundColor: "rgba(199, 50, 155, 0.3)",
+    backgroundColor: "transparent",
+  },
+  "&:focus": {
+    backgroundColor: "transparent",
   },
 
   "&.Mui-selected": {
