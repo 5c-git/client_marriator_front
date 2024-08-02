@@ -9,9 +9,6 @@ export const S_MenuItem = styled(MenuItem)({
   "&:hover": {
     backgroundColor: "rgba(199, 50, 155, 0.3)",
   },
-  "&:focus": {
-    backgroundColor: "rgba(199, 50, 155, 0.1)",
-  },
 
   "&.Mui-selected": {
     backgroundColor: "rgba(199, 50, 155, 0.1)",
