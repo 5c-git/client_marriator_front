@@ -43,6 +43,9 @@ import PinEN from "../routes/signin/pin/locales/en.json";
 import ProfileRU from "../routes/profile/locales/ru.json";
 import ProfileEN from "../routes/profile/locales/en.json";
 
+import MyProfileRU from "../routes/my-profile/locales/ru.json";
+import MyProfileEN from "../routes/my-profile/locales/en.json";
+
 import StyledPhotoCheckboxRU from "../shared/ui/StyledPhotoCheckbox/locales/ru.json";
 import StyledPhotoCheckboxEN from "../shared/ui/StyledPhotoCheckbox/locales/en.json";
 import StyledFileInputRU from "../shared/ui/StyledFileInput/locales/ru.json";
@@ -88,6 +91,7 @@ export const resources = {
       //internal
       Index: IndexRU,
       Profile: ProfileRU,
+      MyProfile: MyProfileRU,
 
       //components
       StyledPhotoCheckbox: StyledPhotoCheckboxRU,
@@ -123,6 +127,7 @@ export const resources = {
       //internal
       Index: IndexEN,
       Profile: ProfileEN,
+      MyProfile: MyProfileEN,
 
       //components
       StyledPhotoCheckbox: StyledPhotoCheckboxEN,

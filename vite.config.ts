@@ -18,7 +18,9 @@ export default defineConfig({
             () => {
               route(undefined, "routes/menuLayout/menuLayout.tsx", () => {
                 route(":lang?/", "routes/home/home.tsx");
-                route(":lang?/profile", "routes/profile/profile.tsx");
+                route(":lang?/profile", "routes/profile/profile.tsx", () => {
+                  route("my-profile", "routes/my-profile/my-profile.tsx");
+                });
               });
 
               //signin

@@ -27,7 +27,7 @@ import { ProfileIcon } from "./icons/ProfileIcon";
 import { SettingsIcon } from "./icons/SettingsIcon";
 import { DocumentsIcon } from "./icons/DocumentsIcon";
 import { ExitIcon } from "./icons/ExitIcon";
-import { BulletIcon } from "./icons/BulletIcon";
+import { BulletIcon } from "~/shared/icons/BulletIcon";
 
 import { queryClient } from "~/root";
 import { getAccessToken } from "~/preferences/token/token";

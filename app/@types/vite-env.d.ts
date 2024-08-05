@@ -12,6 +12,7 @@ interface ImportMetaEnv {
   readonly VITE_FINISH_REGISTER: string;
   readonly VITE_CHECK_PIN: string;
   readonly VITE_GET_USER_INFO: string;
+  readonly VITE_GET_USER_PERSONAL_MENU: string;
   // more env variables...
 }
 
