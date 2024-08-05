@@ -8,6 +8,20 @@
 export interface GetUserPersonalMenuSuccess {
   status: "success";
   result: {
-    section: unknown[];
+    /**
+     * @minItems 1
+     */
+    section: [
+      {
+        name: string;
+        value: number;
+        notification: boolean;
+      },
+      ...{
+        name: string;
+        value: number;
+        notification: boolean;
+      }[],
+    ];
   };
 }

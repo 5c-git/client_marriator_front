@@ -24,20 +24,23 @@ import { Loader } from "~/shared/ui/Loader/Loader";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 import { BulletIcon } from "~/shared/icons/BulletIcon";
 
-// import { queryClient } from "~/root";
+import { queryClient } from "~/root";
 import { getAccessToken } from "~/preferences/token/token";
+
+import {
+  getUserPersonalMenu,
+  getUserPersonalMenuKeys,
+} from "~/requests/getUserPersonalMenu/getUserPersonalMenu";
 
 export async function clientLoader() {
   const accessToken = await getAccessToken();
 
   if (accessToken) {
-    // const data = await queryClient.fetchQuery({
-    //   queryKey: [getUserInfoKeys[0]],
-    //   queryFn: () => getUserInfo(accessToken),
-    //   staleTime: 60000,
-    // });
-
-    const data = { data: "data" };
+    const data = await queryClient.fetchQuery({
+      queryKey: [getUserPersonalMenuKeys[0]],
+      queryFn: () => getUserPersonalMenu(accessToken),
+      staleTime: 60000,
+    });
 
     return json(data);
   } else {
@@ -74,59 +77,65 @@ export default function MyProfile() {
             rowGap: "12px",
           }}
         >
-          <ListItem
-            disableGutters
-            disablePadding
-            sx={{
-              display: "block",
-              paddingRight: "16px",
-              paddingLeft: "16px",
-            }}
-          >
-            <ListItemButton
-              component={Link}
-              to="/"
+          {data.result.section.map((item) => (
+            <ListItem
+              key={item.name}
+              disableGutters
+              disablePadding
               sx={{
-                display: "flex",
-                // justifyContent: "space-between",
-                padding: "16px 0px",
-                columnGap: "12px",
+                display: "block",
+                paddingRight: "16px",
+                paddingLeft: "16px",
               }}
             >
-              <Typography
+              <ListItemButton
+                component={Link}
+                to="/"
                 sx={{
-                  color: theme.palette["Black"],
-                  overflow: "hidden",
-                  textOverflow: "ellipsis",
-                  whiteSpace: "nowrap",
+                  display: "flex",
+                  padding: "16px 0px",
+                  columnGap: "12px",
                 }}
-                component="p"
-                variant="Reg_16"
               >
-                Документы иностранного гражданина{" "}
-              </Typography>
-              <BulletIcon
+                <Typography
+                  sx={{
+                    color: theme.palette["Black"],
+                    overflow: "hidden",
+                    textOverflow: "ellipsis",
+                    whiteSpace: "nowrap",
+                  }}
+                  component="p"
+                  variant="Reg_16"
+                >
+                  {item.name}{" "}
+                </Typography>
+
+                {item.notification ? (
+                  <BulletIcon
+                    sx={{
+                      width: "6px",
+                      height: "6px",
+                      color: theme.palette["Red"],
+                    }}
+                  />
+                ) : null}
+
+                <ListItemIcon
+                  sx={{
+                    minWidth: "unset",
+                    marginLeft: "auto",
+                  }}
+                >
+                  <ArrowForwardIosIcon htmlColor={theme.palette["Grey_2"]} />
+                </ListItemIcon>
+              </ListItemButton>
+              <Divider
                 sx={{
-                  width: "6px",
-                  height: "6px",
-                  color: theme.palette["Red"],
+                  backgroundColor: theme.palette["Grey_4"],
                 }}
               />
-              <ListItemIcon
-                sx={{
-                  minWidth: "unset",
-                  marginLeft: "auto",
-                }}
-              >
-                <ArrowForwardIosIcon htmlColor={theme.palette["Grey_2"]} />
-              </ListItemIcon>
-            </ListItemButton>
-            <Divider
-              sx={{
-                backgroundColor: theme.palette["Grey_4"],
-              }}
-            />
-          </ListItem>
+            </ListItem>
+          ))}
         </List>
       </Box>
     </>

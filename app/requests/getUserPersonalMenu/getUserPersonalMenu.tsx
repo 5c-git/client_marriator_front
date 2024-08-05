@@ -43,10 +43,31 @@ export const getUserPersonalMenu = async (
 
 // MOCKS
 export const mockResponseSuccess = {
-  status: "success",
   result: {
-    section: [],
+    section: [
+      {
+        name: "Персональные данные",
+        value: 1,
+        notification: true,
+      },
+      {
+        name: "Допуски, справки, удостоверения",
+        value: 2,
+        notification: false,
+      },
+      {
+        name: "Радиус поиска работы",
+        value: 3,
+        notification: false,
+      },
+      {
+        name: "Документы иностранного гражданина",
+        value: 4,
+        notification: false,
+      },
+    ],
   },
+  status: "success",
 };
 
 export const getUserPersonalMenuMockResponse = http.get(

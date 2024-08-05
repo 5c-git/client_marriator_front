@@ -15,7 +15,23 @@
       "properties": {
         "section": {
           "type": "array",
-          "items": {}
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "name": {
+                "type": "string"
+              },
+              "value": {
+                "type": "number"
+              },
+              "notification": {
+                "type": "boolean"
+              }
+            },
+            "required": ["name", "value", "notification"]
+          }
         }
       },
       "required": ["section"]
