@@ -8,6 +8,8 @@ import {
 
 import { t } from "i18next";
 
+import { withLocale } from "~/shared/withLocale";
+
 import {
   useTheme,
   Box,
@@ -108,7 +110,7 @@ export default function Profile() {
           >
             <ListItemButton
               component={Link}
-              to="/"
+              to={withLocale("my-profile")}
               sx={{
                 padding: "16px 0px",
                 columnGap: "12px",

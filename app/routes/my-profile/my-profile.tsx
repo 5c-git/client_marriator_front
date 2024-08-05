@@ -105,13 +105,13 @@ export default function MyProfile() {
               >
                 Документы иностранного гражданина{" "}
               </Typography>
-              {/* <BulletIcon
+              <BulletIcon
                 sx={{
                   width: "6px",
                   height: "6px",
                   color: theme.palette["Red"],
                 }}
-              /> */}
+              />
               <ListItemIcon
                 sx={{
                   minWidth: "unset",

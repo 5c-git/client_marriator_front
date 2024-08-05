@@ -9,6 +9,7 @@ import { postFinishRegisterResponse } from "~/requests/postFinishRegister/postFi
 import { postCheckPinResponse } from "~/requests/postCheckPin/postCheckPin";
 
 import { getUserInfoMockResponse } from "~/requests/getUserInfo/getUserInfo";
+import { getUserPersonalMenuMockResponse } from "~/requests/getUserPersonalMenu/getUserPersonalMenu";
 
 export const handlers = [
   getFormMockResponse,
@@ -19,4 +20,5 @@ export const handlers = [
   postFinishRegisterResponse,
   postCheckPinResponse,
   getUserInfoMockResponse,
+  getUserPersonalMenuMockResponse,
 ];

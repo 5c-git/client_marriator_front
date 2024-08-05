@@ -1,0 +1,25 @@
+{
+  "$id": "getUserPersonalMenuSuccess",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "getUserPersonalMenuSuccess",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "status": {
+      "type": "string",
+      "const": "success"
+    },
+    "result": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "section": {
+          "type": "array",
+          "items": {}
+        }
+      },
+      "required": ["section"]
+    }
+  },
+  "required": ["status", "result"]
+}
