@@ -1,0 +1,33 @@
+{
+  "$id": "getUserFieldsSuccess",
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "title": "getUserFieldsSuccess",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "status": {
+      "type": "string",
+      "const": "success"
+    },
+    "result": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "formData": {
+          "type": "array",
+          "items": {}
+        },
+        "section": {
+          "type": "array",
+          "items": {}
+        },
+        "type": {
+          "type": "string",
+          "enum": ["needRequired", "allowedNewStep"]
+        }
+      },
+      "required": ["formData", "section", "type"]
+    }
+  },
+  "required": ["status", "result"]
+}

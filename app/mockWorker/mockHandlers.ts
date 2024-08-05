@@ -10,6 +10,7 @@ import { postCheckPinResponse } from "~/requests/postCheckPin/postCheckPin";
 
 import { getUserInfoMockResponse } from "~/requests/getUserInfo/getUserInfo";
 import { getUserPersonalMenuMockResponse } from "~/requests/getUserPersonalMenu/getUserPersonalMenu";
+import { getUserFieldsMockResponse } from "~/requests/getUserFields/getUserFields";
 
 export const handlers = [
   getFormMockResponse,
@@ -21,4 +22,5 @@ export const handlers = [
   postCheckPinResponse,
   getUserInfoMockResponse,
   getUserPersonalMenuMockResponse,
+  getUserFieldsMockResponse,
 ];
