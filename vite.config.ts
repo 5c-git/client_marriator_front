@@ -18,6 +18,10 @@ export default defineConfig({
             () => {
               route(undefined, "routes/menuLayout/menuLayout.tsx", () => {
                 route(":lang?/", "routes/home/home.tsx");
+                route(
+                  ":lang?/registration/registration-complete",
+                  "routes/registration-complete/registration-complete.tsx"
+                );
                 route(":lang?/profile", "routes/profile/profile.tsx");
                 route(
                   ":lang?/profile/my-profile",

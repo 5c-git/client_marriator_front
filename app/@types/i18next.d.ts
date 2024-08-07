@@ -9,6 +9,7 @@ import RegistrationStep4RU from "../routes/registration/step4/locales/ru.json";
 import RegistrationStep5RU from "../routes/registration/step5/locales/ru.json";
 import RegistrationStep6RU from "../routes/registration/step6/locales/ru.json";
 import RegistrationStep7RU from "../routes/registration/step7/locales/ru.json";
+import RegistrationCompleteRU from "../routes/registration-complete/locales/ru.json";
 
 import PhoneRU from "../routes/signin/phone/locales/ru.json";
 import SmsRU from "../routes/signin/sms/locales/ru.json";
@@ -48,6 +49,7 @@ declare module "i18next" {
         RegistrationStep5: typeof RegistrationStep5RU;
         RegistrationStep6: typeof RegistrationStep6RU;
         RegistrationStep7: typeof RegistrationStep7RU;
+        RegistrationComplete: typeof RegistrationCompleteRU;
         //reg
 
         //internal

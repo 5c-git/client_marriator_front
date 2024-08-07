@@ -28,6 +28,9 @@ import RegistrationStep6EN from "../routes/registration/step6/locales/en.json";
 import RegistrationStep7RU from "../routes/registration/step7/locales/ru.json";
 import RegistrationStep7EN from "../routes/registration/step7/locales/en.json";
 
+import RegistrationCompleteRU from "../routes/registration-complete/locales/ru.json";
+import RegistrationCompleteEN from "../routes/registration-complete/locales/en.json";
+
 import PhoneRU from "../routes/signin/phone/locales/ru.json";
 import PhoneEN from "../routes/signin/phone/locales/en.json";
 
@@ -86,6 +89,7 @@ export const resources = {
       RegistrationStep5: RegistrationStep5RU,
       RegistrationStep6: RegistrationStep6RU,
       RegistrationStep7: RegistrationStep7RU,
+      RegistrationComplete: RegistrationCompleteRU,
       //reg
 
       //internal
@@ -122,6 +126,7 @@ export const resources = {
       RegistrationStep5: RegistrationStep5EN,
       RegistrationStep6: RegistrationStep6EN,
       RegistrationStep7: RegistrationStep7EN,
+      RegistrationComplete: RegistrationCompleteEN,
       //reg
 
       //internal
