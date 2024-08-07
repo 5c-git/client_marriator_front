@@ -185,7 +185,9 @@ export const StyledFileInput = forwardRef(
                   disabled={props.disabled}
                   value={props.value}
                 >
-                  {value === "" ? props.placeholder : value}
+                  {value === ""
+                    ? props.placeholder
+                    : value.substring(value.indexOf("["))}
                 </S_ActivationButton>
               </S_ButtonContainer>
 
