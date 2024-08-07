@@ -136,6 +136,8 @@ export const StyledPhotoCheckbox = forwardRef(
                             color: theme.palette["Corp_1"],
                           }}
                           href={props.helperInfo.link.path}
+                          target="_blank"
+                          rel="noreferrer"
                         >
                           {props.helperInfo.link.text}
                         </a>
@@ -377,6 +379,8 @@ export const StyledPhotoCheckbox = forwardRef(
                             textDecorationLine: "underline",
                           }}
                           href={activeItem.details?.link?.path}
+                          target="_blank"
+                          rel="noreferrer"
                         >
                           {activeItem.details?.link?.text}
                         </a>

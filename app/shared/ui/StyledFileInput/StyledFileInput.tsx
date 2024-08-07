@@ -179,7 +179,7 @@ export const StyledFileInput = forwardRef(
                 <S_ActivationButton
                   type="button"
                   onClick={() => {
-                    value === "" ? setOpen(true) : (location.href = value);
+                    value === "" ? setOpen(true) : window.open(value, "_blank");
                   }}
                   error={props.error}
                   disabled={props.disabled}
@@ -268,6 +268,8 @@ export const StyledFileInput = forwardRef(
                           color: theme.palette["Corp_1"],
                         }}
                         href={props.helperInfo.link.path}
+                        target="_blank"
+                        rel="noreferrer"
                       >
                         {props.helperInfo.link.text}
                       </a>

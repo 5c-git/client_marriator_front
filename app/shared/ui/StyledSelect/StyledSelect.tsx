@@ -167,6 +167,8 @@ export const StyledSelect = forwardRef((props: StyledSelectProps, ref) => {
                       color: theme.palette["Corp_1"],
                     }}
                     href={props.helperInfo.link.path}
+                    target="_blank"
+                    rel="noreferrer"
                   >
                     {props.helperInfo.link.text}
                   </a>

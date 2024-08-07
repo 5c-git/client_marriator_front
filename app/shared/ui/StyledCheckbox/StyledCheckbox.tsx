@@ -109,6 +109,8 @@ export const StyledCheckbox = forwardRef((props: StyledCheckboxProps, ref) => {
                           color: theme.palette["Corp_1"],
                         }}
                         href={props.helperInfo.link.path}
+                        target="_blank"
+                        rel="noreferrer"
                       >
                         {props.helperInfo.link.text}
                       </a>
