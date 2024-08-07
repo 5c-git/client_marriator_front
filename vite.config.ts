@@ -23,6 +23,10 @@ export default defineConfig({
                   ":lang?/profile/my-profile",
                   "routes/my-profile/my-profile.tsx"
                 );
+                route(
+                  ":lang?/profile/profile-edit",
+                  "routes/profile-edit/profile-edit.tsx"
+                );
               });
 
               //signin

@@ -31,6 +31,7 @@ import {
   getUserPersonalMenu,
   getUserPersonalMenuKeys,
 } from "~/requests/getUserPersonalMenu/getUserPersonalMenu";
+import { withLocale } from "~/shared/withLocale";
 
 export async function clientLoader() {
   const accessToken = await getAccessToken();
@@ -90,7 +91,10 @@ export default function MyProfile() {
             >
               <ListItemButton
                 component={Link}
-                to="/"
+                to={{
+                  pathname: `${withLocale("/profile/profile-edit")}`,
+                  search: `?section=${item.value}`,
+                }}
                 sx={{
                   display: "flex",
                   padding: "16px 0px",
