@@ -41,7 +41,11 @@ type StyledEmailFieldProps = {
   onChange: (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => void;
+
   onImmediateChange: () => void;
+  onBlur?: (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => void;
 };
 
 export const StyledEmailField = forwardRef(
@@ -82,6 +86,10 @@ export const StyledEmailField = forwardRef(
               onChange={(evt) => {
                 props.onChange(evt);
                 props.onImmediateChange();
+              }}
+              onBlur={(evt) => {
+                props.onBlur ? props.onBlur(evt) : () => {};
+                // props.onImmediateChange();
               }}
               sx={{
                 marginBottom: "4px",

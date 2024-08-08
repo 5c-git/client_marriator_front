@@ -1,0 +1,14 @@
+{
+  "$id": "postCheckEmailCodeSuccess",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "postCheckEmailCodeSuccess",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "status": {
+      "type": "string",
+      "const": "success"
+    }
+  },
+  "required": ["status"]
+}

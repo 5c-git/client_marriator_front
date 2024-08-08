@@ -31,6 +31,9 @@ import RegistrationStep7EN from "../routes/registration/step7/locales/en.json";
 import RegistrationCompleteRU from "../routes/registration-complete/locales/ru.json";
 import RegistrationCompleteEN from "../routes/registration-complete/locales/en.json";
 
+import ConfirmEmailRU from "../routes/confirm-email/locales/ru.json";
+import ConfirmEmailEN from "../routes/confirm-email/locales/en.json";
+
 import PhoneRU from "../routes/signin/phone/locales/ru.json";
 import PhoneEN from "../routes/signin/phone/locales/en.json";
 
@@ -92,6 +95,8 @@ export const resources = {
       RegistrationComplete: RegistrationCompleteRU,
       //reg
 
+      ConfirmEmail: ConfirmEmailRU,
+
       //internal
       Index: IndexRU,
       Profile: ProfileRU,
@@ -128,6 +133,8 @@ export const resources = {
       RegistrationStep7: RegistrationStep7EN,
       RegistrationComplete: RegistrationCompleteEN,
       //reg
+
+      ConfirmEmail: ConfirmEmailEN,
 
       //internal
       Index: IndexEN,

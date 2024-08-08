@@ -12,6 +12,8 @@ import { getUserInfoMockResponse } from "~/requests/getUserInfo/getUserInfo";
 import { getUserPersonalMenuMockResponse } from "~/requests/getUserPersonalMenu/getUserPersonalMenu";
 import { getUserFieldsMockResponse } from "~/requests/getUserFields/getUserFields";
 import { getStaticUserInfoMockResponse } from "~/requests/getStaticUserInfo/getStaticUserInfo";
+import { mockPostSetUserEmailMockResponse } from "~/requests/postSetUserEmail/postSetUserEmail";
+import { postCheckEmailCodeMockResponse } from "~/requests/postCheckEmailCode/postCheckEmailCode";
 
 export const handlers = [
   getFormMockResponse,
@@ -25,4 +27,6 @@ export const handlers = [
   getUserPersonalMenuMockResponse,
   getUserFieldsMockResponse,
   getStaticUserInfoMockResponse,
+  mockPostSetUserEmailMockResponse,
+  postCheckEmailCodeMockResponse,
 ];

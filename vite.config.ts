@@ -74,6 +74,11 @@ export default defineConfig({
                 "routes/registration/step7/step7.tsx"
               );
               // registration;
+
+              route(
+                ":lang?/confirm-email",
+                "routes/confirm-email/confirm-email.tsx"
+              );
             }
           );
         });
