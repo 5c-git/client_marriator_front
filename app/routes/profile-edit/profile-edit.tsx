@@ -1,17 +1,26 @@
+import { useEffect } from "react";
 import {
   json,
   useLoaderData,
+  useFetcher,
   useNavigate,
   useNavigation,
   // Link,
   ClientActionFunctionArgs,
 } from "@remix-run/react";
 
-// import { t } from "i18next";
+import * as Yup from "yup";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { useForm } from "react-hook-form";
+
+import { t } from "i18next";
+
+import { withLocale } from "~/shared/withLocale";
 
 import {
-  // useTheme,
+  useTheme,
   Box,
+  Button,
   // Typography,
   // List,
   // ListItem,
@@ -29,6 +38,11 @@ import {
   getUserFields,
   getUserFieldsKeys,
 } from "~/requests/getUserFields/getUserFields";
+import {
+  generateDefaultValues,
+  generateInputsMarkup,
+  generateValidationSchema,
+} from "~/shared/constructor/constructor";
 
 export async function clientLoader({ request }: ClientActionFunctionArgs) {
   const currentURL = new URL(request.url);
@@ -44,18 +58,46 @@ export async function clientLoader({ request }: ClientActionFunctionArgs) {
       staleTime: 60000,
     });
 
-    return json(data);
+    return json({
+      accessToken,
+      formFields: data.result.formData,
+      formStatus: data.result.type,
+    });
   } else {
     throw new Response("Токен авторизации не обнаружен!", { status: 401 });
   }
 }
 
 export default function ProfileEdit() {
-  // const theme = useTheme();
+  const theme = useTheme();
   const navigate = useNavigate();
   const navigation = useNavigation();
 
-  const data = useLoaderData<typeof clientLoader>();
+  const fetcher = useFetcher();
+
+  const { accessToken, formFields, formStatus } =
+    useLoaderData<typeof clientLoader>();
+
+  const {
+    control,
+    setValue,
+    trigger,
+    getValues,
+    handleSubmit,
+    formState: { errors },
+    reset,
+  } = useForm({
+    defaultValues: generateDefaultValues(formFields),
+    resolver: yupResolver(Yup.object(generateValidationSchema(formFields))),
+    mode: "onChange",
+    shouldUnregister: true,
+  });
+
+  useEffect(() => {
+    setTimeout(() => {
+      reset(generateDefaultValues(formFields));
+    });
+  }, [formFields, reset]);
 
   return (
     <>
@@ -71,6 +113,54 @@ export default function ProfileEdit() {
             navigate(-1);
           }}
         />
+
+        <form
+          style={{
+            display: "grid",
+            rowGap: "16px",
+          }}
+        >
+          {generateInputsMarkup(
+            formFields,
+            errors,
+            control,
+            setValue,
+            trigger,
+            () => {
+              fetcher.submit(JSON.stringify(getValues()), {
+                method: "POST",
+                encType: "application/json",
+              });
+            },
+            accessToken
+          )}
+
+          <Box
+            sx={{
+              position: "fixed",
+              zIndex: 1,
+              width: "100%",
+              bottom: "0",
+              left: "0",
+              padding: "10px 16px 24px 16px",
+              backgroundColor: theme.palette["White"],
+            }}
+          >
+            <Button
+              variant="contained"
+              onClick={() => {
+                trigger();
+                handleSubmit(() => {
+                  if (formStatus === "allowedNewStep") {
+                    navigate(withLocale("/registration/step4"));
+                  }
+                })();
+              }}
+            >
+              {t("RegistrationStep3.finishButton")}
+            </Button>
+          </Box>
+        </form>
       </Box>
     </>
   );
