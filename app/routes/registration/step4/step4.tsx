@@ -29,6 +29,7 @@ import { StyledPhotoInput } from "~/shared/ui/StyledPhotoInput/StyledPhotoInput"
 import { StyledEmailField } from "~/shared/ui/StyledEmailField/StyledEmailField";
 
 import { getForm } from "~/requests/getForm/getForm";
+import { getStaticUserInfo } from "~/requests/getStaticUserInfo/getStaticUserInfo";
 import { postSaveForm } from "~/requests/postSaveForm/postSaveForm";
 import { getAccessToken } from "~/preferences/token/token";
 
@@ -38,8 +39,11 @@ export async function clientLoader() {
   if (accessToken) {
     const data = await getForm(accessToken, 4);
 
+    const staticFields = await getStaticUserInfo(accessToken);
+
     return json({
       accessToken,
+      staticFields: staticFields.result.userData,
       formFields: data.result.formData,
       formStatus: data.result.type,
     });
@@ -67,7 +71,7 @@ export default function Step4() {
   const navigate = useNavigate();
   const navigation = useNavigation();
 
-  const { accessToken, formFields, formStatus } =
+  const { accessToken, staticFields, formFields, formStatus } =
     useLoaderData<typeof clientLoader>();
 
   const {
@@ -80,8 +84,8 @@ export default function Step4() {
     reset,
   } = useForm({
     defaultValues: {
-      staticPhoto: "",
-      staticEmail: "",
+      staticPhoto: staticFields.img,
+      staticEmail: staticFields.email,
       ...generateDefaultValues(formFields),
     },
     resolver: yupResolver(
@@ -101,15 +105,20 @@ export default function Step4() {
 
   useEffect(() => {
     setTimeout(() => {
-      reset({
-        staticPhoto: getValues("staticPhoto"),
-        staticEmail: getValues("staticEmail"),
-        ...generateDefaultValues(formFields),
-      });
+      reset(
+        {
+          // staticPhoto: getValues("staticPhoto"),
+          // staticEmail: getValues("staticEmail"),
+          staticPhoto: staticFields.img,
+          staticEmail: staticFields.email,
+          ...generateDefaultValues(formFields),
+        },
+        {
+          keepErrors: false,
+        }
+      );
     });
-  }, [formFields, reset, getValues]);
-
-  console.log(getValues());
+  }, [staticFields, formFields, reset, getValues]);
 
   return (
     <>

@@ -464,6 +464,7 @@ export const StyledFileInput = forwardRef(
                           setValue(data.resFile);
                           setLoaded(true);
                           setLoading(false);
+                          setError(null);
                           onChange(name, data.resFile);
                           props.onImmediateChange();
                         },
