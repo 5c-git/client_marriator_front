@@ -125,6 +125,7 @@ export default function Profile() {
             }}
           >
             <ListItemButton
+              disabled
               component={Link}
               to={withLocale("my-profile")}
               sx={{
