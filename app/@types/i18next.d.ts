@@ -12,6 +12,7 @@ import RegistrationStep7RU from "../routes/registration/step7/locales/ru.json";
 import RegistrationCompleteRU from "../routes/registration-complete/locales/ru.json";
 
 import ConfirmEmailRU from "../routes/confirm-email/locales/ru.json";
+import ConfirmRestorePinRU from "../routes/confirm-restore-pin/locales/ru.json";
 
 import PhoneRU from "../routes/signin/phone/locales/ru.json";
 import SmsRU from "../routes/signin/sms/locales/ru.json";
@@ -52,8 +53,10 @@ declare module "i18next" {
         RegistrationStep6: typeof RegistrationStep6RU;
         RegistrationStep7: typeof RegistrationStep7RU;
         RegistrationComplete: typeof RegistrationCompleteRU;
-        ConfirmEmail: typeof ConfirmEmailRU;
         //reg
+
+        ConfirmEmail: typeof ConfirmEmailRU;
+        ConfirmRestorePin: typeof ConfirmRestorePinRU;
 
         //internal
         Index: typeof IndexRU;

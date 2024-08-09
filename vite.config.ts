@@ -79,6 +79,10 @@ export default defineConfig({
                 ":lang?/confirm-email",
                 "routes/confirm-email/confirm-email.tsx"
               );
+              route(
+                ":lang?/confirm-restore-pin",
+                "routes/confirm-restore-pin/confirm-restore-pin.tsx"
+              );
             }
           );
         });

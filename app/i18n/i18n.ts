@@ -34,6 +34,9 @@ import RegistrationCompleteEN from "../routes/registration-complete/locales/en.j
 import ConfirmEmailRU from "../routes/confirm-email/locales/ru.json";
 import ConfirmEmailEN from "../routes/confirm-email/locales/en.json";
 
+import ConfirmRestorePinRU from "../routes/confirm-restore-pin/locales/ru.json";
+import ConfirmRestorePinEN from "../routes/confirm-restore-pin/locales/en.json";
+
 import PhoneRU from "../routes/signin/phone/locales/ru.json";
 import PhoneEN from "../routes/signin/phone/locales/en.json";
 
@@ -96,6 +99,7 @@ export const resources = {
       //reg
 
       ConfirmEmail: ConfirmEmailRU,
+      ConfirmRestorePin: ConfirmRestorePinRU,
 
       //internal
       Index: IndexRU,
@@ -135,6 +139,7 @@ export const resources = {
       //reg
 
       ConfirmEmail: ConfirmEmailEN,
+      ConfirmRestorePin: ConfirmRestorePinEN,
 
       //internal
       Index: IndexEN,

@@ -38,6 +38,7 @@ const validationSchema = Yup.object().shape({
 
 export async function clientAction({ request }: ClientActionFunctionArgs) {
   const currentURL = new URL(request.url);
+  const type = currentURL.searchParams.get("type");
 
   const fields = await request.json();
   const accessToken = await getAccessToken();
@@ -46,7 +47,11 @@ export async function clientAction({ request }: ClientActionFunctionArgs) {
     const data = await postSetUserPin(accessToken, fields.pin);
 
     if ("status" in data) {
-      throw redirect(withLocale("/registration/step1"));
+      if (type && type === "restore") {
+        throw redirect(withLocale("/signin/pin"));
+      } else {
+        throw redirect(withLocale("/registration/step1"));
+      }
     } else {
       currentURL.searchParams.set("error", "unAuth");
       throw redirect(currentURL.toString());
