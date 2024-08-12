@@ -84,7 +84,7 @@ export default function ProfileEdit() {
     trigger,
     getValues,
     handleSubmit,
-    formState: { errors },
+    formState: { errors, isDirty },
     reset,
   } = useForm({
     defaultValues: generateDefaultValues(formFields),
@@ -99,11 +99,17 @@ export default function ProfileEdit() {
     });
   }, [formFields, reset]);
 
+  console.log(isDirty);
+
   return (
     <>
       {navigation.state !== "idle" ? <Loader /> : null}
 
-      <Box>
+      <Box
+        sx={{
+          paddingBottom: "74px",
+        }}
+      >
         <TopNavigation
           header={{
             text: "Страница редактирования",
@@ -118,6 +124,7 @@ export default function ProfileEdit() {
           style={{
             display: "grid",
             rowGap: "16px",
+            paddingTop: "26px",
           }}
         >
           {generateInputsMarkup(
@@ -147,6 +154,19 @@ export default function ProfileEdit() {
             }}
           >
             <Button
+              variant="outlined"
+              onClick={() => {
+                trigger();
+                handleSubmit(() => {
+                  if (formStatus === "allowedNewStep") {
+                    navigate(withLocale("/registration/step4"));
+                  }
+                })();
+              }}
+            >
+              Сохранить
+            </Button>
+            <Button
               variant="contained"
               onClick={() => {
                 trigger();
@@ -157,7 +177,7 @@ export default function ProfileEdit() {
                 })();
               }}
             >
-              {t("RegistrationStep3.finishButton")}
+              Сохранить
             </Button>
           </Box>
         </form>
