@@ -58,7 +58,6 @@ export async function clientLoader({ request }: ClientActionFunctionArgs) {
 
 export async function clientAction({ request }: ClientActionFunctionArgs) {
   const currentURL = new URL(request.url);
-  const params = new URLSearchParams();
   const accessToken = await getAccessToken();
 
   const { _action, ...fields } = await request.json();
@@ -67,7 +66,7 @@ export async function clientAction({ request }: ClientActionFunctionArgs) {
     if (_action === "sendAgain") {
       const data = await postSetUserEmail(accessToken, fields.email);
 
-      params.set("ttl", data.result.code.ttl.toString());
+      currentURL.searchParams.set("ttl", data.result.code.ttl.toString());
 
       throw redirect(currentURL.toString());
     } else if (_action === "sendCode") {
@@ -124,6 +123,10 @@ export default function СonfirmEmail() {
 
     return () => clearInterval(timer);
   }, [seconds]);
+
+  useEffect(() => {
+    setSeconds(Number(ttl));
+  }, [ttl]);
 
   return (
     <>

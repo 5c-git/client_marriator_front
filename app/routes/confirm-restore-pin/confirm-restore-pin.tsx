@@ -71,7 +71,7 @@ export async function clientAction({ request }: ClientActionFunctionArgs) {
       await setAccessToken(data.result.token.access_token);
       await setRefreshToken(data.result.token.refresh_token);
 
-      params.set("ttl", data.result.code.ttl.toString());
+      currentURL.searchParams.set("ttl", data.result.code.ttl.toString());
 
       throw redirect(currentURL.toString());
     } else if (_action === "sendCode") {
@@ -133,6 +133,10 @@ export default function СonfirmRestorePin() {
 
     return () => clearInterval(timer);
   }, [seconds]);
+
+  useEffect(() => {
+    setSeconds(Number(ttl));
+  }, [ttl]);
 
   return (
     <>
