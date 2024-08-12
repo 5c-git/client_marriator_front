@@ -2,14 +2,14 @@ import type { StoryObj, Meta } from "@storybook/react";
 import * as DocBlock from "@storybook/blocks";
 
 import { createRemixStub } from "@remix-run/testing";
-import { http, delay, HttpResponse } from "msw";
+// import { http, delay, HttpResponse } from "msw";
 
-import Sms from "./confirm-restore-pin";
+import СonfirmRestorePin from "./confirm-restore-pin";
 import { json } from "@remix-run/react";
 
 const meta = {
-  title: "Страницы/Вход/Смс-код",
-  component: Sms,
+  title: "Страницы/Восстановление пин-кода",
+  component: СonfirmRestorePin,
   tags: ["autodocs"],
   parameters: {
     layout: {
@@ -19,21 +19,21 @@ const meta = {
       page: () => (
         <>
           <DocBlock.Title />
-          <h2>Адрес страницы: /signin/sms</h2>
+          <h2>Адрес страницы: /confirm-restore-pin</h2>
           <h3>Используемые запросы:</h3>
           <p>
-            postSendPhone() - VITE_SEND_PHONE -{" "}
-            {import.meta.env.VITE_SEND_PHONE}
+            postStartRestorePin() - VITE_START_RESTORE_PIN -{" "}
+            {import.meta.env.VITE_START_RESTORE_PIN}
           </p>
           <p>
-            postCheckCode() - VITE_CHECK_CODE -{" "}
-            {import.meta.env.VITE_CHECK_CODE}
+            postCheckCodeRestore() - VITE_POST_CHECK_CODE_RESTORE -{" "}
+            {import.meta.env.VITE_POST_CHECK_CODE_RESTORE}
           </p>
         </>
       ),
     },
   },
-} satisfies Meta<typeof Sms>;
+} satisfies Meta<typeof СonfirmRestorePin>;
 
 export default meta;
 
@@ -45,14 +45,10 @@ export const Primary: Story = {
     (Story) => {
       const RemixStub = createRemixStub([
         {
-          path: "/",
+          path: "/confirm-restore-pin",
           Component: Story,
-          loader: async ({ request }) => {
-            const currentURL = new URL(request.url);
-
-            const ttl = currentURL.searchParams.get("ttl");
-
-            return json({ phone: "+79123152151", ttl });
+          loader: async () => {
+            return json({ ttl: 120 });
           },
           action: async () => {
             // const data = await postRegStep2({ test: "test" });
@@ -63,19 +59,19 @@ export const Primary: Story = {
         },
       ]);
 
-      return <RemixStub />;
+      return <RemixStub initialEntries={["/confirm-restore-pin"]} />;
     },
   ],
   parameters: {
-    msw: {
-      handlers: [
-        http.post(import.meta.env.VITE_GET_FORM, async () => {
-          await delay(2000);
-          return HttpResponse.json({
-            status: "Success",
-          });
-        }),
-      ],
-    },
+    // msw: {
+    //   handlers: [
+    //     http.post(import.meta.env.VITE_GET_FORM, async () => {
+    //       await delay(2000);
+    //       return HttpResponse.json({
+    //         status: "Success",
+    //       });
+    //     }),
+    //   ],
+    // },
   },
 };

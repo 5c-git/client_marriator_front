@@ -2,14 +2,14 @@ import type { StoryObj, Meta } from "@storybook/react";
 import * as DocBlock from "@storybook/blocks";
 
 import { createRemixStub } from "@remix-run/testing";
-import { http, delay, HttpResponse } from "msw";
+// import { http, delay, HttpResponse } from "msw";
 
-import Sms from "./confirm-email";
+import СonfirmEmail from "./confirm-email";
 import { json } from "@remix-run/react";
 
 const meta = {
-  title: "Страницы/Вход/Смс-код",
-  component: Sms,
+  title: "Страницы/Подтверждение email",
+  component: СonfirmEmail,
   tags: ["autodocs"],
   parameters: {
     layout: {
@@ -19,21 +19,21 @@ const meta = {
       page: () => (
         <>
           <DocBlock.Title />
-          <h2>Адрес страницы: /signin/sms</h2>
+          <h2>Адрес страницы: /confirm-email</h2>
           <h3>Используемые запросы:</h3>
           <p>
-            postSendPhone() - VITE_SEND_PHONE -{" "}
-            {import.meta.env.VITE_SEND_PHONE}
+            postSetUserEmail() - VITE_POST_SET_USER_EMAIL -{" "}
+            {import.meta.env.VITE_POST_SET_USER_EMAIL}
           </p>
           <p>
-            postCheckCode() - VITE_CHECK_CODE -{" "}
-            {import.meta.env.VITE_CHECK_CODE}
+            postCheckEmailCode() - VITE_POST_CHECK_EMAIL_CODE -{" "}
+            {import.meta.env.VITE_POST_CHECK_EMAIL_CODE}
           </p>
         </>
       ),
     },
   },
-} satisfies Meta<typeof Sms>;
+} satisfies Meta<typeof СonfirmEmail>;
 
 export default meta;
 
@@ -45,14 +45,10 @@ export const Primary: Story = {
     (Story) => {
       const RemixStub = createRemixStub([
         {
-          path: "/",
+          path: "/confirm-email",
           Component: Story,
-          loader: async ({ request }) => {
-            const currentURL = new URL(request.url);
-
-            const ttl = currentURL.searchParams.get("ttl");
-
-            return json({ phone: "+79123152151", ttl });
+          loader: async () => {
+            return json({ email: "test@mail.ru", ttl: "120" });
           },
           action: async () => {
             // const data = await postRegStep2({ test: "test" });
@@ -63,19 +59,19 @@ export const Primary: Story = {
         },
       ]);
 
-      return <RemixStub />;
+      return <RemixStub initialEntries={["/confirm-email"]} />;
     },
   ],
   parameters: {
-    msw: {
-      handlers: [
-        http.post(import.meta.env.VITE_GET_FORM, async () => {
-          await delay(2000);
-          return HttpResponse.json({
-            status: "Success",
-          });
-        }),
-      ],
-    },
+    // msw: {
+    //   handlers: [
+    //     http.post(import.meta.env.VITE_GET_FORM, async () => {
+    //       await delay(2000);
+    //       return HttpResponse.json({
+    //         status: "Success",
+    //       });
+    //     }),
+    //   ],
+    // },
   },
 };

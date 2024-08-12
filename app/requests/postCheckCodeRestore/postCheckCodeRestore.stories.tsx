@@ -7,7 +7,7 @@ import responseSchemaError from "./postCheckCodeRestoreError.schema.json";
 const Mock = () => <></>;
 
 const meta = {
-  title: "Сетевые запросы/postCheckCodeRestore",
+  title: "Сетевые запросы/Вход/postCheckCodeRestore",
   component: Mock,
   tags: ["autodocs"],
 } satisfies Meta<typeof Mock>;

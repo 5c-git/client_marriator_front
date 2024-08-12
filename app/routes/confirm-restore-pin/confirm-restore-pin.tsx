@@ -48,10 +48,9 @@ const validationSchema = Yup.object().shape({
 export async function clientLoader({ request }: ClientActionFunctionArgs) {
   const currentURL = new URL(request.url);
 
-  const accessToken = await getAccessToken();
   const ttl = currentURL.searchParams.get("ttl");
 
-  if (!accessToken || !ttl) {
+  if (!ttl) {
     throw new Response(t("ConfirmRestorePin.wrongData"));
   }
 

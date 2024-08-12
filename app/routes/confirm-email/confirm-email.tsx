@@ -31,9 +31,10 @@ import { TopNavigation } from "~/shared/ui/TopNavigation/TopNavigation";
 import { Loader } from "~/shared/ui/Loader/Loader";
 
 import { getUserEmail } from "~/preferences/userEmail/userEmail";
+import { getAccessToken } from "~/preferences/token/token";
+
 import { postSetUserEmail } from "~/requests/postSetUserEmail/postSetUserEmail";
 import { postCheckEmailCode } from "~/requests/postCheckEmailCode/postCheckEmailCode";
-import { getAccessToken } from "~/preferences/token/token";
 
 const validationSchema = Yup.object().shape({
   code: Yup.string()
