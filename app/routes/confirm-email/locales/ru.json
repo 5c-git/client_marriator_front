@@ -1,0 +1,11 @@
+{
+  "header": "Подтвердите email",
+  "sendAgain": "Получить код повторно",
+  "timer": "Повторная отправка доступна через",
+  "notification": "Код был отправлен на указанный email!",
+  "errorNotifivation": "Неверный код подтверждения!",
+  "inputPlaceholder": "Код из email",
+  "inputValidation": "Обязательное поле",
+  "inputValidation_lenght": "Укажите корректный код",
+  "wrongData": "Получены некорректные данные!"
+}

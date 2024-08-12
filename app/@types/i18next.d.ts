@@ -9,12 +9,17 @@ import RegistrationStep4RU from "../routes/registration/step4/locales/ru.json";
 import RegistrationStep5RU from "../routes/registration/step5/locales/ru.json";
 import RegistrationStep6RU from "../routes/registration/step6/locales/ru.json";
 import RegistrationStep7RU from "../routes/registration/step7/locales/ru.json";
+import RegistrationCompleteRU from "../routes/registration-complete/locales/ru.json";
+
+import ConfirmEmailRU from "../routes/confirm-email/locales/ru.json";
+import ConfirmRestorePinRU from "../routes/confirm-restore-pin/locales/ru.json";
 
 import PhoneRU from "../routes/signin/phone/locales/ru.json";
 import SmsRU from "../routes/signin/sms/locales/ru.json";
 import PinRU from "../routes/signin/pin/locales/ru.json";
 import CreatePinRU from "../routes/signin/createPin/locales/ru.json";
 import ProfileRU from "../routes/profile/locales/ru.json";
+import MyProfileRU from "../routes/my-profile/locales/ru.json";
 
 import StyledPhotoCheckboxRU from "../shared/ui/StyledPhotoCheckbox/locales/ru.json";
 import StyledFileInputRU from "../shared/ui/StyledFileInput/locales/ru.json";
@@ -47,11 +52,16 @@ declare module "i18next" {
         RegistrationStep5: typeof RegistrationStep5RU;
         RegistrationStep6: typeof RegistrationStep6RU;
         RegistrationStep7: typeof RegistrationStep7RU;
+        RegistrationComplete: typeof RegistrationCompleteRU;
         //reg
+
+        ConfirmEmail: typeof ConfirmEmailRU;
+        ConfirmRestorePin: typeof ConfirmRestorePinRU;
 
         //internal
         Index: typeof IndexRU;
         Profile: typeof ProfileRU;
+        MyProfile: typeof MyProfileRU;
 
         //components
         StyledPhotoCheckbox: typeof StyledPhotoCheckboxRU;

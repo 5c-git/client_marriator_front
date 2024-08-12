@@ -68,9 +68,9 @@ export const StyledPhotoInput = forwardRef(
     const [loaded, setLoaded] = useState<boolean>(false);
     const [error, setError] = useState<string>("");
 
-    // useEffect(() => {
-    //   setValue(props.value);
-    // }, [props.value]);
+    useEffect(() => {
+      setValue(props.value);
+    }, [props.value]);
 
     useEffect(() => {
       if (props.error) {
@@ -176,6 +176,7 @@ export const StyledPhotoInput = forwardRef(
                           onChange(name, data.resFile);
                           setLoading(false);
                           setLoaded(true);
+                          setError("");
                           props.onImmediateChange();
                         },
                         (error) => {
@@ -252,6 +253,8 @@ export const StyledPhotoInput = forwardRef(
                           color: theme.palette["Corp_1"],
                         }}
                         href={props.helperInfo.link.path}
+                        target="_blank"
+                        rel="noreferrer"
                       >
                         {props.helperInfo.link.text}
                       </a>

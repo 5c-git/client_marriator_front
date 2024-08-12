@@ -18,7 +18,19 @@ export default defineConfig({
             () => {
               route(undefined, "routes/menuLayout/menuLayout.tsx", () => {
                 route(":lang?/", "routes/home/home.tsx");
+                route(
+                  ":lang?/registration/registration-complete",
+                  "routes/registration-complete/registration-complete.tsx"
+                );
                 route(":lang?/profile", "routes/profile/profile.tsx");
+                route(
+                  ":lang?/profile/my-profile",
+                  "routes/my-profile/my-profile.tsx"
+                );
+                route(
+                  ":lang?/profile/profile-edit",
+                  "routes/profile-edit/profile-edit.tsx"
+                );
               });
 
               //signin
@@ -62,6 +74,15 @@ export default defineConfig({
                 "routes/registration/step7/step7.tsx"
               );
               // registration;
+
+              route(
+                ":lang?/confirm-email",
+                "routes/confirm-email/confirm-email.tsx"
+              );
+              route(
+                ":lang?/confirm-restore-pin",
+                "routes/confirm-restore-pin/confirm-restore-pin.tsx"
+              );
             }
           );
         });

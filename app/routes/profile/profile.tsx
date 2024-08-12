@@ -1,12 +1,16 @@
+import { useState } from "react";
 import {
   json,
   useLoaderData,
+  useFetcher,
   useNavigate,
   useNavigation,
   Link,
 } from "@remix-run/react";
 
 import { t } from "i18next";
+
+import { withLocale } from "~/shared/withLocale";
 
 import {
   useTheme,
@@ -19,6 +23,10 @@ import {
   ListItemButton,
   ListItemIcon,
   Divider,
+  Dialog,
+  DialogActions,
+  DialogTitle,
+  Button,
 } from "@mui/material";
 import { TopNavigation } from "~/shared/ui/TopNavigation/TopNavigation";
 import { Loader } from "~/shared/ui/Loader/Loader";
@@ -27,10 +35,11 @@ import { ProfileIcon } from "./icons/ProfileIcon";
 import { SettingsIcon } from "./icons/SettingsIcon";
 import { DocumentsIcon } from "./icons/DocumentsIcon";
 import { ExitIcon } from "./icons/ExitIcon";
-import { BulletIcon } from "./icons/BulletIcon";
+import { BulletIcon } from "~/shared/icons/BulletIcon";
 
 import { queryClient } from "~/root";
 import { getAccessToken } from "~/preferences/token/token";
+import { clearPreferences } from "~/preferences/preferences";
 import {
   getUserInfo,
   getUserInfoKeys,
@@ -52,12 +61,21 @@ export async function clientLoader() {
   }
 }
 
+export async function clientAction() {
+  await clearPreferences();
+
+  return json({ status: "ok" });
+}
+
 export default function Profile() {
   const theme = useTheme();
   const navigate = useNavigate();
   const navigation = useNavigation();
 
   const data = useLoaderData<typeof clientLoader>();
+  const fetcher = useFetcher();
+
+  const [openDialog, setOpenDialog] = useState<boolean>(false);
 
   return (
     <>
@@ -107,8 +125,9 @@ export default function Profile() {
             }}
           >
             <ListItemButton
+              disabled
               component={Link}
-              to="/"
+              to={withLocale("my-profile")}
               sx={{
                 padding: "16px 0px",
                 columnGap: "12px",
@@ -158,6 +177,7 @@ export default function Profile() {
             }}
           >
             <ListItemButton
+              disabled
               component={Link}
               to="/"
               sx={{
@@ -209,6 +229,7 @@ export default function Profile() {
             }}
           >
             <ListItemButton
+              disabled
               component={Link}
               to="/"
               sx={{
@@ -260,8 +281,11 @@ export default function Profile() {
             }}
           >
             <ListItemButton
-              component={Link}
-              to="/"
+              // component={Link}
+              // to="/"
+              onClick={() => {
+                setOpenDialog(true);
+              }}
               sx={{
                 padding: "16px 0px",
                 columnGap: "12px",
@@ -298,6 +322,41 @@ export default function Profile() {
           </ListItem>
         </List>
       </Box>
+
+      <Dialog
+        open={openDialog}
+        onClose={() => {
+          setOpenDialog(false);
+        }}
+        sx={{
+          "& .MuiDialog-paper": {
+            borderRadius: "8px",
+          },
+        }}
+      >
+        <DialogTitle>{t("Profile.dialog", { context: "title" })}</DialogTitle>
+        <DialogActions>
+          <Button
+            variant="outlined"
+            onClick={() => {
+              setOpenDialog(false);
+            }}
+          >
+            {t("Profile.dialog", { context: "no" })}
+          </Button>
+          <Button
+            variant="contained"
+            onClick={() => {
+              fetcher.submit(JSON.stringify({ logout: "logout" }), {
+                method: "POST",
+                encType: "application/json",
+              });
+            }}
+          >
+            {t("Profile.dialog", { context: "yes" })}
+          </Button>
+        </DialogActions>
+      </Dialog>
     </>
   );
 }

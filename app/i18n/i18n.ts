@@ -28,6 +28,15 @@ import RegistrationStep6EN from "../routes/registration/step6/locales/en.json";
 import RegistrationStep7RU from "../routes/registration/step7/locales/ru.json";
 import RegistrationStep7EN from "../routes/registration/step7/locales/en.json";
 
+import RegistrationCompleteRU from "../routes/registration-complete/locales/ru.json";
+import RegistrationCompleteEN from "../routes/registration-complete/locales/en.json";
+
+import ConfirmEmailRU from "../routes/confirm-email/locales/ru.json";
+import ConfirmEmailEN from "../routes/confirm-email/locales/en.json";
+
+import ConfirmRestorePinRU from "../routes/confirm-restore-pin/locales/ru.json";
+import ConfirmRestorePinEN from "../routes/confirm-restore-pin/locales/en.json";
+
 import PhoneRU from "../routes/signin/phone/locales/ru.json";
 import PhoneEN from "../routes/signin/phone/locales/en.json";
 
@@ -42,6 +51,9 @@ import PinEN from "../routes/signin/pin/locales/en.json";
 
 import ProfileRU from "../routes/profile/locales/ru.json";
 import ProfileEN from "../routes/profile/locales/en.json";
+
+import MyProfileRU from "../routes/my-profile/locales/ru.json";
+import MyProfileEN from "../routes/my-profile/locales/en.json";
 
 import StyledPhotoCheckboxRU from "../shared/ui/StyledPhotoCheckbox/locales/ru.json";
 import StyledPhotoCheckboxEN from "../shared/ui/StyledPhotoCheckbox/locales/en.json";
@@ -83,11 +95,16 @@ export const resources = {
       RegistrationStep5: RegistrationStep5RU,
       RegistrationStep6: RegistrationStep6RU,
       RegistrationStep7: RegistrationStep7RU,
+      RegistrationComplete: RegistrationCompleteRU,
       //reg
+
+      ConfirmEmail: ConfirmEmailRU,
+      ConfirmRestorePin: ConfirmRestorePinRU,
 
       //internal
       Index: IndexRU,
       Profile: ProfileRU,
+      MyProfile: MyProfileRU,
 
       //components
       StyledPhotoCheckbox: StyledPhotoCheckboxRU,
@@ -118,11 +135,16 @@ export const resources = {
       RegistrationStep5: RegistrationStep5EN,
       RegistrationStep6: RegistrationStep6EN,
       RegistrationStep7: RegistrationStep7EN,
+      RegistrationComplete: RegistrationCompleteEN,
       //reg
+
+      ConfirmEmail: ConfirmEmailEN,
+      ConfirmRestorePin: ConfirmRestorePinEN,
 
       //internal
       Index: IndexEN,
       Profile: ProfileEN,
+      MyProfile: MyProfileEN,
 
       //components
       StyledPhotoCheckbox: StyledPhotoCheckboxEN,

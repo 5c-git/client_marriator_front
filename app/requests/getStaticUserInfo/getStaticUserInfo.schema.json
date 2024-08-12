@@ -1,0 +1,34 @@
+{
+  "$id": "getStaticUserInfoSuccess",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "getStaticUserInfoSuccess",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "status": {
+      "type": "string",
+      "const": "success"
+    },
+    "result": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "userData": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "email": {
+              "type": "string"
+            },
+            "img": {
+              "type": "string"
+            }
+          },
+          "required": ["email", "img"]
+        }
+      },
+      "required": ["userData"]
+    }
+  },
+  "required": ["status", "result"]
+}

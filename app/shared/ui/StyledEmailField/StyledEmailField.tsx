@@ -41,7 +41,11 @@ type StyledEmailFieldProps = {
   onChange: (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => void;
+
   onImmediateChange: () => void;
+  onBlur?: (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => void;
 };
 
 export const StyledEmailField = forwardRef(
@@ -82,6 +86,10 @@ export const StyledEmailField = forwardRef(
               onChange={(evt) => {
                 props.onChange(evt);
                 props.onImmediateChange();
+              }}
+              onBlur={(evt) => {
+                props.onBlur ? props.onBlur(evt) : () => {};
+                // props.onImmediateChange();
               }}
               sx={{
                 marginBottom: "4px",
@@ -134,6 +142,8 @@ export const StyledEmailField = forwardRef(
                         color: theme.palette["Corp_1"],
                       }}
                       href={props.helperInfo.link.path}
+                      target="_blank"
+                      rel="noreferrer"
                     >
                       {props.helperInfo.link.text}
                     </a>

@@ -839,6 +839,147 @@ export const Primary: Story = {
             },
           ]);
         }),
+        http.get("/error", async () => {
+          await delay(2000);
+          return HttpResponse.json([
+            {
+              inputType: "select",
+              name: "nalogstatus",
+              value: "nalogstatus_fiz_lico",
+              disabled: false,
+              options: [
+                {
+                  value: "nalogstatus_samozanyatyj",
+                  label:
+                    "\u0421\u0430\u043c\u043e\u0437\u0430\u043d\u044f\u0442\u044b\u0439",
+                  disabled: false,
+                },
+                {
+                  value: "nalogstatus_fiz_lico",
+                  label:
+                    "\u0424\u0438\u0437\u0438\u0447\u0435\u0441\u043a\u043e\u0435 \u043b\u0438\u0446\u043e",
+                  disabled: false,
+                },
+              ],
+              validation: "default",
+              placeholder:
+                "\u041d\u0430\u043b\u043e\u0433\u043e\u0432\u044b\u0439 \u0441\u0442\u0430\u0442\u0443\u0441",
+              helperInfo: {
+                link: {
+                  path: "https://lknpd.nalog.ru/auth/login",
+                  text: "\u0421\u0442\u0430\u043d\u044c \u0441\u0430\u043c\u043e\u0437\u0430\u043d\u044f\u0442\u044b\u043c",
+                  type: "internal",
+                },
+              },
+            },
+            {
+              inputType: "select",
+              name: "gov",
+              value: "directory_citizenship_OLA2CdAK4Yb3jdoYOj59kbiehGQaDa",
+              disabled: false,
+              options: [
+                {
+                  value: "grazhdanstvo_ARM",
+                  label:
+                    "\u0420\u0435\u0441\u043f\u0443\u0431\u043b\u0438\u043a\u0430 \u0410\u0440\u043c\u0435\u043d\u0438\u044f",
+                  disabled: false,
+                },
+                {
+                  value: "grazhdanstvo_KAZ",
+                  label:
+                    "\u0420\u0435\u0441\u043f\u0443\u0431\u043b\u0438\u043a\u0430 \u041a\u0430\u0437\u0430\u0445\u0441\u0442\u0430\u043d",
+                  disabled: false,
+                },
+                {
+                  value: "directory_citizenship_OLA2CdAK4Yb3jdoYOj59kbiehGQaDa",
+                  label:
+                    "\u0420\u043e\u0441\u0441\u0438\u0439\u0441\u043a\u0430\u044f \u0424\u0435\u0434\u0435\u0440\u0430\u0446\u0438\u044f",
+                  disabled: false,
+                },
+              ],
+              validation: "default",
+              placeholder:
+                "\u0413\u0440\u0430\u0436\u0434\u0430\u043d\u0441\u0442\u0432\u043e",
+            },
+            {
+              inputType: "selectMultiple",
+              name: "vk0wcCKTq7sP67Iybq19sLyJckCZzz",
+              value: ["territoriya_poiska_predlozhenij_77"],
+              placeholder:
+                "\u0422\u0435\u0440\u0440\u0438\u0442\u043e\u0440\u0438\u044f \u043f\u043e\u0438\u0441\u043a\u0430 \u043f\u0440\u0435\u0434\u043b\u043e\u0436\u0435\u043d\u0438\u0439",
+              disabled: false,
+              options: [
+                {
+                  value: "territoriya_poiska_predlozhenij_77",
+                  label: "\u041c\u043e\u0441\u043a\u0432\u0430",
+                  disabled: false,
+                },
+                {
+                  value: "territoriya_poiska_predlozhenij_16",
+                  label:
+                    "\u0422\u0430\u0442\u0430\u0440\u0441\u0442\u0430\u043d",
+                  disabled: false,
+                },
+              ],
+              validation: "default",
+            },
+            {
+              inputType: "photoCheckbox",
+              name: "vidideayt",
+              value: [
+                "directory_view_activities_e7JEmQrGSvQ2JCDJlgTd09jNoiFfGm",
+              ],
+              disabled: false,
+              options: [
+                {
+                  value:
+                    "directory_view_activities_e7JEmQrGSvQ2JCDJlgTd09jNoiFfGm",
+                  label: "\u041a\u0443\u0440\u044c\u0435\u0440",
+                  disabled: false,
+                  img: "http://preprod.marriator-api.fivecorners.ru/storage/source/directory/view_activities/2-img/1675359703_www-funnyart-club-p-kurer-prikol-vkontakte-61.jpg",
+                  text: "\u0414\u043e\u0441\u0442\u0430\u0432\u043a\u0430 \u043f\u043e\u0434 \u0440\u0430\u0437\u043d\u044b\u0435 \u0437\u0430\u0434\u0430\u0447\u0438, \u0431\u044b\u0441\u0442\u0440\u0430\u044f \u043a\u0443\u0440\u044c\u0435\u0440\u0441\u043a\u0430\u044f \u0434\u043e\u0441\u0442\u0430\u0432\u043a\u0430",
+                  details: {
+                    text: "\u041a\u0443\u0440\u044c\u0435\u0440",
+                    details:
+                      "\u0414\u043e\u0441\u0442\u0430\u0432\u043a\u0430 \u043f\u043e\u0434 \u0440\u0430\u0437\u043d\u044b\u0435 \u0437\u0430\u0434\u0430\u0447\u0438, \u0431\u044b\u0441\u0442\u0440\u0430\u044f \u043a\u0443\u0440\u044c\u0435\u0440\u0441\u043a\u0430\u044f \u0434\u043e\u0441\u0442\u0430\u0432\u043a\u0430",
+                    img: "http://preprod.marriator-api.fivecorners.ru/storage/source/directory/view_activities/2-imgDetail/1675359703_www-funnyart-club-p-kurer-prikol-vkontakte-61.jpg",
+                  },
+                },
+                {
+                  value:
+                    "directory_view_activities_AudJFcNa8lg8QJVLmHQjGqXxe4T1ZY",
+                  label: "\u041f\u0435\u043a\u0430\u0440\u044c",
+                  disabled: false,
+                  img: "http://preprod.marriator-api.fivecorners.ru/storage/source/directory/view_activities/3-img/1661081678_53-pofoto-club-p-beloborodii-pekari-65.jpg",
+                  text: "\u041f\u043e\u043c\u043e\u0449\u043d\u0438\u043a \u043f\u043e\u0432\u0430\u0440\u0430,\u041f\u0438\u0446\u0446\u043c\u0435\u0439\u043a\u0435\u0440 \u0440\u043e\u0437\u043d\u0438\u0447\u043d\u043e\u0439 \u0441\u0435\u0442\u0438,\u041f\u0438\u0446\u0446\u043c\u0435\u0439\u043a\u0435\u0440,\u0422\u0435\u0441\u0442\u043e\u043c\u0435\u0441,\u0422\u0435\u0441\u0442\u043e\u043c\u0435\u0441 \u0440\u043e\u0437\u043d\u0438\u0447\u043d\u043e\u0439 \u0441\u0435\u0442\u0438,\u041f\u0435\u043a\u0430\u0440\u044c \u0440\u043e\u0437\u043d\u0438\u0447\u043d\u043e\u0439 \u0441\u0435\u0442\u0438",
+                  details: {
+                    text: "\u041f\u0435\u043a\u0430\u0440\u044c",
+                    details:
+                      "\u041f\u043e\u043c\u043e\u0449\u043d\u0438\u043a \u043f\u043e\u0432\u0430\u0440\u0430,\u041f\u0438\u0446\u0446\u043c\u0435\u0439\u043a\u0435\u0440 \u0440\u043e\u0437\u043d\u0438\u0447\u043d\u043e\u0439 \u0441\u0435\u0442\u0438,\u041f\u0438\u0446\u0446\u043c\u0435\u0439\u043a\u0435\u0440,\u0422\u0435\u0441\u0442\u043e\u043c\u0435\u0441,\u0422\u0435\u0441\u0442\u043e\u043c\u0435\u0441 \u0440\u043e\u0437\u043d\u0438\u0447\u043d\u043e\u0439 \u0441\u0435\u0442\u0438,\u041f\u0435\u043a\u0430\u0440\u044c \u0440\u043e\u0437\u043d\u0438\u0447\u043d\u043e\u0439 \u0441\u0435\u0442\u0438",
+                    img: "http://preprod.marriator-api.fivecorners.ru/storage/source/directory/view_activities/3-imgDetail/1661081678_53-pofoto-club-p-beloborodii-pekari-65.jpg",
+                  },
+                },
+                {
+                  value:
+                    "directory_view_activities_DJZ8mtC9ZcV4H1Fb1w3gGiU9sBLH8u",
+                  label: "\u041f\u0440\u043e\u0434\u0430\u0432\u0435\u0446",
+                  disabled: false,
+                  img: "http://preprod.marriator-api.fivecorners.ru/storage/source/directory/view_activities/1-img/8c37f333-3b09-4686-9238-dd89e704fbc7-31-Wavebreakmedia-Shutterst.jpg",
+                  text: "\u041a\u0430\u0441\u0441\u0438\u0440 \u043c\u0430\u0433\u0430\u0437\u0438\u043d\u0430,\u041a\u0430\u0441\u0441\u0438\u0440 \u043c\u0430\u0433\u0430\u0437\u0438\u043d\u0430 \u0440\u043e\u0437\u043d\u0438\u0447\u043d\u043e\u0439 \u0441\u0435\u0442\u0438,\u041c\u043e\u0431\u0438\u043b\u044c\u043d\u044b\u0439 \u043a\u0430\u0441\u0441\u0438\u0440,\u041f\u0440\u043e\u0434\u0430\u0432\u0435\u0446 \u043f\u0440\u0438\u043b\u0430\u0432\u043a\u0430,\u041f\u0440\u043e\u0434\u0430\u0432\u0435\u0446 \u043f\u0440\u0438\u043b\u0430\u0432\u043a\u0430 \u0440\u043e\u0437\u043d\u0438\u0447\u043d\u043e\u0439 \u0441\u0435\u0442\u0438,\u041f\u0440\u043e\u0434\u0430\u0432\u0435\u0446 \u0442\u043e\u0440\u0433\u043e\u0432\u043e\u0433\u043e \u0437\u0430\u043b\u0430,\u041f\u0440\u043e\u0434\u0430\u0432\u0435\u0446 \u0442\u043e\u0440\u0433\u043e\u0432\u043e\u0433\u043e \u0437\u0430\u043b\u0430 \u0440\u043e\u0437\u043d\u0438\u0447\u043d\u043e\u0439 \u0441\u0435\u0442\u0438,\u041a\u0430\u0441\u0441\u0438\u0440 \u043e\u0431\u0449\u0435\u043f\u0438\u0442\u0430",
+                  details: {
+                    text: "\u041f\u0440\u043e\u0434\u0430\u0432\u0435\u0446",
+                    details:
+                      "\u041a\u0430\u0441\u0441\u0438\u0440 \u043c\u0430\u0433\u0430\u0437\u0438\u043d\u0430,\u041a\u0430\u0441\u0441\u0438\u0440 \u043c\u0430\u0433\u0430\u0437\u0438\u043d\u0430 \u0440\u043e\u0437\u043d\u0438\u0447\u043d\u043e\u0439 \u0441\u0435\u0442\u0438,\u041c\u043e\u0431\u0438\u043b\u044c\u043d\u044b\u0439 \u043a\u0430\u0441\u0441\u0438\u0440,\u041f\u0440\u043e\u0434\u0430\u0432\u0435\u0446 \u043f\u0440\u0438\u043b\u0430\u0432\u043a\u0430,\u041f\u0440\u043e\u0434\u0430\u0432\u0435\u0446 \u043f\u0440\u0438\u043b\u0430\u0432\u043a\u0430 \u0440\u043e\u0437\u043d\u0438\u0447\u043d\u043e\u0439 \u0441\u0435\u0442\u0438,\u041f\u0440\u043e\u0434\u0430\u0432\u0435\u0446 \u0442\u043e\u0440\u0433\u043e\u0432\u043e\u0433\u043e \u0437\u0430\u043b\u0430,\u041f\u0440\u043e\u0434\u0430\u0432\u0435\u0446 \u0442\u043e\u0440\u0433\u043e\u0432\u043e\u0433\u043e \u0437\u0430\u043b\u0430 \u0440\u043e\u0437\u043d\u0438\u0447\u043d\u043e\u0439 \u0441\u0435\u0442\u0438,\u041a\u0430\u0441\u0441\u0438\u0440 \u043e\u0431\u0449\u0435\u043f\u0438\u0442\u0430",
+                    img: "http://preprod.marriator-api.fivecorners.ru/storage/source/directory/view_activities/1-imgDetail/8c37f333-3b09-4686-9238-dd89e704fbc7-31-Wavebreakmedia-Shutterst.jpg",
+                  },
+                },
+              ],
+              validation: "default",
+              heading:
+                "\u0412\u0438\u0434\u044b \u0434\u0435\u044f\u0442\u0435\u043b\u044c\u043d\u043e\u0441\u0442\u0438",
+            },
+          ]);
+        }),
       ],
     },
   },

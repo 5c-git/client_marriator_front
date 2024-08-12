@@ -61,7 +61,7 @@ export async function clientAction({ request }: ClientActionFunctionArgs) {
       await setAccessToken(data.result.token.access_token);
       await setRefreshToken(data.result.token.refresh_token);
 
-      throw redirect(withLocale("/signin/pin"));
+      throw redirect(withLocale("/registration/registration-complete"));
     } else {
       const data = await postSaveForm(accessToken, 7, fields);
 

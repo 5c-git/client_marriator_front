@@ -11,7 +11,7 @@ export interface GetUserInfoSuccess {
       id: number;
       name: null;
       email: string;
-      email_verified_at: null;
+      email_verified_at: string | null;
       created_at: string;
       updated_at: string;
       api_token: null;

@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useState, useEffect } from "react";
 import {
   useLoaderData,
   useFetcher,
@@ -6,6 +6,7 @@ import {
   useNavigation,
   ClientActionFunctionArgs,
   json,
+  redirect,
 } from "@remix-run/react";
 import * as Yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -21,15 +22,25 @@ import {
 } from "~/shared/constructor/constructor";
 import { emailRegExp } from "~/shared/validators";
 
-import { useTheme, Box, Typography, Button } from "@mui/material";
+import {
+  useTheme,
+  Box,
+  Typography,
+  Button,
+  Dialog,
+  DialogTitle,
+} from "@mui/material";
 import { TopNavigation } from "~/shared/ui/TopNavigation/TopNavigation";
 import { Loader } from "~/shared/ui/Loader/Loader";
 
 import { StyledPhotoInput } from "~/shared/ui/StyledPhotoInput/StyledPhotoInput";
 import { StyledEmailField } from "~/shared/ui/StyledEmailField/StyledEmailField";
 
+import { setUserEmail } from "~/preferences/userEmail/userEmail";
 import { getForm } from "~/requests/getForm/getForm";
+import { getStaticUserInfo } from "~/requests/getStaticUserInfo/getStaticUserInfo";
 import { postSaveForm } from "~/requests/postSaveForm/postSaveForm";
+import { postSetUserEmail } from "~/requests/postSetUserEmail/postSetUserEmail";
 import { getAccessToken } from "~/preferences/token/token";
 
 export async function clientLoader() {
@@ -38,8 +49,11 @@ export async function clientLoader() {
   if (accessToken) {
     const data = await getForm(accessToken, 4);
 
+    const staticFields = await getStaticUserInfo(accessToken);
+
     return json({
       accessToken,
+      staticFields: staticFields.result.userData,
       formFields: data.result.formData,
       formStatus: data.result.type,
     });
@@ -49,13 +63,23 @@ export async function clientLoader() {
 }
 
 export async function clientAction({ request }: ClientActionFunctionArgs) {
-  const fields = await request.json();
+  const params = new URLSearchParams();
+  const { _action, ...fields } = await request.json();
   const accessToken = await getAccessToken();
 
   if (accessToken) {
-    const data = await postSaveForm(accessToken, 4, fields);
+    if (_action && _action === "confirmEmail") {
+      await setUserEmail(fields.email);
+      await postSetUserEmail(accessToken, fields.email);
 
-    return data;
+      params.set("ttl", "120");
+
+      throw redirect(withLocale(`/confirm-email?${params}`));
+    } else {
+      const data = await postSaveForm(accessToken, 4, fields);
+
+      return data;
+    }
   } else {
     throw new Response("Токен авторизации не обнаружен!", { status: 401 });
   }
@@ -67,7 +91,9 @@ export default function Step4() {
   const navigate = useNavigate();
   const navigation = useNavigation();
 
-  const { accessToken, formFields, formStatus } =
+  const [openDialog, setOpenDialog] = useState<boolean>(false);
+
+  const { accessToken, staticFields, formFields, formStatus } =
     useLoaderData<typeof clientLoader>();
 
   const {
@@ -80,8 +106,8 @@ export default function Step4() {
     reset,
   } = useForm({
     defaultValues: {
-      staticPhoto: "",
-      staticEmail: "",
+      staticPhoto: staticFields.img,
+      staticEmail: staticFields.email,
       ...generateDefaultValues(formFields),
     },
     resolver: yupResolver(
@@ -89,7 +115,6 @@ export default function Step4() {
         staticPhoto: Yup.string().required(t("Constructor.photo")),
         staticEmail: Yup.string()
           .default("")
-          // .email(t("Constructor.email", { context: "wrongVaue" }))
           .matches(emailRegExp, t("Constructor.email_wrongValue"))
           .required(t("Constructor.email")),
         ...generateValidationSchema(formFields),
@@ -101,15 +126,18 @@ export default function Step4() {
 
   useEffect(() => {
     setTimeout(() => {
-      reset({
-        staticPhoto: getValues("staticPhoto"),
-        staticEmail: getValues("staticEmail"),
-        ...generateDefaultValues(formFields),
-      });
+      reset(
+        {
+          staticPhoto: staticFields.img,
+          staticEmail: staticFields.email,
+          ...generateDefaultValues(formFields),
+        },
+        {
+          keepErrors: false,
+        }
+      );
     });
-  }, [formFields, reset, getValues]);
-
-  console.log(getValues());
+  }, [staticFields, formFields, reset, getValues]);
 
   return (
     <>
@@ -193,12 +221,13 @@ export default function Step4() {
               <StyledEmailField
                 inputType="email"
                 placeholder="E-mail"
-                onImmediateChange={() => {
-                  fetcher.submit(JSON.stringify(getValues()), {
-                    method: "POST",
-                    encType: "application/json",
-                  });
-                }}
+                // onImmediateChange={() => {
+                //   fetcher.submit(JSON.stringify(getValues()), {
+                //     method: "POST",
+                //     encType: "application/json",
+                //   });
+                // }}
+                onImmediateChange={() => {}}
                 validation="default"
                 inputStyles={{
                   paddingRight: "16px",
@@ -206,6 +235,13 @@ export default function Step4() {
                 }}
                 error={errors.staticEmail?.message}
                 {...field}
+                onBlur={(evt) => {
+                  if (
+                    evt.target.value !== "" &&
+                    errors.staticEmail === undefined
+                  )
+                    setOpenDialog(true);
+                }}
               />
             )}
           />
@@ -253,6 +289,48 @@ export default function Step4() {
           </Box>
         </form>
       </Box>
+
+      <Dialog
+        open={openDialog}
+        onClose={() => {
+          setOpenDialog(false);
+          setValue("staticEmail", "");
+        }}
+        sx={{
+          "& .MuiDialog-paper": {
+            padding: "16px",
+            borderRadius: "8px",
+          },
+        }}
+      >
+        <DialogTitle
+          sx={{
+            padding: 0,
+          }}
+        >
+          {t("RegistrationStep4.dialog", { context: "title" })}
+        </DialogTitle>
+        <Button
+          variant="contained"
+          onClick={() => {
+            fetcher.submit(
+              JSON.stringify({
+                _action: "confirmEmail",
+                email: getValues("staticEmail"),
+              }),
+              {
+                method: "POST",
+                encType: "application/json",
+              }
+            );
+          }}
+          sx={{
+            marginTop: "16px",
+          }}
+        >
+          {t("RegistrationStep4.dialog", { context: "button" })}
+        </Button>
+      </Dialog>
     </>
   );
 }

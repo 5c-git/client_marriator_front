@@ -179,13 +179,15 @@ export const StyledFileInput = forwardRef(
                 <S_ActivationButton
                   type="button"
                   onClick={() => {
-                    value === "" ? setOpen(true) : (location.href = value);
+                    value === "" ? setOpen(true) : window.open(value, "_blank");
                   }}
                   error={props.error}
                   disabled={props.disabled}
                   value={props.value}
                 >
-                  {value === "" ? props.placeholder : value}
+                  {value === ""
+                    ? props.placeholder
+                    : value.substring(value.indexOf("["))}
                 </S_ActivationButton>
               </S_ButtonContainer>
 
@@ -266,6 +268,8 @@ export const StyledFileInput = forwardRef(
                           color: theme.palette["Corp_1"],
                         }}
                         href={props.helperInfo.link.path}
+                        target="_blank"
+                        rel="noreferrer"
                       >
                         {props.helperInfo.link.text}
                       </a>
@@ -460,6 +464,7 @@ export const StyledFileInput = forwardRef(
                           setValue(data.resFile);
                           setLoaded(true);
                           setLoading(false);
+                          setError(null);
                           onChange(name, data.resFile);
                           props.onImmediateChange();
                         },

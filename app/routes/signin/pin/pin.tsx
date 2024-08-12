@@ -1,7 +1,6 @@
 import {
   useSubmit,
   useNavigation,
-  Link,
   ClientActionFunctionArgs,
   useActionData,
   json,
@@ -16,11 +15,19 @@ import { yupResolver } from "@hookform/resolvers/yup";
 
 import { useForm, Controller } from "react-hook-form";
 
-import { Box, Typography, Snackbar, Alert, useTheme } from "@mui/material";
+import {
+  Box,
+  Typography,
+  Snackbar,
+  Alert,
+  useTheme,
+  Button,
+} from "@mui/material";
 import { StyledOptField } from "~/shared/ui/StyledOtpField/StyledOtpField";
 import { Loader } from "~/shared/ui/Loader/Loader";
 
 import { postCheckPin } from "~/requests/postCheckPin/postCheckPin";
+import { postStartRestorePin } from "~/requests/postStartRestorePin/postStartRestorePin";
 import {
   getAccessToken,
   setAccessToken,
@@ -32,17 +39,29 @@ const validationSchema = Yup.object().shape({
 });
 
 export async function clientAction({ request }: ClientActionFunctionArgs) {
-  const fields = await request.json();
+  const { _action, ...fields } = await request.json();
+  const params = new URLSearchParams();
   const accessToken = await getAccessToken();
 
   if (accessToken) {
-    const data = await postCheckPin(accessToken, fields.pin);
-    if (data.status === "success") {
+    if (_action && _action === "restorePin") {
+      const data = await postStartRestorePin(accessToken);
+
       await setAccessToken(data.result.token.access_token);
       await setRefreshToken(data.result.token.refresh_token);
-      throw redirect(withLocale("/"));
-    } else if (data.status === "error") {
-      return json({ error: t("Pin.pinError") });
+
+      params.set("ttl", data.result.code.ttl.toString());
+
+      throw redirect(withLocale(`/confirm-restore-pin?${params}`));
+    } else {
+      const data = await postCheckPin(accessToken, fields.pin);
+      if (data.status === "success") {
+        await setAccessToken(data.result.token.access_token);
+        await setRefreshToken(data.result.token.refresh_token);
+        throw redirect(withLocale("/"));
+      } else if (data.status === "error") {
+        return json({ error: t("Pin.pinError") });
+      }
     }
   } else {
     throw new Response("Токен авторизации не обнаружен!", { status: 401 });
@@ -158,10 +177,17 @@ export default function Pin() {
             {t("Pin.forgetPin")}
           </Typography>
 
-          <Link
-            to="/signin/phone"
-            style={{
+          <Button
+            sx={{
               textDecoration: "none",
+              width: "unset",
+              padding: 0,
+            }}
+            onClick={() => {
+              submit(JSON.stringify({ _action: "restorePin" }), {
+                method: "POST",
+                encType: "application/json",
+              });
             }}
           >
             <Typography
@@ -173,7 +199,7 @@ export default function Pin() {
             >
               {t("Pin.restorePin")}
             </Typography>
-          </Link>
+          </Button>
         </Box>
       </Box>
 

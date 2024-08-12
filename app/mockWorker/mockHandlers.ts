@@ -9,6 +9,13 @@ import { postFinishRegisterResponse } from "~/requests/postFinishRegister/postFi
 import { postCheckPinResponse } from "~/requests/postCheckPin/postCheckPin";
 
 import { getUserInfoMockResponse } from "~/requests/getUserInfo/getUserInfo";
+import { getUserPersonalMenuMockResponse } from "~/requests/getUserPersonalMenu/getUserPersonalMenu";
+import { getUserFieldsMockResponse } from "~/requests/getUserFields/getUserFields";
+import { getStaticUserInfoMockResponse } from "~/requests/getStaticUserInfo/getStaticUserInfo";
+import { mockPostSetUserEmailMockResponse } from "~/requests/postSetUserEmail/postSetUserEmail";
+import { postCheckEmailCodeMockResponse } from "~/requests/postCheckEmailCode/postCheckEmailCode";
+import { postStartRestorePinMockResponse } from "~/requests/postStartRestorePin/postStartRestorePin";
+import { postCheckCodeRestoreMockResponse } from "~/requests/postCheckCodeRestore/postCheckCodeRestore";
 
 export const handlers = [
   getFormMockResponse,
@@ -19,4 +26,11 @@ export const handlers = [
   postFinishRegisterResponse,
   postCheckPinResponse,
   getUserInfoMockResponse,
+  getUserPersonalMenuMockResponse,
+  getUserFieldsMockResponse,
+  getStaticUserInfoMockResponse,
+  mockPostSetUserEmailMockResponse,
+  postCheckEmailCodeMockResponse,
+  postStartRestorePinMockResponse,
+  postCheckCodeRestoreMockResponse,
 ];

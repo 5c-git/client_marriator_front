@@ -23,7 +23,7 @@
               "type": "string"
             },
             "email_verified_at": {
-              "type": "null"
+              "type": ["string", "null"]
             },
             "created_at": {
               "type": "string"

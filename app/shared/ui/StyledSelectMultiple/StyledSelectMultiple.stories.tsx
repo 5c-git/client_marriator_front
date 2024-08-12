@@ -74,6 +74,36 @@ export const Primary: Story = {
         label: "Пятый",
         disabled: false,
       },
+      {
+        value: "sixth",
+        label: "Шестой",
+        disabled: false,
+      },
+      {
+        value: "7",
+        label: "7",
+        disabled: false,
+      },
+      {
+        value: "8",
+        label: "8",
+        disabled: false,
+      },
+      {
+        value: "9",
+        label: "9",
+        disabled: false,
+      },
+      {
+        value: "9",
+        label: "9",
+        disabled: false,
+      },
+      {
+        value: "10",
+        label: "10",
+        disabled: false,
+      },
     ],
 
     // heading: "This is header",
