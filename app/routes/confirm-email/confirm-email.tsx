@@ -122,7 +122,7 @@ export default function СonfirmEmail() {
     }, 1000);
 
     return () => clearInterval(timer);
-  }, [seconds]);
+  }, [seconds, navigation.state]);
 
   useEffect(() => {
     setSeconds(Number(ttl));

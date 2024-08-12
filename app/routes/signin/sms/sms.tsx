@@ -133,7 +133,7 @@ export default function Sms() {
 
   useEffect(() => {
     setSeconds(Number(ttl));
-  }, [ttl]);
+  }, [ttl, navigation.state]);
 
   return (
     <>

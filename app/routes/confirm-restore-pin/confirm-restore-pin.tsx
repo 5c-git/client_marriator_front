@@ -136,7 +136,7 @@ export default function СonfirmRestorePin() {
 
   useEffect(() => {
     setSeconds(Number(ttl));
-  }, [ttl]);
+  }, [ttl, navigation.state]);
 
   return (
     <>
