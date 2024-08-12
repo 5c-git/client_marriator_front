@@ -193,7 +193,6 @@ export default function СonfirmRestorePin() {
               lineHeight: "1.25rem",
             }}
             onClick={() => {
-              setSeconds(10);
               submit(
                 JSON.stringify({
                   _action: "sendAgain",
