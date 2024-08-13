@@ -7,6 +7,7 @@ import {
   ClientActionFunctionArgs,
   json,
   redirect,
+  useSearchParams,
 } from "@remix-run/react";
 import * as Yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -29,6 +30,8 @@ import {
   Button,
   Dialog,
   DialogTitle,
+  Snackbar,
+  Alert,
 } from "@mui/material";
 import { TopNavigation } from "~/shared/ui/TopNavigation/TopNavigation";
 import { Loader } from "~/shared/ui/Loader/Loader";
@@ -63,6 +66,7 @@ export async function clientLoader() {
 }
 
 export async function clientAction({ request }: ClientActionFunctionArgs) {
+  const currentURL = new URL(request.url);
   const params = new URLSearchParams();
   const { _action, ...fields } = await request.json();
   const accessToken = await getAccessToken();
@@ -70,11 +74,17 @@ export async function clientAction({ request }: ClientActionFunctionArgs) {
   if (accessToken) {
     if (_action && _action === "confirmEmail") {
       await setUserEmail(fields.email);
-      await postSetUserEmail(accessToken, fields.email);
+      const newEmailData = await postSetUserEmail(accessToken, fields.email);
 
-      params.set("ttl", "120");
+      if (newEmailData.status === "error") {
+        currentURL.searchParams.set("error", "alreadyExists");
 
-      throw redirect(withLocale(`/confirm-email?${params}`));
+        throw redirect(currentURL.toString());
+      } else {
+        params.set("ttl", "120");
+
+        throw redirect(withLocale(`/confirm-email?${params}`));
+      }
     } else {
       const data = await postSaveForm(accessToken, 4, fields);
 
@@ -93,8 +103,12 @@ export default function Step4() {
 
   const [openDialog, setOpenDialog] = useState<boolean>(false);
 
+  const [searchParams, setSearchParams] = useSearchParams();
+
   const { accessToken, staticFields, formFields, formStatus } =
     useLoaderData<typeof clientLoader>();
+
+  const error = searchParams.get("error");
 
   const {
     control,
@@ -238,6 +252,7 @@ export default function Step4() {
                 onBlur={(evt) => {
                   if (
                     evt.target.value !== "" &&
+                    evt.target.value !== getValues("staticEmail") &&
                     errors.staticEmail === undefined
                   )
                     setOpenDialog(true);
@@ -323,6 +338,7 @@ export default function Step4() {
                 encType: "application/json",
               }
             );
+            setOpenDialog(false);
           }}
           sx={{
             marginTop: "16px",
@@ -331,6 +347,28 @@ export default function Step4() {
           {t("RegistrationStep4.dialog", { context: "button" })}
         </Button>
       </Dialog>
+
+      <Snackbar
+        open={error ? true : false}
+        autoHideDuration={3000}
+        onClose={() => {
+          setSearchParams((prev) => {
+            prev.delete("error");
+            return prev;
+          });
+        }}
+      >
+        <Alert
+          severity="info"
+          variant="small"
+          color="Banner_Error"
+          sx={{
+            width: "100%",
+          }}
+        >
+          {t("RegistrationStep4.error_alreadyExists")}
+        </Alert>
+      </Snackbar>
     </>
   );
 }

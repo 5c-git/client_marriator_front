@@ -4,5 +4,6 @@
   "intro": "Provide information to conclude an agreement",
   "finishButton": "Next",
   "dialog_title": "Email must be confirmed",
-  "dialog_button": "Confirm"
+  "dialog_button": "Confirm",
+  "error_alreadyExists": "Provided email is assigned to another user or is incorrect"
 }
