@@ -18,7 +18,7 @@ export const postSaveUserFields = async (
   accessToken: string,
   formData: unknown
 ) => {
-  const url = new URL(import.meta.env.VITE_POST_SAVE_USER_FIELDS);
+  const url = new URL(import.meta.env.VITE_SAVE_USER_FIELDS);
 
   const request = await fetch(url, {
     method: "POST",
@@ -61,7 +61,7 @@ export const mockResponseError = {
 };
 
 export const postSaveFormMockResponse = http.post(
-  `${import.meta.env.VITE_POST_SAVE_USER_FIELDS}`,
+  `${import.meta.env.VITE_SAVE_USER_FIELDS}`,
   async () => {
     await delay(2000);
     return HttpResponse.json(mockResponseSuccess);

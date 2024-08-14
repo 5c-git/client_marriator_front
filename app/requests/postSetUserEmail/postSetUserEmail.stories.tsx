@@ -24,8 +24,8 @@ export const Basic: Story = {
           <DocBlock.Description />
 
           <h1>method: POST</h1>
-          <h3>переменная: VITE_POST_SET_USER_EMAIL</h3>
-          <h3>адрес: {import.meta.env.VITE_POST_SET_USER_EMAIL}</h3>
+          <h3>переменная: VITE_SET_USER_EMAIL</h3>
+          <h3>адрес: {import.meta.env.VITE_SET_USER_EMAIL}</h3>
 
           <h2>Payload</h2>
           <DocBlock.Source

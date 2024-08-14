@@ -18,7 +18,7 @@ export const postCheckCodeRestore = async (
   accessToken: string,
   code: string
 ) => {
-  const url = new URL(import.meta.env.VITE_POST_CHECK_CODE_RESTORE);
+  const url = new URL(import.meta.env.VITE_CHECK_CODE_RESTORE);
 
   const request = await fetch(url, {
     method: "POST",
@@ -77,7 +77,7 @@ export const mockResponseError = {
 };
 
 export const postCheckCodeRestoreMockResponse = http.post(
-  `${import.meta.env.VITE_POST_CHECK_CODE_RESTORE}`,
+  `${import.meta.env.VITE_CHECK_CODE_RESTORE}`,
   async () => {
     // const url = new URL(request.url);
     // const scenario = url.searchParams.get("scenario");

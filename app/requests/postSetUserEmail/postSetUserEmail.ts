@@ -15,7 +15,7 @@ const validateResponseError = ajv.compile(responseError);
 export const postSetUserEmailKeys = ["postSetUserEmail"];
 
 export const postSetUserEmail = async (accessToken: string, email: string) => {
-  const url = new URL(import.meta.env.VITE_POST_SET_USER_EMAIL);
+  const url = new URL(import.meta.env.VITE_SET_USER_EMAIL);
 
   const request = await fetch(url, {
     method: "POST",
@@ -68,7 +68,7 @@ export const mockResponseError = {
 };
 
 export const mockPostSetUserEmailMockResponse = http.post(
-  `${import.meta.env.VITE_POST_SET_USER_EMAIL}`,
+  `${import.meta.env.VITE_SET_USER_EMAIL}`,
   async () => {
     // const url = new URL(request.url);
     // const scenario = url.searchParams.get("scenario");

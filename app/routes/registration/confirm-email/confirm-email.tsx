@@ -66,9 +66,11 @@ export async function clientAction({ request }: ClientActionFunctionArgs) {
     if (_action === "sendAgain") {
       const data = await postSetUserEmail(accessToken, fields.email);
 
-      currentURL.searchParams.set("ttl", data.result.code.ttl.toString());
+      if ("result" in data) {
+        currentURL.searchParams.set("ttl", data.result.code.ttl.toString());
 
-      throw redirect(currentURL.toString());
+        throw redirect(currentURL.toString());
+      }
     } else if (_action === "sendCode") {
       const data = await postCheckEmailCode(accessToken, fields.code);
 

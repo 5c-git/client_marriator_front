@@ -4,12 +4,12 @@ import * as DocBlock from "@storybook/blocks";
 import { createRemixStub } from "@remix-run/testing";
 // import { http, delay, HttpResponse } from "msw";
 
-import СonfirmRestorePin from "./confirm-restore-pin";
+import СonfirmEmail from "./confirm-email";
 import { json } from "@remix-run/react";
 
 const meta = {
-  title: "Страницы/Восстановление пин-кода",
-  component: СonfirmRestorePin,
+  title: "Страницы/Подтверждение email",
+  component: СonfirmEmail,
   tags: ["autodocs"],
   parameters: {
     layout: {
@@ -19,21 +19,21 @@ const meta = {
       page: () => (
         <>
           <DocBlock.Title />
-          <h2>Адрес страницы: /confirm-restore-pin</h2>
+          <h2>Адрес страницы: /confirm-email</h2>
           <h3>Используемые запросы:</h3>
           <p>
-            postStartRestorePin() - VITE_START_RESTORE_PIN -{" "}
-            {import.meta.env.VITE_START_RESTORE_PIN}
+            postSetUserEmail() - VITE_SET_USER_EMAIL -{" "}
+            {import.meta.env.VITE_SET_USER_EMAIL}
           </p>
           <p>
-            postCheckCodeRestore() - VITE_POST_CHECK_CODE_RESTORE -{" "}
-            {import.meta.env.VITE_POST_CHECK_CODE_RESTORE}
+            postCheckEmailCode() - VITE_CHECK_EMAIL_CODE -{" "}
+            {import.meta.env.VITE_CHECK_EMAIL_CODE}
           </p>
         </>
       ),
     },
   },
-} satisfies Meta<typeof СonfirmRestorePin>;
+} satisfies Meta<typeof СonfirmEmail>;
 
 export default meta;
 
@@ -45,10 +45,10 @@ export const Primary: Story = {
     (Story) => {
       const RemixStub = createRemixStub([
         {
-          path: "/confirm-restore-pin",
+          path: "/confirm-email",
           Component: Story,
           loader: async () => {
-            return json({ ttl: 120 });
+            return json({ email: "test@mail.ru", ttl: "120" });
           },
           action: async () => {
             // const data = await postRegStep2({ test: "test" });
@@ -59,7 +59,7 @@ export const Primary: Story = {
         },
       ]);
 
-      return <RemixStub initialEntries={["/confirm-restore-pin"]} />;
+      return <RemixStub initialEntries={["/confirm-email"]} />;
     },
   ],
   parameters: {

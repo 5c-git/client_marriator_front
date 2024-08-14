@@ -28,14 +28,14 @@ import RegistrationStep6EN from "../routes/registration/step6/locales/en.json";
 import RegistrationStep7RU from "../routes/registration/step7/locales/ru.json";
 import RegistrationStep7EN from "../routes/registration/step7/locales/en.json";
 
-import RegistrationCompleteRU from "../routes/registration-complete/locales/ru.json";
-import RegistrationCompleteEN from "../routes/registration-complete/locales/en.json";
+import RegistrationCompleteRU from "../routes/registration/registration-complete/locales/ru.json";
+import RegistrationCompleteEN from "../routes/registration/registration-complete/locales/en.json";
 
-import ConfirmEmailRU from "../routes/confirm-email/locales/ru.json";
-import ConfirmEmailEN from "../routes/confirm-email/locales/en.json";
+import ConfirmEmailRU from "../routes/registration/confirm-email/locales/ru.json";
+import ConfirmEmailEN from "../routes/registration/confirm-email/locales/en.json";
 
-import ConfirmRestorePinRU from "../routes/confirm-restore-pin/locales/ru.json";
-import ConfirmRestorePinEN from "../routes/confirm-restore-pin/locales/en.json";
+import ConfirmRestorePinRU from "../routes/signin/confirm-restore-pin/locales/ru.json";
+import ConfirmRestorePinEN from "../routes/signin/confirm-restore-pin/locales/en.json";
 
 import PhoneRU from "../routes/signin/phone/locales/ru.json";
 import PhoneEN from "../routes/signin/phone/locales/en.json";
@@ -49,14 +49,14 @@ import CreatePinEN from "../routes/signin/createPin/locales/en.json";
 import PinRU from "../routes/signin/pin/locales/ru.json";
 import PinEN from "../routes/signin/pin/locales/en.json";
 
-import ProfileRU from "../routes/profile/locales/ru.json";
-import ProfileEN from "../routes/profile/locales/en.json";
+import ProfileRU from "../routes/profile/index/locales/ru.json";
+import ProfileEN from "../routes/profile/index/locales/en.json";
 
-import MyProfileRU from "../routes/my-profile/locales/ru.json";
-import MyProfileEN from "../routes/my-profile/locales/en.json";
+import MyProfileRU from "../routes/profile/my-profile/locales/ru.json";
+import MyProfileEN from "../routes/profile/my-profile/locales/en.json";
 
-import ProfileEditRU from "../routes/profile-edit/locales/ru.json";
-import ProfileEditEN from "../routes/profile-edit/locales/en.json";
+import ProfileEditRU from "../routes/profile/profile-edit/locales/ru.json";
+import ProfileEditEN from "../routes/profile/profile-edit/locales/en.json";
 
 import StyledPhotoCheckboxRU from "../shared/ui/StyledPhotoCheckbox/locales/ru.json";
 import StyledPhotoCheckboxEN from "../shared/ui/StyledPhotoCheckbox/locales/en.json";

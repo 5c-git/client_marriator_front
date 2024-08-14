@@ -83,7 +83,7 @@ export async function clientAction({ request }: ClientActionFunctionArgs) {
       } else {
         params.set("ttl", "120");
 
-        throw redirect(withLocale(`/confirm-email?${params}`));
+        throw redirect(withLocale(`/registration/confirm-email?${params}`));
       }
     } else {
       const data = await postSaveForm(accessToken, 4, fields);
