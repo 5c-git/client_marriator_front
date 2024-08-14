@@ -52,13 +52,19 @@ export const postSetUserEmail = async (accessToken: string, email: string) => {
 
 // MOCKS
 export const mockResponseSuccess = {
-  status: "success",
   result: {
     code: {
       status: "success",
-      code: "12345",
+      code: 9829,
+      ttl: 120,
     },
   },
+  status: "success",
+};
+
+export const mockResponseError = {
+  error: "Email отсутствует или присвоен другому пользователю",
+  status: "error",
 };
 
 export const mockPostSetUserEmailMockResponse = http.post(
@@ -68,7 +74,7 @@ export const mockPostSetUserEmailMockResponse = http.post(
     // const scenario = url.searchParams.get("scenario");
 
     await delay(2000);
-    return HttpResponse.json(mockResponseSuccess);
+    return HttpResponse.json(mockResponseError);
 
     // if (scenario === "reg") {
     //   await delay(2000);
