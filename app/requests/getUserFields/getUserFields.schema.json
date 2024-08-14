@@ -15,11 +15,86 @@
       "properties": {
         "formData": {
           "type": "array",
-          "items": {}
+          "items": {
+            "anyOf": [
+              {
+                "$ref": "text"
+              },
+              {
+                "$ref": "select"
+              },
+              {
+                "$ref": "radio"
+              },
+              {
+                "$ref": "checkboxMultiple"
+              },
+              {
+                "$ref": "photoCheckbox"
+              },
+              {
+                "$ref": "checkbox"
+              },
+              {
+                "$ref": "file"
+              },
+              {
+                "$ref": "photo"
+              },
+              {
+                "$ref": "date"
+              },
+              {
+                "$ref": "card"
+              },
+              {
+                "$ref": "phone"
+              },
+              {
+                "$ref": "month"
+              },
+              {
+                "$ref": "email"
+              },
+              {
+                "$ref": "account"
+              },
+              {
+                "$ref": "inn"
+              },
+              {
+                "$ref": "snils"
+              },
+              {
+                "$ref": "sms"
+              },
+              {
+                "$ref": "autocomplete"
+              },
+              {
+                "$ref": "selectMultiple"
+              }
+            ]
+          }
         },
         "section": {
           "type": "array",
-          "items": {}
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "name": {
+                "type": "string"
+              },
+              "value": {
+                "type": "number"
+              },
+              "notification": {
+                "type": "boolean"
+              }
+            },
+            "required": ["name", "value", "notification"]
+          }
         },
         "type": {
           "type": "string",

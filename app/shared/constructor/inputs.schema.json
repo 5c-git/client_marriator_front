@@ -906,7 +906,22 @@
             },
             "additionalProperties": false
           },
-          "additionalProperties": false
+          "moreData": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "name": {
+                  "type": "string"
+                },
+                "value": {
+                  "type": "string"
+                }
+              },
+              "required": ["name", "value"]
+            }
+          }
         },
         "required": [
           "inputType",

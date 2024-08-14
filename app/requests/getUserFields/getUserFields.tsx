@@ -1,10 +1,52 @@
 import { http, delay, HttpResponse } from "msw";
 import Ajv from "ajv";
+import addFormats from "ajv-formats";
+
+import textSchema from "../../shared/ui/StyledTextField/StyledTextField.schema.json";
+import selectSchema from "../../shared/ui/StyledSelect/StyledSelect.schema.json";
+import radioSchema from "../../shared/ui/StyledRadioButton/StyledRadioButton.schema.json";
+import checkboxMultipleSchema from "../../shared/ui/StyledCheckboxMultiple/StyledCheckboxMultiple.schema.json";
+import photoCheckboxSchema from "../../shared/ui/StyledPhotoCheckbox/StyledPhotoCheckbox.schema.json";
+import checkboxSchema from "../../shared/ui/StyledCheckbox/StyledCheckbox.schema.json";
+import fileSchema from "../../shared/ui/StyledFileInput/StyledFileInput.schema.json";
+import photoSchema from "../../shared/ui/StyledPhotoInput/StyledPhotoInput.schema.json";
+import phoneSchema from "../../shared/ui/StyledPhoneField/StyledPhoneField.schema.json";
+import dateSchema from "../../shared/ui/StyledDateField/StyledDateField.schema.json";
+import cardSchema from "../../shared/ui/StyledCardField/StyledCardField.schema.json";
+import monthSchema from "../../shared/ui/StyledMonthField/StyledMonthField.schema.json";
+import emailSchema from "../../shared/ui/StyledEmailField/StyledEmailField.schema.json";
+import accountSchema from "../../shared/ui/StyledAccountField/StyledAccountField.schema.json";
+import innSchema from "../../shared/ui/StyledInnField/StyledInnField.schema.json";
+import snilsSchema from "../../shared/ui/StyledSnilsField/StyledSnilsField.schema.json";
+import smsSchema from "../../shared/ui/StyledSmsField/StyledSmsField.schema.json";
+import autocompleteSchema from "../../shared/ui/StyledAutocomplete/StyledAutocomplete.schema.json";
+import selectMultipleSchema from "../../shared/ui/StyledSelectMultiple/StyledSelectMultiple.schema.json";
 
 import getUserFieldsSchema from "./getUserFields.schema.json";
 import { GetUserFieldsSuccess } from "./getUserFields.type";
 
 const ajv = new Ajv();
+addFormats(ajv);
+
+ajv.addSchema(textSchema);
+ajv.addSchema(selectSchema);
+ajv.addSchema(radioSchema);
+ajv.addSchema(checkboxMultipleSchema);
+ajv.addSchema(photoCheckboxSchema);
+ajv.addSchema(checkboxSchema);
+ajv.addSchema(fileSchema);
+ajv.addSchema(photoSchema);
+ajv.addSchema(phoneSchema);
+ajv.addSchema(dateSchema);
+ajv.addSchema(cardSchema);
+ajv.addSchema(monthSchema);
+ajv.addSchema(emailSchema);
+ajv.addSchema(accountSchema);
+ajv.addSchema(innSchema);
+ajv.addSchema(snilsSchema);
+ajv.addSchema(smsSchema);
+ajv.addSchema(autocompleteSchema);
+ajv.addSchema(selectMultipleSchema);
 
 const validateSuccess = ajv.compile(getUserFieldsSchema);
 

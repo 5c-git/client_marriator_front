@@ -20,6 +20,7 @@ import {
   Typography,
   LinearProgress,
   Alert,
+  Stack,
 } from "@mui/material";
 
 import {
@@ -65,6 +66,10 @@ type FileInputProps = {
     text?: string;
     images?: string[];
   };
+  moreData?: {
+    name: string;
+    value: string;
+  }[];
 
   dividerTop?: true;
   dividerBottom?: true;
@@ -151,6 +156,34 @@ export const StyledFileInput = forwardRef(
               >
                 {props.heading}
               </Typography>
+            ) : null}
+
+            {props.moreData ? (
+              <Stack
+                sx={{
+                  rowGap: "8px",
+                  paddingBottom: "8px",
+                }}
+              >
+                {props.moreData.map((item) => (
+                  <Stack key={item.name}>
+                    <Typography
+                      component="p"
+                      variant="Reg_12"
+                      sx={{ color: theme.palette["Grey_2"] }}
+                    >
+                      {item.name}
+                    </Typography>
+                    <Typography
+                      component="p"
+                      variant="Reg_14"
+                      sx={{ color: theme.palette["Black"] }}
+                    >
+                      {item.value}
+                    </Typography>
+                  </Stack>
+                ))}
+              </Stack>
             ) : null}
 
             <S_Box

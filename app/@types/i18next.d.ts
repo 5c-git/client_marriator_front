@@ -20,6 +20,7 @@ import PinRU from "../routes/signin/pin/locales/ru.json";
 import CreatePinRU from "../routes/signin/createPin/locales/ru.json";
 import ProfileRU from "../routes/profile/locales/ru.json";
 import MyProfileRU from "../routes/my-profile/locales/ru.json";
+import ProfileEditRU from "../routes/profile-edit/locales/ru.json";
 
 import StyledPhotoCheckboxRU from "../shared/ui/StyledPhotoCheckbox/locales/ru.json";
 import StyledFileInputRU from "../shared/ui/StyledFileInput/locales/ru.json";
@@ -62,6 +63,7 @@ declare module "i18next" {
         Index: typeof IndexRU;
         Profile: typeof ProfileRU;
         MyProfile: typeof MyProfileRU;
+        ProfileEdit: typeof ProfileEditRU;
 
         //components
         StyledPhotoCheckbox: typeof StyledPhotoCheckboxRU;

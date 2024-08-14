@@ -1,3 +1,5 @@
 {
-  "header": ""
+  "sectionHeader": "Profile editing",
+  "button_cancel": "Cancel",
+  "button_confirm": "Save"
 }

@@ -3,6 +3,7 @@
   "$schema": "http://json-schema.org/draft-07/schema#",
   "title": "Schema for File Input",
   "type": "object",
+  "additionalProperties": false,
   "properties": {
     "inputType": {
       "type": "string",
@@ -85,7 +86,22 @@
       },
       "additionalProperties": false
     },
-    "additionalProperties": false
+    "moreData": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "value": {
+            "type": "string"
+          }
+        },
+        "required": ["name", "value"]
+      }
+    }
   },
   "required": ["inputType", "name", "value", "placeholder", "validation", "url"]
 }

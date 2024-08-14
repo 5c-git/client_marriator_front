@@ -5,7 +5,6 @@ import {
   useFetcher,
   useNavigate,
   useNavigation,
-  // Link,
   ClientActionFunctionArgs,
 } from "@remix-run/react";
 
@@ -15,34 +14,20 @@ import { useForm } from "react-hook-form";
 
 import { t } from "i18next";
 
-import { withLocale } from "~/shared/withLocale";
-
-import {
-  useTheme,
-  Box,
-  Button,
-  // Typography,
-  // List,
-  // ListItem,
-  // ListItemButton,
-  // ListItemIcon,
-  // Divider,
-} from "@mui/material";
+import { useTheme, Box, Button } from "@mui/material";
 import { TopNavigation } from "~/shared/ui/TopNavigation/TopNavigation";
 import { Loader } from "~/shared/ui/Loader/Loader";
 
-import { queryClient } from "~/root";
-import { getAccessToken } from "~/preferences/token/token";
-
-import {
-  getUserFields,
-  getUserFieldsKeys,
-} from "~/requests/getUserFields/getUserFields";
 import {
   generateDefaultValues,
   generateInputsMarkup,
   generateValidationSchema,
 } from "~/shared/constructor/constructor";
+
+import { getAccessToken } from "~/preferences/token/token";
+
+import { getUserFields } from "~/requests/getUserFields/getUserFields";
+import { postSaveUserFields } from "~/requests/postSaveUserFields/postSaveUserFields";
 
 export async function clientLoader({ request }: ClientActionFunctionArgs) {
   const currentURL = new URL(request.url);
@@ -52,17 +37,33 @@ export async function clientLoader({ request }: ClientActionFunctionArgs) {
   const section = currentURL.searchParams.get("section");
 
   if (accessToken && section) {
-    const data = await queryClient.fetchQuery({
-      queryKey: [getUserFieldsKeys[0]],
-      queryFn: () => getUserFields(accessToken, section),
-      staleTime: 60000,
-    });
+    const data = await getUserFields(accessToken, section);
+
+    const curentSection = data.result.section.find(
+      (item) => item.value === Number(section)
+    );
 
     return json({
       accessToken,
       formFields: data.result.formData,
-      formStatus: data.result.type,
+      currentSection:
+        curentSection !== undefined
+          ? curentSection.name
+          : t("ProfileEdit.sectionHeader"),
     });
+  } else {
+    throw new Response("Токен авторизации не обнаружен!", { status: 401 });
+  }
+}
+
+export async function clientAction({ request }: ClientActionFunctionArgs) {
+  const fields = await request.json();
+  const accessToken = await getAccessToken();
+
+  if (accessToken) {
+    const data = await postSaveUserFields(accessToken, fields);
+
+    return data;
   } else {
     throw new Response("Токен авторизации не обнаружен!", { status: 401 });
   }
@@ -75,7 +76,7 @@ export default function ProfileEdit() {
 
   const fetcher = useFetcher();
 
-  const { accessToken, formFields, formStatus } =
+  const { accessToken, formFields, currentSection } =
     useLoaderData<typeof clientLoader>();
 
   const {
@@ -99,20 +100,18 @@ export default function ProfileEdit() {
     });
   }, [formFields, reset]);
 
-  console.log(isDirty);
-
   return (
     <>
       {navigation.state !== "idle" ? <Loader /> : null}
 
       <Box
         sx={{
-          paddingBottom: "74px",
+          paddingBottom: "92px",
         }}
       >
         <TopNavigation
           header={{
-            text: "Страница редактирования",
+            text: currentSection,
             bold: false,
           }}
           backAction={() => {
@@ -133,51 +132,47 @@ export default function ProfileEdit() {
             control,
             setValue,
             trigger,
-            () => {
-              fetcher.submit(JSON.stringify(getValues()), {
-                method: "POST",
-                encType: "application/json",
-              });
-            },
+            () => {},
             accessToken
           )}
 
           <Box
             sx={{
               position: "fixed",
+              display: "flex",
+              columnGap: "8px",
               zIndex: 1,
               width: "100%",
-              bottom: "0",
+              bottom: "54px",
               left: "0",
-              padding: "10px 16px 24px 16px",
+              padding: "21px 16px 21px 16px",
               backgroundColor: theme.palette["White"],
+              transition: "0.3s",
+              opacity: isDirty ? 1 : 0,
+              pointerEvents: isDirty ? "auto" : "none",
             }}
           >
             <Button
               variant="outlined"
               onClick={() => {
-                trigger();
-                handleSubmit(() => {
-                  if (formStatus === "allowedNewStep") {
-                    navigate(withLocale("/registration/step4"));
-                  }
-                })();
+                reset(generateDefaultValues(formFields));
               }}
             >
-              Сохранить
+              {t("ProfileEdit.button_cancel")}
             </Button>
             <Button
               variant="contained"
               onClick={() => {
                 trigger();
                 handleSubmit(() => {
-                  if (formStatus === "allowedNewStep") {
-                    navigate(withLocale("/registration/step4"));
-                  }
+                  fetcher.submit(JSON.stringify(getValues()), {
+                    method: "POST",
+                    encType: "application/json",
+                  });
                 })();
               }}
             >
-              Сохранить
+              {t("ProfileEdit.button_confirm")}
             </Button>
           </Box>
         </form>
