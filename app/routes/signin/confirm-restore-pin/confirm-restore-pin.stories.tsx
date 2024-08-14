@@ -8,7 +8,7 @@ import СonfirmRestorePin from "./confirm-restore-pin";
 import { json } from "@remix-run/react";
 
 const meta = {
-  title: "Страницы/Восстановление пин-кода",
+  title: "Страницы/Вход/Восстановление пин-кода",
   component: СonfirmRestorePin,
   tags: ["autodocs"],
   parameters: {
@@ -19,7 +19,7 @@ const meta = {
       page: () => (
         <>
           <DocBlock.Title />
-          <h2>Адрес страницы: /confirm-restore-pin</h2>
+          <h2>Адрес страницы: /signin/confirm-restore-pin</h2>
           <h3>Используемые запросы:</h3>
           <p>
             postStartRestorePin() - VITE_START_RESTORE_PIN -{" "}

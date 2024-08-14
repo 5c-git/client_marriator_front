@@ -8,7 +8,7 @@ import СonfirmEmail from "./confirm-email";
 import { json } from "@remix-run/react";
 
 const meta = {
-  title: "Страницы/Подтверждение email",
+  title: "Страницы/Регистрация/Подтверждение email",
   component: СonfirmEmail,
   tags: ["autodocs"],
   parameters: {
@@ -19,7 +19,7 @@ const meta = {
       page: () => (
         <>
           <DocBlock.Title />
-          <h2>Адрес страницы: /confirm-email</h2>
+          <h2>Адрес страницы: /registration/confirm-email</h2>
           <h3>Используемые запросы:</h3>
           <p>
             postSetUserEmail() - VITE_SET_USER_EMAIL -{" "}
