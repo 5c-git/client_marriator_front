@@ -28,6 +28,10 @@ export default defineConfig({
                   "routes/profile/my-profile/my-profile.tsx"
                 );
                 route(
+                  ":lang?/profile/profile-meta",
+                  "routes/profile/profile-meta/profile-meta.tsx"
+                );
+                route(
                   ":lang?/profile/profile-edit",
                   "routes/profile/profile-edit/profile-edit.tsx"
                 );

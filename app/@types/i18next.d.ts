@@ -21,6 +21,7 @@ import CreatePinRU from "../routes/signin/createPin/locales/ru.json";
 import ProfileRU from "../routes/profile/index/locales/ru.json";
 import MyProfileRU from "../routes/profile/my-profile/locales/ru.json";
 import ProfileEditRU from "../routes/profile/profile-edit/locales/ru.json";
+import ProfileMetaRU from "../routes/profile/profile-meta/locales/ru.json";
 
 import StyledPhotoCheckboxRU from "../shared/ui/StyledPhotoCheckbox/locales/ru.json";
 import StyledFileInputRU from "../shared/ui/StyledFileInput/locales/ru.json";
@@ -64,6 +65,7 @@ declare module "i18next" {
         Profile: typeof ProfileRU;
         MyProfile: typeof MyProfileRU;
         ProfileEdit: typeof ProfileEditRU;
+        ProfileMeta: typeof ProfileMetaRU;
 
         //components
         StyledPhotoCheckbox: typeof StyledPhotoCheckboxRU;

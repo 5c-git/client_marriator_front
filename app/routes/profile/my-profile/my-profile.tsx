@@ -78,6 +78,52 @@ export default function MyProfile() {
             rowGap: "12px",
           }}
         >
+          <ListItem
+            disableGutters
+            disablePadding
+            sx={{
+              display: "block",
+              paddingRight: "16px",
+              paddingLeft: "16px",
+            }}
+          >
+            <ListItemButton
+              component={Link}
+              to={`${withLocale("/profile/profile-meta")}`}
+              sx={{
+                display: "flex",
+                padding: "16px 0px",
+                columnGap: "12px",
+              }}
+            >
+              <Typography
+                sx={{
+                  color: theme.palette["Black"],
+                  overflow: "hidden",
+                  textOverflow: "ellipsis",
+                  whiteSpace: "nowrap",
+                }}
+                component="p"
+                variant="Reg_16"
+              >
+                {t("MyProfile.listItem_base")}
+              </Typography>
+
+              <ListItemIcon
+                sx={{
+                  minWidth: "unset",
+                  marginLeft: "auto",
+                }}
+              >
+                <ArrowForwardIosIcon htmlColor={theme.palette["Grey_2"]} />
+              </ListItemIcon>
+            </ListItemButton>
+            <Divider
+              sx={{
+                backgroundColor: theme.palette["Grey_4"],
+              }}
+            />
+          </ListItem>
           {data.result.section.map((item) => (
             <ListItem
               key={item.name}

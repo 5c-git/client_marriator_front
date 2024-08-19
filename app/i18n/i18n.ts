@@ -58,6 +58,9 @@ import MyProfileEN from "../routes/profile/my-profile/locales/en.json";
 import ProfileEditRU from "../routes/profile/profile-edit/locales/ru.json";
 import ProfileEditEN from "../routes/profile/profile-edit/locales/en.json";
 
+import ProfileMetaRU from "../routes/profile/profile-meta/locales/ru.json";
+import ProfileMetaEN from "../routes/profile/profile-meta/locales/en.json";
+
 import StyledPhotoCheckboxRU from "../shared/ui/StyledPhotoCheckbox/locales/ru.json";
 import StyledPhotoCheckboxEN from "../shared/ui/StyledPhotoCheckbox/locales/en.json";
 import StyledFileInputRU from "../shared/ui/StyledFileInput/locales/ru.json";
@@ -109,6 +112,7 @@ export const resources = {
       Profile: ProfileRU,
       MyProfile: MyProfileRU,
       ProfileEdit: ProfileEditRU,
+      ProfileMeta: ProfileMetaRU,
 
       //components
       StyledPhotoCheckbox: StyledPhotoCheckboxRU,
@@ -150,6 +154,7 @@ export const resources = {
       Profile: ProfileEN,
       MyProfile: MyProfileEN,
       ProfileEdit: ProfileEditEN,
+      ProfileMeta: ProfileMetaEN,
 
       //components
       StyledPhotoCheckbox: StyledPhotoCheckboxEN,

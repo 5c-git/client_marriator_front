@@ -20,6 +20,9 @@ interface ImportMetaEnv {
   readonly VITE_START_RESTORE_PIN: string;
   readonly VITE_CHECK_CODE_RESTORE: string;
   readonly VITE_SAVE_USER_FIELDS: string;
+  readonly VITE_SET_PERSONAL_USER_EMAIL: string;
+  readonly VITE_CHANGE_USER_PHONE: string;
+  readonly VITE_SEND_PERSONAL_PHOTO: string;
   // more env variables...
 }
 

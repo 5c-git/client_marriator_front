@@ -16,6 +16,8 @@ import { mockPostSetUserEmailMockResponse } from "~/requests/postSetUserEmail/po
 import { postCheckEmailCodeMockResponse } from "~/requests/postCheckEmailCode/postCheckEmailCode";
 import { postStartRestorePinMockResponse } from "~/requests/postStartRestorePin/postStartRestorePin";
 import { postCheckCodeRestoreMockResponse } from "~/requests/postCheckCodeRestore/postCheckCodeRestore";
+import { postPersonalSetUserEmailMockResponse } from "~/requests/postPersonalSetUserEmail/postPersonalSetUserEmail";}
+import { postChangeUserPhoneMockResponse } from "~/requests/postChangeUserPhone/postChangeUserPhone";}
 
 export const handlers = [
   getFormMockResponse,
@@ -33,4 +35,6 @@ export const handlers = [
   postCheckEmailCodeMockResponse,
   postStartRestorePinMockResponse,
   postCheckCodeRestoreMockResponse,
+  postPersonalSetUserEmailMockResponse,
+  postChangeUserPhoneMockResponse
 ];

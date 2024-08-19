@@ -15,17 +15,10 @@ import { useForm, Controller } from "react-hook-form";
 import { t } from "i18next";
 import { withLocale } from "~/shared/withLocale";
 
-import {
-  generateDefaultValues,
-  generateInputsMarkup,
-  generateValidationSchema,
-} from "~/shared/constructor/constructor";
 import { emailRegExp } from "~/shared/validators";
 
 import {
-  useTheme,
   Box,
-  Typography,
   Button,
   Dialog,
   DialogTitle,
@@ -37,27 +30,27 @@ import { Loader } from "~/shared/ui/Loader/Loader";
 
 import { StyledPhotoInput } from "~/shared/ui/StyledPhotoInput/StyledPhotoInput";
 import { StyledEmailField } from "~/shared/ui/StyledEmailField/StyledEmailField";
+import { StyledPhoneField } from "~/shared/ui/StyledPhoneField/StyledPhoneField";
 
 import { setUserEmail } from "~/preferences/userEmail/userEmail";
-import { getForm } from "~/requests/getForm/getForm";
-import { getStaticUserInfo } from "~/requests/getStaticUserInfo/getStaticUserInfo";
-import { postSaveForm } from "~/requests/postSaveForm/postSaveForm";
-import { postSetUserEmail } from "~/requests/postSetUserEmail/postSetUserEmail";
+import { setUserPhone } from "~/preferences/userPhone/userPhone";
 import { getAccessToken } from "~/preferences/token/token";
+
+import { getUserInfo } from "~/requests/getUserInfo/getUserInfo";
+import { postChangeUserPhone } from "~/requests/postChangeUserPhone/postChangeUserPhone";
+import { postPersonalSetUserEmail } from "~/requests/postPersonalSetUserEmail/postPersonalSetUserEmail";
 
 export async function clientLoader() {
   const accessToken = await getAccessToken();
 
   if (accessToken) {
-    const data = await getForm(accessToken, 4);
-
-    const staticFields = await getStaticUserInfo(accessToken);
+    const userInfo = await getUserInfo(accessToken);
 
     return json({
       accessToken,
-      staticFields: staticFields.result.userData,
-      formFields: data.result.formData,
-      formStatus: data.result.type,
+      photo: userInfo.result.userData.img,
+      phone: userInfo.result.userData.phone.toString(),
+      email: userInfo.result.userData.email,
     });
   } else {
     throw new Response("Токен авторизации не обнаружен!", { status: 401 });
@@ -69,41 +62,49 @@ export async function clientAction({ request }: ClientActionFunctionArgs) {
   const { _action, ...fields } = await request.json();
   const accessToken = await getAccessToken();
 
-  if (_action && _action === "reset") {
+  if (_action === "reset") {
     return null;
   }
 
   if (accessToken) {
-    if (_action && _action === "confirmEmail") {
+    if (_action === "changePhoto") {
+      return null;
+    } else if (_action === "confirmEmail") {
       await setUserEmail(fields.email);
-      const newEmailData = await postSetUserEmail(accessToken, fields.email);
-
+      const newEmailData = await postPersonalSetUserEmail(
+        accessToken,
+        fields.email,
+      );
       if (newEmailData.status === "error") {
-        return json({ error: "alreadyExists" });
+        return json({ error: "emailAlreadyExists" });
       } else {
         params.set("ttl", "120");
-
-        throw redirect(withLocale(`/registration/confirm-email?${params}`));
+        throw redirect(withLocale(`/profile/confirm-personal-email?${params}`));
       }
-    } else {
-      const data = await postSaveForm(accessToken, 4, fields);
-
-      return data;
+    } else if (_action === "confirmPhone") {
+      await setUserPhone(fields.phone);
+      const newPhoneData = await postChangeUserPhone(accessToken, fields.phon);
+      if (newPhoneData.status === "error") {
+        return json({ error: "phoneAlreadyExists" });
+      } else {
+        params.set("ttl", "120");
+        throw redirect(withLocale(`/profile/confirm-personal-phone?${params}`));
+      }
     }
   } else {
     throw new Response("Токен авторизации не обнаружен!", { status: 401 });
   }
 }
 
-export default function Step4() {
-  const theme = useTheme();
+export default function ProfileMeta() {
   const fetcher = useFetcher<typeof clientAction>();
   const navigate = useNavigate();
   const navigation = useNavigation();
 
-  const [openDialog, setOpenDialog] = useState<boolean>(false);
+  const [openPhoneDialog, setOpenPhoneDialog] = useState<boolean>(false);
+  const [openEmailDialog, setOpenEmailDialog] = useState<boolean>(false);
 
-  const { accessToken, staticFields, formFields, formStatus } =
+  const { accessToken, photo, phone, email } =
     useLoaderData<typeof clientLoader>();
 
   const {
@@ -111,24 +112,23 @@ export default function Step4() {
     setValue,
     trigger,
     getValues,
-    handleSubmit,
     formState: { errors },
     reset,
   } = useForm({
     defaultValues: {
-      staticPhoto: staticFields.img,
-      staticEmail: staticFields.email,
-      ...generateDefaultValues(formFields),
+      metaPhoto: photo,
+      metaPhone: phone,
+      metaEmail: email,
     },
     resolver: yupResolver(
       Yup.object({
-        staticPhoto: Yup.string().required(t("Constructor.photo")),
-        staticEmail: Yup.string()
+        metaPhoto: Yup.string().required(t("Constructor.photo")),
+        metaPhone: Yup.string().required(t("Constructor.phone")),
+        metaEmail: Yup.string()
           .default("")
           .matches(emailRegExp, t("Constructor.email_wrongValue"))
           .required(t("Constructor.email")),
-        ...generateValidationSchema(formFields),
-      })
+      }),
     ),
     mode: "onChange",
     shouldUnregister: true,
@@ -138,16 +138,16 @@ export default function Step4() {
     setTimeout(() => {
       reset(
         {
-          staticPhoto: staticFields.img,
-          staticEmail: staticFields.email,
-          ...generateDefaultValues(formFields),
+          metaPhoto: photo,
+          metaPhone: phone,
+          metaEmail: email,
         },
         {
           keepErrors: false,
-        }
+        },
       );
     });
-  }, [staticFields, formFields, reset, getValues]);
+  }, [photo, phone, email, reset, getValues]);
 
   return (
     <>
@@ -160,31 +160,13 @@ export default function Step4() {
       >
         <TopNavigation
           header={{
-            text: t("RegistrationStep4.header"),
+            text: t("ProfileMeta.header"),
             bold: false,
           }}
-          label={t("RegistrationStep4.step")}
           backAction={() => {
             navigate(-1);
           }}
         />
-
-        <Box
-          sx={{
-            padding: "24px 16px",
-          }}
-        >
-          <Typography
-            component="p"
-            variant="Reg_18"
-            sx={{
-              color: theme.palette["Black"],
-              paddingBottom: "14px",
-            }}
-          >
-            {t("RegistrationStep4.intro")}
-          </Typography>
-        </Box>
 
         <form
           style={{
@@ -196,10 +178,11 @@ export default function Step4() {
             sx={{
               display: "flex",
               justifyContent: "center",
+              paddingTop: "16px",
             }}
           >
             <Controller
-              name="staticPhoto"
+              name="metaPhoto"
               control={control}
               render={({ field }) => (
                 <StyledPhotoInput
@@ -208,104 +191,89 @@ export default function Step4() {
                   // @ts-expect-error wrong automatic type narroing
                   onChange={setValue}
                   onImmediateChange={() => {
-                    fetcher.submit(JSON.stringify(getValues()), {
-                      method: "POST",
-                      encType: "application/json",
-                    });
+                    fetcher.submit(
+                      JSON.stringify({
+                        _action: "changePhoto",
+                        email: getValues("metaPhoto"),
+                      }),
+                      {
+                        method: "POST",
+                        encType: "application/json",
+                      },
+                    );
                   }}
                   validation="default"
-                  url={import.meta.env.VITE_SEND_PHOTO}
+                  url={import.meta.env.VITE_SEND_PERSONAL_PHOTO}
                   token={accessToken}
                   // @ts-expect-error wrong automatic type narroing
                   triggerValidation={trigger}
-                  error={errors.staticPhoto?.message}
+                  error={errors.metaPhoto?.message}
                 />
               )}
             />
           </Box>
 
           <Controller
-            name="staticEmail"
+            name="metaPhone"
             control={control}
             render={({ field }) => (
-              <StyledEmailField
-                inputType="email"
-                placeholder="E-mail"
-                // onImmediateChange={() => {
-                //   fetcher.submit(JSON.stringify(getValues()), {
-                //     method: "POST",
-                //     encType: "application/json",
-                //   });
-                // }}
+              <StyledPhoneField
+                inputType="phone"
+                placeholder="Phone"
                 onImmediateChange={() => {}}
                 validation="default"
                 inputStyles={{
                   paddingRight: "16px",
                   paddingLeft: "16px",
                 }}
-                error={errors.staticEmail?.message}
+                error={errors.metaPhone?.message}
                 {...field}
-                onBlur={(evt) => {
+                onBlur={(value) => {
                   if (
-                    evt.target.value !== "" &&
-                    evt.target.value !== staticFields.email &&
-                    errors.staticEmail === undefined
+                    value !== "" &&
+                    value !== phone &&
+                    errors.metaPhone === undefined
                   )
-                    setOpenDialog(true);
+                    setOpenPhoneDialog(true);
                 }}
               />
             )}
           />
 
-          {generateInputsMarkup(
-            formFields,
-            errors,
-            // @ts-expect-error wrong automatic type narroing
-            control,
-            setValue,
-            trigger,
-            () => {
-              fetcher.submit(JSON.stringify(getValues()), {
-                method: "POST",
-                encType: "application/json",
-              });
-            },
-            accessToken
-          )}
-
-          <Box
-            sx={{
-              position: "fixed",
-              zIndex: 1,
-              width: "100%",
-              bottom: "0",
-              left: "0",
-              padding: "10px 16px 24px 16px",
-              backgroundColor: theme.palette["White"],
-            }}
-          >
-            <Button
-              variant="contained"
-              onClick={() => {
-                trigger();
-                handleSubmit(() => {
-                  if (formStatus === "allowedNewStep") {
-                    navigate(withLocale("/registration/step5"));
-                  }
-                })();
-              }}
-            >
-              {t("RegistrationStep4.finishButton")}
-            </Button>
-          </Box>
+          <Controller
+            name="metaEmail"
+            control={control}
+            render={({ field }) => (
+              <StyledEmailField
+                inputType="email"
+                placeholder="E-mail"
+                onImmediateChange={() => {}}
+                validation="default"
+                inputStyles={{
+                  paddingRight: "16px",
+                  paddingLeft: "16px",
+                }}
+                error={errors.metaEmail?.message}
+                {...field}
+                onBlur={(evt) => {
+                  if (
+                    evt.target.value !== "" &&
+                    evt.target.value !== email &&
+                    errors.metaEmail === undefined
+                  )
+                    setOpenEmailDialog(true);
+                }}
+              />
+            )}
+          />
         </form>
       </Box>
 
       <Dialog
-        open={openDialog}
+        open={openPhoneDialog}
         onClose={() => {
-          setOpenDialog(false);
-          setValue("staticEmail", "");
+          setOpenPhoneDialog(false);
+          setValue("metaPhone", "");
         }}
         sx={{
           "& .MuiDialog-paper": {
@@ -319,7 +287,51 @@ export default function Step4() {
             padding: 0,
           }}
         >
-          {t("RegistrationStep4.dialog", { context: "title" })}
+          {t("ProfileMeta.dialog", { context: "phone" })}
+        </DialogTitle>
+
+        <Button
+          variant="contained"
+          onClick={() => {
+            fetcher.submit(
+              JSON.stringify({
+                _action: "confirmPhone",
+                email: getValues("metaPhone"),
+              }),
+              {
+                method: "POST",
+                encType: "application/json",
+              },
+            );
+            setOpenPhoneDialog(false);
+          }}
+          sx={{
+            marginTop: "16px",
+          }}
+        >
+          {t("ProfileMeta.dialog", { context: "button" })}
+        </Button>
+      </Dialog>
+
+      <Dialog
+        open={openEmailDialog}
+        onClose={() => {
+          setOpenEmailDialog(false);
+          setValue("metaEmail", "");
+        }}
+        sx={{
+          "& .MuiDialog-paper": {
+            padding: "16px",
+            borderRadius: "8px",
+          },
+        }}
+      >
+        <DialogTitle
+          sx={{
+            padding: 0,
+          }}
+        >
+          {t("ProfileMeta.dialog", { context: "email" })}
         </DialogTitle>
 
         <Button
@@ -328,25 +340,25 @@ export default function Step4() {
             fetcher.submit(
               JSON.stringify({
                 _action: "confirmEmail",
-                email: getValues("staticEmail"),
+                email: getValues("metaEmail"),
               }),
               {
                 method: "POST",
                 encType: "application/json",
-              }
+              },
             );
-            setOpenDialog(false);
+            setOpenEmailDialog(false);
           }}
           sx={{
             marginTop: "16px",
           }}
         >
-          {t("RegistrationStep4.dialog", { context: "button" })}
+          {t("ProfileMeta.dialog", { context: "button" })}
         </Button>
       </Dialog>
 
       <Snackbar
-        open={fetcher.data?.error === "alreadyExists" ? true : false}
+        open={fetcher.data?.error ? true : false}
         autoHideDuration={3000}
         onClose={() => {
           fetcher.submit(
@@ -356,7 +368,7 @@ export default function Step4() {
             {
               method: "POST",
               encType: "application/json",
-            }
+            },
           );
         }}
       >
@@ -368,7 +380,9 @@ export default function Step4() {
             width: "100%",
           }}
         >
-          {t("RegistrationStep4.error_alreadyExists")}
+          {fetcher.data?.error === "emailAlreadyExists"
+            ? t("ProfileMeta.error_emailAlreadyExists")
+            : t("ProfileMeta.error_phoneAlreadyExists")}
         </Alert>
       </Snackbar>
     </>

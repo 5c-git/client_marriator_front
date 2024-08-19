@@ -36,6 +36,8 @@ export const ErrorBoundary = () => {
   }, [error.status, navigate]);
   ////
 
+  console.log(error);
+
   return (
     <>
       {error.status !== 401 ? (

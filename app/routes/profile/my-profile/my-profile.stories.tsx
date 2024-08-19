@@ -5,7 +5,7 @@ import { createRemixStub } from "@remix-run/testing";
 import { http, delay, HttpResponse } from "msw";
 
 import MyProfile from "./my-profile";
-import MenuLayout from "../menuLayout/menuLayout";
+import MenuLayout from "~/routes/menuLayout/menuLayout";
 
 import { json } from "@remix-run/react";
 
