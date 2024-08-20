@@ -14,6 +14,8 @@ import { useForm } from "react-hook-form";
 
 import { t } from "i18next";
 
+import { withLocale } from "~/shared/withLocale";
+
 import { useTheme, Box, Button } from "@mui/material";
 import { TopNavigation } from "~/shared/ui/TopNavigation/TopNavigation";
 import { Loader } from "~/shared/ui/Loader/Loader";
@@ -40,7 +42,7 @@ export async function clientLoader({ request }: ClientActionFunctionArgs) {
     const data = await getUserFields(accessToken, section);
 
     const curentSection = data.result.section.find(
-      (item) => item.value === Number(section)
+      (item) => item.value === Number(section),
     );
 
     return json({
@@ -115,7 +117,7 @@ export default function ProfileEdit() {
             bold: false,
           }}
           backAction={() => {
-            navigate(-1);
+            navigate(withLocale("/profile/my-profile"));
           }}
         />
 
@@ -133,7 +135,7 @@ export default function ProfileEdit() {
             setValue,
             trigger,
             () => {},
-            accessToken
+            accessToken,
           )}
 
           <Box

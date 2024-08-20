@@ -164,7 +164,7 @@ export default function ProfileMeta() {
             bold: false,
           }}
           backAction={() => {
-            navigate(-1);
+            navigate(withLocale("/profile/my-profile"));
           }}
         />
 

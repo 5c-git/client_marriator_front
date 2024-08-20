@@ -4,12 +4,12 @@ import * as DocBlock from "@storybook/blocks";
 import { createRemixStub } from "@remix-run/testing";
 // import { http, delay, HttpResponse } from "msw";
 
-import СonfirmEmail from "./confirm-email";
+import ConfirmPersonalEmail from "./confirm-personal-email";
 import { json } from "@remix-run/react";
 
 const meta = {
-  title: "Страницы/Регистрация/Подтверждение emailkkkkk",
-  component: СonfirmEmail,
+  title: "Страницы/Внутренние/Профиль/Подтверждение личного email",
+  component: ConfirmPersonalEmail,
   tags: ["autodocs"],
   parameters: {
     layout: {
@@ -19,21 +19,21 @@ const meta = {
       page: () => (
         <>
           <DocBlock.Title />
-          <h2>Адрес страницы: /registration/confirm-email</h2>
+          <h2>Адрес страницы: /profile/confirm-personal-email</h2>
           <h3>Используемые запросы:</h3>
           <p>
-            postSetUserEmail() - VITE_SET_USER_EMAIL -{" "}
-            {import.meta.env.VITE_SET_USER_EMAIL}
+            postPersonalSetUserEmail() - VITE_SET_PERSONAL_USER_EMAIL -{" "}
+            {import.meta.env.VITE_SET_PERSONAL_USER_EMAIL}
           </p>
           <p>
-            postCheckEmailCode() - VITE_CHECK_EMAIL_CODE -{" "}
+            postPersonalCheckEmailCode() - VITE_PERSONAL_CHECK_EMAIL_CODE -{" "}
             {import.meta.env.VITE_CHECK_EMAIL_CODE}
           </p>
         </>
       ),
     },
   },
-} satisfies Meta<typeof СonfirmEmail>;
+} satisfies Meta<typeof ConfirmPersonalEmail>;
 
 export default meta;
 
@@ -45,7 +45,7 @@ export const Primary: Story = {
     (Story) => {
       const RemixStub = createRemixStub([
         {
-          path: "/confirm-email",
+          path: "/profile/confirm-personal-email",
           Component: Story,
           loader: async () => {
             return json({ email: "test@mail.ru", ttl: "120" });
@@ -59,7 +59,7 @@ export const Primary: Story = {
         },
       ]);
 
-      return <RemixStub initialEntries={["/confirm-email"]} />;
+      return <RemixStub initialEntries={["/profile/confirm-personal-email"]} />;
     },
   ],
   parameters: {
