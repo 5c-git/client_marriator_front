@@ -1,0 +1,32 @@
+{
+  "$id": "postPersonalCheckEmailCodeError",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "postPersonalCheckEmailCodeError",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "status": {
+      "type": "string",
+      "const": "error"
+    },
+    "result": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "code": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "status": {
+              "type": "string",
+              "enum": ["error", "notExists"]
+            }
+          },
+          "required": ["status"]
+        }
+      },
+      "required": ["code"]
+    }
+  },
+  "required": ["status", "result"]
+}

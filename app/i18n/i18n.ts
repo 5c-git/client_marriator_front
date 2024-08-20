@@ -61,6 +61,12 @@ import ProfileEditEN from "../routes/profile/profile-edit/locales/en.json";
 import ProfileMetaRU from "../routes/profile/profile-meta/locales/ru.json";
 import ProfileMetaEN from "../routes/profile/profile-meta/locales/en.json";
 
+import ConfirmPersonalPhoneRU from "../routes/profile/confirm-personal-phone/locales/ru.json";
+import ConfirmPersonalPhoneEN from "../routes/profile/confirm-personal-phone/locales/en.json";
+
+import ConfirmPersonalEmailRU from "../routes/profile/confirm-personal-email/locales/ru.json";
+import ConfirmPersonalEmailEN from "../routes/profile/confirm-personal-email/locales/en.json";
+
 import StyledPhotoCheckboxRU from "../shared/ui/StyledPhotoCheckbox/locales/ru.json";
 import StyledPhotoCheckboxEN from "../shared/ui/StyledPhotoCheckbox/locales/en.json";
 import StyledFileInputRU from "../shared/ui/StyledFileInput/locales/ru.json";
@@ -113,6 +119,8 @@ export const resources = {
       MyProfile: MyProfileRU,
       ProfileEdit: ProfileEditRU,
       ProfileMeta: ProfileMetaRU,
+      ConfirmPersonalPhone: ConfirmPersonalPhoneRU,
+      ConfirmPersonalEmail: ConfirmPersonalEmailRU,
 
       //components
       StyledPhotoCheckbox: StyledPhotoCheckboxRU,
@@ -155,6 +163,8 @@ export const resources = {
       MyProfile: MyProfileEN,
       ProfileEdit: ProfileEditEN,
       ProfileMeta: ProfileMetaEN,
+      ConfirmPersonalPhone: ConfirmPersonalPhoneEN,
+      ConfirmPersonalEmail: ConfirmPersonalEmailEN,
 
       //components
       StyledPhotoCheckbox: StyledPhotoCheckboxEN,

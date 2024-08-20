@@ -83,7 +83,7 @@ export async function clientAction({ request }: ClientActionFunctionArgs) {
       }
     } else if (_action === "confirmPhone") {
       await setUserPhone(fields.phone);
-      const newPhoneData = await postChangeUserPhone(accessToken, fields.phon);
+      const newPhoneData = await postChangeUserPhone(accessToken, fields.phone);
       if (newPhoneData.status === "error") {
         return json({ error: "phoneAlreadyExists" });
       } else {
@@ -296,7 +296,7 @@ export default function ProfileMeta() {
             fetcher.submit(
               JSON.stringify({
                 _action: "confirmPhone",
-                email: getValues("metaPhone"),
+                phone: getValues("metaPhone"),
               }),
               {
                 method: "POST",

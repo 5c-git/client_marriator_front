@@ -16,8 +16,10 @@ import { mockPostSetUserEmailMockResponse } from "~/requests/postSetUserEmail/po
 import { postCheckEmailCodeMockResponse } from "~/requests/postCheckEmailCode/postCheckEmailCode";
 import { postStartRestorePinMockResponse } from "~/requests/postStartRestorePin/postStartRestorePin";
 import { postCheckCodeRestoreMockResponse } from "~/requests/postCheckCodeRestore/postCheckCodeRestore";
-import { postPersonalSetUserEmailMockResponse } from "~/requests/postPersonalSetUserEmail/postPersonalSetUserEmail";}
-import { postChangeUserPhoneMockResponse } from "~/requests/postChangeUserPhone/postChangeUserPhone";}
+import { postPersonalSetUserEmailMockResponse } from "~/requests/postPersonalSetUserEmail/postPersonalSetUserEmail";
+import { postChangeUserPhoneMockResponse } from "~/requests/postChangeUserPhone/postChangeUserPhone";
+import { postPersonalCheckEmailCodeMockResponse } from "~/requests/postPersonalCheckEmailCode/postPersonalCheckEmailCode";
+import { postConfirmChangeUserPhoneMockResponse } from "~/requests/postConfirmChangeUserPhone/postConfirmChangeUserPhone";
 
 export const handlers = [
   getFormMockResponse,
@@ -36,5 +38,7 @@ export const handlers = [
   postStartRestorePinMockResponse,
   postCheckCodeRestoreMockResponse,
   postPersonalSetUserEmailMockResponse,
-  postChangeUserPhoneMockResponse
+  postChangeUserPhoneMockResponse,
+  postPersonalCheckEmailCodeMockResponse,
+  postConfirmChangeUserPhoneMockResponse,
 ];

@@ -23,6 +23,8 @@ interface ImportMetaEnv {
   readonly VITE_SET_PERSONAL_USER_EMAIL: string;
   readonly VITE_CHANGE_USER_PHONE: string;
   readonly VITE_SEND_PERSONAL_PHOTO: string;
+  readonly VITE_PERSONAL_CHECK_EMAIL_CODE: string;
+  readonly VITE_CONFIRM_CHANGE_USER_PHONE: string;
   // more env variables...
 }
 
