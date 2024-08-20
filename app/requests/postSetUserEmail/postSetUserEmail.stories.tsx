@@ -2,6 +2,7 @@ import type { StoryObj, Meta } from "@storybook/react";
 import * as DocBlock from "@storybook/blocks";
 
 import responseSchemaSuccess from "./postSetUserEmail.schema.json";
+import responseSchemaError from "./postSetUserEmailError.schema.json";
 
 const Mock = () => <></>;
 
@@ -23,8 +24,8 @@ export const Basic: Story = {
           <DocBlock.Description />
 
           <h1>method: POST</h1>
-          <h3>переменная: VITE_POST_SET_USER_EMAIL</h3>
-          <h3>адрес: {import.meta.env.VITE_POST_SET_USER_EMAIL}</h3>
+          <h3>переменная: VITE_SET_USER_EMAIL</h3>
+          <h3>адрес: {import.meta.env.VITE_SET_USER_EMAIL}</h3>
 
           <h2>Payload</h2>
           <DocBlock.Source
@@ -49,6 +50,12 @@ export const Basic: Story = {
           <DocBlock.Source
             language="json"
             code={JSON.stringify(responseSchemaSuccess, null, 2)}
+          />
+
+          <h2>Response Error JSON Schema</h2>
+          <DocBlock.Source
+            language="json"
+            code={JSON.stringify(responseSchemaError, null, 2)}
           />
         </>
       ),

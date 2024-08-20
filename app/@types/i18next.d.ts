@@ -9,17 +9,23 @@ import RegistrationStep4RU from "../routes/registration/step4/locales/ru.json";
 import RegistrationStep5RU from "../routes/registration/step5/locales/ru.json";
 import RegistrationStep6RU from "../routes/registration/step6/locales/ru.json";
 import RegistrationStep7RU from "../routes/registration/step7/locales/ru.json";
-import RegistrationCompleteRU from "../routes/registration-complete/locales/ru.json";
+import RegistrationCompleteRU from "../routes/registration/registration-complete/locales/ru.json";
 
-import ConfirmEmailRU from "../routes/confirm-email/locales/ru.json";
-import ConfirmRestorePinRU from "../routes/confirm-restore-pin/locales/ru.json";
+import ConfirmEmailRU from "../routes/registration/confirm-email/locales/ru.json";
+import ConfirmRestorePinRU from "../routes/signin/confirm-restore-pin/locales/ru.json";
 
 import PhoneRU from "../routes/signin/phone/locales/ru.json";
 import SmsRU from "../routes/signin/sms/locales/ru.json";
 import PinRU from "../routes/signin/pin/locales/ru.json";
 import CreatePinRU from "../routes/signin/createPin/locales/ru.json";
-import ProfileRU from "../routes/profile/locales/ru.json";
-import MyProfileRU from "../routes/my-profile/locales/ru.json";
+import ProfileRU from "../routes/profile/index/locales/ru.json";
+import MyProfileRU from "../routes/profile/my-profile/locales/ru.json";
+import ProfileEditRU from "../routes/profile/profile-edit/locales/ru.json";
+import ProfileMetaRU from "../routes/profile/profile-meta/locales/ru.json";
+import UserActivitiesRU from "../routes/profile/user-activities/locales/ru.json";
+
+import ConfirmPersonalPhoneRU from "../routes/profile/confirm-personal-phone/locales/ru.json";
+import ConfirmPersonalEmailRU from "../routes/profile/confirm-personal-email/locales/ru.json";
 
 import StyledPhotoCheckboxRU from "../shared/ui/StyledPhotoCheckbox/locales/ru.json";
 import StyledFileInputRU from "../shared/ui/StyledFileInput/locales/ru.json";
@@ -62,6 +68,11 @@ declare module "i18next" {
         Index: typeof IndexRU;
         Profile: typeof ProfileRU;
         MyProfile: typeof MyProfileRU;
+        ProfileEdit: typeof ProfileEditRU;
+        ProfileMeta: typeof ProfileMetaRU;
+        ConfirmPersonalPhone: typeof ConfirmPersonalPhoneRU;
+        ConfirmPersonalEmail: typeof ConfirmPersonalEmailRU;
+        UserActivities: typeof UserActivitiesRU;
 
         //components
         StyledPhotoCheckbox: typeof StyledPhotoCheckboxRU;

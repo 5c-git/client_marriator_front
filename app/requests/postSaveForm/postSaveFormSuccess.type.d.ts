@@ -9,8 +9,6 @@ export interface PostSaveFormSuccessInputsSchema {
   result: {
     step: number;
     type: "needRequired" | "allowedNewStep" | "addedNewFields";
-    [k: string]: unknown;
   };
   status: "success";
-  [k: string]: unknown;
 }

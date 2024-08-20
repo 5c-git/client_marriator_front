@@ -15,7 +15,7 @@ const validateResponseError = ajv.compile(responseError);
 export const postCheckEmailCodeKeys = ["postCheckEmailCode"];
 
 export const postCheckEmailCode = async (accessToken: string, code: string) => {
-  const url = new URL(import.meta.env.VITE_POST_CHECK_EMAIL_CODE);
+  const url = new URL(import.meta.env.VITE_CHECK_EMAIL_CODE);
 
   const request = await fetch(url, {
     method: "POST",
@@ -66,7 +66,7 @@ export const mockResponseError = {
 };
 
 export const postCheckEmailCodeMockResponse = http.post(
-  `${import.meta.env.VITE_POST_CHECK_EMAIL_CODE}`,
+  `${import.meta.env.VITE_CHECK_EMAIL_CODE}`,
   async () => {
     // const url = new URL(request.url);
     // const scenario = url.searchParams.get("scenario");

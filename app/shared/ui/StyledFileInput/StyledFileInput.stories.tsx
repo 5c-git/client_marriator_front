@@ -43,6 +43,7 @@ export const Primary: Story = {
   name: "file",
   args: {
     inputType: "file",
+    token: "token",
     name: "file",
     value: "",
     url: import.meta.env.VITE_SEND_FILE,
@@ -86,6 +87,7 @@ export const Primary: Story = {
     return (
       <StyledFileInput
         inputType={args.inputType}
+        token={args.token}
         name={args.name}
         value={args.value}
         onChange={onChange}
@@ -111,6 +113,7 @@ export const PrimaryDisabled: Story = {
   name: "file (отключенный)",
   args: {
     inputType: "file",
+    token: "token",
     name: "file",
     value: "",
     url: import.meta.env.VITE_SEND_FILE,
@@ -154,6 +157,7 @@ export const PrimaryDisabled: Story = {
     return (
       <StyledFileInput
         inputType={args.inputType}
+        token={args.token}
         name={args.name}
         value={args.value}
         onChange={onChange}
@@ -179,6 +183,7 @@ export const PrimaryNothing: Story = {
   name: "file (без доп информации)",
   args: {
     inputType: "file",
+    token: "token",
     name: "file",
     value: "",
     url: import.meta.env.VITE_SEND_FILE,
@@ -221,6 +226,7 @@ export const PrimaryNothing: Story = {
     return (
       <StyledFileInput
         inputType={args.inputType}
+        token={args.token}
         name={args.name}
         value={args.value}
         onChange={onChange}
@@ -245,6 +251,7 @@ export const PrimaryFilled: Story = {
   name: "file (заполненный)",
   args: {
     inputType: "file",
+    token: "token",
     name: "file",
     value: "{Номер телефона} - {Наименование документа}.pdf",
     url: import.meta.env.VITE_SEND_FILE,
@@ -287,6 +294,7 @@ export const PrimaryFilled: Story = {
     return (
       <StyledFileInput
         inputType={args.inputType}
+        token={args.token}
         name={args.name}
         value={args.value}
         onChange={onChange}
@@ -311,6 +319,7 @@ export const PrimaryError: Story = {
   name: "file (ошибка)",
   args: {
     inputType: "file",
+    token: "token",
     name: "file",
     value: "",
     url: import.meta.env.VITE_SEND_FILE,
@@ -354,6 +363,7 @@ export const PrimaryError: Story = {
     return (
       <StyledFileInput
         inputType={args.inputType}
+        token={args.token}
         name={args.name}
         value={args.value}
         onChange={onChange}
@@ -378,6 +388,7 @@ export const PrimaryWarning: Story = {
   name: "file (статус  - warning)",
   args: {
     inputType: "file",
+    token: "token",
     name: "file",
     value: "",
     url: import.meta.env.VITE_SEND_FILE,
@@ -420,6 +431,7 @@ export const PrimaryWarning: Story = {
     return (
       <StyledFileInput
         inputType={args.inputType}
+        token={args.token}
         name={args.name}
         value={args.value}
         onChange={onChange}
@@ -444,6 +456,7 @@ export const PrimaryHeading: Story = {
   name: "file (pаголовок)",
   args: {
     inputType: "file",
+    token: "token",
     name: "file",
     value: "",
     url: import.meta.env.VITE_SEND_FILE,
@@ -486,6 +499,7 @@ export const PrimaryHeading: Story = {
     return (
       <StyledFileInput
         inputType={args.inputType}
+        token={args.token}
         name={args.name}
         value={args.value}
         onChange={onChange}
@@ -510,6 +524,7 @@ export const PrimaryHelper: Story = {
   name: "file (вспомогательная информация)",
   args: {
     inputType: "file",
+    token: "token",
     name: "file",
     value: "",
     url: import.meta.env.VITE_SEND_FILE,
@@ -552,6 +567,7 @@ export const PrimaryHelper: Story = {
     return (
       <StyledFileInput
         inputType={args.inputType}
+        token={args.token}
         name={args.name}
         value={args.value}
         onChange={onChange}
@@ -576,6 +592,7 @@ export const PrimaryDividers: Story = {
   name: "file (разделители)",
   args: {
     inputType: "file",
+    token: "token",
     name: "file",
     value: "",
     url: import.meta.env.VITE_SEND_FILE,
@@ -618,6 +635,7 @@ export const PrimaryDividers: Story = {
     return (
       <StyledFileInput
         inputType={args.inputType}
+        token={args.token}
         name={args.name}
         value={args.value}
         onChange={onChange}
@@ -633,6 +651,89 @@ export const PrimaryDividers: Story = {
         dividerBottom={args.dividerBottom}
         heading={args.heading}
         helperInfo={args.helperInfo}
+      />
+    );
+  },
+};
+
+export const PrimaryMoreInfo: Story = {
+  name: "file (дополнительная информация)",
+  args: {
+    inputType: "file",
+    token: "token",
+    name: "file",
+    value: "",
+    url: import.meta.env.VITE_SEND_FILE,
+    placeholder: "Приложи документ",
+    validation: "none",
+    onChange: () => {},
+    onImmediateChange: () => {},
+    triggerValidation: () => {},
+
+    dividerTop: true,
+    dividerBottom: true,
+    // heading: "Заголовок инпута",
+    // error: "Ошибка!",
+    // status: "warning",
+    drawerInfo: {
+      text: "Поясняющий текст, который может быть очень длинным, но не совсем уж очень сильно длинным, в общем 3 строки.",
+      images: [
+        "/client_marriator_front/mockImg/drawerImage.jpg",
+        "/client_marriator_front/mockImg/drawerImage.jpg",
+        "/client_marriator_front/mockImg/drawerImage.jpg",
+        "/client_marriator_front/mockImg/drawerImage.jpg",
+      ],
+    },
+    helperInfo: {
+      text: "Текст и ",
+      link: {
+        type: "external",
+        path: "https://www.google.com/",
+        text: "cсылка",
+      },
+    },
+    moreInfo: [
+      {
+        name: "Имя",
+        value: "Андрей",
+      },
+      {
+        name: "Фамилия",
+        value: "Ястребцов",
+      },
+      {
+        name: "Отчество",
+        value: "Александрович",
+      },
+    ],
+  },
+  render: function Render(args) {
+    const [, updateArgs] = useArgs();
+
+    function onChange(name: string, value: unknown) {
+      updateArgs({ value });
+    }
+
+    return (
+      <StyledFileInput
+        inputType={args.inputType}
+        token={args.token}
+        name={args.name}
+        value={args.value}
+        onChange={onChange}
+        onImmediateChange={args.onImmediateChange}
+        triggerValidation={args.triggerValidation}
+        url={args.url}
+        error={args.error}
+        status={args.status}
+        placeholder={args.placeholder}
+        validation={args.validation}
+        drawerInfo={args.drawerInfo}
+        dividerTop={args.dividerTop}
+        dividerBottom={args.dividerBottom}
+        heading={args.heading}
+        helperInfo={args.helperInfo}
+        moreInfo={args.moreInfo}
       />
     );
   },

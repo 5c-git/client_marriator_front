@@ -20,16 +20,32 @@ export default defineConfig({
                 route(":lang?/", "routes/home/home.tsx");
                 route(
                   ":lang?/registration/registration-complete",
-                  "routes/registration-complete/registration-complete.tsx"
+                  "routes/registration/registration-complete/registration-complete.tsx"
                 );
-                route(":lang?/profile", "routes/profile/profile.tsx");
+                route(":lang?/profile", "routes/profile/index/profile.tsx");
                 route(
                   ":lang?/profile/my-profile",
-                  "routes/my-profile/my-profile.tsx"
+                  "routes/profile/my-profile/my-profile.tsx"
+                );
+                route(
+                  ":lang?/profile/profile-meta",
+                  "routes/profile/profile-meta/profile-meta.tsx"
                 );
                 route(
                   ":lang?/profile/profile-edit",
-                  "routes/profile-edit/profile-edit.tsx"
+                  "routes/profile/profile-edit/profile-edit.tsx"
+                );
+                route(
+                  ":lang?/profile/confirm-personal-email",
+                  "routes/profile/confirm-personal-email/confirm-personal-email.tsx"
+                );
+                route(
+                  ":lang?/profile/confirm-personal-phone",
+                  "routes/profile/confirm-personal-phone/confirm-personal-phone.tsx"
+                );
+                route(
+                  ":lang?/profile/user-activities",
+                  "routes/profile/user-activities/user-activities.tsx"
                 );
               });
 
@@ -41,6 +57,10 @@ export default defineConfig({
                 "routes/signin/createPin/createPin.tsx"
               );
               route(":lang?/signin/pin", "routes/signin/pin/pin.tsx");
+              route(
+                ":lang?/signin/confirm-restore-pin",
+                "routes/signin/confirm-restore-pin/confirm-restore-pin.tsx"
+              );
               //signin
 
               //registration
@@ -73,16 +93,11 @@ export default defineConfig({
                 ":lang?/registration/step7",
                 "routes/registration/step7/step7.tsx"
               );
+              route(
+                ":lang?/registration/confirm-email",
+                "routes/registration/confirm-email/confirm-email.tsx"
+              );
               // registration;
-
-              route(
-                ":lang?/confirm-email",
-                "routes/confirm-email/confirm-email.tsx"
-              );
-              route(
-                ":lang?/confirm-restore-pin",
-                "routes/confirm-restore-pin/confirm-restore-pin.tsx"
-              );
             }
           );
         });

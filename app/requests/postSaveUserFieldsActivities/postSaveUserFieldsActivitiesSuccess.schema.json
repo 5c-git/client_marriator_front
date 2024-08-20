@@ -1,0 +1,28 @@
+{
+  "$id": "postSaveUserFieldsActivitiesSuccess",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "postSaveUserFieldsActivitiesSuccess",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "result": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "step": {
+          "type": "number"
+        },
+        "type": {
+          "type": "string",
+          "enum": ["needRequired", "allowedNewStep", "addedNewFields"]
+        }
+      },
+      "required": ["step", "type"]
+    },
+    "status": {
+      "type": "string",
+      "const": "success"
+    }
+  },
+  "required": ["result", "status"]
+}

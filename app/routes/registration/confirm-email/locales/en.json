@@ -1,0 +1,12 @@
+{
+  "header": "Confirm email",
+  "sendAgain": "Resend code",
+  "timer": "Resend available after",
+  "notification": "Code has been sent to provided email!",
+  "errorNotifivation": "Wrong code!",
+  "inputPlaceholder": "Code",
+
+  "inputValidation": "Required field",
+  "inputValidation_lenght": "Please provide correct value",
+  "wrongData": "Wrong data revieved!"
+}

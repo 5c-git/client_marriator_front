@@ -59,16 +59,14 @@ export async function clientLoader({ request }: ClientActionFunctionArgs) {
 
 export async function clientAction({ request }: ClientActionFunctionArgs) {
   const currentURL = new URL(request.url);
-  const params = new URLSearchParams();
-
   const { _action, ...fields } = await request.json();
 
   if (_action === "sendAgain") {
     const data = await postSendPhone(fields.phone);
 
     if (data.result.code.status !== "errorSend") {
-      params.set("ttl", data.result.code.ttl.toString());
-      params.set("type", data.result.type);
+      currentURL.searchParams.set("ttl", data.result.code.ttl.toString());
+      currentURL.searchParams.set("type", data.result.type);
 
       throw redirect(currentURL.toString());
     } else {
@@ -133,6 +131,10 @@ export default function Sms() {
     return () => clearInterval(timer);
   }, [seconds]);
 
+  useEffect(() => {
+    setSeconds(Number(ttl));
+  }, [ttl, navigation.state]);
+
   return (
     <>
       {navigation.state !== "idle" ? <Loader /> : null}
@@ -188,7 +190,6 @@ export default function Sms() {
               lineHeight: "1.25rem",
             }}
             onClick={() => {
-              setSeconds(10);
               submit(
                 JSON.stringify({
                   _action: "sendAgain",
@@ -224,7 +225,7 @@ export default function Sms() {
                 {Math.floor(seconds / 60) < 10
                   ? `0${Math.floor(seconds / 60)}`
                   : Math.floor(seconds / 60)}
-                :{seconds % 60 < 10 ? `0${seconds % 60}` : seconds % 60}
+                {""}:{seconds % 60 < 10 ? `0${seconds % 60}` : seconds % 60}
               </Typography>
             </Typography>
           ) : null}

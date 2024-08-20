@@ -1,0 +1,17 @@
+{
+  "$id": "postSetUserEmailErrorSchema",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "postSetUserEmailErrorSchema",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "error": {
+      "type": "string"
+    },
+    "status": {
+      "type": "string",
+      "const": "error"
+    }
+  },
+  "required": ["error", "status"]
+}

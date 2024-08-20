@@ -43,6 +43,7 @@ type StyledPhoneFieldProps = {
 
   onChange: (e: string) => void;
   onImmediateChange: () => void;
+  onBlur?: (e: string) => void;
 };
 
 export const StyledPhoneField = forwardRef(
@@ -82,6 +83,12 @@ export const StyledPhoneField = forwardRef(
                 props.onChange(evt.target.value.replace(/[^\d]/g, ""));
                 // props.onChange(evt.target.value);
                 props.onImmediateChange();
+              }}
+              onBlur={(evt) => {
+                props.onBlur
+                  ? props.onBlur(evt.target.value.replace(/[^\d]/g, ""))
+                  : () => {};
+                // props.onImmediateChange();
               }}
               disabled={props.disabled}
               error={props.error ? true : false}

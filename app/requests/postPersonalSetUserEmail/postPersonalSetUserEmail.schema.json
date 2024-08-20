@@ -1,0 +1,57 @@
+{
+  "$id": "postPersonalSetUserEmailSuccessSchema",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "postPersonalSetUserEmailSuccessSchema",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "status": {
+      "type": "string",
+      "const": "success"
+    },
+    "result": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "code": {
+          "type": "object",
+          "anyOf": [
+            {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "status": {
+                  "type": "string",
+                  "const": "exists"
+                },
+                "ttl": {
+                  "type": "number"
+                }
+              },
+              "required": ["status", "ttl"]
+            },
+            {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "status": {
+                  "type": "string",
+                  "const": "success"
+                },
+                "code": {
+                  "type": "number"
+                },
+                "ttl": {
+                  "type": "number"
+                }
+              },
+              "required": ["status", "code", "ttl"]
+            }
+          ]
+        }
+      },
+      "required": ["code"]
+    }
+  },
+  "required": ["status", "result"]
+}

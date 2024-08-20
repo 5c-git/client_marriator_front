@@ -29,6 +29,8 @@ import {
   Button,
   Dialog,
   DialogTitle,
+  Snackbar,
+  Alert,
 } from "@mui/material";
 import { TopNavigation } from "~/shared/ui/TopNavigation/TopNavigation";
 import { Loader } from "~/shared/ui/Loader/Loader";
@@ -67,14 +69,22 @@ export async function clientAction({ request }: ClientActionFunctionArgs) {
   const { _action, ...fields } = await request.json();
   const accessToken = await getAccessToken();
 
+  if (_action && _action === "reset") {
+    return null;
+  }
+
   if (accessToken) {
     if (_action && _action === "confirmEmail") {
       await setUserEmail(fields.email);
-      await postSetUserEmail(accessToken, fields.email);
+      const newEmailData = await postSetUserEmail(accessToken, fields.email);
 
-      params.set("ttl", "120");
+      if (newEmailData.status === "error") {
+        return json({ error: "alreadyExists" });
+      } else {
+        params.set("ttl", "120");
 
-      throw redirect(withLocale(`/confirm-email?${params}`));
+        throw redirect(withLocale(`/registration/confirm-email?${params}`));
+      }
     } else {
       const data = await postSaveForm(accessToken, 4, fields);
 
@@ -87,7 +97,7 @@ export async function clientAction({ request }: ClientActionFunctionArgs) {
 
 export default function Step4() {
   const theme = useTheme();
-  const fetcher = useFetcher();
+  const fetcher = useFetcher<typeof clientAction>();
   const navigate = useNavigate();
   const navigation = useNavigation();
 
@@ -238,6 +248,7 @@ export default function Step4() {
                 onBlur={(evt) => {
                   if (
                     evt.target.value !== "" &&
+                    evt.target.value !== staticFields.email &&
                     errors.staticEmail === undefined
                   )
                     setOpenDialog(true);
@@ -310,6 +321,7 @@ export default function Step4() {
         >
           {t("RegistrationStep4.dialog", { context: "title" })}
         </DialogTitle>
+
         <Button
           variant="contained"
           onClick={() => {
@@ -323,6 +335,7 @@ export default function Step4() {
                 encType: "application/json",
               }
             );
+            setOpenDialog(false);
           }}
           sx={{
             marginTop: "16px",
@@ -331,6 +344,33 @@ export default function Step4() {
           {t("RegistrationStep4.dialog", { context: "button" })}
         </Button>
       </Dialog>
+
+      <Snackbar
+        open={fetcher.data?.error === "alreadyExists" ? true : false}
+        autoHideDuration={3000}
+        onClose={() => {
+          fetcher.submit(
+            JSON.stringify({
+              _action: "reset",
+            }),
+            {
+              method: "POST",
+              encType: "application/json",
+            }
+          );
+        }}
+      >
+        <Alert
+          severity="info"
+          variant="small"
+          color="Banner_Error"
+          sx={{
+            width: "100%",
+          }}
+        >
+          {t("RegistrationStep4.error_alreadyExists")}
+        </Alert>
+      </Snackbar>
     </>
   );
 }

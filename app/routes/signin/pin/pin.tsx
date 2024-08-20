@@ -52,7 +52,7 @@ export async function clientAction({ request }: ClientActionFunctionArgs) {
 
       params.set("ttl", data.result.code.ttl.toString());
 
-      throw redirect(withLocale(`/confirm-restore-pin?${params}`));
+      throw redirect(withLocale(`/signin/confirm-restore-pin?${params}`));
     } else {
       const data = await postCheckPin(accessToken, fields.pin);
       if (data.status === "success") {

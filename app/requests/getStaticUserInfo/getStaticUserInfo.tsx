@@ -44,7 +44,15 @@ export const getStaticUserInfo = async (
 };
 
 // MOCKS
-export const mockResponseSuccess = {};
+export const mockResponseSuccess = {
+  result: {
+    userData: {
+      email: "yastrebsov@gmail.com",
+      img: "",
+    },
+  },
+  status: "success",
+};
 
 export const mockResponseError = {};
 

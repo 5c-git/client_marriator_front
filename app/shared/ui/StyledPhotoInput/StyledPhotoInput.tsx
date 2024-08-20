@@ -184,7 +184,7 @@ export const StyledPhotoInput = forwardRef(
                           onChange(name, "");
                           setError(error);
                           setLoading(false);
-                        }
+                        },
                       ).catch(() => {
                         setValue("");
                         onChange(name, "");
@@ -271,7 +271,7 @@ export const StyledPhotoInput = forwardRef(
         {loading ? <Loader /> : null}
       </>
     );
-  }
+  },
 );
 
 StyledPhotoInput.displayName = "StyledPhotoInput";
