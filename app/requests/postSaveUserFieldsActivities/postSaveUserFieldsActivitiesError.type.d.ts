@@ -5,10 +5,7 @@
  * and run json-schema-to-typescript to regenerate this file.
  */
 
-export interface PostSaveFormSuccessInputsSchema {
-  result: {
-    step: number;
-    type: "needRequired" | "allowedNewStep" | "addedNewFields";
-  };
-  status: "success";
+export interface PostSaveUserFieldsActivitiesError {
+  status: string;
+  error: "error";
 }

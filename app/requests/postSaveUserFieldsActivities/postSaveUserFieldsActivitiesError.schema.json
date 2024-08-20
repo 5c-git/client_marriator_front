@@ -1,0 +1,17 @@
+{
+  "$id": "postSaveUserFieldsActivitiesError",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "postSaveUserFieldsActivitiesError",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "status": {
+      "type": "string"
+    },
+    "error": {
+      "type": "string",
+      "const": "error"
+    }
+  },
+  "required": ["status", "error"]
+}

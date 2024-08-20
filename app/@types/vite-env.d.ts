@@ -25,6 +25,8 @@ interface ImportMetaEnv {
   readonly VITE_SEND_PERSONAL_PHOTO: string;
   readonly VITE_PERSONAL_CHECK_EMAIL_CODE: string;
   readonly VITE_CONFIRM_CHANGE_USER_PHONE: string;
+  readonly VITE_GET_FORM_ACTIVITIES: string;
+  readonly VITE_SAVE_USER_FIELDS_ACTIVITIES: string;
   // more env variables...
 }
 

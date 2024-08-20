@@ -1,7 +1,7 @@
 {
-  "$id": "PostSaveFormSuccess",
+  "$id": "postSaveUserFieldsActivitiesSuccess",
   "$schema": "http://json-schema.org/draft-07/schema#",
-  "title": "Post save form success inputs schema",
+  "title": "postSaveUserFieldsActivitiesSuccess",
   "type": "object",
   "additionalProperties": false,
   "properties": {

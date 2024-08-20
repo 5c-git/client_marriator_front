@@ -60,6 +60,8 @@ import ProfileEditEN from "../routes/profile/profile-edit/locales/en.json";
 
 import ProfileMetaRU from "../routes/profile/profile-meta/locales/ru.json";
 import ProfileMetaEN from "../routes/profile/profile-meta/locales/en.json";
+import UserActivitiesRU from "../routes/profile/user-activities/locales/ru.json";
+import UserActivitiesEN from "../routes/profile/user-activities/locales/en.json";
 
 import ConfirmPersonalPhoneRU from "../routes/profile/confirm-personal-phone/locales/ru.json";
 import ConfirmPersonalPhoneEN from "../routes/profile/confirm-personal-phone/locales/en.json";
@@ -121,6 +123,7 @@ export const resources = {
       ProfileMeta: ProfileMetaRU,
       ConfirmPersonalPhone: ConfirmPersonalPhoneRU,
       ConfirmPersonalEmail: ConfirmPersonalEmailRU,
+      UserActivities: UserActivitiesRU,
 
       //components
       StyledPhotoCheckbox: StyledPhotoCheckboxRU,
@@ -165,6 +168,7 @@ export const resources = {
       ProfileMeta: ProfileMetaEN,
       ConfirmPersonalPhone: ConfirmPersonalPhoneEN,
       ConfirmPersonalEmail: ConfirmPersonalEmailEN,
+      UserActivities: UserActivitiesEN,
 
       //components
       StyledPhotoCheckbox: StyledPhotoCheckboxEN,

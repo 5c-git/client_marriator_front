@@ -22,6 +22,7 @@ import ProfileRU from "../routes/profile/index/locales/ru.json";
 import MyProfileRU from "../routes/profile/my-profile/locales/ru.json";
 import ProfileEditRU from "../routes/profile/profile-edit/locales/ru.json";
 import ProfileMetaRU from "../routes/profile/profile-meta/locales/ru.json";
+import UserActivitiesRU from "../routes/profile/user-activities/locales/ru.json";
 
 import ConfirmPersonalPhoneRU from "../routes/profile/confirm-personal-phone/locales/ru.json";
 import ConfirmPersonalEmailRU from "../routes/profile/confirm-personal-email/locales/ru.json";
@@ -71,6 +72,7 @@ declare module "i18next" {
         ProfileMeta: typeof ProfileMetaRU;
         ConfirmPersonalPhone: typeof ConfirmPersonalPhoneRU;
         ConfirmPersonalEmail: typeof ConfirmPersonalEmailRU;
+        UserActivities: typeof UserActivitiesRU;
 
         //components
         StyledPhotoCheckbox: typeof StyledPhotoCheckboxRU;
