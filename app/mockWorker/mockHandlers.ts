@@ -22,6 +22,13 @@ import { postPersonalCheckEmailCodeMockResponse } from "~/requests/postPersonalC
 import { postConfirmChangeUserPhoneMockResponse } from "~/requests/postConfirmChangeUserPhone/postConfirmChangeUserPhone";
 import { getFormActivitiesMockResponse } from "~/requests/getFormActivities/getFormActivities";
 import { postSaveUserFieldsActivitiesMockResponse } from "~/requests/postSaveUserFieldsActivities/postSaveUserFieldsActivities";
+import { getRequisitesDataMockResponse } from "~/requests/getRequisitesData/getRequisitesData";
+import { postSaveRequisitesDataMockResponse } from "~/requests/postSaveRequisitesData/postSaveRequisitesData";
+import { getBikMockResponse } from "~/requests/getBik/getBik";
+import { postDeleteRequisiteMockResponse } from "~/requests/postDeleteRequisite/postDeleteRequisite";
+import { getGeoDataMockResponse } from "~/requests/getGeoData/getGeoData";
+import { getMapFieldMockResponse } from "~/requests/getMapField/getMapField";
+import { postSetMapFieldMockResponse } from "~/requests/postSetMapField/postSetMapField";
 
 export const handlers = [
   getFormMockResponse,
@@ -45,4 +52,11 @@ export const handlers = [
   postConfirmChangeUserPhoneMockResponse,
   getFormActivitiesMockResponse,
   postSaveUserFieldsActivitiesMockResponse,
+  getRequisitesDataMockResponse,
+  postSaveRequisitesDataMockResponse,
+  getBikMockResponse,
+  postDeleteRequisiteMockResponse,
+  getGeoDataMockResponse,
+  getMapFieldMockResponse,
+  postSetMapFieldMockResponse,
 ];

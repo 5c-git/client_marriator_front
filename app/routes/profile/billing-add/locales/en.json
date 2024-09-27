@@ -1,0 +1,15 @@
+{
+  "header": "Add Billing info",
+  "placeholder_checkbox": "confidant",
+  "placeholder_fio": "Full name",
+  "placeholder_bik": "Bank identification code",
+  "placeholder_account": "Account",
+  "placeholder_card": "Card",
+  "placeholder_payWithCard": "Payments by bank card number?",
+  "placeholder_cardDue": "Card valid through",
+  "dialog_title": "Cancel input data?",
+  "button_cancel": "Cancel",
+  "button_save": "Save",
+  "button_yes": "Yes",
+  "button_no": "No"
+}

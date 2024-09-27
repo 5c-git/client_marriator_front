@@ -1,0 +1,6 @@
+{
+  "header": "Task search radius",
+  "input_address": "Address",
+  "input_radius": "Radius, km",
+  "error_not-found": "Unable to find provided address"
+}

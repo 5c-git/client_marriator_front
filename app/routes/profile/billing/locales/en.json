@@ -1,0 +1,14 @@
+{
+  "header": "Billing",
+  "header_action": "+ Add",
+  "empty_text": "In order to receive payments, you must become self-employed and add payment details or add details of a trusted person registered as self-employed.",
+  "field_fio": "Full name",
+  "field_bik": "Bank identification code",
+  "field_account": "Account",
+  "field_card": "Card",
+  "field_payWithCard": "Payments by bank card number?",
+  "field_cardDue": "Card valid through",
+  "yes": "Yes",
+  "no": "No",
+  "button_edit": "Edit"
+}

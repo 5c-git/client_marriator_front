@@ -63,6 +63,18 @@
             },
             "requisitesData": {
               "type": ["string", "null"]
+            },
+            "mapAddress": {
+              "type": "string"
+            },
+            "mapRadius": {
+              "type": "string"
+            },
+            "coordinates": {
+              "type": ["null", "string"]
+            },
+            "updateData": {
+              "type": ["null", "string"]
             }
           },
           "required": [
@@ -82,7 +94,11 @@
             "expansionData",
             "errorData",
             "estateData",
-            "requisitesData"
+            "requisitesData",
+            "mapAddress",
+            "mapRadius",
+            "coordinates",
+            "updateData"
           ]
         }
       },

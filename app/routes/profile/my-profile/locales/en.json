@@ -1,5 +1,7 @@
 {
   "header": "My profile",
   "listItem_base": "Base profile data",
-  "user_activities": "Activities"
+  "user_activities": "Activities",
+  "billing": "Billing",
+  "work-radius": "Work radius"
 }

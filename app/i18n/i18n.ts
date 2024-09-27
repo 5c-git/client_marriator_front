@@ -62,12 +62,23 @@ import ProfileMetaRU from "../routes/profile/profile-meta/locales/ru.json";
 import ProfileMetaEN from "../routes/profile/profile-meta/locales/en.json";
 import UserActivitiesRU from "../routes/profile/user-activities/locales/ru.json";
 import UserActivitiesEN from "../routes/profile/user-activities/locales/en.json";
+import BillingRU from "../routes/profile/billing/locales/ru.json";
+import BillingEN from "../routes/profile/billing/locales/en.json";
+
+import BillingAddRU from "../routes/profile/billing-add/locales/ru.json";
+import BillingAddEN from "../routes/profile/billing-add/locales/en.json";
+
+import BillingEditRU from "../routes/profile/billing-edit/locales/ru.json";
+import BillingEditEN from "../routes/profile/billing-edit/locales/en.json";
 
 import ConfirmPersonalPhoneRU from "../routes/profile/confirm-personal-phone/locales/ru.json";
 import ConfirmPersonalPhoneEN from "../routes/profile/confirm-personal-phone/locales/en.json";
 
 import ConfirmPersonalEmailRU from "../routes/profile/confirm-personal-email/locales/ru.json";
 import ConfirmPersonalEmailEN from "../routes/profile/confirm-personal-email/locales/en.json";
+
+import WorkRadiusRU from "../routes/profile/work-radius/locales/ru.json";
+import WorkRadiusEN from "../routes/profile/work-radius/locales/en.json";
 
 import StyledPhotoCheckboxRU from "../shared/ui/StyledPhotoCheckbox/locales/ru.json";
 import StyledPhotoCheckboxEN from "../shared/ui/StyledPhotoCheckbox/locales/en.json";
@@ -124,6 +135,10 @@ export const resources = {
       ConfirmPersonalPhone: ConfirmPersonalPhoneRU,
       ConfirmPersonalEmail: ConfirmPersonalEmailRU,
       UserActivities: UserActivitiesRU,
+      Billing: BillingRU,
+      BillingAdd: BillingAddRU,
+      BillingEdit: BillingEditRU,
+      WorkRadius: WorkRadiusRU,
 
       //components
       StyledPhotoCheckbox: StyledPhotoCheckboxRU,
@@ -169,6 +184,10 @@ export const resources = {
       ConfirmPersonalPhone: ConfirmPersonalPhoneEN,
       ConfirmPersonalEmail: ConfirmPersonalEmailEN,
       UserActivities: UserActivitiesEN,
+      Billing: BillingEN,
+      BillingAdd: BillingAddEN,
+      BillingEdit: BillingEditEN,
+      WorkRadius: WorkRadiusEN,
 
       //components
       StyledPhotoCheckbox: StyledPhotoCheckboxEN,

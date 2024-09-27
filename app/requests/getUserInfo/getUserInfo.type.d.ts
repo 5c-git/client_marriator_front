@@ -25,6 +25,10 @@ export interface GetUserInfoSuccess {
       errorData: string | null;
       estateData: string | null;
       requisitesData: string | null;
+      mapAddress: string;
+      mapRadius: string;
+      coordinates: null;
+      updateData: null;
     };
   };
   status: string;

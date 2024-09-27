@@ -1,0 +1,15 @@
+{
+  "header": "Добавить реквизиты",
+  "placeholder_checkbox": "Моё доверенное лицо",
+  "placeholder_fio": "ФИО получателя",
+  "placeholder_bik": "БИК",
+  "placeholder_account": "Лицевой счет",
+  "placeholder_card": "Номер банковской карты",
+  "placeholder_payWithCard": "Платежи по номеру банковской карты?",
+  "placeholder_cardDue": "Срок окончания действия карты",
+  "dialog_title": "Отменить введённые данные?",
+  "button_cancel": "Отменить",
+  "button_save": "Сохранить",
+  "button_yes": "Да",
+  "button_no": "Нет"
+}

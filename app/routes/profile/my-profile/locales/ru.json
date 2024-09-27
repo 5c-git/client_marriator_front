@@ -1,5 +1,7 @@
 {
   "header": "Мой профиль",
   "listItem_base": "Входные данные",
-  "user_activities": "Виды деятельности"
+  "user_activities": "Виды деятельности",
+  "billing": "Реквизиты",
+  "work-radius": "Радиус поиска работы"
 }

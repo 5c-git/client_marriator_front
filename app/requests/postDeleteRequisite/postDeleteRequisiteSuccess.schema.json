@@ -1,0 +1,14 @@
+{
+  "$id": "postDeleteRequisiteSuccess",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "postDeleteRequisiteSuccess",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "status": {
+      "type": "string",
+      "const": "success"
+    }
+  },
+  "required": ["status"]
+}
