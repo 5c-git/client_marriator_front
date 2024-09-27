@@ -1,0 +1,60 @@
+{
+  "$id": "getGeoDataSuccess",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "getGeoDataSuccess",
+  "type": "object",
+  "properties": {
+    "response": {
+      "type": "object",
+      "properties": {
+        "GeoObjectCollection": {
+          "type": "object",
+          "properties": {
+            "featureMember": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "GeoObject": {
+                    "type": "object",
+                    "properties": {
+                      "metaDataProperty": {
+                        "type": "object",
+                        "properties": {
+                          "GeocoderMetaData": {
+                            "type": "object",
+                            "properties": {
+                              "text": {
+                                "type": "string"
+                              }
+                            },
+                            "required": ["text"]
+                          }
+                        },
+                        "required": ["GeocoderMetaData"]
+                      },
+                      "Point": {
+                        "type": "object",
+                        "properties": {
+                          "pos": {
+                            "type": "string"
+                          }
+                        },
+                        "required": ["pos"]
+                      }
+                    },
+                    "required": ["metaDataProperty", "Point"]
+                  }
+                },
+                "required": ["GeoObject"]
+              }
+            }
+          },
+          "required": ["featureMember"]
+        }
+      },
+      "required": ["GeoObjectCollection"]
+    }
+  },
+  "required": ["response"]
+}

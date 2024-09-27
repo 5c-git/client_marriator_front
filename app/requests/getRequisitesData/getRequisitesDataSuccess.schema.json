@@ -1,0 +1,54 @@
+{
+  "$id": "getRequisitesDataSuccess",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "getRequisitesDataSuccess",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "status": {
+      "type": "string",
+      "const": "success"
+    },
+    "result": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "bik": {
+            "type": "string"
+          },
+          "fio": {
+            "type": "string"
+          },
+          "card": {
+            "type": "string"
+          },
+          "account": {
+            "type": "string"
+          },
+          "cardDue": {
+            "type": "string",
+            "format": "date"
+          },
+          "confidant": {
+            "type": "boolean"
+          },
+          "payWithCard": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "bik",
+          "fio",
+          "card",
+          "account",
+          "cardDue",
+          "confidant",
+          "payWithCard"
+        ]
+      }
+    }
+  },
+  "required": ["result", "status"]
+}

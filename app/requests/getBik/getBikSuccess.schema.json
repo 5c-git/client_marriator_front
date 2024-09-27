@@ -1,0 +1,40 @@
+{
+  "$id": "getBikSuccess",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "getBikSuccess",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "result": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "bankData": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "value": {
+                "type": "string"
+              },
+              "label": {
+                "type": "string"
+              },
+              "disabled": {
+                "type": "boolean"
+              }
+            },
+            "required": ["value", "label", "disabled"]
+          }
+        }
+      },
+      "required": ["bankData"]
+    },
+    "status": {
+      "type": "string",
+      "const": "success"
+    }
+  },
+  "required": ["result", "status"]
+}

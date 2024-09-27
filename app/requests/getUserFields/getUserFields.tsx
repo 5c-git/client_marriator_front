@@ -80,6 +80,7 @@ export const getUserFields = async (
   if (validateSuccess(response)) {
     data = response as unknown as GetUserFieldsSuccess;
   } else {
+    console.log(validateSuccess.errors);
     throw new Response(`Данные запроса getUserFields не валидны схеме`);
   }
 

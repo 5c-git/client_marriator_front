@@ -21,8 +21,10 @@ export const MaskedField = forwardRef<HTMLInputElement, MaskedFieldProps>(
         definitions={{
           p: /[7]/,
         }}
-        onAccept={(value: string) => {
-          onChange({ target: { name: props.name, value } });
+        onAccept={(value: string, _, event) => {
+          if (event) {
+            onChange({ target: { name: props.name, value } });
+          }
         }}
       />
     );

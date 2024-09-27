@@ -1,0 +1,30 @@
+{
+  "$id": "postSetMapFieldSuccess",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "postSetMapFieldSuccess",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "status": {
+      "type": "string",
+      "const": "success"
+    },
+    "result": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "mapAddress": {
+          "type": "string"
+        },
+        "mapRadius": {
+          "type": "string"
+        },
+        "coordinates": {
+          "type": ["string", "null"]
+        }
+      },
+      "required": ["mapAddress", "mapRadius", "coordinates"]
+    }
+  },
+  "required": ["status", "result"]
+}

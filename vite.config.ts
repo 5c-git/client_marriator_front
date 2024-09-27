@@ -7,6 +7,10 @@ import tsconfigPaths from "vite-tsconfig-paths";
 installGlobals();
 
 export default defineConfig({
+  ssr: {
+    // Bundle `problematic-dependency` into the server build
+    noExternal: ["ymap3-components"],
+  },
   plugins: [
     remix({
       ssr: false,
@@ -46,6 +50,22 @@ export default defineConfig({
                 route(
                   ":lang?/profile/user-activities",
                   "routes/profile/user-activities/user-activities.tsx"
+                );
+                route(
+                  ":lang?/profile/billing",
+                  "routes/profile/billing/billing.tsx"
+                );
+                route(
+                  ":lang?/profile/billing-add",
+                  "routes/profile/billing-add/billing-add.tsx"
+                );
+                route(
+                  ":lang?/profile/billing-edit",
+                  "routes/profile/billing-edit/billing-edit.tsx"
+                );
+                route(
+                  ":lang?/profile/work-radius",
+                  "routes/profile/work-radius/work-radius.tsx"
                 );
               });
 

@@ -27,6 +27,13 @@ interface ImportMetaEnv {
   readonly VITE_CONFIRM_CHANGE_USER_PHONE: string;
   readonly VITE_GET_FORM_ACTIVITIES: string;
   readonly VITE_SAVE_USER_FIELDS_ACTIVITIES: string;
+  readonly VITE_GET_REQUISITES_DATA: string;
+  readonly VITE_SAVE_REQUISITES_DATA: string;
+  readonly VITE_GET_BIK: string;
+  readonly VITE_DELETE_REQUISITE: string;
+  readonly VITE_YANDEX_GEO_KEY: string;
+  readonly VITE_GET_MAP_FIELD: string;
+  readonly VITE_POST_MAP_FIELD: string;
   // more env variables...
 }
 
