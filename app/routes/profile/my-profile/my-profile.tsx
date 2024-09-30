@@ -67,7 +67,7 @@ export default function MyProfile() {
             bold: false,
           }}
           backAction={() => {
-            navigate(-1);
+            navigate(withLocale("/profile"));
           }}
         />
 
@@ -326,7 +326,7 @@ export default function MyProfile() {
           ))}
         </List>
 
-        {data.result.section.find((item) => item.notification === false) ? (
+        {data.result.section.find((item) => item.notification === true) ? (
           <Box
             sx={{
               display: "flex",
