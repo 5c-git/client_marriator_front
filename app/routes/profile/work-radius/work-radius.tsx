@@ -114,21 +114,27 @@ export async function clientAction({ request }: ClientActionFunctionArgs) {
     return json({ reset: "reset" });
   }
 
+  if (clientGeoData.value === "") {
+    return json({ error: 400 });
+  }
+
   const yandexGeoData = await getGeoData(clientGeoData.value);
 
   if (accessToken) {
     if (yandexGeoData.response.GeoObjectCollection.featureMember.length !== 0) {
+      console.log(clientGeoData);
+
       await postSetMapField(
         accessToken,
         yandexGeoData.response.GeoObjectCollection.featureMember[0].GeoObject
           .metaDataProperty.GeocoderMetaData.text,
         yandexGeoData.response.GeoObjectCollection.featureMember[0].GeoObject
           .Point.pos,
-        clientGeoData.radius
+        clientGeoData.radius === "" ? null : clientGeoData.radius
       );
       return null;
     } else {
-      return json({ error: "Указанный адрес не удалось найти!" });
+      return json({ error: 404 });
     }
   } else {
     throw new Response("Токен авторизации не обнаружен!", { status: 401 });
@@ -194,6 +200,8 @@ export default function WorkRadius() {
 
   const debouncedRadiusFieldSubmit = debounce(
     (evt: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+      console.log(evt.target.value);
+
       fetcher.submit(
         JSON.stringify({
           value: `${coordinates[0]},${coordinates[1]}`,
@@ -407,7 +415,12 @@ export default function WorkRadius() {
             width: "100%",
           }}
         >
-          {t("WorkRadius.error_not-found")}
+          {fetcher.data && "error" in fetcher.data && fetcher.data.error === 400
+            ? t("WorkRadius.error_400")
+            : null}
+          {fetcher.data && "error" in fetcher.data && fetcher.data.error === 404
+            ? t("WorkRadius.error_404")
+            : null}
         </Alert>
       </Snackbar>
     </>

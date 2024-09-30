@@ -4,5 +4,6 @@
   "header_expl": "Set search criteria for tasks based on distance and travel time. Tasks are displayed based on real geolocation",
   "input_address": "Address",
   "input_radius": "Radius, km",
-  "error_not-found": "Unable to find provided address"
+  "error_404": "Unable to find provided address",
+  "error_400": "Address has to be provided"
 }
