@@ -45,6 +45,8 @@ const Slot = (props: SlotPropsWithError) => {
 export const StyledOptField = forwardRef((props: StyledOptField, ref) => (
   <Box sx={props.styles} ref={ref}>
     <OTPInput
+      // eslint-disable-next-line jsx-a11y/no-autofocus
+      autoFocus={true}
       maxLength={4}
       value={props.value}
       onChange={props.onChange}
