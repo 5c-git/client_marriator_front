@@ -14,7 +14,14 @@ import { circle } from "@turf/turf";
 import i18next, { t } from "i18next";
 import { withLocale } from "~/shared/withLocale";
 
-import { useTheme, Box, TextField, Snackbar, Alert } from "@mui/material";
+import {
+  useTheme,
+  Box,
+  TextField,
+  Snackbar,
+  Alert,
+  Typography,
+} from "@mui/material";
 import { TopNavigation } from "~/shared/ui/TopNavigation/TopNavigation";
 import { Loader } from "~/shared/ui/Loader/Loader";
 
@@ -159,8 +166,6 @@ export default function WorkRadius() {
     },
   });
 
-  console.log(language);
-
   useEffect(() => {
     setTimeout(() => {
       reset({
@@ -226,6 +231,35 @@ export default function WorkRadius() {
             paddingTop: "20px",
           }}
         >
+          <Box
+            sx={{
+              display: "grid",
+              rowGap: "8px",
+            }}
+          >
+            <Typography
+              component="h1"
+              variant="Reg_18"
+              sx={{
+                textAlign: "center",
+                color: theme.palette["Black"],
+              }}
+            >
+              {t("WorkRadius.header_text")}
+            </Typography>
+
+            <Typography
+              component="p"
+              variant="Reg_14"
+              sx={{
+                textAlign: "center",
+                color: theme.palette["Grey_2"],
+              }}
+            >
+              {t("WorkRadius.header_expl")}
+            </Typography>
+          </Box>
+
           <form
             style={{
               display: "grid",

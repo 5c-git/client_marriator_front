@@ -1,5 +1,7 @@
 {
   "header": "Task search radius",
+  "header_text": "Look for tasks close to home!",
+  "header_expl": "Set search criteria for tasks based on distance and travel time. Tasks are displayed based on real geolocation",
   "input_address": "Address",
   "input_radius": "Radius, km",
   "error_not-found": "Unable to find provided address"
