@@ -17,7 +17,7 @@
               "type": "number"
             },
             "name": {
-              "type": "null"
+              "type": ["null", "string"]
             },
             "email": {
               "type": "string"

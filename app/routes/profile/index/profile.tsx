@@ -109,7 +109,7 @@ export default function Profile() {
 
           {data.result.userData.name ? (
             <Typography component="p" variant="Bold_18">
-              Саенко Виталий Николаевич
+              {data.result.userData.name}
             </Typography>
           ) : null}
         </Stack>
