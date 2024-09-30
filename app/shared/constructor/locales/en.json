@@ -20,6 +20,7 @@
   "account_wrongValue": "Required field",
   "inn": "Required field",
   "inn_wrongValue": "Provide correct value",
+  "inn_wrongInn": "Provide correct INN",
   "snils": "Required field",
   "snils_wrongValue": "Provide correct value",
   "sms": "Required field",
