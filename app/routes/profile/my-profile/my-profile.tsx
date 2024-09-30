@@ -325,6 +325,36 @@ export default function MyProfile() {
             </ListItem>
           ))}
         </List>
+
+        {data.result.section.find((item) => item.notification === false) ? (
+          <Box
+            sx={{
+              display: "flex",
+              columnGap: "10px",
+              paddingTop: "10px",
+              paddingRight: "16px",
+              paddingLeft: "16px",
+              alignItems: "center",
+            }}
+          >
+            <BulletIcon
+              sx={{
+                width: "6px",
+                height: "6px",
+                color: theme.palette["Red"],
+              }}
+            />
+            <Typography
+              component="p"
+              variant="Reg_12"
+              sx={{
+                color: theme.palette["Grey_2"],
+              }}
+            >
+              {t("MyProfile.red-dot_text")}
+            </Typography>
+          </Box>
+        ) : null}
       </Box>
     </>
   );

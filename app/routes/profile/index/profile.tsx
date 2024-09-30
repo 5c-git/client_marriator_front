@@ -3,7 +3,6 @@ import {
   json,
   useLoaderData,
   useFetcher,
-  useNavigate,
   useNavigation,
   Link,
 } from "@remix-run/react";
@@ -69,7 +68,6 @@ export async function clientAction() {
 
 export default function Profile() {
   const theme = useTheme();
-  const navigate = useNavigate();
   const navigation = useNavigation();
 
   const data = useLoaderData<typeof clientLoader>();
@@ -122,8 +120,6 @@ export default function Profile() {
             }}
           >
             <ListItemButton
-              // disabled
-              // to={withLocale("/")}
               component={Link}
               to={withLocale("my-profile")}
               sx={{
@@ -150,13 +146,15 @@ export default function Profile() {
                 variant="Reg_16"
               >
                 {t("Profile.profile")}{" "}
-                <BulletIcon
-                  sx={{
-                    width: "6px",
-                    height: "6px",
-                    color: theme.palette["Red"],
-                  }}
-                />
+                {data.result.userData.errorData ? (
+                  <BulletIcon
+                    sx={{
+                      width: "6px",
+                      height: "6px",
+                      color: theme.palette["Red"],
+                    }}
+                  />
+                ) : null}
               </Typography>
             </ListItemButton>
             <Divider
