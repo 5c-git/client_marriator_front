@@ -51,7 +51,7 @@ export async function clientLoader() {
     const data = await queryClient.fetchQuery({
       queryKey: [getUserInfoKeys[0]],
       queryFn: () => getUserInfo(accessToken),
-      staleTime: 60000,
+      staleTime: 5000,
     });
 
     return json(data);
