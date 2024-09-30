@@ -57,7 +57,7 @@ const Сonstructor = ({ data }: { data: Inputs }) => {
   return (
     <form
       onSubmit={handleSubmit((values) => {
-        console.log(values);
+        console.log(`VALID ${values}`);
       })}
       style={{
         display: "grid",
@@ -169,11 +169,53 @@ type Story = StoryObj<typeof meta>;
 export const Primary: Story = {
   name: "Конструктор",
   args: {
-    url: "/new",
+    url: "/snils",
   },
   parameters: {
     msw: {
       handlers: [
+        http.get("/inn", async () => {
+          // await delay(2000);
+          return HttpResponse.json([
+            {
+              inputType: "inn",
+              name: "9nuDjP3c3Ule99uIiPArhyE1rssGHF",
+              value: "1",
+              label: "ИНН",
+              disabled: false,
+              validation: "default",
+              placeholder: "ИНН",
+              helperInfo: {
+                link: {
+                  path: "https://service.nalog.ru/inn.do",
+                  text: "Узнай свой ИНН",
+                  type: "external",
+                },
+              },
+            },
+          ]);
+        }),
+        http.get("/snils", async () => {
+          // await delay(2000);
+          return HttpResponse.json([
+            {
+              inputType: "snils",
+              name: "IloSAoeA5hNj6iKQuM3saaBSmw7nvC",
+              value: "",
+              label: "СНИЛС",
+              disabled: false,
+              validation: "default",
+              placeholder: "СНИЛС",
+              helperInfo: {
+                link: {
+                  path: "https://es.pfrf.ru/",
+                  text: "Электронные услуги и сервисы СФР",
+                  type: "external",
+                },
+              },
+            },
+          ]);
+        }),
         http.get("/auto", async () => {
           await delay(2000);
           return HttpResponse.json([

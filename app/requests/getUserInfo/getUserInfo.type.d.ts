@@ -9,7 +9,7 @@ export interface GetUserInfoSuccess {
   result: {
     userData: {
       id: number;
-      name: null;
+      name: null | string;
       email: string;
       email_verified_at: string | null;
       created_at: string;
@@ -27,8 +27,8 @@ export interface GetUserInfoSuccess {
       requisitesData: string | null;
       mapAddress: string;
       mapRadius: string;
-      coordinates: null;
-      updateData: null;
+      coordinates: null | string;
+      updateData: null | string;
     };
   };
   status: string;

@@ -14,7 +14,7 @@ export const postSetMapField = async (
   accessToken: string,
   mapAddress: string,
   coordinates: string,
-  mapRadius: string
+  mapRadius: string | null
 ): Promise<PostSetMapFieldSuccess> => {
   const url = new URL(import.meta.env.VITE_POST_MAP_FIELD);
 

@@ -59,7 +59,7 @@ export async function clientLoader({ request }: ClientActionFunctionArgs) {
 
 export async function clientAction({ request }: ClientActionFunctionArgs) {
   const currentURL = new URL(request.url);
-  const { _action, ...fields } = await request.json();
+  const { _action, currentTTL, ...fields } = await request.json();
 
   if (_action === "sendAgain") {
     const data = await postSendPhone(fields.phone);
@@ -79,6 +79,8 @@ export async function clientAction({ request }: ClientActionFunctionArgs) {
 
     if (data.status === "error") {
       currentURL.searchParams.set("error", "error");
+
+      currentURL.searchParams.set("ttl", currentTTL.toString());
 
       throw redirect(currentURL.toString());
     } else {
@@ -170,10 +172,17 @@ export default function Sms() {
                   error={errors.sms?.message}
                   placeholder={t("Sms.inputPlaceholder")}
                   onImmediateChange={handleSubmit((values) => {
-                    submit(JSON.stringify({ _action: "sendSms", ...values }), {
-                      method: "POST",
-                      encType: "application/json",
-                    });
+                    submit(
+                      JSON.stringify({
+                        _action: "sendSms",
+                        currentTTL: seconds,
+                        ...values,
+                      }),
+                      {
+                        method: "POST",
+                        encType: "application/json",
+                      }
+                    );
                   })}
                   {...field}
                 />

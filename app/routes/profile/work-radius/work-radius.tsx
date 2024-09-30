@@ -14,7 +14,14 @@ import { circle } from "@turf/turf";
 import i18next, { t } from "i18next";
 import { withLocale } from "~/shared/withLocale";
 
-import { useTheme, Box, TextField, Snackbar, Alert } from "@mui/material";
+import {
+  useTheme,
+  Box,
+  TextField,
+  Snackbar,
+  Alert,
+  Typography,
+} from "@mui/material";
 import { TopNavigation } from "~/shared/ui/TopNavigation/TopNavigation";
 import { Loader } from "~/shared/ui/Loader/Loader";
 
@@ -107,21 +114,27 @@ export async function clientAction({ request }: ClientActionFunctionArgs) {
     return json({ reset: "reset" });
   }
 
+  if (clientGeoData.value === "") {
+    return json({ error: 400 });
+  }
+
   const yandexGeoData = await getGeoData(clientGeoData.value);
 
   if (accessToken) {
     if (yandexGeoData.response.GeoObjectCollection.featureMember.length !== 0) {
+      console.log(clientGeoData);
+
       await postSetMapField(
         accessToken,
         yandexGeoData.response.GeoObjectCollection.featureMember[0].GeoObject
           .metaDataProperty.GeocoderMetaData.text,
         yandexGeoData.response.GeoObjectCollection.featureMember[0].GeoObject
           .Point.pos,
-        clientGeoData.radius
+        clientGeoData.radius === "" ? null : clientGeoData.radius
       );
       return null;
     } else {
-      return json({ error: "Указанный адрес не удалось найти!" });
+      return json({ error: 404 });
     }
   } else {
     throw new Response("Токен авторизации не обнаружен!", { status: 401 });
@@ -159,8 +172,6 @@ export default function WorkRadius() {
     },
   });
 
-  console.log(language);
-
   useEffect(() => {
     setTimeout(() => {
       reset({
@@ -189,6 +200,8 @@ export default function WorkRadius() {
 
   const debouncedRadiusFieldSubmit = debounce(
     (evt: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+      console.log(evt.target.value);
+
       fetcher.submit(
         JSON.stringify({
           value: `${coordinates[0]},${coordinates[1]}`,
@@ -226,6 +239,35 @@ export default function WorkRadius() {
             paddingTop: "20px",
           }}
         >
+          <Box
+            sx={{
+              display: "grid",
+              rowGap: "8px",
+            }}
+          >
+            <Typography
+              component="h1"
+              variant="Reg_18"
+              sx={{
+                textAlign: "center",
+                color: theme.palette["Black"],
+              }}
+            >
+              {t("WorkRadius.header_text")}
+            </Typography>
+
+            <Typography
+              component="p"
+              variant="Reg_14"
+              sx={{
+                textAlign: "center",
+                color: theme.palette["Grey_2"],
+              }}
+            >
+              {t("WorkRadius.header_expl")}
+            </Typography>
+          </Box>
+
           <form
             style={{
               display: "grid",
@@ -373,7 +415,12 @@ export default function WorkRadius() {
             width: "100%",
           }}
         >
-          {t("WorkRadius.error_not-found")}
+          {fetcher.data && "error" in fetcher.data && fetcher.data.error === 400
+            ? t("WorkRadius.error_400")
+            : null}
+          {fetcher.data && "error" in fetcher.data && fetcher.data.error === 404
+            ? t("WorkRadius.error_404")
+            : null}
         </Alert>
       </Snackbar>
     </>

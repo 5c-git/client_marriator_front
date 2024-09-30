@@ -180,14 +180,70 @@ const validationMap: {
     default: Yup.string()
       .default("")
       .length(12, t("Constructor.inn", { context: "wrongVaue" }))
-      .required(t("Constructor.inn")),
+      .required(t("Constructor.inn"))
+      .test(
+        "is-inn",
+        () => t("Constructor.inn", { context: "wrongInn" }),
+        (value) => {
+          const checkDigit = function (inn: string, coefficients) {
+            let n = 0;
+            for (const i in coefficients) {
+              n += coefficients[i] * inn[i];
+            }
+            return parseInt((n % 11) % 10);
+          };
+
+          const n10 = checkDigit(value, [2, 4, 10, 3, 5, 9, 4, 6, 8]);
+          const n11 = checkDigit(value, [7, 2, 4, 10, 3, 5, 9, 4, 6, 8]);
+          const n12 = checkDigit(value, [3, 7, 2, 4, 10, 3, 5, 9, 4, 6, 8]);
+
+          switch (value.length) {
+            case 10:
+              if (n10 === parseInt(value[9])) {
+                return true;
+              }
+              break;
+            case 12:
+              if (n11 === parseInt(value[10]) && n12 === parseInt(value[11])) {
+                return true;
+              }
+              break;
+          }
+
+          return false;
+        }
+      ),
   },
   snils: {
     none: Yup.string().default("").notRequired(),
     default: Yup.string()
       .default("")
       .length(11, t("Constructor.snils", { context: "wrongVaue" }))
-      .required(t("Constructor.snils")),
+      .required(t("Constructor.snils"))
+      .test(
+        "is-snils",
+        () => t("Constructor.snils", { context: "wrongSnils" }),
+        (value) => {
+          let sum = 0;
+          for (let i = 0; i < 9; i++) {
+            sum += parseInt(value[i]) * (9 - i);
+          }
+          let checkDigit = 0;
+          if (sum < 100) {
+            checkDigit = sum;
+          } else if (sum > 101) {
+            checkDigit = parseInt(sum % 101);
+            if (checkDigit === 100) {
+              checkDigit = 0;
+            }
+          }
+          if (checkDigit === parseInt(value.slice(-2))) {
+            return true;
+          } else {
+            return false;
+          }
+        }
+      ),
   },
   sms: {
     none: Yup.string().default("").notRequired(),

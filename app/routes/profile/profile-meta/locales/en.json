@@ -4,5 +4,6 @@
   "dialog_email": "Email number must be confirmed",
   "dialog_button": "Confirm",
   "error_emailAlreadyExists": "Provided email is assigned to another user or is incorrect",
-  "error_phoneAlreadyExists": "Provided phone is assigned to another user or is incorrect"
+  "error_phoneAlreadyExists": "Provided phone is assigned to another user or is incorrect",
+  "field_phone": "Phone"
 }

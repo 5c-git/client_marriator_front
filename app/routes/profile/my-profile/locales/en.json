@@ -3,5 +3,6 @@
   "listItem_base": "Base profile data",
   "user_activities": "Activities",
   "billing": "Billing",
-  "work-radius": "Work radius"
+  "work-radius": "Work radius",
+  "red-dot_text": "The red dot shows the sections that need to be filled out."
 }

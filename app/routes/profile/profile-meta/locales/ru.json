@@ -4,5 +4,6 @@
   "dialog_email": "Email необходимо подтвердить",
   "dialog_button": "Подтвердить",
   "error_emailAlreadyExists": "Данный email присвоен другому пользователю или неверен",
-  "error_phoneAlreadyExists": "Данный номер телефона присвоен другому пользователю или неверен"
+  "error_phoneAlreadyExists": "Данный номер телефона присвоен другому пользователю или неверен",
+  "field_phone": "Телефон"
 }

@@ -73,7 +73,7 @@ export async function clientAction({ request }: ClientActionFunctionArgs) {
       await setUserEmail(fields.email);
       const newEmailData = await postPersonalSetUserEmail(
         accessToken,
-        fields.email,
+        fields.email
       );
       if (newEmailData.status === "error") {
         return json({ error: "emailAlreadyExists" });
@@ -128,7 +128,7 @@ export default function ProfileMeta() {
           .default("")
           .matches(emailRegExp, t("Constructor.email_wrongValue"))
           .required(t("Constructor.email")),
-      }),
+      })
     ),
     mode: "onChange",
     shouldUnregister: true,
@@ -144,7 +144,7 @@ export default function ProfileMeta() {
         },
         {
           keepErrors: false,
-        },
+        }
       );
     });
   }, [photo, phone, email, reset, getValues]);
@@ -199,7 +199,7 @@ export default function ProfileMeta() {
                       {
                         method: "POST",
                         encType: "application/json",
-                      },
+                      }
                     );
                   }}
                   validation="default"
@@ -219,7 +219,7 @@ export default function ProfileMeta() {
             render={({ field }) => (
               <StyledPhoneField
                 inputType="phone"
-                placeholder="Phone"
+                placeholder={t("ProfileMeta.field_phone")}
                 onImmediateChange={() => {}}
                 validation="default"
                 inputStyles={{
@@ -301,7 +301,7 @@ export default function ProfileMeta() {
               {
                 method: "POST",
                 encType: "application/json",
-              },
+              }
             );
             setOpenPhoneDialog(false);
           }}
@@ -345,7 +345,7 @@ export default function ProfileMeta() {
               {
                 method: "POST",
                 encType: "application/json",
-              },
+              }
             );
             setOpenEmailDialog(false);
           }}
@@ -368,7 +368,7 @@ export default function ProfileMeta() {
             {
               method: "POST",
               encType: "application/json",
-            },
+            }
           );
         }}
       >
