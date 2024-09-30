@@ -62,7 +62,7 @@ export async function clientAction({ request }: ClientActionFunctionArgs) {
   const params = new URLSearchParams();
   const accessToken = await getAccessToken();
 
-  const { _action, ...fields } = await request.json();
+  const { _action, currentTTL, ...fields } = await request.json();
 
   if (accessToken) {
     if (_action === "sendAgain") {
@@ -89,6 +89,8 @@ export async function clientAction({ request }: ClientActionFunctionArgs) {
 
       if (data.status === "error") {
         currentURL.searchParams.set("error", "error");
+
+        currentURL.searchParams.set("ttl", currentTTL.toString());
 
         throw redirect(currentURL.toString());
       }
@@ -173,10 +175,17 @@ export default function СonfirmRestorePin() {
                   error={errors.code?.message}
                   placeholder={t("ConfirmRestorePin.inputPlaceholder")}
                   onImmediateChange={handleSubmit((values) => {
-                    submit(JSON.stringify({ _action: "sendCode", ...values }), {
-                      method: "POST",
-                      encType: "application/json",
-                    });
+                    submit(
+                      JSON.stringify({
+                        _action: "sendCode",
+                        currentTTL: seconds,
+                        ...values,
+                      }),
+                      {
+                        method: "POST",
+                        encType: "application/json",
+                      }
+                    );
                   })}
                   {...field}
                 />

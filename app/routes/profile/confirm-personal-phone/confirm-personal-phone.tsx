@@ -60,7 +60,7 @@ export async function clientAction({ request }: ClientActionFunctionArgs) {
   const currentURL = new URL(request.url);
   const accessToken = await getAccessToken();
 
-  const { _action, ...fields } = await request.json();
+  const { _action, currentTTL, ...fields } = await request.json();
 
   if (accessToken) {
     if (_action === "sendAgain") {
@@ -74,18 +74,26 @@ export async function clientAction({ request }: ClientActionFunctionArgs) {
     } else if (_action === "sendCode") {
       const phone = await getUserPhone();
 
-      const data = await postConfirmChangeUserPhone(
-        accessToken,
-        phone,
-        fields.code,
-      );
+      if (phone) {
+        const data = await postConfirmChangeUserPhone(
+          accessToken,
+          phone,
+          fields.code
+        );
 
-      if (data.status === "error") {
-        currentURL.searchParams.set("error", "error");
+        if (data.status === "error") {
+          currentURL.searchParams.set("error", "error");
 
-        throw redirect(currentURL.toString());
+          currentURL.searchParams.set("ttl", currentTTL.toString());
+
+          throw redirect(currentURL.toString());
+        } else {
+          throw redirect(withLocale("/profile/profile-meta"));
+        }
       } else {
-        throw redirect(withLocale("/profile/profile-meta"));
+        throw new Response("Телефон пользователя не обнаружен!", {
+          status: 401,
+        });
       }
     }
   } else {
@@ -168,10 +176,17 @@ export default function СonfirmPersonalPhone() {
                   error={errors.code?.message}
                   placeholder={t("ConfirmPersonalPhone.inputPlaceholder")}
                   onImmediateChange={handleSubmit((values) => {
-                    submit(JSON.stringify({ _action: "sendCode", ...values }), {
-                      method: "POST",
-                      encType: "application/json",
-                    });
+                    submit(
+                      JSON.stringify({
+                        _action: "sendCode",
+                        currentTTL: seconds,
+                        ...values,
+                      }),
+                      {
+                        method: "POST",
+                        encType: "application/json",
+                      }
+                    );
                   })}
                   {...field}
                 />
@@ -196,7 +211,7 @@ export default function СonfirmPersonalPhone() {
                 {
                   method: "POST",
                   encType: "application/json",
-                },
+                }
               );
             }}
           >
