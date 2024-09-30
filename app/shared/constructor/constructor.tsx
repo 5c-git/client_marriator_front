@@ -219,7 +219,31 @@ const validationMap: {
     default: Yup.string()
       .default("")
       .length(11, t("Constructor.snils", { context: "wrongVaue" }))
-      .required(t("Constructor.snils")),
+      .required(t("Constructor.snils"))
+      .test(
+        "is-snils",
+        () => t("Constructor.snils", { context: "wrongSnils" }),
+        (value) => {
+          let sum = 0;
+          for (let i = 0; i < 9; i++) {
+            sum += parseInt(value[i]) * (9 - i);
+          }
+          let checkDigit = 0;
+          if (sum < 100) {
+            checkDigit = sum;
+          } else if (sum > 101) {
+            checkDigit = parseInt(sum % 101);
+            if (checkDigit === 100) {
+              checkDigit = 0;
+            }
+          }
+          if (checkDigit === parseInt(value.slice(-2))) {
+            return true;
+          } else {
+            return false;
+          }
+        }
+      ),
   },
   sms: {
     none: Yup.string().default("").notRequired(),

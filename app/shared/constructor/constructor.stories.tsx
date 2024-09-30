@@ -169,7 +169,7 @@ type Story = StoryObj<typeof meta>;
 export const Primary: Story = {
   name: "Конструктор",
   args: {
-    url: "/inn",
+    url: "/snils",
   },
   parameters: {
     msw: {
@@ -189,6 +189,27 @@ export const Primary: Story = {
                 link: {
                   path: "https://service.nalog.ru/inn.do",
                   text: "Узнай свой ИНН",
+                  type: "external",
+                },
+              },
+            },
+          ]);
+        }),
+        http.get("/snils", async () => {
+          // await delay(2000);
+          return HttpResponse.json([
+            {
+              inputType: "snils",
+              name: "IloSAoeA5hNj6iKQuM3saaBSmw7nvC",
+              value: "",
+              label: "СНИЛС",
+              disabled: false,
+              validation: "default",
+              placeholder: "СНИЛС",
+              helperInfo: {
+                link: {
+                  path: "https://es.pfrf.ru/",
+                  text: "Электронные услуги и сервисы СФР",
                   type: "external",
                 },
               },
