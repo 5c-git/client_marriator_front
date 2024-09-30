@@ -87,9 +87,6 @@ export default function Profile() {
             text: t("Profile.header"),
             bold: false,
           }}
-          backAction={() => {
-            navigate(-1);
-          }}
         />
 
         <Stack
