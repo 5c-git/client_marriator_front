@@ -18,6 +18,7 @@
   "email_wrongValue": "Provide correct e-mail",
   "account": "Required field",
   "account_wrongValue": "Required field",
+  "account_wrongAccount": "Provide correct account",
   "inn": "Required field",
   "inn_wrongValue": "Provide correct value",
   "inn_wrongInn": "Provide correct INN",

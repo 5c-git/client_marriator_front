@@ -18,6 +18,7 @@
   "email_wrongValue": "Укажите корректный e-mail",
   "account": "Обязательное поле",
   "account_wrongValue": "Укажите корректное значение",
+  "account_wrongAccount": "Укажите корректный счёт",
   "inn": "Обязательное поле",
   "inn_wrongValue": "Укажите корректное значение",
   "inn_wrongInn": "Укажите корректный ИНН",
