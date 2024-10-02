@@ -16,5 +16,5 @@ export const ClipIcon = createSvgIcon(
       strokeLinejoin="round"
     />
   </svg>,
-  "ClipIcon",
+  "ClipIcon"
 );

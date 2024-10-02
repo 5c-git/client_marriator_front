@@ -30,5 +30,5 @@ export const DownloadIcon = createSvgIcon(
       strokeLinejoin="round"
     />
   </svg>,
-  "DownloadIcon",
+  "DownloadIcon"
 );

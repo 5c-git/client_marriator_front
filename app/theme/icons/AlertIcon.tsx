@@ -30,5 +30,5 @@ export const AlertIcon = createSvgIcon(
       strokeLinejoin="round"
     />
   </svg>,
-  "AlertIcon",
+  "AlertIcon"
 );
