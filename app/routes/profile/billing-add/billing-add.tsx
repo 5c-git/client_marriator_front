@@ -89,6 +89,28 @@ export default function BillingAdd() {
         bik: Yup.string().required(t("Constructor.autocomplete")),
         account: Yup.string()
           .default("")
+          // .test(
+          //   "is-account",
+          //   () => t("Constructor.account", { context: "wrongAccount" }),
+          //   (value, context) => {
+          //     const { bik } = context.parent;
+
+          //     const bikRs = "0" + bik.slice(4, -3) + value;
+          //     let checksum = 0;
+          //     const coefficients = [
+          //       7, 1, 3, 7, 1, 3, 7, 1, 3, 7, 1, 3, 7, 1, 3, 7, 1, 3, 7, 1, 3,
+          //       7, 1,
+          //     ];
+          //     for (const i in coefficients) {
+          //       checksum += coefficients[i] * (Number(bikRs[i]) % 10);
+          //     }
+          //     if (checksum % 10 === 0) {
+          //       return true;
+          //     }
+
+          //     return false;
+          //   }
+          // )
           .length(20, t("Constructor.account_wrongValue"))
           .required(t("Constructor.account")),
         card: Yup.string()

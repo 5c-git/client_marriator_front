@@ -44,18 +44,18 @@ export const mockResponseSuccess = {
   result: {
     bankData: [
       {
-        value: "sber1",
-        label: "4324234423 - Сбербанк",
+        value: "044535974",
+        label: "Неверный БИК",
         disabled: false,
       },
       {
-        value: "alfa2",
-        label: "343242234 - АльфаБанк",
+        value: "044525974",
+        label: "Тинькофф",
         disabled: false,
       },
       {
-        value: "directory_bank_qvaF529W1qOjnHSwKv32TiFCXgloVS",
-        label: '044599810 - "ИНТЕРАКТИВНЫЙ БАНК" (ООО)',
+        value: "044525225",
+        label: "Сбербанк",
         disabled: false,
       },
     ],

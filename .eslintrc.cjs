@@ -35,6 +35,7 @@ module.exports = {
         "plugin:react-hooks/recommended",
         "plugin:jsx-a11y/recommended",
       ],
+
       settings: {
         react: {
           version: "detect",
@@ -81,4 +82,7 @@ module.exports = {
       },
     },
   ],
+  rules: {
+    "react/no-unknown-property": ["error", { ignore: ["sx"] }],
+  },
 };

@@ -42,7 +42,7 @@ export async function clientLoader({ request }: ClientActionFunctionArgs) {
     const data = await getUserFields(accessToken, section);
 
     const curentSection = data.result.section.find(
-      (item) => item.value === Number(section),
+      (item) => item.value === Number(section)
     );
 
     return json({
@@ -135,7 +135,7 @@ export default function ProfileEdit() {
             setValue,
             trigger,
             () => {},
-            accessToken,
+            accessToken
           )}
 
           <Box

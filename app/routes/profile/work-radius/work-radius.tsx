@@ -118,6 +118,10 @@ export async function clientAction({ request }: ClientActionFunctionArgs) {
     return json({ error: 400 });
   }
 
+  if (clientGeoData.radius === "") {
+    return json({ error: 402 });
+  }
+
   const yandexGeoData = await getGeoData(clientGeoData.value);
 
   if (accessToken) {
@@ -130,7 +134,7 @@ export async function clientAction({ request }: ClientActionFunctionArgs) {
           .metaDataProperty.GeocoderMetaData.text,
         yandexGeoData.response.GeoObjectCollection.featureMember[0].GeoObject
           .Point.pos,
-        clientGeoData.radius === "" ? null : clientGeoData.radius
+        clientGeoData.radius
       );
       return null;
     } else {
@@ -417,6 +421,9 @@ export default function WorkRadius() {
         >
           {fetcher.data && "error" in fetcher.data && fetcher.data.error === 400
             ? t("WorkRadius.error_400")
+            : null}
+          {fetcher.data && "error" in fetcher.data && fetcher.data.error === 402
+            ? t("WorkRadius.error_402")
             : null}
           {fetcher.data && "error" in fetcher.data && fetcher.data.error === 404
             ? t("WorkRadius.error_404")

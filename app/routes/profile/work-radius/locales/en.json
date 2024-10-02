@@ -5,5 +5,6 @@
   "input_address": "Address",
   "input_radius": "Radius, km",
   "error_404": "Unable to find provided address",
-  "error_400": "Address has to be provided"
+  "error_400": "Address has to be provided",
+  "error_402": "Radius has to be provided"
 }
