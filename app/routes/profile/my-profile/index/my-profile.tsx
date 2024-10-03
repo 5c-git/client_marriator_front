@@ -89,7 +89,7 @@ export default function MyProfile() {
           >
             <ListItemButton
               component={Link}
-              to={`${withLocale("/profile/profile-meta")}`}
+              to={`${withLocale("/profile/my-profile/profile-meta")}`}
               sx={{
                 display: "flex",
                 padding: "16px 0px",
@@ -135,7 +135,7 @@ export default function MyProfile() {
           >
             <ListItemButton
               component={Link}
-              to={`${withLocale("/profile/user-activities?step=1")}`}
+              to={`${withLocale("/profile/my-profile/user-activities?step=1")}`}
               sx={{
                 display: "flex",
                 padding: "16px 0px",
@@ -181,7 +181,7 @@ export default function MyProfile() {
           >
             <ListItemButton
               component={Link}
-              to={`${withLocale("/profile/billing")}`}
+              to={`${withLocale("/profile/my-profile/billing")}`}
               sx={{
                 display: "flex",
                 padding: "16px 0px",
@@ -227,7 +227,7 @@ export default function MyProfile() {
           >
             <ListItemButton
               component={Link}
-              to={`${withLocale("/profile/work-radius")}`}
+              to={`${withLocale("/profile/my-profile/work-radius")}`}
               sx={{
                 display: "flex",
                 padding: "16px 0px",
@@ -276,7 +276,7 @@ export default function MyProfile() {
               <ListItemButton
                 component={Link}
                 to={{
-                  pathname: `${withLocale("/profile/profile-edit")}`,
+                  pathname: `${withLocale("/profile/my-profile/profile-edit")}`,
                   search: `?section=${item.value}`,
                 }}
                 sx={{

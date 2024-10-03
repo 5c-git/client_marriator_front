@@ -225,9 +225,8 @@ export default function Profile() {
             }}
           >
             <ListItemButton
-              disabled
               component={Link}
-              to="/"
+              to={withLocale("documents")}
               sx={{
                 padding: "16px 0px",
                 columnGap: "12px",

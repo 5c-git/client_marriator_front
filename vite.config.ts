@@ -29,43 +29,48 @@ export default defineConfig({
                 route(":lang?/profile", "routes/profile/index/profile.tsx");
                 route(
                   ":lang?/profile/my-profile",
-                  "routes/profile/my-profile/my-profile.tsx"
+                  "routes/profile/my-profile/index/my-profile.tsx"
+                );
+
+                route(
+                  ":lang?/profile/my-profile/profile-edit",
+                  "routes/profile/my-profile/profile-edit/profile-edit.tsx"
                 );
                 route(
-                  ":lang?/profile/profile-meta",
-                  "routes/profile/profile-meta/profile-meta.tsx"
+                  ":lang?/profile/my-profile/profile-meta",
+                  "routes/profile/my-profile/profile-meta/index/profile-meta.tsx"
                 );
                 route(
-                  ":lang?/profile/profile-edit",
-                  "routes/profile/profile-edit/profile-edit.tsx"
+                  ":lang?/profile/my-profile/profile-meta/confirm-personal-email",
+                  "routes/profile/my-profile/profile-meta/confirm-personal-email/confirm-personal-email.tsx"
                 );
                 route(
-                  ":lang?/profile/confirm-personal-email",
-                  "routes/profile/confirm-personal-email/confirm-personal-email.tsx"
+                  ":lang?/profile/my-profile/profile-meta/confirm-personal-phone",
+                  "routes/profile/my-profile/profile-meta/confirm-personal-phone/confirm-personal-phone.tsx"
                 );
                 route(
-                  ":lang?/profile/confirm-personal-phone",
-                  "routes/profile/confirm-personal-phone/confirm-personal-phone.tsx"
+                  ":lang?/profile/my-profile/user-activities",
+                  "routes/profile/my-profile/user-activities/user-activities.tsx"
                 );
                 route(
-                  ":lang?/profile/user-activities",
-                  "routes/profile/user-activities/user-activities.tsx"
+                  ":lang?/profile/my-profile/billing",
+                  "routes/profile/my-profile/billing/index/billing.tsx"
                 );
                 route(
-                  ":lang?/profile/billing",
-                  "routes/profile/billing/billing.tsx"
+                  ":lang?/profile/my-profile/billing/billing-add",
+                  "routes/profile/my-profile/billing/billing-add/billing-add.tsx"
                 );
                 route(
-                  ":lang?/profile/billing-add",
-                  "routes/profile/billing-add/billing-add.tsx"
+                  ":lang?/profile/my-profile/billing/billing-edit",
+                  "routes/profile/my-profile/billing/billing-edit/billing-edit.tsx"
                 );
                 route(
-                  ":lang?/profile/billing-edit",
-                  "routes/profile/billing-edit/billing-edit.tsx"
+                  ":lang?/profile/my-profile/work-radius",
+                  "routes/profile/my-profile/work-radius/work-radius.tsx"
                 );
                 route(
-                  ":lang?/profile/work-radius",
-                  "routes/profile/work-radius/work-radius.tsx"
+                  ":lang?/profile/documents",
+                  "routes/profile/documents/index/documents.tsx"
                 );
               });
 

@@ -10,7 +10,7 @@ import MenuLayout from "~/routes/menuLayout/menuLayout";
 import { json } from "@remix-run/react";
 
 const meta = {
-  title: "Страницы/Внутренние/Профиль/Редактирование профиля",
+  title: "Страницы/Внутренние/Профиль/Мой профиль/Редактирование профиля",
   component: ProfileEdit,
   tags: ["autodocs"],
   parameters: {
@@ -21,7 +21,7 @@ const meta = {
       page: () => (
         <>
           <DocBlock.Title />
-          <h2>Адрес страницы: /profile/profile-edit</h2>
+          <h2>Адрес страницы: /profile/my-profile/profile-edit</h2>
           <h3>Используемые запросы:</h3>
           <p>
             getUserFields() - VITE_GET_USER_FIELDS -{" "}

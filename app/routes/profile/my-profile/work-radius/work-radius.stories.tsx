@@ -17,7 +17,7 @@ import {
 import { json } from "@remix-run/react";
 
 const meta = {
-  title: "Страницы/Внутренние/Профиль/Радиус поиска",
+  title: "Страницы/Внутренние/Профиль/Мой профиль/Радиус поиска",
   component: WorkRadius,
   tags: ["autodocs"],
   decorators: [withRouter],
@@ -29,7 +29,7 @@ const meta = {
       page: () => (
         <>
           <DocBlock.Title />
-          <h2>Адрес страницы: /profile/work-radius</h2>
+          <h2>Адрес страницы: /profile/my-profile/work-radius</h2>
           <h3>Используемые запросы:</h3>
           <p>
             getMapField() - VITE_GET_MAP_FIELD -{" "}

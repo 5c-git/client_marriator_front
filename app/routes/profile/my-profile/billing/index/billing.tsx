@@ -50,7 +50,7 @@ export default function Billing() {
           buttonAction={{
             text: t("Billing.header_action"),
             action: () => {
-              navigate(withLocale("/profile/billing-add"));
+              navigate(withLocale("/profile/my-profile/billing/billing-add"));
             },
           }}
           backAction={() => {
@@ -186,12 +186,15 @@ export default function Billing() {
                 <Button
                   variant="outlined"
                   onClick={() => {
-                    navigate(withLocale("/profile/billing-edit"), {
-                      state: {
-                        dataId: index,
-                        ...item,
-                      },
-                    });
+                    navigate(
+                      withLocale("/profile/my-profile/billing/billing-edit"),
+                      {
+                        state: {
+                          dataId: index,
+                          ...item,
+                        },
+                      }
+                    );
                   }}
                 >
                   {t("Billing.button_edit")}

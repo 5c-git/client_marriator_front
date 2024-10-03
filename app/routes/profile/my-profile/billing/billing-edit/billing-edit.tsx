@@ -7,6 +7,7 @@ import {
   redirect,
   json,
   useLoaderData,
+  useLocation,
 } from "@remix-run/react";
 
 import * as Yup from "yup";
@@ -31,6 +32,7 @@ import { StyledAutocomplete } from "~/shared/ui/StyledAutocomplete/StyledAutocom
 import { getAccessToken } from "~/preferences/token/token";
 import { getBik } from "~/requests/getBik/getBik";
 import { postSaveRequisitesData } from "~/requests/postSaveRequisitesData/postSaveRequisitesData";
+import { postDeleteRequisite } from "~/requests/postDeleteRequisite/postDeleteRequisite";
 
 export async function clientLoader() {
   const accessToken = await getAccessToken();
@@ -45,26 +47,51 @@ export async function clientLoader() {
 }
 
 export async function clientAction({ request }: ClientActionFunctionArgs) {
-  const fields = await request.json();
+  const { _action, dataId, ...fields } = await request.json();
   const accessToken = await getAccessToken();
 
   if (accessToken) {
-    await postSaveRequisitesData(accessToken, fields, -1);
+    if (_action === "saveChanges") {
+      await postSaveRequisitesData(accessToken, fields, dataId);
 
-    throw redirect(withLocale(`/profile/billing`));
+      throw redirect(withLocale(`/profile/my-profile/billing`));
+    } else if (_action === "delete") {
+      await postDeleteRequisite(accessToken, dataId);
+
+      throw redirect(withLocale(`/profile/my-profile/billing`));
+    }
   } else {
     throw new Response("Токен авторизации не обнаружен!", { status: 401 });
   }
 }
 
-export default function BillingAdd() {
+type BillingInfo = {
+  dataId: number;
+  bik: string;
+  fio: string;
+  card: string;
+  account: string;
+  cardDue: string;
+  confidant: boolean;
+  payWithCard: string;
+};
+
+export default function BillingEdit() {
   const submit = useSubmit();
   const navigate = useNavigate();
   const navigation = useNavigation();
+  const location = useLocation();
 
   const { bikOptions } = useLoaderData<typeof clientLoader>();
 
   const [openDialog, setOpenDialog] = useState<boolean>(false);
+  const [openDelete, setOpenDelete] = useState<boolean>(false);
+
+  const passedBillingInfo: BillingInfo = location.state;
+
+  const bikMatch = bikOptions.find(
+    (item) => item.value === passedBillingInfo.bik
+  );
 
   const {
     control,
@@ -73,14 +100,13 @@ export default function BillingAdd() {
     formState: { errors },
   } = useForm({
     defaultValues: {
-      confidant: false,
-      fio: "",
-      bik: "",
-      account: "",
-      card: "",
-      payWithCard: "yes",
-      // @ts-expect-error wrong automatic type narroing
-      cardDue: null,
+      confidant: passedBillingInfo.confidant,
+      fio: passedBillingInfo.fio,
+      bik: bikMatch ? bikMatch.value : "",
+      account: passedBillingInfo.account,
+      card: passedBillingInfo.card,
+      payWithCard: passedBillingInfo.payWithCard,
+      cardDue: passedBillingInfo.cardDue,
     },
     resolver: yupResolver(
       Yup.object({
@@ -156,11 +182,11 @@ export default function BillingAdd() {
       >
         <TopNavigation
           header={{
-            text: t("BillingAdd.header"),
+            text: t("BillingEdit.header"),
             bold: false,
           }}
           backAction={() => {
-            navigate(withLocale("/profile/billing"));
+            navigate(withLocale("/profile/my-profile/billing"));
           }}
         />
 
@@ -187,7 +213,7 @@ export default function BillingAdd() {
               render={({ field }) => (
                 <StyledCheckbox
                   inputType="checkbox"
-                  label={t("BillingAdd.placeholder_checkbox")}
+                  label={t("BillingEdit.placeholder_checkbox")}
                   onImmediateChange={() => {}}
                   validation="none"
                   error={errors.confidant?.message}
@@ -201,7 +227,7 @@ export default function BillingAdd() {
               render={({ field }) => (
                 <StyledTextField
                   inputType="text"
-                  placeholder={t("BillingAdd.placeholder_fio")}
+                  placeholder={t("BillingEdit.placeholder_fio")}
                   onImmediateChange={() => {}}
                   validation="none"
                   error={errors.fio?.message}
@@ -215,7 +241,7 @@ export default function BillingAdd() {
               render={({ field }) => (
                 <StyledAutocomplete
                   inputType="autocomplete"
-                  placeholder={t("BillingAdd.placeholder_bik")}
+                  placeholder={t("BillingEdit.placeholder_bik")}
                   onImmediateChange={() => {}}
                   validation="none"
                   options={bikOptions}
@@ -230,7 +256,7 @@ export default function BillingAdd() {
               render={({ field }) => (
                 <StyledAccountField
                   inputType="account"
-                  placeholder={t("BillingAdd.placeholder_account")}
+                  placeholder={t("BillingEdit.placeholder_account")}
                   onImmediateChange={() => {}}
                   validation="none"
                   error={errors.account?.message}
@@ -244,7 +270,7 @@ export default function BillingAdd() {
               render={({ field }) => (
                 <StyledCardField
                   inputType="card"
-                  placeholder={t("BillingAdd.placeholder_card")}
+                  placeholder={t("BillingEdit.placeholder_card")}
                   onImmediateChange={() => {}}
                   validation="none"
                   error={errors.card?.message}
@@ -261,16 +287,16 @@ export default function BillingAdd() {
                   onImmediateChange={() => {}}
                   validation="none"
                   error={errors.payWithCard?.message}
-                  heading={t("BillingAdd.placeholder_payWithCard")}
+                  heading={t("BillingEdit.placeholder_payWithCard")}
                   options={[
                     {
                       disabled: false,
-                      label: t("BillingAdd.button_yes"),
+                      label: t("BillingEdit.button_yes"),
                       value: "yes",
                     },
                     {
                       disabled: false,
-                      label: t("BillingAdd.button_no"),
+                      label: t("BillingEdit.button_no"),
                       value: "no",
                     },
                   ]}
@@ -284,7 +310,7 @@ export default function BillingAdd() {
               render={({ field }) => (
                 <StyledMonthField
                   inputType="month"
-                  placeholder={t("BillingAdd.placeholder_cardDue")}
+                  placeholder={t("BillingEdit.placeholder_cardDue")}
                   onImmediateChange={() => {}}
                   validation="none"
                   error={errors.cardDue?.message}
@@ -316,13 +342,40 @@ export default function BillingAdd() {
                 setOpenDialog(true);
               }}
             >
-              {t("BillingAdd.button_cancel")}
+              {t("BillingEdit.button_cancel")}
             </Button>
 
-            <Button type="submit" variant="contained">
-              {t("BillingAdd.button_save")}
+            <Button
+              type="button"
+              onClick={handleSubmit((values) => {
+                submit(
+                  JSON.stringify({
+                    _action: "saveChanges",
+                    dataId: passedBillingInfo.dataId,
+                    ...values,
+                  }),
+                  {
+                    method: "POST",
+                    encType: "application/json",
+                  }
+                );
+              })}
+              variant="contained"
+            >
+              {t("BillingEdit.button_save")}
             </Button>
           </Box>
+
+          <Button
+            onClick={() => {
+              setOpenDelete(true);
+            }}
+            sx={{
+              marginTop: "16px",
+            }}
+          >
+            {t("BillingEdit.button_delete")}
+          </Button>
         </form>
       </Box>
 
@@ -343,7 +396,7 @@ export default function BillingAdd() {
             padding: 0,
           }}
         >
-          {t("BillingAdd.dialog_title")}
+          {t("BillingEdit.dialog_title")}
         </DialogTitle>
 
         <Box
@@ -361,7 +414,7 @@ export default function BillingAdd() {
               marginTop: "16px",
             }}
           >
-            {t("BillingAdd.button_no")}
+            {t("BillingEdit.button_no")}
           </Button>
           <Button
             variant="contained"
@@ -373,7 +426,69 @@ export default function BillingAdd() {
               marginTop: "16px",
             }}
           >
-            {t("BillingAdd.button_yes")}
+            {t("BillingEdit.button_yes")}
+          </Button>
+        </Box>
+      </Dialog>
+
+      <Dialog
+        open={openDelete}
+        onClose={() => {
+          setOpenDelete(false);
+        }}
+        sx={{
+          "& .MuiDialog-paper": {
+            padding: "16px",
+            borderRadius: "8px",
+          },
+        }}
+      >
+        <DialogTitle
+          sx={{
+            padding: 0,
+          }}
+        >
+          {t("BillingEdit.delete_title")}
+        </DialogTitle>
+
+        <Box
+          sx={{
+            display: "flex",
+            columnGap: "8px",
+          }}
+        >
+          <Button
+            variant="outlined"
+            onClick={() => {
+              setOpenDelete(false);
+            }}
+            sx={{
+              marginTop: "16px",
+            }}
+          >
+            {t("BillingEdit.button_no")}
+          </Button>
+          <Button
+            variant="contained"
+            onClick={() => {
+              setOpenDelete(false);
+
+              submit(
+                JSON.stringify({
+                  _action: "delete",
+                  dataId: passedBillingInfo.dataId,
+                }),
+                {
+                  method: "POST",
+                  encType: "application/json",
+                }
+              );
+            }}
+            sx={{
+              marginTop: "16px",
+            }}
+          >
+            {t("BillingEdit.button_yes")}
           </Button>
         </Box>
       </Dialog>

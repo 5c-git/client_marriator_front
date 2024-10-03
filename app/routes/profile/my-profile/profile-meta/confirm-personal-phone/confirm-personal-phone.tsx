@@ -30,30 +30,30 @@ import { StyledSmsField } from "~/shared/ui/StyledSmsField/StyledSmsField";
 import { TopNavigation } from "~/shared/ui/TopNavigation/TopNavigation";
 import { Loader } from "~/shared/ui/Loader/Loader";
 
-import { getUserEmail } from "~/preferences/userEmail/userEmail";
+import { getUserPhone } from "~/preferences/userPhone/userPhone";
 import { getAccessToken } from "~/preferences/token/token";
 
-import { postPersonalSetUserEmail } from "~/requests/postPersonalSetUserEmail/postPersonalSetUserEmail";
-import { postPersonalCheckEmailCode } from "~/requests/postPersonalCheckEmailCode/postPersonalCheckEmailCode";
+import { postChangeUserPhone } from "~/requests/postChangeUserPhone/postChangeUserPhone";
+import { postConfirmChangeUserPhone } from "~/requests/postConfirmChangeUserPhone/postConfirmChangeUserPhone";
 
 const validationSchema = Yup.object().shape({
   code: Yup.string()
     .default("")
-    .length(4, t("ConfirmPersonalEmail.inputValidation", { context: "lenght" }))
-    .required(t("ConfirmPersonalEmail.inputValidation")),
+    .length(4, t("ConfirmPersonalPhone.inputValidation", { context: "lenght" }))
+    .required(t("ConfirmPersonalPhone.inputValidation")),
 });
 
 export async function clientLoader({ request }: ClientActionFunctionArgs) {
   const currentURL = new URL(request.url);
 
-  const email = await getUserEmail();
+  const phone = await getUserPhone();
   const ttl = currentURL.searchParams.get("ttl");
 
-  if (!email || !ttl) {
-    throw new Response(t("ConfirmPersonalEmail.wrongData"));
+  if (!phone || !ttl) {
+    throw new Response(t("ConfirmPersonalPhone.wrongData"));
   }
 
-  return json({ email, ttl });
+  return json({ phone, ttl });
 }
 
 export async function clientAction({ request }: ClientActionFunctionArgs) {
@@ -64,7 +64,7 @@ export async function clientAction({ request }: ClientActionFunctionArgs) {
 
   if (accessToken) {
     if (_action === "sendAgain") {
-      const data = await postPersonalSetUserEmail(accessToken, fields.email);
+      const data = await postChangeUserPhone(accessToken, fields.phone);
 
       if ("result" in data) {
         currentURL.searchParams.set("ttl", data.result.code.ttl.toString());
@@ -72,16 +72,28 @@ export async function clientAction({ request }: ClientActionFunctionArgs) {
         throw redirect(currentURL.toString());
       }
     } else if (_action === "sendCode") {
-      const data = await postPersonalCheckEmailCode(accessToken, fields.code);
+      const phone = await getUserPhone();
 
-      if (data.status === "error") {
-        currentURL.searchParams.set("error", "error");
+      if (phone) {
+        const data = await postConfirmChangeUserPhone(
+          accessToken,
+          phone,
+          fields.code
+        );
 
-        currentURL.searchParams.set("ttl", currentTTL.toString());
+        if (data.status === "error") {
+          currentURL.searchParams.set("error", "error");
 
-        throw redirect(currentURL.toString());
+          currentURL.searchParams.set("ttl", currentTTL.toString());
+
+          throw redirect(currentURL.toString());
+        } else {
+          throw redirect(withLocale("/profile/my-profile/profile-meta"));
+        }
       } else {
-        throw redirect(withLocale("/profile/profile-meta"));
+        throw new Response("Телефон пользователя не обнаружен!", {
+          status: 401,
+        });
       }
     }
   } else {
@@ -89,13 +101,13 @@ export async function clientAction({ request }: ClientActionFunctionArgs) {
   }
 }
 
-export default function СonfirmPersonalEmail() {
+export default function СonfirmPersonalPhone() {
   const theme = useTheme();
   const submit = useSubmit();
   const navigation = useNavigation();
   const navigate = useNavigate();
 
-  const { email, ttl } = useLoaderData<typeof clientLoader>();
+  const { phone, ttl } = useLoaderData<typeof clientLoader>();
 
   const [seconds, setSeconds] = useState<number>(Number(ttl));
   const [open, setOpen] = useState<boolean>(true);
@@ -136,7 +148,7 @@ export default function СonfirmPersonalEmail() {
       <Box>
         <TopNavigation
           header={{
-            text: t("ConfirmPersonalEmail.header"),
+            text: t("ConfirmPersonalPhone.header"),
             bold: false,
           }}
           backAction={() => {
@@ -162,7 +174,7 @@ export default function СonfirmPersonalEmail() {
                 <StyledSmsField
                   inputType="sms"
                   error={errors.code?.message}
-                  placeholder={t("ConfirmPersonalEmail.inputPlaceholder")}
+                  placeholder={t("ConfirmPersonalPhone.inputPlaceholder")}
                   onImmediateChange={handleSubmit((values) => {
                     submit(
                       JSON.stringify({
@@ -194,7 +206,7 @@ export default function СonfirmPersonalEmail() {
               submit(
                 JSON.stringify({
                   _action: "sendAgain",
-                  email: email,
+                  phone: phone,
                 }),
                 {
                   method: "POST",
@@ -203,7 +215,7 @@ export default function СonfirmPersonalEmail() {
               );
             }}
           >
-            {t("ConfirmPersonalEmail.sendAgain")}
+            {t("ConfirmPersonalPhone.sendAgain")}
           </Button>
 
           {seconds !== 0 ? (
@@ -215,7 +227,7 @@ export default function СonfirmPersonalEmail() {
                 textAlign: "center",
               }}
             >
-              {t("ConfirmPersonalEmail.timer")}{" "}
+              {t("ConfirmPersonalPhone.timer")}{" "}
               <Typography
                 component="span"
                 variant="Bold_12"
@@ -248,7 +260,7 @@ export default function СonfirmPersonalEmail() {
             width: "100%",
           }}
         >
-          {t("ConfirmPersonalEmail.notification")}
+          {t("ConfirmPersonalPhone.notification")}
         </Alert>
       </Snackbar>
 
@@ -270,7 +282,7 @@ export default function СonfirmPersonalEmail() {
             width: "100%",
           }}
         >
-          {t("ConfirmPersonalEmail.errorNotifivation")}
+          {t("ConfirmPersonalPhone.errorNotifivation")}
         </Alert>
       </Snackbar>
     </>

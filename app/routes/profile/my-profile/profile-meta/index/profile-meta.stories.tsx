@@ -14,7 +14,7 @@ import {
 import { json } from "@remix-run/react";
 
 const meta = {
-  title: "Страницы/Внутренние/Профиль/Входные данные",
+  title: "Страницы/Внутренние/Профиль/Мой профиль/Входные данные",
   component: ProfileMeta,
   tags: ["autodocs"],
   parameters: {
@@ -25,7 +25,7 @@ const meta = {
       page: () => (
         <>
           <DocBlock.Title />
-          <h2>Адрес страницы: /profile/profile-meta</h2>
+          <h2>Адрес страницы: /profile/my-profile/profile-meta</h2>
           <h3>Используемые запросы:</h3>
           <p>
             getUserInfo() - VITE_GET_USER_INFO -{" "}

@@ -52,33 +52,36 @@ import PinEN from "../routes/signin/pin/locales/en.json";
 import ProfileRU from "../routes/profile/index/locales/ru.json";
 import ProfileEN from "../routes/profile/index/locales/en.json";
 
-import MyProfileRU from "../routes/profile/my-profile/locales/ru.json";
-import MyProfileEN from "../routes/profile/my-profile/locales/en.json";
+import MyProfileRU from "../routes/profile/my-profile/index/locales/ru.json";
+import MyProfileEN from "../routes/profile/my-profile/index/locales/en.json";
 
-import ProfileEditRU from "../routes/profile/profile-edit/locales/ru.json";
-import ProfileEditEN from "../routes/profile/profile-edit/locales/en.json";
+import ProfileEditRU from "../routes/profile/my-profile/profile-edit/locales/ru.json";
+import ProfileEditEN from "../routes/profile/my-profile/profile-edit/locales/en.json";
 
-import ProfileMetaRU from "../routes/profile/profile-meta/locales/ru.json";
-import ProfileMetaEN from "../routes/profile/profile-meta/locales/en.json";
-import UserActivitiesRU from "../routes/profile/user-activities/locales/ru.json";
-import UserActivitiesEN from "../routes/profile/user-activities/locales/en.json";
-import BillingRU from "../routes/profile/billing/locales/ru.json";
-import BillingEN from "../routes/profile/billing/locales/en.json";
+import ProfileMetaRU from "../routes/profile/my-profile/profile-meta/index/locales/ru.json";
+import ProfileMetaEN from "../routes/profile/my-profile/profile-meta/index/locales/en.json";
+import UserActivitiesRU from "../routes/profile/my-profile/user-activities/locales/ru.json";
+import UserActivitiesEN from "../routes/profile/my-profile/user-activities/locales/en.json";
+import BillingRU from "../routes/profile/my-profile/billing/index/locales/ru.json";
+import BillingEN from "../routes/profile/my-profile/billing/index/locales/en.json";
 
-import BillingAddRU from "../routes/profile/billing-add/locales/ru.json";
-import BillingAddEN from "../routes/profile/billing-add/locales/en.json";
+import BillingAddRU from "../routes/profile/my-profile/billing/billing-add/locales/ru.json";
+import BillingAddEN from "../routes/profile/my-profile/billing/billing-add/locales/en.json";
 
-import BillingEditRU from "../routes/profile/billing-edit/locales/ru.json";
-import BillingEditEN from "../routes/profile/billing-edit/locales/en.json";
+import BillingEditRU from "../routes/profile/my-profile/billing/billing-edit/locales/ru.json";
+import BillingEditEN from "../routes/profile/my-profile/billing/billing-edit/locales/en.json";
 
-import ConfirmPersonalPhoneRU from "../routes/profile/confirm-personal-phone/locales/ru.json";
-import ConfirmPersonalPhoneEN from "../routes/profile/confirm-personal-phone/locales/en.json";
+import ConfirmPersonalPhoneRU from "../routes/profile/my-profile/profile-meta/confirm-personal-phone/locales/ru.json";
+import ConfirmPersonalPhoneEN from "../routes/profile/my-profile/profile-meta/confirm-personal-phone/locales/en.json";
 
-import ConfirmPersonalEmailRU from "../routes/profile/confirm-personal-email/locales/ru.json";
-import ConfirmPersonalEmailEN from "../routes/profile/confirm-personal-email/locales/en.json";
+import ConfirmPersonalEmailRU from "../routes/profile/my-profile/profile-meta/confirm-personal-email/locales/ru.json";
+import ConfirmPersonalEmailEN from "../routes/profile/my-profile/profile-meta/confirm-personal-email/locales/en.json";
 
-import WorkRadiusRU from "../routes/profile/work-radius/locales/ru.json";
-import WorkRadiusEN from "../routes/profile/work-radius/locales/en.json";
+import WorkRadiusRU from "../routes/profile/my-profile/work-radius/locales/ru.json";
+import WorkRadiusEN from "../routes/profile/my-profile/work-radius/locales/en.json";
+
+import DocumentsRU from "../routes/profile/documents/index/locales/ru.json";
+import DocumentsEN from "../routes/profile/documents/index/locales/en.json";
 
 import StyledPhotoCheckboxRU from "../shared/ui/StyledPhotoCheckbox/locales/ru.json";
 import StyledPhotoCheckboxEN from "../shared/ui/StyledPhotoCheckbox/locales/en.json";
@@ -139,6 +142,7 @@ export const resources = {
       BillingAdd: BillingAddRU,
       BillingEdit: BillingEditRU,
       WorkRadius: WorkRadiusRU,
+      Documents: DocumentsRU,
 
       //components
       StyledPhotoCheckbox: StyledPhotoCheckboxRU,
@@ -188,6 +192,7 @@ export const resources = {
       BillingAdd: BillingAddEN,
       BillingEdit: BillingEditEN,
       WorkRadius: WorkRadiusEN,
+      Documents: DocumentsEN,
 
       //components
       StyledPhotoCheckbox: StyledPhotoCheckboxEN,

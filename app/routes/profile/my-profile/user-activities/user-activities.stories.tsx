@@ -16,7 +16,7 @@ import { mockResponseAllowedNewStep } from "~/requests/postSaveUserFieldsActivit
 import { json } from "@remix-run/react";
 
 const meta = {
-  title: "Страницы/Внутренние/Профиль/Виды деятельности",
+  title: "Страницы/Внутренние/Профиль/Мой профиль/Виды деятельности",
   component: UserActivities,
   tags: ["autodocs"],
   parameters: {
@@ -27,7 +27,7 @@ const meta = {
       page: () => (
         <>
           <DocBlock.Title />
-          <h2>Адрес страницы: /profile/user-activities</h2>
+          <h2>Адрес страницы: /profile/my-profile/user-activities</h2>
           <h3>Используемые запросы:</h3>
           <p>
             getFormActivities() - VITE_GET_FORM_ACTIVITIES -{" "}

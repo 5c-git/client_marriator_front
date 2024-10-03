@@ -17,7 +17,7 @@ import {
 import { json } from "@remix-run/react";
 
 const meta = {
-  title: "Страницы/Внутренние/Профиль/Платёжные реквизиты",
+  title: "Страницы/Внутренние/Профиль/Мой профиль/Платёжные реквизиты",
   component: Billing,
   tags: ["autodocs"],
   decorators: [withRouter],
@@ -29,7 +29,7 @@ const meta = {
       page: () => (
         <>
           <DocBlock.Title />
-          <h2>Адрес страницы: /profile/billing</h2>
+          <h2>Адрес страницы: /profile/my-profile/billing</h2>
           <h3>Используемые запросы:</h3>
           <p>
             getRequisitesData() - VITE_GET_REQUISITES_DATA -{" "}

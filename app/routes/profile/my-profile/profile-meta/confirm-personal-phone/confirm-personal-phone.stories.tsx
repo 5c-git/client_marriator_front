@@ -4,12 +4,13 @@ import * as DocBlock from "@storybook/blocks";
 import { createRemixStub } from "@remix-run/testing";
 // import { http, delay, HttpResponse } from "msw";
 
-import ConfirmPersonalEmail from "./confirm-personal-email";
+import СonfirmPersonalPhone from "./confirm-personal-phone";
 import { json } from "@remix-run/react";
 
 const meta = {
-  title: "Страницы/Внутренние/Профиль/Подтверждение личного email",
-  component: ConfirmPersonalEmail,
+  title:
+    "Страницы/Внутренние/Профиль/Мой профиль/Входные данные/Подтверждение личного телефона",
+  component: СonfirmPersonalPhone,
   tags: ["autodocs"],
   parameters: {
     layout: {
@@ -19,21 +20,24 @@ const meta = {
       page: () => (
         <>
           <DocBlock.Title />
-          <h2>Адрес страницы: /profile/confirm-personal-email</h2>
+          <h2>
+            Адрес страницы:
+            /profile/my-profile/profile-meta/confirm-personal-phone
+          </h2>
           <h3>Используемые запросы:</h3>
           <p>
-            postPersonalSetUserEmail() - VITE_SET_PERSONAL_USER_EMAIL -{" "}
-            {import.meta.env.VITE_SET_PERSONAL_USER_EMAIL}
+            postChangeUserPhone() - VITE_CHANGE_USER_PHONE -{" "}
+            {import.meta.env.VITE_CHANGE_USER_PHONE}
           </p>
           <p>
-            postPersonalCheckEmailCode() - VITE_PERSONAL_CHECK_EMAIL_CODE -{" "}
-            {import.meta.env.VITE_CHECK_EMAIL_CODE}
+            postConfirmChangeUserPhone() - VITE_CONFIRM_CHANGE_USER_PHONE -{" "}
+            {import.meta.env.VITE_CONFIRM_CHANGE_USER_PHONE}
           </p>
         </>
       ),
     },
   },
-} satisfies Meta<typeof ConfirmPersonalEmail>;
+} satisfies Meta<typeof СonfirmPersonalPhone>;
 
 export default meta;
 
@@ -45,10 +49,10 @@ export const Primary: Story = {
     (Story) => {
       const RemixStub = createRemixStub([
         {
-          path: "/profile/confirm-personal-email",
+          path: "/profile/confirm-personal-phone",
           Component: Story,
           loader: async () => {
-            return json({ email: "test@mail.ru", ttl: "120" });
+            return json({ phone: "79152142635", ttl: "120" });
           },
           action: async () => {
             // const data = await postRegStep2({ test: "test" });
@@ -59,7 +63,7 @@ export const Primary: Story = {
         },
       ]);
 
-      return <RemixStub initialEntries={["/profile/confirm-personal-email"]} />;
+      return <RemixStub initialEntries={["/profile/confirm-personal-phone"]} />;
     },
   ],
   parameters: {

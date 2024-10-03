@@ -79,7 +79,11 @@ export async function clientAction({ request }: ClientActionFunctionArgs) {
         return json({ error: "emailAlreadyExists" });
       } else {
         params.set("ttl", "120");
-        throw redirect(withLocale(`/profile/confirm-personal-email?${params}`));
+        throw redirect(
+          withLocale(
+            `/profile/my-profile/profile-meta/confirm-personal-email?${params}`
+          )
+        );
       }
     } else if (_action === "confirmPhone") {
       await setUserPhone(fields.phone);
@@ -88,7 +92,11 @@ export async function clientAction({ request }: ClientActionFunctionArgs) {
         return json({ error: "phoneAlreadyExists" });
       } else {
         params.set("ttl", "120");
-        throw redirect(withLocale(`/profile/confirm-personal-phone?${params}`));
+        throw redirect(
+          withLocale(
+            `/profile/my-profile/profile-meta/confirm-personal-phone?${params}`
+          )
+        );
       }
     }
   } else {
