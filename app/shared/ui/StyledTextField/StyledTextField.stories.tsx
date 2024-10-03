@@ -349,6 +349,86 @@ export const PrimaryTextDisabled: Story = {
   },
 };
 
+export const PrimaryTextDisabledStatus: Story = {
+  name: "text (отключенное поле со статусом)",
+  args: {
+    inputType: "text",
+    name: "text",
+    value: "",
+    placeholder: "Текстовое поле",
+    onChange: () => {},
+    onImmediateChange: () => {},
+    validation: "none",
+    disabled: true,
+    status: "warning",
+  },
+  render: function Render(args) {
+    const [, updateArgs] = useArgs();
+
+    function onChange(
+      evt: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+    ) {
+      updateArgs({ value: evt.target.value });
+    }
+
+    return (
+      <StyledTextField
+        inputType="text"
+        name={args.name}
+        placeholder={args.placeholder}
+        value={args.value}
+        onChange={onChange}
+        onImmediateChange={args.onImmediateChange}
+        disabled={args.disabled}
+        validation={args.validation}
+        status={args.status}
+      />
+    );
+  },
+};
+
+export const PrimaryTextDisabledStatusText: Story = {
+  name: "text (отключенное поле со статусом и текстом)",
+  args: {
+    inputType: "text",
+    name: "text",
+    value: "",
+    placeholder: "Текстовое поле",
+    onChange: () => {},
+    onImmediateChange: () => {},
+    validation: "none",
+    disabled: true,
+    status: "warning",
+    helperInfo: {
+      text: "Вспомогательный текст",
+    },
+  },
+  render: function Render(args) {
+    const [, updateArgs] = useArgs();
+
+    function onChange(
+      evt: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+    ) {
+      updateArgs({ value: evt.target.value });
+    }
+
+    return (
+      <StyledTextField
+        inputType="text"
+        name={args.name}
+        placeholder={args.placeholder}
+        value={args.value}
+        onChange={onChange}
+        onImmediateChange={args.onImmediateChange}
+        disabled={args.disabled}
+        validation={args.validation}
+        status={args.status}
+        helperInfo={args.helperInfo}
+      />
+    );
+  },
+};
+
 export const PrimaryTextValue: Story = {
   name: "text (заполненное поле)",
   args: {

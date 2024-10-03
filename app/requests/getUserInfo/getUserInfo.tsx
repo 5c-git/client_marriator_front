@@ -37,6 +37,7 @@ export const getUserInfo = async (
   if (validateSuccess(response)) {
     data = response as unknown as GetUserInfoSuccess;
   } else {
+    console.log(validateSuccess.errors);
     throw new Response(`Данные запроса getUserInfo не валидны схеме`);
   }
 

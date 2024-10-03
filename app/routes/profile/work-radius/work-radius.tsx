@@ -29,6 +29,7 @@ import { getAccessToken } from "~/preferences/token/token";
 
 import { getGeoData } from "~/requests/getGeoData/getGeoData";
 import { getMapField } from "~/requests/getMapField/getMapField";
+import { getSettingsFromKey } from "~/requests/getSettingsFromKey/getSettingsFromKey";
 import { postSetMapField } from "~/requests/postSetMapField/postSetMapField";
 
 import { MarkerIcon } from "./icons/MarkerIcon";
@@ -86,6 +87,9 @@ export async function clientLoader() {
 
   if (accessToken) {
     const mapData = await getMapField(accessToken);
+    const settingsData = await getSettingsFromKey(accessToken, "radius");
+
+    console.log(settingsData);
 
     const coordinates: Coordinates =
       mapData.result.coordinates !== null
@@ -99,7 +103,10 @@ export async function clientLoader() {
       language,
       address: mapData.result.mapAddress,
       coordinates,
-      radius: mapData.result.mapRadius,
+      radius:
+        mapData.result.mapRadius === ""
+          ? settingsData.result
+          : mapData.result.mapRadius,
     });
   } else {
     throw new Response("Токен авторизации не обнаружен!", { status: 401 });

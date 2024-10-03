@@ -34,6 +34,7 @@ interface ImportMetaEnv {
   readonly VITE_YANDEX_GEO_KEY: string;
   readonly VITE_GET_MAP_FIELD: string;
   readonly VITE_POST_MAP_FIELD: string;
+  readonly VITE_SETTINGS_FROM_KEY: string;
   // more env variables...
 }
 
