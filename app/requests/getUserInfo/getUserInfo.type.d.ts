@@ -29,6 +29,8 @@ export interface GetUserInfoSuccess {
       mapRadius: string;
       coordinates: null | string;
       updateData: null | string;
+      change_fields: null;
+      date_for_send: null;
     };
   };
   status: string;

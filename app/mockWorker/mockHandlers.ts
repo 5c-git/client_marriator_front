@@ -29,6 +29,7 @@ import { postDeleteRequisiteMockResponse } from "~/requests/postDeleteRequisite/
 import { getGeoDataMockResponse } from "~/requests/getGeoData/getGeoData";
 import { getMapFieldMockResponse } from "~/requests/getMapField/getMapField";
 import { postSetMapFieldMockResponse } from "~/requests/postSetMapField/postSetMapField";
+import { getSettingsFromKeyMockResponse } from "~/requests/getSettingsFromKey/getSettingsFromKey";
 
 export const handlers = [
   getFormMockResponse,
@@ -59,4 +60,5 @@ export const handlers = [
   getGeoDataMockResponse,
   getMapFieldMockResponse,
   postSetMapFieldMockResponse,
+  getSettingsFromKeyMockResponse,
 ];
