@@ -1,7 +1,6 @@
 import type { StoryObj, Meta } from "@storybook/react";
 import * as DocBlock from "@storybook/blocks";
 
-import { createRemixStub } from "@remix-run/testing";
 import { http, delay, HttpResponse } from "msw";
 
 import ProfileMeta from "./profile-meta";
@@ -12,11 +11,17 @@ import {
 } from "~/requests/getUserInfo/getUserInfo";
 
 import { json } from "@remix-run/react";
+import {
+  reactRouterParameters,
+  withRouter,
+} from "storybook-addon-remix-react-router";
+import MenuLayout from "~/routes/menuLayout/menuLayout";
 
 const meta = {
   title: "Страницы/Внутренние/Профиль/Мой профиль/Входные данные",
   component: ProfileMeta,
   tags: ["autodocs"],
+  decorators: [withRouter],
   parameters: {
     layout: {
       padded: false,
@@ -54,32 +59,7 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Primary: Story = {
-  name: "Страница",
-  decorators: [
-    (Story) => {
-      const RemixStub = createRemixStub([
-        {
-          path: "/",
-          Component: Story,
-          loader: async () => {
-            const userInfo = await getUserInfo("token");
-
-            return json({
-              accessToken: "token",
-              photo: userInfo.result.userData.img,
-              phone: userInfo.result.userData.phone.toString(),
-              email: userInfo.result.userData.email,
-            });
-          },
-          action: async () => {
-            return null;
-          },
-        },
-      ]);
-
-      return <RemixStub />;
-    },
-  ],
+  name: "Page",
   parameters: {
     msw: {
       handlers: [
@@ -93,5 +73,30 @@ export const Primary: Story = {
         }),
       ],
     },
+    reactRouter: reactRouterParameters({
+      routing: {
+        path: "/profile/my-profile/profile-meta",
+        Component: MenuLayout,
+        children: [
+          {
+            index: true,
+            useStoryElement: true,
+            loader: async () => {
+              const userInfo = await getUserInfo("token");
+
+              return json({
+                accessToken: "token",
+                photo: userInfo.result.userData.img,
+                phone: userInfo.result.userData.phone.toString(),
+                email: userInfo.result.userData.email,
+              });
+            },
+            action: async () => {
+              return null;
+            },
+          },
+        ],
+      },
+    }),
   },
 };

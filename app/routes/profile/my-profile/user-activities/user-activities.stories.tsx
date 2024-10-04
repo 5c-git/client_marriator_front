@@ -1,7 +1,6 @@
 import type { StoryObj, Meta } from "@storybook/react";
 import * as DocBlock from "@storybook/blocks";
 
-import { createRemixStub } from "@remix-run/testing";
 import { http, delay, HttpResponse } from "msw";
 
 import UserActivities from "./user-activities";
@@ -14,11 +13,17 @@ import {
 import { mockResponseAllowedNewStep } from "~/requests/postSaveUserFieldsActivities/postSaveUserFieldsActivities";
 
 import { json } from "@remix-run/react";
+import {
+  reactRouterParameters,
+  withRouter,
+} from "storybook-addon-remix-react-router";
+import MenuLayout from "~/routes/menuLayout/menuLayout";
 
 const meta = {
   title: "Страницы/Внутренние/Профиль/Мой профиль/Виды деятельности",
   component: UserActivities,
   tags: ["autodocs"],
+  decorators: [withRouter],
   parameters: {
     layout: {
       padded: false,
@@ -48,30 +53,7 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Primary: Story = {
-  name: "Страница",
-  decorators: [
-    (Story) => {
-      const RemixStub = createRemixStub([
-        {
-          path: "/",
-          Component: Story,
-          loader: async () => {
-            const data = await getFormActivities("token", 1);
-
-            return json({
-              formFields: data.result.formData,
-              formStatus: data.result.type,
-            });
-          },
-          action: async () => {
-            return null;
-          },
-        },
-      ]);
-
-      return <RemixStub />;
-    },
-  ],
+  name: "Page",
   parameters: {
     msw: {
       handlers: [
@@ -88,5 +70,28 @@ export const Primary: Story = {
         ),
       ],
     },
+    reactRouter: reactRouterParameters({
+      routing: {
+        path: "/profile/my-profile/user-activities",
+        Component: MenuLayout,
+        children: [
+          {
+            index: true,
+            useStoryElement: true,
+            loader: async () => {
+              const data = await getFormActivities("token", 1);
+
+              return json({
+                formFields: data.result.formData,
+                formStatus: data.result.type,
+              });
+            },
+            action: async () => {
+              return null;
+            },
+          },
+        ],
+      },
+    }),
   },
 };

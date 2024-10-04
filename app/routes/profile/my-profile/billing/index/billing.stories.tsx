@@ -15,6 +15,7 @@ import {
 } from "~/requests/getRequisitesData/getRequisitesData";
 
 import { json } from "@remix-run/react";
+import MenuLayout from "~/routes/menuLayout/menuLayout";
 
 const meta = {
   title: "Страницы/Внутренние/Профиль/Мой профиль/Платёжные реквизиты",
@@ -46,7 +47,7 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Primary: Story = {
-  name: "Страница",
+  name: "Page",
   parameters: {
     msw: {
       handlers: [
@@ -58,14 +59,22 @@ export const Primary: Story = {
     },
     reactRouter: reactRouterParameters({
       routing: {
-        loader: async () => {
-          const requisitesData = await getRequisitesData("token");
+        path: "/profile/my-profile/billing",
+        Component: MenuLayout,
+        children: [
+          {
+            index: true,
+            useStoryElement: true,
+            loader: async () => {
+              const requisitesData = await getRequisitesData("token");
 
-          return json({ billingArray: requisitesData.result });
-        },
-        action: async () => {
-          return null;
-        },
+              return json({ billingArray: requisitesData.result });
+            },
+            action: async () => {
+              return null;
+            },
+          },
+        ],
       },
     }),
   },

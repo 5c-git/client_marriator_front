@@ -1,7 +1,6 @@
 import type { StoryObj, Meta } from "@storybook/react";
 import * as DocBlock from "@storybook/blocks";
 
-import { createRemixStub } from "@remix-run/testing";
 import { http, delay, HttpResponse } from "msw";
 
 import Phone from "./phone";
@@ -10,11 +9,16 @@ import {
   postSendPhone,
   mockPostSendPhoneResponseRegister,
 } from "~/requests/postSendPhone/postSendPhone";
+import {
+  reactRouterParameters,
+  withRouter,
+} from "storybook-addon-remix-react-router";
 
 const meta = {
   title: "Страницы/Вход/Телефон",
   component: Phone,
   tags: ["autodocs"],
+  decorators: [withRouter],
   parameters: {
     layout: {
       padded: false,
@@ -40,30 +44,7 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Primary: Story = {
-  name: "Страница (переход на регистрацию)",
-  decorators: [
-    (Story) => {
-      const RemixStub = createRemixStub([
-        {
-          path: "/",
-          Component: Story,
-          action: async ({ request }) => {
-            const fields = await request.json();
-
-            const data = await postSendPhone(fields.phone);
-
-            // if (data) {
-            //   throw redirect("/");
-            // }
-
-            return data;
-          },
-        },
-      ]);
-
-      return <RemixStub />;
-    },
-  ],
+  name: "Page (переход на регистрацию)",
   parameters: {
     msw: {
       handlers: [
@@ -73,5 +54,21 @@ export const Primary: Story = {
         }),
       ],
     },
+    reactRouter: reactRouterParameters({
+      routing: {
+        path: "/signin/phone",
+        action: async ({ request }) => {
+          const fields = await request.json();
+
+          const data = await postSendPhone(fields.phone);
+
+          // if (data) {
+          //   throw redirect("/");
+          // }
+
+          return data;
+        },
+      },
+    }),
   },
 };

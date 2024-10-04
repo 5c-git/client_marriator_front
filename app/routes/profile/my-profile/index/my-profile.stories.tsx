@@ -1,18 +1,26 @@
 import type { StoryObj, Meta } from "@storybook/react";
 import * as DocBlock from "@storybook/blocks";
 
-import { createRemixStub } from "@remix-run/testing";
+import {
+  reactRouterParameters,
+  withRouter,
+} from "storybook-addon-remix-react-router";
 import { http, delay, HttpResponse } from "msw";
 
 import MyProfile from "./my-profile";
 import MenuLayout from "~/routes/menuLayout/menuLayout";
 
 import { json } from "@remix-run/react";
+import {
+  getUserPersonalMenu,
+  mockResponseSuccess,
+} from "~/requests/getUserPersonalMenu/getUserPersonalMenu";
 
 const meta = {
   title: "Страницы/Внутренние/Профиль/Мой профиль",
   component: MyProfile,
   tags: ["autodocs"],
+  decorators: [withRouter],
   parameters: {
     layout: {
       padded: false,
@@ -38,37 +46,32 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Primary: Story = {
-  name: "Страница",
-  decorators: [
-    (Story) => {
-      const RemixStub = createRemixStub([
-        {
-          Component: MenuLayout,
-          children: [
-            {
-              path: "/profile/my-profile",
-              Component: Story,
-              loader: async () => {
-                // const data = await getUserInfo("token");
-
-                return json({ data: "data" });
-              },
-            },
-          ],
-        },
-      ]);
-
-      return <RemixStub initialEntries={["/profile/my-profile"]} />;
-    },
-  ],
+  name: "Page",
   parameters: {
     msw: {
       handlers: [
         http.get(import.meta.env.VITE_GET_USER_PERSONAL_MENU, async () => {
           await delay(2000);
-          return HttpResponse.json({ data: "data" });
+          return HttpResponse.json(mockResponseSuccess);
         }),
       ],
     },
+    reactRouter: reactRouterParameters({
+      routing: {
+        path: "/profile/my-profile",
+        Component: MenuLayout,
+        children: [
+          {
+            index: true,
+            useStoryElement: true,
+            loader: async () => {
+              const data = await getUserPersonalMenu("token");
+
+              return json(data);
+            },
+          },
+        ],
+      },
+    }),
   },
 };

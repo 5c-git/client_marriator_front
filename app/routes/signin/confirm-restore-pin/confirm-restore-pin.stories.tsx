@@ -1,16 +1,18 @@
 import type { StoryObj, Meta } from "@storybook/react";
 import * as DocBlock from "@storybook/blocks";
 
-import { createRemixStub } from "@remix-run/testing";
-// import { http, delay, HttpResponse } from "msw";
-
 import СonfirmRestorePin from "./confirm-restore-pin";
 import { json } from "@remix-run/react";
+import {
+  reactRouterParameters,
+  withRouter,
+} from "storybook-addon-remix-react-router";
 
 const meta = {
   title: "Страницы/Вход/Восстановление пин-кода",
   component: СonfirmRestorePin,
   tags: ["autodocs"],
+  decorators: [withRouter],
   parameters: {
     layout: {
       padded: false,
@@ -40,38 +42,18 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Primary: Story = {
-  name: "Страница",
-  decorators: [
-    (Story) => {
-      const RemixStub = createRemixStub([
-        {
-          path: "/confirm-restore-pin",
-          Component: Story,
-          loader: async () => {
-            return json({ ttl: 120 });
-          },
-          action: async () => {
-            // const data = await postRegStep2({ test: "test" });
-            // return data;
-
-            return null;
-          },
-        },
-      ]);
-
-      return <RemixStub initialEntries={["/confirm-restore-pin"]} />;
-    },
-  ],
+  name: "Page",
   parameters: {
-    // msw: {
-    //   handlers: [
-    //     http.post(import.meta.env.VITE_GET_FORM, async () => {
-    //       await delay(2000);
-    //       return HttpResponse.json({
-    //         status: "Success",
-    //       });
-    //     }),
-    //   ],
-    // },
+    reactRouter: reactRouterParameters({
+      routing: {
+        path: "/signin/confirm-restore-pin",
+        loader: async () => {
+          return json({ ttl: 120 });
+        },
+        action: async () => {
+          return null;
+        },
+      },
+    }),
   },
 };

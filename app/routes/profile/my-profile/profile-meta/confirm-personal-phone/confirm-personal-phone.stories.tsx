@@ -1,8 +1,10 @@
 import type { StoryObj, Meta } from "@storybook/react";
 import * as DocBlock from "@storybook/blocks";
 
-import { createRemixStub } from "@remix-run/testing";
-// import { http, delay, HttpResponse } from "msw";
+import {
+  reactRouterParameters,
+  withRouter,
+} from "storybook-addon-remix-react-router";
 
 import СonfirmPersonalPhone from "./confirm-personal-phone";
 import { json } from "@remix-run/react";
@@ -12,6 +14,7 @@ const meta = {
     "Страницы/Внутренние/Профиль/Мой профиль/Входные данные/Подтверждение личного телефона",
   component: СonfirmPersonalPhone,
   tags: ["autodocs"],
+  decorators: [withRouter],
   parameters: {
     layout: {
       padded: false,
@@ -44,38 +47,21 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Primary: Story = {
-  name: "Страница",
-  decorators: [
-    (Story) => {
-      const RemixStub = createRemixStub([
-        {
-          path: "/profile/confirm-personal-phone",
-          Component: Story,
-          loader: async () => {
-            return json({ phone: "79152142635", ttl: "120" });
-          },
-          action: async () => {
-            // const data = await postRegStep2({ test: "test" });
-            // return data;
-
-            return null;
-          },
-        },
-      ]);
-
-      return <RemixStub initialEntries={["/profile/confirm-personal-phone"]} />;
-    },
-  ],
+  name: "Page",
   parameters: {
-    // msw: {
-    //   handlers: [
-    //     http.post(import.meta.env.VITE_GET_FORM, async () => {
-    //       await delay(2000);
-    //       return HttpResponse.json({
-    //         status: "Success",
-    //       });
-    //     }),
-    //   ],
-    // },
+    reactRouter: reactRouterParameters({
+      routing: {
+        path: "/profile/my-profile/profile-meta/confirm-personal-phone",
+        loader: async () => {
+          return json({ phone: "79152142635", ttl: "120" });
+        },
+        action: async () => {
+          // const data = await postRegStep2({ test: "test" });
+          // return data;
+
+          return null;
+        },
+      },
+    }),
   },
 };

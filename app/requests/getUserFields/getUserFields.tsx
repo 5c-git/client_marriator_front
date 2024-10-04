@@ -102,7 +102,7 @@ export const mockResponseSuccess = {
       {
         inputType: "select",
         name: "nalogstatus",
-        value: true,
+        value: "nalogstatus_samozanyatyj",
         disabled: false,
         options: [
           {
@@ -125,25 +125,6 @@ export const mockResponseSuccess = {
             type: "internal",
           },
         },
-        moreData: [
-          {
-            name: "1",
-            value: "1",
-          },
-          {
-            name: "2",
-            value: "2",
-          },
-          {
-            name: "3",
-            value: "3",
-          },
-          {
-            name: "4",
-            value: "4",
-          },
-        ],
-        errorData: "122",
       },
       {
         inputType: "checkbox",
@@ -744,75 +725,6 @@ export const mockResponseSuccess = {
         heading: "ОСАГО",
         helperInfo: {
           text: "Для подтверждения приложи фотографию документа",
-        },
-      },
-      {
-        inputType: "select",
-        name: "gov",
-        value: true,
-        disabled: false,
-        options: [
-          {
-            value: "grazhdanstvo_ARM",
-            label: "Республика Армения",
-            disabled: false,
-          },
-          {
-            value: "grazhdanstvo_KAZ",
-            label: "Республика Казахстан",
-            disabled: false,
-          },
-          {
-            value: "directory_citizenship_OLA2CdAK4Yb3jdoYOj59kbiehGQaDa",
-            label: "Российская Федерация",
-            disabled: false,
-          },
-        ],
-        validation: "default",
-        placeholder: "Гражданство",
-      },
-      {
-        inputType: "radio",
-        name: "2xC9RxW86VOvK1tlENocp26QDwJNQ2",
-        value: true,
-        disabled: false,
-        options: [
-          {
-            value: "directory_medical_book_vvKBcoSqAl02wYAt5zE2wJYeDxUbge",
-            label: "В наличии",
-            disabled: false,
-          },
-          {
-            value: "directory_medical_book_szrxXy5ejZU7y5gLCN5PIpzfC54B8a",
-            label: "На оформлении",
-            disabled: false,
-          },
-        ],
-        validation: "none",
-        heading: "Медкнижка",
-      },
-      {
-        inputType: "select",
-        name: "R7ydKRH6YRdU85KI2UIql0EDWNyvnr",
-        value: "",
-        disabled: false,
-        options: [
-          {
-            value: "directory_documentation_TCtWFq2oOe1pfstFl5nw43ujCkrpy7",
-            label: "Вид на жительство",
-            disabled: false,
-          },
-          {
-            value: "directory_documentation_o8Tdo9sL762jqbHpd54aD6KK09sJtr",
-            label: "Паспорт гражданина Российской Федерации",
-            disabled: false,
-          },
-        ],
-        validation: "default",
-        heading: "Документ удостоверяющий личность",
-        placeholder: "",
-        helperInfo: {
-          text: "Для изменения данных выбери тип документа и загрузи его фотографии",
         },
       },
       {

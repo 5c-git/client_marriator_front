@@ -15,6 +15,7 @@ import {
 } from "~/requests/getMapField/getMapField";
 
 import { json } from "@remix-run/react";
+import MenuLayout from "~/routes/menuLayout/menuLayout";
 
 const meta = {
   title: "Страницы/Внутренние/Профиль/Мой профиль/Радиус поиска",
@@ -50,7 +51,7 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Primary: Story = {
-  name: "Страница",
+  name: "Page",
   parameters: {
     msw: {
       handlers: [
@@ -66,27 +67,35 @@ export const Primary: Story = {
     },
     reactRouter: reactRouterParameters({
       routing: {
-        loader: async () => {
-          const mapData = await getMapField("token");
+        path: "/profile/my-profile/work-radius",
+        Component: MenuLayout,
+        children: [
+          {
+            index: true,
+            useStoryElement: true,
+            loader: async () => {
+              const mapData = await getMapField("token");
 
-          const coordinates =
-            mapData.result.coordinates !== null
-              ? [
-                  Number(mapData.result.coordinates.split(" ")[0]),
-                  Number(mapData.result.coordinates.split(" ")[1]),
-                ]
-              : [37.623082, 55.75254];
+              const coordinates =
+                mapData.result.coordinates !== null
+                  ? [
+                      Number(mapData.result.coordinates.split(" ")[0]),
+                      Number(mapData.result.coordinates.split(" ")[1]),
+                    ]
+                  : [37.623082, 55.75254];
 
-          return json({
-            language: "ru",
-            address: mapData.result.mapAddress,
-            coordinates,
-            radius: mapData.result.mapRadius,
-          });
-        },
-        action: async () => {
-          return null;
-        },
+              return json({
+                language: "ru",
+                address: mapData.result.mapAddress,
+                coordinates,
+                radius: mapData.result.mapRadius,
+              });
+            },
+            action: async () => {
+              return null;
+            },
+          },
+        ],
       },
     }),
   },

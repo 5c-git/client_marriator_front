@@ -1,18 +1,27 @@
 import type { StoryObj, Meta } from "@storybook/react";
 import * as DocBlock from "@storybook/blocks";
 
-import { createRemixStub } from "@remix-run/testing";
 import { http, delay, HttpResponse } from "msw";
 
 import ProfileEdit from "./profile-edit";
 import MenuLayout from "~/routes/menuLayout/menuLayout";
 
+import {
+  reactRouterParameters,
+  withRouter,
+} from "storybook-addon-remix-react-router";
+import {
+  getUserFields,
+  mockResponseSuccess,
+} from "~/requests/getUserFields/getUserFields";
+import { t } from "i18next";
 import { json } from "@remix-run/react";
 
 const meta = {
   title: "Страницы/Внутренние/Профиль/Мой профиль/Редактирование профиля",
   component: ProfileEdit,
   tags: ["autodocs"],
+  decorators: [withRouter],
   parameters: {
     layout: {
       padded: false,
@@ -38,37 +47,43 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Primary: Story = {
-  name: "Страница",
-  decorators: [
-    (Story) => {
-      const RemixStub = createRemixStub([
-        {
-          Component: MenuLayout,
-          children: [
-            {
-              path: "/profile/profile-edit",
-              Component: Story,
-              loader: async () => {
-                // const data = await getUserInfo("token");
-
-                return json({ data: "data" });
-              },
-            },
-          ],
-        },
-      ]);
-
-      return <RemixStub initialEntries={["/profile/profile-edit"]} />;
-    },
-  ],
+  name: "Page",
   parameters: {
     msw: {
       handlers: [
         http.get(import.meta.env.VITE_GET_USER_FIELDS, async () => {
           await delay(2000);
-          return HttpResponse.json({ data: "data" });
+          return HttpResponse.json(mockResponseSuccess);
         }),
       ],
     },
+    reactRouter: reactRouterParameters({
+      routing: {
+        path: "/profile/my-profile/profile-edit",
+        Component: MenuLayout,
+        children: [
+          {
+            index: true,
+            useStoryElement: true,
+            loader: async () => {
+              const data = await getUserFields("token", "1");
+
+              const curentSection = data.result.section.find(
+                (item) => item.value === Number("1")
+              );
+
+              return json({
+                accessToken: "token",
+                formFields: data.result.formData,
+                currentSection:
+                  curentSection !== undefined
+                    ? curentSection.name
+                    : t("ProfileEdit.sectionHeader"),
+              });
+            },
+          },
+        ],
+      },
+    }),
   },
 };

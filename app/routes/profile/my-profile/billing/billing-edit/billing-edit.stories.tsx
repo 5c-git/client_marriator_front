@@ -12,6 +12,7 @@ import {
   reactRouterParameters,
   withRouter,
 } from "storybook-addon-remix-react-router";
+import MenuLayout from "~/routes/menuLayout/menuLayout";
 
 const meta = {
   title:
@@ -50,7 +51,7 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Primary: Story = {
-  name: "Страница",
+  name: "Page",
   parameters: {
     msw: {
       handlers: [
@@ -62,14 +63,22 @@ export const Primary: Story = {
     },
     reactRouter: reactRouterParameters({
       routing: {
-        loader: async () => {
-          const bik = await getBik("token");
+        path: "/profile/my-profile/billing/billing-edit",
+        Component: MenuLayout,
+        children: [
+          {
+            index: true,
+            useStoryElement: true,
+            loader: async () => {
+              const bik = await getBik("token");
 
-          return json({ bikOptions: bik.result.bankData });
-        },
-        action: async () => {
-          return null;
-        },
+              return json({ bikOptions: bik.result.bankData });
+            },
+            action: async () => {
+              return null;
+            },
+          },
+        ],
       },
       location: {
         state: {

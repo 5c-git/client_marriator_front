@@ -5,7 +5,6 @@ import Documents from "./documents";
 import MenuLayout from "~/routes/menuLayout/menuLayout";
 
 import {
-  reactRouterNestedAncestors,
   reactRouterParameters,
   withRouter,
 } from "storybook-addon-remix-react-router";
@@ -40,13 +39,19 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Primary: Story = {
-  name: "Страница",
+  name: "Page",
   parameters: {
     reactRouter: reactRouterParameters({
-      routing: reactRouterNestedAncestors({
+      routing: {
         path: "/profile/documents",
-        element: <MenuLayout />,
-      }),
+        Component: MenuLayout,
+        children: [
+          {
+            index: true,
+            useStoryElement: true,
+          },
+        ],
+      },
     }),
   },
 };

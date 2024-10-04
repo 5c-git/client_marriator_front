@@ -1,16 +1,20 @@
 import type { StoryObj, Meta } from "@storybook/react";
 import * as DocBlock from "@storybook/blocks";
 
-import { createRemixStub } from "@remix-run/testing";
 import { http, delay, HttpResponse } from "msw";
 
 import Sms from "./sms";
 import { json } from "@remix-run/react";
+import {
+  reactRouterParameters,
+  withRouter,
+} from "storybook-addon-remix-react-router";
 
 const meta = {
   title: "Страницы/Вход/Смс-код",
   component: Sms,
   tags: ["autodocs"],
+  decorators: [withRouter],
   parameters: {
     layout: {
       padded: false,
@@ -40,32 +44,7 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Primary: Story = {
-  name: "Страница",
-  decorators: [
-    (Story) => {
-      const RemixStub = createRemixStub([
-        {
-          path: "/",
-          Component: Story,
-          loader: async ({ request }) => {
-            const currentURL = new URL(request.url);
-
-            const ttl = currentURL.searchParams.get("ttl");
-
-            return json({ phone: "+79123152151", ttl });
-          },
-          action: async () => {
-            // const data = await postRegStep2({ test: "test" });
-            // return data;
-
-            return null;
-          },
-        },
-      ]);
-
-      return <RemixStub />;
-    },
-  ],
+  name: "Page",
   parameters: {
     msw: {
       handlers: [
@@ -77,5 +56,23 @@ export const Primary: Story = {
         }),
       ],
     },
+    reactRouter: reactRouterParameters({
+      routing: {
+        path: "/signin/sms",
+        loader: async ({ request }) => {
+          const currentURL = new URL(request.url);
+
+          const ttl = currentURL.searchParams.get("ttl");
+
+          return json({ phone: "+79123152151", ttl });
+        },
+        action: async () => {
+          // const data = await postRegStep2({ test: "test" });
+          // return data;
+
+          return null;
+        },
+      },
+    }),
   },
 };
