@@ -10,6 +10,7 @@ import {
 // MUI
 import { theme } from "./theme/theme";
 import { CssBaseline, ThemeProvider } from "@mui/material";
+import "@mui/material-pigment-css/styles.css";
 // MUI
 
 import { QueryClient } from "@tanstack/react-query";
@@ -62,6 +63,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
           <CssBaseline />
           {children}
         </ThemeProvider>
+        {/* {children} */}
         <ScrollRestoration />
         <Scripts />
       </body>
