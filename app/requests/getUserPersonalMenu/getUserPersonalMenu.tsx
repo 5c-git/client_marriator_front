@@ -46,22 +46,22 @@ export const mockResponseSuccess = {
   result: {
     section: [
       {
-        name: "Персональные данные",
+        name: "\u041f\u0435\u0440\u0441\u043e\u043d\u0430\u043b\u044c\u043d\u044b\u0435 \u0434\u0430\u043d\u043d\u044b\u0435",
         value: 1,
-        notification: true,
+        notification: false,
       },
       {
-        name: "Допуски, справки, удостоверения",
+        name: "\u0414\u043e\u043f\u0443\u0441\u043a\u0438, \u0441\u043f\u0440\u0430\u0432\u043a\u0438, \u0443\u0434\u043e\u0441\u0442\u043e\u0432\u0435\u0440\u0435\u043d\u0438\u044f",
         value: 2,
         notification: false,
       },
       {
-        name: "Радиус поиска работы",
+        name: "\u0420\u0430\u0434\u0438\u0443\u0441 \u043f\u043e\u0438\u0441\u043a\u0430 \u0440\u0430\u0431\u043e\u0442\u044b",
         value: 3,
         notification: false,
       },
       {
-        name: "Документы иностранного гражданина",
+        name: "\u0414\u043e\u043a\u0443\u043c\u0435\u043d\u0442\u044b \u0438\u043d\u043e\u0441\u0442\u0440\u0430\u043d\u043d\u043e\u0433\u043e \u0433\u0440\u0430\u0436\u0434\u0430\u043d\u0438\u043d\u0430",
         value: 4,
         notification: false,
       },

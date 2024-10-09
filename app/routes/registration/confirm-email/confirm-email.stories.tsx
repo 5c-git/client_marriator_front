@@ -1,16 +1,18 @@
 import type { StoryObj, Meta } from "@storybook/react";
 import * as DocBlock from "@storybook/blocks";
 
-import { createRemixStub } from "@remix-run/testing";
-// import { http, delay, HttpResponse } from "msw";
-
 import СonfirmEmail from "./confirm-email";
 import { json } from "@remix-run/react";
+import {
+  reactRouterParameters,
+  withRouter,
+} from "storybook-addon-remix-react-router";
 
 const meta = {
   title: "Страницы/Регистрация/Подтверждение email",
   component: СonfirmEmail,
   tags: ["autodocs"],
+  decorators: [withRouter],
   parameters: {
     layout: {
       padded: false,
@@ -40,38 +42,21 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Primary: Story = {
-  name: "Страница",
-  decorators: [
-    (Story) => {
-      const RemixStub = createRemixStub([
-        {
-          path: "/confirm-email",
-          Component: Story,
-          loader: async () => {
-            return json({ email: "test@mail.ru", ttl: "120" });
-          },
-          action: async () => {
-            // const data = await postRegStep2({ test: "test" });
-            // return data;
-
-            return null;
-          },
-        },
-      ]);
-
-      return <RemixStub initialEntries={["/confirm-email"]} />;
-    },
-  ],
+  name: "Page",
   parameters: {
-    // msw: {
-    //   handlers: [
-    //     http.post(import.meta.env.VITE_GET_FORM, async () => {
-    //       await delay(2000);
-    //       return HttpResponse.json({
-    //         status: "Success",
-    //       });
-    //     }),
-    //   ],
-    // },
+    reactRouter: reactRouterParameters({
+      routing: {
+        path: "/registration/confirm-email",
+        loader: async () => {
+          return json({ email: "test@mail.ru", ttl: "120" });
+        },
+        action: async () => {
+          // const data = await postRegStep2({ test: "test" });
+          // return data;
+
+          return null;
+        },
+      },
+    }),
   },
 };

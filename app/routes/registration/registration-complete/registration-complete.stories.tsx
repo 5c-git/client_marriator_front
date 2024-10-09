@@ -1,7 +1,6 @@
 import type { StoryObj, Meta } from "@storybook/react";
 import * as DocBlock from "@storybook/blocks";
 
-import { createRemixStub } from "@remix-run/testing";
 import { http, delay, HttpResponse } from "msw";
 
 import RegistrationComplete from "./registration-complete";
@@ -13,11 +12,16 @@ import {
 } from "~/requests/getUserInfo/getUserInfo";
 
 import { json } from "@remix-run/react";
+import {
+  reactRouterParameters,
+  withRouter,
+} from "storybook-addon-remix-react-router";
 
 const meta = {
   title: "Страницы/Регистрация/Завершение регистрации",
   component: RegistrationComplete,
   tags: ["autodocs"],
+  decorators: [withRouter],
   parameters: {
     layout: {
       padded: false,
@@ -43,31 +47,7 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Primary: Story = {
-  name: "Страница",
-  decorators: [
-    (Story) => {
-      const RemixStub = createRemixStub([
-        {
-          Component: MenuLayout,
-          children: [
-            {
-              path: "/registration/registration-complete",
-              Component: Story,
-              loader: async () => {
-                const data = await getUserInfo("token");
-
-                return json(data);
-              },
-            },
-          ],
-        },
-      ]);
-
-      return (
-        <RemixStub initialEntries={["/registration/registration-complete"]} />
-      );
-    },
-  ],
+  name: "Page",
   parameters: {
     msw: {
       handlers: [
@@ -77,5 +57,22 @@ export const Primary: Story = {
         }),
       ],
     },
+    reactRouter: reactRouterParameters({
+      routing: {
+        path: "/registration/registration-complete",
+        Component: MenuLayout,
+        children: [
+          {
+            index: true,
+            useStoryElement: true,
+            loader: async () => {
+              const data = await getUserInfo("token");
+
+              return json(data);
+            },
+          },
+        ],
+      },
+    }),
   },
 };

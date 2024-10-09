@@ -1,7 +1,6 @@
 import type { StoryObj, Meta } from "@storybook/react";
 import * as DocBlock from "@storybook/blocks";
 
-import { createRemixStub } from "@remix-run/testing";
 import { http, delay, HttpResponse } from "msw";
 
 import Step7 from "./step7";
@@ -13,11 +12,16 @@ import {
   mockResponseAllowedNewStep,
 } from "~/requests/postSaveForm/postSaveForm";
 import { json } from "@remix-run/react";
+import {
+  reactRouterParameters,
+  withRouter,
+} from "storybook-addon-remix-react-router";
 
 const meta = {
   title: "Страницы/Регистрация/Шаг7",
   component: Step7,
   tags: ["autodocs"],
+  decorators: [withRouter],
   parameters: {
     layout: {
       padded: false,
@@ -44,37 +48,6 @@ type Story = StoryObj<typeof meta>;
 
 export const Primary: Story = {
   name: "Страница",
-  decorators: [
-    (Story) => {
-      const RemixStub = createRemixStub([
-        {
-          path: "/",
-          Component: Story,
-          loader: async () => {
-            const data = await getForm("token", 7);
-
-            return json({
-              formFields: data.result.formData,
-              formStatus: data.result.type,
-            });
-          },
-          action: async ({ request }) => {
-            const fields = await request.json();
-
-            const data = await postSaveForm("token", 7, fields);
-
-            if (data.result.type === "allowedNewStep") {
-              alert("Переходим на следующий шаг!");
-            }
-
-            return data;
-          },
-        },
-      ]);
-
-      return <RemixStub />;
-    },
-  ],
   parameters: {
     msw: {
       handlers: [
@@ -138,5 +111,29 @@ export const Primary: Story = {
         }),
       ],
     },
+    reactRouter: reactRouterParameters({
+      routing: {
+        path: "/registration/step7",
+        loader: async () => {
+          const data = await getForm("token", 7);
+
+          return json({
+            formFields: data.result.formData,
+            formStatus: data.result.type,
+          });
+        },
+        action: async ({ request }) => {
+          const fields = await request.json();
+
+          const data = await postSaveForm("token", 7, fields);
+
+          if (data.result.type === "allowedNewStep") {
+            alert("Переходим на следующий шаг!");
+          }
+
+          return data;
+        },
+      },
+    }),
   },
 };

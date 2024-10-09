@@ -19,17 +19,22 @@ import SmsRU from "../routes/signin/sms/locales/ru.json";
 import PinRU from "../routes/signin/pin/locales/ru.json";
 import CreatePinRU from "../routes/signin/createPin/locales/ru.json";
 import ProfileRU from "../routes/profile/index/locales/ru.json";
-import MyProfileRU from "../routes/profile/my-profile/locales/ru.json";
-import ProfileEditRU from "../routes/profile/profile-edit/locales/ru.json";
-import ProfileMetaRU from "../routes/profile/profile-meta/locales/ru.json";
-import UserActivitiesRU from "../routes/profile/user-activities/locales/ru.json";
-import BillingRU from "../routes/profile/billing/locales/ru.json";
-import BillingAddRU from "../routes/profile/billing-add/locales/ru.json";
-import BillingEditRU from "../routes/profile/billing-edit/locales/ru.json";
+import MyProfileRU from "../routes/profile/my-profile/index/locales/ru.json";
+import ProfileEditRU from "../routes/profile/my-profile/profile-edit/locales/ru.json";
+import ProfileMetaRU from "../routes/profile/my-profile/profile-meta/index/locales/ru.json";
+import UserActivitiesRU from "../routes/profile/my-profile/user-activities/locales/ru.json";
+import BillingRU from "../routes/profile/my-profile/billing/index/locales/ru.json";
+import BillingAddRU from "../routes/profile/my-profile/billing/billing-add/locales/ru.json";
+import BillingEditRU from "../routes/profile/my-profile/billing/billing-edit/locales/ru.json";
 
-import ConfirmPersonalPhoneRU from "../routes/profile/confirm-personal-phone/locales/ru.json";
-import ConfirmPersonalEmailRU from "../routes/profile/confirm-personal-email/locales/ru.json";
-import WorkRadiusRU from "../routes/profile/work-radius/locales/ru.json";
+import ConfirmPersonalPhoneRU from "../routes/profile/my-profile/profile-meta/confirm-personal-phone/locales/ru.json";
+import ConfirmPersonalEmailRU from "../routes/profile/my-profile/profile-meta/confirm-personal-email/locales/ru.json";
+import WorkRadiusRU from "../routes/profile/my-profile/work-radius/locales/ru.json";
+import DocumentsRU from "../routes/profile/documents/index/locales/ru.json";
+import SignRU from "../routes/profile/documents/sign/locales/ru.json";
+import SignADealRU from "../routes/profile/documents/sign-a-deal/locales/ru.json";
+import TerminateADealRU from "../routes/profile/documents/terminate-a-deal/locales/ru.json";
+import DocumentsArchiveRU from "../routes/profile/documents/documents-archive/locales/ru.json";
 
 import StyledPhotoCheckboxRU from "../shared/ui/StyledPhotoCheckbox/locales/ru.json";
 import StyledFileInputRU from "../shared/ui/StyledFileInput/locales/ru.json";
@@ -81,6 +86,11 @@ declare module "i18next" {
         BillingAdd: typeof BillingAddRU;
         BillingEdit: typeof BillingEditRU;
         WorkRadius: typeof WorkRadiusRU;
+        Documents: typeof DocumentsRU;
+        Sign: typeof SignRU;
+        SignADeal: typeof SignADealRU;
+        TerminateADeal: typeof TerminateADealRU;
+        DocumentsArchive: typeof DocumentsArchiveRU;
 
         //components
         StyledPhotoCheckbox: typeof StyledPhotoCheckboxRU;

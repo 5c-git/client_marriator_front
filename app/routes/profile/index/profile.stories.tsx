@@ -1,8 +1,12 @@
 import type { StoryObj, Meta } from "@storybook/react";
 import * as DocBlock from "@storybook/blocks";
 
-import { createRemixStub } from "@remix-run/testing";
 import { http, delay, HttpResponse } from "msw";
+
+import {
+  reactRouterParameters,
+  withRouter,
+} from "storybook-addon-remix-react-router";
 
 import Profile from "./profile";
 import MenuLayout from "~/routes/menuLayout/menuLayout";
@@ -18,6 +22,7 @@ const meta = {
   title: "Страницы/Внутренние/Профиль",
   component: Profile,
   tags: ["autodocs"],
+  decorators: [withRouter],
   parameters: {
     layout: {
       padded: false,
@@ -43,29 +48,7 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Primary: Story = {
-  name: "Страница",
-  decorators: [
-    (Story) => {
-      const RemixStub = createRemixStub([
-        {
-          Component: MenuLayout,
-          children: [
-            {
-              path: "/profile",
-              Component: Story,
-              loader: async () => {
-                const data = await getUserInfo("token");
-
-                return json(data);
-              },
-            },
-          ],
-        },
-      ]);
-
-      return <RemixStub initialEntries={["/profile"]} />;
-    },
-  ],
+  name: "Page",
   parameters: {
     msw: {
       handlers: [
@@ -75,5 +58,25 @@ export const Primary: Story = {
         }),
       ],
     },
+    reactRouter: reactRouterParameters({
+      routing: {
+        path: "/profile",
+        Component: MenuLayout,
+        children: [
+          {
+            index: true,
+            useStoryElement: true,
+            loader: async () => {
+              const data = await getUserInfo("token");
+
+              return json(data);
+            },
+            action: async () => {
+              return null;
+            },
+          },
+        ],
+      },
+    }),
   },
 };
