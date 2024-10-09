@@ -1,0 +1,14 @@
+{
+  "$id": "postSetTerminateSuccess",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "postSetTerminateSuccess",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "status": {
+      "type": "string",
+      "const": "success"
+    }
+  },
+  "required": ["status"]
+}

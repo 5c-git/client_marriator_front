@@ -59,7 +59,7 @@ export default function Documents() {
           >
             <ListItemButton
               component={Link}
-              to={`${withLocale("/profile/profile-meta")}`}
+              to={`${withLocale("/profile/documents/sign")}`}
               sx={{
                 display: "flex",
                 padding: "16px 0px",
@@ -113,7 +113,7 @@ export default function Documents() {
           >
             <ListItemButton
               component={Link}
-              to={`${withLocale("/profile/profile-meta")}`}
+              to={`${withLocale("/profile/documents/sign-a-deal")}`}
               sx={{
                 display: "flex",
                 padding: "16px 0px",
@@ -167,7 +167,7 @@ export default function Documents() {
           >
             <ListItemButton
               component={Link}
-              to={`${withLocale("/profile/profile-meta")}`}
+              to={`${withLocale("/profile/documents/terminate-a-deal")}`}
               sx={{
                 display: "flex",
                 padding: "16px 0px",
@@ -221,7 +221,7 @@ export default function Documents() {
           >
             <ListItemButton
               component={Link}
-              to={`${withLocale("/profile/profile-meta")}`}
+              to={`${withLocale("/profile/documents/documents-archive")}`}
               sx={{
                 display: "flex",
                 padding: "16px 0px",
@@ -274,6 +274,7 @@ export default function Documents() {
             }}
           >
             <ListItemButton
+              disabled
               component={Link}
               to={`${withLocale("/profile/profile-meta")}`}
               sx={{

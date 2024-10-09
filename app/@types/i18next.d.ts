@@ -31,6 +31,10 @@ import ConfirmPersonalPhoneRU from "../routes/profile/my-profile/profile-meta/co
 import ConfirmPersonalEmailRU from "../routes/profile/my-profile/profile-meta/confirm-personal-email/locales/ru.json";
 import WorkRadiusRU from "../routes/profile/my-profile/work-radius/locales/ru.json";
 import DocumentsRU from "../routes/profile/documents/index/locales/ru.json";
+import SignRU from "../routes/profile/documents/sign/locales/ru.json";
+import SignADealRU from "../routes/profile/documents/sign-a-deal/locales/ru.json";
+import TerminateADealRU from "../routes/profile/documents/terminate-a-deal/locales/ru.json";
+import DocumentsArchiveRU from "../routes/profile/documents/documents-archive/locales/ru.json";
 
 import StyledPhotoCheckboxRU from "../shared/ui/StyledPhotoCheckbox/locales/ru.json";
 import StyledFileInputRU from "../shared/ui/StyledFileInput/locales/ru.json";
@@ -83,6 +87,10 @@ declare module "i18next" {
         BillingEdit: typeof BillingEditRU;
         WorkRadius: typeof WorkRadiusRU;
         Documents: typeof DocumentsRU;
+        Sign: typeof SignRU;
+        SignADeal: typeof SignADealRU;
+        TerminateADeal: typeof TerminateADealRU;
+        DocumentsArchive: typeof DocumentsArchiveRU;
 
         //components
         StyledPhotoCheckbox: typeof StyledPhotoCheckboxRU;

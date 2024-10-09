@@ -83,6 +83,18 @@ import WorkRadiusEN from "../routes/profile/my-profile/work-radius/locales/en.js
 import DocumentsRU from "../routes/profile/documents/index/locales/ru.json";
 import DocumentsEN from "../routes/profile/documents/index/locales/en.json";
 
+import SignRU from "../routes/profile/documents/sign/locales/ru.json";
+import SignEN from "../routes/profile/documents/sign/locales/en.json";
+
+import SignADealRU from "../routes/profile/documents/sign-a-deal/locales/ru.json";
+import SignADealEN from "../routes/profile/documents/sign-a-deal/locales/en.json";
+
+import TerminateADealRU from "../routes/profile/documents/terminate-a-deal/locales/ru.json";
+import TerminateADealEN from "../routes/profile/documents/terminate-a-deal/locales/en.json";
+
+import DocumentsArchiveRU from "../routes/profile/documents/documents-archive/locales/ru.json";
+import DocumentsArchiveEN from "../routes/profile/documents/documents-archive/locales/en.json";
+
 import StyledPhotoCheckboxRU from "../shared/ui/StyledPhotoCheckbox/locales/ru.json";
 import StyledPhotoCheckboxEN from "../shared/ui/StyledPhotoCheckbox/locales/en.json";
 import StyledFileInputRU from "../shared/ui/StyledFileInput/locales/ru.json";
@@ -143,6 +155,10 @@ export const resources = {
       BillingEdit: BillingEditRU,
       WorkRadius: WorkRadiusRU,
       Documents: DocumentsRU,
+      Sign: SignRU,
+      SignADeal: SignADealRU,
+      TerminateADeal: TerminateADealRU,
+      DocumentsArchive: DocumentsArchiveRU,
 
       //components
       StyledPhotoCheckbox: StyledPhotoCheckboxRU,
@@ -193,6 +209,10 @@ export const resources = {
       BillingEdit: BillingEditEN,
       WorkRadius: WorkRadiusEN,
       Documents: DocumentsEN,
+      Sign: SignEN,
+      SignADeal: SignADealEN,
+      TerminateADeal: TerminateADealEN,
+      DocumentsArchive: DocumentsArchiveEN,
 
       //components
       StyledPhotoCheckbox: StyledPhotoCheckboxEN,

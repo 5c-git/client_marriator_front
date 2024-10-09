@@ -30,6 +30,12 @@ import { getGeoDataMockResponse } from "~/requests/getGeoData/getGeoData";
 import { getMapFieldMockResponse } from "~/requests/getMapField/getMapField";
 import { postSetMapFieldMockResponse } from "~/requests/postSetMapField/postSetMapField";
 import { getSettingsFromKeyMockResponse } from "~/requests/getSettingsFromKey/getSettingsFromKey";
+import { getDocumentSignedMockResponse } from "~/requests/getDocumentSigned/getDocumentSigned";
+import { getDocumentConcludeMockResponse } from "~/requests/getDocumentConclude/getDocumentConclude";
+import { getDocumentTerminateMockResponse } from "~/requests/getDocumentTerminate/getDocumentTerminate";
+import { postSetConcludeMockResponse } from "~/requests/postSetConclude/postSetConclude";
+import { postSetTerminateMockResponse } from "~/requests/postSetTerminate/postSetTerminate";
+import { getDocumentArchiveMockResponse } from "~/requests/getDocumentArchive/getDocumentArchive";
 
 export const handlers = [
   getFormMockResponse,
@@ -61,4 +67,10 @@ export const handlers = [
   getMapFieldMockResponse,
   postSetMapFieldMockResponse,
   getSettingsFromKeyMockResponse,
+  getDocumentSignedMockResponse,
+  getDocumentConcludeMockResponse,
+  getDocumentTerminateMockResponse,
+  postSetConcludeMockResponse,
+  postSetTerminateMockResponse,
+  getDocumentArchiveMockResponse,
 ];

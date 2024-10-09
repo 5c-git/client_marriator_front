@@ -72,6 +72,22 @@ export default defineConfig({
                   ":lang?/profile/documents",
                   "routes/profile/documents/index/documents.tsx"
                 );
+                route(
+                  ":lang?/profile/documents/sign",
+                  "routes/profile/documents/sign/sign.tsx"
+                );
+                route(
+                  ":lang?/profile/documents/sign-a-deal",
+                  "routes/profile/documents/sign-a-deal/sign-a-deal.tsx"
+                );
+                route(
+                  ":lang?/profile/documents/terminate-a-deal",
+                  "routes/profile/documents/terminate-a-deal/terminate-a-deal.tsx"
+                );
+                route(
+                  ":lang?/profile/documents/documents-archive",
+                  "routes/profile/documents/documents-archive/documents-archive.tsx"
+                );
               });
 
               //signin

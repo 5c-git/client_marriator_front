@@ -35,6 +35,12 @@ interface ImportMetaEnv {
   readonly VITE_GET_MAP_FIELD: string;
   readonly VITE_POST_MAP_FIELD: string;
   readonly VITE_SETTINGS_FROM_KEY: string;
+  readonly VITE_GET_DOCUMENT_SIGNED: string;
+  readonly VITE_GET_DOCUMENT_CONCLUDE: string;
+  readonly VITE_SET_CONCLUDE: string;
+  readonly VITE_GET_DOCUMENT_TERMINATE: string;
+  readonly VITE_SET_TERMINATE: string;
+  readonly VITE_GET_DOCUMENT_ARCHIVE: string;
   // more env variables...
 }
 

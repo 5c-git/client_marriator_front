@@ -75,12 +75,6 @@
             },
             "updateData": {
               "type": ["null", "string"]
-            },
-            "change_fields": {
-              "type": "null"
-            },
-            "date_for_send": {
-              "type": "null"
             }
           },
           "required": [
@@ -104,9 +98,7 @@
             "mapAddress",
             "mapRadius",
             "coordinates",
-            "updateData",
-            "change_fields",
-            "date_for_send"
+            "updateData"
           ]
         }
       },
