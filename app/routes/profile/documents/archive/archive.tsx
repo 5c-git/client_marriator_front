@@ -38,7 +38,7 @@ export async function clientLoader() {
   }
 }
 
-export default function DocumentsArchive() {
+export default function Archive() {
   const theme = useTheme();
   const navigation = useNavigation();
   const navigate = useNavigate();

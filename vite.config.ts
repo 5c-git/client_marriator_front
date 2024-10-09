@@ -85,8 +85,8 @@ export default defineConfig({
                   "routes/profile/documents/terminate-a-deal/terminate-a-deal.tsx"
                 );
                 route(
-                  ":lang?/profile/documents/documents-archive",
-                  "routes/profile/documents/documents-archive/documents-archive.tsx"
+                  ":lang?/profile/documents/archive",
+                  "routes/profile/documents/archive/archive.tsx"
                 );
               });
 

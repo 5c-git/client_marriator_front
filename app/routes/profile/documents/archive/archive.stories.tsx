@@ -1,7 +1,7 @@
 import type { StoryObj, Meta } from "@storybook/react";
 import * as DocBlock from "@storybook/blocks";
 
-import DocumentsArchive from "./documents-archive";
+import DocumentsArchive from "./archive";
 import MenuLayout from "~/routes/menuLayout/menuLayout";
 
 import {
@@ -28,7 +28,7 @@ const meta = {
       page: () => (
         <>
           <DocBlock.Title />
-          <h2>Адрес страницы: /profile/documents/documents-archive</h2>
+          <h2>Адрес страницы: /profile/documents/archive</h2>
           <h3>Используемые запросы:</h3>
           <p>
             getDocumentArchive() - VITE_GET_DOCUMENT_ARCHIVE -{" "}
@@ -57,7 +57,7 @@ export const Primary: Story = {
     },
     reactRouter: reactRouterParameters({
       routing: {
-        path: "/profile/documents/documents-archive",
+        path: "/profile/documents/archive",
         Component: MenuLayout,
         children: [
           {
