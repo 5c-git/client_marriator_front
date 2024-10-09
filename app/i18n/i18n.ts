@@ -92,8 +92,8 @@ import SignADealEN from "../routes/profile/documents/sign-a-deal/locales/en.json
 import TerminateADealRU from "../routes/profile/documents/terminate-a-deal/locales/ru.json";
 import TerminateADealEN from "../routes/profile/documents/terminate-a-deal/locales/en.json";
 
-import DocumentsArchiveRU from "../routes/profile/documents/documents-archive/locales/ru.json";
-import DocumentsArchiveEN from "../routes/profile/documents/documents-archive/locales/en.json";
+import DocumentsArchiveRU from "../routes/profile/documents/archive/locales/ru.json";
+import DocumentsArchiveEN from "../routes/profile/documents/archive/locales/en.json";
 
 import StyledPhotoCheckboxRU from "../shared/ui/StyledPhotoCheckbox/locales/ru.json";
 import StyledPhotoCheckboxEN from "../shared/ui/StyledPhotoCheckbox/locales/en.json";

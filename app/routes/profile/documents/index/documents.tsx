@@ -221,7 +221,7 @@ export default function Documents() {
           >
             <ListItemButton
               component={Link}
-              to={`${withLocale("/profile/documents/documents-archive")}`}
+              to={`${withLocale("/profile/documents/archive")}`}
               sx={{
                 display: "flex",
                 padding: "16px 0px",

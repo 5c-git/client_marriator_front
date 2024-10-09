@@ -9,7 +9,7 @@ installGlobals();
 export default defineConfig({
   ssr: {
     // Bundle `problematic-dependency` into the server build
-    noExternal: ["ymap3-components"],
+    noExternal: ["ymap3-components", /^@mui\//],
   },
   plugins: [
     remix({
@@ -85,8 +85,8 @@ export default defineConfig({
                   "routes/profile/documents/terminate-a-deal/terminate-a-deal.tsx"
                 );
                 route(
-                  ":lang?/profile/documents/documents-archive",
-                  "routes/profile/documents/documents-archive/documents-archive.tsx"
+                  ":lang?/profile/documents/archive",
+                  "routes/profile/documents/archive/archive.tsx"
                 );
               });
 

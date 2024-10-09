@@ -1,23 +1,23 @@
 import type { StoryObj, Meta } from "@storybook/react";
 import * as DocBlock from "@storybook/blocks";
 
-import DocumentsArchive from "./documents-archive";
+import SignADeal from "./certificates";
 import MenuLayout from "~/routes/menuLayout/menuLayout";
 
 import {
   reactRouterParameters,
   withRouter,
 } from "storybook-addon-remix-react-router";
-import {
-  getDocumentArchive,
-  mockResponseSuccess,
-} from "~/requests/getDocumentArchive/getDocumentArchive";
 import { json } from "@remix-run/react";
+import {
+  getDocumentConclude,
+  mockResponseSuccess,
+} from "~/requests/getDocumentConclude/getDocumentConclude";
 import { delay, http, HttpResponse } from "msw";
 
 const meta = {
-  title: "Страницы/Внутренние/Профиль/Документы/Архив документов",
-  component: DocumentsArchive,
+  title: "Страницы/Внутренние/Профиль/Документы/Заключить договор",
+  component: SignADeal,
   tags: ["autodocs"],
   decorators: [withRouter],
   parameters: {
@@ -28,17 +28,21 @@ const meta = {
       page: () => (
         <>
           <DocBlock.Title />
-          <h2>Адрес страницы: /profile/documents/documents-archive</h2>
+          <h2>Адрес страницы: /profile/documents/sign-a-deal</h2>
           <h3>Используемые запросы:</h3>
           <p>
-            getDocumentArchive() - VITE_GET_DOCUMENT_ARCHIVE -{" "}
-            {import.meta.env.VITE_GET_DOCUMENT_ARCHIVE}
+            getDocumentConclude() - VITE_GET_DOCUMENT_CONCLUDE -{" "}
+            {import.meta.env.VITE_GET_DOCUMENT_CONCLUDE}
+          </p>
+          <p>
+            postSetConclude() - VITE_SET_CONCLUDE -{" "}
+            {import.meta.env.VITE_SET_CONCLUDE}
           </p>
         </>
       ),
     },
   },
-} satisfies Meta<typeof DocumentsArchive>;
+} satisfies Meta<typeof SignADeal>;
 
 export default meta;
 
@@ -49,23 +53,31 @@ export const Primary: Story = {
   parameters: {
     msw: {
       handlers: [
-        http.get(import.meta.env.VITE_GET_DOCUMENT_ARCHIVE, async () => {
+        http.get(import.meta.env.VITE_GET_DOCUMENT_CONCLUDE, async () => {
           await delay(2000);
           return HttpResponse.json(mockResponseSuccess);
+        }),
+        http.post(import.meta.env.VITE_SET_CONCLUDE, async () => {
+          await delay(2000);
+          return HttpResponse.json({ success: "success" });
         }),
       ],
     },
     reactRouter: reactRouterParameters({
       routing: {
-        path: "/profile/documents/documents-archive",
+        path: "/profile/documents/sign-a-deal",
         Component: MenuLayout,
         children: [
           {
             index: true,
             useStoryElement: true,
             loader: async () => {
-              const data = await getDocumentArchive("token");
-              return json(data.result);
+              const data = await getDocumentConclude("token");
+
+              return json(data.result.organization);
+            },
+            action: async () => {
+              return null;
             },
           },
         ],
