@@ -9,7 +9,7 @@ installGlobals();
 export default defineConfig({
   ssr: {
     // Bundle `problematic-dependency` into the server build
-    noExternal: ["ymap3-components"],
+    noExternal: ["ymap3-components", /^@mui\//],
   },
   plugins: [
     remix({
