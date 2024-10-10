@@ -36,6 +36,8 @@ import { getDocumentTerminateMockResponse } from "~/requests/getDocumentTerminat
 import { postSetConcludeMockResponse } from "~/requests/postSetConclude/postSetConclude";
 import { postSetTerminateMockResponse } from "~/requests/postSetTerminate/postSetTerminate";
 import { getDocumentArchiveMockResponse } from "~/requests/getDocumentArchive/getDocumentArchive";
+import { getDocumentInquiriesMockResponse } from "~/requests/getDocumentInquiries/getDocumentInquiries";
+import { getCompanyAndCertificatesInquiriesMockResponse } from "~/requests/getCompanyAndCertificatesInquiries/getCompanyAndCertificatesInquiries";
 
 export const handlers = [
   getFormMockResponse,
@@ -73,4 +75,6 @@ export const handlers = [
   postSetConcludeMockResponse,
   postSetTerminateMockResponse,
   getDocumentArchiveMockResponse,
+  getDocumentInquiriesMockResponse,
+  getCompanyAndCertificatesInquiriesMockResponse,
 ];

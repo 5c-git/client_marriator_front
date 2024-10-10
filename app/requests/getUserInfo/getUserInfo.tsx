@@ -72,8 +72,6 @@ export const mockResponseSuccess = {
       mapRadius: "3",
       updateData: "[]",
       coordinates: "38.638562 55.77913",
-      change_fields: null,
-      date_for_send: null,
     },
   },
   status: "success",

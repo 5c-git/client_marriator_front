@@ -4,6 +4,21 @@ import { defineConfig } from "vite";
 import path from "path";
 import tsconfigPaths from "vite-tsconfig-paths";
 
+// PIGMENT MIGRATION v6.1.3 - DOES NOT WORK
+// import { pigment } from "@pigment-css/vite-plugin";
+// import { createTheme } from "@mui/material";
+// import { theme } from "~/theme/theme";
+
+/**
+ * @type {import('@pigment-css/vite-plugin').PigmentOptions}
+ */
+// const pigmentConfig = {
+//   transformLibraries: ["@mui/material"],
+//   theme: createTheme({
+//     cssVariables: true,
+//   }),
+// };
+
 installGlobals();
 
 export default defineConfig({
@@ -88,6 +103,10 @@ export default defineConfig({
                   ":lang?/profile/documents/archive",
                   "routes/profile/documents/archive/archive.tsx"
                 );
+                route(
+                  ":lang?/profile/documents/certificates",
+                  "routes/profile/documents/certificates/certificates.tsx"
+                );
               });
 
               //signin
@@ -144,6 +163,7 @@ export default defineConfig({
         });
       },
     }),
+    // pigment(pigmentConfig),
     tsconfigPaths(),
   ],
   resolve: {

@@ -19,6 +19,7 @@
     "@hookform/resolvers": "^3.3.4",
     "@mui/icons-material": "^6.1.3",
     "@mui/material": "^6.1.3",
+    "@mui/material-pigment-css": "^6.1.3",
     "@mui/x-date-pickers": "^7.6.2",
     "@remix-run/node": "^2.8.1",
     "@remix-run/react": "^2.8.1",
@@ -44,6 +45,7 @@
   },
   "devDependencies": {
     "@chromatic-com/storybook": "^2.0.2",
+    "@pigment-css/vite-plugin": "^0.0.24",
     "@remix-run/dev": "^2.8.1",
     "@storybook/addon-essentials": "^8.0.8",
     "@storybook/addon-interactions": "^8.0.8",
