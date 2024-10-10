@@ -274,9 +274,8 @@ export default function Documents() {
             }}
           >
             <ListItemButton
-              disabled
               component={Link}
-              to={`${withLocale("/profile/profile-meta")}`}
+              to={`${withLocale("/profile/documents/certificates")}`}
               sx={{
                 display: "flex",
                 padding: "16px 0px",

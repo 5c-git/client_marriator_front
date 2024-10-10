@@ -103,6 +103,10 @@ export default defineConfig({
                   ":lang?/profile/documents/archive",
                   "routes/profile/documents/archive/archive.tsx"
                 );
+                route(
+                  ":lang?/profile/documents/certificates",
+                  "routes/profile/documents/certificates/certificates.tsx"
+                );
               });
 
               //signin

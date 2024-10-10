@@ -35,6 +35,7 @@ import SignRU from "../routes/profile/documents/sign/locales/ru.json";
 import SignADealRU from "../routes/profile/documents/sign-a-deal/locales/ru.json";
 import TerminateADealRU from "../routes/profile/documents/terminate-a-deal/locales/ru.json";
 import DocumentsArchiveRU from "../routes/profile/documents/archive/locales/ru.json";
+import CertificatesRU from "../routes/profile/documents/certificates/locales/ru.json";
 
 import StyledPhotoCheckboxRU from "../shared/ui/StyledPhotoCheckbox/locales/ru.json";
 import StyledFileInputRU from "../shared/ui/StyledFileInput/locales/ru.json";
@@ -91,6 +92,7 @@ declare module "i18next" {
         SignADeal: typeof SignADealRU;
         TerminateADeal: typeof TerminateADealRU;
         DocumentsArchive: typeof DocumentsArchiveRU;
+        Certificates: typeof CertificatesRU;
 
         //components
         StyledPhotoCheckbox: typeof StyledPhotoCheckboxRU;

@@ -1,6 +1,8 @@
 {
-  "header": "Sign a deal",
-  "sign_header": "Select customers",
-  "sign_text": "Deals to be signed will appear in the “Signature required” section.",
-  "button_action": "Sign deal"
+  "header": "Certificates",
+  "header_text": "Needed information will be provided",
+  "button_action": "Request certificate",
+  "input_organization": "Select organization",
+  "input_certificate": "Select certificate",
+  "done_documents": "Ready certificates"
 }

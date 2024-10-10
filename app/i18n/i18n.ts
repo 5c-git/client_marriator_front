@@ -95,6 +95,9 @@ import TerminateADealEN from "../routes/profile/documents/terminate-a-deal/local
 import DocumentsArchiveRU from "../routes/profile/documents/archive/locales/ru.json";
 import DocumentsArchiveEN from "../routes/profile/documents/archive/locales/en.json";
 
+import CertificatesRU from "../routes/profile/documents/certificates/locales/ru.json";
+import CertificatesEN from "../routes/profile/documents/certificates/locales/en.json";
+
 import StyledPhotoCheckboxRU from "../shared/ui/StyledPhotoCheckbox/locales/ru.json";
 import StyledPhotoCheckboxEN from "../shared/ui/StyledPhotoCheckbox/locales/en.json";
 import StyledFileInputRU from "../shared/ui/StyledFileInput/locales/ru.json";
@@ -159,6 +162,7 @@ export const resources = {
       SignADeal: SignADealRU,
       TerminateADeal: TerminateADealRU,
       DocumentsArchive: DocumentsArchiveRU,
+      Certificates: CertificatesRU,
 
       //components
       StyledPhotoCheckbox: StyledPhotoCheckboxRU,
@@ -213,6 +217,7 @@ export const resources = {
       SignADeal: SignADealEN,
       TerminateADeal: TerminateADealEN,
       DocumentsArchive: DocumentsArchiveEN,
+      Certificates: CertificatesEN,
 
       //components
       StyledPhotoCheckbox: StyledPhotoCheckboxEN,

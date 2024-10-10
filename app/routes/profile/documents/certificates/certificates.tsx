@@ -7,43 +7,93 @@ import {
   ClientActionFunctionArgs,
 } from "@remix-run/react";
 
+import * as Yup from "yup";
+import { yupResolver } from "@hookform/resolvers/yup";
 import { useForm, Controller } from "react-hook-form";
 
 import { t } from "i18next";
 
 import { withLocale } from "~/shared/withLocale";
 
-import { useTheme, Box, Button, Typography } from "@mui/material";
+import {
+  useTheme,
+  Box,
+  Button,
+  Typography,
+  Divider,
+  Stack,
+  IconButton,
+} from "@mui/material";
 import { TopNavigation } from "~/shared/ui/TopNavigation/TopNavigation";
-import { StyledCheckbox } from "~/shared/ui/StyledCheckbox/StyledCheckbox";
+import { StyledSelect } from "~/shared/ui/StyledSelect/StyledSelect";
+
+import FileDownloadOutlinedIcon from "@mui/icons-material/FileDownloadOutlined";
 
 import { Loader } from "~/shared/ui/Loader/Loader";
 
 import { getAccessToken } from "~/preferences/token/token";
-import { getDocumentConclude } from "~/requests/getDocumentConclude/getDocumentConclude";
-import { postSetConclude } from "~/requests/postSetConclude/postSetConclude";
+import { getDocumentInquiries } from "~/requests/getDocumentInquiries/getDocumentInquiries";
+import { getCompanyAndCertificatesInquiries } from "~/requests/getCompanyAndCertificatesInquiries/getCompanyAndCertificatesInquiries";
+import { postRequestInquiries } from "~/requests/postRequestInquiries/postRequestInquiries";
 
-export const generateDefaultValues = (
-  items: { uuid: string; name: string }[]
+const generateOrganizationOptions = (
+  organizations: {
+    uuid: string;
+    name: string;
+  }[]
 ) => {
-  const defaultValues: {
-    [key: string]: boolean;
-  } = {};
+  const options: {
+    value: string;
+    label: string;
+    disabled: boolean;
+  }[] = [];
 
-  items.forEach((item) => {
-    defaultValues[item.uuid] = false;
+  organizations.forEach((item) => {
+    options.push({
+      value: item.uuid,
+      label: item.name,
+      disabled: false,
+    });
   });
 
-  return defaultValues;
+  return options;
+};
+
+const generateCertificateOptions = (
+  certificates: {
+    id: number;
+    key: string;
+    value: string;
+  }[]
+) => {
+  const options: {
+    value: string;
+    label: string;
+    disabled: boolean;
+  }[] = [];
+
+  certificates.forEach((item) => {
+    options.push({
+      value: item.value,
+      label: item.key,
+      disabled: false,
+    });
+  });
+
+  return options;
 };
 
 export async function clientLoader() {
   const accessToken = await getAccessToken();
 
   if (accessToken) {
-    const data = await getDocumentConclude(accessToken);
+    const certificatesData = await getDocumentInquiries(accessToken);
+    const fieldsData = await getCompanyAndCertificatesInquiries(accessToken);
 
-    return json(data.result.organization);
+    return json({
+      certificates: certificatesData.result,
+      fields: fieldsData.result,
+    });
   } else {
     throw new Response("Токен авторизации не обнаружен!", { status: 401 });
   }
@@ -54,24 +104,43 @@ export async function clientAction({ request }: ClientActionFunctionArgs) {
   const accessToken = await getAccessToken();
 
   if (accessToken) {
-    await postSetConclude(accessToken, fields);
-
+    await postRequestInquiries(
+      accessToken,
+      fields.organization,
+      fields.certificate
+    );
     return null;
   } else {
     throw new Response("Токен авторизации не обнаружен!", { status: 401 });
   }
 }
 
-export default function SignADeal() {
+export default function Certificates() {
   const theme = useTheme();
   const navigation = useNavigation();
   const navigate = useNavigate();
   const submit = useSubmit();
 
-  const data = useLoaderData<typeof clientLoader>();
+  const { fields, certificates } = useLoaderData<typeof clientLoader>();
 
-  const { control, handleSubmit } = useForm({
-    defaultValues: generateDefaultValues(data),
+  const organizationOptions = generateOrganizationOptions(fields.organization);
+  const certificateOptions = generateCertificateOptions(fields.certificates);
+
+  const {
+    control,
+    handleSubmit,
+    formState: { isDirty, errors },
+  } = useForm({
+    defaultValues: {
+      organization: "",
+      certificate: "",
+    },
+    resolver: yupResolver(
+      Yup.object({
+        organization: Yup.string().required(t("Constructor.select")),
+        certificate: Yup.string().required(t("Constructor.select")),
+      })
+    ),
   });
 
   return (
@@ -85,7 +154,7 @@ export default function SignADeal() {
       >
         <TopNavigation
           header={{
-            text: t("SignADeal.header"),
+            text: t("Certificates.header"),
             bold: false,
           }}
           backAction={() => {
@@ -99,99 +168,153 @@ export default function SignADeal() {
             flexDirection: "column",
             paddingTop: "20px",
             paddingBottom: "20px",
-            paddingRight: "16px",
-            paddingLeft: "16px",
+
             height: "calc(100% - 56px)",
           }}
         >
-          <Typography
-            component="h1"
-            variant="Reg_18"
+          <Box
             sx={{
-              color: theme.palette["Black"],
-              paddingBottom: "8px",
+              paddingRight: "16px",
+              paddingLeft: "16px",
+              paddingBottom: "16px",
             }}
           >
-            {t("SignADeal.sign_header")}
-          </Typography>
+            <Typography
+              component="h1"
+              variant="Reg_18"
+              sx={{
+                color: theme.palette["Black"],
+                paddingBottom: "16px",
+              }}
+            >
+              {t("Certificates.header_text")}
+            </Typography>
 
-          <Typography
-            component="p"
-            variant="Reg_14"
+            <form
+              onSubmit={handleSubmit((values) => {
+                submit(JSON.stringify(values), {
+                  method: "POST",
+                  encType: "application/json",
+                });
+                // console.log(values);
+              })}
+              style={{
+                display: "grid",
+                rowGap: "16px",
+              }}
+            >
+              <Controller
+                name="organization"
+                control={control}
+                render={({ field }) => (
+                  <StyledSelect
+                    inputType="select"
+                    placeholder={t("Certificates.input_organization")}
+                    onImmediateChange={() => {}}
+                    validation="none"
+                    options={organizationOptions}
+                    error={errors.organization?.message}
+                    {...field}
+                  />
+                )}
+              />
+
+              <Controller
+                name="certificate"
+                control={control}
+                render={({ field }) => (
+                  <StyledSelect
+                    inputType="select"
+                    placeholder={t("Certificates.input_certificate")}
+                    onImmediateChange={() => {}}
+                    validation="none"
+                    options={certificateOptions}
+                    error={errors.certificate?.message}
+                    {...field}
+                  />
+                )}
+              />
+
+              <Button variant="contained" disabled={!isDirty} type="submit">
+                {t("Certificates.button_action")}
+              </Button>
+            </form>
+          </Box>
+          <Divider
             sx={{
-              color: theme.palette["Grey_2"],
-              paddingBottom: "18px",
+              backgroundColor: theme.palette["Grey_4"],
             }}
-          >
-            {t("SignADeal.sign_text")}
-          </Typography>
+          />
 
-          <form
-            onSubmit={handleSubmit((values) => {
-              const chekedValues: string[] = [];
-
-              for (const key in values) {
-                if (values[key] === true) {
-                  chekedValues.push(key);
-                }
-              }
-
-              submit(JSON.stringify(chekedValues), {
-                method: "POST",
-                encType: "application/json",
-              });
-            })}
-            style={{
-              display: "flex",
-              flexDirection: "column",
-              flexGrow: "1",
-              overflow: "auto",
-              position: "relative",
-              paddingBottom: "45px",
-            }}
-          >
+          {certificates.length !== 0 ? (
             <Box
               sx={{
-                display: "flex",
-                flexDirection: "column",
-                flexGrow: 1,
-                // height: "100%",
-                overflow: "auto",
+                display: "grid",
+                paddingTop: "16px",
+                paddingRight: "16px",
+                paddingLeft: "16px",
+                rowGap: "8px",
               }}
             >
-              {" "}
-              {data.map((item) => (
-                <Controller
-                  key={item.name}
-                  name={item.uuid}
-                  control={control}
-                  render={({ field }) => (
-                    <StyledCheckbox
-                      inputType="checkbox"
-                      validation="none"
-                      onImmediateChange={() => {}}
-                      label={item.name}
-                      name={field.name}
-                      value={field.value}
-                      onChange={field.onChange}
+              <Typography
+                component="p"
+                variant="Bold_14"
+                sx={{
+                  color: theme.palette["Black"],
+                }}
+              >
+                {t("Certificates.done_documents")}
+              </Typography>
+
+              {certificates.map((item) => (
+                <Box
+                  sx={{
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "space-between",
+                    columnGap: "8px",
+                  }}
+                  key={item.uuid}
+                >
+                  <Stack>
+                    {/* <Typography
+                      component="p"
+                      variant="Reg_14"
+                      sx={{
+                        color: theme.palette["Black"],
+                      }}
+                    >
+                      Организация №2
+                    </Typography> */}
+                    <Typography
+                      component="p"
+                      variant="Reg_14"
+                      sx={{
+                        color: theme.palette["Black"],
+                      }}
+                    >
+                      {item.name}
+                    </Typography>
+                  </Stack>
+
+                  <IconButton
+                    LinkComponent="a"
+                    href={item.path}
+                    target="_blank"
+                    rel="noreferrer"
+                    edge="end"
+                    aria-label="download file"
+                  >
+                    <FileDownloadOutlinedIcon
+                      sx={{
+                        color: theme.palette["Black"],
+                      }}
                     />
-                  )}
-                />
+                  </IconButton>
+                </Box>
               ))}
             </Box>
-
-            <Button
-              sx={{
-                marginTop: "auto",
-                position: "absolute",
-                bottom: 0,
-              }}
-              variant="contained"
-              type="submit"
-            >
-              {t("SignADeal.button_action")}
-            </Button>
-          </form>
+          ) : null}
         </Box>
       </Box>
     </>

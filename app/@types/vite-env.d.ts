@@ -41,6 +41,9 @@ interface ImportMetaEnv {
   readonly VITE_GET_DOCUMENT_TERMINATE: string;
   readonly VITE_SET_TERMINATE: string;
   readonly VITE_GET_DOCUMENT_ARCHIVE: string;
+  readonly VITE_GET_DOCUMENTS_INQUIRIES: string;
+  readonly VITE_GET_COMPANY_AND_CERTIFICATES_INQUIRIES: string;
+  readonly VITE_REQUEST_INQUIRIES: string;
   // more env variables...
 }
 
