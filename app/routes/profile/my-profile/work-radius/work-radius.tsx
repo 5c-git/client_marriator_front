@@ -323,7 +323,7 @@ export default function WorkRadius() {
                   label={t("input_radius")}
                   slotProps={{
                     input: {
-                      component: MaskedField as never,
+                      inputComponent: MaskedField as never,
                       inputProps: {
                         mask: "00",
                       },
