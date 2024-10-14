@@ -5,7 +5,7 @@ import {
   useLoaderData,
 } from "@remix-run/react";
 
-import { t } from "i18next";
+import { useTranslation } from "react-i18next";
 
 import { withLocale } from "~/shared/withLocale";
 
@@ -39,6 +39,7 @@ export async function clientLoader() {
 }
 
 export default function Archive() {
+  const { t } = useTranslation("documentsArchive");
   const theme = useTheme();
   const navigation = useNavigation();
   const navigate = useNavigate();
@@ -51,7 +52,7 @@ export default function Archive() {
 
       <TopNavigation
         header={{
-          text: t("DocumentsArchive.header"),
+          text: t("header"),
           bold: false,
         }}
         backAction={() => {
@@ -78,7 +79,7 @@ export default function Archive() {
             paddingBottom: "8px",
           }}
         >
-          {t("DocumentsArchive.archive_header")}
+          {t("archive_header")}
         </Typography>
 
         <Typography
@@ -89,7 +90,7 @@ export default function Archive() {
             paddingBottom: "18px",
           }}
         >
-          {t("DocumentsArchive.archive_text")}
+          {t("archive_text")}
         </Typography>
 
         <List
@@ -135,7 +136,7 @@ export default function Archive() {
                 justifyContent: "center",
               }}
             >
-              {t("DocumentsArchive.archive_nothing")}
+              {t("archive_nothing")}
             </ListItem>
           )}
         </List>

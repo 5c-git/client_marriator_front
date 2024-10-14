@@ -7,7 +7,6 @@ import {
   reactRouterParameters,
   withRouter,
 } from "storybook-addon-remix-react-router";
-
 const meta = {
   title: "Страницы/Регистрация/Подтверждение email",
   component: СonfirmEmail,

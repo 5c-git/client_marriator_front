@@ -10,7 +10,8 @@ import {
   useSearchParams,
 } from "@remix-run/react";
 
-import { t } from "i18next";
+import { t, loadNamespaces } from "i18next";
+import { useTranslation } from "react-i18next";
 import { withLocale } from "~/shared/withLocale";
 
 import * as Yup from "yup";
@@ -38,20 +39,15 @@ import {
   setRefreshToken,
 } from "~/preferences/token/token";
 
-const validationSchema = Yup.object().shape({
-  code: Yup.string()
-    .default("")
-    .length(4, t("ConfirmRestorePin.inputValidation", { context: "lenght" }))
-    .required(t("ConfirmRestorePin.inputValidation")),
-});
-
 export async function clientLoader({ request }: ClientActionFunctionArgs) {
+  await loadNamespaces("confirmRestorePin");
+
   const currentURL = new URL(request.url);
 
   const ttl = currentURL.searchParams.get("ttl");
 
   if (!ttl) {
-    throw new Response(t("ConfirmRestorePin.wrongData"));
+    throw new Response(t("wrongData", { ns: "confirmRestorePin" }));
   }
 
   return json({ ttl });
@@ -101,6 +97,7 @@ export async function clientAction({ request }: ClientActionFunctionArgs) {
 }
 
 export default function СonfirmRestorePin() {
+  const { t } = useTranslation("confirmRestorePin");
   const theme = useTheme();
   const submit = useSubmit();
   const navigation = useNavigation();
@@ -123,7 +120,14 @@ export default function СonfirmRestorePin() {
     defaultValues: {
       code: "",
     },
-    resolver: yupResolver(validationSchema),
+    resolver: yupResolver(
+      Yup.object().shape({
+        code: Yup.string()
+          .default("")
+          .length(4, t("inputValidation_lenght"))
+          .required(t("inputValidation")),
+      })
+    ),
   });
 
   useEffect(() => {
@@ -147,7 +151,7 @@ export default function СonfirmRestorePin() {
       <Box>
         <TopNavigation
           header={{
-            text: t("ConfirmRestorePin.header"),
+            text: t("header"),
             bold: false,
           }}
           backAction={() => {
@@ -173,7 +177,7 @@ export default function СonfirmRestorePin() {
                 <StyledSmsField
                   inputType="sms"
                   error={errors.code?.message}
-                  placeholder={t("ConfirmRestorePin.inputPlaceholder")}
+                  placeholder={t("inputPlaceholder")}
                   onImmediateChange={handleSubmit((values) => {
                     submit(
                       JSON.stringify({
@@ -213,7 +217,7 @@ export default function СonfirmRestorePin() {
               );
             }}
           >
-            {t("ConfirmRestorePin.sendAgain")}
+            {t("sendAgain")}
           </Button>
 
           {seconds !== 0 ? (
@@ -225,7 +229,7 @@ export default function СonfirmRestorePin() {
                 textAlign: "center",
               }}
             >
-              {t("ConfirmRestorePin.timer")}{" "}
+              {t("timer")}{" "}
               <Typography
                 component="span"
                 variant="Bold_12"
@@ -258,7 +262,7 @@ export default function СonfirmRestorePin() {
             width: "100%",
           }}
         >
-          {t("ConfirmRestorePin.notification")}
+          {t("notification")}
         </Alert>
       </Snackbar>
 
@@ -280,7 +284,7 @@ export default function СonfirmRestorePin() {
             width: "100%",
           }}
         >
-          {t("ConfirmRestorePin.errorNotifivation")}
+          {t("errorNotifivation")}
         </Alert>
       </Snackbar>
     </>

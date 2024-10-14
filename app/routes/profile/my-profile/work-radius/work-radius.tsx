@@ -11,7 +11,8 @@ import { useForm, Controller } from "react-hook-form";
 
 import { circle } from "@turf/turf";
 
-import i18next, { t } from "i18next";
+import i18next from "i18next";
+import { useTranslation } from "react-i18next";
 import { withLocale } from "~/shared/withLocale";
 
 import {
@@ -166,6 +167,7 @@ export function shouldRevalidate({
 }
 
 export default function WorkRadius() {
+  const { t } = useTranslation("workRadius");
   const theme = useTheme();
   const fetcher = useFetcher<typeof clientAction>();
   const navigate = useNavigate();
@@ -234,7 +236,7 @@ export default function WorkRadius() {
       <Box>
         <TopNavigation
           header={{
-            text: t("WorkRadius.header"),
+            text: t("header"),
             bold: false,
           }}
           backAction={() => {
@@ -264,7 +266,7 @@ export default function WorkRadius() {
                 color: theme.palette["Black"],
               }}
             >
-              {t("WorkRadius.header_text")}
+              {t("header_text")}
             </Typography>
 
             <Typography
@@ -275,7 +277,7 @@ export default function WorkRadius() {
                 color: theme.palette["Grey_2"],
               }}
             >
-              {t("WorkRadius.header_expl")}
+              {t("header_expl")}
             </Typography>
           </Box>
 
@@ -291,16 +293,18 @@ export default function WorkRadius() {
               render={({ field }) => (
                 <TextField
                   {...field}
-                  label={t("WorkRadius.input_address")}
+                  label={t("input_address")}
                   fullWidth
-                  InputProps={{
-                    endAdornment: (
-                      <MarkerIcon
-                        sx={{
-                          color: theme.palette["Grey_3"],
-                        }}
-                      />
-                    ),
+                  slotProps={{
+                    input: {
+                      endAdornment: (
+                        <MarkerIcon
+                          sx={{
+                            color: theme.palette["Grey_3"],
+                          }}
+                        />
+                      ),
+                    },
                   }}
                   onChange={(evt) => {
                     field.onChange(evt);
@@ -316,14 +320,16 @@ export default function WorkRadius() {
               render={({ field }) => (
                 <TextField
                   {...field}
-                  label={t("WorkRadius.input_radius")}
-                  InputProps={{
-                    inputComponent: MaskedField as never,
-                    inputProps: {
-                      mask: "00",
+                  label={t("input_radius")}
+                  slotProps={{
+                    input: {
+                      component: MaskedField as never,
+                      inputProps: {
+                        mask: "00",
+                      },
+                      inputMode: "numeric",
+                      type: "tel",
                     },
-                    inputMode: "numeric",
-                    type: "tel",
                   }}
                   onChange={(evt) => {
                     field.onChange(evt);
@@ -427,13 +433,13 @@ export default function WorkRadius() {
           }}
         >
           {fetcher.data && "error" in fetcher.data && fetcher.data.error === 400
-            ? t("WorkRadius.error_400")
+            ? t("error_400")
             : null}
           {fetcher.data && "error" in fetcher.data && fetcher.data.error === 402
-            ? t("WorkRadius.error_402")
+            ? t("error_402")
             : null}
           {fetcher.data && "error" in fetcher.data && fetcher.data.error === 404
-            ? t("WorkRadius.error_404")
+            ? t("error_404")
             : null}
         </Alert>
       </Snackbar>

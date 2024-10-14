@@ -12,7 +12,8 @@ import * as Yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useForm } from "react-hook-form";
 
-import { t } from "i18next";
+import { t, loadNamespaces } from "i18next";
+import { useTranslation } from "react-i18next";
 
 import { withLocale } from "~/shared/withLocale";
 
@@ -32,6 +33,8 @@ import { getUserFields } from "~/requests/getUserFields/getUserFields";
 import { postSaveUserFields } from "~/requests/postSaveUserFields/postSaveUserFields";
 
 export async function clientLoader({ request }: ClientActionFunctionArgs) {
+  await loadNamespaces("profileEdit");
+
   const currentURL = new URL(request.url);
 
   const accessToken = await getAccessToken();
@@ -51,7 +54,7 @@ export async function clientLoader({ request }: ClientActionFunctionArgs) {
       currentSection:
         curentSection !== undefined
           ? curentSection.name
-          : t("ProfileEdit.sectionHeader"),
+          : t("sectionHeader", { ns: "profileEdit" }),
     });
   } else {
     throw new Response("Токен авторизации не обнаружен!", { status: 401 });
@@ -72,6 +75,7 @@ export async function clientAction({ request }: ClientActionFunctionArgs) {
 }
 
 export default function ProfileEdit() {
+  const { t } = useTranslation("profileEdit");
   const theme = useTheme();
   const navigate = useNavigate();
   const navigation = useNavigation();
@@ -160,7 +164,7 @@ export default function ProfileEdit() {
                 reset(generateDefaultValues(formFields));
               }}
             >
-              {t("ProfileEdit.button_cancel")}
+              {t("button_cancel")}
             </Button>
             <Button
               variant="contained"
@@ -174,7 +178,7 @@ export default function ProfileEdit() {
                 })();
               }}
             >
-              {t("ProfileEdit.button_confirm")}
+              {t("button_confirm")}
             </Button>
           </Box>
         </form>

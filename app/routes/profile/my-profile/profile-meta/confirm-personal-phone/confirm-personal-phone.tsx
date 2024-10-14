@@ -10,7 +10,8 @@ import {
   useSearchParams,
 } from "@remix-run/react";
 
-import { t } from "i18next";
+import { t, loadNamespaces } from "i18next";
+import { useTranslation } from "react-i18next";
 import { withLocale } from "~/shared/withLocale";
 
 import * as Yup from "yup";
@@ -36,21 +37,16 @@ import { getAccessToken } from "~/preferences/token/token";
 import { postChangeUserPhone } from "~/requests/postChangeUserPhone/postChangeUserPhone";
 import { postConfirmChangeUserPhone } from "~/requests/postConfirmChangeUserPhone/postConfirmChangeUserPhone";
 
-const validationSchema = Yup.object().shape({
-  code: Yup.string()
-    .default("")
-    .length(4, t("ConfirmPersonalPhone.inputValidation", { context: "lenght" }))
-    .required(t("ConfirmPersonalPhone.inputValidation")),
-});
-
 export async function clientLoader({ request }: ClientActionFunctionArgs) {
+  await loadNamespaces("confirmPersonalPhone");
+
   const currentURL = new URL(request.url);
 
   const phone = await getUserPhone();
   const ttl = currentURL.searchParams.get("ttl");
 
   if (!phone || !ttl) {
-    throw new Response(t("ConfirmPersonalPhone.wrongData"));
+    throw new Response(t("wrongData", { ns: "confirmPersonalPhone" }));
   }
 
   return json({ phone, ttl });
@@ -102,6 +98,7 @@ export async function clientAction({ request }: ClientActionFunctionArgs) {
 }
 
 export default function СonfirmPersonalPhone() {
+  const { t } = useTranslation("confirmPersonalPhone");
   const theme = useTheme();
   const submit = useSubmit();
   const navigation = useNavigation();
@@ -124,7 +121,14 @@ export default function СonfirmPersonalPhone() {
     defaultValues: {
       code: "",
     },
-    resolver: yupResolver(validationSchema),
+    resolver: yupResolver(
+      Yup.object().shape({
+        code: Yup.string()
+          .default("")
+          .length(4, t("inputValidation_lenght"))
+          .required(t("inputValidation")),
+      })
+    ),
   });
 
   useEffect(() => {
@@ -148,7 +152,7 @@ export default function СonfirmPersonalPhone() {
       <Box>
         <TopNavigation
           header={{
-            text: t("ConfirmPersonalPhone.header"),
+            text: t("header"),
             bold: false,
           }}
           backAction={() => {
@@ -174,7 +178,7 @@ export default function СonfirmPersonalPhone() {
                 <StyledSmsField
                   inputType="sms"
                   error={errors.code?.message}
-                  placeholder={t("ConfirmPersonalPhone.inputPlaceholder")}
+                  placeholder={t("inputPlaceholder")}
                   onImmediateChange={handleSubmit((values) => {
                     submit(
                       JSON.stringify({
@@ -215,7 +219,7 @@ export default function СonfirmPersonalPhone() {
               );
             }}
           >
-            {t("ConfirmPersonalPhone.sendAgain")}
+            {t("sendAgain")}
           </Button>
 
           {seconds !== 0 ? (
@@ -227,7 +231,7 @@ export default function СonfirmPersonalPhone() {
                 textAlign: "center",
               }}
             >
-              {t("ConfirmPersonalPhone.timer")}{" "}
+              {t("timer")}{" "}
               <Typography
                 component="span"
                 variant="Bold_12"
@@ -260,7 +264,7 @@ export default function СonfirmPersonalPhone() {
             width: "100%",
           }}
         >
-          {t("ConfirmPersonalPhone.notification")}
+          {t("notification")}
         </Alert>
       </Snackbar>
 
@@ -282,7 +286,7 @@ export default function СonfirmPersonalPhone() {
             width: "100%",
           }}
         >
-          {t("ConfirmPersonalPhone.errorNotifivation")}
+          {t("errorNotifivation")}
         </Alert>
       </Snackbar>
     </>

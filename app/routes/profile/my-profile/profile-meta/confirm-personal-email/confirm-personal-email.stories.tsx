@@ -4,6 +4,7 @@ import * as DocBlock from "@storybook/blocks";
 import ConfirmPersonalEmail from "./confirm-personal-email";
 import { json } from "@remix-run/react";
 import { reactRouterParameters } from "storybook-addon-remix-react-router";
+import { loadNamespaces } from "i18next";
 
 const meta = {
   title:
@@ -48,6 +49,8 @@ export const Primary: Story = {
       routing: {
         path: "/profile/my-profile/profile-meta/confirm-personal-email",
         loader: async () => {
+          await loadNamespaces("confirmPersonalEmail");
+
           return json({ email: "test@mail.ru", ttl: "120" });
         },
         action: async () => {

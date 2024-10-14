@@ -1,7 +1,7 @@
 import { forwardRef, useState } from "react";
 import { Link } from "@remix-run/react";
 
-import { t } from "i18next";
+import { useTranslation } from "react-i18next";
 
 import {
   useTheme,
@@ -54,6 +54,7 @@ type StyledAutocompleteProps = {
 
 export const StyledAutocomplete = forwardRef(
   (props: StyledAutocompleteProps, ref) => {
+    const { t } = useTranslation("styledAutocomplete");
     const theme = useTheme();
 
     const [inputValue, setInputValue] = useState<string>(props.value);
@@ -119,7 +120,7 @@ export const StyledAutocomplete = forwardRef(
               isOptionEqualToValue={(option, value) => option === value}
               popupIcon={<KeyboardArrowDownIcon />}
               disabled={props.disabled}
-              noOptionsText={t("StyledAutocomplete.noOptionsText")}
+              noOptionsText={t("noOptionsText")}
               renderInput={(params) => (
                 <TextField
                   {...params}

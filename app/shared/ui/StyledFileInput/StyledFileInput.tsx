@@ -5,7 +5,7 @@ import Swiper from "swiper";
 import "swiper/css";
 import { resizeFile } from "~/shared/resizeFile/resizeFile";
 
-import { t } from "i18next";
+import { useTranslation } from "react-i18next";
 
 import { postSendFile } from "~/requests/postSendFile/postSendFile";
 
@@ -82,6 +82,7 @@ const MAX_FILE_SIZE = 6000000;
 
 export const StyledFileInput = forwardRef(
   ({ onChange, name, triggerValidation, ...props }: FileInputProps, ref) => {
+    const { t } = useTranslation("styledFileInput");
     const theme = useTheme();
 
     const inputRef = useRef<HTMLInputElement>(null);
@@ -240,8 +241,8 @@ export const StyledFileInput = forwardRef(
                     props.error
                       ? theme.palette["Red"]
                       : props.disabled
-                        ? theme.palette["Grey_4"]
-                        : theme.palette["Grey_2"]
+                      ? theme.palette["Grey_4"]
+                      : theme.palette["Grey_2"]
                   }
                   sx={{
                     width: "18px",
@@ -409,7 +410,7 @@ export const StyledFileInput = forwardRef(
                 color: theme.palette["Black"],
               }}
             >
-              {t("StyledFileInput.loadText")}
+              {t("loadText")}
             </Typography>
 
             <Typography
@@ -417,7 +418,7 @@ export const StyledFileInput = forwardRef(
               variant="Reg_12"
               sx={{ color: theme.palette["Grey_2"], paddingRight: "16px" }}
             >
-              {t("StyledFileInput.allowedTypes")}
+              {t("allowedTypes")}
             </Typography>
 
             <Box
@@ -446,7 +447,7 @@ export const StyledFileInput = forwardRef(
                   }}
                   variant="outlined"
                 >
-                  {t("StyledFileInput.load")}
+                  {t("load")}
                 </Button>
               </label>
 
@@ -467,7 +468,7 @@ export const StyledFileInput = forwardRef(
                       if (fileArray[i].size > MAX_FILE_SIZE) {
                         setOpen(false);
                         setLoading(true);
-                        setError(t("StyledFileInput.error"));
+                        setError(t("error"));
                         maxSize = true;
                         break;
                       }
@@ -509,7 +510,7 @@ export const StyledFileInput = forwardRef(
                       ).catch(() => {
                         setValue("");
                         onChange(name, "");
-                        setError(t("StyledFileInput.error_unexpected"));
+                        setError(t("error_unexpected"));
                       });
                     }
                   }
@@ -572,7 +573,7 @@ export const StyledFileInput = forwardRef(
                     color: theme.palette["Black"],
                   }}
                 >
-                  {t("StyledFileInput.loading")}
+                  {t("loading")}
                 </Typography>{" "}
                 <LinearProgress
                   // variant="determinate"
@@ -605,7 +606,7 @@ export const StyledFileInput = forwardRef(
                   }
                 }}
               >
-                {t("StyledFileInput.back")}
+                {t("back")}
               </Button>
             ) : null}
           </Box>

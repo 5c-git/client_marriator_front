@@ -12,7 +12,7 @@ import * as Yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useForm } from "react-hook-form";
 
-import { t } from "i18next";
+import { useTranslation } from "react-i18next";
 import { withLocale } from "~/shared/withLocale";
 
 import {
@@ -73,6 +73,7 @@ export async function clientAction({ request }: ClientActionFunctionArgs) {
 }
 
 export default function Step7() {
+  const { t } = useTranslation("registrationStep7");
   const theme = useTheme();
 
   const fetcher = useFetcher();
@@ -113,10 +114,10 @@ export default function Step7() {
       >
         <TopNavigation
           header={{
-            text: t("RegistrationStep7.header"),
+            text: t("header"),
             bold: false,
           }}
-          label={t("RegistrationStep7.step")}
+          label={t("step")}
           backAction={() => {
             navigate(-1);
           }}
@@ -135,7 +136,7 @@ export default function Step7() {
               paddingBottom: "14px",
             }}
           >
-            {t("RegistrationStep7.intro")}
+            {t("intro")}
           </Typography>
         </Box>
 
@@ -185,7 +186,7 @@ export default function Step7() {
                 })();
               }}
             >
-              {t("RegistrationStep7.finishButton")}
+              {t("finishButton")}
             </Button>
 
             <Typography
@@ -195,7 +196,7 @@ export default function Step7() {
                 color: theme.palette["Black"],
               }}
             >
-              {t("RegistrationStep7.deal")}{" "}
+              {t("deal")}{" "}
               <Typography
                 component="a"
                 title="legal"
@@ -206,9 +207,9 @@ export default function Step7() {
                   textDecoration: "underline",
                 }}
               >
-                {t("RegistrationStep7.deal_personal")}
+                {t("deal_personal")}
               </Typography>{" "}
-              {t("RegistrationStep7.deal_and")}{" "}
+              {t("deal_and")}{" "}
               <Typography
                 component="a"
                 variant="Reg_12"
@@ -219,7 +220,7 @@ export default function Step7() {
                   textDecoration: "underline",
                 }}
               >
-                {t("RegistrationStep7.deal_agreement")}
+                {t("deal_agreement")}
               </Typography>
             </Typography>
           </Box>

@@ -8,6 +8,7 @@ import {
 
 import СonfirmPersonalPhone from "./confirm-personal-phone";
 import { json } from "@remix-run/react";
+import { loadNamespaces } from "i18next";
 
 const meta = {
   title:
@@ -53,6 +54,8 @@ export const Primary: Story = {
       routing: {
         path: "/profile/my-profile/profile-meta/confirm-personal-phone",
         loader: async () => {
+          await loadNamespaces("confirmPersonalPhone");
+
           return json({ phone: "79152142635", ttl: "120" });
         },
         action: async () => {

@@ -9,7 +9,7 @@ import {
 
 import { useForm, Controller } from "react-hook-form";
 
-import { t } from "i18next";
+import { useTranslation } from "react-i18next";
 
 import { withLocale } from "~/shared/withLocale";
 
@@ -63,6 +63,7 @@ export async function clientAction({ request }: ClientActionFunctionArgs) {
 }
 
 export default function TerminateADeal() {
+  const { t } = useTranslation("terminateADeal");
   const theme = useTheme();
   const navigation = useNavigation();
   const navigate = useNavigate();
@@ -85,7 +86,7 @@ export default function TerminateADeal() {
       >
         <TopNavigation
           header={{
-            text: t("TerminateADeal.header"),
+            text: t("header"),
             bold: false,
           }}
           backAction={() => {
@@ -112,7 +113,7 @@ export default function TerminateADeal() {
               paddingBottom: "8px",
             }}
           >
-            {t("TerminateADeal.terminate_header")}
+            {t("terminate_header")}
           </Typography>
 
           <Typography
@@ -123,7 +124,7 @@ export default function TerminateADeal() {
               paddingBottom: "18px",
             }}
           >
-            {t("TerminateADeal.terminate_text")}
+            {t("terminate_text")}
           </Typography>
 
           <form
@@ -189,7 +190,7 @@ export default function TerminateADeal() {
               variant="contained"
               type="submit"
             >
-              {t("TerminateADeal.button_action")}
+              {t("button_action")}
             </Button>
           </form>
         </Box>

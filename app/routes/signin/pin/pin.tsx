@@ -8,6 +8,7 @@ import {
 } from "@remix-run/react";
 
 import { t } from "i18next";
+import { useTranslation } from "react-i18next";
 import { withLocale } from "~/shared/withLocale";
 
 import * as Yup from "yup";
@@ -34,10 +35,6 @@ import {
   setRefreshToken,
 } from "~/preferences/token/token";
 
-const validationSchema = Yup.object().shape({
-  pin: Yup.string().min(4).max(4).required(),
-});
-
 export async function clientAction({ request }: ClientActionFunctionArgs) {
   const { _action, ...fields } = await request.json();
   const params = new URLSearchParams();
@@ -60,7 +57,7 @@ export async function clientAction({ request }: ClientActionFunctionArgs) {
         await setRefreshToken(data.result.token.refresh_token);
         throw redirect(withLocale("/"));
       } else if (data.status === "error") {
-        return json({ error: t("Pin.pinError") });
+        return json({ error: t("pinError", { ns: "pin" }) });
       }
     }
   } else {
@@ -69,6 +66,7 @@ export async function clientAction({ request }: ClientActionFunctionArgs) {
 }
 
 export default function Pin() {
+  const { t } = useTranslation("pin");
   const theme = useTheme();
   const submit = useSubmit();
   const navigation = useNavigation();
@@ -83,7 +81,11 @@ export default function Pin() {
     defaultValues: {
       pin: "",
     },
-    resolver: yupResolver(validationSchema),
+    resolver: yupResolver(
+      Yup.object().shape({
+        pin: Yup.string().min(4).max(4).required(),
+      })
+    ),
   });
 
   return (
@@ -106,7 +108,7 @@ export default function Pin() {
             paddingBottom: "8px",
           }}
         >
-          {t("Pin.header")}
+          {t("header")}
         </Typography>
 
         <Typography
@@ -118,7 +120,7 @@ export default function Pin() {
             paddingBottom: "37px",
           }}
         >
-          {t("Pin.intro")}
+          {t("intro")}
         </Typography>
 
         <Typography
@@ -130,7 +132,7 @@ export default function Pin() {
             paddingBottom: "20px",
           }}
         >
-          {t("Pin.text")}
+          {t("text")}
         </Typography>
 
         <form
@@ -174,7 +176,7 @@ export default function Pin() {
               color: theme.palette["Black"],
             }}
           >
-            {t("Pin.forgetPin")}
+            {t("forgetPin")}
           </Typography>
 
           <Button
@@ -197,7 +199,7 @@ export default function Pin() {
                 color: theme.palette["Corp_1"],
               }}
             >
-              {t("Pin.restorePin")}
+              {t("restorePin")}
             </Typography>
           </Button>
         </Box>
@@ -212,7 +214,7 @@ export default function Pin() {
             width: "100%",
           }}
         >
-          {t("Pin.pinError")}
+          {t("pinError")}
         </Alert>
       </Snackbar>
     </>

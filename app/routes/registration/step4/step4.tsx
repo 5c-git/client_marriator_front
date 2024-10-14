@@ -12,7 +12,7 @@ import * as Yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useForm, Controller } from "react-hook-form";
 
-import { t } from "i18next";
+import { useTranslation } from "react-i18next";
 import { withLocale } from "~/shared/withLocale";
 
 import {
@@ -96,6 +96,7 @@ export async function clientAction({ request }: ClientActionFunctionArgs) {
 }
 
 export default function Step4() {
+  const { t } = useTranslation("registrationStep4");
   const theme = useTheme();
   const fetcher = useFetcher<typeof clientAction>();
   const navigate = useNavigate();
@@ -122,11 +123,11 @@ export default function Step4() {
     },
     resolver: yupResolver(
       Yup.object({
-        staticPhoto: Yup.string().required(t("Constructor.photo")),
+        staticPhoto: Yup.string().required(t("photo", { ns: "constructor" })),
         staticEmail: Yup.string()
           .default("")
-          .matches(emailRegExp, t("Constructor.email_wrongValue"))
-          .required(t("Constructor.email")),
+          .matches(emailRegExp, t("email_wrongValue", { ns: "constructor" }))
+          .required(t("email", { ns: "constructor" })),
         ...generateValidationSchema(formFields),
       })
     ),
@@ -160,10 +161,10 @@ export default function Step4() {
       >
         <TopNavigation
           header={{
-            text: t("RegistrationStep4.header"),
+            text: t("header"),
             bold: false,
           }}
-          label={t("RegistrationStep4.step")}
+          label={t("step")}
           backAction={() => {
             navigate(-1);
           }}
@@ -182,7 +183,7 @@ export default function Step4() {
               paddingBottom: "14px",
             }}
           >
-            {t("RegistrationStep4.intro")}
+            {t("intro")}
           </Typography>
         </Box>
 
@@ -295,7 +296,7 @@ export default function Step4() {
                 })();
               }}
             >
-              {t("RegistrationStep4.finishButton")}
+              {t("finishButton")}
             </Button>
           </Box>
         </form>
@@ -319,7 +320,7 @@ export default function Step4() {
             padding: 0,
           }}
         >
-          {t("RegistrationStep4.dialog", { context: "title" })}
+          {t("dialog_title")}
         </DialogTitle>
 
         <Button
@@ -341,12 +342,18 @@ export default function Step4() {
             marginTop: "16px",
           }}
         >
-          {t("RegistrationStep4.dialog", { context: "button" })}
+          {t("dialog_button")}
         </Button>
       </Dialog>
 
       <Snackbar
-        open={fetcher.data?.error === "alreadyExists" ? true : false}
+        open={
+          fetcher.data &&
+          "error" in fetcher.data &&
+          fetcher.data.error === "alreadyExists"
+            ? true
+            : false
+        }
         autoHideDuration={3000}
         onClose={() => {
           fetcher.submit(
@@ -368,7 +375,7 @@ export default function Step4() {
             width: "100%",
           }}
         >
-          {t("RegistrationStep4.error_alreadyExists")}
+          {t("error_alreadyExists")}
         </Alert>
       </Snackbar>
     </>

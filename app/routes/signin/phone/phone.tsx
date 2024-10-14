@@ -6,7 +6,7 @@ import {
   redirect,
 } from "@remix-run/react";
 
-import { t } from "i18next";
+import { useTranslation } from "react-i18next";
 import { withLocale } from "~/shared/withLocale";
 
 import * as Yup from "yup";
@@ -22,14 +22,7 @@ import { Loader } from "~/shared/ui/Loader/Loader";
 import marriator from "./marriator.svg";
 
 import { setUserPhone } from "~/preferences/userPhone/userPhone";
-
 import { postSendPhone } from "~/requests/postSendPhone/postSendPhone";
-
-const validationSchema = Yup.object().shape({
-  phone: Yup.string()
-    .matches(phoneRegExp, t("Phone.inputValidation", { context: "regExp" }))
-    .required(t("Phone.inputValidation")),
-});
 
 export async function clientAction({ request }: ClientActionFunctionArgs) {
   const currentURL = new URL(request.url);
@@ -53,7 +46,7 @@ export async function clientAction({ request }: ClientActionFunctionArgs) {
 }
 
 export default function Phone() {
-  // const theme = useTheme();
+  const { t } = useTranslation("phone");
 
   const submit = useSubmit();
   const navigation = useNavigation();
@@ -70,7 +63,13 @@ export default function Phone() {
     defaultValues: {
       phone: "",
     },
-    resolver: yupResolver(validationSchema),
+    resolver: yupResolver(
+      Yup.object().shape({
+        phone: Yup.string()
+          .matches(phoneRegExp, t("inputValidation_regExp"))
+          .required(t("inputValidation")),
+      })
+    ),
   });
 
   return (
@@ -101,6 +100,7 @@ export default function Phone() {
             alt="marriator"
           />
         </Box>
+
         <form
           onSubmit={handleSubmit((values) => {
             submit(JSON.stringify(values), {
@@ -116,7 +116,7 @@ export default function Phone() {
               <StyledPhoneField
                 inputType="phone"
                 error={errors.phone?.message}
-                placeholder={t("Phone.inputPlaceholder")}
+                placeholder={t("inputPlaceholder")}
                 onImmediateChange={() => {}}
                 styles={{
                   paddingBottom: "16px",
@@ -128,7 +128,7 @@ export default function Phone() {
           />
 
           <Button type="submit" variant="outlined">
-            {t("Phone.submitButton")}
+            {t("submitButton")}
           </Button>
         </form>
       </Box>

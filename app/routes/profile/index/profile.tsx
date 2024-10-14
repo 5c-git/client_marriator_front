@@ -7,7 +7,7 @@ import {
   Link,
 } from "@remix-run/react";
 
-import { t } from "i18next";
+import { useTranslation } from "react-i18next";
 
 import { withLocale } from "~/shared/withLocale";
 
@@ -67,6 +67,7 @@ export async function clientAction() {
 }
 
 export default function Profile() {
+  const { t } = useTranslation("profile");
   const theme = useTheme();
   const navigation = useNavigation();
 
@@ -82,7 +83,7 @@ export default function Profile() {
       <Box>
         <TopNavigation
           header={{
-            text: t("Profile.header"),
+            text: t("header"),
             bold: false,
           }}
         />
@@ -145,7 +146,7 @@ export default function Profile() {
                 component="p"
                 variant="Reg_16"
               >
-                {t("Profile.profile")}{" "}
+                {t("profile")}{" "}
                 {data.result.userData.errorData ? (
                   <BulletIcon
                     sx={{
@@ -199,7 +200,7 @@ export default function Profile() {
                 component="p"
                 variant="Reg_16"
               >
-                {t("Profile.settings")}{" "}
+                {t("settings")}{" "}
                 {/* <BulletIcon
                   sx={{
                     width: "6px",
@@ -250,7 +251,7 @@ export default function Profile() {
                 component="p"
                 variant="Reg_16"
               >
-                {t("Profile.documents")}{" "}
+                {t("documents")}{" "}
                 {/* <BulletIcon
                   sx={{
                     width: "6px",
@@ -304,7 +305,7 @@ export default function Profile() {
                 component="p"
                 variant="Reg_16"
               >
-                {t("Profile.exit")}{" "}
+                {t("exit")}{" "}
                 {/* <BulletIcon
                   sx={{
                     width: "6px",
@@ -329,7 +330,7 @@ export default function Profile() {
           },
         }}
       >
-        <DialogTitle>{t("Profile.dialog", { context: "title" })}</DialogTitle>
+        <DialogTitle>{t("dialog_title")}</DialogTitle>
         <DialogActions>
           <Button
             variant="outlined"
@@ -337,7 +338,7 @@ export default function Profile() {
               setOpenDialog(false);
             }}
           >
-            {t("Profile.dialog", { context: "no" })}
+            {t("dialog_no")}
           </Button>
           <Button
             variant="contained"
@@ -348,7 +349,7 @@ export default function Profile() {
               });
             }}
           >
-            {t("Profile.dialog", { context: "yes" })}
+            {t("dialog_yes")}
           </Button>
         </DialogActions>
       </Dialog>

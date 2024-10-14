@@ -2,7 +2,7 @@ import { Link } from "@remix-run/react";
 import { useState, useEffect, useRef, forwardRef } from "react";
 import { UseFormSetValue } from "react-hook-form";
 
-import { t } from "i18next";
+import { useTranslation } from "react-i18next";
 
 import { resizeFile } from "~/shared/resizeFile/resizeFile";
 import { postSendFile } from "~/requests/postSendFile/postSendFile";
@@ -60,6 +60,7 @@ const MAX_FILE_SIZE = 6000000;
 
 export const StyledPhotoInput = forwardRef(
   ({ onChange, name, triggerValidation, ...props }: PhotoInputProps, ref) => {
+    const { t } = useTranslation("styledPhotoInput");
     const theme = useTheme();
 
     const inputRef = useRef<HTMLInputElement>(null);
@@ -138,9 +139,7 @@ export const StyledPhotoInput = forwardRef(
                     display: props.disabled ? "none" : "block",
                   }}
                 >
-                  {value === ""
-                    ? t("StyledPhotoInput.photo")
-                    : t("StyledPhotoInput.photo_replace")}
+                  {value === "" ? t("photo") : t("photo_replace")}
                 </Typography>
               </label>
 
@@ -157,7 +156,7 @@ export const StyledPhotoInput = forwardRef(
                     const formData = new FormData();
 
                     if (file.size > MAX_FILE_SIZE) {
-                      setError(t("StyledPhotoInput.error"));
+                      setError(t("error"));
                       maxSize = true;
                     }
 
@@ -184,11 +183,11 @@ export const StyledPhotoInput = forwardRef(
                           onChange(name, "");
                           setError(error);
                           setLoading(false);
-                        },
+                        }
                       ).catch(() => {
                         setValue("");
                         onChange(name, "");
-                        setError(t("StyledPhotoInput.error_unexpected"));
+                        setError(t("error_unexpected"));
                         setLoading(false);
                       });
                     }
@@ -271,7 +270,7 @@ export const StyledPhotoInput = forwardRef(
         {loading ? <Loader /> : null}
       </>
     );
-  },
+  }
 );
 
 StyledPhotoInput.displayName = "StyledPhotoInput";

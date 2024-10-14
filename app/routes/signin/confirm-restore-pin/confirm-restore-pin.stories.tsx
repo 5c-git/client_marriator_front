@@ -7,6 +7,7 @@ import {
   reactRouterParameters,
   withRouter,
 } from "storybook-addon-remix-react-router";
+import { loadNamespaces } from "i18next";
 
 const meta = {
   title: "Страницы/Вход/Восстановление пин-кода",
@@ -48,6 +49,7 @@ export const Primary: Story = {
       routing: {
         path: "/signin/confirm-restore-pin",
         loader: async () => {
+          await loadNamespaces("confirmRestorePin");
           return json({ ttl: 120 });
         },
         action: async () => {

@@ -3,7 +3,7 @@ import {
   // Link
 } from "@remix-run/react";
 
-import { t } from "i18next";
+import { useTranslation } from "react-i18next";
 
 // import { withLocale } from "~/shared/withLocale";
 
@@ -14,6 +14,7 @@ import { TopNavigation } from "~/shared/ui/TopNavigation/TopNavigation";
 import { SuccessIcon } from "./icons/SuccessIcon";
 
 export default function RegistrationComplete() {
+  const { t } = useTranslation("registrationComplete");
   const theme = useTheme();
   const navigation = useNavigation();
 
@@ -23,7 +24,7 @@ export default function RegistrationComplete() {
 
       <TopNavigation
         header={{
-          text: t("RegistrationComplete.header"),
+          text: t("header"),
           bold: false,
         }}
       />
@@ -50,7 +51,7 @@ export default function RegistrationComplete() {
           variant="Reg_18"
           sx={{ color: theme.palette["Black"], marginBottom: "8px" }}
         >
-          {t("RegistrationComplete.title")}
+          {t("title")}
         </Typography>
 
         <Typography
@@ -58,7 +59,7 @@ export default function RegistrationComplete() {
           variant="Reg_16"
           sx={{ color: theme.palette["Grey_2"], textAlign: "center" }}
         >
-          {t("RegistrationComplete.text", { context: "start" })}
+          {t("text_start")}
 
           {/* <Typography
             component={Link}
@@ -66,7 +67,7 @@ export default function RegistrationComplete() {
             variant="Reg_16"
             sx={{ color: theme.palette["Corp_1"], textDecoration: "underline" }}
           >
-            {t("RegistrationComplete.text", { context: "link" })}
+            {t("text_link")}
           </Typography> */}
 
           <Typography
@@ -74,7 +75,7 @@ export default function RegistrationComplete() {
             variant="Reg_16"
             sx={{ color: theme.palette["Grey_2"] }}
           >
-            {t("RegistrationComplete.text", { context: "link" })}
+            {t("text_link")}
           </Typography>
 
           <Typography
@@ -82,7 +83,7 @@ export default function RegistrationComplete() {
             variant="Reg_16"
             sx={{ color: theme.palette["Grey_2"] }}
           >
-            {t("RegistrationComplete.text", { context: "end" })}
+            {t("text_end")}
           </Typography>
         </Typography>
       </Stack>

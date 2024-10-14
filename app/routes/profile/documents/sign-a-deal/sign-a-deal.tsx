@@ -9,7 +9,7 @@ import {
 
 import { useForm, Controller } from "react-hook-form";
 
-import { t } from "i18next";
+import { useTranslation } from "react-i18next";
 
 import { withLocale } from "~/shared/withLocale";
 
@@ -63,6 +63,7 @@ export async function clientAction({ request }: ClientActionFunctionArgs) {
 }
 
 export default function SignADeal() {
+  const { t } = useTranslation("signADeal");
   const theme = useTheme();
   const navigation = useNavigation();
   const navigate = useNavigate();
@@ -85,7 +86,7 @@ export default function SignADeal() {
       >
         <TopNavigation
           header={{
-            text: t("SignADeal.header"),
+            text: t("header"),
             bold: false,
           }}
           backAction={() => {
@@ -112,7 +113,7 @@ export default function SignADeal() {
               paddingBottom: "8px",
             }}
           >
-            {t("SignADeal.sign_header")}
+            {t("sign_header")}
           </Typography>
 
           <Typography
@@ -123,7 +124,7 @@ export default function SignADeal() {
               paddingBottom: "18px",
             }}
           >
-            {t("SignADeal.sign_text")}
+            {t("sign_text")}
           </Typography>
 
           <form
@@ -189,7 +190,7 @@ export default function SignADeal() {
               variant="contained"
               type="submit"
             >
-              {t("SignADeal.button_action")}
+              {t("button_action")}
             </Button>
           </form>
         </Box>

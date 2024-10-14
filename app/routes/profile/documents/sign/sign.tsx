@@ -5,7 +5,7 @@ import {
   useLoaderData,
 } from "@remix-run/react";
 
-import { t } from "i18next";
+import { useTranslation } from "react-i18next";
 
 import { withLocale } from "~/shared/withLocale";
 
@@ -31,6 +31,7 @@ export async function clientLoader() {
 }
 
 export default function Sign() {
+  const { t } = useTranslation("sign");
   const theme = useTheme();
   const navigation = useNavigation();
   const navigate = useNavigate();
@@ -48,7 +49,7 @@ export default function Sign() {
       >
         <TopNavigation
           header={{
-            text: t("Sign.header"),
+            text: t("header"),
             bold: false,
           }}
           backAction={() => {
@@ -75,7 +76,7 @@ export default function Sign() {
                 paddingBottom: "8px",
               }}
             >
-              {t("Sign.sign_header")}
+              {t("sign_header")}
             </Typography>
           ) : (
             <S_OrderedList>
@@ -92,7 +93,7 @@ export default function Sign() {
               }}
               variant="contained"
             >
-              {t("Sign.button_action")}
+              {t("button_action")}
             </Button>
           ) : null}
         </Box>
