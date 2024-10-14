@@ -10,7 +10,8 @@ import {
   useSearchParams,
 } from "@remix-run/react";
 
-import { t } from "i18next";
+import { t, loadNamespaces } from "i18next";
+import { useTranslation } from "react-i18next";
 import { withLocale } from "~/shared/withLocale";
 
 import * as Yup from "yup";
@@ -36,22 +37,16 @@ import { setAccessToken, setRefreshToken } from "~/preferences/token/token";
 import { postSendPhone } from "~/requests/postSendPhone/postSendPhone";
 import { postCheckCode } from "~/requests/postCheckCode/postCheckCode";
 
-const validationSchema = Yup.object().shape({
-  phone: Yup.string().notRequired(),
-  sms: Yup.string()
-    .default("")
-    .length(4, t("Sms.inputValidation", { context: "lenght" }))
-    .required(t("Sms.inputValidation")),
-});
-
 export async function clientLoader({ request }: ClientActionFunctionArgs) {
+  await loadNamespaces("sms");
+
   const currentURL = new URL(request.url);
 
   const phone = await getUserPhone();
   const ttl = currentURL.searchParams.get("ttl");
 
   if (!phone || !ttl) {
-    throw new Response(t("Sms.wrongData"));
+    throw new Response(t("wrongData", { ns: "sms" }));
   }
 
   return json({ phone, ttl });
@@ -97,6 +92,7 @@ export async function clientAction({ request }: ClientActionFunctionArgs) {
 }
 
 export default function Sms() {
+  const { t } = useTranslation("sms");
   const theme = useTheme();
   const submit = useSubmit();
   const navigation = useNavigation();
@@ -120,7 +116,15 @@ export default function Sms() {
       phone: phone,
       sms: "",
     },
-    resolver: yupResolver(validationSchema),
+    resolver: yupResolver(
+      Yup.object().shape({
+        phone: Yup.string().notRequired(),
+        sms: Yup.string()
+          .default("")
+          .length(4, t("inputValidation_lenght"))
+          .required(t("inputValidation")),
+      })
+    ),
   });
 
   useEffect(() => {
@@ -144,7 +148,7 @@ export default function Sms() {
       <Box>
         <TopNavigation
           header={{
-            text: t("Sms.header"),
+            text: t("header"),
             bold: false,
           }}
           backAction={() => {
@@ -170,7 +174,7 @@ export default function Sms() {
                 <StyledSmsField
                   inputType="sms"
                   error={errors.sms?.message}
-                  placeholder={t("Sms.inputPlaceholder")}
+                  placeholder={t("inputPlaceholder")}
                   onImmediateChange={handleSubmit((values) => {
                     submit(
                       JSON.stringify({
@@ -211,7 +215,7 @@ export default function Sms() {
               );
             }}
           >
-            {t("Sms.sendAgain")}
+            {t("sendAgain")}
           </Button>
 
           {seconds !== 0 ? (
@@ -223,7 +227,7 @@ export default function Sms() {
                 textAlign: "center",
               }}
             >
-              {t("Sms.timer")}{" "}
+              {t("timer")}{" "}
               <Typography
                 component="span"
                 variant="Bold_12"
@@ -256,7 +260,7 @@ export default function Sms() {
             width: "100%",
           }}
         >
-          {t("Sms.notification")}
+          {t("notification")}
         </Alert>
       </Snackbar>
 
@@ -278,7 +282,7 @@ export default function Sms() {
             width: "100%",
           }}
         >
-          {t("Sms.errorNotifivation")}
+          {t("errorNotifivation")}
         </Alert>
       </Snackbar>
     </>

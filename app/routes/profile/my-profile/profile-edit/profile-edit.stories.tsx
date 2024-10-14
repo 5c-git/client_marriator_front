@@ -14,7 +14,7 @@ import {
   getUserFields,
   mockResponseSuccess,
 } from "~/requests/getUserFields/getUserFields";
-import { t } from "i18next";
+import { loadNamespaces, t } from "i18next";
 import { json } from "@remix-run/react";
 
 const meta = {
@@ -66,6 +66,8 @@ export const Primary: Story = {
             index: true,
             useStoryElement: true,
             loader: async () => {
+              await loadNamespaces("profileEdit");
+
               const data = await getUserFields("token", "1");
 
               const curentSection = data.result.section.find(
@@ -78,7 +80,7 @@ export const Primary: Story = {
                 currentSection:
                   curentSection !== undefined
                     ? curentSection.name
-                    : t("ProfileEdit.sectionHeader"),
+                    : t("sectionHeader", { ns: "profileEdit" }),
               });
             },
           },

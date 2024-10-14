@@ -1,105 +1,111 @@
-import ConstructorRU from "../shared/constructor/locales/ru.json";
-import IndexRU from "../routes/home/locales/ru.json";
-import RootErrorBoundryRU from "../routes/rootErrorBoundry/locales/ru.json";
+//meta
+import constructor from "../../public/locales/ru/constructor.json";
+import rootErrorBoundry from "../../public/locales/ru/rootErrorBoundry.json";
+//meta
 
-import RegistrationStep1RU from "../routes/registration/step1/locales/ru.json";
-import RegistrationStep2RU from "../routes/registration/step2/locales/ru.json";
-import RegistrationStep3RU from "../routes/registration/step3/locales/ru.json";
-import RegistrationStep4RU from "../routes/registration/step4/locales/ru.json";
-import RegistrationStep5RU from "../routes/registration/step5/locales/ru.json";
-import RegistrationStep6RU from "../routes/registration/step6/locales/ru.json";
-import RegistrationStep7RU from "../routes/registration/step7/locales/ru.json";
-import RegistrationCompleteRU from "../routes/registration/registration-complete/locales/ru.json";
+//auth
+import phone from "../../public/locales/ru/phone.json";
+import sms from "../../public/locales/ru/sms.json";
+import pin from "../../public/locales/ru/pin.json";
+import createPin from "../../public/locales/ru/createPin.json";
+import confirmRestorePin from "../../public/locales/ru/confirmRestorePin.json";
+//auth
 
-import ConfirmEmailRU from "../routes/registration/confirm-email/locales/ru.json";
-import ConfirmRestorePinRU from "../routes/signin/confirm-restore-pin/locales/ru.json";
+//registration
+import confirmEmail from "../../public/locales/ru/confirmEmail.json";
+import registrationStep1 from "../../public/locales/ru/registrationStep1.json";
+import registrationStep2 from "../../public/locales/ru/registrationStep2.json";
+import registrationStep3 from "../../public/locales/ru/registrationStep3.json";
+import registrationStep4 from "../../public/locales/ru/registrationStep4.json";
+import registrationStep5 from "../../public/locales/ru/registrationStep5.json";
+import registrationStep6 from "../../public/locales/ru/registrationStep6.json";
+import registrationStep7 from "../../public/locales/ru/registrationStep7.json";
+import registrationComplete from "../../public/locales/ru/registrationComplete.json";
+//registration
 
-import PhoneRU from "../routes/signin/phone/locales/ru.json";
-import SmsRU from "../routes/signin/sms/locales/ru.json";
-import PinRU from "../routes/signin/pin/locales/ru.json";
-import CreatePinRU from "../routes/signin/createPin/locales/ru.json";
-import ProfileRU from "../routes/profile/index/locales/ru.json";
-import MyProfileRU from "../routes/profile/my-profile/index/locales/ru.json";
-import ProfileEditRU from "../routes/profile/my-profile/profile-edit/locales/ru.json";
-import ProfileMetaRU from "../routes/profile/my-profile/profile-meta/index/locales/ru.json";
-import UserActivitiesRU from "../routes/profile/my-profile/user-activities/locales/ru.json";
-import BillingRU from "../routes/profile/my-profile/billing/index/locales/ru.json";
-import BillingAddRU from "../routes/profile/my-profile/billing/billing-add/locales/ru.json";
-import BillingEditRU from "../routes/profile/my-profile/billing/billing-edit/locales/ru.json";
+//internal
+import home from "../../public/locales/ru/home.json";
+import profile from "../../public/locales/ru/profile.json";
+import myProfile from "../../public/locales/ru/myProfile.json";
+import profileEdit from "../../public/locales/ru/profileEdit.json";
+import profileMeta from "../../public/locales/ru/profileMeta.json";
+import userActivities from "../../public/locales/ru/userActivities.json";
+import workRadius from "../../public/locales/ru/workRadius.json";
+import confirmPersonalPhone from "../../public/locales/ru/confirmPersonalPhone.json";
+import confirmPersonalEmail from "../../public/locales/ru/confirmPersonalEmail.json";
+import billing from "../../public/locales/ru/billing.json";
+import billingAdd from "../../public/locales/ru/billingAdd.json";
+import billingEdit from "../../public/locales/ru/billingEdit.json";
+import documents from "../../public/locales/ru/documents.json";
+import sign from "../../public/locales/ru/sign.json";
+import signADeal from "../../public/locales/ru/signADeal.json";
+import terminateADeal from "../../public/locales/ru/terminateADeal.json";
+import documentsArchive from "../../public/locales/ru/documentsArchive.json";
+import certificates from "../../public/locales/ru/certificates.json";
+//internal
 
-import ConfirmPersonalPhoneRU from "../routes/profile/my-profile/profile-meta/confirm-personal-phone/locales/ru.json";
-import ConfirmPersonalEmailRU from "../routes/profile/my-profile/profile-meta/confirm-personal-email/locales/ru.json";
-import WorkRadiusRU from "../routes/profile/my-profile/work-radius/locales/ru.json";
-import DocumentsRU from "../routes/profile/documents/index/locales/ru.json";
-import SignRU from "../routes/profile/documents/sign/locales/ru.json";
-import SignADealRU from "../routes/profile/documents/sign-a-deal/locales/ru.json";
-import TerminateADealRU from "../routes/profile/documents/terminate-a-deal/locales/ru.json";
-import DocumentsArchiveRU from "../routes/profile/documents/archive/locales/ru.json";
-import CertificatesRU from "../routes/profile/documents/certificates/locales/ru.json";
-
-import StyledPhotoCheckboxRU from "../shared/ui/StyledPhotoCheckbox/locales/ru.json";
-import StyledFileInputRU from "../shared/ui/StyledFileInput/locales/ru.json";
-import StyledPhotoInputRU from "../shared/ui/StyledPhotoInput/locales/ru.json";
-import StyledAutocompleteRU from "../shared/ui/StyledAutocomplete/locales/ru.json";
+//components
+import styledPhotoCheckbox from "../../public/locales/ru/styledPhotoCheckbox.json";
+import styledFileInput from "../../public/locales/ru/styledFileInput.json";
+import styledPhotoInput from "../../public/locales/ru/styledPhotoInput.json";
+import styledAutocomplete from "../../public/locales/ru/styledAutocomplete.json";
 
 import "i18next";
 declare module "i18next" {
   interface CustomTypeOptions {
     // custom resources type
     resources: {
-      translation: {
-        //meta
-        Constructor: typeof ConstructorRU;
-        RootErrorBoundry: typeof RootErrorBoundryRU;
-        //meta
+      //meta
+      constructor: typeof constructor;
+      rootErrorBoundry: typeof rootErrorBoundry;
+      //meta
 
-        //auth
-        Phone: typeof PhoneRU;
-        Sms: typeof SmsRU;
-        Pin: typeof PinRU;
-        CreatePin: typeof CreatePinRU;
-        //auth
+      //auth
+      phone: typeof phone;
+      sms: typeof sms;
+      pin: typeof pin;
+      createPin: typeof createPin;
+      confirmRestorePin: typeof confirmRestorePin;
+      //auth
 
-        //reg
-        RegistrationStep1: typeof RegistrationStep1RU;
-        RegistrationStep2: typeof RegistrationStep2RU;
-        RegistrationStep3: typeof RegistrationStep3RU;
-        RegistrationStep4: typeof RegistrationStep4RU;
-        RegistrationStep5: typeof RegistrationStep5RU;
-        RegistrationStep6: typeof RegistrationStep6RU;
-        RegistrationStep7: typeof RegistrationStep7RU;
-        RegistrationComplete: typeof RegistrationCompleteRU;
-        //reg
+      //registration
+      confirmEmail: typeof confirmEmail;
+      registrationStep1: typeof registrationStep1;
+      registrationStep2: typeof registrationStep2;
+      registrationStep3: typeof registrationStep3;
+      registrationStep4: typeof registrationStep4;
+      registrationStep5: typeof registrationStep5;
+      registrationStep6: typeof registrationStep6;
+      registrationStep7: typeof registrationStep7;
+      registrationComplete: typeof registrationComplete;
+      //registration
 
-        ConfirmEmail: typeof ConfirmEmailRU;
-        ConfirmRestorePin: typeof ConfirmRestorePinRU;
+      //internal
+      home: typeof home;
+      profile: typeof profile;
+      myProfile: typeof myProfile;
+      profileEdit: typeof profileEdit;
+      profileMeta: typeof profileMeta;
+      userActivities: typeof userActivities;
+      workRadius: typeof workRadius;
+      confirmPersonalPhone: typeof confirmPersonalPhone;
+      confirmPersonalEmail: typeof confirmPersonalEmail;
+      billing: typeof billing;
+      billingAdd: typeof billingAdd;
+      billingEdit: typeof billingEdit;
+      documents: typeof documents;
+      sign: typeof sign;
+      signADeal: typeof signADeal;
+      terminateADeal: typeof terminateADeal;
+      documentsArchive: typeof documentsArchive;
+      certificates: typeof certificates;
+      //internal
 
-        //internal
-        Index: typeof IndexRU;
-        Profile: typeof ProfileRU;
-        MyProfile: typeof MyProfileRU;
-        ProfileEdit: typeof ProfileEditRU;
-        ProfileMeta: typeof ProfileMetaRU;
-        ConfirmPersonalPhone: typeof ConfirmPersonalPhoneRU;
-        ConfirmPersonalEmail: typeof ConfirmPersonalEmailRU;
-        UserActivities: typeof UserActivitiesRU;
-        Billing: typeof BillingRU;
-        BillingAdd: typeof BillingAddRU;
-        BillingEdit: typeof BillingEditRU;
-        WorkRadius: typeof WorkRadiusRU;
-        Documents: typeof DocumentsRU;
-        Sign: typeof SignRU;
-        SignADeal: typeof SignADealRU;
-        TerminateADeal: typeof TerminateADealRU;
-        DocumentsArchive: typeof DocumentsArchiveRU;
-        Certificates: typeof CertificatesRU;
-
-        //components
-        StyledPhotoCheckbox: typeof StyledPhotoCheckboxRU;
-        StyledFileInput: typeof StyledFileInputRU;
-        StyledPhotoInput: typeof StyledPhotoInputRU;
-        StyledAutocomplete: typeof StyledAutocompleteRU;
-      };
+      //components
+      styledPhotoCheckbox: typeof styledPhotoCheckbox;
+      styledFileInput: typeof styledFileInput;
+      styledPhotoInput: typeof styledPhotoInput;
+      styledAutocomplete: typeof styledAutocomplete;
     };
   }
 }

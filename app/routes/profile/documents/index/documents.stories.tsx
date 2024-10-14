@@ -23,11 +23,6 @@ const meta = {
         <>
           <DocBlock.Title />
           <h2>Адрес страницы: /profile/documents</h2>
-          {/* <h3>Используемые запросы:</h3>
-          <p>
-            getUserInfo() - VITE_GET_USER_INFO -{" "}
-            {import.meta.env.VITE_GET_USER_INFO}
-          </p> */}
         </>
       ),
     },

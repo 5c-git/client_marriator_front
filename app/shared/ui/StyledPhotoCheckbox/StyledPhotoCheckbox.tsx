@@ -14,7 +14,7 @@ import {
 } from "@mui/material";
 import { Link } from "@remix-run/react";
 
-import { t } from "i18next";
+import { useTranslation } from "react-i18next";
 
 import CloseIcon from "@mui/icons-material/Close";
 
@@ -65,6 +65,7 @@ type StyledPhotoCheckboxProps = {
 
 export const StyledPhotoCheckbox = forwardRef(
   (props: StyledPhotoCheckboxProps, ref) => {
+    const { t } = useTranslation("styledPhotoCheckbox");
     const theme = useTheme();
 
     const [activeItem, setActiveItem] = useState<
@@ -259,7 +260,7 @@ export const StyledPhotoCheckbox = forwardRef(
                       marginTop: "14px",
                     }}
                   >
-                    {t("StyledPhotoCheckbox.more")}
+                    {t("more")}
                   </Button>
                 ) : null}
               </Box>
@@ -401,7 +402,7 @@ export const StyledPhotoCheckbox = forwardRef(
                       setOpen(false);
                     }}
                   >
-                    {t("StyledPhotoCheckbox.select")}
+                    {t("select")}
                   </Button>
                 ) : (
                   <Box>
@@ -414,7 +415,7 @@ export const StyledPhotoCheckbox = forwardRef(
                         color: theme.palette["Black"],
                       }}
                     >
-                      {t("StyledPhotoCheckbox.cancel")}
+                      {t("cancel")}
                     </Typography>
 
                     <Box
@@ -429,7 +430,7 @@ export const StyledPhotoCheckbox = forwardRef(
                           setOpen(false);
                         }}
                       >
-                        {t("StyledPhotoCheckbox.no")}
+                        {t("no")}
                       </Button>
                       <Button
                         variant="contained"
@@ -443,7 +444,7 @@ export const StyledPhotoCheckbox = forwardRef(
                           setOpen(false);
                         }}
                       >
-                        {t("StyledPhotoCheckbox.yes")}
+                        {t("yes")}
                       </Button>
                     </Box>
                   </Box>

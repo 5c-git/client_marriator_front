@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { Outlet, useRouteError, useNavigate } from "@remix-run/react";
-import { t } from "i18next";
+import { useTranslation } from "react-i18next";
 import { withLocale } from "~/shared/withLocale";
 
 import { postRefreshToken } from "~/requests/postRefreshToken/postRefreshToken";
@@ -12,6 +12,7 @@ import { useTheme, Box, Button, Typography } from "@mui/material";
 import logoTurnOff from "./logo-turnoff.svg";
 
 export const ErrorBoundary = () => {
+  const { t } = useTranslation("rootErrorBoundry");
   const theme = useTheme();
   const navigate = useNavigate();
 
@@ -74,7 +75,7 @@ export const ErrorBoundary = () => {
               paddingTop: "40px",
             }}
           >
-            {t("RootErrorBoundry.error")}
+            {t("error")}
           </Typography>
           <Typography
             component="p"
@@ -94,7 +95,7 @@ export const ErrorBoundary = () => {
               navigate(0);
             }}
           >
-            {t("RootErrorBoundry.refresh")}
+            {t("refresh")}
           </Button>
         </Box>
       ) : null}

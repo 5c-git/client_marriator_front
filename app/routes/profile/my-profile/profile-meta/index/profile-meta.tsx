@@ -12,7 +12,7 @@ import * as Yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useForm, Controller } from "react-hook-form";
 
-import { t } from "i18next";
+import { useTranslation } from "react-i18next";
 import { withLocale } from "~/shared/withLocale";
 
 import { emailRegExp } from "~/shared/validators";
@@ -105,6 +105,7 @@ export async function clientAction({ request }: ClientActionFunctionArgs) {
 }
 
 export default function ProfileMeta() {
+  const { t } = useTranslation("profileMeta");
   const fetcher = useFetcher<typeof clientAction>();
   const navigate = useNavigate();
   const navigation = useNavigation();
@@ -130,12 +131,12 @@ export default function ProfileMeta() {
     },
     resolver: yupResolver(
       Yup.object({
-        metaPhoto: Yup.string().required(t("Constructor.photo")),
-        metaPhone: Yup.string().required(t("Constructor.phone")),
+        metaPhoto: Yup.string().required(t("photo", { ns: "constructor" })),
+        metaPhone: Yup.string().required(t("phone", { ns: "constructor" })),
         metaEmail: Yup.string()
           .default("")
-          .matches(emailRegExp, t("Constructor.email_wrongValue"))
-          .required(t("Constructor.email")),
+          .matches(emailRegExp, t("email_wrongValue", { ns: "constructor" }))
+          .required(t("email", { ns: "constructor" })),
       })
     ),
     mode: "onChange",
@@ -168,7 +169,7 @@ export default function ProfileMeta() {
       >
         <TopNavigation
           header={{
-            text: t("ProfileMeta.header"),
+            text: t("header"),
             bold: false,
           }}
           backAction={() => {
@@ -227,7 +228,7 @@ export default function ProfileMeta() {
             render={({ field }) => (
               <StyledPhoneField
                 inputType="phone"
-                placeholder={t("ProfileMeta.field_phone")}
+                placeholder={t("field_phone")}
                 onImmediateChange={() => {}}
                 validation="default"
                 inputStyles={{
@@ -295,7 +296,7 @@ export default function ProfileMeta() {
             padding: 0,
           }}
         >
-          {t("ProfileMeta.dialog", { context: "phone" })}
+          {t("dialog_phone")}
         </DialogTitle>
 
         <Button
@@ -317,7 +318,7 @@ export default function ProfileMeta() {
             marginTop: "16px",
           }}
         >
-          {t("ProfileMeta.dialog", { context: "button" })}
+          {t("dialog_button")}
         </Button>
       </Dialog>
 
@@ -339,7 +340,7 @@ export default function ProfileMeta() {
             padding: 0,
           }}
         >
-          {t("ProfileMeta.dialog", { context: "email" })}
+          {t("dialog_email")}
         </DialogTitle>
 
         <Button
@@ -361,7 +362,7 @@ export default function ProfileMeta() {
             marginTop: "16px",
           }}
         >
-          {t("ProfileMeta.dialog", { context: "button" })}
+          {t("dialog_button")}
         </Button>
       </Dialog>
 
@@ -389,8 +390,8 @@ export default function ProfileMeta() {
           }}
         >
           {fetcher.data?.error === "emailAlreadyExists"
-            ? t("ProfileMeta.error_emailAlreadyExists")
-            : t("ProfileMeta.error_phoneAlreadyExists")}
+            ? t("error_emailAlreadyExists")
+            : t("error_phoneAlreadyExists")}
         </Alert>
       </Snackbar>
     </>

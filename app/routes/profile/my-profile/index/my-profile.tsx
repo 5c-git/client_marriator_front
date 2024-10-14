@@ -6,7 +6,7 @@ import {
   Link,
 } from "@remix-run/react";
 
-import { t } from "i18next";
+import { useTranslation } from "react-i18next";
 
 import {
   useTheme,
@@ -50,6 +50,7 @@ export async function clientLoader() {
 }
 
 export default function MyProfile() {
+  const { t } = useTranslation("myProfile");
   const theme = useTheme();
   const navigate = useNavigate();
   const navigation = useNavigation();
@@ -63,7 +64,7 @@ export default function MyProfile() {
       <Box>
         <TopNavigation
           header={{
-            text: t("MyProfile.header"),
+            text: t("header"),
             bold: false,
           }}
           backAction={() => {
@@ -106,7 +107,7 @@ export default function MyProfile() {
                 component="p"
                 variant="Reg_16"
               >
-                {t("MyProfile.listItem_base")}
+                {t("listItem_base")}
               </Typography>
 
               <ListItemIcon
@@ -152,7 +153,7 @@ export default function MyProfile() {
                 component="p"
                 variant="Reg_16"
               >
-                {t("MyProfile.user_activities")}
+                {t("user_activities")}
               </Typography>
 
               <ListItemIcon
@@ -198,7 +199,7 @@ export default function MyProfile() {
                 component="p"
                 variant="Reg_16"
               >
-                {t("MyProfile.billing")}
+                {t("billing")}
               </Typography>
 
               <ListItemIcon
@@ -244,7 +245,7 @@ export default function MyProfile() {
                 component="p"
                 variant="Reg_16"
               >
-                {t("MyProfile.work-radius")}
+                {t("work-radius")}
               </Typography>
 
               <ListItemIcon
@@ -351,7 +352,7 @@ export default function MyProfile() {
                 color: theme.palette["Grey_2"],
               }}
             >
-              {t("MyProfile.red-dot_text")}
+              {t("red-dot_text")}
             </Typography>
           </Box>
         ) : null}

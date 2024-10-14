@@ -5,7 +5,9 @@ import { hydrateRoot } from "react-dom/client";
 import i18next from "i18next";
 import { I18nextProvider, initReactI18next } from "react-i18next";
 import LanguageDetector from "i18next-browser-languagedetector";
-import * as i18n from "./i18n/i18n";
+import HttpBackend from "i18next-http-backend";
+
+export const supportedLngs = ["ru", "en"];
 
 async function enableMocking() {
   if (process.env.NODE_ENV !== "development") {
@@ -26,10 +28,17 @@ async function enableMocking() {
 async function hydrate() {
   // eslint-disable-next-line import/no-named-as-default-member
   await i18next
-    .use(LanguageDetector) // Setup a client-side language detector
-    .use(initReactI18next) // Tell i18next to use the react-i18next plugin
+    .use(HttpBackend)
+    .use(LanguageDetector)
+    .use(initReactI18next)
     .init({
-      ...i18n, // spread the configuration
+      supportedLngs,
+      lng: "ru", // default language
+      fallbackLng: "ru",
+      ns: ["constructor", "rootErrorBoundry"],
+      backend: {
+        backends: [HttpBackend],
+      },
     });
 
   enableMocking().then(() => {

@@ -11,7 +11,7 @@ import * as Yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useForm } from "react-hook-form";
 
-import { t } from "i18next";
+import { useTranslation } from "react-i18next";
 import { withLocale } from "~/shared/withLocale";
 
 import {
@@ -58,6 +58,7 @@ export async function clientAction({ request }: ClientActionFunctionArgs) {
 }
 
 export default function Step2() {
+  const { t } = useTranslation("registrationStep2");
   const theme = useTheme();
 
   const fetcher = useFetcher();
@@ -100,10 +101,10 @@ export default function Step2() {
       >
         <TopNavigation
           header={{
-            text: t("RegistrationStep2.header"),
+            text: t("header"),
             bold: false,
           }}
-          label={t("RegistrationStep2.step")}
+          label={t("step")}
           backAction={() => {
             navigate(-1);
           }}
@@ -122,7 +123,7 @@ export default function Step2() {
               paddingBottom: "14px",
             }}
           >
-            {t("RegistrationStep2.intro")}
+            {t("intro")}
           </Typography>
         </Box>
 
@@ -169,7 +170,7 @@ export default function Step2() {
                 })();
               }}
             >
-              {t("RegistrationStep2.finishButton")}
+              {t("finishButton")}
             </Button>
           </Box>
         </form>

@@ -9,6 +9,7 @@ import {
   reactRouterParameters,
   withRouter,
 } from "storybook-addon-remix-react-router";
+import { loadNamespaces } from "i18next";
 
 const meta = {
   title: "Страницы/Вход/Смс-код",
@@ -60,6 +61,8 @@ export const Primary: Story = {
       routing: {
         path: "/signin/sms",
         loader: async ({ request }) => {
+          loadNamespaces("sms");
+
           const currentURL = new URL(request.url);
 
           const ttl = currentURL.searchParams.get("ttl");

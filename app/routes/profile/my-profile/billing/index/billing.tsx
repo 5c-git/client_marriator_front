@@ -5,7 +5,7 @@ import {
   json,
 } from "@remix-run/react";
 
-import { t } from "i18next";
+import { useTranslation } from "react-i18next";
 import { withLocale } from "~/shared/withLocale";
 
 import { format } from "date-fns";
@@ -32,6 +32,7 @@ export async function clientLoader() {
 }
 
 export default function Billing() {
+  const { t } = useTranslation("billing");
   const navigate = useNavigate();
   const navigation = useNavigation();
 
@@ -44,11 +45,11 @@ export default function Billing() {
       <Box>
         <TopNavigation
           header={{
-            text: t("Billing.header"),
+            text: t("header"),
             bold: false,
           }}
           buttonAction={{
-            text: t("Billing.header_action"),
+            text: t("header_action"),
             action: () => {
               navigate(withLocale("/profile/my-profile/billing/billing-add"));
             },
@@ -70,7 +71,7 @@ export default function Billing() {
               paddingRight: "16px",
             }}
           >
-            {t("Billing.empty_text")}
+            {t("empty_text")}
           </Typography>
         ) : (
           billingArray.map((item, index) => (
@@ -87,7 +88,7 @@ export default function Billing() {
                     variant="Bold_14"
                     sx={{ color: theme.palette["Black"] }}
                   >
-                    {t("Billing.field_fio")}
+                    {t("field_fio")}
                   </Typography>
 
                   {item.fio !== "" ? (
@@ -106,7 +107,7 @@ export default function Billing() {
                     variant="Reg_12"
                     sx={{ color: theme.palette["Grey_2"] }}
                   >
-                    {t("Billing.field_bik")}
+                    {t("field_bik")}
                   </Typography>
                   <Typography
                     component="p"
@@ -122,7 +123,7 @@ export default function Billing() {
                     variant="Reg_12"
                     sx={{ color: theme.palette["Grey_2"] }}
                   >
-                    {t("Billing.field_account")}
+                    {t("field_account")}
                   </Typography>
                   <Typography
                     component="p"
@@ -138,7 +139,7 @@ export default function Billing() {
                     variant="Reg_12"
                     sx={{ color: theme.palette["Grey_2"] }}
                   >
-                    {t("Billing.field_card")}
+                    {t("field_card")}
                   </Typography>
                   <Typography
                     component="p"
@@ -154,16 +155,14 @@ export default function Billing() {
                     variant="Reg_12"
                     sx={{ color: theme.palette["Grey_2"] }}
                   >
-                    {t("Billing.field_payWithCard")}
+                    {t("field_payWithCard")}
                   </Typography>
                   <Typography
                     component="p"
                     variant="Reg_14"
                     sx={{ color: theme.palette["Black"] }}
                   >
-                    {item.payWithCard === "yes"
-                      ? t("Billing.yes")
-                      : t("Billing.no")}
+                    {item.payWithCard === "yes" ? t("yes") : t("no")}
                   </Typography>
                 </Stack>
                 <Stack>
@@ -172,7 +171,7 @@ export default function Billing() {
                     variant="Reg_12"
                     sx={{ color: theme.palette["Grey_2"] }}
                   >
-                    {t("Billing.field_cardDue")}
+                    {t("field_cardDue")}
                   </Typography>
                   <Typography
                     component="p"
@@ -197,7 +196,7 @@ export default function Billing() {
                     );
                   }}
                 >
-                  {t("Billing.button_edit")}
+                  {t("button_edit")}
                 </Button>
               </Stack>
               {index < billingArray.length ? <Divider /> : null}

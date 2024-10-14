@@ -8,7 +8,8 @@ import {
   useSearchParams,
 } from "@remix-run/react";
 
-import { t } from "i18next";
+// import { t } from "i18next";
+import { useTranslation } from "react-i18next";
 import { withLocale } from "~/shared/withLocale";
 
 import * as Yup from "yup";
@@ -30,11 +31,6 @@ import { Loader } from "~/shared/ui/Loader/Loader";
 
 import { postSetUserPin } from "~/requests/postSetUserPin/postSetUserPin";
 import { getAccessToken } from "~/preferences/token/token";
-
-const validationSchema = Yup.object().shape({
-  pin: Yup.string().min(4).max(4).required(),
-  confirmPin: Yup.string().oneOf([Yup.ref("pin")], "Pins must match"),
-});
 
 export async function clientAction({ request }: ClientActionFunctionArgs) {
   const currentURL = new URL(request.url);
@@ -63,6 +59,7 @@ export async function clientAction({ request }: ClientActionFunctionArgs) {
 }
 
 export default function CreatePin() {
+  const { t } = useTranslation("createPin");
   const theme = useTheme();
   const submit = useSubmit();
   const navigation = useNavigation();
@@ -83,7 +80,12 @@ export default function CreatePin() {
       pin: "",
       confirmPin: "",
     },
-    resolver: yupResolver(validationSchema),
+    resolver: yupResolver(
+      Yup.object().shape({
+        pin: Yup.string().min(4).max(4).required(),
+        confirmPin: Yup.string().oneOf([Yup.ref("pin")], "Pins must match"),
+      })
+    ),
   });
 
   return (
@@ -93,7 +95,7 @@ export default function CreatePin() {
       <Box>
         <TopNavigation
           header={{
-            text: t("CreatePin.header"),
+            text: t("header"),
             bold: false,
           }}
           backAction={() => {
@@ -122,7 +124,7 @@ export default function CreatePin() {
               paddingBottom: "24px",
             }}
           >
-            {t("CreatePin.intro")}
+            {t("intro")}
           </Typography>
 
           <Divider />
@@ -137,9 +139,7 @@ export default function CreatePin() {
               paddingBottom: "20px",
             }}
           >
-            {step === 1
-              ? t("CreatePin.text")
-              : t("CreatePin.text", { context: "step2" })}
+            {step === 1 ? t("text") : t("text_step2")}
           </Typography>
 
           <form
@@ -206,7 +206,7 @@ export default function CreatePin() {
             width: "100%",
           }}
         >
-          {t("CreatePin.error")}
+          {t("error")}
         </Alert>
       </Snackbar>
 
@@ -225,9 +225,7 @@ export default function CreatePin() {
             width: "100%",
           }}
         >
-          {error === "noToken"
-            ? t("CreatePin.error", { context: "token" })
-            : t("CreatePin.error", { context: "auth" })}
+          {error === "noToken" ? t("error_token") : t("error_auth")}
         </Alert>
       </Snackbar>
     </>

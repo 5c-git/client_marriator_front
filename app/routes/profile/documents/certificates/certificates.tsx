@@ -11,7 +11,7 @@ import * as Yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useForm, Controller } from "react-hook-form";
 
-import { t } from "i18next";
+import { useTranslation } from "react-i18next";
 
 import { withLocale } from "~/shared/withLocale";
 
@@ -116,6 +116,7 @@ export async function clientAction({ request }: ClientActionFunctionArgs) {
 }
 
 export default function Certificates() {
+  const { t } = useTranslation("certificates");
   const theme = useTheme();
   const navigation = useNavigation();
   const navigate = useNavigate();
@@ -137,8 +138,8 @@ export default function Certificates() {
     },
     resolver: yupResolver(
       Yup.object({
-        organization: Yup.string().required(t("Constructor.select")),
-        certificate: Yup.string().required(t("Constructor.select")),
+        organization: Yup.string().required(t("select", { ns: "constructor" })),
+        certificate: Yup.string().required(t("select", { ns: "constructor" })),
       })
     ),
   });
@@ -154,7 +155,7 @@ export default function Certificates() {
       >
         <TopNavigation
           header={{
-            text: t("Certificates.header"),
+            text: t("header"),
             bold: false,
           }}
           backAction={() => {
@@ -187,7 +188,7 @@ export default function Certificates() {
                 paddingBottom: "16px",
               }}
             >
-              {t("Certificates.header_text")}
+              {t("header_text")}
             </Typography>
 
             <form
@@ -209,7 +210,7 @@ export default function Certificates() {
                 render={({ field }) => (
                   <StyledSelect
                     inputType="select"
-                    placeholder={t("Certificates.input_organization")}
+                    placeholder={t("input_organization")}
                     onImmediateChange={() => {}}
                     validation="none"
                     options={organizationOptions}
@@ -225,7 +226,7 @@ export default function Certificates() {
                 render={({ field }) => (
                   <StyledSelect
                     inputType="select"
-                    placeholder={t("Certificates.input_certificate")}
+                    placeholder={t("input_certificate")}
                     onImmediateChange={() => {}}
                     validation="none"
                     options={certificateOptions}
@@ -236,7 +237,7 @@ export default function Certificates() {
               />
 
               <Button variant="contained" disabled={!isDirty} type="submit">
-                {t("Certificates.button_action")}
+                {t("button_action")}
               </Button>
             </form>
           </Box>
@@ -263,7 +264,7 @@ export default function Certificates() {
                   color: theme.palette["Black"],
                 }}
               >
-                {t("Certificates.done_documents")}
+                {t("done_documents")}
               </Typography>
 
               {certificates.map((item) => (

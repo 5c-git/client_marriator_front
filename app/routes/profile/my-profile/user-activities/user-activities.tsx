@@ -13,7 +13,7 @@ import * as Yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useForm } from "react-hook-form";
 
-import { t } from "i18next";
+import { useTranslation } from "react-i18next";
 import { withLocale } from "~/shared/withLocale";
 
 import {
@@ -70,6 +70,7 @@ export async function clientAction({ request }: ClientActionFunctionArgs) {
 }
 
 export default function UserActivities() {
+  const { t } = useTranslation("userActivities");
   const theme = useTheme();
 
   const fetcher = useFetcher();
@@ -117,10 +118,10 @@ export default function UserActivities() {
       >
         <TopNavigation
           header={{
-            text: t("UserActivities.header"),
+            text: t("header"),
             bold: true,
           }}
-          label={`${t("UserActivities.step")} ${step}`}
+          label={`${t("step")} ${step}`}
           backAction={() => {
             if (step === 1) {
               navigate(withLocale("/profile/my-profile"));
@@ -148,7 +149,7 @@ export default function UserActivities() {
                 paddingBottom: "14px",
               }}
             >
-              {t("UserActivities.additional")}{" "}
+              {t("additional")}{" "}
             </Typography>
           </Box>
         ) : null}
@@ -202,7 +203,7 @@ export default function UserActivities() {
                 })();
               }}
             >
-              {t("UserActivities.finishButton")}
+              {t("finishButton")}
             </Button>
           </Box>
         </form>

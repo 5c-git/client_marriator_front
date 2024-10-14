@@ -17,7 +17,7 @@ import { QueryClient } from "@tanstack/react-query";
 import { LoaderFunctionArgs } from "@remix-run/node";
 
 import { changeLanguage } from "i18next";
-import { supportedLngs } from "./i18n/i18n";
+import { supportedLngs } from "./entry.client";
 
 export const queryClient = new QueryClient({
   defaultOptions: {

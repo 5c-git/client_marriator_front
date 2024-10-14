@@ -2,19 +2,18 @@ import type { Preview } from "@storybook/react";
 
 import { initialize, mswLoader } from "msw-storybook-addon";
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, Suspense } from "react";
 
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
 import i18next from "i18next";
 import { I18nextProvider, initReactI18next } from "react-i18next";
 import LanguageDetector from "i18next-browser-languagedetector";
-import * as i18n from "../app/i18n/i18n";
+import HttpBackend from "i18next-http-backend";
 
 import { theme } from "../app/theme/theme";
 import { ThemeProvider } from "@mui/material/styles";
 import { CssBaseline } from "@mui/material";
-
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
@@ -28,13 +27,41 @@ i18next
   .use(LanguageDetector) // Setup a client-side language detector
   .use(initReactI18next) // Tell i18next to use the react-i18next plugin
   .init({
-    ...i18n, // spread the configuration
+    supportedLngs: ["ru", "en"],
+    lng: "ru", // default language
+    fallbackLng: "ru",
+    resources: {
+      en: {
+        translation: {
+          key: "hello world",
+        },
+      },
+      ru: {
+        translation: {
+          key: "привет мир",
+        },
+      },
+    },
   });
 
+// i18next
+//   .use(HttpBackend)
+//   .use(LanguageDetector)
+//   .use(initReactI18next)
+//   .init({
+//     supportedLngs: ["ru", "en"],
+//     lng: "ru", // default language
+//     fallbackLng: "ru",
+//     ns: ["constructor", "rootErrorBoundry"],
+//     backend: {
+//       backends: [HttpBackend],
+//     },
+//   });
+
 initialize({
-  serviceWorker: {
-    url: "/client_marriator_front/mockServiceWorker.js",
-  },
+  // serviceWorker: {
+  //   url: "/client_marriator_front/mockServiceWorker.js",
+  // },
   onUnhandledRequest: "bypass",
   findWorker(scriptUrl, mockServiceWorkerUrl) {
     return scriptUrl.includes("mockServiceWorker");
@@ -79,14 +106,16 @@ const preview: Preview = {
       }, [locale]);
 
       return (
-        <I18nextProvider i18n={i18next}>
-          <QueryClientProvider client={queryClient}>
-            <ThemeProvider theme={theme}>
-              <CssBaseline />
-              <Story />
-            </ThemeProvider>
-          </QueryClientProvider>
-        </I18nextProvider>
+        <Suspense>
+          <I18nextProvider i18n={i18next}>
+            <QueryClientProvider client={queryClient}>
+              <ThemeProvider theme={theme}>
+                <CssBaseline />
+                <Story />
+              </ThemeProvider>
+            </QueryClientProvider>
+          </I18nextProvider>
+        </Suspense>
       );
     },
   ],

@@ -1,6 +1,6 @@
 import { useNavigation, useNavigate, Link } from "@remix-run/react";
 
-import { t } from "i18next";
+import { useTranslation } from "react-i18next";
 
 import { withLocale } from "~/shared/withLocale";
 
@@ -22,6 +22,7 @@ import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 // import { BulletIcon } from "~/shared/icons/BulletIcon";
 
 export default function Documents() {
+  const { t } = useTranslation("documents");
   const theme = useTheme();
   const navigation = useNavigation();
   const navigate = useNavigate();
@@ -33,7 +34,7 @@ export default function Documents() {
       <Box>
         <TopNavigation
           header={{
-            text: t("Documents.header"),
+            text: t("header"),
             bold: false,
           }}
           backAction={() => {
@@ -76,7 +77,7 @@ export default function Documents() {
                 component="p"
                 variant="Reg_16"
               >
-                {t("Documents.item_sign")}
+                {t("item_sign")}
               </Typography>
 
               {/* <BulletIcon
@@ -130,7 +131,7 @@ export default function Documents() {
                 component="p"
                 variant="Reg_16"
               >
-                {t("Documents.item_deal")}
+                {t("item_deal")}
               </Typography>
 
               {/* <BulletIcon
@@ -184,7 +185,7 @@ export default function Documents() {
                 component="p"
                 variant="Reg_16"
               >
-                {t("Documents.item_break")}
+                {t("item_break")}
               </Typography>
 
               {/* <BulletIcon
@@ -238,7 +239,7 @@ export default function Documents() {
                 component="p"
                 variant="Reg_16"
               >
-                {t("Documents.item_archive")}
+                {t("item_archive")}
               </Typography>
 
               {/* <BulletIcon
@@ -292,7 +293,7 @@ export default function Documents() {
                 component="p"
                 variant="Reg_16"
               >
-                {t("Documents.item_certificates")}
+                {t("item_certificates")}
               </Typography>
 
               {/* <BulletIcon

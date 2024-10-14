@@ -14,7 +14,7 @@ import * as Yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useForm, Controller } from "react-hook-form";
 
-import { t } from "i18next";
+import { useTranslation } from "react-i18next";
 import { withLocale } from "~/shared/withLocale";
 
 import { Box, Button, Divider, Dialog, DialogTitle } from "@mui/material";
@@ -77,6 +77,7 @@ type BillingInfo = {
 };
 
 export default function BillingEdit() {
+  const { t } = useTranslation("billingEdit");
   const submit = useSubmit();
   const navigate = useNavigate();
   const navigation = useNavigation();
@@ -111,8 +112,8 @@ export default function BillingEdit() {
     resolver: yupResolver(
       Yup.object({
         confidant: Yup.boolean().required(),
-        fio: Yup.string().required(t("Constructor.text")),
-        bik: Yup.string().required(t("Constructor.autocomplete")),
+        fio: Yup.string().required(t("text", { ns: "constructor" })),
+        bik: Yup.string().required(t("autocomplete", { ns: "constructor" })),
         account: Yup.string()
           .default("")
           // .test(
@@ -137,12 +138,12 @@ export default function BillingEdit() {
           //     return false;
           //   }
           // )
-          .length(20, t("Constructor.account_wrongValue"))
-          .required(t("Constructor.account")),
+          .length(20, t("account_wrongValue", { ns: "constructor" }))
+          .required(t("account", { ns: "constructor" })),
         card: Yup.string()
           .test(
             "is-card",
-            () => t("Constructor.card", { context: "wrongValue" }),
+            () => t("card_wrongValue", { ns: "constructor" }),
             (value) => {
               // accept only digits, dashes or spaces
               // if (/[^0-9-\s]+/.test(value)) return false;
@@ -164,9 +165,11 @@ export default function BillingEdit() {
               return sum % 10 === 0;
             }
           )
-          .required(t("Constructor.card")),
-        payWithCard: Yup.string().required(t("Constructor.radio")),
-        cardDue: Yup.string().nullable().required(t("Constructor.date")),
+          .required(t("card", { ns: "constructor" })),
+        payWithCard: Yup.string().required(t("radio", { ns: "constructor" })),
+        cardDue: Yup.string()
+          .nullable()
+          .required(t("date", { ns: "constructor" })),
       })
     ),
   });
@@ -182,7 +185,7 @@ export default function BillingEdit() {
       >
         <TopNavigation
           header={{
-            text: t("BillingEdit.header"),
+            text: t("header"),
             bold: false,
           }}
           backAction={() => {
@@ -213,7 +216,7 @@ export default function BillingEdit() {
               render={({ field }) => (
                 <StyledCheckbox
                   inputType="checkbox"
-                  label={t("BillingEdit.placeholder_checkbox")}
+                  label={t("placeholder_checkbox")}
                   onImmediateChange={() => {}}
                   validation="none"
                   error={errors.confidant?.message}
@@ -227,7 +230,7 @@ export default function BillingEdit() {
               render={({ field }) => (
                 <StyledTextField
                   inputType="text"
-                  placeholder={t("BillingEdit.placeholder_fio")}
+                  placeholder={t("placeholder_fio")}
                   onImmediateChange={() => {}}
                   validation="none"
                   error={errors.fio?.message}
@@ -241,7 +244,7 @@ export default function BillingEdit() {
               render={({ field }) => (
                 <StyledAutocomplete
                   inputType="autocomplete"
-                  placeholder={t("BillingEdit.placeholder_bik")}
+                  placeholder={t("placeholder_bik")}
                   onImmediateChange={() => {}}
                   validation="none"
                   options={bikOptions}
@@ -256,7 +259,7 @@ export default function BillingEdit() {
               render={({ field }) => (
                 <StyledAccountField
                   inputType="account"
-                  placeholder={t("BillingEdit.placeholder_account")}
+                  placeholder={t("placeholder_account")}
                   onImmediateChange={() => {}}
                   validation="none"
                   error={errors.account?.message}
@@ -270,7 +273,7 @@ export default function BillingEdit() {
               render={({ field }) => (
                 <StyledCardField
                   inputType="card"
-                  placeholder={t("BillingEdit.placeholder_card")}
+                  placeholder={t("placeholder_card")}
                   onImmediateChange={() => {}}
                   validation="none"
                   error={errors.card?.message}
@@ -287,16 +290,16 @@ export default function BillingEdit() {
                   onImmediateChange={() => {}}
                   validation="none"
                   error={errors.payWithCard?.message}
-                  heading={t("BillingEdit.placeholder_payWithCard")}
+                  heading={t("placeholder_payWithCard")}
                   options={[
                     {
                       disabled: false,
-                      label: t("BillingEdit.button_yes"),
+                      label: t("button_yes"),
                       value: "yes",
                     },
                     {
                       disabled: false,
-                      label: t("BillingEdit.button_no"),
+                      label: t("button_no"),
                       value: "no",
                     },
                   ]}
@@ -310,7 +313,7 @@ export default function BillingEdit() {
               render={({ field }) => (
                 <StyledMonthField
                   inputType="month"
-                  placeholder={t("BillingEdit.placeholder_cardDue")}
+                  placeholder={t("placeholder_cardDue")}
                   onImmediateChange={() => {}}
                   validation="none"
                   error={errors.cardDue?.message}
@@ -342,7 +345,7 @@ export default function BillingEdit() {
                 setOpenDialog(true);
               }}
             >
-              {t("BillingEdit.button_cancel")}
+              {t("button_cancel")}
             </Button>
 
             <Button
@@ -362,7 +365,7 @@ export default function BillingEdit() {
               })}
               variant="contained"
             >
-              {t("BillingEdit.button_save")}
+              {t("button_save")}
             </Button>
           </Box>
 
@@ -374,7 +377,7 @@ export default function BillingEdit() {
               marginTop: "16px",
             }}
           >
-            {t("BillingEdit.button_delete")}
+            {t("button_delete")}
           </Button>
         </form>
       </Box>
@@ -396,7 +399,7 @@ export default function BillingEdit() {
             padding: 0,
           }}
         >
-          {t("BillingEdit.dialog_title")}
+          {t("dialog_title")}
         </DialogTitle>
 
         <Box
@@ -414,7 +417,7 @@ export default function BillingEdit() {
               marginTop: "16px",
             }}
           >
-            {t("BillingEdit.button_no")}
+            {t("button_no")}
           </Button>
           <Button
             variant="contained"
@@ -426,7 +429,7 @@ export default function BillingEdit() {
               marginTop: "16px",
             }}
           >
-            {t("BillingEdit.button_yes")}
+            {t("button_yes")}
           </Button>
         </Box>
       </Dialog>
@@ -448,7 +451,7 @@ export default function BillingEdit() {
             padding: 0,
           }}
         >
-          {t("BillingEdit.delete_title")}
+          {t("delete_title")}
         </DialogTitle>
 
         <Box
@@ -466,7 +469,7 @@ export default function BillingEdit() {
               marginTop: "16px",
             }}
           >
-            {t("BillingEdit.button_no")}
+            {t("button_no")}
           </Button>
           <Button
             variant="contained"
@@ -488,7 +491,7 @@ export default function BillingEdit() {
               marginTop: "16px",
             }}
           >
-            {t("BillingEdit.button_yes")}
+            {t("button_yes")}
           </Button>
         </Box>
       </Dialog>

@@ -1,7 +1,7 @@
 import { ClientActionFunctionArgs, redirect } from "@remix-run/react";
 
+// import { useTranslation } from "react-i18next";
 import i18next from "i18next";
-
 const activeLocale = i18next.language;
 
 export async function clientLoader({ request }: ClientActionFunctionArgs) {
@@ -14,5 +14,7 @@ export async function clientLoader({ request }: ClientActionFunctionArgs) {
 }
 
 export default function Home() {
+  // const { t } = useTranslation("home");
+
   return <p>home</p>;
 }

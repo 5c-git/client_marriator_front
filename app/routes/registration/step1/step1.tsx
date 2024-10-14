@@ -12,7 +12,7 @@ import * as Yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useForm } from "react-hook-form";
 
-import { t } from "i18next";
+import { useTranslation } from "react-i18next";
 import { withLocale } from "~/shared/withLocale";
 
 import {
@@ -52,13 +52,14 @@ export async function clientAction({ request }: ClientActionFunctionArgs) {
   if (accessToken) {
     const data = await postSaveForm(accessToken, 1, fields);
 
-    return data;
+    return json(data);
   } else {
     throw new Response("Токен авторизации не обнаружен!", { status: 401 });
   }
 }
 
 export default function Step1() {
+  const { t } = useTranslation("registrationStep1");
   const theme = useTheme();
 
   const fetcher = useFetcher();
@@ -100,10 +101,10 @@ export default function Step1() {
       >
         <TopNavigation
           header={{
-            text: t("RegistrationStep1.header"),
+            text: t("header"),
             bold: true,
           }}
-          label={t("RegistrationStep1.step")}
+          label={t("step")}
         />
 
         <Box
@@ -119,7 +120,7 @@ export default function Step1() {
               paddingBottom: "14px",
             }}
           >
-            {t("RegistrationStep1.intro")}{" "}
+            {t("intro")}{" "}
             <Typography
               component="span"
               variant="Reg_18"
@@ -127,9 +128,9 @@ export default function Step1() {
                 color: theme.palette["Corp_2"],
               }}
             >
-              {t("RegistrationStep1.intro_marker")}
+              {t("intro_marker")}
             </Typography>{" "}
-            {t("RegistrationStep1.intro_end")}
+            {t("intro_end")}
           </Typography>
 
           <Typography
@@ -140,7 +141,7 @@ export default function Step1() {
               paddingBottom: "24px",
             }}
           >
-            {t("RegistrationStep1.text")}
+            {t("text")}
           </Typography>
 
           <Typography
@@ -151,7 +152,7 @@ export default function Step1() {
               paddingBottom: "24px",
             }}
           >
-            {t("RegistrationStep1.action")}{" "}
+            {t("action")}{" "}
             <Typography
               component="span"
               variant="Reg_14"
@@ -159,7 +160,7 @@ export default function Step1() {
                 color: theme.palette["Corp_2"],
               }}
             >
-              {t("RegistrationStep1.action_marker")}
+              {t("action_marker")}
             </Typography>
           </Typography>
         </Box>
@@ -207,7 +208,7 @@ export default function Step1() {
                 })();
               }}
             >
-              {t("RegistrationStep1.finishButton")}
+              {t("finishButton")}
             </Button>
           </Box>
         </form>

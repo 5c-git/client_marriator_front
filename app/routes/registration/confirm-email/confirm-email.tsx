@@ -10,7 +10,8 @@ import {
   useSearchParams,
 } from "@remix-run/react";
 
-import { t } from "i18next";
+import { t, loadNamespaces } from "i18next";
+import { useTranslation } from "react-i18next";
 import { withLocale } from "~/shared/withLocale";
 
 import * as Yup from "yup";
@@ -36,21 +37,16 @@ import { getAccessToken } from "~/preferences/token/token";
 import { postSetUserEmail } from "~/requests/postSetUserEmail/postSetUserEmail";
 import { postCheckEmailCode } from "~/requests/postCheckEmailCode/postCheckEmailCode";
 
-const validationSchema = Yup.object().shape({
-  code: Yup.string()
-    .default("")
-    .length(4, t("ConfirmEmail.inputValidation", { context: "lenght" }))
-    .required(t("ConfirmEmail.inputValidation")),
-});
-
 export async function clientLoader({ request }: ClientActionFunctionArgs) {
+  await loadNamespaces("confirmEmail");
+
   const currentURL = new URL(request.url);
 
   const email = await getUserEmail();
   const ttl = currentURL.searchParams.get("ttl");
 
   if (!email || !ttl) {
-    throw new Response(t("ConfirmEmail.wrongData"));
+    throw new Response(t("wrongData", { ns: "confirmEmail" }));
   }
 
   return json({ email, ttl });
@@ -93,6 +89,7 @@ export async function clientAction({ request }: ClientActionFunctionArgs) {
 }
 
 export default function СonfirmEmail() {
+  const { t } = useTranslation("confirmEmail");
   const theme = useTheme();
   const submit = useSubmit();
   const navigation = useNavigation();
@@ -115,7 +112,14 @@ export default function СonfirmEmail() {
     defaultValues: {
       code: "",
     },
-    resolver: yupResolver(validationSchema),
+    resolver: yupResolver(
+      Yup.object().shape({
+        code: Yup.string()
+          .default("")
+          .length(4, t("inputValidation_lenght"))
+          .required(t("inputValidation")),
+      })
+    ),
   });
 
   useEffect(() => {
@@ -139,7 +143,7 @@ export default function СonfirmEmail() {
       <Box>
         <TopNavigation
           header={{
-            text: t("ConfirmEmail.header"),
+            text: t("header"),
             bold: false,
           }}
           backAction={() => {
@@ -165,7 +169,7 @@ export default function СonfirmEmail() {
                 <StyledSmsField
                   inputType="sms"
                   error={errors.code?.message}
-                  placeholder={t("ConfirmEmail.inputPlaceholder")}
+                  placeholder={t("inputPlaceholder")}
                   onImmediateChange={handleSubmit((values) => {
                     submit(
                       JSON.stringify({
@@ -206,7 +210,7 @@ export default function СonfirmEmail() {
               );
             }}
           >
-            {t("ConfirmEmail.sendAgain")}
+            {t("sendAgain")}
           </Button>
 
           {seconds !== 0 ? (
@@ -218,7 +222,7 @@ export default function СonfirmEmail() {
                 textAlign: "center",
               }}
             >
-              {t("ConfirmEmail.timer")}{" "}
+              {t("timer")}{" "}
               <Typography
                 component="span"
                 variant="Bold_12"
@@ -251,7 +255,7 @@ export default function СonfirmEmail() {
             width: "100%",
           }}
         >
-          {t("ConfirmEmail.notification")}
+          {t("notification")}
         </Alert>
       </Snackbar>
 
@@ -273,7 +277,7 @@ export default function СonfirmEmail() {
             width: "100%",
           }}
         >
-          {t("ConfirmEmail.errorNotifivation")}
+          {t("errorNotifivation")}
         </Alert>
       </Snackbar>
     </>

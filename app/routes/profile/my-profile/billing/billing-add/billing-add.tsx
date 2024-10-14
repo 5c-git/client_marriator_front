@@ -13,7 +13,7 @@ import * as Yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useForm, Controller } from "react-hook-form";
 
-import { t } from "i18next";
+import { useTranslation } from "react-i18next";
 import { withLocale } from "~/shared/withLocale";
 
 import { Box, Button, Divider, Dialog, DialogTitle } from "@mui/material";
@@ -58,6 +58,7 @@ export async function clientAction({ request }: ClientActionFunctionArgs) {
 }
 
 export default function BillingAdd() {
+  const { t } = useTranslation("billingAdd");
   const submit = useSubmit();
   const navigate = useNavigate();
   const navigation = useNavigation();
@@ -85,8 +86,8 @@ export default function BillingAdd() {
     resolver: yupResolver(
       Yup.object({
         confidant: Yup.boolean().required(),
-        fio: Yup.string().required(t("Constructor.text")),
-        bik: Yup.string().required(t("Constructor.autocomplete")),
+        fio: Yup.string().required(t("text", { ns: "constructor" })),
+        bik: Yup.string().required(t("autocomplete", { ns: "constructor" })),
         account: Yup.string()
           .default("")
           // .test(
@@ -111,12 +112,12 @@ export default function BillingAdd() {
           //     return false;
           //   }
           // )
-          .length(20, t("Constructor.account_wrongValue"))
-          .required(t("Constructor.account")),
+          .length(20, t("account_wrongValue", { ns: "constructor" }))
+          .required(t("account", { ns: "constructor" })),
         card: Yup.string()
           .test(
             "is-card",
-            () => t("Constructor.card", { context: "wrongValue" }),
+            () => t("card_wrongValue", { ns: "constructor" }),
             (value) => {
               // accept only digits, dashes or spaces
               // if (/[^0-9-\s]+/.test(value)) return false;
@@ -138,9 +139,11 @@ export default function BillingAdd() {
               return sum % 10 === 0;
             }
           )
-          .required(t("Constructor.card")),
-        payWithCard: Yup.string().required(t("Constructor.radio")),
-        cardDue: Yup.string().nullable().required(t("Constructor.date")),
+          .required(t("card", { ns: "constructor" })),
+        payWithCard: Yup.string().required(t("radio", { ns: "constructor" })),
+        cardDue: Yup.string()
+          .nullable()
+          .required(t("date", { ns: "constructor" })),
       })
     ),
   });
@@ -156,7 +159,7 @@ export default function BillingAdd() {
       >
         <TopNavigation
           header={{
-            text: t("BillingAdd.header"),
+            text: t("header"),
             bold: false,
           }}
           backAction={() => {
@@ -187,7 +190,7 @@ export default function BillingAdd() {
               render={({ field }) => (
                 <StyledCheckbox
                   inputType="checkbox"
-                  label={t("BillingAdd.placeholder_checkbox")}
+                  label={t("placeholder_checkbox")}
                   onImmediateChange={() => {}}
                   validation="none"
                   error={errors.confidant?.message}
@@ -201,7 +204,7 @@ export default function BillingAdd() {
               render={({ field }) => (
                 <StyledTextField
                   inputType="text"
-                  placeholder={t("BillingAdd.placeholder_fio")}
+                  placeholder={t("placeholder_fio")}
                   onImmediateChange={() => {}}
                   validation="none"
                   error={errors.fio?.message}
@@ -215,7 +218,7 @@ export default function BillingAdd() {
               render={({ field }) => (
                 <StyledAutocomplete
                   inputType="autocomplete"
-                  placeholder={t("BillingAdd.placeholder_bik")}
+                  placeholder={t("placeholder_bik")}
                   onImmediateChange={() => {}}
                   validation="none"
                   options={bikOptions}
@@ -230,7 +233,7 @@ export default function BillingAdd() {
               render={({ field }) => (
                 <StyledAccountField
                   inputType="account"
-                  placeholder={t("BillingAdd.placeholder_account")}
+                  placeholder={t("placeholder_account")}
                   onImmediateChange={() => {}}
                   validation="none"
                   error={errors.account?.message}
@@ -244,7 +247,7 @@ export default function BillingAdd() {
               render={({ field }) => (
                 <StyledCardField
                   inputType="card"
-                  placeholder={t("BillingAdd.placeholder_card")}
+                  placeholder={t("placeholder_card")}
                   onImmediateChange={() => {}}
                   validation="none"
                   error={errors.card?.message}
@@ -261,16 +264,16 @@ export default function BillingAdd() {
                   onImmediateChange={() => {}}
                   validation="none"
                   error={errors.payWithCard?.message}
-                  heading={t("BillingAdd.placeholder_payWithCard")}
+                  heading={t("placeholder_payWithCard")}
                   options={[
                     {
                       disabled: false,
-                      label: t("BillingAdd.button_yes"),
+                      label: t("button_yes"),
                       value: "yes",
                     },
                     {
                       disabled: false,
-                      label: t("BillingAdd.button_no"),
+                      label: t("button_no"),
                       value: "no",
                     },
                   ]}
@@ -284,7 +287,7 @@ export default function BillingAdd() {
               render={({ field }) => (
                 <StyledMonthField
                   inputType="month"
-                  placeholder={t("BillingAdd.placeholder_cardDue")}
+                  placeholder={t("placeholder_cardDue")}
                   onImmediateChange={() => {}}
                   validation="none"
                   error={errors.cardDue?.message}
@@ -316,11 +319,11 @@ export default function BillingAdd() {
                 setOpenDialog(true);
               }}
             >
-              {t("BillingAdd.button_cancel")}
+              {t("button_cancel")}
             </Button>
 
             <Button type="submit" variant="contained">
-              {t("BillingAdd.button_save")}
+              {t("button_save")}
             </Button>
           </Box>
         </form>
@@ -343,7 +346,7 @@ export default function BillingAdd() {
             padding: 0,
           }}
         >
-          {t("BillingAdd.dialog_title")}
+          {t("dialog_title")}
         </DialogTitle>
 
         <Box
@@ -361,7 +364,7 @@ export default function BillingAdd() {
               marginTop: "16px",
             }}
           >
-            {t("BillingAdd.button_no")}
+            {t("button_no")}
           </Button>
           <Button
             variant="contained"
@@ -373,7 +376,7 @@ export default function BillingAdd() {
               marginTop: "16px",
             }}
           >
-            {t("BillingAdd.button_yes")}
+            {t("button_yes")}
           </Button>
         </Box>
       </Dialog>
