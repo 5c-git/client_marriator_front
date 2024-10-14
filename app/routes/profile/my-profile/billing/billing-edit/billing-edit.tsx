@@ -112,8 +112,10 @@ export default function BillingEdit() {
     resolver: yupResolver(
       Yup.object({
         confidant: Yup.boolean().required(),
-        fio: Yup.string().required(t("text", { ns: "constructor" })),
-        bik: Yup.string().required(t("autocomplete", { ns: "constructor" })),
+        fio: Yup.string().required(t("text", { ns: "constructorFields" })),
+        bik: Yup.string().required(
+          t("autocomplete", { ns: "constructorFields" })
+        ),
         account: Yup.string()
           .default("")
           // .test(
@@ -138,12 +140,12 @@ export default function BillingEdit() {
           //     return false;
           //   }
           // )
-          .length(20, t("account_wrongValue", { ns: "constructor" }))
-          .required(t("account", { ns: "constructor" })),
+          .length(20, t("account_wrongValue", { ns: "constructorFields" }))
+          .required(t("account", { ns: "constructorFields" })),
         card: Yup.string()
           .test(
             "is-card",
-            () => t("card_wrongValue", { ns: "constructor" }),
+            () => t("card_wrongValue", { ns: "constructorFields" }),
             (value) => {
               // accept only digits, dashes or spaces
               // if (/[^0-9-\s]+/.test(value)) return false;
@@ -165,11 +167,13 @@ export default function BillingEdit() {
               return sum % 10 === 0;
             }
           )
-          .required(t("card", { ns: "constructor" })),
-        payWithCard: Yup.string().required(t("radio", { ns: "constructor" })),
+          .required(t("card", { ns: "constructorFields" })),
+        payWithCard: Yup.string().required(
+          t("radio", { ns: "constructorFields" })
+        ),
         cardDue: Yup.string()
           .nullable()
-          .required(t("date", { ns: "constructor" })),
+          .required(t("date", { ns: "constructorFields" })),
       })
     ),
   });

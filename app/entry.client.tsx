@@ -35,7 +35,8 @@ async function hydrate() {
       supportedLngs,
       lng: "ru", // default language
       fallbackLng: "ru",
-      ns: ["constructor", "rootErrorBoundry"],
+      ns: ["rootErrorBoundry", "constructorFields"],
+      partialBundledLanguages: true,
       backend: {
         backends: [HttpBackend],
       },

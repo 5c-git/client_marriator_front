@@ -123,11 +123,16 @@ export default function Step4() {
     },
     resolver: yupResolver(
       Yup.object({
-        staticPhoto: Yup.string().required(t("photo", { ns: "constructor" })),
+        staticPhoto: Yup.string().required(
+          t("photo", { ns: "constructorFields" })
+        ),
         staticEmail: Yup.string()
           .default("")
-          .matches(emailRegExp, t("email_wrongValue", { ns: "constructor" }))
-          .required(t("email", { ns: "constructor" })),
+          .matches(
+            emailRegExp,
+            t("email_wrongValue", { ns: "constructorFields" })
+          )
+          .required(t("email", { ns: "constructorFields" })),
         ...generateValidationSchema(formFields),
       })
     ),

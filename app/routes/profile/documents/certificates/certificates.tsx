@@ -138,8 +138,12 @@ export default function Certificates() {
     },
     resolver: yupResolver(
       Yup.object({
-        organization: Yup.string().required(t("select", { ns: "constructor" })),
-        certificate: Yup.string().required(t("select", { ns: "constructor" })),
+        organization: Yup.string().required(
+          t("select", { ns: "constructorFields" })
+        ),
+        certificate: Yup.string().required(
+          t("select", { ns: "constructorFields" })
+        ),
       })
     ),
   });

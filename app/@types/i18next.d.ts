@@ -1,5 +1,5 @@
 //meta
-import constructor from "../../public/locales/ru/constructor.json";
+import constructorFields from "../../public/locales/ru/constructorFields.json";
 import rootErrorBoundry from "../../public/locales/ru/rootErrorBoundry.json";
 //meta
 
@@ -56,7 +56,7 @@ declare module "i18next" {
     // custom resources type
     resources: {
       //meta
-      constructor: typeof constructor;
+      constructorFields: typeof constructorFields;
       rootErrorBoundry: typeof rootErrorBoundry;
       //meta
 

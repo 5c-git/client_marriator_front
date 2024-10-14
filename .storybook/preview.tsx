@@ -24,39 +24,18 @@ const queryClient = new QueryClient({
 });
 
 i18next
-  .use(LanguageDetector) // Setup a client-side language detector
-  .use(initReactI18next) // Tell i18next to use the react-i18next plugin
+  .use(HttpBackend)
+  .use(LanguageDetector)
+  .use(initReactI18next)
   .init({
     supportedLngs: ["ru", "en"],
     lng: "ru", // default language
     fallbackLng: "ru",
-    resources: {
-      en: {
-        translation: {
-          key: "hello world",
-        },
-      },
-      ru: {
-        translation: {
-          key: "привет мир",
-        },
-      },
+    ns: ["constructor", "rootErrorBoundry"],
+    backend: {
+      backends: [HttpBackend],
     },
   });
-
-// i18next
-//   .use(HttpBackend)
-//   .use(LanguageDetector)
-//   .use(initReactI18next)
-//   .init({
-//     supportedLngs: ["ru", "en"],
-//     lng: "ru", // default language
-//     fallbackLng: "ru",
-//     ns: ["constructor", "rootErrorBoundry"],
-//     backend: {
-//       backends: [HttpBackend],
-//     },
-//   });
 
 initialize({
   // serviceWorker: {

@@ -131,12 +131,19 @@ export default function ProfileMeta() {
     },
     resolver: yupResolver(
       Yup.object({
-        metaPhoto: Yup.string().required(t("photo", { ns: "constructor" })),
-        metaPhone: Yup.string().required(t("phone", { ns: "constructor" })),
+        metaPhoto: Yup.string().required(
+          t("photo", { ns: "constructorFields" })
+        ),
+        metaPhone: Yup.string().required(
+          t("phone", { ns: "constructorFields" })
+        ),
         metaEmail: Yup.string()
           .default("")
-          .matches(emailRegExp, t("email_wrongValue", { ns: "constructor" }))
-          .required(t("email", { ns: "constructor" })),
+          .matches(
+            emailRegExp,
+            t("email_wrongValue", { ns: "constructorFields" })
+          )
+          .required(t("email", { ns: "constructorFields" })),
       })
     ),
     mode: "onChange",

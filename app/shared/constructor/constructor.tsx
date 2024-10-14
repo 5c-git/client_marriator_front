@@ -69,7 +69,7 @@ const validationMap: {
 } = {
   text: {
     none: Yup.string().default("").notRequired(),
-    default: Yup.string().required(t("text", { ns: "constructor" })),
+    default: Yup.string().required(t("text", { ns: "constructorFields" })),
 
     // wrongValue: (value: string, error: string) =>
     //   Yup.string().test(
@@ -81,59 +81,68 @@ const validationMap: {
   phone: {
     none: Yup.string().default("").notRequired(),
     default: Yup.string()
-      .matches(phoneRegExp, t("phone_wrongValue", { ns: "constructor" }))
-      .required(t("phone", { ns: "constructor" })),
+      .matches(phoneRegExp, t("phone_wrongValue", { ns: "constructorFields" }))
+      .required(t("phone", { ns: "constructorFields" })),
   },
   select: {
     none: Yup.string().default("").notRequired(),
-    default: Yup.string().required(t("select", { ns: "constructor" })),
+    default: Yup.string().required(t("select", { ns: "constructorFields" })),
   },
   selectMultiple: {
     none: Yup.array().notRequired(),
-    default: Yup.array().min(1, t("selectMultiple", { ns: "constructor" })),
+    default: Yup.array().min(
+      1,
+      t("selectMultiple", { ns: "constructorFields" })
+    ),
   },
   radio: {
     none: Yup.string().default("").notRequired(),
-    default: Yup.string().required(t("radio", { ns: "constructor" })),
+    default: Yup.string().required(t("radio", { ns: "constructorFields" })),
   },
   checkbox: {
     none: Yup.boolean(),
     checked: Yup.boolean().oneOf(
       [true],
-      t("checkbox_checked", { ns: "constructor" })
+      t("checkbox_checked", { ns: "constructorFields" })
     ),
     unchecked: Yup.boolean().oneOf(
       [false],
-      t("checkbox_unchecked", { ns: "constructor" })
+      t("checkbox_unchecked", { ns: "constructorFields" })
     ),
   },
   checkboxMultiple: {
     none: Yup.array().notRequired(),
-    default: Yup.array().min(1, t("checkboxMultiple", { ns: "constructor" })),
+    default: Yup.array().min(
+      1,
+      t("checkboxMultiple", { ns: "constructorFields" })
+    ),
   },
   photoCheckbox: {
     none: Yup.array().notRequired(),
-    default: Yup.array().min(1, t("photoCheckbox", { ns: "constructor" })),
+    default: Yup.array().min(
+      1,
+      t("photoCheckbox", { ns: "constructorFields" })
+    ),
   },
   file: {
     none: Yup.string().default("").notRequired(),
-    default: Yup.string().required(t("file", { ns: "constructor" })),
+    default: Yup.string().required(t("file", { ns: "constructorFields" })),
   },
   photo: {
     none: Yup.string().default("").notRequired(),
-    default: Yup.string().required(t("photo", { ns: "constructor" })),
+    default: Yup.string().required(t("photo", { ns: "constructorFields" })),
   },
   date: {
     none: Yup.string().default("").notRequired(),
-    default: Yup.string().required(t("date", { ns: "constructor" })),
-    "16years": Yup.string().required(t("data", { ns: "constructor" })),
+    default: Yup.string().required(t("date", { ns: "constructorFields" })),
+    "16years": Yup.string().required(t("data", { ns: "constructorFields" })),
   },
   card: {
     none: Yup.string().default("").notRequired(),
     default: Yup.string()
       .test(
         "is-card",
-        () => t("card_wrongValue", { ns: "constructor" }),
+        () => t("card_wrongValue", { ns: "constructorFields" }),
         (value) => {
           // accept only digits, dashes or spaces
           // if (/[^0-9-\s]+/.test(value)) return false;
@@ -152,11 +161,11 @@ const validationMap: {
           return sum % 10 === 0;
         }
       )
-      .required(t("card", { ns: "constructor" })),
+      .required(t("card", { ns: "constructorFields" })),
   },
   month: {
     none: Yup.string().default("").notRequired(),
-    default: Yup.string().required(t("month", { ns: "constructor" })),
+    default: Yup.string().required(t("month", { ns: "constructorFields" })),
   },
   email: {
     // none: Yup.string()
@@ -166,25 +175,25 @@ const validationMap: {
     default: Yup.string()
       .default("")
       // .email(t("Constructor.email", { context: "wrongVaue" }))
-      .matches(emailRegExp, t("email_wrongValue", { ns: "constructor" }))
-      .required(t("email", { ns: "constructor" })),
+      .matches(emailRegExp, t("email_wrongValue", { ns: "constructorFields" }))
+      .required(t("email", { ns: "constructorFields" })),
   },
   account: {
     none: Yup.string().default("").notRequired(),
     default: Yup.string()
       .default("")
-      .length(20, t("account_wrongValue", { ns: "constructor" }))
-      .required(t("account", { ns: "constructor" })),
+      .length(20, t("account_wrongValue", { ns: "constructorFields" }))
+      .required(t("account", { ns: "constructorFields" })),
   },
   inn: {
     none: Yup.string().default("").notRequired(),
     default: Yup.string()
       .default("")
-      .length(12, t("inn_wrongValue", { ns: "constructor" }))
-      .required(t("inn", { ns: "constructor" }))
+      .length(12, t("inn_wrongValue", { ns: "constructorFields" }))
+      .required(t("inn", { ns: "constructorFields" }))
       .test(
         "is-inn",
-        () => t("inn_wrongInn", { ns: "constructor" }),
+        () => t("inn_wrongInn", { ns: "constructorFields" }),
         (value) => {
           const checkDigit = function (inn: string, coefficients) {
             let n = 0;
@@ -219,11 +228,11 @@ const validationMap: {
     none: Yup.string().default("").notRequired(),
     default: Yup.string()
       .default("")
-      .length(11, t("snils_wrongSnils", { ns: "constructor" }))
-      .required(t("snils", { ns: "constructor" }))
+      .length(11, t("snils_wrongSnils", { ns: "constructorFields" }))
+      .required(t("snils", { ns: "constructorFields" }))
       .test(
         "is-snils",
-        () => t("snils_wrongSnils", { ns: "constructor" }),
+        () => t("snils_wrongSnils", { ns: "constructorFields" }),
         (value) => {
           let sum = 0;
           for (let i = 0; i < 9; i++) {
@@ -250,12 +259,14 @@ const validationMap: {
     none: Yup.string().default("").notRequired(),
     default: Yup.string()
       .default("")
-      .length(4, t("sms_wrongValue", { ns: "constructor" }))
-      .required(t("sms", { ns: "constructor" })),
+      .length(4, t("sms_wrongValue", { ns: "constructorFields" }))
+      .required(t("sms", { ns: "constructorFields" })),
   },
   autocomplete: {
     none: Yup.string().default("").notRequired(),
-    default: Yup.string().required(t("autocomplete", { ns: "constructor" })),
+    default: Yup.string().required(
+      t("autocomplete", { ns: "constructorFields" })
+    ),
   },
 };
 
