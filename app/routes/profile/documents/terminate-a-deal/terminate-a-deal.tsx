@@ -71,7 +71,11 @@ export default function TerminateADeal() {
 
   const data = useLoaderData<typeof clientLoader>();
 
-  const { control, handleSubmit } = useForm({
+  const {
+    control,
+    handleSubmit,
+    formState: { isDirty },
+  } = useForm({
     defaultValues: generateDefaultValues(data),
   });
 
@@ -189,6 +193,7 @@ export default function TerminateADeal() {
               }}
               variant="contained"
               type="submit"
+              disabled={!isDirty}
             >
               {t("button_action")}
             </Button>
