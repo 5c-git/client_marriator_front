@@ -5,8 +5,7 @@ import { withLocale } from "~/shared/withLocale";
 
 import { postRefreshToken } from "~/requests/postRefreshToken/postRefreshToken";
 
-import { setAccessToken, setRefreshToken } from "~/preferences/token/token";
-import { clearPreferences } from "~/preferences/preferences";
+import { useStore } from "~/store/store";
 
 import { useTheme, Box, Button, Typography } from "@mui/material";
 import logoTurnOff from "./logo-turnoff.svg";
@@ -25,11 +24,15 @@ export const ErrorBoundary = () => {
         const newTokens = await postRefreshToken("old_token");
 
         if ("token_type" in newTokens.result.token) {
-          await setAccessToken(newTokens.result.token.access_token);
-          await setRefreshToken(newTokens.result.token.refresh_token);
+          useStore
+            .getState()
+            .setAccessToken(newTokens.result.token.access_token);
+          useStore
+            .getState()
+            .setRefreshToken(newTokens.result.token.refresh_token);
           navigate(withLocale("/signin/pin"));
         } else {
-          await clearPreferences();
+          useStore.getState().clearStore();
           navigate(withLocale("/signin/phone"));
         }
       })();

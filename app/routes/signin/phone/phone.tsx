@@ -21,15 +21,18 @@ import { Loader } from "~/shared/ui/Loader/Loader";
 
 import marriator from "./marriator.svg";
 
-import { setUserPhone } from "~/preferences/userPhone/userPhone";
+import { useStore } from "~/store/store";
+
 import { postSendPhone } from "~/requests/postSendPhone/postSendPhone";
+
+const setUserPhone = useStore.getState().setUserPhone;
 
 export async function clientAction({ request }: ClientActionFunctionArgs) {
   const currentURL = new URL(request.url);
   const params = new URLSearchParams();
 
   const fields = await request.json();
-  await setUserPhone(fields.phone);
+  setUserPhone(fields.phone);
 
   const data = await postSendPhone(fields.phone);
 

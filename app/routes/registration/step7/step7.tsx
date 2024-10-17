@@ -28,14 +28,11 @@ import { Loader } from "~/shared/ui/Loader/Loader";
 import { getForm } from "~/requests/getForm/getForm";
 import { postSaveForm } from "~/requests/postSaveForm/postSaveForm";
 import { postFinishRegister } from "~/requests/postFinishRegister/postFinishRegister";
-import {
-  getAccessToken,
-  setAccessToken,
-  setRefreshToken,
-} from "~/preferences/token/token";
+
+import { useStore } from "~/store/store";
 
 export async function clientLoader() {
-  const accessToken = await getAccessToken();
+  const accessToken = useStore.getState().accessToken;
 
   if (accessToken) {
     const data = await getForm(accessToken, 7);
@@ -51,15 +48,15 @@ export async function clientLoader() {
 }
 
 export async function clientAction({ request }: ClientActionFunctionArgs) {
-  const accessToken = await getAccessToken();
+  const accessToken = useStore.getState().accessToken;
   const { _action, ...fields } = await request.json();
 
   if (accessToken) {
     if (_action === "finishRegister") {
       const data = await postFinishRegister(accessToken);
 
-      await setAccessToken(data.result.token.access_token);
-      await setRefreshToken(data.result.token.refresh_token);
+      useStore.getState().setAccessToken(data.result.token.access_token);
+      useStore.getState().setRefreshToken(data.result.token.refresh_token);
 
       throw redirect(withLocale("/registration/registration-complete"));
     } else {

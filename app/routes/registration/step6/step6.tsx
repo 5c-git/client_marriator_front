@@ -26,10 +26,11 @@ import { Loader } from "~/shared/ui/Loader/Loader";
 
 import { getForm } from "~/requests/getForm/getForm";
 import { postSaveForm } from "~/requests/postSaveForm/postSaveForm";
-import { getAccessToken } from "~/preferences/token/token";
+
+import { useStore } from "~/store/store";
 
 export async function clientLoader() {
-  const accessToken = await getAccessToken();
+  const accessToken = useStore.getState().accessToken;
 
   if (accessToken) {
     const data = await getForm(accessToken, 6);
@@ -45,7 +46,7 @@ export async function clientLoader() {
 }
 
 export async function clientAction({ request }: ClientActionFunctionArgs) {
-  const accessToken = await getAccessToken();
+  const accessToken = useStore.getState().accessToken;
   const fields = await request.json();
 
   if (accessToken) {

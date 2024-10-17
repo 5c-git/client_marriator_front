@@ -21,13 +21,13 @@ import { TopNavigation } from "~/shared/ui/TopNavigation/TopNavigation";
 
 import { Loader } from "~/shared/ui/Loader/Loader";
 
-import { getAccessToken } from "~/preferences/token/token";
+import { useStore } from "~/store/store";
 import { getDocumentArchive } from "~/requests/getDocumentArchive/getDocumentArchive";
 
 import FileDownloadOutlinedIcon from "@mui/icons-material/FileDownloadOutlined";
 
 export async function clientLoader() {
-  const accessToken = await getAccessToken();
+  const accessToken = useStore.getState().accessToken;
 
   if (accessToken) {
     const data = await getDocumentArchive(accessToken);

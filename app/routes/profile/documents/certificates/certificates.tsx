@@ -31,7 +31,7 @@ import FileDownloadOutlinedIcon from "@mui/icons-material/FileDownloadOutlined";
 
 import { Loader } from "~/shared/ui/Loader/Loader";
 
-import { getAccessToken } from "~/preferences/token/token";
+import { useStore } from "~/store/store";
 import { getDocumentInquiries } from "~/requests/getDocumentInquiries/getDocumentInquiries";
 import { getCompanyAndCertificatesInquiries } from "~/requests/getCompanyAndCertificatesInquiries/getCompanyAndCertificatesInquiries";
 import { postRequestInquiries } from "~/requests/postRequestInquiries/postRequestInquiries";
@@ -84,7 +84,7 @@ const generateCertificateOptions = (
 };
 
 export async function clientLoader() {
-  const accessToken = await getAccessToken();
+  const accessToken = useStore.getState().accessToken;
 
   if (accessToken) {
     const certificatesData = await getDocumentInquiries(accessToken);
@@ -101,7 +101,7 @@ export async function clientLoader() {
 
 export async function clientAction({ request }: ClientActionFunctionArgs) {
   const fields = await request.json();
-  const accessToken = await getAccessToken();
+  const accessToken = useStore.getState().accessToken;
 
   if (accessToken) {
     await postRequestInquiries(

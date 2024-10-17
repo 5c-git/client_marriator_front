@@ -22,14 +22,14 @@ import {
 
 import { getForm } from "~/requests/getForm/getForm";
 import { postSaveForm } from "~/requests/postSaveForm/postSaveForm";
-import { getAccessToken } from "~/preferences/token/token";
+import { useStore } from "~/store/store";
 
 import { useTheme, Box, Typography, Button } from "@mui/material";
 import { TopNavigation } from "~/shared/ui/TopNavigation/TopNavigation";
 import { Loader } from "~/shared/ui/Loader/Loader";
 
 export async function clientLoader() {
-  const accessToken = await getAccessToken();
+  const accessToken = useStore.getState().accessToken;
 
   if (accessToken) {
     const data = await getForm(accessToken, 5);
@@ -46,7 +46,7 @@ export async function clientLoader() {
 
 export async function clientAction({ request }: ClientActionFunctionArgs) {
   const fields = await request.json();
-  const accessToken = await getAccessToken();
+  const accessToken = useStore.getState().accessToken;
 
   if (accessToken) {
     const data = await postSaveForm(accessToken, 5, fields);

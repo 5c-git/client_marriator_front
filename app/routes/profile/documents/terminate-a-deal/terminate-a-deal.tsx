@@ -19,7 +19,7 @@ import { StyledCheckbox } from "~/shared/ui/StyledCheckbox/StyledCheckbox";
 
 import { Loader } from "~/shared/ui/Loader/Loader";
 
-import { getAccessToken } from "~/preferences/token/token";
+import { useStore } from "~/store/store";
 import { getDocumentTerminate } from "~/requests/getDocumentTerminate/getDocumentTerminate";
 import { postSetTerminate } from "~/requests/postSetTerminate/postSetTerminate";
 
@@ -38,7 +38,7 @@ export const generateDefaultValues = (
 };
 
 export async function clientLoader() {
-  const accessToken = await getAccessToken();
+  const accessToken = useStore.getState().accessToken;
 
   if (accessToken) {
     const data = await getDocumentTerminate(accessToken);
@@ -51,7 +51,7 @@ export async function clientLoader() {
 
 export async function clientAction({ request }: ClientActionFunctionArgs) {
   const fields = await request.json();
-  const accessToken = await getAccessToken();
+  const accessToken = useStore.getState().accessToken;
 
   if (accessToken) {
     await postSetTerminate(accessToken, fields);

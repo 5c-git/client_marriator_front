@@ -14,13 +14,13 @@ import { Box, Button, Typography, Stack, Divider } from "@mui/material";
 import { TopNavigation } from "~/shared/ui/TopNavigation/TopNavigation";
 import { Loader } from "~/shared/ui/Loader/Loader";
 
-import { getAccessToken } from "~/preferences/token/token";
+import { useStore } from "~/store/store";
 
 import { getRequisitesData } from "~/requests/getRequisitesData/getRequisitesData";
 import { theme } from "~/theme/theme";
 
 export async function clientLoader() {
-  const accessToken = await getAccessToken();
+  const accessToken = useStore.getState().accessToken;
 
   if (accessToken) {
     const requisitesData = await getRequisitesData(accessToken);

@@ -25,7 +25,7 @@ import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 import { BulletIcon } from "~/shared/icons/BulletIcon";
 
 import { queryClient } from "~/root";
-import { getAccessToken } from "~/preferences/token/token";
+import { useStore } from "~/store/store";
 
 import {
   getUserPersonalMenu,
@@ -34,7 +34,7 @@ import {
 import { withLocale } from "~/shared/withLocale";
 
 export async function clientLoader() {
-  const accessToken = await getAccessToken();
+  const accessToken = useStore.getState().accessToken;
 
   if (accessToken) {
     const data = await queryClient.fetchQuery({

@@ -29,23 +29,20 @@ import { Loader } from "~/shared/ui/Loader/Loader";
 
 import { postCheckPin } from "~/requests/postCheckPin/postCheckPin";
 import { postStartRestorePin } from "~/requests/postStartRestorePin/postStartRestorePin";
-import {
-  getAccessToken,
-  setAccessToken,
-  setRefreshToken,
-} from "~/preferences/token/token";
+
+import { useStore } from "~/store/store";
 
 export async function clientAction({ request }: ClientActionFunctionArgs) {
   const { _action, ...fields } = await request.json();
   const params = new URLSearchParams();
-  const accessToken = await getAccessToken();
+  const accessToken = useStore.getState().accessToken;
 
   if (accessToken) {
     if (_action && _action === "restorePin") {
       const data = await postStartRestorePin(accessToken);
 
-      await setAccessToken(data.result.token.access_token);
-      await setRefreshToken(data.result.token.refresh_token);
+      useStore.getState().setAccessToken(data.result.token.access_token);
+      useStore.getState().setRefreshToken(data.result.token.refresh_token);
 
       params.set("ttl", data.result.code.ttl.toString());
 
@@ -53,8 +50,8 @@ export async function clientAction({ request }: ClientActionFunctionArgs) {
     } else {
       const data = await postCheckPin(accessToken, fields.pin);
       if (data.status === "success") {
-        await setAccessToken(data.result.token.access_token);
-        await setRefreshToken(data.result.token.refresh_token);
+        useStore.getState().setAccessToken(data.result.token.access_token);
+        useStore.getState().setRefreshToken(data.result.token.refresh_token);
         throw redirect(withLocale("/"));
       } else if (data.status === "error") {
         return json({ error: t("pinError", { ns: "pin" }) });
