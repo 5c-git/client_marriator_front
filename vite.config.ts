@@ -4,19 +4,16 @@ import { defineConfig } from "vite";
 import path from "path";
 import tsconfigPaths from "vite-tsconfig-paths";
 
-// PIGMENT MIGRATION v6.1.3 - DOES NOT WORK
+// PIGMENT MIGRATION v6.1.4 - PARTIAL WORK
 // import { pigment } from "@pigment-css/vite-plugin";
-// import { createTheme } from "@mui/material";
-// import { theme } from "~/theme/theme";
+// import { pigmentTheme } from "./app/theme/themePigment";
 
-/**
- * @type {import('@pigment-css/vite-plugin').PigmentOptions}
- */
+// /**
+//  * @type {import('@pigment-css/vite-plugin').PigmentOptions}
+//  */
 // const pigmentConfig = {
 //   transformLibraries: ["@mui/material"],
-//   theme: createTheme({
-//     cssVariables: true,
-//   }),
+//   theme: pigmentTheme,
 // };
 
 installGlobals();
@@ -29,8 +26,20 @@ export default defineConfig({
   plugins: [
     remix({
       ssr: false,
+      future: {
+        v3_fetcherPersist: true,
+        v3_relativeSplatPath: true,
+        v3_throwAbortReason: true,
+        v3_singleFetch: true,
+        v3_lazyRouteDiscovery: true,
+      },
+
       routes(defineRoutes) {
         return defineRoutes((route) => {
+          //pigment
+          // route("/", "routes-pigment/phone/phone.tsx");
+          //pigment
+
           route(
             undefined,
             "routes/rootErrorBoundry/rootErrorBoundry.tsx",
@@ -121,9 +130,9 @@ export default defineConfig({
                 ":lang?/signin/confirm-restore-pin",
                 "routes/signin/confirm-restore-pin/confirm-restore-pin.tsx"
               );
-              //signin
+              // signin
 
-              //registration
+              // registration
               route(
                 ":lang?/registration/step1",
                 "routes/registration/step1/step1.tsx"

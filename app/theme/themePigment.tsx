@@ -1,11 +1,8 @@
 import { createTheme, alpha } from "@mui/material";
-import GolosRegular from "../static/fonts/Golos-UI_Regular.woff2";
-import GolosMedium from "../static/fonts/Golos-UI_Medium.woff2";
-import GolosBold from "../static/fonts/Golos-UI_Bold.woff2";
-
 import { AlertIcon } from "./icons/AlertIcon";
 
-const baseTheme = createTheme({
+export const pigmentTheme = createTheme({
+  cssVariables: true,
   typography: {
     fontFamily: "Golos UI",
     Reg_8_Uppercase: {
@@ -183,39 +180,34 @@ const baseTheme = createTheme({
     Light_Violet: "#C596DA",
   },
   components: {
-    MuiCssBaseline: {
-      styleOverrides: `
-        @font-face {
-          font-family: 'Golos UI';
-          font-style: normal;
-          font-display: swap;
-          font-weight: 700;
-          src: url(${GolosBold}) format('woff2');
-        }
-        @font-face {
-          font-family: 'Golos UI';
-          font-style: normal;
-          font-display: swap;
-          font-weight: 500;
-          src: url(${GolosMedium}) format('woff2');
-        }
-        @font-face {
-          font-family: 'Golos UI';
-          font-style: normal;
-          font-display: swap;
-          font-weight: 400;
-          src: url(${GolosRegular}) format('woff2');
-        }
-      `,
-    },
-  },
-});
-
-export const theme = createTheme(baseTheme, {
-  components: {
+    // MuiCssBaseline: {
+    //   styleOverrides: `
+    //     @font-face {
+    //       font-family: 'Golos UI';
+    //       font-style: normal;
+    //       font-display: swap;
+    //       font-weight: 700;
+    //       src: url(${GolosBold}) format('woff2');
+    //     }
+    //     @font-face {
+    //       font-family: 'Golos UI';
+    //       font-style: normal;
+    //       font-display: swap;
+    //       font-weight: 500;
+    //       src: url(${GolosMedium}) format('woff2');
+    //     }
+    //     @font-face {
+    //       font-family: 'Golos UI';
+    //       font-style: normal;
+    //       font-display: swap;
+    //       font-weight: 400;
+    //       src: url(${GolosRegular}) format('woff2');
+    //     }
+    //   `,
+    // },
     MuiButton: {
       styleOverrides: {
-        root: {
+        root: ({ theme }) => ({
           width: "100%",
           paddingTop: "12px",
           paddingBottom: "12px",
@@ -226,86 +218,103 @@ export const theme = createTheme(baseTheme, {
           lineHeight: "1rem",
           textTransform: "none",
           boxShadow: "none",
-          color: baseTheme.palette["White"],
+          color: theme.palette["White"],
           "&:active": {
             boxShadow: "none",
           },
           "&.Mui-disabled": {
-            backgroundColor: baseTheme.palette["Grey_4"],
-            borderColor: baseTheme.palette["Grey_4"],
-            color: baseTheme.palette["Grey_3"],
+            backgroundColor: theme.palette["Grey_4"],
+            borderColor: theme.palette["Grey_4"],
+            color: theme.palette["Grey_3"],
           },
           "&.Mui-focusVisible": {
             boxShadow: "none",
           },
-        },
-        contained: {
-          backgroundColor: baseTheme.palette["Corp_1"],
+          variants: [
+            {
+              props: { variant: "contained" },
+              style: {
+                backgroundColor: theme.palette["Corp_1"],
 
-          "&:hover": {
-            boxShadow: "none",
-            backgroundColor: baseTheme.palette["Corp_1"],
-          },
-        },
-        outlined: {
-          backgroundColor: "transparent",
-          color: baseTheme.palette["Corp_1"],
-          borderColor: baseTheme.palette["Corp_1"],
+                "&:hover": {
+                  boxShadow: "none",
+                  backgroundColor: theme.palette["Corp_1"],
+                },
+              },
+            },
+            {
+              props: { variant: "outlined" },
+              style: {
+                backgroundColor: "transparent",
+                color: theme.palette["Corp_1"],
+                borderColor: theme.palette["Corp_1"],
 
-          "&:hover": {
-            boxShadow: "none",
-            backgroundColor: "transparent",
-            borderColor: baseTheme.palette["Corp_1"],
-          },
-        },
-        text: {
-          backgroundColor: "transparent",
-          color: baseTheme.palette["Corp_1"],
-          borderColor: "transparent",
+                "&:hover": {
+                  boxShadow: "none",
+                  backgroundColor: "transparent",
+                  borderColor: theme.palette["Corp_1"],
+                },
+              },
+            },
+            {
+              props: { variant: "text" },
+              style: {
+                backgroundColor: "transparent",
+                color: theme.palette["Corp_1"],
+                borderColor: "transparent",
 
-          "&:hover": {
-            boxShadow: "none",
-            // backgroundColor: baseTheme.palette['Corp_1']
-          },
-          "&.Mui-disabled": {
-            backgroundColor: "transparent",
-            borderColor: "transparent",
-            color: baseTheme.palette["Grey_3"],
-          },
-        },
+                "&:hover": {
+                  boxShadow: "none",
+                  // backgroundColor: theme.palette['Corp_1']
+                },
+                "&.Mui-disabled": {
+                  backgroundColor: "transparent",
+                  borderColor: "transparent",
+                  color: theme.palette["Grey_3"],
+                },
+              },
+            },
+          ],
+        }),
       },
     },
     MuiInputLabel: {
       styleOverrides: {
-        root: {
-          color: baseTheme.palette["Grey_2"],
-          ...baseTheme.typography["Reg_14"],
+        root: ({ theme }) => ({
+          color: theme.palette["Grey_2"],
+          ...theme.typography["Reg_14"],
           transform: "translate(14px, 20px) scale(1)",
 
           "&.Mui-focused": {
-            color: baseTheme.palette["Grey_2"],
+            color: theme.palette["Grey_2"],
           },
           "&.Mui-disabled": {
-            color: baseTheme.palette["Grey_4"],
+            color: theme.palette["Grey_4"],
           },
-        },
-        shrink: {
-          transform: "translate(14px, 8px) scale(1)",
 
-          "&.Mui-error": {
-            color: baseTheme.palette["Grey_2"],
-          },
-        },
+          variants: [
+            {
+              props: { variant: "shrink" },
+              style: {
+                transform: "translate(14px, 8px) scale(1)",
+
+                "&.Mui-error": {
+                  color: theme.palette["Grey_2"],
+                },
+              },
+            },
+          ],
+        }),
       },
     },
     MuiSelect: {
       styleOverrides: {
-        icon: {
-          color: baseTheme.palette["Grey_2"],
+        icon: ({ theme }) => ({
+          color: theme.palette["Grey_2"],
           "&.Mui-disabled": {
-            color: baseTheme.palette["Grey_4"],
+            color: theme.palette["Grey_4"],
           },
-        },
+        }),
         select: {
           whiteSpace: "normal",
         },
@@ -313,25 +322,24 @@ export const theme = createTheme(baseTheme, {
     },
     MuiOutlinedInput: {
       styleOverrides: {
-        root: {
-          backgroundColor: baseTheme.palette["Grey_5"],
+        root: ({ theme }) => ({
+          backgroundColor: theme.palette["Grey_5"],
           borderRadius: "6px",
           border: "1px solid transparent",
 
           "&.Mui-error": {
-            borderColor: baseTheme.palette["Red"],
-            color: baseTheme.palette["Red"],
+            borderColor: theme.palette["Red"],
+            color: theme.palette["Red"],
           },
           "&.Mui-disabled": {
             opacity: "0.6",
           },
-        },
+        }),
         input: {
           paddingTop: "23px",
           paddingBottom: "12px",
           maxWidth: "100%",
         },
-
         notchedOutline: {
           display: "none",
         },
@@ -353,12 +361,12 @@ export const theme = createTheme(baseTheme, {
     },
     MuiFormControlLabel: {
       styleOverrides: {
-        root: {
+        root: ({ theme }) => ({
           "& .MuiTypography-root": {
-            ...baseTheme.typography["Reg_14"],
-            color: baseTheme.palette["Black"],
+            ...theme.typography["Reg_14"],
+            color: theme.palette["Black"],
           },
-        },
+        }),
       },
     },
     MuiAutocomplete: {
@@ -375,10 +383,10 @@ export const theme = createTheme(baseTheme, {
           },
         },
 
-        paper: {
-          backgroundColor: baseTheme.palette["Grey_5"],
+        paper: ({ theme }) => ({
+          backgroundColor: theme.palette["Grey_5"],
           marginTop: "4px",
-        },
+        }),
 
         listbox: {
           display: "grid",
@@ -418,7 +426,7 @@ export const theme = createTheme(baseTheme, {
           padding: "none",
           minWidth: "288px !important",
         },
-        root: {
+        root: ({ theme }) => ({
           "&.Calendar": {
             padding: "none",
             "& .MuiPaper-root": {
@@ -430,7 +438,7 @@ export const theme = createTheme(baseTheme, {
                   "& .MuiPickersToolbar-root": {
                     padding: "16px 8px 16px 8px",
                     "& h4": {
-                      ...baseTheme.typography["Bold_28"],
+                      ...theme.typography["Bold_28"],
                     },
                     "& span": {
                       display: "none",
@@ -461,7 +469,7 @@ export const theme = createTheme(baseTheme, {
                         },
                       },
                       "& .MuiPickersCalendarHeader-labelContainer": {
-                        ...baseTheme.typography["Bold_16"],
+                        ...theme.typography["Bold_16"],
                         overflow: "visible",
                         margin: "0px",
                         "& .MuiPickersCalendarHeader-label": {
@@ -485,8 +493,8 @@ export const theme = createTheme(baseTheme, {
                             height: "38px",
                             width: "100%",
                             "&.Mui-selected": {
-                              backgroundColor: baseTheme.palette["Corp_1"],
-                              color: baseTheme.palette["White"],
+                              backgroundColor: theme.palette["Corp_1"],
+                              color: theme.palette["White"],
                             },
                           },
                         },
@@ -496,11 +504,11 @@ export const theme = createTheme(baseTheme, {
                         padding: "0px 8px",
                         justifyContent: "space-around",
                         "& .MuiTypography-root": {
-                          ...baseTheme.typography["Reg_16"],
+                          ...theme.typography["Reg_16"],
                           width: "38px",
                           height: "38px",
                           margin: "0px",
-                          color: baseTheme.palette["Grey_1"],
+                          color: theme.palette["Grey_1"],
                         },
                       },
                       "& .PrivatePickersSlideTransition-root": {
@@ -516,30 +524,30 @@ export const theme = createTheme(baseTheme, {
                             justifyContent: "space-around",
                             "& .MuiButtonBase-root": {
                               // поле с одним днем
-                              ...baseTheme.typography["Reg_16"],
+                              ...theme.typography["Reg_16"],
                               width: "38px",
                               height: "38px",
                               margin: "0px",
                               backgroundColor: "none",
-                              color: baseTheme.palette["Black"],
+                              color: theme.palette["Black"],
                               "&.Mui-disabled": {
                                 opacity: "0.35",
                               },
                               "&.MuiPickersDay-today": {
                                 // поле с датой сегодня (кружочек)
-                                color: baseTheme.palette["Grey_1"],
-                                borderColor: baseTheme.palette["Grey_1"],
+                                color: theme.palette["Grey_1"],
+                                borderColor: theme.palette["Grey_1"],
                                 backgroundColor: "none",
                               },
                               "&.Mui-selected": {
                                 // выбранная дата
-                                backgroundColor: baseTheme.palette["Corp_1"],
-                                color: baseTheme.palette["White"],
+                                backgroundColor: theme.palette["Corp_1"],
+                                color: theme.palette["White"],
                               },
                               "&.Mui-selected:hover": {
                                 // выбранная дата
-                                backgroundColor: baseTheme.palette["Corp_1"],
-                                color: baseTheme.palette["White"],
+                                backgroundColor: theme.palette["Corp_1"],
+                                color: theme.palette["White"],
                               },
                             },
                           },
@@ -564,7 +572,7 @@ export const theme = createTheme(baseTheme, {
                   // перерисовываем как нам надо
                   visibility: "visible",
                   content: '"Закрыть"',
-                  color: baseTheme.palette["Grey_3"],
+                  color: theme.palette["Grey_3"],
                   border: "none",
                   boxShadow: "none",
                   width: "136px",
@@ -587,7 +595,7 @@ export const theme = createTheme(baseTheme, {
                   // перерисовываем ее
                   visibility: "visible",
                   content: '"Применить"',
-                  color: baseTheme.palette["Corp_1"],
+                  color: theme.palette["Corp_1"],
                   border: "none",
                   boxShadow: "none",
                   width: "136px",
@@ -603,126 +611,128 @@ export const theme = createTheme(baseTheme, {
               },
             },
           },
-        },
+        }),
       },
     },
     MuiDivider: {
       styleOverrides: {
-        root: {
-          backgroundColor: baseTheme.palette["Grey_4"],
-        },
+        root: ({ theme }) => ({
+          backgroundColor: theme.palette["Grey_4"],
+        }),
       },
     },
-    MuiPickersToolbar: {
-      styleOverrides: {
-        root: {
-          display: "none",
-        },
-      },
-    },
+    // MUI X BUG
+    // MuiPickersToolbar: {
+    //   styleOverrides: {
+    //     root: {
+    //       display: "none",
+    //     },
+    //   },
+    // },
+    // MuiPickersDay: {
+    //   styleOverrides: {
+    //     root: ({ theme }) => ({
+    //       color: theme.palette["Black"],
+    //       borderRadius: "50%",
+    //       backgroundColor: theme.palette["White"],
 
-    MuiPickersDay: {
-      styleOverrides: {
-        root: {
-          color: baseTheme.palette["Black"],
-          borderRadius: "50%",
-          backgroundColor: baseTheme.palette["White"],
+    //       "&:focus": {
+    //         backgroundColor: theme.palette["White"],
+    //         "&.Mui-selected": {
+    //           backgroundColor: theme.palette["Corp_1"],
+    //         },
+    //       },
 
-          "&:focus": {
-            backgroundColor: baseTheme.palette["White"],
-            "&.Mui-selected": {
-              backgroundColor: baseTheme.palette["Corp_1"],
-            },
-          },
+    //       "&.Mui-selected": {
+    //         backgroundColor: theme.palette["Corp_1"],
 
-          "&.Mui-selected": {
-            backgroundColor: baseTheme.palette["Corp_1"],
+    //         "&:hover": {
+    //           backgroundColor: theme.palette["Corp_1"],
+    //         },
+    //       },
 
-            "&:hover": {
-              backgroundColor: baseTheme.palette["Corp_1"],
-            },
-          },
+    //       "&:hover": {
+    //         backgroundColor: theme.palette["White"],
+    //       },
+    //     }),
+    //     today: ({ theme }) => ({
+    //       color: theme.palette["Black"],
+    //       borderRadius: "50%",
+    //       border: "1px solid",
+    //       borderColor: theme.palette["Corp_1"],
+    //       backgroundColor: theme.palette["White"],
 
-          "&:hover": {
-            backgroundColor: baseTheme.palette["White"],
-          },
-        },
-        today: {
-          color: baseTheme.palette["Black"],
-          borderRadius: "50%",
-          border: "1px solid",
-          borderColor: baseTheme.palette["Corp_1"],
-          backgroundColor: baseTheme.palette["White"],
+    //       "&:not(.Mui-selected)": {
+    //         borderColor: theme.palette["Corp_1"],
+    //       },
 
-          "&:not(.Mui-selected)": {
-            borderColor: baseTheme.palette["Corp_1"],
-          },
+    //       "&.Mui-selected": {
+    //         backgroundColor: theme.palette["Corp_1"],
+    //         "&:hover": {
+    //           backgroundColor: theme.palette["Corp_1"],
+    //         },
+    //       },
 
-          "&.Mui-selected": {
-            backgroundColor: baseTheme.palette["Corp_1"],
-            "&:hover": {
-              backgroundColor: baseTheme.palette["Corp_1"],
-            },
-          },
+    //       "&:hover": {
+    //         backgroundColor: theme.palette["White"],
+    //       },
+    //     }),
+    //   },
+    // },
+    // MuiMonthCalendar: {
+    //   styleOverrides: {
+    //     root: ({ theme }) => ({
+    //       "& .MuiPickersMonth-monthButton": {
+    //         "&.Mui-selected": {
+    //           backgroundColor: theme.palette["Corp_1"],
 
-          "&:hover": {
-            backgroundColor: baseTheme.palette["White"],
-          },
-        },
-      },
-    },
-    MuiMonthCalendar: {
-      styleOverrides: {
-        root: {
-          "& .MuiPickersMonth-monthButton": {
-            "&.Mui-selected": {
-              backgroundColor: baseTheme.palette["Corp_1"],
+    //           "&:hover": {
+    //             backgroundColor: theme.palette["Corp_1"],
+    //           },
+    //         },
 
-              "&:hover": {
-                backgroundColor: baseTheme.palette["Corp_1"],
-              },
-            },
+    //         "&:hover": {
+    //           backgroundColor: theme.palette["White"],
+    //         },
 
-            "&:hover": {
-              backgroundColor: baseTheme.palette["White"],
-            },
+    //         "&:focus": {
+    //           backgroundColor: theme.palette["White"],
+    //           "&.Mui-selected": {
+    //             backgroundColor: theme.palette["Corp_1"],
+    //           },
+    //         },
+    //       },
+    //     }),
+    //   },
+    // },
+    // MuiYearCalendar: {
+    //   styleOverrides: {
+    //     root: ({ theme }) => ({
+    //       "& .MuiPickersYear-yearButton": {
+    //         "&.Mui-selected": {
+    //           backgroundColor: theme.palette["Corp_1"],
 
-            "&:focus": {
-              backgroundColor: baseTheme.palette["White"],
-              "&.Mui-selected": {
-                backgroundColor: baseTheme.palette["Corp_1"],
-              },
-            },
-          },
-        },
-      },
-    },
-    MuiYearCalendar: {
-      styleOverrides: {
-        root: {
-          "& .MuiPickersYear-yearButton": {
-            "&.Mui-selected": {
-              backgroundColor: baseTheme.palette["Corp_1"],
+    //           "&:hover": {
+    //             backgroundColor: theme.palette["Corp_1"],
+    //           },
+    //         },
 
-              "&:hover": {
-                backgroundColor: baseTheme.palette["Corp_1"],
-              },
-            },
+    //         "&:hover": {
+    //           backgroundColor: theme.palette["White"],
+    //         },
 
-            "&:hover": {
-              backgroundColor: baseTheme.palette["White"],
-            },
+    //         "&:focus": {
+    //           backgroundColor: theme.palette["White"],
+    //           "&.Mui-selected": {
+    //             backgroundColor: theme.palette["Corp_1"],
+    //           },
+    //         },
+    //       },
+    //     }),
+    //   },
+    // },
+    // MUI X BUG
 
-            "&:focus": {
-              backgroundColor: baseTheme.palette["White"],
-              "&.Mui-selected": {
-                backgroundColor: baseTheme.palette["Corp_1"],
-              },
-            },
-          },
-        },
-      },
-    },
     // MuiTabs: {
     //   styleOverrides: {
     //     // цвет бордера выбранного таба
@@ -814,16 +824,17 @@ export const theme = createTheme(baseTheme, {
     //     },
     //   },
     // },
+
     MuiLinearProgress: {
       styleOverrides: {
-        root: {
-          backgroundColor: baseTheme.palette["Grey_4"],
+        root: ({ theme }) => ({
+          backgroundColor: theme.palette["Grey_4"],
           borderRadius: "4px",
-        },
-        bar1Determinate: {
-          backgroundColor: baseTheme.palette["Corp_1"],
+        }),
+        bar1Determinate: ({ theme }) => ({
+          backgroundColor: theme.palette["Corp_1"],
           borderRadius: "4px",
-        },
+        }),
       },
     },
     MuiAlert: {
@@ -836,7 +847,7 @@ export const theme = createTheme(baseTheme, {
       variants: [
         {
           props: { variant: "small" },
-          style: {
+          style: ({ theme }) => ({
             padding: "8px",
             borderRadius: "4px",
 
@@ -849,13 +860,13 @@ export const theme = createTheme(baseTheme, {
               },
             },
             "& .MuiAlert-message": {
-              ...baseTheme.typography.Reg_12,
+              ...theme.typography.Reg_12,
             },
-          },
+          }),
         },
         {
           props: { variant: "normal" },
-          style: {
+          style: ({ theme }) => ({
             paddingTop: "12px",
             paddingBottom: "12px",
             paddingRight: "8px",
@@ -871,37 +882,37 @@ export const theme = createTheme(baseTheme, {
               },
             },
             "& .MuiAlert-message": {
-              ...baseTheme.typography.Reg_14,
+              ...theme.typography.Reg_14,
             },
-          },
+          }),
         },
         {
           props: { color: "Banner_Error" },
-          style: {
-            backgroundColor: baseTheme.palette["Banner_Error"],
-            color: baseTheme.palette["Banner_Text_Error"],
-          },
+          style: ({ theme }) => ({
+            backgroundColor: theme.palette["Banner_Error"],
+            color: theme.palette["Banner_Text_Error"],
+          }),
         },
         {
           props: { color: "Corp_2" },
-          style: {
-            backgroundColor: baseTheme.palette["Corp_2"],
-            color: baseTheme.palette["White"],
-          },
+          style: ({ theme }) => ({
+            backgroundColor: theme.palette["Corp_2"],
+            color: theme.palette["White"],
+          }),
         },
         {
           props: { color: "Yellow_Light" },
-          style: {
-            backgroundColor: baseTheme.palette["Yellow_Light"],
-            color: baseTheme.palette["Yellow_Text"],
-          },
+          style: ({ theme }) => ({
+            backgroundColor: theme.palette["Yellow_Light"],
+            color: theme.palette["Yellow_Text"],
+          }),
         },
         {
           props: { color: "Red" },
-          style: {
-            backgroundColor: baseTheme.palette["Red"],
-            color: baseTheme.palette["White"],
-          },
+          style: ({ theme }) => ({
+            backgroundColor: theme.palette["Red"],
+            color: theme.palette["White"],
+          }),
         },
       ],
       styleOverrides: {
