@@ -29,13 +29,13 @@ import { StyledRadioButton } from "~/shared/ui/StyledRadioButton/StyledRadioButt
 import { StyledMonthField } from "~/shared/ui/StyledMonthField/StyledMonthField";
 import { StyledAutocomplete } from "~/shared/ui/StyledAutocomplete/StyledAutocomplete";
 
-import { getAccessToken } from "~/preferences/token/token";
+import { useStore } from "~/store/store";
 import { getBik } from "~/requests/getBik/getBik";
 import { postSaveRequisitesData } from "~/requests/postSaveRequisitesData/postSaveRequisitesData";
 import { postDeleteRequisite } from "~/requests/postDeleteRequisite/postDeleteRequisite";
 
 export async function clientLoader() {
-  const accessToken = await getAccessToken();
+  const accessToken = useStore.getState().accessToken;
 
   if (accessToken) {
     const bik = await getBik(accessToken);
@@ -48,7 +48,7 @@ export async function clientLoader() {
 
 export async function clientAction({ request }: ClientActionFunctionArgs) {
   const { _action, dataId, ...fields } = await request.json();
-  const accessToken = await getAccessToken();
+  const accessToken = useStore.getState().accessToken;
 
   if (accessToken) {
     if (_action === "saveChanges") {

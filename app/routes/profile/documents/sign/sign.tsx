@@ -15,11 +15,11 @@ import { S_OrderedList, S_OrderedItem } from "./sign.styled";
 
 import { Loader } from "~/shared/ui/Loader/Loader";
 
-import { getAccessToken } from "~/preferences/token/token";
+import { useStore } from "~/store/store";
 import { getDocumentSigned } from "~/requests/getDocumentSigned/getDocumentSigned";
 
 export async function clientLoader() {
-  const accessToken = await getAccessToken();
+  const accessToken = useStore.getState().accessToken;
 
   if (accessToken) {
     const data = await getDocumentSigned(accessToken);

@@ -28,12 +28,13 @@ import { Loader } from "~/shared/ui/Loader/Loader";
 
 import { getFormActivities } from "~/requests/getFormActivities/getFormActivities";
 import { postSaveUserFieldsActivities } from "~/requests/postSaveUserFieldsActivities/postSaveUserFieldsActivities";
-import { getAccessToken } from "~/preferences/token/token";
+
+import { useStore } from "~/store/store";
 
 export async function clientLoader({ request }: ClientActionFunctionArgs) {
   const currentURL = new URL(request.url);
 
-  const accessToken = await getAccessToken();
+  const accessToken = useStore.getState().accessToken;
   const step = currentURL.searchParams.get("step");
 
   if (accessToken && step) {
@@ -52,7 +53,7 @@ export async function clientLoader({ request }: ClientActionFunctionArgs) {
 export async function clientAction({ request }: ClientActionFunctionArgs) {
   const currentURL = new URL(request.url);
   const fields = await request.json();
-  const accessToken = await getAccessToken();
+  const accessToken = useStore.getState().accessToken;
 
   const step = currentURL.searchParams.get("step");
 

@@ -31,8 +31,7 @@ import { StyledSmsField } from "~/shared/ui/StyledSmsField/StyledSmsField";
 import { TopNavigation } from "~/shared/ui/TopNavigation/TopNavigation";
 import { Loader } from "~/shared/ui/Loader/Loader";
 
-import { getUserPhone } from "~/preferences/userPhone/userPhone";
-import { setAccessToken, setRefreshToken } from "~/preferences/token/token";
+import { useStore } from "~/store/store";
 
 import { postSendPhone } from "~/requests/postSendPhone/postSendPhone";
 import { postCheckCode } from "~/requests/postCheckCode/postCheckCode";
@@ -42,7 +41,7 @@ export async function clientLoader({ request }: ClientActionFunctionArgs) {
 
   const currentURL = new URL(request.url);
 
-  const phone = await getUserPhone();
+  const phone = useStore.getState().userPhone;
   const ttl = currentURL.searchParams.get("ttl");
 
   if (!phone || !ttl) {
@@ -79,8 +78,8 @@ export async function clientAction({ request }: ClientActionFunctionArgs) {
 
       throw redirect(currentURL.toString());
     } else {
-      await setAccessToken(data.result.token.access_token);
-      await setRefreshToken(data.result.token.refresh_token);
+      useStore.getState().setAccessToken(data.result.token.access_token);
+      useStore.getState().setRefreshToken(data.result.token.refresh_token);
 
       if (currentURL.searchParams.has("type", "register")) {
         throw redirect(withLocale("/signin/createPin"));

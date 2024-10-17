@@ -31,8 +31,7 @@ import { StyledSmsField } from "~/shared/ui/StyledSmsField/StyledSmsField";
 import { TopNavigation } from "~/shared/ui/TopNavigation/TopNavigation";
 import { Loader } from "~/shared/ui/Loader/Loader";
 
-import { getUserPhone } from "~/preferences/userPhone/userPhone";
-import { getAccessToken } from "~/preferences/token/token";
+import { useStore } from "~/store/store";
 
 import { postChangeUserPhone } from "~/requests/postChangeUserPhone/postChangeUserPhone";
 import { postConfirmChangeUserPhone } from "~/requests/postConfirmChangeUserPhone/postConfirmChangeUserPhone";
@@ -42,7 +41,7 @@ export async function clientLoader({ request }: ClientActionFunctionArgs) {
 
   const currentURL = new URL(request.url);
 
-  const phone = await getUserPhone();
+  const phone = useStore.getState().userPhone;
   const ttl = currentURL.searchParams.get("ttl");
 
   if (!phone || !ttl) {
@@ -54,7 +53,7 @@ export async function clientLoader({ request }: ClientActionFunctionArgs) {
 
 export async function clientAction({ request }: ClientActionFunctionArgs) {
   const currentURL = new URL(request.url);
-  const accessToken = await getAccessToken();
+  const accessToken = useStore.getState().accessToken;
 
   const { _action, currentTTL, ...fields } = await request.json();
 
@@ -68,7 +67,7 @@ export async function clientAction({ request }: ClientActionFunctionArgs) {
         throw redirect(currentURL.toString());
       }
     } else if (_action === "sendCode") {
-      const phone = await getUserPhone();
+      const phone = useStore.getState().userPhone;
 
       if (phone) {
         const data = await postConfirmChangeUserPhone(

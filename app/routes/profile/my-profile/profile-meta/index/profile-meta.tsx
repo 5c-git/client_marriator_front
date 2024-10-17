@@ -32,16 +32,14 @@ import { StyledPhotoInput } from "~/shared/ui/StyledPhotoInput/StyledPhotoInput"
 import { StyledEmailField } from "~/shared/ui/StyledEmailField/StyledEmailField";
 import { StyledPhoneField } from "~/shared/ui/StyledPhoneField/StyledPhoneField";
 
-import { setUserEmail } from "~/preferences/userEmail/userEmail";
-import { setUserPhone } from "~/preferences/userPhone/userPhone";
-import { getAccessToken } from "~/preferences/token/token";
+import { useStore } from "~/store/store";
 
 import { getUserInfo } from "~/requests/getUserInfo/getUserInfo";
 import { postChangeUserPhone } from "~/requests/postChangeUserPhone/postChangeUserPhone";
 import { postPersonalSetUserEmail } from "~/requests/postPersonalSetUserEmail/postPersonalSetUserEmail";
 
 export async function clientLoader() {
-  const accessToken = await getAccessToken();
+  const accessToken = useStore.getState().accessToken;
 
   if (accessToken) {
     const userInfo = await getUserInfo(accessToken);
@@ -60,7 +58,10 @@ export async function clientLoader() {
 export async function clientAction({ request }: ClientActionFunctionArgs) {
   const params = new URLSearchParams();
   const { _action, ...fields } = await request.json();
-  const accessToken = await getAccessToken();
+
+  const accessToken = useStore.getState().accessToken;
+  const setUserEmail = useStore.getState().setUserEmail;
+  const setUserPhone = useStore.getState().setUserPhone;
 
   if (_action === "reset") {
     return null;
@@ -70,7 +71,7 @@ export async function clientAction({ request }: ClientActionFunctionArgs) {
     if (_action === "changePhoto") {
       return null;
     } else if (_action === "confirmEmail") {
-      await setUserEmail(fields.email);
+      setUserEmail(fields.email);
       const newEmailData = await postPersonalSetUserEmail(
         accessToken,
         fields.email
@@ -86,7 +87,7 @@ export async function clientAction({ request }: ClientActionFunctionArgs) {
         );
       }
     } else if (_action === "confirmPhone") {
-      await setUserPhone(fields.phone);
+      setUserPhone(fields.phone);
       const newPhoneData = await postChangeUserPhone(accessToken, fields.phone);
       if (newPhoneData.status === "error") {
         return json({ error: "phoneAlreadyExists" });

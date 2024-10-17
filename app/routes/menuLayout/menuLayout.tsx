@@ -8,14 +8,14 @@ import { WalletIcon } from "~/shared/ui/Menu/icons/WalletIcon";
 import { ProfileIcon } from "~/shared/ui/Menu/icons/ProfileIcon";
 
 import { queryClient } from "~/root";
-import { getAccessToken } from "~/preferences/token/token";
+import { useStore } from "~/store/store";
 import {
   getUserInfo,
   getUserInfoKeys,
 } from "~/requests/getUserInfo/getUserInfo";
 
 export async function clientLoader() {
-  const accessToken = await getAccessToken();
+  const accessToken = useStore.getState().accessToken;
 
   if (accessToken) {
     const data = await queryClient.fetchQuery({

@@ -33,11 +33,8 @@ import { Loader } from "~/shared/ui/Loader/Loader";
 
 import { postStartRestorePin } from "~/requests/postStartRestorePin/postStartRestorePin";
 import { postCheckCodeRestore } from "~/requests/postCheckCodeRestore/postCheckCodeRestore";
-import {
-  getAccessToken,
-  setAccessToken,
-  setRefreshToken,
-} from "~/preferences/token/token";
+
+import { useStore } from "~/store/store";
 
 export async function clientLoader({ request }: ClientActionFunctionArgs) {
   await loadNamespaces("confirmRestorePin");
@@ -56,7 +53,7 @@ export async function clientLoader({ request }: ClientActionFunctionArgs) {
 export async function clientAction({ request }: ClientActionFunctionArgs) {
   const currentURL = new URL(request.url);
   const params = new URLSearchParams();
-  const accessToken = await getAccessToken();
+  const accessToken = useStore.getState().accessToken;
 
   const { _action, currentTTL, ...fields } = await request.json();
 
@@ -64,8 +61,8 @@ export async function clientAction({ request }: ClientActionFunctionArgs) {
     if (_action === "sendAgain") {
       const data = await postStartRestorePin(accessToken);
 
-      await setAccessToken(data.result.token.access_token);
-      await setRefreshToken(data.result.token.refresh_token);
+      useStore.getState().setAccessToken(data.result.token.access_token);
+      useStore.getState().setRefreshToken(data.result.token.refresh_token);
 
       currentURL.searchParams.set("ttl", data.result.code.ttl.toString());
 
@@ -74,8 +71,8 @@ export async function clientAction({ request }: ClientActionFunctionArgs) {
       const data = await postCheckCodeRestore(accessToken, fields.code);
 
       if ("token" in data.result) {
-        await setAccessToken(data.result.token.access_token);
-        await setRefreshToken(data.result.token.refresh_token);
+        useStore.getState().setAccessToken(data.result.token.access_token);
+        useStore.getState().setRefreshToken(data.result.token.refresh_token);
 
         params.delete("ttl");
         params.set("type", "restore");

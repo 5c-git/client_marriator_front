@@ -37,15 +37,14 @@ import { ExitIcon } from "./icons/ExitIcon";
 import { BulletIcon } from "~/shared/icons/BulletIcon";
 
 import { queryClient } from "~/root";
-import { getAccessToken } from "~/preferences/token/token";
-import { clearPreferences } from "~/preferences/preferences";
+import { useStore } from "~/store/store";
 import {
   getUserInfo,
   getUserInfoKeys,
 } from "~/requests/getUserInfo/getUserInfo";
 
 export async function clientLoader() {
-  const accessToken = await getAccessToken();
+  const accessToken = useStore.getState().accessToken;
 
   if (accessToken) {
     const data = await queryClient.fetchQuery({
@@ -61,7 +60,7 @@ export async function clientLoader() {
 }
 
 export async function clientAction() {
-  await clearPreferences();
+  useStore.getState().clearStore();
 
   return json({ status: "ok" });
 }

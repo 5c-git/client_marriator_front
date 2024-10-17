@@ -31,8 +31,7 @@ import { StyledSmsField } from "~/shared/ui/StyledSmsField/StyledSmsField";
 import { TopNavigation } from "~/shared/ui/TopNavigation/TopNavigation";
 import { Loader } from "~/shared/ui/Loader/Loader";
 
-import { getUserEmail } from "~/preferences/userEmail/userEmail";
-import { getAccessToken } from "~/preferences/token/token";
+import { useStore } from "~/store/store";
 
 import { postSetUserEmail } from "~/requests/postSetUserEmail/postSetUserEmail";
 import { postCheckEmailCode } from "~/requests/postCheckEmailCode/postCheckEmailCode";
@@ -42,7 +41,7 @@ export async function clientLoader({ request }: ClientActionFunctionArgs) {
 
   const currentURL = new URL(request.url);
 
-  const email = await getUserEmail();
+  const email = useStore.getState().userEmail;
   const ttl = currentURL.searchParams.get("ttl");
 
   if (!email || !ttl) {
@@ -54,7 +53,7 @@ export async function clientLoader({ request }: ClientActionFunctionArgs) {
 
 export async function clientAction({ request }: ClientActionFunctionArgs) {
   const currentURL = new URL(request.url);
-  const accessToken = await getAccessToken();
+  const accessToken = useStore.getState().accessToken;
 
   const { _action, currentTTL, ...fields } = await request.json();
 

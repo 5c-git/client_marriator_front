@@ -27,7 +27,7 @@ import {
   generateValidationSchema,
 } from "~/shared/constructor/constructor";
 
-import { getAccessToken } from "~/preferences/token/token";
+import { useStore } from "~/store/store";
 
 import { getUserFields } from "~/requests/getUserFields/getUserFields";
 import { postSaveUserFields } from "~/requests/postSaveUserFields/postSaveUserFields";
@@ -37,7 +37,7 @@ export async function clientLoader({ request }: ClientActionFunctionArgs) {
 
   const currentURL = new URL(request.url);
 
-  const accessToken = await getAccessToken();
+  const accessToken = useStore.getState().accessToken;
 
   const section = currentURL.searchParams.get("section");
 
@@ -63,7 +63,7 @@ export async function clientLoader({ request }: ClientActionFunctionArgs) {
 
 export async function clientAction({ request }: ClientActionFunctionArgs) {
   const fields = await request.json();
-  const accessToken = await getAccessToken();
+  const accessToken = useStore.getState().accessToken;
 
   if (accessToken) {
     const data = await postSaveUserFields(accessToken, fields);

@@ -26,7 +26,7 @@ import {
 import { TopNavigation } from "~/shared/ui/TopNavigation/TopNavigation";
 import { Loader } from "~/shared/ui/Loader/Loader";
 
-import { getAccessToken } from "~/preferences/token/token";
+import { useStore } from "~/store/store";
 
 import { getGeoData } from "~/requests/getGeoData/getGeoData";
 import { getMapField } from "~/requests/getMapField/getMapField";
@@ -67,7 +67,7 @@ const langMap = {
 };
 
 export async function clientLoader() {
-  const accessToken = await getAccessToken();
+  const accessToken = useStore.getState().accessToken;
 
   const geolocation = [] as unknown as Coordinates;
   navigator.geolocation.getCurrentPosition(
@@ -116,7 +116,7 @@ export async function clientLoader() {
 
 export async function clientAction({ request }: ClientActionFunctionArgs) {
   const { _action, ...clientGeoData } = await request.json();
-  const accessToken = await getAccessToken();
+  const accessToken = useStore.getState().accessToken;
 
   if (_action === "reset") {
     return json({ reset: "reset" });

@@ -30,14 +30,15 @@ import { TopNavigation } from "~/shared/ui/TopNavigation/TopNavigation";
 import { Loader } from "~/shared/ui/Loader/Loader";
 
 import { postSetUserPin } from "~/requests/postSetUserPin/postSetUserPin";
-import { getAccessToken } from "~/preferences/token/token";
+
+import { useStore } from "~/store/store";
 
 export async function clientAction({ request }: ClientActionFunctionArgs) {
   const currentURL = new URL(request.url);
   const type = currentURL.searchParams.get("type");
 
   const fields = await request.json();
-  const accessToken = await getAccessToken();
+  const accessToken = useStore.getState().accessToken;
 
   if (accessToken) {
     const data = await postSetUserPin(accessToken, fields.pin);

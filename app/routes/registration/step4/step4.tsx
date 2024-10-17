@@ -38,15 +38,15 @@ import { Loader } from "~/shared/ui/Loader/Loader";
 import { StyledPhotoInput } from "~/shared/ui/StyledPhotoInput/StyledPhotoInput";
 import { StyledEmailField } from "~/shared/ui/StyledEmailField/StyledEmailField";
 
-import { setUserEmail } from "~/preferences/userEmail/userEmail";
+import { useStore } from "~/store/store";
+
 import { getForm } from "~/requests/getForm/getForm";
 import { getStaticUserInfo } from "~/requests/getStaticUserInfo/getStaticUserInfo";
 import { postSaveForm } from "~/requests/postSaveForm/postSaveForm";
 import { postSetUserEmail } from "~/requests/postSetUserEmail/postSetUserEmail";
-import { getAccessToken } from "~/preferences/token/token";
 
 export async function clientLoader() {
-  const accessToken = await getAccessToken();
+  const accessToken = useStore.getState().accessToken;
 
   if (accessToken) {
     const data = await getForm(accessToken, 4);
@@ -67,7 +67,8 @@ export async function clientLoader() {
 export async function clientAction({ request }: ClientActionFunctionArgs) {
   const params = new URLSearchParams();
   const { _action, ...fields } = await request.json();
-  const accessToken = await getAccessToken();
+  const accessToken = useStore.getState().accessToken;
+  const setUserEmail = useStore.getState().setUserEmail;
 
   if (_action && _action === "reset") {
     return null;
@@ -75,7 +76,7 @@ export async function clientAction({ request }: ClientActionFunctionArgs) {
 
   if (accessToken) {
     if (_action && _action === "confirmEmail") {
-      await setUserEmail(fields.email);
+      setUserEmail(fields.email);
       const newEmailData = await postSetUserEmail(accessToken, fields.email);
 
       if (newEmailData.status === "error") {
