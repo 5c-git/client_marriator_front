@@ -145,8 +145,14 @@ export default function Phone() {
     // </>
 
     <>
-      <Button variant="contained">button</Button>
-      <p>this is test</p>
+      <Box
+        sx={{
+          backgroundColor: "red",
+        }}
+      >
+        <Button variant="contained">button</Button>
+        <p>this is test</p>
+      </Box>
     </>
   );
 }

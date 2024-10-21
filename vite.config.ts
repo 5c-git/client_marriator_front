@@ -1,5 +1,5 @@
 import { vitePlugin as remix } from "@remix-run/dev";
-import { installGlobals } from "@remix-run/node";
+// import { installGlobals } from "@remix-run/node";
 import { defineConfig } from "vite";
 import path from "path";
 import tsconfigPaths from "vite-tsconfig-paths";
@@ -10,18 +10,25 @@ import tsconfigPaths from "vite-tsconfig-paths";
 
 // /**
 //  * @type {import('@pigment-css/vite-plugin').PigmentOptions}
-//  */
+
 // const pigmentConfig = {
 //   transformLibraries: ["@mui/material"],
 //   theme: pigmentTheme,
 // };
 
-installGlobals();
+declare module "@remix-run/node" {
+  interface Future {
+    v3_singleFetch: true;
+  }
+}
+
+// installGlobals();
 
 export default defineConfig({
   ssr: {
     // Bundle `problematic-dependency` into the server build
     noExternal: ["ymap3-components", /^@mui\//],
+    // noExternal: ["ymap3-components"],
   },
   plugins: [
     remix({
