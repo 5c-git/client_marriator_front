@@ -11,6 +11,7 @@ declare module "@mui/material/styles" {
     Reg_12: React.CSSProperties;
     Bold_12: React.CSSProperties;
     Reg_14: React.CSSProperties;
+    Med_14: React.CSSProperties;
     Bold_14: React.CSSProperties;
     Reg_16: React.CSSProperties;
     Bold_16: React.CSSProperties;
@@ -32,6 +33,7 @@ declare module "@mui/material/styles" {
     Reg_12?: React.CSSProperties;
     Bold_12?: React.CSSProperties;
     Reg_14?: React.CSSProperties;
+    Med_14?: React.CSSProperties;
     Bold_14?: React.CSSProperties;
     Reg_16?: React.CSSProperties;
     Bold_16?: React.CSSProperties;
@@ -122,6 +124,7 @@ declare module "@mui/material/Typography" {
     Reg_12: true;
     Bold_12: true;
     Reg_14: true;
+    Med_14: true;
     Bold_14: true;
     Reg_16: true;
     Bold_16: true;

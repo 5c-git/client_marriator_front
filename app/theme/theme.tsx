@@ -75,6 +75,13 @@ const baseTheme = createTheme({
       fontSize: "0.875rem",
       lineHeight: "1rem",
     },
+    Med_14: {
+      fontFamily: "Golos UI",
+      fontStyle: "normal",
+      fontWeight: 500,
+      fontSize: "0.875rem",
+      lineHeight: "1rem",
+    },
     Bold_14: {
       fontFamily: "Golos UI",
       fontStyle: "normal",
@@ -723,43 +730,48 @@ export const theme = createTheme(baseTheme, {
         },
       },
     },
-    // MuiTabs: {
-    //   styleOverrides: {
-    //     // цвет бордера выбранного таба
-    //     indicator: {
-    //       backgroundColor: baseTheme.palette["Corp_1"],
-    //     },
-    //   },
-    // },
-    // MuiTab: {
-    //   styleOverrides: {
-    //     root: {
-    //       // цвет не выбранного таба
-    //       textTransform: "none",
-    //       color: baseTheme.palette["Grey_1"],
-    //       "&.Mui-selected": {
-    //         // цвет выбранного таба
-    //         color: baseTheme.palette["Corp_1"],
-    //       },
-    //     },
-    //   },
-    // },
-    // MuiChip: {
-    //   styleOverrides: {
-    //     root: {
-    //       display: "flex",
-    //       flexDirection: "row",
-    //       alignItems: "center",
-    //       backgroundColor: baseTheme.palette["Grey_5"],
-    //       borderRadius: "16px",
-    //       height: "32px",
-    //       "& .MuiChip-label": {
-    //         ...baseTheme.typography["Bold_12"],
-    //         color: baseTheme.palette["Grey_1"],
-    //       },
-    //     },
-    //   },
-    // },
+    MuiTabs: {
+      styleOverrides: {
+        root: {
+          boxShadow: "0px 2px 5px 0px rgba(0, 0, 0, 0.05)",
+        },
+        // цвет бордера выбранного таба
+        indicator: {
+          backgroundColor: baseTheme.palette["Corp_1"],
+        },
+      },
+    },
+    MuiTab: {
+      styleOverrides: {
+        root: {
+          ...baseTheme.typography.Reg_14,
+          flexGrow: 1,
+          // цвет не выбранного таба
+          textTransform: "none",
+          color: baseTheme.palette["Grey_1"],
+          "&.Mui-selected": {
+            // цвет выбранного таба
+            color: baseTheme.palette["Corp_1"],
+          },
+        },
+      },
+    },
+    MuiChip: {
+      styleOverrides: {
+        root: {
+          display: "flex",
+          flexDirection: "row",
+          alignItems: "center",
+          backgroundColor: baseTheme.palette["Grey_5"],
+          borderRadius: "16px",
+          height: "32px",
+          "& .MuiChip-label": {
+            ...baseTheme.typography["Med_14"],
+            color: baseTheme.palette["Grey_1"],
+          },
+        },
+      },
+    },
     // MuiFormControlLabel: {
     //   styleOverrides: {
     //     root: {
