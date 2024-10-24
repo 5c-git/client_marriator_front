@@ -38,7 +38,37 @@ export async function clientLoader() {
   if (accessToken) {
     const bik = await getBik(accessToken);
 
-    return json({ bikOptions: bik.result.bankData });
+    const bikOptions: {
+      value: string;
+      label: string;
+      disabled: boolean;
+    }[] = [
+      // {
+      //   value: "044525974",
+      //   label: "ТИНЬКОФФ-TEST",
+      //   disabled: false,
+      // },
+      // {
+      //   value: "044525225",
+      //   label: "СБЕРБАНК-TEST",
+      //   disabled: false,
+      // },
+      // {
+      //   value: "044525600",
+      //   label: "МИНБАНК-TEST",
+      //   disabled: false,
+      // },
+    ];
+
+    bik.result.bankData.forEach((element) => {
+      bikOptions.push({
+        value: element.bic,
+        label: element.label,
+        disabled: element.disabled,
+      });
+    });
+
+    return json({ bikOptions });
   } else {
     throw new Response("Токен авторизации не обнаружен!", { status: 401 });
   }
@@ -92,28 +122,29 @@ export default function BillingAdd() {
         ),
         account: Yup.string()
           .default("")
-          // .test(
-          //   "is-account",
-          //   () => t("Constructor.account", { context: "wrongAccount" }),
-          //   (value, context) => {
-          //     const { bik } = context.parent;
+          .test(
+            "is-account",
+            () => t("account_wrongAccount", { ns: "constructorFields" }),
+            (value, context) => {
+              const { bik } = context.parent;
 
-          //     const bikRs = "0" + bik.slice(4, -3) + value;
-          //     let checksum = 0;
-          //     const coefficients = [
-          //       7, 1, 3, 7, 1, 3, 7, 1, 3, 7, 1, 3, 7, 1, 3, 7, 1, 3, 7, 1, 3,
-          //       7, 1,
-          //     ];
-          //     for (const i in coefficients) {
-          //       checksum += coefficients[i] * (Number(bikRs[i]) % 10);
-          //     }
-          //     if (checksum % 10 === 0) {
-          //       return true;
-          //     }
+              // const bikRs = "0" + bik.slice(4, -3) + value;
+              const bikRs = bik.slice(-3) + value;
+              let checksum = 0;
+              const coefficients = [
+                7, 1, 3, 7, 1, 3, 7, 1, 3, 7, 1, 3, 7, 1, 3, 7, 1, 3, 7, 1, 3,
+                7, 1,
+              ];
+              for (const i in coefficients) {
+                checksum += coefficients[i] * (Number(bikRs[i]) % 10);
+              }
+              if (checksum % 10 === 0) {
+                return true;
+              }
 
-          //     return false;
-          //   }
-          // )
+              return false;
+            }
+          )
           .length(20, t("account_wrongValue", { ns: "constructorFields" }))
           .required(t("account", { ns: "constructorFields" })),
         card: Yup.string()

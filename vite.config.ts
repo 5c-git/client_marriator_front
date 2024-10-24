@@ -4,7 +4,7 @@ import { defineConfig } from "vite";
 import path from "path";
 import tsconfigPaths from "vite-tsconfig-paths";
 
-// PIGMENT MIGRATION v6.1.4 - PARTIAL WORK
+// PIGMENT MIGRATION v6.1.5 - DOES NOT WORK
 // import { pigment } from "@pigment-css/vite-plugin";
 // import { pigmentTheme } from "./app/theme/themePigment";
 

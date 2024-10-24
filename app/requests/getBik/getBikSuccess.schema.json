@@ -18,6 +18,9 @@
               "value": {
                 "type": "string"
               },
+              "bic": {
+                "type": "string"
+              },
               "label": {
                 "type": "string"
               },
@@ -25,7 +28,7 @@
                 "type": "boolean"
               }
             },
-            "required": ["value", "label", "disabled"]
+            "required": ["value", "bic", "label", "disabled"]
           }
         }
       },
