@@ -9,6 +9,7 @@ export interface GetBikSuccess {
   result: {
     bankData: {
       value: string;
+      bic: string;
       label: string;
       disabled: boolean;
     }[];

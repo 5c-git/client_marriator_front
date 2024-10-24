@@ -45,17 +45,20 @@ export const mockResponseSuccess = {
     bankData: [
       {
         value: "044535974",
+        bic: "044535974",
         label: "Неверный БИК",
         disabled: false,
       },
       {
         value: "044525974",
-        label: "Тинькофф",
+        bic: "044525974",
+        label: "ТИНЬКОФФ",
         disabled: false,
       },
       {
         value: "044525225",
-        label: "Сбербанк",
+        bic: "044525225",
+        label: "СБЕРБАНК",
         disabled: false,
       },
     ],
