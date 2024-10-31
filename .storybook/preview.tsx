@@ -39,9 +39,9 @@ i18next
   });
 
 initialize({
-  serviceWorker: {
-    url: "/client_marriator_front/mockServiceWorker.js",
-  },
+  // serviceWorker: {
+  //   url: "/client_marriator_front/mockServiceWorker.js",
+  // },
   onUnhandledRequest: "bypass",
   findWorker(scriptUrl, mockServiceWorkerUrl) {
     return scriptUrl.includes("mockServiceWorker");

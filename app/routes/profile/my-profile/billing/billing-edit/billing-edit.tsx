@@ -127,7 +127,7 @@ export default function BillingEdit() {
   const {
     control,
     handleSubmit,
-    reset,
+    // reset,
     formState: { errors },
   } = useForm({
     defaultValues: {
@@ -457,8 +457,7 @@ export default function BillingEdit() {
           <Button
             variant="contained"
             onClick={() => {
-              reset();
-              setOpenDialog(false);
+              navigate(withLocale("/profile/my-profile/billing"));
             }}
             sx={{
               marginTop: "16px",

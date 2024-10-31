@@ -19,11 +19,13 @@ import { emailRegExp } from "~/shared/validators";
 
 import {
   Box,
+  Stack,
   Button,
   Dialog,
   DialogTitle,
   Snackbar,
   Alert,
+  Typography,
 } from "@mui/material";
 import { TopNavigation } from "~/shared/ui/TopNavigation/TopNavigation";
 import { Loader } from "~/shared/ui/Loader/Loader";
@@ -46,6 +48,10 @@ export async function clientLoader() {
 
     return json({
       accessToken,
+      id:
+        userInfo.result.userData.uuid !== ""
+          ? userInfo.result.userData.uuid
+          : null,
       photo: userInfo.result.userData.img,
       phone: userInfo.result.userData.phone.toString(),
       email: userInfo.result.userData.email,
@@ -114,7 +120,7 @@ export default function ProfileMeta() {
   const [openPhoneDialog, setOpenPhoneDialog] = useState<boolean>(false);
   const [openEmailDialog, setOpenEmailDialog] = useState<boolean>(false);
 
-  const { accessToken, photo, phone, email } =
+  const { accessToken, id, photo, phone, email } =
     useLoaderData<typeof clientLoader>();
 
   const {
@@ -229,6 +235,30 @@ export default function ProfileMeta() {
               )}
             />
           </Box>
+
+          {id ? (
+            <Stack
+              sx={{
+                alignItems: "center",
+              }}
+            >
+              <Typography
+                component="p"
+                variant="Reg_12"
+                sx={{ color: (theme) => theme.palette["Grey_2"] }}
+              >
+                {t("id")}
+              </Typography>
+
+              <Typography
+                component="p"
+                variant="Reg_14"
+                sx={{ color: (theme) => theme.palette["Black"] }}
+              >
+                {id}
+              </Typography>
+            </Stack>
+          ) : null}
 
           <Controller
             name="metaPhone"

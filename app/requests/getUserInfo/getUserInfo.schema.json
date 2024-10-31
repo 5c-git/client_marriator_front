@@ -75,6 +75,9 @@
             },
             "updateData": {
               "type": ["null", "string"]
+            },
+            "uuid": {
+              "type": "string"
             }
           },
           "required": [
@@ -98,7 +101,8 @@
             "mapAddress",
             "mapRadius",
             "coordinates",
-            "updateData"
+            "updateData",
+            "uuid"
           ]
         }
       },
