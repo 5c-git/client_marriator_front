@@ -180,10 +180,35 @@ const validationMap: {
   },
   account: {
     none: Yup.string().default("").notRequired(),
-    default: Yup.string()
-      .default("")
-      .length(20, t("account_wrongValue", { ns: "constructorFields" }))
-      .required(t("account", { ns: "constructorFields" })),
+    default: (bik: string | undefined) =>
+      Yup.string()
+        .default("")
+        .test(
+          "is-account",
+          () => t("account_wrongAccount", { ns: "constructorFields" }),
+          (value, context) => {
+            if (bik) {
+              // const bikRs = "0" + bik.slice(4, -3) + value;
+              const bikRs = context.parent[bik].slice(-3) + value;
+              let checksum = 0;
+              const coefficients = [
+                7, 1, 3, 7, 1, 3, 7, 1, 3, 7, 1, 3, 7, 1, 3, 7, 1, 3, 7, 1, 3,
+                7, 1,
+              ];
+              for (const i in coefficients) {
+                checksum += coefficients[i] * (Number(bikRs[i]) % 10);
+              }
+              if (checksum % 10 === 0) {
+                return true;
+              }
+              return false;
+            }
+
+            return true;
+          }
+        )
+        .length(20, t("account_wrongValue", { ns: "constructorFields" }))
+        .required(t("account", { ns: "constructorFields" })),
   },
   inn: {
     none: Yup.string().default("").notRequired(),
@@ -288,6 +313,7 @@ export const generateValidationSchema = (
   items: {
     inputType: string;
     name: string;
+    placeholder?: string;
     // value: string;
     // error: string;
     validation: string;
@@ -295,9 +321,26 @@ export const generateValidationSchema = (
 ) => {
   const validationSchema: Yup.ObjectShape = {};
 
+  const bikRegExp = new RegExp(`^бик`, "i");
+
+  const bikField = items.find((item) => bikRegExp.test(item.placeholder));
+
   items.forEach((item) => {
-    validationSchema[item.name] =
-      validationMap[item.inputType][item.validation];
+    // account validation requires bik field value, so we find bik field above and pass its name to our account validation so it can grab its value when validation is needed
+    //if there is no bik field but only account field we pass undefined to account validation so part of validation which requires bik field is ignored
+    if (item.inputType === "account" && item.validation === "default") {
+      if (bikField) {
+        validationSchema[item.name] = validationMap[item.inputType][
+          item.validation
+        ](bikField.name);
+      } else {
+        validationSchema[item.name] =
+          validationMap[item.inputType][item.validation](undefined);
+      }
+    } else {
+      validationSchema[item.name] =
+        validationMap[item.inputType][item.validation];
+    }
 
     // if (item.validation === "wrongValue") {
     //   validationSchema[item.name] = validationMap[item.inputType][

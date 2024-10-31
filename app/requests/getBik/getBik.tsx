@@ -46,19 +46,22 @@ export const mockResponseSuccess = {
       {
         value: "044535974",
         bic: "044535974",
-        label: "Неверный БИК",
+        label: "НЕПРАВИЛЬНЫЙ БИК-TEST",
         disabled: false,
       },
       {
         value: "044525974",
-        bic: "044525974",
-        label: "ТИНЬКОФФ",
+        label: "ТИНЬКОФФ-TEST",
         disabled: false,
       },
       {
         value: "044525225",
-        bic: "044525225",
-        label: "СБЕРБАНК",
+        label: "СБЕРБАНК-TEST",
+        disabled: false,
+      },
+      {
+        value: "044525600",
+        label: "МИНБАНК-TEST",
         disabled: false,
       },
     ],
