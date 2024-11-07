@@ -861,10 +861,40 @@ export const mockResponseSuccess = {
   status: "success",
 };
 
+export const mockResponseSuccessEmpty = {
+  result: {
+    formData: [],
+    type: "needRequired",
+    section: [
+      {
+        name: "Персональные данные",
+        value: 1,
+        notification: true,
+      },
+      {
+        name: "Допуски, справки, удостоверения",
+        value: 2,
+        notification: false,
+      },
+      {
+        name: "Радиус поиска работы",
+        value: 3,
+        notification: false,
+      },
+      {
+        name: "Документы иностранного гражданина",
+        value: 4,
+        notification: false,
+      },
+    ],
+  },
+  status: "success",
+};
+
 export const getUserFieldsMockResponse = http.get(
   `${import.meta.env.VITE_GET_USER_FIELDS}`,
   async () => {
     await delay(2000);
-    return HttpResponse.json(mockResponseSuccess);
+    return HttpResponse.json(mockResponseSuccessEmpty);
   }
 );

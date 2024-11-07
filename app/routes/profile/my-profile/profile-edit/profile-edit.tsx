@@ -17,7 +17,7 @@ import { useTranslation } from "react-i18next";
 
 import { withLocale } from "~/shared/withLocale";
 
-import { useTheme, Box, Button } from "@mui/material";
+import { useTheme, Box, Button, Typography } from "@mui/material";
 import { TopNavigation } from "~/shared/ui/TopNavigation/TopNavigation";
 import { Loader } from "~/shared/ui/Loader/Loader";
 
@@ -125,63 +125,79 @@ export default function ProfileEdit() {
           }}
         />
 
-        <form
-          style={{
-            display: "grid",
-            rowGap: "16px",
-            paddingTop: "26px",
-          }}
-        >
-          {generateInputsMarkup(
-            formFields,
-            errors,
-            control,
-            setValue,
-            trigger,
-            () => {},
-            accessToken
-          )}
-
-          <Box
-            sx={{
-              position: "fixed",
-              display: "flex",
-              columnGap: "8px",
-              zIndex: 1,
-              width: "100%",
-              bottom: "54px",
-              left: "0",
-              padding: "21px 16px 21px 16px",
-              backgroundColor: theme.palette["White"],
-              transition: "0.3s",
-              opacity: isDirty ? 1 : 0,
-              pointerEvents: isDirty ? "auto" : "none",
+        {formFields.length > 0 ? (
+          <form
+            style={{
+              display: "grid",
+              rowGap: "16px",
+              paddingTop: "26px",
             }}
           >
-            <Button
-              variant="outlined"
-              onClick={() => {
-                reset(generateDefaultValues(formFields));
+            {generateInputsMarkup(
+              formFields,
+              errors,
+              control,
+              setValue,
+              trigger,
+              () => {},
+              accessToken
+            )}
+
+            <Box
+              sx={{
+                position: "fixed",
+                display: "flex",
+                columnGap: "8px",
+                zIndex: 1,
+                width: "100%",
+                bottom: "54px",
+                left: "0",
+                padding: "21px 16px 21px 16px",
+                backgroundColor: theme.palette["White"],
+                transition: "0.3s",
+                opacity: isDirty ? 1 : 0,
+                pointerEvents: isDirty ? "auto" : "none",
               }}
             >
-              {t("button_cancel")}
-            </Button>
-            <Button
-              variant="contained"
-              onClick={() => {
-                trigger();
-                handleSubmit(() => {
-                  fetcher.submit(JSON.stringify(getValues()), {
-                    method: "POST",
-                    encType: "application/json",
-                  });
-                })();
-              }}
-            >
-              {t("button_confirm")}
-            </Button>
-          </Box>
-        </form>
+              <Button
+                variant="outlined"
+                onClick={() => {
+                  reset(generateDefaultValues(formFields));
+                }}
+              >
+                {t("button_cancel")}
+              </Button>
+              <Button
+                variant="contained"
+                onClick={() => {
+                  trigger();
+                  handleSubmit(() => {
+                    fetcher.submit(JSON.stringify(getValues()), {
+                      method: "POST",
+                      encType: "application/json",
+                    });
+                  })();
+                }}
+              >
+                {t("button_confirm")}
+              </Button>
+            </Box>
+          </form>
+        ) : (
+          <Typography
+            component="p"
+            variant="Reg_18"
+            sx={{
+              color: (theme) => theme.palette["Black"],
+              textAlign: "center",
+              paddingLeft: "16px",
+              paddingRight: "16px",
+              paddingTop: "16px",
+            }}
+          >
+            {t("emptyFields")}
+          </Typography>
+        )}
       </Box>
     </>
   );

@@ -13,6 +13,7 @@ import {
 import {
   getUserFields,
   mockResponseSuccess,
+  mockResponseSuccessEmpty,
 } from "~/requests/getUserFields/getUserFields";
 import { loadNamespaces, t } from "i18next";
 import { json } from "@remix-run/react";
@@ -54,6 +55,50 @@ export const Primary: Story = {
         http.get(import.meta.env.VITE_GET_USER_FIELDS, async () => {
           await delay(2000);
           return HttpResponse.json(mockResponseSuccess);
+        }),
+      ],
+    },
+    reactRouter: reactRouterParameters({
+      routing: {
+        path: "/profile/my-profile/profile-edit",
+        Component: MenuLayout,
+        children: [
+          {
+            index: true,
+            useStoryElement: true,
+            loader: async () => {
+              await loadNamespaces("profileEdit");
+
+              const data = await getUserFields("token", "1");
+
+              const curentSection = data.result.section.find(
+                (item) => item.value === Number("1")
+              );
+
+              return json({
+                accessToken: "token",
+                formFields: data.result.formData,
+                currentSection:
+                  curentSection !== undefined
+                    ? curentSection.name
+                    : t("sectionHeader", { ns: "profileEdit" }),
+              });
+            },
+          },
+        ],
+      },
+    }),
+  },
+};
+
+export const PrimaryEmpty: Story = {
+  name: "Page (отсутствие полей)",
+  parameters: {
+    msw: {
+      handlers: [
+        http.get(import.meta.env.VITE_GET_USER_FIELDS, async () => {
+          await delay(2000);
+          return HttpResponse.json(mockResponseSuccessEmpty);
         }),
       ],
     },

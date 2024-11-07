@@ -1,5 +1,6 @@
 {
   "sectionHeader": "Profile editing",
+  "emptyFields": "At the moment, the documents in this section are not required",
   "button_cancel": "Cancel",
   "button_confirm": "Save"
 }
