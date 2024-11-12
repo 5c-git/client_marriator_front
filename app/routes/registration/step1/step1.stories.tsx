@@ -6,6 +6,7 @@ import { http, delay, HttpResponse } from "msw";
 import Step1 from "./step1";
 
 import { getForm, mockStep1ResponseSuccess } from "~/requests/getForm/getForm";
+import { transformBikOptions } from "~/requests/getForm/getFormHooks";
 import {
   postSaveForm,
   // mockResponseNeedRequired,
@@ -66,7 +67,9 @@ export const Primary: Story = {
       routing: {
         path: "/registration/step1",
         loader: async () => {
-          const data = await getForm("token", 1);
+          const rawData = await getForm("token", 1);
+
+          const data = transformBikOptions(rawData);
 
           return json({
             formFields: data.result.formData,

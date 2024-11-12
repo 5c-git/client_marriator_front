@@ -41,6 +41,7 @@ import { StyledEmailField } from "~/shared/ui/StyledEmailField/StyledEmailField"
 import { useStore } from "~/store/store";
 
 import { getForm } from "~/requests/getForm/getForm";
+import { transformBikOptions } from "~/requests/getForm/getFormHooks";
 import { getStaticUserInfo } from "~/requests/getStaticUserInfo/getStaticUserInfo";
 import { postSaveForm } from "~/requests/postSaveForm/postSaveForm";
 import { postSetUserEmail } from "~/requests/postSetUserEmail/postSetUserEmail";
@@ -49,7 +50,9 @@ export async function clientLoader() {
   const accessToken = useStore.getState().accessToken;
 
   if (accessToken) {
-    const data = await getForm(accessToken, 4);
+    const rawData = await getForm(accessToken, 4);
+
+    const data = transformBikOptions(rawData);
 
     const staticFields = await getStaticUserInfo(accessToken);
 

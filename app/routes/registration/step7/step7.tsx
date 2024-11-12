@@ -26,6 +26,7 @@ import { TopNavigation } from "~/shared/ui/TopNavigation/TopNavigation";
 import { Loader } from "~/shared/ui/Loader/Loader";
 
 import { getForm } from "~/requests/getForm/getForm";
+import { transformBikOptions } from "~/requests/getForm/getFormHooks";
 import { postSaveForm } from "~/requests/postSaveForm/postSaveForm";
 import { postFinishRegister } from "~/requests/postFinishRegister/postFinishRegister";
 
@@ -35,7 +36,9 @@ export async function clientLoader() {
   const accessToken = useStore.getState().accessToken;
 
   if (accessToken) {
-    const data = await getForm(accessToken, 7);
+    const rawData = await getForm(accessToken, 7);
+
+    const data = transformBikOptions(rawData);
 
     return json({
       accessToken,

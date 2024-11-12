@@ -102,7 +102,7 @@ export type Inputs = [
             label: string;
             disabled: boolean;
             [k: string]: unknown;
-          }[],
+          }[]
         ];
         disabled?: boolean;
         validation: "none" | "default";
@@ -159,7 +159,7 @@ export type Inputs = [
             disabled: boolean;
             icon?: "telegram" | "viber" | "whatsapp";
             [k: string]: unknown;
-          }[],
+          }[]
         ];
         additionalProperties?: never;
         [k: string]: unknown;
@@ -250,7 +250,7 @@ export type Inputs = [
               [k: string]: unknown;
             };
             [k: string]: unknown;
-          }[],
+          }[]
         ];
         additionalProperties?: never;
         [k: string]: unknown;
@@ -438,7 +438,7 @@ export type Inputs = [
             label: string;
             disabled: boolean;
             [k: string]: unknown;
-          }[],
+          }[]
         ];
         additionalProperties?: never;
         [k: string]: unknown;
@@ -533,7 +533,7 @@ export type Inputs = [
             value: string;
             label: string;
             disabled: boolean;
-          }[],
+          }[]
         ];
         disabled?: boolean;
         validation: "none" | "default";
@@ -563,16 +563,18 @@ export type Inputs = [
         options: [
           {
             value: string;
+            bic: string;
             label: string;
             disabled: boolean;
             [k: string]: unknown;
           },
           ...{
             value: string;
+            bic: string;
             label: string;
             disabled: boolean;
             [k: string]: unknown;
-          }[],
+          }[]
         ];
         disabled?: boolean;
         validation: "none" | "default";
@@ -687,7 +689,7 @@ export type Inputs = [
             label: string;
             disabled: boolean;
             [k: string]: unknown;
-          }[],
+          }[]
         ];
         disabled?: boolean;
         validation: "none" | "default";
@@ -744,7 +746,7 @@ export type Inputs = [
             disabled: boolean;
             icon?: "telegram" | "viber" | "whatsapp";
             [k: string]: unknown;
-          }[],
+          }[]
         ];
         additionalProperties?: never;
         [k: string]: unknown;
@@ -835,7 +837,7 @@ export type Inputs = [
               [k: string]: unknown;
             };
             [k: string]: unknown;
-          }[],
+          }[]
         ];
         additionalProperties?: never;
         [k: string]: unknown;
@@ -1023,7 +1025,7 @@ export type Inputs = [
             label: string;
             disabled: boolean;
             [k: string]: unknown;
-          }[],
+          }[]
         ];
         additionalProperties?: never;
         [k: string]: unknown;
@@ -1118,7 +1120,7 @@ export type Inputs = [
             value: string;
             label: string;
             disabled: boolean;
-          }[],
+          }[]
         ];
         disabled?: boolean;
         validation: "none" | "default";
@@ -1148,16 +1150,18 @@ export type Inputs = [
         options: [
           {
             value: string;
+            bic: string;
             label: string;
             disabled: boolean;
             [k: string]: unknown;
           },
           ...{
             value: string;
+            bic: string;
             label: string;
             disabled: boolean;
             [k: string]: unknown;
-          }[],
+          }[]
         ];
         disabled?: boolean;
         validation: "none" | "default";
@@ -1178,5 +1182,5 @@ export type Inputs = [
         additionalProperties?: never;
         [k: string]: unknown;
       }
-  )[],
+  )[]
 ];

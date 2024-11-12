@@ -16,6 +16,7 @@ import {
   reactRouterParameters,
   withRouter,
 } from "storybook-addon-remix-react-router";
+import { transformBikOptions } from "~/requests/getForm/getFormHooks";
 
 const meta = {
   title: "Страницы/Регистрация/Шаг3",
@@ -240,7 +241,9 @@ export const Primary: Story = {
       routing: {
         path: "/registration/step3",
         loader: async () => {
-          const data = await getForm("token", 3);
+          const rawData = await getForm("token", 3);
+
+          const data = transformBikOptions(rawData);
 
           return json({
             formFields: data.result.formData,
