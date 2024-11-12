@@ -137,6 +137,12 @@ export default function Pin() {
             display: "flex",
             justifyContent: "center",
           }}
+          onSubmit={handleSubmit((values) => {
+            submit(JSON.stringify(values), {
+              method: "POST",
+              encType: "application/json",
+            });
+          })}
         >
           <Controller
             name="pin"

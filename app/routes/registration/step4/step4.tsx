@@ -201,6 +201,9 @@ export default function Step4() {
             display: "grid",
             rowGap: "16px",
           }}
+          onSubmit={(evt) => {
+            evt.preventDefault();
+          }}
         >
           <Box
             sx={{

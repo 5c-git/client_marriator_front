@@ -174,6 +174,9 @@ export default function Step1() {
             display: "grid",
             rowGap: "16px",
           }}
+          onSubmit={(evt) => {
+            evt.preventDefault();
+          }}
         >
           {generateInputsMarkup(
             formFields,

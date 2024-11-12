@@ -165,6 +165,19 @@ export default function Sms() {
               display: "grid",
               rowGap: "4px",
             }}
+            onSubmit={handleSubmit((values) => {
+              submit(
+                JSON.stringify({
+                  _action: "sendSms",
+                  currentTTL: seconds,
+                  ...values,
+                }),
+                {
+                  method: "POST",
+                  encType: "application/json",
+                }
+              );
+            })}
           >
             <Controller
               name="sms"

@@ -161,6 +161,16 @@ export default function UserActivities() {
             rowGap: "16px",
             marginTop: "16px",
           }}
+          onSubmit={handleSubmit(() => {
+            if (formStatus === "allowedNewStep" && step !== 3) {
+              setSearchParams((prev) => {
+                prev.set("step", (step + 1).toString());
+                return prev;
+              });
+            } else if (formStatus === "allowedNewStep") {
+              navigate(withLocale("/profile/my-profile"));
+            }
+          })}
         >
           {generateInputsMarkup(
             formFields,

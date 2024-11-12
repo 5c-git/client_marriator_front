@@ -132,6 +132,12 @@ export default function ProfileEdit() {
               rowGap: "16px",
               paddingTop: "26px",
             }}
+            onSubmit={handleSubmit(() => {
+              fetcher.submit(JSON.stringify(getValues()), {
+                method: "POST",
+                encType: "application/json",
+              });
+            })}
           >
             {generateInputsMarkup(
               formFields,

@@ -196,6 +196,9 @@ export default function ProfileMeta() {
             display: "grid",
             rowGap: "16px",
           }}
+          onSubmit={(evt) => {
+            evt.preventDefault();
+          }}
         >
           <Box
             sx={{

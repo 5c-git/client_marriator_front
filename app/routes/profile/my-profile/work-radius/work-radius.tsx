@@ -213,8 +213,6 @@ export default function WorkRadius() {
 
   const debouncedRadiusFieldSubmit = debounce(
     (evt: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-      console.log(evt.target.value);
-
       fetcher.submit(
         JSON.stringify({
           value: `${coordinates[0]},${coordinates[1]}`,
@@ -285,6 +283,9 @@ export default function WorkRadius() {
             style={{
               display: "grid",
               rowGap: "16px",
+            }}
+            onSubmit={(evt) => {
+              evt.preventDefault();
             }}
           >
             <Controller

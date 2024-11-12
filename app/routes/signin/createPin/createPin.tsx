@@ -76,6 +76,7 @@ export default function CreatePin() {
     handleSubmit,
     formState: { errors },
     reset,
+    getValues,
   } = useForm({
     defaultValues: {
       pin: "",
@@ -148,6 +149,12 @@ export default function CreatePin() {
               display: "grid",
               rowGap: "4px",
             }}
+            onSubmit={handleSubmit(() => {
+              submit(JSON.stringify({ pin: getValues("confirmPin") }), {
+                method: "POST",
+                encType: "application/json",
+              });
+            })}
           >
             {step === 1 ? (
               <Controller
