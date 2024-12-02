@@ -4,7 +4,6 @@ import {
   useFetcher,
   useNavigation,
   ClientActionFunctionArgs,
-  json,
   useNavigate,
   useSearchParams,
   // redirect,
@@ -40,11 +39,11 @@ export async function clientLoader({ request }: ClientActionFunctionArgs) {
   if (accessToken && step) {
     const data = await getFormActivities(accessToken, Number(step));
 
-    return json({
+    return {
       accessToken,
       formFields: data.result.formData,
       formStatus: data.result.type,
-    });
+    };
   } else {
     throw new Response("Токен авторизации не обнаружен!", { status: 401 });
   }

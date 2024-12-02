@@ -22,8 +22,6 @@ declare module "@remix-run/node" {
   }
 }
 
-// installGlobals();
-
 export default defineConfig({
   ssr: {
     // Bundle `problematic-dependency` into the server build

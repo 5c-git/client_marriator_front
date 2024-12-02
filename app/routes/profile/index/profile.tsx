@@ -1,6 +1,5 @@
 import { useState } from "react";
 import {
-  json,
   useLoaderData,
   useFetcher,
   useNavigation,
@@ -52,8 +51,7 @@ export async function clientLoader() {
       queryFn: () => getUserInfo(accessToken),
       staleTime: 5000,
     });
-
-    return json(data);
+    return data;
   } else {
     throw new Response("Токен авторизации не обнаружен!", { status: 401 });
   }
@@ -62,7 +60,7 @@ export async function clientLoader() {
 export async function clientAction() {
   useStore.getState().clearStore();
 
-  return json({ status: "ok" });
+  return { status: "ok" };
 }
 
 export default function Profile() {

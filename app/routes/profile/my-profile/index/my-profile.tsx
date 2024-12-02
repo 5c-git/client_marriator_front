@@ -1,5 +1,4 @@
 import {
-  json,
   useLoaderData,
   useNavigate,
   useNavigation,
@@ -43,7 +42,7 @@ export async function clientLoader() {
       staleTime: 60000,
     });
 
-    return json(data);
+    return data;
   } else {
     throw new Response("Токен авторизации не обнаружен!", { status: 401 });
   }

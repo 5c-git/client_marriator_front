@@ -4,7 +4,6 @@ import {
   useNavigation,
   useNavigate,
   useLoaderData,
-  json,
   ClientActionFunctionArgs,
   redirect,
   useSearchParams,
@@ -47,7 +46,7 @@ export async function clientLoader({ request }: ClientActionFunctionArgs) {
     throw new Response(t("wrongData", { ns: "confirmRestorePin" }));
   }
 
-  return json({ ttl });
+  return { ttl };
 }
 
 export async function clientAction({ request }: ClientActionFunctionArgs) {

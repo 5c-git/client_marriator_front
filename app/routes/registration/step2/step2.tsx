@@ -5,7 +5,6 @@ import {
   useNavigate,
   useNavigation,
   ClientActionFunctionArgs,
-  json,
 } from "@remix-run/react";
 import * as Yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -38,11 +37,11 @@ export async function clientLoader() {
 
     const data = transformBikOptions(rawData);
 
-    return json({
+    return {
       accessToken,
       formFields: data.result.formData,
       formStatus: data.result.type,
-    });
+    };
   } else {
     throw new Response("Токен авторизации не обнаружен!", { status: 401 });
   }
@@ -55,7 +54,7 @@ export async function clientAction({ request }: ClientActionFunctionArgs) {
   if (accessToken) {
     const data = await postSaveForm(accessToken, 2, fields);
 
-    return json(data);
+    return data;
   } else {
     throw new Response("Токен авторизации не обнаружен!", { status: 401 });
   }

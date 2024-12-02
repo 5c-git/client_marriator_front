@@ -4,7 +4,6 @@ import {
   useLoaderData,
   useNavigate,
   ClientActionFunctionArgs,
-  json,
 } from "@remix-run/react";
 
 import { useForm, Controller } from "react-hook-form";
@@ -100,7 +99,7 @@ export async function clientLoader() {
           ]
         : geolocation;
 
-    return json({
+    return {
       language,
       address: mapData.result.mapAddress,
       coordinates,
@@ -108,7 +107,7 @@ export async function clientLoader() {
         mapData.result.mapRadius === ""
           ? settingsData.result
           : mapData.result.mapRadius,
-    });
+    };
   } else {
     throw new Response("Токен авторизации не обнаружен!", { status: 401 });
   }
@@ -119,15 +118,15 @@ export async function clientAction({ request }: ClientActionFunctionArgs) {
   const accessToken = useStore.getState().accessToken;
 
   if (_action === "reset") {
-    return json({ reset: "reset" });
+    return { reset: "reset" };
   }
 
   if (clientGeoData.value === "") {
-    return json({ error: 400 });
+    return { error: 400 };
   }
 
   if (clientGeoData.radius === "") {
-    return json({ error: 402 });
+    return { error: 402 };
   }
 
   const yandexGeoData = await getGeoData(clientGeoData.value);
@@ -146,7 +145,7 @@ export async function clientAction({ request }: ClientActionFunctionArgs) {
       );
       return null;
     } else {
-      return json({ error: 404 });
+      return { error: 404 };
     }
   } else {
     throw new Response("Токен авторизации не обнаружен!", { status: 401 });

@@ -4,7 +4,6 @@ import {
   useNavigation,
   useNavigate,
   useLoaderData,
-  json,
   ClientActionFunctionArgs,
   redirect,
   useSearchParams,
@@ -48,7 +47,7 @@ export async function clientLoader({ request }: ClientActionFunctionArgs) {
     throw new Response(t("wrongData", { ns: "confirmPersonalEmail" }));
   }
 
-  return json({ email, ttl });
+  return { email, ttl };
 }
 
 export async function clientAction({ request }: ClientActionFunctionArgs) {

@@ -1,9 +1,4 @@
-import {
-  useLoaderData,
-  useNavigate,
-  useNavigation,
-  json,
-} from "@remix-run/react";
+import { useLoaderData, useNavigate, useNavigation } from "@remix-run/react";
 
 import { useTranslation } from "react-i18next";
 import { withLocale } from "~/shared/withLocale";
@@ -25,7 +20,7 @@ export async function clientLoader() {
   if (accessToken) {
     const requisitesData = await getRequisitesData(accessToken);
 
-    return json({ billingArray: requisitesData.result });
+    return { billingArray: requisitesData.result };
   } else {
     throw new Response("Токен авторизации не обнаружен!", { status: 401 });
   }

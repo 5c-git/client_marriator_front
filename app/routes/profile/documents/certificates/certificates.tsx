@@ -1,7 +1,6 @@
 import {
   useNavigation,
   useNavigate,
-  json,
   useLoaderData,
   useSubmit,
   ClientActionFunctionArgs,
@@ -90,10 +89,10 @@ export async function clientLoader() {
     const certificatesData = await getDocumentInquiries(accessToken);
     const fieldsData = await getCompanyAndCertificatesInquiries(accessToken);
 
-    return json({
+    return {
       certificates: certificatesData.result,
       fields: fieldsData.result,
-    });
+    };
   } else {
     throw new Response("Токен авторизации не обнаружен!", { status: 401 });
   }

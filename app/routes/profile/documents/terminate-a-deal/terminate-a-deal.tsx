@@ -1,7 +1,6 @@
 import {
   useNavigation,
   useNavigate,
-  json,
   useLoaderData,
   useSubmit,
   ClientActionFunctionArgs,
@@ -43,7 +42,7 @@ export async function clientLoader() {
   if (accessToken) {
     const data = await getDocumentTerminate(accessToken);
 
-    return json(data.result.organization);
+    return data.result.organization;
   } else {
     throw new Response("Токен авторизации не обнаружен!", { status: 401 });
   }

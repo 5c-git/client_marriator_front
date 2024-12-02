@@ -5,7 +5,6 @@ import {
   useNavigate,
   useNavigation,
   ClientActionFunctionArgs,
-  json,
   redirect,
 } from "@remix-run/react";
 import * as Yup from "yup";
@@ -46,7 +45,7 @@ export async function clientLoader() {
   if (accessToken) {
     const userInfo = await getUserInfo(accessToken);
 
-    return json({
+    return {
       accessToken,
       id:
         userInfo.result.userData.uuid !== ""
@@ -55,7 +54,7 @@ export async function clientLoader() {
       photo: userInfo.result.userData.img,
       phone: userInfo.result.userData.phone.toString(),
       email: userInfo.result.userData.email,
-    });
+    };
   } else {
     throw new Response("Токен авторизации не обнаружен!", { status: 401 });
   }
@@ -83,7 +82,7 @@ export async function clientAction({ request }: ClientActionFunctionArgs) {
         fields.email
       );
       if (newEmailData.status === "error") {
-        return json({ error: "emailAlreadyExists" });
+        return { error: "emailAlreadyExists" };
       } else {
         params.set("ttl", "120");
         throw redirect(
@@ -96,7 +95,7 @@ export async function clientAction({ request }: ClientActionFunctionArgs) {
       setUserPhone(fields.phone);
       const newPhoneData = await postChangeUserPhone(accessToken, fields.phone);
       if (newPhoneData.status === "error") {
-        return json({ error: "phoneAlreadyExists" });
+        return { error: "phoneAlreadyExists" };
       } else {
         params.set("ttl", "120");
         throw redirect(

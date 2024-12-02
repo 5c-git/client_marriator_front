@@ -1,6 +1,5 @@
 import { useEffect } from "react";
 import {
-  json,
   useLoaderData,
   useFetcher,
   useNavigate,
@@ -48,14 +47,14 @@ export async function clientLoader({ request }: ClientActionFunctionArgs) {
       (item) => item.value === Number(section)
     );
 
-    return json({
+    return {
       accessToken,
       formFields: data.result.formData,
       currentSection:
         curentSection !== undefined
           ? curentSection.name
           : t("sectionHeader", { ns: "profileEdit" }),
-    });
+    };
   } else {
     throw new Response("Токен авторизации не обнаружен!", { status: 401 });
   }

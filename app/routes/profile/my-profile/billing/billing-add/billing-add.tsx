@@ -5,7 +5,6 @@ import {
   useSubmit,
   ClientActionFunctionArgs,
   redirect,
-  json,
   useLoaderData,
 } from "@remix-run/react";
 
@@ -68,7 +67,7 @@ export async function clientLoader() {
       });
     });
 
-    return json({ bikOptions });
+    return { bikOptions };
   } else {
     throw new Response("Токен авторизации не обнаружен!", { status: 401 });
   }

@@ -4,7 +4,6 @@ import {
   useFetcher,
   useNavigation,
   ClientActionFunctionArgs,
-  json,
   useNavigate,
   // redirect,
 } from "@remix-run/react";
@@ -39,11 +38,11 @@ export async function clientLoader() {
 
     const data = transformBikOptions(rawData);
 
-    return json({
+    return {
       accessToken,
       formFields: data.result.formData,
       formStatus: data.result.type,
-    });
+    };
   } else {
     throw new Response("Токен авторизации не обнаружен!", { status: 401 });
   }
@@ -56,7 +55,7 @@ export async function clientAction({ request }: ClientActionFunctionArgs) {
   if (accessToken) {
     const data = await postSaveForm(accessToken, 1, fields);
 
-    return json(data);
+    return data;
   } else {
     throw new Response("Токен авторизации не обнаружен!", { status: 401 });
   }

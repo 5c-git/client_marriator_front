@@ -3,7 +3,6 @@ import {
   useNavigation,
   ClientActionFunctionArgs,
   useActionData,
-  json,
   redirect,
 } from "@remix-run/react";
 
@@ -54,7 +53,7 @@ export async function clientAction({ request }: ClientActionFunctionArgs) {
         useStore.getState().setRefreshToken(data.result.token.refresh_token);
         throw redirect(withLocale("/"));
       } else if (data.status === "error") {
-        return json({ error: t("pinError", { ns: "pin" }) });
+        return { error: t("pinError", { ns: "pin" }) };
       }
     }
   } else {

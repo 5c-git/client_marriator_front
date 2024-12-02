@@ -5,7 +5,6 @@ import {
   useNavigate,
   useNavigation,
   ClientActionFunctionArgs,
-  json,
   redirect,
 } from "@remix-run/react";
 import * as Yup from "yup";
@@ -56,12 +55,12 @@ export async function clientLoader() {
 
     const staticFields = await getStaticUserInfo(accessToken);
 
-    return json({
+    return {
       accessToken,
       staticFields: staticFields.result.userData,
       formFields: data.result.formData,
       formStatus: data.result.type,
-    });
+    };
   } else {
     throw new Response("Токен авторизации не обнаружен!", { status: 401 });
   }
@@ -83,7 +82,7 @@ export async function clientAction({ request }: ClientActionFunctionArgs) {
       const newEmailData = await postSetUserEmail(accessToken, fields.email);
 
       if (newEmailData.status === "error") {
-        return json({ error: "alreadyExists" });
+        return { error: "alreadyExists" };
       } else {
         params.set("ttl", "120");
 
