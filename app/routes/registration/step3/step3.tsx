@@ -25,6 +25,7 @@ import { TopNavigation } from "~/shared/ui/TopNavigation/TopNavigation";
 import { Loader } from "~/shared/ui/Loader/Loader";
 
 import { getForm } from "~/requests/getForm/getForm";
+import { transformBikOptions } from "~/requests/getForm/getFormHooks";
 import { postSaveForm } from "~/requests/postSaveForm/postSaveForm";
 
 import { useStore } from "~/store/store";
@@ -33,7 +34,9 @@ export async function clientLoader() {
   const accessToken = useStore.getState().accessToken;
 
   if (accessToken) {
-    const data = await getForm(accessToken, 3);
+    const rawData = await getForm(accessToken, 3);
+
+    const data = transformBikOptions(rawData);
 
     return json({
       accessToken,
@@ -131,6 +134,9 @@ export default function Step3() {
           style={{
             display: "grid",
             rowGap: "16px",
+          }}
+          onSubmit={(evt) => {
+            evt.preventDefault();
           }}
         >
           {generateInputsMarkup(

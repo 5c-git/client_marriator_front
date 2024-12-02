@@ -166,6 +166,19 @@ export default function СonfirmRestorePin() {
               display: "grid",
               rowGap: "4px",
             }}
+            onSubmit={handleSubmit((values) => {
+              submit(
+                JSON.stringify({
+                  _action: "sendCode",
+                  currentTTL: seconds,
+                  ...values,
+                }),
+                {
+                  method: "POST",
+                  encType: "application/json",
+                }
+              );
+            })}
           >
             <Controller
               name="code"

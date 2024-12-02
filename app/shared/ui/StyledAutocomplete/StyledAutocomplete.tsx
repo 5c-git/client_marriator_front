@@ -18,7 +18,7 @@ import {
 
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 
-type StyledAutocompleteProps = {
+export type StyledAutocompleteProps = {
   inputType: "autocomplete";
   name: string;
   value: string;

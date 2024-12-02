@@ -40,7 +40,7 @@ export const ErrorBoundary = () => {
   }, [error.status, navigate]);
   ////
 
-  console.log(error);
+  console.log(JSON.stringify(error, null, 2));
 
   return (
     <>
@@ -95,7 +95,7 @@ export const ErrorBoundary = () => {
           <Button
             variant="outlined"
             onClick={() => {
-              navigate(0);
+              navigate(-1);
             }}
           >
             {t("refresh")}
