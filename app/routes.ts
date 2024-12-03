@@ -1,4 +1,4 @@
-import { type RouteConfig, route, layout, index } from "@react-router/dev/routes";
+import { type RouteConfig, route, layout } from "@react-router/dev/routes";
 
 export default [
   layout("routes/rootErrorBoundry/rootErrorBoundry.tsx", [

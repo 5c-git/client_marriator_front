@@ -1,13 +1,12 @@
 import { useEffect } from "react";
 import {
-  useLoaderData,
   useFetcher,
   useNavigation,
-  ClientActionFunctionArgs,
   useNavigate,
   // redirect,
   useSearchParams,
 } from "react-router";
+import type { Route } from "./+types/user-activities";
 import * as Yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useForm } from "react-hook-form";
@@ -30,7 +29,7 @@ import { postSaveUserFieldsActivities } from "~/requests/postSaveUserFieldsActiv
 
 import { useStore } from "~/store/store";
 
-export async function clientLoader({ request }: ClientActionFunctionArgs) {
+export async function clientLoader({ request }: Route.ClientLoaderArgs) {
   const currentURL = new URL(request.url);
 
   const accessToken = useStore.getState().accessToken;
@@ -49,7 +48,7 @@ export async function clientLoader({ request }: ClientActionFunctionArgs) {
   }
 }
 
-export async function clientAction({ request }: ClientActionFunctionArgs) {
+export async function clientAction({ request }: Route.ClientActionArgs) {
   const currentURL = new URL(request.url);
   const fields = await request.json();
   const accessToken = useStore.getState().accessToken;
@@ -69,16 +68,13 @@ export async function clientAction({ request }: ClientActionFunctionArgs) {
   }
 }
 
-export default function UserActivities() {
+export default function UserActivities({ loaderData }: Route.ComponentProps) {
   const { t } = useTranslation("userActivities");
   const theme = useTheme();
 
   const fetcher = useFetcher();
   const navigation = useNavigation();
   const navigate = useNavigate();
-
-  const { accessToken, formFields, formStatus } =
-    useLoaderData<typeof clientLoader>();
 
   const [searchParams, setSearchParams] = useSearchParams();
 
@@ -95,17 +91,19 @@ export default function UserActivities() {
     formState: { errors },
     reset,
   } = useForm({
-    defaultValues: generateDefaultValues(formFields),
-    resolver: yupResolver(Yup.object(generateValidationSchema(formFields))),
+    defaultValues: generateDefaultValues(loaderData.formFields),
+    resolver: yupResolver(
+      Yup.object(generateValidationSchema(loaderData.formFields))
+    ),
     mode: "onChange",
     shouldUnregister: true,
   });
 
   useEffect(() => {
     setTimeout(() => {
-      reset(generateDefaultValues(formFields));
+      reset(generateDefaultValues(loaderData.formFields));
     });
-  }, [formFields, reset]);
+  }, [loaderData.formFields, reset]);
 
   return (
     <>
@@ -161,18 +159,18 @@ export default function UserActivities() {
             marginTop: "16px",
           }}
           onSubmit={handleSubmit(() => {
-            if (formStatus === "allowedNewStep" && step !== 3) {
+            if (loaderData.formStatus === "allowedNewStep" && step !== 3) {
               setSearchParams((prev) => {
                 prev.set("step", (step + 1).toString());
                 return prev;
               });
-            } else if (formStatus === "allowedNewStep") {
+            } else if (loaderData.formStatus === "allowedNewStep") {
               navigate(withLocale("/profile/my-profile"));
             }
           })}
         >
           {generateInputsMarkup(
-            formFields,
+            loaderData.formFields,
             errors,
             control,
             setValue,
@@ -183,7 +181,7 @@ export default function UserActivities() {
                 encType: "application/json",
               });
             },
-            accessToken
+            loaderData.accessToken
           )}
 
           <Box
@@ -202,12 +200,15 @@ export default function UserActivities() {
               onClick={() => {
                 trigger();
                 handleSubmit(() => {
-                  if (formStatus === "allowedNewStep" && step !== 3) {
+                  if (
+                    loaderData.formStatus === "allowedNewStep" &&
+                    step !== 3
+                  ) {
                     setSearchParams((prev) => {
                       prev.set("step", (step + 1).toString());
                       return prev;
                     });
-                  } else if (formStatus === "allowedNewStep") {
+                  } else if (loaderData.formStatus === "allowedNewStep") {
                     navigate(withLocale("/profile/my-profile"));
                   }
                 })();

@@ -1,10 +1,5 @@
-import {
-  useNavigation,
-  useNavigate,
-  useLoaderData,
-  useSubmit,
-  ClientActionFunctionArgs,
-} from "react-router";
+import { useNavigation, useNavigate, useSubmit } from "react-router";
+import type { Route } from "./+types/certificates";
 
 import * as Yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -98,7 +93,7 @@ export async function clientLoader() {
   }
 }
 
-export async function clientAction({ request }: ClientActionFunctionArgs) {
+export async function clientAction({ request }: Route.ClientActionArgs) {
   const fields = await request.json();
   const accessToken = useStore.getState().accessToken;
 
@@ -114,17 +109,19 @@ export async function clientAction({ request }: ClientActionFunctionArgs) {
   }
 }
 
-export default function Certificates() {
+export default function Certificates({ loaderData }: Route.ComponentProps) {
   const { t } = useTranslation("certificates");
   const theme = useTheme();
   const navigation = useNavigation();
   const navigate = useNavigate();
   const submit = useSubmit();
 
-  const { fields, certificates } = useLoaderData<typeof clientLoader>();
-
-  const organizationOptions = generateOrganizationOptions(fields.organization);
-  const certificateOptions = generateCertificateOptions(fields.certificates);
+  const organizationOptions = generateOrganizationOptions(
+    loaderData.fields.organization
+  );
+  const certificateOptions = generateCertificateOptions(
+    loaderData.fields.certificates
+  );
 
   const {
     control,
@@ -250,7 +247,7 @@ export default function Certificates() {
             }}
           />
 
-          {certificates.length !== 0 ? (
+          {loaderData.certificates.length !== 0 ? (
             <Box
               sx={{
                 display: "grid",
@@ -270,7 +267,7 @@ export default function Certificates() {
                 {t("done_documents")}
               </Typography>
 
-              {certificates.map((item) => (
+              {loaderData.certificates.map((item) => (
                 <Box
                   sx={{
                     display: "flex",

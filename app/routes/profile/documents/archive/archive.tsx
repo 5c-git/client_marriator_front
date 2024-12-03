@@ -1,4 +1,5 @@
-import { useNavigation, useNavigate, useLoaderData } from "react-router";
+import { useNavigation, useNavigate } from "react-router";
+import type { Route } from "./+types/archive";
 
 import { useTranslation } from "react-i18next";
 
@@ -33,13 +34,11 @@ export async function clientLoader() {
   }
 }
 
-export default function Archive() {
+export default function Archive({ loaderData }: Route.ComponentProps) {
   const { t } = useTranslation("documentsArchive");
   const theme = useTheme();
   const navigation = useNavigation();
   const navigate = useNavigate();
-
-  const data = useLoaderData<typeof clientLoader>();
 
   return (
     <>
@@ -95,8 +94,8 @@ export default function Archive() {
             rowGap: "4px",
           }}
         >
-          {data.length !== 0 ? (
-            data.map((item) => (
+          {loaderData.length !== 0 ? (
+            loaderData.map((item) => (
               <ListItem
                 key={item.uuid}
                 secondaryAction={

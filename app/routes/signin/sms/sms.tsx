@@ -3,11 +3,10 @@ import {
   useSubmit,
   useNavigation,
   useNavigate,
-  useLoaderData,
-  ClientActionFunctionArgs,
   redirect,
   useSearchParams,
 } from "react-router";
+import type { Route } from "./+types/sms";
 
 import { t, loadNamespaces } from "i18next";
 import { useTranslation } from "react-i18next";
@@ -35,7 +34,7 @@ import { useStore } from "~/store/store";
 import { postSendPhone } from "~/requests/postSendPhone/postSendPhone";
 import { postCheckCode } from "~/requests/postCheckCode/postCheckCode";
 
-export async function clientLoader({ request }: ClientActionFunctionArgs) {
+export async function clientLoader({ request }: Route.ClientLoaderArgs) {
   await loadNamespaces("sms");
 
   const currentURL = new URL(request.url);
@@ -50,7 +49,7 @@ export async function clientLoader({ request }: ClientActionFunctionArgs) {
   return { phone, ttl };
 }
 
-export async function clientAction({ request }: ClientActionFunctionArgs) {
+export async function clientAction({ request }: Route.ClientActionArgs) {
   const currentURL = new URL(request.url);
   const { _action, currentTTL, ...fields } = await request.json();
 
@@ -89,16 +88,14 @@ export async function clientAction({ request }: ClientActionFunctionArgs) {
   }
 }
 
-export default function Sms() {
+export default function Sms({ loaderData }: Route.ComponentProps) {
   const { t } = useTranslation("sms");
   const theme = useTheme();
   const submit = useSubmit();
   const navigation = useNavigation();
   const navigate = useNavigate();
 
-  const { phone, ttl } = useLoaderData<typeof clientLoader>();
-
-  const [seconds, setSeconds] = useState<number>(Number(ttl));
+  const [seconds, setSeconds] = useState<number>(Number(loaderData.ttl));
   const [open, setOpen] = useState<boolean>(true);
 
   const [searchParams, setSearchParams] = useSearchParams();
@@ -111,7 +108,7 @@ export default function Sms() {
     formState: { errors },
   } = useForm({
     defaultValues: {
-      phone: phone,
+      phone: loaderData.phone,
       sms: "",
     },
     resolver: yupResolver(
@@ -136,8 +133,8 @@ export default function Sms() {
   }, [seconds]);
 
   useEffect(() => {
-    setSeconds(Number(ttl));
-  }, [ttl, navigation.state]);
+    setSeconds(Number(loaderData.ttl));
+  }, [loaderData.ttl, navigation.state]);
 
   return (
     <>
@@ -217,7 +214,7 @@ export default function Sms() {
               submit(
                 JSON.stringify({
                   _action: "sendAgain",
-                  phone: phone,
+                  phone: loaderData.phone,
                 }),
                 {
                   method: "POST",

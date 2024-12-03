@@ -1,11 +1,6 @@
 import { useEffect } from "react";
-import {
-  useLoaderData,
-  useFetcher,
-  useNavigate,
-  useNavigation,
-  ClientActionFunctionArgs,
-} from "react-router";
+import { useFetcher, useNavigate, useNavigation } from "react-router";
+import type { Route } from "./+types/profile-edit";
 
 import * as Yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -31,7 +26,7 @@ import { useStore } from "~/store/store";
 import { getUserFields } from "~/requests/getUserFields/getUserFields";
 import { postSaveUserFields } from "~/requests/postSaveUserFields/postSaveUserFields";
 
-export async function clientLoader({ request }: ClientActionFunctionArgs) {
+export async function clientLoader({ request }: Route.ClientLoaderArgs) {
   await loadNamespaces("profileEdit");
 
   const currentURL = new URL(request.url);
@@ -60,7 +55,7 @@ export async function clientLoader({ request }: ClientActionFunctionArgs) {
   }
 }
 
-export async function clientAction({ request }: ClientActionFunctionArgs) {
+export async function clientAction({ request }: Route.ClientActionArgs) {
   const fields = await request.json();
   const accessToken = useStore.getState().accessToken;
 
@@ -73,16 +68,13 @@ export async function clientAction({ request }: ClientActionFunctionArgs) {
   }
 }
 
-export default function ProfileEdit() {
+export default function ProfileEdit({ loaderData }: Route.ComponentProps) {
   const { t } = useTranslation("profileEdit");
   const theme = useTheme();
   const navigate = useNavigate();
   const navigation = useNavigation();
 
   const fetcher = useFetcher();
-
-  const { accessToken, formFields, currentSection } =
-    useLoaderData<typeof clientLoader>();
 
   const {
     control,
@@ -93,17 +85,19 @@ export default function ProfileEdit() {
     formState: { errors, isDirty },
     reset,
   } = useForm({
-    defaultValues: generateDefaultValues(formFields),
-    resolver: yupResolver(Yup.object(generateValidationSchema(formFields))),
+    defaultValues: generateDefaultValues(loaderData.formFields),
+    resolver: yupResolver(
+      Yup.object(generateValidationSchema(loaderData.formFields))
+    ),
     mode: "onChange",
     shouldUnregister: true,
   });
 
   useEffect(() => {
     setTimeout(() => {
-      reset(generateDefaultValues(formFields));
+      reset(generateDefaultValues(loaderData.formFields));
     });
-  }, [formFields, reset]);
+  }, [loaderData.formFields, reset]);
 
   return (
     <>
@@ -116,7 +110,7 @@ export default function ProfileEdit() {
       >
         <TopNavigation
           header={{
-            text: currentSection,
+            text: loaderData.currentSection,
             bold: false,
           }}
           backAction={() => {
@@ -124,7 +118,7 @@ export default function ProfileEdit() {
           }}
         />
 
-        {formFields.length > 0 ? (
+        {loaderData.formFields.length > 0 ? (
           <form
             style={{
               display: "grid",
@@ -139,13 +133,13 @@ export default function ProfileEdit() {
             })}
           >
             {generateInputsMarkup(
-              formFields,
+              loaderData.formFields,
               errors,
               control,
               setValue,
               trigger,
               () => {},
-              accessToken
+              loaderData.accessToken
             )}
 
             <Box
@@ -167,7 +161,7 @@ export default function ProfileEdit() {
               <Button
                 variant="outlined"
                 onClick={() => {
-                  reset(generateDefaultValues(formFields));
+                  reset(generateDefaultValues(loaderData.formFields));
                 }}
               >
                 {t("button_cancel")}

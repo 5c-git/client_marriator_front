@@ -1,4 +1,5 @@
-import { useLoaderData, useNavigate, useNavigation, Link } from "react-router";
+import { useNavigate, useNavigation, Link } from "react-router";
+import type { Route } from "./+types/my-profile";
 
 import { useTranslation } from "react-i18next";
 
@@ -43,13 +44,11 @@ export async function clientLoader() {
   }
 }
 
-export default function MyProfile() {
+export default function MyProfile({ loaderData }: Route.ComponentProps) {
   const { t } = useTranslation("myProfile");
   const theme = useTheme();
   const navigate = useNavigate();
   const navigation = useNavigation();
-
-  const data = useLoaderData<typeof clientLoader>();
 
   return (
     <>
@@ -257,7 +256,7 @@ export default function MyProfile() {
               }}
             />
           </ListItem>
-          {data.result.section.map((item) => (
+          {loaderData.result.section.map((item) => (
             <ListItem
               key={item.name}
               disableGutters
@@ -321,7 +320,9 @@ export default function MyProfile() {
           ))}
         </List>
 
-        {data.result.section.find((item) => item.notification === true) ? (
+        {loaderData.result.section.find(
+          (item) => item.notification === true
+        ) ? (
           <Box
             sx={{
               display: "flex",

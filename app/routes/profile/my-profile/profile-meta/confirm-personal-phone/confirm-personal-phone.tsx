@@ -3,11 +3,10 @@ import {
   useSubmit,
   useNavigation,
   useNavigate,
-  useLoaderData,
-  ClientActionFunctionArgs,
   redirect,
   useSearchParams,
 } from "react-router";
+import type { Route } from "./+types/confirm-personal-phone";
 
 import { t, loadNamespaces } from "i18next";
 import { useTranslation } from "react-i18next";
@@ -35,7 +34,7 @@ import { useStore } from "~/store/store";
 import { postChangeUserPhone } from "~/requests/postChangeUserPhone/postChangeUserPhone";
 import { postConfirmChangeUserPhone } from "~/requests/postConfirmChangeUserPhone/postConfirmChangeUserPhone";
 
-export async function clientLoader({ request }: ClientActionFunctionArgs) {
+export async function clientLoader({ request }: Route.ClientLoaderArgs) {
   await loadNamespaces("confirmPersonalPhone");
 
   const currentURL = new URL(request.url);
@@ -50,7 +49,7 @@ export async function clientLoader({ request }: ClientActionFunctionArgs) {
   return { phone, ttl };
 }
 
-export async function clientAction({ request }: ClientActionFunctionArgs) {
+export async function clientAction({ request }: Route.ClientActionArgs) {
   const currentURL = new URL(request.url);
   const accessToken = useStore.getState().accessToken;
 
@@ -95,16 +94,16 @@ export async function clientAction({ request }: ClientActionFunctionArgs) {
   }
 }
 
-export default function СonfirmPersonalPhone() {
+export default function СonfirmPersonalPhone({
+  loaderData,
+}: Route.ComponentProps) {
   const { t } = useTranslation("confirmPersonalPhone");
   const theme = useTheme();
   const submit = useSubmit();
   const navigation = useNavigation();
   const navigate = useNavigate();
 
-  const { phone, ttl } = useLoaderData<typeof clientLoader>();
-
-  const [seconds, setSeconds] = useState<number>(Number(ttl));
+  const [seconds, setSeconds] = useState<number>(Number(loaderData.ttl));
   const [open, setOpen] = useState<boolean>(true);
 
   const [searchParams, setSearchParams] = useSearchParams();
@@ -140,8 +139,8 @@ export default function СonfirmPersonalPhone() {
   }, [seconds, navigation.state]);
 
   useEffect(() => {
-    setSeconds(Number(ttl));
-  }, [ttl, navigation.state]);
+    setSeconds(Number(loaderData.ttl));
+  }, [loaderData.ttl, navigation.state]);
 
   return (
     <>
@@ -221,7 +220,7 @@ export default function СonfirmPersonalPhone() {
               submit(
                 JSON.stringify({
                   _action: "sendAgain",
-                  phone: phone,
+                  phone: loaderData.phone,
                 }),
                 {
                   method: "POST",

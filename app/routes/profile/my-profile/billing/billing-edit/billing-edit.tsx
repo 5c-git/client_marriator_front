@@ -3,11 +3,10 @@ import {
   useNavigate,
   useNavigation,
   useSubmit,
-  ClientActionFunctionArgs,
   redirect,
-  useLoaderData,
   useLocation,
 } from "react-router";
+import type { Route } from "./+types/billing-edit";
 
 import * as Yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -75,7 +74,7 @@ export async function clientLoader() {
   }
 }
 
-export async function clientAction({ request }: ClientActionFunctionArgs) {
+export async function clientAction({ request }: Route.ClientActionArgs) {
   const { _action, dataId, ...fields } = await request.json();
   const accessToken = useStore.getState().accessToken;
 
@@ -105,21 +104,19 @@ type BillingInfo = {
   payWithCard: string;
 };
 
-export default function BillingEdit() {
+export default function BillingEdit({ loaderData }: Route.ComponentProps) {
   const { t } = useTranslation("billingEdit");
   const submit = useSubmit();
   const navigate = useNavigate();
   const navigation = useNavigation();
   const location = useLocation();
 
-  const { bikOptions } = useLoaderData<typeof clientLoader>();
-
   const [openDialog, setOpenDialog] = useState<boolean>(false);
   const [openDelete, setOpenDelete] = useState<boolean>(false);
 
   const passedBillingInfo: BillingInfo = location.state;
 
-  const bikMatch = bikOptions.find(
+  const bikMatch = loaderData.bikOptions.find(
     (item) => item.value === passedBillingInfo.bik
   );
 
@@ -281,7 +278,7 @@ export default function BillingEdit() {
                   placeholder={t("placeholder_bik")}
                   onImmediateChange={() => {}}
                   validation="none"
-                  options={bikOptions}
+                  options={loaderData.bikOptions}
                   error={errors.bik?.message}
                   {...field}
                 />

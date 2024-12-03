@@ -1,8 +1,7 @@
-import { reactRouter } from "@react-router/dev/vite";
-// import { installGlobals } from "@remix-run/node";
 import { defineConfig } from "vite";
 import path from "path";
 import tsconfigPaths from "vite-tsconfig-paths";
+import { reactRouter } from "@react-router/dev/vite";
 
 // PIGMENT MIGRATION v6.1.5 - DOES NOT WORK
 // import { pigment } from "@pigment-css/vite-plugin";
@@ -16,12 +15,6 @@ import tsconfigPaths from "vite-tsconfig-paths";
 //   theme: pigmentTheme,
 // };
 
-declare module "@remix-run/node" {
-  interface Future {
-    v3_singleFetch: true;
-  }
-}
-
 export default defineConfig({
   ssr: {
     // Bundle `problematic-dependency` into the server build
@@ -29,17 +22,7 @@ export default defineConfig({
     // noExternal: ["ymap3-components"],
   },
   plugins: [
-    reactRouter({
-      ssr: false,
-      future: {
-        v3_fetcherPersist: true,
-        v3_relativeSplatPath: true,
-        v3_throwAbortReason: true,
-        v3_singleFetch: true,
-        v3_lazyRouteDiscovery: true,
-        v3_routeConfig: true,
-      },
-    }),
+    reactRouter(),
     // pigment(pigmentConfig),
     tsconfigPaths(),
   ],

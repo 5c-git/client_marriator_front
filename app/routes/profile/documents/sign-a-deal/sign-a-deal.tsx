@@ -1,10 +1,5 @@
-import {
-  useNavigation,
-  useNavigate,
-  useLoaderData,
-  useSubmit,
-  ClientActionFunctionArgs,
-} from "react-router";
+import { useNavigation, useNavigate, useSubmit } from "react-router";
+import type { Route } from "./+types/sign-a-deal";
 
 import { useForm, Controller } from "react-hook-form";
 
@@ -48,7 +43,7 @@ export async function clientLoader() {
   }
 }
 
-export async function clientAction({ request }: ClientActionFunctionArgs) {
+export async function clientAction({ request }: Route.ClientActionArgs) {
   const fields = await request.json();
   const accessToken = useStore.getState().accessToken;
 
@@ -61,21 +56,19 @@ export async function clientAction({ request }: ClientActionFunctionArgs) {
   }
 }
 
-export default function SignADeal() {
+export default function SignADeal({ loaderData }: Route.ComponentProps) {
   const { t } = useTranslation("signADeal");
   const theme = useTheme();
   const navigation = useNavigation();
   const navigate = useNavigate();
   const submit = useSubmit();
 
-  const data = useLoaderData<typeof clientLoader>();
-
   const {
     control,
     handleSubmit,
     formState: { isDirty },
   } = useForm({
-    defaultValues: generateDefaultValues(data),
+    defaultValues: generateDefaultValues(loaderData),
   });
 
   return (
@@ -164,7 +157,7 @@ export default function SignADeal() {
               }}
             >
               {" "}
-              {data.map((item) => (
+              {loaderData.map((item) => (
                 <Controller
                   key={item.name}
                   name={item.uuid}
