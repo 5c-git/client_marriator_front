@@ -1,4 +1,4 @@
-import { Outlet } from "@remix-run/react";
+import { Outlet } from "react-router";
 
 import { Stack } from "@mui/material";
 import { Menu } from "~/shared/ui/Menu/Menu";

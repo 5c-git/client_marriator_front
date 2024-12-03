@@ -12,7 +12,7 @@ import {
   getDocumentArchive,
   mockResponseSuccess,
 } from "~/requests/getDocumentArchive/getDocumentArchive";
-import { json } from "@remix-run/react";
+import { json } from "react-router";
 import { delay, http, HttpResponse } from "msw";
 
 const meta = {

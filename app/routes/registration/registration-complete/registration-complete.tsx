@@ -1,7 +1,7 @@
 import {
-  useNavigation,
-  // Link
-} from "@remix-run/react";
+// Link
+useNavigation
+} from "react-router";
 
 import { useTranslation } from "react-i18next";
 

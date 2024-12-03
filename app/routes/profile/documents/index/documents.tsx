@@ -1,4 +1,4 @@
-import { useNavigation, useNavigate, Link } from "@remix-run/react";
+import { useNavigation, useNavigate, Link } from "react-router";
 
 import { useTranslation } from "react-i18next";
 

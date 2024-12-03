@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef, forwardRef } from "react";
-import { Link } from "@remix-run/react";
+import { Link } from "react-router";
 import { UseFormSetValue } from "react-hook-form";
 import Swiper from "swiper";
 import "swiper/css";

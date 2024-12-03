@@ -1,6 +1,6 @@
 import { forwardRef } from "react";
 
-import { Link } from "@remix-run/react";
+import { Link } from "react-router";
 import {
   useTheme,
   SxProps,
@@ -51,9 +51,8 @@ export const StyledPhoneField = forwardRef(
     const theme = useTheme();
 
     return (
-      <Box sx={props.styles} ref={ref}>
+      (<Box sx={props.styles} ref={ref}>
         {props.dividerTop ? <Divider sx={{ marginBottom: "16px" }} /> : null}
-
         <Box sx={props.inputStyles}>
           {props.heading ? (
             <Typography
@@ -162,9 +161,8 @@ export const StyledPhoneField = forwardRef(
             </Typography>
           ) : null}
         </Box>
-
         {props.dividerBottom ? <Divider sx={{ marginTop: "16px" }} /> : null}
-      </Box>
+      </Box>)
     );
   }
 );

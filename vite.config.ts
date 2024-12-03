@@ -1,4 +1,4 @@
-import { vitePlugin as remix } from "@remix-run/dev";
+import { reactRouter } from "@react-router/dev/vite";
 // import { installGlobals } from "@remix-run/node";
 import { defineConfig } from "vite";
 import path from "path";
@@ -29,7 +29,7 @@ export default defineConfig({
     // noExternal: ["ymap3-components"],
   },
   plugins: [
-    remix({
+    reactRouter({
       ssr: false,
       future: {
         v3_fetcherPersist: true,

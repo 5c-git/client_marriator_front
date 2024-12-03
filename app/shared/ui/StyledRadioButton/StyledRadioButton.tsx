@@ -11,7 +11,7 @@ import {
   RadioGroup,
   Radio,
 } from "@mui/material";
-import { Link } from "@remix-run/react";
+import { Link } from "react-router";
 
 import telegram from "./icons/telegram.svg";
 import whatsapp from "./icons/whatsapp.svg";

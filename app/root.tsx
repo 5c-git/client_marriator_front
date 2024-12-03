@@ -1,11 +1,4 @@
-import {
-  Links,
-  Meta,
-  Outlet,
-  Scripts,
-  ScrollRestoration,
-  useLoaderData,
-} from "@remix-run/react";
+import { Links, Meta, Outlet, Scripts, ScrollRestoration, useLoaderData } from "react-router";
 
 // MUI
 import { theme } from "./theme/theme";
@@ -14,7 +7,7 @@ import "@mui/material-pigment-css/styles.css";
 // MUI
 
 import { QueryClient } from "@tanstack/react-query";
-import { LoaderFunctionArgs } from "@remix-run/node";
+import { LoaderFunctionArgs } from "react-router";
 
 import { changeLanguage } from "i18next";
 import { supportedLngs } from "./entry.client";

@@ -6,7 +6,7 @@ import {
   ClientActionFunctionArgs,
   redirect,
   useSearchParams,
-} from "@remix-run/react";
+} from "react-router";
 
 // import { t } from "i18next";
 import { useTranslation } from "react-i18next";

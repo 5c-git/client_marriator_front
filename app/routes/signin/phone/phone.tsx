@@ -4,7 +4,7 @@ import {
   ClientActionFunctionArgs,
   useSearchParams,
   redirect,
-} from "@remix-run/react";
+} from "react-router";
 
 import { useTranslation } from "react-i18next";
 import { withLocale } from "~/shared/withLocale";

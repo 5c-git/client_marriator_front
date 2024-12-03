@@ -7,7 +7,7 @@ import {
   redirect,
   useLoaderData,
   useLocation,
-} from "@remix-run/react";
+} from "react-router";
 
 import * as Yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";

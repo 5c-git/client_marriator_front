@@ -1,4 +1,4 @@
-import { useLoaderData, useNavigate, useNavigation } from "@remix-run/react";
+import { useLoaderData, useNavigate, useNavigation } from "react-router";
 
 import { useTranslation } from "react-i18next";
 import { withLocale } from "~/shared/withLocale";
@@ -33,172 +33,169 @@ export default function Billing() {
 
   const { billingArray } = useLoaderData<typeof clientLoader>();
 
-  return (
-    <>
-      {navigation.state !== "idle" ? <Loader /> : null}
+  return (<>
+    {navigation.state !== "idle" ? <Loader /> : null}
+    <Box>
+      <TopNavigation
+        header={{
+          text: t("header"),
+          bold: false,
+        }}
+        buttonAction={{
+          text: t("header_action"),
+          action: () => {
+            navigate(withLocale("/profile/my-profile/billing/billing-add"));
+          },
+        }}
+        backAction={() => {
+          navigate(withLocale("/profile/my-profile"));
+        }}
+      />
 
-      <Box>
-        <TopNavigation
-          header={{
-            text: t("header"),
-            bold: false,
+      {billingArray.length <= 0 ? (
+        <Typography
+          component="p"
+          variant="Reg_14"
+          sx={{
+            color: theme.palette["Grey_2"],
+            textAlign: "center",
+            paddingTop: "125px",
+            paddingLeft: "16px",
+            paddingRight: "16px",
           }}
-          buttonAction={{
-            text: t("header_action"),
-            action: () => {
-              navigate(withLocale("/profile/my-profile/billing/billing-add"));
-            },
-          }}
-          backAction={() => {
-            navigate(withLocale("/profile/my-profile"));
-          }}
-        />
+        >
+          {t("empty_text")}
+        </Typography>
+      ) : (
+        billingArray.map((item, index) => (
+          <Stack key={index}>
+            <Stack
+              sx={{
+                padding: "16px",
+                rowGap: "8px",
+              }}
+            >
+              <Stack>
+                <Typography
+                  component="p"
+                  variant="Bold_14"
+                  sx={{ color: theme.palette["Black"] }}
+                >
+                  {t("field_fio")}
+                </Typography>
 
-        {billingArray.length <= 0 ? (
-          <Typography
-            component="p"
-            variant="Reg_14"
-            sx={{
-              color: theme.palette["Grey_2"],
-              textAlign: "center",
-              paddingTop: "125px",
-              paddingLeft: "16px",
-              paddingRight: "16px",
-            }}
-          >
-            {t("empty_text")}
-          </Typography>
-        ) : (
-          billingArray.map((item, index) => (
-            <Stack key={index}>
-              <Stack
-                sx={{
-                  padding: "16px",
-                  rowGap: "8px",
+                {item.fio !== "" ? (
+                  <Typography
+                    component="p"
+                    variant="Reg_14"
+                    sx={{ color: theme.palette["Grey_2"] }}
+                  >
+                    {item.fio}
+                  </Typography>
+                ) : null}
+              </Stack>
+              <Stack>
+                <Typography
+                  component="p"
+                  variant="Reg_12"
+                  sx={{ color: theme.palette["Grey_2"] }}
+                >
+                  {t("field_bik")}
+                </Typography>
+                <Typography
+                  component="p"
+                  variant="Reg_14"
+                  sx={{ color: theme.palette["Black"] }}
+                >
+                  {item.bik}
+                </Typography>
+              </Stack>
+              <Stack>
+                <Typography
+                  component="p"
+                  variant="Reg_12"
+                  sx={{ color: theme.palette["Grey_2"] }}
+                >
+                  {t("field_account")}
+                </Typography>
+                <Typography
+                  component="p"
+                  variant="Reg_14"
+                  sx={{ color: theme.palette["Black"] }}
+                >
+                  {item.account}
+                </Typography>
+              </Stack>
+              <Stack>
+                <Typography
+                  component="p"
+                  variant="Reg_12"
+                  sx={{ color: theme.palette["Grey_2"] }}
+                >
+                  {t("field_card")}
+                </Typography>
+                <Typography
+                  component="p"
+                  variant="Reg_14"
+                  sx={{ color: theme.palette["Black"] }}
+                >
+                  {item.card.replace(/\d{4}(?=.)/g, "$& ")}
+                </Typography>
+              </Stack>
+              <Stack>
+                <Typography
+                  component="p"
+                  variant="Reg_12"
+                  sx={{ color: theme.palette["Grey_2"] }}
+                >
+                  {t("field_payWithCard")}
+                </Typography>
+                <Typography
+                  component="p"
+                  variant="Reg_14"
+                  sx={{ color: theme.palette["Black"] }}
+                >
+                  {item.payWithCard === "yes" ? t("yes") : t("no")}
+                </Typography>
+              </Stack>
+              <Stack>
+                <Typography
+                  component="p"
+                  variant="Reg_12"
+                  sx={{ color: theme.palette["Grey_2"] }}
+                >
+                  {t("field_cardDue")}
+                </Typography>
+                <Typography
+                  component="p"
+                  variant="Reg_14"
+                  sx={{ color: theme.palette["Black"] }}
+                >
+                  {format(item.cardDue, "LL.yy")}
+                </Typography>
+              </Stack>
+
+              <Button
+                variant="outlined"
+                onClick={() => {
+                  navigate(
+                    withLocale("/profile/my-profile/billing/billing-edit"),
+                    {
+                      state: {
+                        dataId: index,
+                        ...item,
+                      },
+                    }
+                  );
                 }}
               >
-                <Stack>
-                  <Typography
-                    component="p"
-                    variant="Bold_14"
-                    sx={{ color: theme.palette["Black"] }}
-                  >
-                    {t("field_fio")}
-                  </Typography>
-
-                  {item.fio !== "" ? (
-                    <Typography
-                      component="p"
-                      variant="Reg_14"
-                      sx={{ color: theme.palette["Grey_2"] }}
-                    >
-                      {item.fio}
-                    </Typography>
-                  ) : null}
-                </Stack>
-                <Stack>
-                  <Typography
-                    component="p"
-                    variant="Reg_12"
-                    sx={{ color: theme.palette["Grey_2"] }}
-                  >
-                    {t("field_bik")}
-                  </Typography>
-                  <Typography
-                    component="p"
-                    variant="Reg_14"
-                    sx={{ color: theme.palette["Black"] }}
-                  >
-                    {item.bik}
-                  </Typography>
-                </Stack>
-                <Stack>
-                  <Typography
-                    component="p"
-                    variant="Reg_12"
-                    sx={{ color: theme.palette["Grey_2"] }}
-                  >
-                    {t("field_account")}
-                  </Typography>
-                  <Typography
-                    component="p"
-                    variant="Reg_14"
-                    sx={{ color: theme.palette["Black"] }}
-                  >
-                    {item.account}
-                  </Typography>
-                </Stack>
-                <Stack>
-                  <Typography
-                    component="p"
-                    variant="Reg_12"
-                    sx={{ color: theme.palette["Grey_2"] }}
-                  >
-                    {t("field_card")}
-                  </Typography>
-                  <Typography
-                    component="p"
-                    variant="Reg_14"
-                    sx={{ color: theme.palette["Black"] }}
-                  >
-                    {item.card.replace(/\d{4}(?=.)/g, "$& ")}
-                  </Typography>
-                </Stack>
-                <Stack>
-                  <Typography
-                    component="p"
-                    variant="Reg_12"
-                    sx={{ color: theme.palette["Grey_2"] }}
-                  >
-                    {t("field_payWithCard")}
-                  </Typography>
-                  <Typography
-                    component="p"
-                    variant="Reg_14"
-                    sx={{ color: theme.palette["Black"] }}
-                  >
-                    {item.payWithCard === "yes" ? t("yes") : t("no")}
-                  </Typography>
-                </Stack>
-                <Stack>
-                  <Typography
-                    component="p"
-                    variant="Reg_12"
-                    sx={{ color: theme.palette["Grey_2"] }}
-                  >
-                    {t("field_cardDue")}
-                  </Typography>
-                  <Typography
-                    component="p"
-                    variant="Reg_14"
-                    sx={{ color: theme.palette["Black"] }}
-                  >
-                    {format(item.cardDue, "LL.yy")}
-                  </Typography>
-                </Stack>
-
-                <Button
-                  variant="outlined"
-                  onClick={() => {
-                    navigate(
-                      withLocale("/profile/my-profile/billing/billing-edit"),
-                      {
-                        state: {
-                          dataId: index,
-                          ...item,
-                        },
-                      }
-                    );
-                  }}
-                >
-                  {t("button_edit")}
-                </Button>
-              </Stack>
-              {index < billingArray.length ? <Divider /> : null}
+                {t("button_edit")}
+              </Button>
             </Stack>
-          ))
-        )}
-      </Box>
-    </>
-  );
+            {index < billingArray.length ? <Divider /> : null}
+          </Stack>
+        ))
+      )}
+    </Box>
+  </>);
 }

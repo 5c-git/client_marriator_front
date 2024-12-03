@@ -1,10 +1,5 @@
 import { useState } from "react";
-import {
-  useLoaderData,
-  useFetcher,
-  useNavigation,
-  Link,
-} from "@remix-run/react";
+import { useLoaderData, useFetcher, useNavigation, Link } from "react-router";
 
 import { useTranslation } from "react-i18next";
 

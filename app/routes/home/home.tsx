@@ -1,4 +1,4 @@
-import { ClientActionFunctionArgs, redirect } from "@remix-run/react";
+import { ClientActionFunctionArgs, redirect } from "react-router";
 
 // import { useTranslation } from "react-i18next";
 import i18next from "i18next";
