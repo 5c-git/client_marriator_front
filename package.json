@@ -48,6 +48,7 @@
     "@chromatic-com/storybook": "^2.0.2",
     "@pigment-css/vite-plugin": "^0.0.24",
     "@remix-run/dev": "^2.13.1",
+    "@remix-run/route-config": "^2.15.0",
     "@storybook/addon-essentials": "^8.0.8",
     "@storybook/addon-interactions": "^8.0.8",
     "@storybook/addon-links": "^8.0.8",
@@ -74,7 +75,7 @@
     "storybook": "^8.0.8",
     "storybook-addon-remix-react-router": "^3.0.0",
     "typescript": "^5.1.6",
-    "vite": "^6.0.2",
+    "vite": "^5.4.11",
     "vite-tsconfig-paths": "^5.0.1"
   },
   "engines": {
