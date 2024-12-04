@@ -7,7 +7,7 @@ import {
 } from "storybook-addon-remix-react-router";
 
 import СonfirmPersonalPhone from "./confirm-personal-phone";
-import { json } from "@remix-run/react";
+import { json } from "react-router";
 import { loadNamespaces } from "i18next";
 
 const meta = {

@@ -12,7 +12,7 @@ import BillingAdd from "./billing-add";
 
 import { getBik, mockResponseSuccess } from "~/requests/getBik/getBik";
 
-import { json } from "@remix-run/react";
+import { json } from "react-router";
 import MenuLayout from "~/routes/menuLayout/menuLayout";
 
 const meta = {

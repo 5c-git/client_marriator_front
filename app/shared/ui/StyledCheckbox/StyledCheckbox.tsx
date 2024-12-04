@@ -9,7 +9,7 @@ import {
   FormControlLabel,
   Checkbox,
 } from "@mui/material";
-import { Link } from "@remix-run/react";
+import { Link } from "react-router";
 
 type StyledCheckboxProps = {
   inputType: "checkbox";

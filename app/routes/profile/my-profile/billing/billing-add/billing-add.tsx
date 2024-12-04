@@ -1,13 +1,6 @@
 import { useState } from "react";
-import {
-  useNavigate,
-  useNavigation,
-  useSubmit,
-  ClientActionFunctionArgs,
-  redirect,
-  json,
-  useLoaderData,
-} from "@remix-run/react";
+import { useNavigate, useNavigation, useSubmit, redirect } from "react-router";
+import type { Route } from "./+types/billing-add";
 
 import * as Yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -68,13 +61,13 @@ export async function clientLoader() {
       });
     });
 
-    return json({ bikOptions });
+    return { bikOptions };
   } else {
     throw new Response("Токен авторизации не обнаружен!", { status: 401 });
   }
 }
 
-export async function clientAction({ request }: ClientActionFunctionArgs) {
+export async function clientAction({ request }: Route.ClientActionArgs) {
   const fields = await request.json();
   const accessToken = useStore.getState().accessToken;
 
@@ -87,13 +80,11 @@ export async function clientAction({ request }: ClientActionFunctionArgs) {
   }
 }
 
-export default function BillingAdd() {
+export default function BillingAdd({ loaderData }: Route.ComponentProps) {
   const { t } = useTranslation("billingAdd");
   const submit = useSubmit();
   const navigate = useNavigate();
   const navigation = useNavigation();
-
-  const { bikOptions } = useLoaderData<typeof clientLoader>();
 
   const [openDialog, setOpenDialog] = useState<boolean>(false);
 
@@ -256,7 +247,7 @@ export default function BillingAdd() {
                   placeholder={t("placeholder_bik")}
                   onImmediateChange={() => {}}
                   validation="none"
-                  options={bikOptions}
+                  options={loaderData.bikOptions}
                   error={errors.bik?.message}
                   {...field}
                 />

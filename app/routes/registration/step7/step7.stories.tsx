@@ -11,7 +11,7 @@ import {
   // mockResponseNeedRequired,
   mockResponseAllowedNewStep,
 } from "~/requests/postSaveForm/postSaveForm";
-import { json } from "@remix-run/react";
+import { json } from "react-router";
 import {
   reactRouterParameters,
   withRouter,

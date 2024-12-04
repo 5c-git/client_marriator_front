@@ -16,7 +16,7 @@ import {
   mockResponseSuccessEmpty,
 } from "~/requests/getUserFields/getUserFields";
 import { loadNamespaces, t } from "i18next";
-import { json } from "@remix-run/react";
+import { json } from "react-router";
 
 const meta = {
   title: "Страницы/Внутренние/Профиль/Мой профиль/Редактирование профиля",

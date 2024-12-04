@@ -3,10 +3,10 @@ import {
   useSubmit,
   useNavigation,
   useNavigate,
-  ClientActionFunctionArgs,
   redirect,
   useSearchParams,
-} from "@remix-run/react";
+} from "react-router";
+import type { Route } from "./+types/createPin";
 
 // import { t } from "i18next";
 import { useTranslation } from "react-i18next";
@@ -33,7 +33,7 @@ import { postSetUserPin } from "~/requests/postSetUserPin/postSetUserPin";
 
 import { useStore } from "~/store/store";
 
-export async function clientAction({ request }: ClientActionFunctionArgs) {
+export async function clientAction({ request }: Route.ClientActionArgs) {
   const currentURL = new URL(request.url);
   const type = currentURL.searchParams.get("type");
 

@@ -1,13 +1,6 @@
 import { useState, useEffect } from "react";
-import {
-  useLoaderData,
-  useFetcher,
-  useNavigate,
-  useNavigation,
-  ClientActionFunctionArgs,
-  json,
-  redirect,
-} from "@remix-run/react";
+import { useFetcher, useNavigate, useNavigation, redirect } from "react-router";
+import type { Route } from "./+types/step4";
 import * as Yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useForm, Controller } from "react-hook-form";
@@ -56,18 +49,18 @@ export async function clientLoader() {
 
     const staticFields = await getStaticUserInfo(accessToken);
 
-    return json({
+    return {
       accessToken,
       staticFields: staticFields.result.userData,
       formFields: data.result.formData,
       formStatus: data.result.type,
-    });
+    };
   } else {
     throw new Response("Токен авторизации не обнаружен!", { status: 401 });
   }
 }
 
-export async function clientAction({ request }: ClientActionFunctionArgs) {
+export async function clientAction({ request }: Route.ClientActionArgs) {
   const params = new URLSearchParams();
   const { _action, ...fields } = await request.json();
   const accessToken = useStore.getState().accessToken;
@@ -83,7 +76,7 @@ export async function clientAction({ request }: ClientActionFunctionArgs) {
       const newEmailData = await postSetUserEmail(accessToken, fields.email);
 
       if (newEmailData.status === "error") {
-        return json({ error: "alreadyExists" });
+        return { error: "alreadyExists" };
       } else {
         params.set("ttl", "120");
 
@@ -99,7 +92,7 @@ export async function clientAction({ request }: ClientActionFunctionArgs) {
   }
 }
 
-export default function Step4() {
+export default function Step4({ loaderData }: Route.ComponentProps) {
   const { t } = useTranslation("registrationStep4");
   const theme = useTheme();
   const fetcher = useFetcher<typeof clientAction>();
@@ -107,9 +100,6 @@ export default function Step4() {
   const navigation = useNavigation();
 
   const [openDialog, setOpenDialog] = useState<boolean>(false);
-
-  const { accessToken, staticFields, formFields, formStatus } =
-    useLoaderData<typeof clientLoader>();
 
   const {
     control,
@@ -121,9 +111,9 @@ export default function Step4() {
     reset,
   } = useForm({
     defaultValues: {
-      staticPhoto: staticFields.img,
-      staticEmail: staticFields.email,
-      ...generateDefaultValues(formFields),
+      staticPhoto: loaderData.staticFields.img,
+      staticEmail: loaderData.staticFields.email,
+      ...generateDefaultValues(loaderData.formFields),
     },
     resolver: yupResolver(
       Yup.object({
@@ -137,7 +127,7 @@ export default function Step4() {
             t("email_wrongValue", { ns: "constructorFields" })
           )
           .required(t("email", { ns: "constructorFields" })),
-        ...generateValidationSchema(formFields),
+        ...generateValidationSchema(loaderData.formFields),
       })
     ),
     mode: "onChange",
@@ -148,16 +138,16 @@ export default function Step4() {
     setTimeout(() => {
       reset(
         {
-          staticPhoto: staticFields.img,
-          staticEmail: staticFields.email,
-          ...generateDefaultValues(formFields),
+          staticPhoto: loaderData.staticFields.img,
+          staticEmail: loaderData.staticFields.email,
+          ...generateDefaultValues(loaderData.formFields),
         },
         {
           keepErrors: false,
         }
       );
     });
-  }, [staticFields, formFields, reset, getValues]);
+  }, [loaderData.staticFields, loaderData.formFields, reset, getValues]);
 
   return (
     <>
@@ -228,7 +218,7 @@ export default function Step4() {
                   }}
                   validation="default"
                   url={import.meta.env.VITE_SEND_PHOTO}
-                  token={accessToken}
+                  token={loaderData.accessToken}
                   // @ts-expect-error wrong automatic type narroing
                   triggerValidation={trigger}
                   error={errors.staticPhoto?.message}
@@ -261,7 +251,7 @@ export default function Step4() {
                 onBlur={(evt) => {
                   if (
                     evt.target.value !== "" &&
-                    evt.target.value !== staticFields.email &&
+                    evt.target.value !== loaderData.staticFields.email &&
                     errors.staticEmail === undefined
                   )
                     setOpenDialog(true);
@@ -271,7 +261,7 @@ export default function Step4() {
           />
 
           {generateInputsMarkup(
-            formFields,
+            loaderData.formFields,
             errors,
             // @ts-expect-error wrong automatic type narroing
             control,
@@ -283,7 +273,7 @@ export default function Step4() {
                 encType: "application/json",
               });
             },
-            accessToken
+            loaderData.accessToken
           )}
 
           <Box
@@ -302,7 +292,7 @@ export default function Step4() {
               onClick={() => {
                 trigger();
                 handleSubmit(() => {
-                  if (formStatus === "allowedNewStep") {
+                  if (loaderData.formStatus === "allowedNewStep") {
                     navigate(withLocale("/registration/step5"));
                   }
                 })();

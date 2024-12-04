@@ -1,11 +1,6 @@
 import { ChangeEvent, useEffect, useState } from "react";
-import {
-  useFetcher,
-  useLoaderData,
-  useNavigate,
-  ClientActionFunctionArgs,
-  json,
-} from "@remix-run/react";
+import { useFetcher, useNavigate } from "react-router";
+import type { Route } from "./+types/work-radius";
 
 import { useForm, Controller } from "react-hook-form";
 
@@ -100,7 +95,7 @@ export async function clientLoader() {
           ]
         : geolocation;
 
-    return json({
+    return {
       language,
       address: mapData.result.mapAddress,
       coordinates,
@@ -108,26 +103,26 @@ export async function clientLoader() {
         mapData.result.mapRadius === ""
           ? settingsData.result
           : mapData.result.mapRadius,
-    });
+    };
   } else {
     throw new Response("Токен авторизации не обнаружен!", { status: 401 });
   }
 }
 
-export async function clientAction({ request }: ClientActionFunctionArgs) {
+export async function clientAction({ request }: Route.ClientActionArgs) {
   const { _action, ...clientGeoData } = await request.json();
   const accessToken = useStore.getState().accessToken;
 
   if (_action === "reset") {
-    return json({ reset: "reset" });
+    return { reset: "reset" };
   }
 
   if (clientGeoData.value === "") {
-    return json({ error: 400 });
+    return { error: 400 };
   }
 
   if (clientGeoData.radius === "") {
-    return json({ error: 402 });
+    return { error: 402 };
   }
 
   const yandexGeoData = await getGeoData(clientGeoData.value);
@@ -146,7 +141,7 @@ export async function clientAction({ request }: ClientActionFunctionArgs) {
       );
       return null;
     } else {
-      return json({ error: 404 });
+      return { error: 404 };
     }
   } else {
     throw new Response("Токен авторизации не обнаружен!", { status: 401 });
@@ -166,41 +161,38 @@ export function shouldRevalidate({
   return defaultShouldRevalidate;
 }
 
-export default function WorkRadius() {
+export default function WorkRadius({ loaderData }: Route.ComponentProps) {
   const { t } = useTranslation("workRadius");
   const theme = useTheme();
   const fetcher = useFetcher<typeof clientAction>();
   const navigate = useNavigate();
 
-  const { language, address, radius, coordinates } =
-    useLoaderData<typeof clientLoader>();
-
   const [isActive, setIsActive] = useState<boolean>(false);
 
   const { control, watch, reset } = useForm({
     defaultValues: {
-      address,
-      coordinates,
-      radius,
+      address: loaderData.address,
+      coordinates: loaderData.coordinates,
+      radius: loaderData.radius,
     },
   });
 
   useEffect(() => {
     setTimeout(() => {
       reset({
-        address,
-        coordinates,
-        radius,
+        address: loaderData.address,
+        coordinates: loaderData.coordinates,
+        radius: loaderData.radius,
       });
     });
-  }, [address, radius, coordinates, reset]);
+  }, [loaderData.address, loaderData.radius, loaderData.coordinates, reset]);
 
   const debouncedTextFieldSubmit = debounce(
     (evt: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
       fetcher.submit(
         JSON.stringify({
           value: evt.target.value.replaceAll(" ", "+"),
-          radius,
+          radius: loaderData.radius,
         }),
         {
           method: "POST",
@@ -215,7 +207,7 @@ export default function WorkRadius() {
     (evt: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
       fetcher.submit(
         JSON.stringify({
-          value: `${coordinates[0]},${coordinates[1]}`,
+          value: `${loaderData.coordinates[0]},${loaderData.coordinates[1]}`,
           radius: evt.target.value,
         }),
         {
@@ -347,16 +339,16 @@ export default function WorkRadius() {
               borderRadius: "6px",
               overflow: "hidden",
               filter:
-                address === "" && isActive === false
+                loaderData.address === "" && isActive === false
                   ? "grayscale(1)"
                   : "grayscale(0)",
             }}
           >
             <YMapComponentsProvider
-              lang={langMap[language]}
+              lang={langMap[loaderData.language]}
               apiKey={import.meta.env.VITE_YANDEX_GEO_KEY}
             >
-              <YMap location={{ center: coordinates, zoom: 12 }}>
+              <YMap location={{ center: loaderData.coordinates, zoom: 12 }}>
                 <YMapListener
                   layer="any"
                   onTouchStart={() => {
@@ -366,7 +358,7 @@ export default function WorkRadius() {
                     fetcher.submit(
                       JSON.stringify({
                         value: `${event.coordinates[0]},${event.coordinates[1]}`,
-                        radius,
+                        radius: loaderData.radius,
                       }),
                       {
                         method: "POST",
@@ -378,8 +370,8 @@ export default function WorkRadius() {
                 <YMapDefaultSchemeLayer />
                 <YMapDefaultFeaturesLayer />
 
-                {address !== "" ? (
-                  <YMapMarker coordinates={coordinates}>
+                {loaderData.address !== "" ? (
+                  <YMapMarker coordinates={loaderData.coordinates}>
                     <MarkerIcon
                       sx={{
                         position: "absolute",
@@ -394,7 +386,7 @@ export default function WorkRadius() {
                 {watch("radius") !== "" ? (
                   <YMapFeature
                     geometry={getCircleGeoJSON(
-                      coordinates,
+                      loaderData.coordinates,
                       Number(watch("radius"))
                     )}
                     style={{

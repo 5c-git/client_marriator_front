@@ -1,13 +1,12 @@
 import { useEffect } from "react";
 import {
-  useLoaderData,
   useFetcher,
   useNavigation,
-  ClientActionFunctionArgs,
-  json,
-  useNavigate,
   // redirect,
-} from "@remix-run/react";
+  useNavigate,
+} from "react-router";
+import type { Route } from "./+types/step1";
+
 import * as Yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useForm } from "react-hook-form";
@@ -39,39 +38,36 @@ export async function clientLoader() {
 
     const data = transformBikOptions(rawData);
 
-    return json({
+    return {
       accessToken,
       formFields: data.result.formData,
       formStatus: data.result.type,
-    });
+    };
   } else {
     throw new Response("Токен авторизации не обнаружен!", { status: 401 });
   }
 }
 
-export async function clientAction({ request }: ClientActionFunctionArgs) {
+export async function clientAction({ request }: Route.ClientActionArgs) {
   const fields = await request.json();
   const accessToken = useStore.getState().accessToken;
 
   if (accessToken) {
     const data = await postSaveForm(accessToken, 1, fields);
 
-    return json(data);
+    return data;
   } else {
     throw new Response("Токен авторизации не обнаружен!", { status: 401 });
   }
 }
 
-export default function Step1() {
+export default function Step1({ loaderData }: Route.ComponentProps) {
   const { t } = useTranslation("registrationStep1");
   const theme = useTheme();
 
   const fetcher = useFetcher();
   const navigation = useNavigation();
   const navigate = useNavigate();
-
-  const { accessToken, formFields, formStatus } =
-    useLoaderData<typeof clientLoader>();
 
   const {
     control,
@@ -82,17 +78,19 @@ export default function Step1() {
     formState: { errors },
     reset,
   } = useForm({
-    defaultValues: generateDefaultValues(formFields),
-    resolver: yupResolver(Yup.object(generateValidationSchema(formFields))),
+    defaultValues: generateDefaultValues(loaderData.formFields),
+    resolver: yupResolver(
+      Yup.object(generateValidationSchema(loaderData.formFields))
+    ),
     mode: "onChange",
     shouldUnregister: true,
   });
 
   useEffect(() => {
     setTimeout(() => {
-      reset(generateDefaultValues(formFields));
+      reset(generateDefaultValues(loaderData.formFields));
     });
-  }, [formFields, reset]);
+  }, [loaderData.formFields, reset]);
 
   return (
     <>
@@ -179,7 +177,7 @@ export default function Step1() {
           }}
         >
           {generateInputsMarkup(
-            formFields,
+            loaderData.formFields,
             errors,
             control,
             setValue,
@@ -190,7 +188,7 @@ export default function Step1() {
                 encType: "application/json",
               });
             },
-            accessToken
+            loaderData.accessToken
           )}
 
           <Box
@@ -209,7 +207,7 @@ export default function Step1() {
               onClick={() => {
                 trigger();
                 handleSubmit(() => {
-                  if (formStatus === "allowedNewStep") {
+                  if (loaderData.formStatus === "allowedNewStep") {
                     navigate(withLocale("/registration/step2"));
                   }
                 })();

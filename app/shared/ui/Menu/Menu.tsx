@@ -1,5 +1,5 @@
 import { forwardRef } from "react";
-import { NavLink } from "@remix-run/react";
+import { NavLink } from "react-router";
 import { withLocale } from "~/shared/withLocale";
 import {
   Theme,

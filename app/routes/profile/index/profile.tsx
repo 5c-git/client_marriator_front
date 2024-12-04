@@ -1,11 +1,6 @@
 import { useState } from "react";
-import {
-  json,
-  useLoaderData,
-  useFetcher,
-  useNavigation,
-  Link,
-} from "@remix-run/react";
+import { useFetcher, useNavigation, Link } from "react-router";
+import type { Route } from "./+types/profile";
 
 import { useTranslation } from "react-i18next";
 
@@ -52,8 +47,7 @@ export async function clientLoader() {
       queryFn: () => getUserInfo(accessToken),
       staleTime: 5000,
     });
-
-    return json(data);
+    return data;
   } else {
     throw new Response("Токен авторизации не обнаружен!", { status: 401 });
   }
@@ -62,15 +56,14 @@ export async function clientLoader() {
 export async function clientAction() {
   useStore.getState().clearStore();
 
-  return json({ status: "ok" });
+  return { status: "ok" };
 }
 
-export default function Profile() {
+export default function Profile({ loaderData }: Route.ComponentProps) {
   const { t } = useTranslation("profile");
   const theme = useTheme();
   const navigation = useNavigation();
 
-  const data = useLoaderData<typeof clientLoader>();
   const fetcher = useFetcher();
 
   const [openDialog, setOpenDialog] = useState<boolean>(false);
@@ -99,12 +92,12 @@ export default function Profile() {
               width: "90px",
               height: "90px",
             }}
-            src={data.result.userData.img}
+            src={loaderData.result.userData.img}
           />
 
-          {data.result.userData.name ? (
+          {loaderData.result.userData.name ? (
             <Typography component="p" variant="Bold_18">
-              {data.result.userData.name}
+              {loaderData.result.userData.name}
             </Typography>
           ) : null}
         </Stack>
@@ -146,7 +139,7 @@ export default function Profile() {
                 variant="Reg_16"
               >
                 {t("profile")}{" "}
-                {data.result.userData.errorData ? (
+                {loaderData.result.userData.errorData ? (
                   <BulletIcon
                     sx={{
                       width: "6px",

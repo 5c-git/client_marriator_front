@@ -3,12 +3,10 @@ import {
   useSubmit,
   useNavigation,
   useNavigate,
-  useLoaderData,
-  json,
-  ClientActionFunctionArgs,
   redirect,
   useSearchParams,
-} from "@remix-run/react";
+} from "react-router";
+import type { Route } from "./+types/confirm-restore-pin";
 
 import { t, loadNamespaces } from "i18next";
 import { useTranslation } from "react-i18next";
@@ -36,7 +34,7 @@ import { postCheckCodeRestore } from "~/requests/postCheckCodeRestore/postCheckC
 
 import { useStore } from "~/store/store";
 
-export async function clientLoader({ request }: ClientActionFunctionArgs) {
+export async function clientLoader({ request }: Route.ClientLoaderArgs) {
   await loadNamespaces("confirmRestorePin");
 
   const currentURL = new URL(request.url);
@@ -47,10 +45,10 @@ export async function clientLoader({ request }: ClientActionFunctionArgs) {
     throw new Response(t("wrongData", { ns: "confirmRestorePin" }));
   }
 
-  return json({ ttl });
+  return { ttl };
 }
 
-export async function clientAction({ request }: ClientActionFunctionArgs) {
+export async function clientAction({ request }: Route.ClientActionArgs) {
   const currentURL = new URL(request.url);
   const params = new URLSearchParams();
   const accessToken = useStore.getState().accessToken;
@@ -93,16 +91,16 @@ export async function clientAction({ request }: ClientActionFunctionArgs) {
   }
 }
 
-export default function СonfirmRestorePin() {
+export default function СonfirmRestorePin({
+  loaderData,
+}: Route.ComponentProps) {
   const { t } = useTranslation("confirmRestorePin");
   const theme = useTheme();
   const submit = useSubmit();
   const navigation = useNavigation();
   const navigate = useNavigate();
 
-  const { ttl } = useLoaderData<typeof clientLoader>();
-
-  const [seconds, setSeconds] = useState<number>(Number(ttl));
+  const [seconds, setSeconds] = useState<number>(Number(loaderData.ttl));
   const [open, setOpen] = useState<boolean>(true);
 
   const [searchParams, setSearchParams] = useSearchParams();
@@ -138,8 +136,8 @@ export default function СonfirmRestorePin() {
   }, [seconds]);
 
   useEffect(() => {
-    setSeconds(Number(ttl));
-  }, [ttl, navigation.state]);
+    setSeconds(Number(loaderData.ttl));
+  }, [loaderData.ttl, navigation.state]);
 
   return (
     <>

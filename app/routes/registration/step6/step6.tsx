@@ -1,12 +1,6 @@
 import { useEffect } from "react";
-import {
-  useLoaderData,
-  useFetcher,
-  useNavigate,
-  useNavigation,
-  ClientActionFunctionArgs,
-  json,
-} from "@remix-run/react";
+import { useFetcher, useNavigate, useNavigation } from "react-router";
+import type { Route } from "./+types/step6";
 import * as Yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useForm } from "react-hook-form";
@@ -38,17 +32,17 @@ export async function clientLoader() {
 
     const data = transformBikOptions(rawData);
 
-    return json({
+    return {
       accessToken,
       formFields: data.result.formData,
       formStatus: data.result.type,
-    });
+    };
   } else {
     throw new Response("Токен авторизации не обнаружен!", { status: 401 });
   }
 }
 
-export async function clientAction({ request }: ClientActionFunctionArgs) {
+export async function clientAction({ request }: Route.ClientActionArgs) {
   const accessToken = useStore.getState().accessToken;
   const fields = await request.json();
 
@@ -61,16 +55,13 @@ export async function clientAction({ request }: ClientActionFunctionArgs) {
   }
 }
 
-export default function Step6() {
+export default function Step6({ loaderData }: Route.ComponentProps) {
   const { t } = useTranslation("registrationStep6");
   const theme = useTheme();
 
   const fetcher = useFetcher();
   const navigate = useNavigate();
   const navigation = useNavigation();
-
-  const { accessToken, formFields, formStatus } =
-    useLoaderData<typeof clientLoader>();
 
   const {
     control,
@@ -81,17 +72,19 @@ export default function Step6() {
     formState: { errors },
     reset,
   } = useForm({
-    defaultValues: generateDefaultValues(formFields),
-    resolver: yupResolver(Yup.object(generateValidationSchema(formFields))),
+    defaultValues: generateDefaultValues(loaderData.formFields),
+    resolver: yupResolver(
+      Yup.object(generateValidationSchema(loaderData.formFields))
+    ),
     mode: "onChange",
     shouldUnregister: true,
   });
 
   useEffect(() => {
     setTimeout(() => {
-      reset(generateDefaultValues(formFields));
+      reset(generateDefaultValues(loaderData.formFields));
     });
-  }, [formFields, reset]);
+  }, [loaderData.formFields, reset]);
 
   return (
     <>
@@ -140,7 +133,7 @@ export default function Step6() {
           }}
         >
           {generateInputsMarkup(
-            formFields,
+            loaderData.formFields,
             errors,
             control,
             setValue,
@@ -151,7 +144,7 @@ export default function Step6() {
                 encType: "application/json",
               });
             },
-            accessToken
+            loaderData.accessToken
           )}
 
           <Box
@@ -170,7 +163,7 @@ export default function Step6() {
               onClick={() => {
                 trigger();
                 handleSubmit(() => {
-                  if (formStatus === "allowedNewStep") {
+                  if (loaderData.formStatus === "allowedNewStep") {
                     navigate(withLocale("/registration/step7"));
                   }
                 })();

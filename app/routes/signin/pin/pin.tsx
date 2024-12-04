@@ -1,11 +1,5 @@
-import {
-  useSubmit,
-  useNavigation,
-  ClientActionFunctionArgs,
-  useActionData,
-  json,
-  redirect,
-} from "@remix-run/react";
+import { useSubmit, useNavigation, redirect } from "react-router";
+import type { Route } from "./+types/pin";
 
 import { t } from "i18next";
 import { useTranslation } from "react-i18next";
@@ -32,7 +26,7 @@ import { postStartRestorePin } from "~/requests/postStartRestorePin/postStartRes
 
 import { useStore } from "~/store/store";
 
-export async function clientAction({ request }: ClientActionFunctionArgs) {
+export async function clientAction({ request }: Route.ClientActionArgs) {
   const { _action, ...fields } = await request.json();
   const params = new URLSearchParams();
   const accessToken = useStore.getState().accessToken;
@@ -54,7 +48,7 @@ export async function clientAction({ request }: ClientActionFunctionArgs) {
         useStore.getState().setRefreshToken(data.result.token.refresh_token);
         throw redirect(withLocale("/"));
       } else if (data.status === "error") {
-        return json({ error: t("pinError", { ns: "pin" }) });
+        return { error: t("pinError", { ns: "pin" }) };
       }
     }
   } else {
@@ -62,13 +56,11 @@ export async function clientAction({ request }: ClientActionFunctionArgs) {
   }
 }
 
-export default function Pin() {
+export default function Pin({ actionData }: Route.ComponentProps) {
   const { t } = useTranslation("pin");
   const theme = useTheme();
   const submit = useSubmit();
   const navigation = useNavigation();
-
-  const actionData = useActionData<typeof clientAction>();
 
   const {
     control,

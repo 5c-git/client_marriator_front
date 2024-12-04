@@ -1,184 +1,30 @@
-import { vitePlugin as remix } from "@remix-run/dev";
-// import { installGlobals } from "@remix-run/node";
 import { defineConfig } from "vite";
 import path from "path";
 import tsconfigPaths from "vite-tsconfig-paths";
+import { reactRouter } from "@react-router/dev/vite";
 
-// PIGMENT MIGRATION v6.1.5 - DOES NOT WORK
+// PIGMENT MIGRATION v6.1.10 - WORKS BUT DOES NOT APPLY SX STYLES OR CUSTOM THEME
 // import { pigment } from "@pigment-css/vite-plugin";
+// import { createTheme } from "@mui/material";
 // import { pigmentTheme } from "./app/theme/themePigment";
 
-// /**
-//  * @type {import('@pigment-css/vite-plugin').PigmentOptions}
-
+/**
+ * @type {import('@pigment-css/vite-plugin').PigmentOptions}
+ */
 // const pigmentConfig = {
 //   transformLibraries: ["@mui/material"],
-//   theme: pigmentTheme,
+//   theme: createTheme({
+//     cssVariables: true,
+//   }),
 // };
-
-declare module "@remix-run/node" {
-  interface Future {
-    v3_singleFetch: true;
-  }
-}
-
-// installGlobals();
 
 export default defineConfig({
   ssr: {
     // Bundle `problematic-dependency` into the server build
-    noExternal: ["ymap3-components", /^@mui\//],
-    // noExternal: ["ymap3-components"],
+    noExternal: ["ymap3-components", /^@mui\//, /@pigment-css/],
   },
   plugins: [
-    remix({
-      ssr: false,
-      future: {
-        v3_fetcherPersist: true,
-        v3_relativeSplatPath: true,
-        v3_throwAbortReason: true,
-        v3_singleFetch: true,
-        v3_lazyRouteDiscovery: true,
-      },
-
-      routes(defineRoutes) {
-        return defineRoutes((route) => {
-          //pigment
-          // route("/", "routes-pigment/phone/phone.tsx");
-          //pigment
-
-          route(
-            undefined,
-            "routes/rootErrorBoundry/rootErrorBoundry.tsx",
-            () => {
-              route(undefined, "routes/menuLayout/menuLayout.tsx", () => {
-                route(":lang?/", "routes/home/home.tsx");
-                route(
-                  ":lang?/registration/registration-complete",
-                  "routes/registration/registration-complete/registration-complete.tsx"
-                );
-                route(":lang?/profile", "routes/profile/index/profile.tsx");
-                route(
-                  ":lang?/profile/my-profile",
-                  "routes/profile/my-profile/index/my-profile.tsx"
-                );
-
-                route(
-                  ":lang?/profile/my-profile/profile-edit",
-                  "routes/profile/my-profile/profile-edit/profile-edit.tsx"
-                );
-                route(
-                  ":lang?/profile/my-profile/profile-meta",
-                  "routes/profile/my-profile/profile-meta/index/profile-meta.tsx"
-                );
-                route(
-                  ":lang?/profile/my-profile/profile-meta/confirm-personal-email",
-                  "routes/profile/my-profile/profile-meta/confirm-personal-email/confirm-personal-email.tsx"
-                );
-                route(
-                  ":lang?/profile/my-profile/profile-meta/confirm-personal-phone",
-                  "routes/profile/my-profile/profile-meta/confirm-personal-phone/confirm-personal-phone.tsx"
-                );
-                route(
-                  ":lang?/profile/my-profile/user-activities",
-                  "routes/profile/my-profile/user-activities/user-activities.tsx"
-                );
-                route(
-                  ":lang?/profile/my-profile/billing",
-                  "routes/profile/my-profile/billing/index/billing.tsx"
-                );
-                route(
-                  ":lang?/profile/my-profile/billing/billing-add",
-                  "routes/profile/my-profile/billing/billing-add/billing-add.tsx"
-                );
-                route(
-                  ":lang?/profile/my-profile/billing/billing-edit",
-                  "routes/profile/my-profile/billing/billing-edit/billing-edit.tsx"
-                );
-                route(
-                  ":lang?/profile/my-profile/work-radius",
-                  "routes/profile/my-profile/work-radius/work-radius.tsx"
-                );
-                route(
-                  ":lang?/profile/documents",
-                  "routes/profile/documents/index/documents.tsx"
-                );
-                route(
-                  ":lang?/profile/documents/sign",
-                  "routes/profile/documents/sign/sign.tsx"
-                );
-                route(
-                  ":lang?/profile/documents/sign-a-deal",
-                  "routes/profile/documents/sign-a-deal/sign-a-deal.tsx"
-                );
-                route(
-                  ":lang?/profile/documents/terminate-a-deal",
-                  "routes/profile/documents/terminate-a-deal/terminate-a-deal.tsx"
-                );
-                route(
-                  ":lang?/profile/documents/archive",
-                  "routes/profile/documents/archive/archive.tsx"
-                );
-                route(
-                  ":lang?/profile/documents/certificates",
-                  "routes/profile/documents/certificates/certificates.tsx"
-                );
-              });
-
-              //signin
-              route(":lang?/signin/phone", "routes/signin/phone/phone.tsx");
-              route(":lang?/signin/sms", "routes/signin/sms/sms.tsx");
-              route(
-                ":lang?/signin/createPin",
-                "routes/signin/createPin/createPin.tsx"
-              );
-              route(":lang?/signin/pin", "routes/signin/pin/pin.tsx");
-              route(
-                ":lang?/signin/confirm-restore-pin",
-                "routes/signin/confirm-restore-pin/confirm-restore-pin.tsx"
-              );
-              // signin
-
-              // registration
-              route(
-                ":lang?/registration/step1",
-                "routes/registration/step1/step1.tsx"
-              );
-              route(
-                ":lang?/registration/step2",
-                "routes/registration/step2/step2.tsx"
-              );
-
-              route(
-                ":lang?/registration/step3",
-                "routes/registration/step3/step3.tsx"
-              );
-              route(
-                ":lang?/registration/step4",
-                "routes/registration/step4/step4.tsx"
-              );
-              route(
-                ":lang?/registration/step5",
-                "routes/registration/step5/step5.tsx"
-              );
-              route(
-                ":lang?/registration/step6",
-                "routes/registration/step6/step6.tsx"
-              );
-              route(
-                ":lang?/registration/step7",
-                "routes/registration/step7/step7.tsx"
-              );
-              route(
-                ":lang?/registration/confirm-email",
-                "routes/registration/confirm-email/confirm-email.tsx"
-              );
-              // registration;
-            }
-          );
-        });
-      },
-    }),
+    reactRouter(),
     // pigment(pigmentConfig),
     tsconfigPaths(),
   ],

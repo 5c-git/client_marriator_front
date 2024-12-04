@@ -7,7 +7,7 @@ import BillingEdit from "./billing-edit";
 
 import { getBik, mockResponseSuccess } from "~/requests/getBik/getBik";
 
-import { json } from "@remix-run/react";
+import { json } from "react-router";
 import {
   reactRouterParameters,
   withRouter,

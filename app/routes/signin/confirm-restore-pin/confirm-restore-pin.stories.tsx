@@ -2,7 +2,7 @@ import type { StoryObj, Meta } from "@storybook/react";
 import * as DocBlock from "@storybook/blocks";
 
 import СonfirmRestorePin from "./confirm-restore-pin";
-import { json } from "@remix-run/react";
+import { json } from "react-router";
 import {
   reactRouterParameters,
   withRouter,

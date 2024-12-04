@@ -14,7 +14,7 @@ import {
   mockResponseSuccess,
 } from "~/requests/getRequisitesData/getRequisitesData";
 
-import { json } from "@remix-run/react";
+import { json } from "react-router";
 import MenuLayout from "~/routes/menuLayout/menuLayout";
 
 const meta = {

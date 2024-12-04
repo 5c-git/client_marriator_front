@@ -1,11 +1,5 @@
-import {
-  useNavigation,
-  useNavigate,
-  json,
-  useLoaderData,
-  useSubmit,
-  ClientActionFunctionArgs,
-} from "@remix-run/react";
+import { useNavigation, useNavigate, useSubmit } from "react-router";
+import type { Route } from "./+types/terminate-a-deal";
 
 import { useForm, Controller } from "react-hook-form";
 
@@ -43,13 +37,13 @@ export async function clientLoader() {
   if (accessToken) {
     const data = await getDocumentTerminate(accessToken);
 
-    return json(data.result.organization);
+    return data.result.organization;
   } else {
     throw new Response("Токен авторизации не обнаружен!", { status: 401 });
   }
 }
 
-export async function clientAction({ request }: ClientActionFunctionArgs) {
+export async function clientAction({ request }: Route.ClientActionArgs) {
   const fields = await request.json();
   const accessToken = useStore.getState().accessToken;
 
@@ -62,21 +56,19 @@ export async function clientAction({ request }: ClientActionFunctionArgs) {
   }
 }
 
-export default function TerminateADeal() {
+export default function TerminateADeal({ loaderData }: Route.ComponentProps) {
   const { t } = useTranslation("terminateADeal");
   const theme = useTheme();
   const navigation = useNavigation();
   const navigate = useNavigate();
   const submit = useSubmit();
 
-  const data = useLoaderData<typeof clientLoader>();
-
   const {
     control,
     handleSubmit,
     formState: { isDirty },
   } = useForm({
-    defaultValues: generateDefaultValues(data),
+    defaultValues: generateDefaultValues(loaderData),
   });
 
   return (
@@ -165,7 +157,7 @@ export default function TerminateADeal() {
               }}
             >
               {" "}
-              {data.map((item) => (
+              {loaderData.map((item) => (
                 <Controller
                   key={item.name}
                   name={item.uuid}

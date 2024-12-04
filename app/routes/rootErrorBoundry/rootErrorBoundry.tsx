@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { Outlet, useRouteError, useNavigate } from "@remix-run/react";
+import { Outlet, useRouteError, useNavigate } from "react-router";
 import { useTranslation } from "react-i18next";
 import { withLocale } from "~/shared/withLocale";
 

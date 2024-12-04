@@ -10,7 +10,7 @@ import { http, delay, HttpResponse } from "msw";
 import MyProfile from "./my-profile";
 import MenuLayout from "~/routes/menuLayout/menuLayout";
 
-import { json } from "@remix-run/react";
+import { json } from "react-router";
 import {
   getUserPersonalMenu,
   mockResponseSuccess,

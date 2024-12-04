@@ -1,13 +1,7 @@
 import { useState, useEffect } from "react";
-import {
-  useLoaderData,
-  useFetcher,
-  useNavigate,
-  useNavigation,
-  ClientActionFunctionArgs,
-  json,
-  redirect,
-} from "@remix-run/react";
+import { useFetcher, useNavigate, useNavigation, redirect } from "react-router";
+import type { Route } from "./+types/profile-meta";
+
 import * as Yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useForm, Controller } from "react-hook-form";
@@ -46,7 +40,7 @@ export async function clientLoader() {
   if (accessToken) {
     const userInfo = await getUserInfo(accessToken);
 
-    return json({
+    return {
       accessToken,
       id:
         userInfo.result.userData.uuid !== ""
@@ -55,13 +49,13 @@ export async function clientLoader() {
       photo: userInfo.result.userData.img,
       phone: userInfo.result.userData.phone.toString(),
       email: userInfo.result.userData.email,
-    });
+    };
   } else {
     throw new Response("Токен авторизации не обнаружен!", { status: 401 });
   }
 }
 
-export async function clientAction({ request }: ClientActionFunctionArgs) {
+export async function clientAction({ request }: Route.ClientActionArgs) {
   const params = new URLSearchParams();
   const { _action, ...fields } = await request.json();
 
@@ -83,7 +77,7 @@ export async function clientAction({ request }: ClientActionFunctionArgs) {
         fields.email
       );
       if (newEmailData.status === "error") {
-        return json({ error: "emailAlreadyExists" });
+        return { error: "emailAlreadyExists" };
       } else {
         params.set("ttl", "120");
         throw redirect(
@@ -96,7 +90,7 @@ export async function clientAction({ request }: ClientActionFunctionArgs) {
       setUserPhone(fields.phone);
       const newPhoneData = await postChangeUserPhone(accessToken, fields.phone);
       if (newPhoneData.status === "error") {
-        return json({ error: "phoneAlreadyExists" });
+        return { error: "phoneAlreadyExists" };
       } else {
         params.set("ttl", "120");
         throw redirect(
@@ -111,7 +105,7 @@ export async function clientAction({ request }: ClientActionFunctionArgs) {
   }
 }
 
-export default function ProfileMeta() {
+export default function ProfileMeta({ loaderData }: Route.ComponentProps) {
   const { t } = useTranslation("profileMeta");
   const fetcher = useFetcher<typeof clientAction>();
   const navigate = useNavigate();
@@ -119,9 +113,6 @@ export default function ProfileMeta() {
 
   const [openPhoneDialog, setOpenPhoneDialog] = useState<boolean>(false);
   const [openEmailDialog, setOpenEmailDialog] = useState<boolean>(false);
-
-  const { accessToken, id, photo, phone, email } =
-    useLoaderData<typeof clientLoader>();
 
   const {
     control,
@@ -132,9 +123,9 @@ export default function ProfileMeta() {
     reset,
   } = useForm({
     defaultValues: {
-      metaPhoto: photo,
-      metaPhone: phone,
-      metaEmail: email,
+      metaPhoto: loaderData.photo,
+      metaPhone: loaderData.phone,
+      metaEmail: loaderData.email,
     },
     resolver: yupResolver(
       Yup.object({
@@ -161,16 +152,16 @@ export default function ProfileMeta() {
     setTimeout(() => {
       reset(
         {
-          metaPhoto: photo,
-          metaPhone: phone,
-          metaEmail: email,
+          metaPhoto: loaderData.photo,
+          metaPhone: loaderData.phone,
+          metaEmail: loaderData.email,
         },
         {
           keepErrors: false,
         }
       );
     });
-  }, [photo, phone, email, reset, getValues]);
+  }, [loaderData.photo, loaderData.phone, loaderData.email, reset, getValues]);
 
   return (
     <>
@@ -230,7 +221,7 @@ export default function ProfileMeta() {
                   }}
                   validation="default"
                   url={import.meta.env.VITE_SEND_PERSONAL_PHOTO}
-                  token={accessToken}
+                  token={loaderData.accessToken}
                   // @ts-expect-error wrong automatic type narroing
                   triggerValidation={trigger}
                   error={errors.metaPhoto?.message}
@@ -239,7 +230,7 @@ export default function ProfileMeta() {
             />
           </Box>
 
-          {id ? (
+          {loaderData.id ? (
             <Stack
               sx={{
                 alignItems: "center",
@@ -258,7 +249,7 @@ export default function ProfileMeta() {
                 variant="Reg_14"
                 sx={{ color: (theme) => theme.palette["Black"] }}
               >
-                {id}
+                {loaderData.id}
               </Typography>
             </Stack>
           ) : null}
@@ -281,7 +272,7 @@ export default function ProfileMeta() {
                 onBlur={(value) => {
                   if (
                     value !== "" &&
-                    value !== phone &&
+                    value !== loaderData.phone &&
                     errors.metaPhone === undefined
                   )
                     setOpenPhoneDialog(true);
@@ -308,7 +299,7 @@ export default function ProfileMeta() {
                 onBlur={(evt) => {
                   if (
                     evt.target.value !== "" &&
-                    evt.target.value !== email &&
+                    evt.target.value !== loaderData.email &&
                     errors.metaEmail === undefined
                   )
                     setOpenEmailDialog(true);

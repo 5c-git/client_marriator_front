@@ -1,4 +1,4 @@
-import { json, Outlet } from "@remix-run/react";
+import { Outlet } from "react-router";
 
 import { Stack } from "@mui/material";
 import { Menu } from "~/shared/ui/Menu/Menu";
@@ -24,7 +24,7 @@ export async function clientLoader() {
       staleTime: 60000,
     });
 
-    return json(data);
+    return data;
   } else {
     throw new Response("Токен авторизации не обнаружен!", { status: 401 });
   }

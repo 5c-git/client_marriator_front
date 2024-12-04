@@ -1,10 +1,10 @@
 import {
   useSubmit,
   useNavigation,
-  ClientActionFunctionArgs,
   useSearchParams,
   redirect,
-} from "@remix-run/react";
+} from "react-router";
+import type { Route } from "./+types/phone";
 
 import { useTranslation } from "react-i18next";
 import { withLocale } from "~/shared/withLocale";
@@ -27,7 +27,7 @@ import { postSendPhone } from "~/requests/postSendPhone/postSendPhone";
 
 const setUserPhone = useStore.getState().setUserPhone;
 
-export async function clientAction({ request }: ClientActionFunctionArgs) {
+export async function clientAction({ request }: Route.ClientActionArgs) {
   const currentURL = new URL(request.url);
   const params = new URLSearchParams();
 

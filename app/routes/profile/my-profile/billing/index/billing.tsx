@@ -1,9 +1,5 @@
-import {
-  useLoaderData,
-  useNavigate,
-  useNavigation,
-  json,
-} from "@remix-run/react";
+import { useNavigate, useNavigation } from "react-router";
+import type { Route } from "./+types/billing";
 
 import { useTranslation } from "react-i18next";
 import { withLocale } from "~/shared/withLocale";
@@ -25,23 +21,20 @@ export async function clientLoader() {
   if (accessToken) {
     const requisitesData = await getRequisitesData(accessToken);
 
-    return json({ billingArray: requisitesData.result });
+    return { billingArray: requisitesData.result };
   } else {
     throw new Response("Токен авторизации не обнаружен!", { status: 401 });
   }
 }
 
-export default function Billing() {
+export default function Billing({ loaderData }: Route.ComponentProps) {
   const { t } = useTranslation("billing");
   const navigate = useNavigate();
   const navigation = useNavigation();
 
-  const { billingArray } = useLoaderData<typeof clientLoader>();
-
   return (
     <>
       {navigation.state !== "idle" ? <Loader /> : null}
-
       <Box>
         <TopNavigation
           header={{
@@ -59,7 +52,7 @@ export default function Billing() {
           }}
         />
 
-        {billingArray.length <= 0 ? (
+        {loaderData.billingArray.length <= 0 ? (
           <Typography
             component="p"
             variant="Reg_14"
@@ -74,7 +67,7 @@ export default function Billing() {
             {t("empty_text")}
           </Typography>
         ) : (
-          billingArray.map((item, index) => (
+          loaderData.billingArray.map((item, index) => (
             <Stack key={index}>
               <Stack
                 sx={{
@@ -199,7 +192,7 @@ export default function Billing() {
                   {t("button_edit")}
                 </Button>
               </Stack>
-              {index < billingArray.length ? <Divider /> : null}
+              {index < loaderData.billingArray.length ? <Divider /> : null}
             </Stack>
           ))
         )}

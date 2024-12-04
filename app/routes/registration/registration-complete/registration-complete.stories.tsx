@@ -11,7 +11,7 @@ import {
   mockResponseSuccess,
 } from "~/requests/getUserInfo/getUserInfo";
 
-import { json } from "@remix-run/react";
+import { json } from "react-router";
 import {
   reactRouterParameters,
   withRouter,

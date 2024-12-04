@@ -1,9 +1,5 @@
-import {
-  useNavigation,
-  useNavigate,
-  json,
-  useLoaderData,
-} from "@remix-run/react";
+import { useNavigation, useNavigate } from "react-router";
+import type { Route } from "./+types/archive";
 
 import { useTranslation } from "react-i18next";
 
@@ -32,19 +28,17 @@ export async function clientLoader() {
   if (accessToken) {
     const data = await getDocumentArchive(accessToken);
 
-    return json(data.result);
+    return data.result;
   } else {
     throw new Response("Токен авторизации не обнаружен!", { status: 401 });
   }
 }
 
-export default function Archive() {
+export default function Archive({ loaderData }: Route.ComponentProps) {
   const { t } = useTranslation("documentsArchive");
   const theme = useTheme();
   const navigation = useNavigation();
   const navigate = useNavigate();
-
-  const data = useLoaderData<typeof clientLoader>();
 
   return (
     <>
@@ -100,8 +94,8 @@ export default function Archive() {
             rowGap: "4px",
           }}
         >
-          {data.length !== 0 ? (
-            data.map((item) => (
+          {loaderData.length !== 0 ? (
+            loaderData.map((item) => (
               <ListItem
                 key={item.uuid}
                 secondaryAction={

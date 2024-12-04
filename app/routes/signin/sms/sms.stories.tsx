@@ -4,7 +4,7 @@ import * as DocBlock from "@storybook/blocks";
 import { http, delay, HttpResponse } from "msw";
 
 import Sms from "./sms";
-import { json } from "@remix-run/react";
+import { json } from "react-router";
 import {
   reactRouterParameters,
   withRouter,

@@ -5,16 +5,17 @@ import {
   Scripts,
   ScrollRestoration,
   useLoaderData,
-} from "@remix-run/react";
+  LoaderFunctionArgs,
+} from "react-router";
 
 // MUI
 import { theme } from "./theme/theme";
 import { CssBaseline, ThemeProvider } from "@mui/material";
-import "@mui/material-pigment-css/styles.css";
 // MUI
+import "@mui/material-pigment-css/styles.css";
+// import DefaultPropsProvider from "@mui/material/DefaultPropsProvider";
 
 import { QueryClient } from "@tanstack/react-query";
-import { LoaderFunctionArgs } from "@remix-run/node";
 
 import { changeLanguage } from "i18next";
 import { supportedLngs } from "./entry.client";
@@ -63,7 +64,15 @@ export function Layout({ children }: { children: React.ReactNode }) {
           <CssBaseline />
           {children}
         </ThemeProvider>
-        {/* {children} */}
+        {/* <DefaultPropsProvider
+          value={{
+            MuiButtonBase: {
+              disableRipple: true,
+            },
+          }}
+        >
+          {children}
+        </DefaultPropsProvider> */}
         <ScrollRestoration />
         <Scripts />
       </body>

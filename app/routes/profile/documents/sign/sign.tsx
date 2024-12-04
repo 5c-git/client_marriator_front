@@ -1,9 +1,5 @@
-import {
-  useNavigation,
-  useNavigate,
-  json,
-  useLoaderData,
-} from "@remix-run/react";
+import { useNavigation, useNavigate } from "react-router";
+import type { Route } from "./+types/sign";
 
 import { useTranslation } from "react-i18next";
 
@@ -24,19 +20,17 @@ export async function clientLoader() {
   if (accessToken) {
     const data = await getDocumentSigned(accessToken);
 
-    return json(data.result);
+    return data.result;
   } else {
     throw new Response("Токен авторизации не обнаружен!", { status: 401 });
   }
 }
 
-export default function Sign() {
+export default function Sign({ loaderData }: Route.ComponentProps) {
   const { t } = useTranslation("sign");
   const theme = useTheme();
   const navigation = useNavigation();
   const navigate = useNavigate();
-
-  const data = useLoaderData<typeof clientLoader>();
 
   return (
     <>
@@ -67,7 +61,7 @@ export default function Sign() {
             height: "calc(100% - 56px)",
           }}
         >
-          {data.length === 0 ? (
+          {loaderData.length === 0 ? (
             <Typography
               component="h1"
               variant="Reg_18"
@@ -80,13 +74,13 @@ export default function Sign() {
             </Typography>
           ) : (
             <S_OrderedList>
-              {data.map((item) => (
+              {loaderData.map((item) => (
                 <S_OrderedItem key={item.uuid}>{item.name}</S_OrderedItem>
               ))}
             </S_OrderedList>
           )}
 
-          {data.length > 0 ? (
+          {loaderData.length > 0 ? (
             <Button
               sx={{
                 marginTop: "auto",

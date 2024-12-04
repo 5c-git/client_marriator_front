@@ -8,7 +8,7 @@ import {
   reactRouterParameters,
   withRouter,
 } from "storybook-addon-remix-react-router";
-import { json } from "@remix-run/react";
+import { json } from "react-router";
 
 import {
   getDocumentTerminate,
