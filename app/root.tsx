@@ -11,8 +11,9 @@ import {
 // MUI
 import { theme } from "./theme/theme";
 import { CssBaseline, ThemeProvider } from "@mui/material";
-import "@mui/material-pigment-css/styles.css";
 // MUI
+import "@mui/material-pigment-css/styles.css";
+// import DefaultPropsProvider from "@mui/material/DefaultPropsProvider";
 
 import { QueryClient } from "@tanstack/react-query";
 
@@ -63,7 +64,15 @@ export function Layout({ children }: { children: React.ReactNode }) {
           <CssBaseline />
           {children}
         </ThemeProvider>
-        {/* {children} */}
+        {/* <DefaultPropsProvider
+          value={{
+            MuiButtonBase: {
+              disableRipple: true,
+            },
+          }}
+        >
+          {children}
+        </DefaultPropsProvider> */}
         <ScrollRestoration />
         <Scripts />
       </body>

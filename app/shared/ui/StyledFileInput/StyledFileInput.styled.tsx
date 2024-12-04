@@ -17,12 +17,12 @@ export const S_Box = styled(Box, {
   borderColor: props.error
     ? props.theme.palette["Red"]
     : props.status === "warning"
-      ? props.theme.palette["Yellow"]
-      : props.theme.palette["Grey_5"],
+    ? props.theme.palette["Yellow"]
+    : props.theme.palette["Grey_5"],
   backgroundColor: props.theme.palette["Grey_5"],
   opacity: props.disabled ? 0.6 : 1,
   pointerEvents: props.disabled ? "none" : "initial",
-}));
+})) as typeof Box;
 
 export const S_ButtonContainer = styled(Box)({
   display: "grid",
@@ -31,7 +31,7 @@ export const S_ButtonContainer = styled(Box)({
   overflow: "hidden",
   textOverflow: "ellipsis",
   whiteSpace: "nowrap",
-});
+}) as typeof Box;
 
 export const S_ActivationButton = styled("button", {
   shouldForwardProp: (prop) =>
@@ -54,10 +54,10 @@ export const S_ActivationButton = styled("button", {
   color: props.error
     ? props.theme.palette["Red"]
     : props.disabled
-      ? props.theme.palette["Grey_4"]
-      : props.value !== ""
-        ? props.theme.palette["Black"]
-        : props.theme.palette["Grey_2"],
+    ? props.theme.palette["Grey_4"]
+    : props.value !== ""
+    ? props.theme.palette["Black"]
+    : props.theme.palette["Grey_2"],
 }));
 
 export const S_SwipeableDrawer = styled(SwipeableDrawer)((props) => ({
