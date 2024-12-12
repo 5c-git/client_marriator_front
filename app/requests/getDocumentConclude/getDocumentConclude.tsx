@@ -4,6 +4,7 @@ import addFormats from "ajv-formats";
 
 import getDocumentConcludeSuccess from "./getDocumentConcludeSuccess.schema.json";
 import { GetDocumentConcludeSuccess } from "./getDocumentConcludeSuccess.type";
+import { UnxpectedError } from "~/shared/unexpectedError/unexpectedError";
 
 const ajv = new Ajv();
 addFormats(ajv);
@@ -15,32 +16,40 @@ export const getDocumentConcludeKeys = ["getDocumentConclude"];
 export const getDocumentConclude = async (
   accessToken: string
 ): Promise<GetDocumentConcludeSuccess> => {
-  const url = new URL(import.meta.env.VITE_GET_DOCUMENT_CONCLUDE);
+  try {
+    const url = new URL(import.meta.env.VITE_GET_DOCUMENT_CONCLUDE);
 
-  const request = await fetch(url, {
-    method: "GET",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${accessToken}`,
-    },
-  });
-  const response = await request.json();
-
-  let data;
-
-  if (request.status === 401 || request.status === 403) {
-    throw new Response("Unauthorized", {
-      status: 401,
+    const request = await fetch(url, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${accessToken}`,
+      },
     });
-  }
+    const response = await request.json();
 
-  if (validateSuccess(response)) {
-    data = response as unknown as GetDocumentConcludeSuccess;
-  } else {
-    throw new Response(`Данные запроса getDocumentConclude не валидны схеме`);
-  }
+    let data;
 
-  return data;
+    if (request.status === 401 || request.status === 403) {
+      throw new Response("Unauthorized", {
+        status: 401,
+      });
+    }
+
+    if (validateSuccess(response)) {
+      data = response as unknown as GetDocumentConcludeSuccess;
+    } else {
+      throw new Response(`Данные запроса getDocumentConclude не валидны схеме`);
+    }
+
+    return data;
+  } catch (error) {
+    if (error instanceof Error) {
+      throw new UnxpectedError(error.message);
+    } else {
+      throw new UnxpectedError("Unknown unexpected error");
+    }
+  }
 };
 
 // MOCKS

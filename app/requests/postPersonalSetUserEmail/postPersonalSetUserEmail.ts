@@ -6,6 +6,7 @@ import responseError from "./postPersonalSetUserEmailError.schema.json";
 
 import { PostPersonalSetUserEmailSuccessSchema } from "./postPersonalSetUserEmail.type";
 import { PostPersonalSetUserEmailErrorSchema } from "./postPersonalSetUserEmailError.type";
+import { UnxpectedError } from "~/shared/unexpectedError/unexpectedError";
 
 const ajv = new Ajv();
 
@@ -16,41 +17,49 @@ export const postPersonalSetUserEmailKeys = ["postPersonalSetUserEmail"];
 
 export const postPersonalSetUserEmail = async (
   accessToken: string,
-  email: string,
+  email: string
 ) => {
-  const url = new URL(import.meta.env.VITE_SET_PERSONAL_USER_EMAIL);
+  try {
+    const url = new URL(import.meta.env.VITE_SET_PERSONAL_USER_EMAIL);
 
-  const request = await fetch(url, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${accessToken}`,
-    },
-    body: JSON.stringify({
-      email,
-    }),
-  });
-  const response = await request.json();
-
-  let data;
-
-  if (request.status === 401) {
-    throw new Response("Unauthorized", {
-      status: 401,
+    const request = await fetch(url, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${accessToken}`,
+      },
+      body: JSON.stringify({
+        email,
+      }),
     });
-  }
+    const response = await request.json();
 
-  if (validateResponseSuccess(response)) {
-    data = response as unknown as PostPersonalSetUserEmailSuccessSchema;
-  } else if (validateResponseError(response)) {
-    data = response as unknown as PostPersonalSetUserEmailErrorSchema;
-  } else {
-    throw new Response(
-      "Данные запроса postPersonalSetUserEmail не соответствуют схеме",
-    );
-  }
+    let data;
 
-  return data;
+    if (request.status === 401) {
+      throw new Response("Unauthorized", {
+        status: 401,
+      });
+    }
+
+    if (validateResponseSuccess(response)) {
+      data = response as unknown as PostPersonalSetUserEmailSuccessSchema;
+    } else if (validateResponseError(response)) {
+      data = response as unknown as PostPersonalSetUserEmailErrorSchema;
+    } else {
+      throw new Response(
+        "Данные запроса postPersonalSetUserEmail не соответствуют схеме"
+      );
+    }
+
+    return data;
+  } catch (error) {
+    if (error instanceof Error) {
+      throw new UnxpectedError(error.message);
+    } else {
+      throw new UnxpectedError("Unknown unexpected error");
+    }
+  }
 };
 
 // MOCKS
@@ -91,5 +100,5 @@ export const postPersonalSetUserEmailMockResponse = http.post(
     //   await delay(2000);
     //   return HttpResponse.json(mockResponseError);
     // }
-  },
+  }
 );

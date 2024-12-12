@@ -6,6 +6,7 @@ import responseUnauth from "./postSetUserPinUnauth.schema.json";
 
 import { PostSetUserPinSuccessSchema } from "./postSetUserPinSuccess.type";
 import { PostSetUserPinUnauthSchema } from "./postSetUserPinUnauth.type";
+import { UnxpectedError } from "~/shared/unexpectedError/unexpectedError";
 
 const ajv = new Ajv();
 
@@ -15,37 +16,47 @@ const validateResponseUnauth = ajv.compile(responseUnauth);
 export const postSetUserPinKeys = ["postSetUserPin"];
 
 export const postSetUserPin = async (accessToken: string, pin: string) => {
-  const url = new URL(import.meta.env.VITE_SET_USER_PIN);
+  try {
+    const url = new URL(import.meta.env.VITE_SET_USER_PIN);
 
-  const request = await fetch(url, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${accessToken}`,
-    },
-    body: JSON.stringify({
-      pin,
-    }),
-  });
-  const response = await request.json();
-
-  let data;
-
-  if (request.status === 401) {
-    throw new Response("Unauthorized", {
-      status: 401,
+    const request = await fetch(url, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${accessToken}`,
+      },
+      body: JSON.stringify({
+        pin,
+      }),
     });
-  }
+    const response = await request.json();
 
-  if (validateResponseSuccess(response)) {
-    data = response as unknown as PostSetUserPinSuccessSchema;
-  } else if (validateResponseUnauth(response)) {
-    data = response as unknown as PostSetUserPinUnauthSchema;
-  } else {
-    throw new Response("Данные запроса postSetUserPin не соответствуют схеме");
-  }
+    let data;
 
-  return data;
+    if (request.status === 401) {
+      throw new Response("Unauthorized", {
+        status: 401,
+      });
+    }
+
+    if (validateResponseSuccess(response)) {
+      data = response as unknown as PostSetUserPinSuccessSchema;
+    } else if (validateResponseUnauth(response)) {
+      data = response as unknown as PostSetUserPinUnauthSchema;
+    } else {
+      throw new Response(
+        "Данные запроса postSetUserPin не соответствуют схеме"
+      );
+    }
+
+    return data;
+  } catch (error) {
+    if (error instanceof Error) {
+      throw new UnxpectedError(error.message);
+    } else {
+      throw new UnxpectedError("Unknown unexpected error");
+    }
+  }
 };
 
 // MOCKS

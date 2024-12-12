@@ -4,6 +4,7 @@ import Ajv from "ajv";
 import schemaSuccess from "./postSaveUserFieldsActivitiesSuccess.schema.json";
 
 import { PostSaveUserFieldsActivitiesSuccess } from "./postSaveUserFieldsActivitiesSuccess.type";
+import { UnxpectedError } from "~/shared/unexpectedError/unexpectedError";
 
 const ajv = new Ajv();
 
@@ -18,38 +19,46 @@ export const postSaveUserFieldsActivities = async (
   step: number,
   formData: unknown
 ): Promise<PostSaveUserFieldsActivitiesSuccess> => {
-  const url = new URL(import.meta.env.VITE_SAVE_USER_FIELDS_ACTIVITIES);
+  try {
+    const url = new URL(import.meta.env.VITE_SAVE_USER_FIELDS_ACTIVITIES);
 
-  const request = await fetch(url, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${accessToken}`,
-    },
-    body: JSON.stringify({
-      step,
-      formData,
-    }),
-  });
-  const response = await request.json();
-
-  let data: PostSaveUserFieldsActivitiesSuccess;
-
-  if (request.status === 401) {
-    throw new Response("Unauthorized", {
-      status: 401,
+    const request = await fetch(url, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${accessToken}`,
+      },
+      body: JSON.stringify({
+        step,
+        formData,
+      }),
     });
-  }
+    const response = await request.json();
 
-  if (validateSuccess(response)) {
-    data = response as unknown as PostSaveUserFieldsActivitiesSuccess;
-  } else {
-    throw new Response(
-      `Данные запроса postSaveUserFieldsActivities, шаг - ${step} не валидны схеме`
-    );
-  }
+    let data: PostSaveUserFieldsActivitiesSuccess;
 
-  return data;
+    if (request.status === 401) {
+      throw new Response("Unauthorized", {
+        status: 401,
+      });
+    }
+
+    if (validateSuccess(response)) {
+      data = response as unknown as PostSaveUserFieldsActivitiesSuccess;
+    } else {
+      throw new Response(
+        `Данные запроса postSaveUserFieldsActivities, шаг - ${step} не валидны схеме`
+      );
+    }
+
+    return data;
+  } catch (error) {
+    if (error instanceof Error) {
+      throw new UnxpectedError(error.message);
+    } else {
+      throw new UnxpectedError("Unknown unexpected error");
+    }
+  }
 };
 
 // MOCKS

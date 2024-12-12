@@ -6,6 +6,7 @@ import responseError from "./postCheckCodeRestoreError.schema.json";
 
 import { PostCheckCodeRestoreSuccess } from "./postCheckCodeRestoreSuccess.type";
 import { PostCheckCodeRestoreError } from "./postCheckCodeRestoreError.type";
+import { UnxpectedError } from "~/shared/unexpectedError/unexpectedError";
 
 const ajv = new Ajv();
 
@@ -18,39 +19,47 @@ export const postCheckCodeRestore = async (
   accessToken: string,
   code: string
 ) => {
-  const url = new URL(import.meta.env.VITE_CHECK_CODE_RESTORE);
+  try {
+    const url = new URL(import.meta.env.VITE_CHECK_CODE_RESTORE);
 
-  const request = await fetch(url, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${accessToken}`,
-    },
-    body: JSON.stringify({
-      code,
-    }),
-  });
-  const response = await request.json();
-
-  let data;
-
-  if (request.status === 401) {
-    throw new Response("Unauthorized", {
-      status: 401,
+    const request = await fetch(url, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${accessToken}`,
+      },
+      body: JSON.stringify({
+        code,
+      }),
     });
-  }
+    const response = await request.json();
 
-  if (validateResponseSuccess(response)) {
-    data = response as unknown as PostCheckCodeRestoreSuccess;
-  } else if (validateResponseError(response)) {
-    data = response as unknown as PostCheckCodeRestoreError;
-  } else {
-    throw new Response(
-      "Данные запроса postCheckCodeRestore не соответствуют схеме"
-    );
-  }
+    let data;
 
-  return data;
+    if (request.status === 401) {
+      throw new Response("Unauthorized", {
+        status: 401,
+      });
+    }
+
+    if (validateResponseSuccess(response)) {
+      data = response as unknown as PostCheckCodeRestoreSuccess;
+    } else if (validateResponseError(response)) {
+      data = response as unknown as PostCheckCodeRestoreError;
+    } else {
+      throw new Response(
+        "Данные запроса postCheckCodeRestore не соответствуют схеме"
+      );
+    }
+
+    return data;
+  } catch (error) {
+    if (error instanceof Error) {
+      throw new UnxpectedError(error.message);
+    } else {
+      throw new UnxpectedError("Unknown unexpected error");
+    }
+  }
 };
 
 // MOCKS

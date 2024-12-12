@@ -4,6 +4,7 @@ import addFormats from "ajv-formats";
 
 import getCompanyAndCertificatesInquiriesSuccess from "./getCompanyAndCertificatesInquiriesSuccess.schema.json";
 import { GetCompanyAndCertificatesInquiriesSuccess } from "./getCompanyAndCertificatesInquiriesSuccess.type";
+import { UnxpectedError } from "~/shared/unexpectedError/unexpectedError";
 
 const ajv = new Ajv();
 addFormats(ajv);
@@ -17,36 +18,44 @@ export const getCompanyAndCertificatesInquiriesKeys = [
 export const getCompanyAndCertificatesInquiries = async (
   accessToken: string
 ): Promise<GetCompanyAndCertificatesInquiriesSuccess> => {
-  const url = new URL(
-    import.meta.env.VITE_GET_COMPANY_AND_CERTIFICATES_INQUIRIES
-  );
-
-  const request = await fetch(url, {
-    method: "GET",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${accessToken}`,
-    },
-  });
-  const response = await request.json();
-
-  let data;
-
-  if (request.status === 401 || request.status === 403) {
-    throw new Response("Unauthorized", {
-      status: 401,
-    });
-  }
-
-  if (validateSuccess(response)) {
-    data = response as unknown as GetCompanyAndCertificatesInquiriesSuccess;
-  } else {
-    throw new Response(
-      `Данные запроса getCompanyAndCertificatesInquiries не валидны схеме`
+  try {
+    const url = new URL(
+      import.meta.env.VITE_GET_COMPANY_AND_CERTIFICATES_INQUIRIES
     );
-  }
 
-  return data;
+    const request = await fetch(url, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${accessToken}`,
+      },
+    });
+    const response = await request.json();
+
+    let data;
+
+    if (request.status === 401 || request.status === 403) {
+      throw new Response("Unauthorized", {
+        status: 401,
+      });
+    }
+
+    if (validateSuccess(response)) {
+      data = response as unknown as GetCompanyAndCertificatesInquiriesSuccess;
+    } else {
+      throw new Response(
+        `Данные запроса getCompanyAndCertificatesInquiries не валидны схеме`
+      );
+    }
+
+    return data;
+  } catch (error) {
+    if (error instanceof Error) {
+      throw new UnxpectedError(error.message);
+    } else {
+      throw new UnxpectedError("Unknown unexpected error");
+    }
+  }
 };
 
 // MOCKS

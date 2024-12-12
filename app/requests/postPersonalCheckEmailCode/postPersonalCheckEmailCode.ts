@@ -6,6 +6,7 @@ import responseError from "./postPersonalCheckEmailCodeError.schema.json";
 
 import { PostPersonalCheckEmailCodeSuccess } from "./postPersonalCheckEmailCodeSuccess.type";
 import { PostPersonalCheckEmailCodeError } from "./postPersonalCheckEmailCodeError.type";
+import { UnxpectedError } from "~/shared/unexpectedError/unexpectedError";
 
 const ajv = new Ajv();
 
@@ -16,41 +17,49 @@ export const postPersonalCheckEmailCodeKeys = ["postPersonalCheckEmailCode"];
 
 export const postPersonalCheckEmailCode = async (
   accessToken: string,
-  code: string,
+  code: string
 ) => {
-  const url = new URL(import.meta.env.VITE_PERSONAL_CHECK_EMAIL_CODE);
+  try {
+    const url = new URL(import.meta.env.VITE_PERSONAL_CHECK_EMAIL_CODE);
 
-  const request = await fetch(url, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${accessToken}`,
-    },
-    body: JSON.stringify({
-      code,
-    }),
-  });
-  const response = await request.json();
-
-  let data;
-
-  if (request.status === 401) {
-    throw new Response("Unauthorized", {
-      status: 401,
+    const request = await fetch(url, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${accessToken}`,
+      },
+      body: JSON.stringify({
+        code,
+      }),
     });
-  }
+    const response = await request.json();
 
-  if (validateResponseSuccess(response)) {
-    data = response as unknown as PostPersonalCheckEmailCodeSuccess;
-  } else if (validateResponseError(response)) {
-    data = response as unknown as PostPersonalCheckEmailCodeError;
-  } else {
-    throw new Response(
-      "Данные запроса postPersonalCheckEmailCode не соответствуют схеме",
-    );
-  }
+    let data;
 
-  return data;
+    if (request.status === 401) {
+      throw new Response("Unauthorized", {
+        status: 401,
+      });
+    }
+
+    if (validateResponseSuccess(response)) {
+      data = response as unknown as PostPersonalCheckEmailCodeSuccess;
+    } else if (validateResponseError(response)) {
+      data = response as unknown as PostPersonalCheckEmailCodeError;
+    } else {
+      throw new Response(
+        "Данные запроса postPersonalCheckEmailCode не соответствуют схеме"
+      );
+    }
+
+    return data;
+  } catch (error) {
+    if (error instanceof Error) {
+      throw new UnxpectedError(error.message);
+    } else {
+      throw new UnxpectedError("Unknown unexpected error");
+    }
+  }
 };
 
 // MOCKS
@@ -89,5 +98,5 @@ export const postPersonalCheckEmailCodeMockResponse = http.post(
     //   await delay(2000);
     //   return HttpResponse.json(mockResponseError);
     // }
-  },
+  }
 );

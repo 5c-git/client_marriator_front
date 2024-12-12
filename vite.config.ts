@@ -1,9 +1,10 @@
+import { sentryVitePlugin } from "@sentry/vite-plugin";
 import { defineConfig } from "vite";
 import path from "path";
 import tsconfigPaths from "vite-tsconfig-paths";
 import { reactRouter } from "@react-router/dev/vite";
 
-// PIGMENT MIGRATION v6.1.10 - WORKS BUT DOES NOT APPLY SX STYLES OR CUSTOM THEME
+// PIGMENT MIGRATION v6.2.0 - DOES NOT WORK
 // import { pigment } from "@pigment-css/vite-plugin";
 // import { createTheme } from "@mui/material";
 // import { pigmentTheme } from "./app/theme/themePigment";
@@ -23,11 +24,19 @@ export default defineConfig({
     // Bundle `problematic-dependency` into the server build
     noExternal: ["ymap3-components", /^@mui\//, /@pigment-css/],
   },
+
   plugins: [
-    reactRouter(),
     // pigment(pigmentConfig),
+    reactRouter(),
     tsconfigPaths(),
+
+    sentryVitePlugin({
+      org: "5corners",
+      project: "marriator-front",
+      telemetry: process.env.NODE_ENV !== "development" ? true : false,
+    }),
   ],
+
   resolve: {
     alias: {
       "@mui/x-date-pickers/AdapterDateFnsV3": path.resolve(
@@ -35,5 +44,9 @@ export default defineConfig({
         "node_modules/@mui/x-date-pickers/AdapterDateFnsV3/AdapterDateFnsV3.js"
       ),
     },
+  },
+
+  build: {
+    sourcemap: true,
   },
 });

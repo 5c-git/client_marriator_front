@@ -23,6 +23,8 @@
     "@pigment-css/react": "^0.0.28",
     "@react-router/node": "^7.0.1",
     "@react-router/serve": "^7.0.1",
+    "@sentry/react": "^8.43.0",
+    "@sentry/vite-plugin": "^2.22.7",
     "@tanstack/react-query": "^5.29.0",
     "@turf/turf": "^7.1.0",
     "ajv": "^8.13.0",
@@ -86,6 +88,5 @@
       "public",
       "public/client_marriator_front"
     ]
-  },
-  "packageManager": "pnpm@8.15.5+sha1.a58c038faac410c947dbdb93eb30994037d0fce2"
+  }
 }

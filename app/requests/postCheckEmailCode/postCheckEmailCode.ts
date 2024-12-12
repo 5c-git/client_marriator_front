@@ -6,6 +6,7 @@ import responseError from "./postCheckEmailCodeError.schema.json";
 
 import { PostCheckEmailCodeSuccess } from "./postCheckEmailCodeSuccess.type";
 import { PostCheckEmailCodeError } from "./postCheckEmailCodeError.type";
+import { UnxpectedError } from "~/shared/unexpectedError/unexpectedError";
 
 const ajv = new Ajv();
 
@@ -15,39 +16,47 @@ const validateResponseError = ajv.compile(responseError);
 export const postCheckEmailCodeKeys = ["postCheckEmailCode"];
 
 export const postCheckEmailCode = async (accessToken: string, code: string) => {
-  const url = new URL(import.meta.env.VITE_CHECK_EMAIL_CODE);
+  try {
+    const url = new URL(import.meta.env.VITE_CHECK_EMAIL_CODE);
 
-  const request = await fetch(url, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${accessToken}`,
-    },
-    body: JSON.stringify({
-      code,
-    }),
-  });
-  const response = await request.json();
-
-  let data;
-
-  if (request.status === 401) {
-    throw new Response("Unauthorized", {
-      status: 401,
+    const request = await fetch(url, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${accessToken}`,
+      },
+      body: JSON.stringify({
+        code,
+      }),
     });
-  }
+    const response = await request.json();
 
-  if (validateResponseSuccess(response)) {
-    data = response as unknown as PostCheckEmailCodeSuccess;
-  } else if (validateResponseError(response)) {
-    data = response as unknown as PostCheckEmailCodeError;
-  } else {
-    throw new Response(
-      "Данные запроса postCheckEmailCode не соответствуют схеме"
-    );
-  }
+    let data;
 
-  return data;
+    if (request.status === 401) {
+      throw new Response("Unauthorized", {
+        status: 401,
+      });
+    }
+
+    if (validateResponseSuccess(response)) {
+      data = response as unknown as PostCheckEmailCodeSuccess;
+    } else if (validateResponseError(response)) {
+      data = response as unknown as PostCheckEmailCodeError;
+    } else {
+      throw new Response(
+        "Данные запроса postCheckEmailCode не соответствуют схеме"
+      );
+    }
+
+    return data;
+  } catch (error) {
+    if (error instanceof Error) {
+      throw new UnxpectedError(error.message);
+    } else {
+      throw new UnxpectedError("Unknown unexpected error");
+    }
+  }
 };
 
 // MOCKS

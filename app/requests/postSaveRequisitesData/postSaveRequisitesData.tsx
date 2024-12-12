@@ -4,6 +4,7 @@ import Ajv from "ajv";
 import schemaSuccess from "./postSaveRequisitesDataSuccess.schema.json";
 
 import { PostSaveRequisitesDataSuccess } from "./postSaveRequisitesDataSuccess.type";
+import { UnxpectedError } from "~/shared/unexpectedError/unexpectedError";
 
 const ajv = new Ajv();
 
@@ -16,38 +17,46 @@ export const postSaveRequisitesData = async (
   formData: unknown,
   dataId: number
 ) => {
-  const url = new URL(import.meta.env.VITE_SAVE_REQUISITES_DATA);
+  try {
+    const url = new URL(import.meta.env.VITE_SAVE_REQUISITES_DATA);
 
-  const request = await fetch(url, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${accessToken}`,
-    },
-    body: JSON.stringify({
-      data: formData,
-      dataId,
-    }),
-  });
-  const response = await request.json();
-
-  let data;
-
-  if (request.status === 401) {
-    throw new Response("Unauthorized", {
-      status: 401,
+    const request = await fetch(url, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${accessToken}`,
+      },
+      body: JSON.stringify({
+        data: formData,
+        dataId,
+      }),
     });
-  }
+    const response = await request.json();
 
-  if (validateSuccess(response)) {
-    data = response as unknown as PostSaveRequisitesDataSuccess;
-  } else {
-    throw new Response(
-      `Данные запроса postSaveRequisitesData не валидны схеме`
-    );
-  }
+    let data;
 
-  return data;
+    if (request.status === 401) {
+      throw new Response("Unauthorized", {
+        status: 401,
+      });
+    }
+
+    if (validateSuccess(response)) {
+      data = response as unknown as PostSaveRequisitesDataSuccess;
+    } else {
+      throw new Response(
+        `Данные запроса postSaveRequisitesData не валидны схеме`
+      );
+    }
+
+    return data;
+  } catch (error) {
+    if (error instanceof Error) {
+      throw new UnxpectedError(error.message);
+    } else {
+      throw new UnxpectedError("Unknown unexpected error");
+    }
+  }
 };
 
 // MOCKS

@@ -3,6 +3,7 @@ import Ajv from "ajv";
 
 import postRequestInquiriesSuccess from "./postRequestInquiriesSuccess.schema.json";
 import { PostRequestInquiriesSuccess } from "./postRequestInquiriesSuccess.type";
+import { UnxpectedError } from "~/shared/unexpectedError/unexpectedError";
 
 const ajv = new Ajv();
 
@@ -15,36 +16,46 @@ export const postRequestInquiries = async (
   uuid: string,
   certificates: string
 ): Promise<PostRequestInquiriesSuccess> => {
-  const url = new URL(import.meta.env.VITE_REQUEST_INQUIRIES);
+  try {
+    const url = new URL(import.meta.env.VITE_REQUEST_INQUIRIES);
 
-  const request = await fetch(url, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${accessToken}`,
-    },
-    body: JSON.stringify({
-      uuid,
-      certificates,
-    }),
-  });
-  const response = await request.json();
-
-  let data;
-
-  if (request.status === 401 || request.status === 403) {
-    throw new Response("Unauthorized", {
-      status: 401,
+    const request = await fetch(url, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${accessToken}`,
+      },
+      body: JSON.stringify({
+        uuid,
+        certificates,
+      }),
     });
-  }
+    const response = await request.json();
 
-  if (validateSuccess(response)) {
-    data = response as unknown as PostRequestInquiriesSuccess;
-  } else {
-    throw new Response(`Данные запроса postRequestInquiries не валидны схеме`);
-  }
+    let data;
 
-  return data;
+    if (request.status === 401 || request.status === 403) {
+      throw new Response("Unauthorized", {
+        status: 401,
+      });
+    }
+
+    if (validateSuccess(response)) {
+      data = response as unknown as PostRequestInquiriesSuccess;
+    } else {
+      throw new Response(
+        `Данные запроса postRequestInquiries не валидны схеме`
+      );
+    }
+
+    return data;
+  } catch (error) {
+    if (error instanceof Error) {
+      throw new UnxpectedError(error.message);
+    } else {
+      throw new UnxpectedError("Unknown unexpected error");
+    }
+  }
 };
 
 // MOCKS

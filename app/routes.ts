@@ -7,7 +7,6 @@ import {
 
 export default [
   // index("routes/pigment/pigment.tsx"),
-
   layout("routes/rootErrorBoundry/rootErrorBoundry.tsx", [
     layout("routes/menuLayout/menuLayout.tsx", [
       route(":lang?/", "routes/home/home.tsx"),
@@ -81,6 +80,8 @@ export default [
         "routes/profile/documents/certificates/certificates.tsx"
       ),
     ]),
+
+    route(":lang?/offline", "routes/offline/offline.tsx"),
 
     //signin
     route(":lang?/signin/phone", "routes/signin/phone/phone.tsx"),

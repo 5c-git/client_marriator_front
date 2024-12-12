@@ -6,6 +6,7 @@ import responseError from "./postCheckCodeError.schema.json";
 
 import { PostCheckCodeSuccessSchema } from "./postCheckCodeSuccess.type";
 import { PostCheckCodeErrorSchema } from "./postCheckCodeError.type";
+import { UnxpectedError } from "~/shared/unexpectedError/unexpectedError";
 
 const ajv = new Ajv();
 
@@ -15,37 +16,45 @@ const validateResponseError = ajv.compile(responseError);
 export const postCheckCodeKeys = ["postCheckCode"];
 
 export const postCheckCode = async (phone: string, code: string) => {
-  const url = new URL(import.meta.env.VITE_CHECK_CODE);
+  try {
+    const url = new URL(import.meta.env.VITE_CHECK_CODE);
 
-  const request = await fetch(url, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({
-      phone,
-      code,
-    }),
-  });
-  const response = await request.json();
-
-  let data;
-
-  if (request.status === 401) {
-    throw new Response("Unauthorized", {
-      status: 401,
+    const request = await fetch(url, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        phone,
+        code,
+      }),
     });
-  }
+    const response = await request.json();
 
-  if (validateResponseSuccess(response)) {
-    data = response as unknown as PostCheckCodeSuccessSchema;
-  } else if (validateResponseError(response)) {
-    data = response as unknown as PostCheckCodeErrorSchema;
-  } else {
-    throw new Response("Данные запроса postCheckCode не соответствуют схеме");
-  }
+    let data;
 
-  return data;
+    if (request.status === 401) {
+      throw new Response("Unauthorized", {
+        status: 401,
+      });
+    }
+
+    if (validateResponseSuccess(response)) {
+      data = response as unknown as PostCheckCodeSuccessSchema;
+    } else if (validateResponseError(response)) {
+      data = response as unknown as PostCheckCodeErrorSchema;
+    } else {
+      throw new Response("Данные запроса postCheckCode не соответствуют схеме");
+    }
+
+    return data;
+  } catch (error) {
+    if (error instanceof Error) {
+      throw new UnxpectedError(error.message);
+    } else {
+      throw new UnxpectedError("Unknown unexpected error");
+    }
+  }
 };
 
 // MOCKS

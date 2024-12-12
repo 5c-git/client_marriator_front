@@ -3,6 +3,7 @@ import Ajv from "ajv";
 
 import getGeoDataSuccess from "./getGeoDataSuccess.schema.json";
 import { GetGeoDataSuccess } from "./getGeoDataSuccess.type";
+import { UnxpectedError } from "~/shared/unexpectedError/unexpectedError";
 
 const ajv = new Ajv();
 
@@ -13,32 +14,42 @@ export const getGeoDataKeys = ["getGeoData"];
 export const getGeoData = async (
   geoData: string
 ): Promise<GetGeoDataSuccess> => {
-  const url = new URL(
-    `https://geocode-maps.yandex.ru/1.x/?apikey=${import.meta.env.VITE_YANDEX_GEO_KEY}&geocode=${geoData}&results=1&format=json`
-  );
+  try {
+    const url = new URL(
+      `https://geocode-maps.yandex.ru/1.x/?apikey=${
+        import.meta.env.VITE_YANDEX_GEO_KEY
+      }&geocode=${geoData}&results=1&format=json`
+    );
 
-  const request = await fetch(url, {
-    method: "GET",
-    headers: {
-      "Content-Type": "application/json",
-    },
-  });
-  const response = await request.json();
+    const request = await fetch(url, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    const response = await request.json();
 
-  let data;
+    let data;
 
-  if (request.status > 299 && request.status < 200) {
-    throw new Response(`Указан неверный адрес или координаты`);
+    if (request.status > 299 && request.status < 200) {
+      throw new Response(`Указан неверный адрес или координаты`);
+    }
+
+    if (validateSuccess(response)) {
+      data = response as unknown as GetGeoDataSuccess;
+    } else {
+      console.log(validateSuccess.errors);
+      throw new Response(`Данные запроса getGeoData не валидны схеме`);
+    }
+
+    return data;
+  } catch (error) {
+    if (error instanceof Error) {
+      throw new UnxpectedError(error.message);
+    } else {
+      throw new UnxpectedError("Unknown unexpected error");
+    }
   }
-
-  if (validateSuccess(response)) {
-    data = response as unknown as GetGeoDataSuccess;
-  } else {
-    console.log(validateSuccess.errors);
-    throw new Response(`Данные запроса getGeoData не валидны схеме`);
-  }
-
-  return data;
 };
 
 // MOCKS

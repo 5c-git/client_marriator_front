@@ -24,6 +24,7 @@ import selectMultipleSchema from "../../shared/ui/StyledSelectMultiple/StyledSel
 
 import getUserFieldsSchema from "./getUserFields.schema.json";
 import { GetUserFieldsSuccess } from "./getUserFields.type";
+import { UnxpectedError } from "~/shared/unexpectedError/unexpectedError";
 
 const ajv = new Ajv();
 addFormats(ajv);
@@ -56,35 +57,43 @@ export const getUserFields = async (
   accessToken: string,
   section: string
 ): Promise<GetUserFieldsSuccess> => {
-  const url = new URL(import.meta.env.VITE_GET_USER_FIELDS);
+  try {
+    const url = new URL(import.meta.env.VITE_GET_USER_FIELDS);
 
-  url.searchParams.append("section", section);
+    url.searchParams.append("section", section);
 
-  const request = await fetch(url, {
-    method: "GET",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${accessToken}`,
-    },
-  });
-  const response = await request.json();
-
-  let data;
-
-  if (request.status === 401) {
-    throw new Response("Unauthorized", {
-      status: 401,
+    const request = await fetch(url, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${accessToken}`,
+      },
     });
-  }
+    const response = await request.json();
 
-  if (validateSuccess(response)) {
-    data = response as unknown as GetUserFieldsSuccess;
-  } else {
-    console.log(validateSuccess.errors);
-    throw new Response(`Данные запроса getUserFields не валидны схеме`);
-  }
+    let data;
 
-  return data;
+    if (request.status === 401) {
+      throw new Response("Unauthorized", {
+        status: 401,
+      });
+    }
+
+    if (validateSuccess(response)) {
+      data = response as unknown as GetUserFieldsSuccess;
+    } else {
+      console.log(validateSuccess.errors);
+      throw new Response(`Данные запроса getUserFields не валидны схеме`);
+    }
+
+    return data;
+  } catch (error) {
+    if (error instanceof Error) {
+      throw new UnxpectedError(error.message);
+    } else {
+      throw new UnxpectedError("Unknown unexpected error");
+    }
+  }
 };
 
 // MOCKS

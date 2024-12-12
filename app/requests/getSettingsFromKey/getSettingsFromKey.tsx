@@ -3,6 +3,7 @@ import Ajv from "ajv";
 
 import getSettingsFromKeySuccess from "./getSettingsFromKey.schema.json";
 import { GetSettingsFromKeySuccess } from "./getSettingsFromKey.type";
+import { UnxpectedError } from "~/shared/unexpectedError/unexpectedError";
 
 const ajv = new Ajv();
 
@@ -16,34 +17,42 @@ export const getSettingsFromKey = async (
   accessToken: string,
   setting: Setting
 ): Promise<GetSettingsFromKeySuccess> => {
-  const url = new URL(import.meta.env.VITE_SETTINGS_FROM_KEY);
+  try {
+    const url = new URL(import.meta.env.VITE_SETTINGS_FROM_KEY);
 
-  url.searchParams.append("key", setting);
+    url.searchParams.append("key", setting);
 
-  const request = await fetch(url, {
-    method: "GET",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${accessToken}`,
-    },
-  });
-  const response = await request.json();
-
-  let data;
-
-  if (request.status === 401 || request.status === 403) {
-    throw new Response("Unauthorized", {
-      status: 401,
+    const request = await fetch(url, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${accessToken}`,
+      },
     });
-  }
+    const response = await request.json();
 
-  if (validateSuccess(response)) {
-    data = response as unknown as GetSettingsFromKeySuccess;
-  } else {
-    throw new Response(`Данные запроса getSettingsFromKey не валидны схеме`);
-  }
+    let data;
 
-  return data;
+    if (request.status === 401 || request.status === 403) {
+      throw new Response("Unauthorized", {
+        status: 401,
+      });
+    }
+
+    if (validateSuccess(response)) {
+      data = response as unknown as GetSettingsFromKeySuccess;
+    } else {
+      throw new Response(`Данные запроса getSettingsFromKey не валидны схеме`);
+    }
+
+    return data;
+  } catch (error) {
+    if (error instanceof Error) {
+      throw new UnxpectedError(error.message);
+    } else {
+      throw new UnxpectedError("Unknown unexpected error");
+    }
+  }
 };
 
 // MOCKS

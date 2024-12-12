@@ -6,6 +6,7 @@ import responseError from "./postConfirmChangeUserPhoneError.schema.json";
 
 import { PostConfirmChangeUserPhoneSuccess } from "./postConfirmChangeUserPhoneSuccess.type";
 import { PostConfirmChangeUserPhoneError } from "./postConfirmChangeUserPhoneError.type";
+import { UnxpectedError } from "~/shared/unexpectedError/unexpectedError";
 
 const ajv = new Ajv();
 
@@ -17,42 +18,50 @@ export const postConfirmChangeUserPhoneKeys = ["postConfirmChangeUserPhone"];
 export const postConfirmChangeUserPhone = async (
   accessToken: string,
   phone: string,
-  code: string,
+  code: string
 ) => {
-  const url = new URL(import.meta.env.VITE_CONFIRM_CHANGE_USER_PHONE);
+  try {
+    const url = new URL(import.meta.env.VITE_CONFIRM_CHANGE_USER_PHONE);
 
-  const request = await fetch(url, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${accessToken}`,
-    },
-    body: JSON.stringify({
-      phone,
-      code,
-    }),
-  });
-  const response = await request.json();
-
-  let data;
-
-  if (request.status === 401) {
-    throw new Response("Unauthorized", {
-      status: 401,
+    const request = await fetch(url, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${accessToken}`,
+      },
+      body: JSON.stringify({
+        phone,
+        code,
+      }),
     });
-  }
+    const response = await request.json();
 
-  if (validateResponseSuccess(response)) {
-    data = response as unknown as PostConfirmChangeUserPhoneSuccess;
-  } else if (validateResponseError(response)) {
-    data = response as unknown as PostConfirmChangeUserPhoneError;
-  } else {
-    throw new Response(
-      "Данные запроса postConfirmChangeUserPhone не соответствуют схеме",
-    );
-  }
+    let data;
 
-  return data;
+    if (request.status === 401) {
+      throw new Response("Unauthorized", {
+        status: 401,
+      });
+    }
+
+    if (validateResponseSuccess(response)) {
+      data = response as unknown as PostConfirmChangeUserPhoneSuccess;
+    } else if (validateResponseError(response)) {
+      data = response as unknown as PostConfirmChangeUserPhoneError;
+    } else {
+      throw new Response(
+        "Данные запроса postConfirmChangeUserPhone не соответствуют схеме"
+      );
+    }
+
+    return data;
+  } catch (error) {
+    if (error instanceof Error) {
+      throw new UnxpectedError(error.message);
+    } else {
+      throw new UnxpectedError("Unknown unexpected error");
+    }
+  }
 };
 
 // MOCKS
@@ -91,5 +100,5 @@ export const postConfirmChangeUserPhoneMockResponse = http.post(
     //   await delay(2000);
     //   return HttpResponse.json(mockResponseError);
     // }
-  },
+  }
 );
