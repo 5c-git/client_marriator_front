@@ -16,5 +16,16 @@ export async function clientLoader({ request }: ClientActionFunctionArgs) {
 export default function Home() {
   // const { t } = useTranslation("home");
 
-  return <p>home</p>;
+  return (
+    <>
+      <p>home</p>
+      <button
+        onClick={() => {
+          throw new Error("тестовая ошибка для Sentry");
+        }}
+      >
+        Тестовая ошибка для Sentry
+      </button>
+    </>
+  );
 }

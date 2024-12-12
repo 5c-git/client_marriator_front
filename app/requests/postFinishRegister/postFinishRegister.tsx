@@ -4,6 +4,7 @@ import Ajv from "ajv";
 import schemaSuccess from "./postFinishRegisterSuccess.schema.json";
 
 import { PostFinishRegisterSuccess } from "./postFinishRegisterSuccess.type";
+import { UnxpectedError } from "~/shared/unexpectedError/unexpectedError";
 
 const ajv = new Ajv();
 
@@ -14,32 +15,40 @@ export const postFinishRegisterKeys = ["postFinishRegister"];
 export const postFinishRegister = async (
   accessToken: string
 ): Promise<PostFinishRegisterSuccess> => {
-  const url = new URL(import.meta.env.VITE_FINISH_REGISTER);
+  try {
+    const url = new URL(import.meta.env.VITE_FINISH_REGISTER);
 
-  const request = await fetch(url, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${accessToken}`,
-    },
-  });
-  const response = await request.json();
-
-  let data: PostFinishRegisterSuccess;
-
-  if (request.status === 401) {
-    throw new Response("Unauthorized", {
-      status: 401,
+    const request = await fetch(url, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${accessToken}`,
+      },
     });
-  }
+    const response = await request.json();
 
-  if (validateSuccess(response)) {
-    data = response as unknown as PostFinishRegisterSuccess;
-  } else {
-    throw new Response(`Данные запроса postFinishRegister не валидны схеме`);
-  }
+    let data: PostFinishRegisterSuccess;
 
-  return data;
+    if (request.status === 401) {
+      throw new Response("Unauthorized", {
+        status: 401,
+      });
+    }
+
+    if (validateSuccess(response)) {
+      data = response as unknown as PostFinishRegisterSuccess;
+    } else {
+      throw new Response(`Данные запроса postFinishRegister не валидны схеме`);
+    }
+
+    return data;
+  } catch (error) {
+    if (error instanceof Error) {
+      throw new UnxpectedError(error.message);
+    } else {
+      throw new UnxpectedError("Unknown unexpected error");
+    }
+  }
 };
 
 // MOCKS

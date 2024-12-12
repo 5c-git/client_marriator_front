@@ -105,7 +105,9 @@ export default function CreatePin() {
               setStep(1);
               reset();
             } else {
-              navigate(-1);
+              navigate(withLocale("/signin/createPin"), {
+                viewTransition: true,
+              });
             }
           }}
         />

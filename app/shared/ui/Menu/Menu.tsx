@@ -44,6 +44,7 @@ export const Menu = ({ styles, links }: MenuProps) => {
           >(function MenuItem(props, ref) {
             return (
               <NavLink
+                viewTransition
                 end={item.to === "/" ? true : false}
                 ref={ref}
                 to={withLocale(item.to)}

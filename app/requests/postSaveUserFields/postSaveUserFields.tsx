@@ -6,6 +6,7 @@ import schemaError from "./postSaveUserFieldsError.schema.json";
 
 import { PostSaveUserFieldsSuccess } from "./postSaveUserFieldsSuccess.type";
 import { PostSaveUserFieldsError } from "./postSaveUserFieldsError.type";
+import { UnxpectedError } from "~/shared/unexpectedError/unexpectedError";
 
 const ajv = new Ajv();
 
@@ -18,37 +19,45 @@ export const postSaveUserFields = async (
   accessToken: string,
   formData: unknown
 ) => {
-  const url = new URL(import.meta.env.VITE_SAVE_USER_FIELDS);
+  try {
+    const url = new URL(import.meta.env.VITE_SAVE_USER_FIELDS);
 
-  const request = await fetch(url, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${accessToken}`,
-    },
-    body: JSON.stringify({
-      formData,
-    }),
-  });
-  const response = await request.json();
-
-  let data;
-
-  if (request.status === 401) {
-    throw new Response("Unauthorized", {
-      status: 401,
+    const request = await fetch(url, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${accessToken}`,
+      },
+      body: JSON.stringify({
+        formData,
+      }),
     });
-  }
+    const response = await request.json();
 
-  if (validateSuccess(response)) {
-    data = response as unknown as PostSaveUserFieldsSuccess;
-  } else if (validateError(response)) {
-    data = response as unknown as PostSaveUserFieldsError;
-  } else {
-    throw new Response(`Данные запроса postSaveUserFields не валидны схеме`);
-  }
+    let data;
 
-  return data;
+    if (request.status === 401) {
+      throw new Response("Unauthorized", {
+        status: 401,
+      });
+    }
+
+    if (validateSuccess(response)) {
+      data = response as unknown as PostSaveUserFieldsSuccess;
+    } else if (validateError(response)) {
+      data = response as unknown as PostSaveUserFieldsError;
+    } else {
+      throw new Response(`Данные запроса postSaveUserFields не валидны схеме`);
+    }
+
+    return data;
+  } catch (error) {
+    if (error instanceof Error) {
+      throw new UnxpectedError(error.message);
+    } else {
+      throw new UnxpectedError("Unknown unexpected error");
+    }
+  }
 };
 
 // MOCKS

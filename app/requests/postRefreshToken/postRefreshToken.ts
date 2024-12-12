@@ -7,6 +7,7 @@ import responseError from "./postRefreshTokenError.schema.json";
 
 import { PostRefreshTokenSuccessSchema } from "./postRefreshTokenSuccess.type";
 import { PostRefreshTokenErrorSchema } from "./postRefreshTokenError.type";
+import { UnxpectedError } from "~/shared/unexpectedError/unexpectedError";
 
 const ajv = new Ajv();
 
@@ -16,32 +17,40 @@ const validateResponseError = ajv.compile(responseError);
 export const postRefreshTokenKeys = ["postRefreshToken"];
 
 export const postRefreshToken = async (refreshToken: string) => {
-  const url = new URL(import.meta.env.VITE_REFRESH_TOKEN);
+  try {
+    const url = new URL(import.meta.env.VITE_REFRESH_TOKEN);
 
-  const request = await fetch(url, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({
-      refreshToken,
-    }),
-  });
-  const response = await request.json();
+    const request = await fetch(url, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        refreshToken,
+      }),
+    });
+    const response = await request.json();
 
-  let data;
+    let data;
 
-  if (validateResponseSuccess(response)) {
-    data = response as unknown as PostRefreshTokenSuccessSchema;
-  } else if (validateResponseError(response)) {
-    data = response as unknown as PostRefreshTokenErrorSchema;
-  } else {
-    throw new Response(
-      "Данные запроса postRefreshToken не соответствуют схеме"
-    );
+    if (validateResponseSuccess(response)) {
+      data = response as unknown as PostRefreshTokenSuccessSchema;
+    } else if (validateResponseError(response)) {
+      data = response as unknown as PostRefreshTokenErrorSchema;
+    } else {
+      throw new Response(
+        "Данные запроса postRefreshToken не соответствуют схеме"
+      );
+    }
+
+    return data;
+  } catch (error) {
+    if (error instanceof Error) {
+      throw new UnxpectedError(error.message);
+    } else {
+      throw new UnxpectedError("Unknown unexpected error");
+    }
   }
-
-  return data;
 };
 
 // MOCKS

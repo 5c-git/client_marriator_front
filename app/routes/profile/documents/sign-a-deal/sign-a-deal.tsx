@@ -86,7 +86,9 @@ export default function SignADeal({ loaderData }: Route.ComponentProps) {
             bold: false,
           }}
           backAction={() => {
-            navigate(withLocale("/profile/documents"));
+            navigate(withLocale("/profile/documents"), {
+              viewTransition: true,
+            });
           }}
         />
 

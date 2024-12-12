@@ -4,6 +4,7 @@ import addFormats from "ajv-formats";
 
 import getUserInfoSuccess from "./getUserInfo.schema.json";
 import { GetUserInfoSuccess } from "./getUserInfo.type";
+import { UnxpectedError } from "~/shared/unexpectedError/unexpectedError";
 
 const ajv = new Ajv();
 addFormats(ajv);
@@ -15,33 +16,41 @@ export const getUserInfoKeys = ["getUserInfo"];
 export const getUserInfo = async (
   accessToken: string
 ): Promise<GetUserInfoSuccess> => {
-  const url = new URL(import.meta.env.VITE_GET_USER_INFO);
+  try {
+    const url = new URL(import.meta.env.VITE_GET_USER_INFO);
 
-  const request = await fetch(url, {
-    method: "GET",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${accessToken}`,
-    },
-  });
-  const response = await request.json();
-
-  let data;
-
-  if (request.status === 401 || request.status === 403) {
-    throw new Response("Unauthorized", {
-      status: 401,
+    const request = await fetch(url, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${accessToken}`,
+      },
     });
-  }
+    const response = await request.json();
 
-  if (validateSuccess(response)) {
-    data = response as unknown as GetUserInfoSuccess;
-  } else {
-    console.log(validateSuccess.errors);
-    throw new Response(`Данные запроса getUserInfo не валидны схеме`);
-  }
+    let data;
 
-  return data;
+    if (request.status === 401 || request.status === 403) {
+      throw new Response("Unauthorized", {
+        status: 401,
+      });
+    }
+
+    if (validateSuccess(response)) {
+      data = response as unknown as GetUserInfoSuccess;
+    } else {
+      console.log(validateSuccess.errors);
+      throw new Response(`Данные запроса getUserInfo не валидны схеме`);
+    }
+
+    return data;
+  } catch (error) {
+    if (error instanceof Error) {
+      throw new UnxpectedError(error.message);
+    } else {
+      throw new UnxpectedError("Unknown unexpected error");
+    }
+  }
 };
 
 // MOCKS

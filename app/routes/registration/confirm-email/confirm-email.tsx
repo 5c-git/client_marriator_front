@@ -142,7 +142,9 @@ export default function СonfirmEmail({ loaderData }: Route.ComponentProps) {
             bold: false,
           }}
           backAction={() => {
-            navigate(-1);
+            navigate(withLocale("/registration/step4"), {
+              viewTransition: true,
+            });
           }}
         />
 

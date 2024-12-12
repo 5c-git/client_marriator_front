@@ -4,6 +4,7 @@ import addFormats from "ajv-formats";
 
 import getDocumentInquiriesSuccess from "./getDocumentInquiriesSuccess.schema.json";
 import { GetDocumentInquiriesSuccess } from "./getDocumentInquiriesSuccess.type";
+import { UnxpectedError } from "~/shared/unexpectedError/unexpectedError";
 
 const ajv = new Ajv();
 addFormats(ajv);
@@ -15,32 +16,42 @@ export const getDocumentInquiriesKeys = ["getDocumentInquiries"];
 export const getDocumentInquiries = async (
   accessToken: string
 ): Promise<GetDocumentInquiriesSuccess> => {
-  const url = new URL(import.meta.env.VITE_GET_DOCUMENTS_INQUIRIES);
+  try {
+    const url = new URL(import.meta.env.VITE_GET_DOCUMENTS_INQUIRIES);
 
-  const request = await fetch(url, {
-    method: "GET",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${accessToken}`,
-    },
-  });
-  const response = await request.json();
-
-  let data;
-
-  if (request.status === 401 || request.status === 403) {
-    throw new Response("Unauthorized", {
-      status: 401,
+    const request = await fetch(url, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${accessToken}`,
+      },
     });
-  }
+    const response = await request.json();
 
-  if (validateSuccess(response)) {
-    data = response as unknown as GetDocumentInquiriesSuccess;
-  } else {
-    throw new Response(`Данные запроса getDocumentInquiries не валидны схеме`);
-  }
+    let data;
 
-  return data;
+    if (request.status === 401 || request.status === 403) {
+      throw new Response("Unauthorized", {
+        status: 401,
+      });
+    }
+
+    if (validateSuccess(response)) {
+      data = response as unknown as GetDocumentInquiriesSuccess;
+    } else {
+      throw new Response(
+        `Данные запроса getDocumentInquiries не валидны схеме`
+      );
+    }
+
+    return data;
+  } catch (error) {
+    if (error instanceof Error) {
+      throw new UnxpectedError(error.message);
+    } else {
+      throw new UnxpectedError("Unknown unexpected error");
+    }
+  }
 };
 
 // MOCKS

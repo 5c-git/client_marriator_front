@@ -3,6 +3,7 @@ import Ajv from "ajv";
 
 import postSetMapFieldSuccess from "./postSetMapFieldSuccess.schema.json";
 import { PostSetMapFieldSuccess } from "./postSetMapFieldSuccess.type";
+import { UnxpectedError } from "~/shared/unexpectedError/unexpectedError";
 
 const ajv = new Ajv();
 
@@ -16,37 +17,45 @@ export const postSetMapField = async (
   coordinates: string,
   mapRadius: string | null
 ): Promise<PostSetMapFieldSuccess> => {
-  const url = new URL(import.meta.env.VITE_POST_MAP_FIELD);
+  try {
+    const url = new URL(import.meta.env.VITE_POST_MAP_FIELD);
 
-  const request = await fetch(url, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${accessToken}`,
-    },
-    body: JSON.stringify({
-      mapAddress,
-      coordinates,
-      mapRadius,
-    }),
-  });
-  const response = await request.json();
-
-  let data;
-
-  if (request.status === 401 || request.status === 403) {
-    throw new Response("Unauthorized", {
-      status: 401,
+    const request = await fetch(url, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${accessToken}`,
+      },
+      body: JSON.stringify({
+        mapAddress,
+        coordinates,
+        mapRadius,
+      }),
     });
-  }
+    const response = await request.json();
 
-  if (validateSuccess(response)) {
-    data = response as unknown as PostSetMapFieldSuccess;
-  } else {
-    throw new Response(`Данные запроса postSetMapField не валидны схеме`);
-  }
+    let data;
 
-  return data;
+    if (request.status === 401 || request.status === 403) {
+      throw new Response("Unauthorized", {
+        status: 401,
+      });
+    }
+
+    if (validateSuccess(response)) {
+      data = response as unknown as PostSetMapFieldSuccess;
+    } else {
+      throw new Response(`Данные запроса postSetMapField не валидны схеме`);
+    }
+
+    return data;
+  } catch (error) {
+    if (error instanceof Error) {
+      throw new UnxpectedError(error.message);
+    } else {
+      throw new UnxpectedError("Unknown unexpected error");
+    }
+  }
 };
 
 // MOCKS

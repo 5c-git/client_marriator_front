@@ -4,6 +4,7 @@ import Ajv from "ajv";
 
 import getStaticUserInfoSuccess from "./getStaticUserInfo.schema.json";
 import { GetStaticUserInfoSuccess } from "./getStaticUserInfo.type";
+import { UnxpectedError } from "~/shared/unexpectedError/unexpectedError";
 
 const ajv = new Ajv();
 // addFormats(ajv);
@@ -15,32 +16,40 @@ export const getStaticUserInfoKeys = ["getStaticUserInfo"];
 export const getStaticUserInfo = async (
   accessToken: string
 ): Promise<GetStaticUserInfoSuccess> => {
-  const url = new URL(import.meta.env.VITE_GET_STATIC_USER_INFO);
+  try {
+    const url = new URL(import.meta.env.VITE_GET_STATIC_USER_INFO);
 
-  const request = await fetch(url, {
-    method: "GET",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${accessToken}`,
-    },
-  });
-  const response = await request.json();
-
-  let data;
-
-  if (request.status === 401 || request.status === 403) {
-    throw new Response("Unauthorized", {
-      status: 401,
+    const request = await fetch(url, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${accessToken}`,
+      },
     });
-  }
+    const response = await request.json();
 
-  if (validateSuccess(response)) {
-    data = response as unknown as GetStaticUserInfoSuccess;
-  } else {
-    throw new Response(`Данные запроса getStaticUserInfo не валидны схеме`);
-  }
+    let data;
 
-  return data;
+    if (request.status === 401 || request.status === 403) {
+      throw new Response("Unauthorized", {
+        status: 401,
+      });
+    }
+
+    if (validateSuccess(response)) {
+      data = response as unknown as GetStaticUserInfoSuccess;
+    } else {
+      throw new Response(`Данные запроса getStaticUserInfo не валидны схеме`);
+    }
+
+    return data;
+  } catch (error) {
+    if (error instanceof Error) {
+      throw new UnxpectedError(error.message);
+    } else {
+      throw new UnxpectedError("Unknown unexpected error");
+    }
+  }
 };
 
 // MOCKS

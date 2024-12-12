@@ -3,6 +3,7 @@ import Ajv from "ajv";
 
 import getBikSuccess from "./getBikSuccess.schema.json";
 import { GetBikSuccess } from "./gitBikSuccess.type";
+import { UnxpectedError } from "~/shared/unexpectedError/unexpectedError";
 
 const ajv = new Ajv();
 
@@ -11,32 +12,40 @@ const validateSuccess = ajv.compile(getBikSuccess);
 export const getBikKeys = ["getBik"];
 
 export const getBik = async (accessToken: string): Promise<GetBikSuccess> => {
-  const url = new URL(import.meta.env.VITE_GET_BIK);
+  try {
+    const url = new URL(import.meta.env.VITE_GET_BIK);
 
-  const request = await fetch(url, {
-    method: "GET",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${accessToken}`,
-    },
-  });
-  const response = await request.json();
-
-  let data;
-
-  if (request.status === 401 || request.status === 403) {
-    throw new Response("Unauthorized", {
-      status: 401,
+    const request = await fetch(url, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${accessToken}`,
+      },
     });
-  }
+    const response = await request.json();
 
-  if (validateSuccess(response)) {
-    data = response as unknown as GetBikSuccess;
-  } else {
-    throw new Response(`Данные запроса getBik не валидны схеме`);
-  }
+    let data;
 
-  return data;
+    if (request.status === 401 || request.status === 403) {
+      throw new Response("Unauthorized", {
+        status: 401,
+      });
+    }
+
+    if (validateSuccess(response)) {
+      data = response as unknown as GetBikSuccess;
+    } else {
+      throw new Response(`Данные запроса getBik не валидны схеме`);
+    }
+
+    return data;
+  } catch (error) {
+    if (error instanceof Error) {
+      throw new UnxpectedError(error.message);
+    } else {
+      throw new UnxpectedError("Unknown unexpected error");
+    }
+  }
 };
 
 // MOCKS

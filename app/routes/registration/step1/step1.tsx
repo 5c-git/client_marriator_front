@@ -208,7 +208,9 @@ export default function Step1({ loaderData }: Route.ComponentProps) {
                 trigger();
                 handleSubmit(() => {
                   if (loaderData.formStatus === "allowedNewStep") {
-                    navigate(withLocale("/registration/step2"));
+                    navigate(withLocale("/registration/step2"), {
+                      viewTransition: true,
+                    });
                   }
                 })();
               }}

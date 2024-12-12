@@ -150,7 +150,9 @@ export default function СonfirmRestorePin({
             bold: false,
           }}
           backAction={() => {
-            navigate(-1);
+            navigate(withLocale("/signin/pin"), {
+              viewTransition: true,
+            });
           }}
         />
 

@@ -153,7 +153,9 @@ export default function СonfirmPersonalPhone({
             bold: false,
           }}
           backAction={() => {
-            navigate(-1);
+            navigate(withLocale("/profile/my-profile/profile-meta"), {
+              viewTransition: true,
+            });
           }}
         />
 

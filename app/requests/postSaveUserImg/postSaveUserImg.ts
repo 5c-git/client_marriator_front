@@ -6,6 +6,7 @@ import responseError from "./postSaveUserImgError.schema.json";
 
 import { PostSaveUserImgSuccess } from "./postSaveUserImgSuccess.type";
 import { PostSaveUserImgError } from "./postSaveUserImgError.type";
+import { UnxpectedError } from "~/shared/unexpectedError/unexpectedError";
 
 const ajv = new Ajv();
 
@@ -21,33 +22,43 @@ export const postSendUserImg = async (
   onSuccess: (data: PostSaveUserImgSuccess) => void,
   onError: (error: string) => void
 ) => {
-  const url = new URL(urlString);
+  try {
+    const url = new URL(urlString);
 
-  const request = await fetch(url, {
-    method: "POST",
-    headers: {
-      Authorization: `Bearer ${accessToken}`,
-    },
-    body: body,
-  });
-
-  if (request.status === 401) {
-    throw new Response("Unauthorized", {
-      status: 401,
+    const request = await fetch(url, {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+      body: body,
     });
-  }
 
-  const response = await request.json();
+    if (request.status === 401) {
+      throw new Response("Unauthorized", {
+        status: 401,
+      });
+    }
 
-  if (validateResponseSuccess(response)) {
-    const data = response as unknown as PostSaveUserImgSuccess;
+    const response = await request.json();
 
-    onSuccess(data);
-  } else if (validateResponseError(response)) {
-    const error = response as unknown as PostSaveUserImgError;
+    if (validateResponseSuccess(response)) {
+      const data = response as unknown as PostSaveUserImgSuccess;
 
-    onError(error.error);
-  } else {
-    throw new Response("Данные запроса postSendUserImg не соответствуют схеме");
+      onSuccess(data);
+    } else if (validateResponseError(response)) {
+      const error = response as unknown as PostSaveUserImgError;
+
+      onError(error.error);
+    } else {
+      throw new Response(
+        "Данные запроса postSendUserImg не соответствуют схеме"
+      );
+    }
+  } catch (error) {
+    if (error instanceof Error) {
+      throw new UnxpectedError(error.message);
+    } else {
+      throw new UnxpectedError("Unknown unexpected error");
+    }
   }
 };

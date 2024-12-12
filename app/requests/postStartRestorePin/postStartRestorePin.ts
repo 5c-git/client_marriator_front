@@ -6,6 +6,7 @@ import responseError from "./postStartRestorePinError.schema.json";
 
 import { PostStartRestorePinSuccess } from "./postStartRestorePinSuccess.type";
 import { PostStartRestorePinError } from "./postStartRestorePinError.type";
+import { UnxpectedError } from "~/shared/unexpectedError/unexpectedError";
 
 const ajv = new Ajv();
 
@@ -15,40 +16,48 @@ const validateResponseError = ajv.compile(responseError);
 export const postStartRestorePinKeys = ["postStartRestorePin"];
 
 export const postStartRestorePin = async (accessToken: string) => {
-  const url = new URL(import.meta.env.VITE_START_RESTORE_PIN);
+  try {
+    const url = new URL(import.meta.env.VITE_START_RESTORE_PIN);
 
-  const request = await fetch(url, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${accessToken}`,
-    },
-    // body: JSON.stringify({
-    //   phone,
-    //   code,
-    // }),
-  });
-  const response = await request.json();
-
-  let data;
-
-  if (request.status === 401) {
-    throw new Response("Unauthorized", {
-      status: 401,
+    const request = await fetch(url, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${accessToken}`,
+      },
+      // body: JSON.stringify({
+      //   phone,
+      //   code,
+      // }),
     });
-  }
+    const response = await request.json();
 
-  if (validateResponseSuccess(response)) {
-    data = response as unknown as PostStartRestorePinSuccess;
-  } else if (validateResponseError(response)) {
-    data = response as unknown as PostStartRestorePinError;
-  } else {
-    throw new Response(
-      "Данные запроса postStartRestorePin не соответствуют схеме"
-    );
-  }
+    let data;
 
-  return data;
+    if (request.status === 401) {
+      throw new Response("Unauthorized", {
+        status: 401,
+      });
+    }
+
+    if (validateResponseSuccess(response)) {
+      data = response as unknown as PostStartRestorePinSuccess;
+    } else if (validateResponseError(response)) {
+      data = response as unknown as PostStartRestorePinError;
+    } else {
+      throw new Response(
+        "Данные запроса postStartRestorePin не соответствуют схеме"
+      );
+    }
+
+    return data;
+  } catch (error) {
+    if (error instanceof Error) {
+      throw new UnxpectedError(error.message);
+    } else {
+      throw new UnxpectedError("Unknown unexpected error");
+    }
+  }
 };
 
 // MOCKS

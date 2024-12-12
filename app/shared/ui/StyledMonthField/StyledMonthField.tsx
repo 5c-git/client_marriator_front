@@ -116,8 +116,8 @@ export const StyledMonthField = forwardRef(
                     borderColor: props.error
                       ? theme.palette["Red"]
                       : props.status === "warning"
-                        ? theme.palette["Yellow"]
-                        : "transparent",
+                      ? theme.palette["Yellow"]
+                      : "transparent",
                   },
 
                   "& .MuiInputLabel-root": {
@@ -157,6 +157,7 @@ export const StyledMonthField = forwardRef(
                 <>
                   {props.helperInfo.link.type === "internal" ? (
                     <Link
+                      viewTransition
                       style={{
                         textDecorationLine: "underline",
                         color: theme.palette["Corp_1"],

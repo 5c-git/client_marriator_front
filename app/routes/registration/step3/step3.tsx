@@ -102,7 +102,9 @@ export default function Step3({ loaderData }: Route.ComponentProps) {
           }}
           label={t("step")}
           backAction={() => {
-            navigate(-1);
+            navigate(withLocale("/registration/step2"), {
+              viewTransition: true,
+            });
           }}
         />
 
@@ -164,7 +166,9 @@ export default function Step3({ loaderData }: Route.ComponentProps) {
                 trigger();
                 handleSubmit(() => {
                   if (loaderData.formStatus === "allowedNewStep") {
-                    navigate(withLocale("/registration/step4"));
+                    navigate(withLocale("/registration/step4"), {
+                      viewTransition: true,
+                    });
                   }
                 })();
               }}

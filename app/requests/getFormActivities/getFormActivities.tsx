@@ -24,6 +24,7 @@ import selectMultipleSchema from "../../shared/ui/StyledSelectMultiple/StyledSel
 
 import getFormSchema from "./getFormActivities.schema.json";
 import { GetFormActivities } from "./getFormActivities.type";
+import { UnxpectedError } from "~/shared/unexpectedError/unexpectedError";
 
 const ajv = new Ajv();
 addFormats(ajv);
@@ -56,36 +57,44 @@ export const getFormActivities = async (
   accessToken: string,
   step: number
 ): Promise<GetFormActivities> => {
-  const url = new URL(import.meta.env.VITE_GET_FORM_ACTIVITIES);
+  try {
+    const url = new URL(import.meta.env.VITE_GET_FORM_ACTIVITIES);
 
-  url.searchParams.append("step", step.toString());
+    url.searchParams.append("step", step.toString());
 
-  const request = await fetch(url, {
-    method: "GET",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${accessToken}`,
-    },
-  });
-  const response = await request.json();
-
-  let data;
-
-  if (request.status === 401) {
-    throw new Response("Unauthorized", {
-      status: 401,
+    const request = await fetch(url, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${accessToken}`,
+      },
     });
-  }
+    const response = await request.json();
 
-  if (validateSuccess(response)) {
-    data = response as unknown as GetFormActivities;
-  } else {
-    throw new Response(
-      `Данные запроса getFormActitvities, шаг - ${step} не валидны схеме`
-    );
-  }
+    let data;
 
-  return data;
+    if (request.status === 401) {
+      throw new Response("Unauthorized", {
+        status: 401,
+      });
+    }
+
+    if (validateSuccess(response)) {
+      data = response as unknown as GetFormActivities;
+    } else {
+      throw new Response(
+        `Данные запроса getFormActitvities, шаг - ${step} не валидны схеме`
+      );
+    }
+
+    return data;
+  } catch (error) {
+    if (error instanceof Error) {
+      throw new UnxpectedError(error.message);
+    } else {
+      throw new UnxpectedError("Unknown unexpected error");
+    }
+  }
 };
 
 // MOCKS

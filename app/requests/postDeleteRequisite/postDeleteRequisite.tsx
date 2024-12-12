@@ -3,6 +3,7 @@ import Ajv from "ajv";
 
 import schemaSuccess from "./postDeleteRequisiteSuccess.schema.json";
 import { PostDeleteRequisiteSuccess } from "./postDeleteRequisiteSuccess.type";
+import { UnxpectedError } from "~/shared/unexpectedError/unexpectedError";
 
 const ajv = new Ajv();
 
@@ -14,35 +15,43 @@ export const postDeleteRequisite = async (
   accessToken: string,
   dataId: number
 ) => {
-  const url = new URL(import.meta.env.VITE_DELETE_REQUISITE);
+  try {
+    const url = new URL(import.meta.env.VITE_DELETE_REQUISITE);
 
-  const request = await fetch(url, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${accessToken}`,
-    },
-    body: JSON.stringify({
-      dataId,
-    }),
-  });
-  const response = await request.json();
-
-  let data;
-
-  if (request.status === 401) {
-    throw new Response("Unauthorized", {
-      status: 401,
+    const request = await fetch(url, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${accessToken}`,
+      },
+      body: JSON.stringify({
+        dataId,
+      }),
     });
-  }
+    const response = await request.json();
 
-  if (validateSuccess(response)) {
-    data = response as unknown as PostDeleteRequisiteSuccess;
-  } else {
-    throw new Response(`Данные запроса postDeleteRequisite не валидны схеме`);
-  }
+    let data;
 
-  return data;
+    if (request.status === 401) {
+      throw new Response("Unauthorized", {
+        status: 401,
+      });
+    }
+
+    if (validateSuccess(response)) {
+      data = response as unknown as PostDeleteRequisiteSuccess;
+    } else {
+      throw new Response(`Данные запроса postDeleteRequisite не валидны схеме`);
+    }
+
+    return data;
+  } catch (error) {
+    if (error instanceof Error) {
+      throw new UnxpectedError(error.message);
+    } else {
+      throw new UnxpectedError("Unknown unexpected error");
+    }
+  }
 };
 
 // MOCKS

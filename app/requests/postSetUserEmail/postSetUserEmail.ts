@@ -6,6 +6,7 @@ import responseError from "./postSetUserEmailError.schema.json";
 
 import { PostSetUserEmailSuccessSchema } from "./postSetUserEmail.type";
 import { PostSetUserEmailErrorSchema } from "./postSetUserEmailError.type";
+import { UnxpectedError } from "~/shared/unexpectedError/unexpectedError";
 
 const ajv = new Ajv();
 
@@ -15,39 +16,47 @@ const validateResponseError = ajv.compile(responseError);
 export const postSetUserEmailKeys = ["postSetUserEmail"];
 
 export const postSetUserEmail = async (accessToken: string, email: string) => {
-  const url = new URL(import.meta.env.VITE_SET_USER_EMAIL);
+  try {
+    const url = new URL(import.meta.env.VITE_SET_USER_EMAIL);
 
-  const request = await fetch(url, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${accessToken}`,
-    },
-    body: JSON.stringify({
-      email,
-    }),
-  });
-  const response = await request.json();
-
-  let data;
-
-  if (request.status === 401) {
-    throw new Response("Unauthorized", {
-      status: 401,
+    const request = await fetch(url, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${accessToken}`,
+      },
+      body: JSON.stringify({
+        email,
+      }),
     });
-  }
+    const response = await request.json();
 
-  if (validateResponseSuccess(response)) {
-    data = response as unknown as PostSetUserEmailSuccessSchema;
-  } else if (validateResponseError(response)) {
-    data = response as unknown as PostSetUserEmailErrorSchema;
-  } else {
-    throw new Response(
-      "Данные запроса postSetUserEmail не соответствуют схеме"
-    );
-  }
+    let data;
 
-  return data;
+    if (request.status === 401) {
+      throw new Response("Unauthorized", {
+        status: 401,
+      });
+    }
+
+    if (validateResponseSuccess(response)) {
+      data = response as unknown as PostSetUserEmailSuccessSchema;
+    } else if (validateResponseError(response)) {
+      data = response as unknown as PostSetUserEmailErrorSchema;
+    } else {
+      throw new Response(
+        "Данные запроса postSetUserEmail не соответствуют схеме"
+      );
+    }
+
+    return data;
+  } catch (error) {
+    if (error instanceof Error) {
+      throw new UnxpectedError(error.message);
+    } else {
+      throw new UnxpectedError("Unknown unexpected error");
+    }
+  }
 };
 
 // MOCKS

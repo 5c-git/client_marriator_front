@@ -3,6 +3,7 @@ import Ajv from "ajv";
 
 import getMapFieldSuccess from "./getMapFieldSuccess.schema.json";
 import { GetMapFieldSuccess } from "./getMapFieldSuccess.type";
+import { UnxpectedError } from "~/shared/unexpectedError/unexpectedError";
 
 const ajv = new Ajv();
 
@@ -13,32 +14,40 @@ export const getMapFieldKeys = ["getMapField"];
 export const getMapField = async (
   accessToken: string
 ): Promise<GetMapFieldSuccess> => {
-  const url = new URL(import.meta.env.VITE_GET_MAP_FIELD);
+  try {
+    const url = new URL(import.meta.env.VITE_GET_MAP_FIELD);
 
-  const request = await fetch(url, {
-    method: "GET",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${accessToken}`,
-    },
-  });
-  const response = await request.json();
-
-  let data;
-
-  if (request.status === 401 || request.status === 403) {
-    throw new Response("Unauthorized", {
-      status: 401,
+    const request = await fetch(url, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${accessToken}`,
+      },
     });
-  }
+    const response = await request.json();
 
-  if (validateSuccess(response)) {
-    data = response as unknown as GetMapFieldSuccess;
-  } else {
-    throw new Response(`Данные запроса getMapField не валидны схеме`);
-  }
+    let data;
 
-  return data;
+    if (request.status === 401 || request.status === 403) {
+      throw new Response("Unauthorized", {
+        status: 401,
+      });
+    }
+
+    if (validateSuccess(response)) {
+      data = response as unknown as GetMapFieldSuccess;
+    } else {
+      throw new Response(`Данные запроса getMapField не валидны схеме`);
+    }
+
+    return data;
+  } catch (error) {
+    if (error instanceof Error) {
+      throw new UnxpectedError(error.message);
+    } else {
+      throw new UnxpectedError("Unknown unexpected error");
+    }
+  }
 };
 
 // MOCKS

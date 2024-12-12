@@ -178,7 +178,9 @@ export default function ProfileMeta({ loaderData }: Route.ComponentProps) {
             bold: false,
           }}
           backAction={() => {
-            navigate(withLocale("/profile/my-profile"));
+            navigate(withLocale("/profile/my-profile"), {
+              viewTransition: true,
+            });
           }}
         />
 

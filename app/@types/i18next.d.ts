@@ -1,6 +1,7 @@
 //meta
 import constructorFields from "../../public/locales/ru/constructorFields.json";
 import rootErrorBoundry from "../../public/locales/ru/rootErrorBoundry.json";
+import offline from "../../public/locales/ru/offline.json";
 //meta
 
 //auth
@@ -58,6 +59,7 @@ declare module "i18next" {
       //meta
       constructorFields: typeof constructorFields;
       rootErrorBoundry: typeof rootErrorBoundry;
+      offline: typeof offline;
       //meta
 
       //auth
