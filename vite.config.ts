@@ -1,4 +1,3 @@
-import { sentryVitePlugin } from "@sentry/vite-plugin";
 import { defineConfig } from "vite";
 import path from "path";
 import tsconfigPaths from "vite-tsconfig-paths";
@@ -29,12 +28,6 @@ export default defineConfig({
     // pigment(pigmentConfig),
     reactRouter(),
     tsconfigPaths(),
-
-    sentryVitePlugin({
-      org: "5corners",
-      project: "marriator-front",
-      telemetry: process.env.NODE_ENV !== "development" ? true : false,
-    }),
   ],
 
   resolve: {

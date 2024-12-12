@@ -13,7 +13,6 @@ import logoTurnOff from "./logo-turnoff.svg";
 import { UnxpectedError } from "~/shared/unexpectedError/unexpectedError";
 
 // 401 - WE THROW THIS STATUS CODE IF USER IS UNAUTHORIZED
-// 503 - WE THROW THIS STATUS CODE IN try/catch IN catch SECTIONS IF THERE IS ANY ERROR
 
 export const ErrorBoundary = ({ error }: Route.ErrorBoundaryProps) => {
   const { t } = useTranslation("rootErrorBoundry");
@@ -160,7 +159,7 @@ export const ErrorBoundary = ({ error }: Route.ErrorBoundaryProps) => {
           >
             {t("error")}
           </Typography>
-          <Typography
+          {/* <Typography
             component="p"
             variant="Reg_14"
             sx={{
@@ -171,8 +170,8 @@ export const ErrorBoundary = ({ error }: Route.ErrorBoundaryProps) => {
             }}
           >
             {error.name}
-          </Typography>
-          <Typography
+          </Typography> */}
+          {/* <Typography
             component="p"
             variant="Reg_14"
             sx={{
@@ -182,7 +181,7 @@ export const ErrorBoundary = ({ error }: Route.ErrorBoundaryProps) => {
             }}
           >
             {error.message}
-          </Typography>
+          </Typography> */}
           <Button
             variant="outlined"
             onClick={() => {
