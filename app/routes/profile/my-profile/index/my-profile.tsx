@@ -61,7 +61,7 @@ export default function MyProfile({ loaderData }: Route.ComponentProps) {
             bold: false,
           }}
           backAction={() => {
-            navigate(withLocale("/profile"));
+            navigate(withLocale("/profile"), { viewTransition: true });
           }}
         />
 
@@ -83,6 +83,7 @@ export default function MyProfile({ loaderData }: Route.ComponentProps) {
           >
             <ListItemButton
               component={Link}
+              viewTransition
               to={`${withLocale("/profile/my-profile/profile-meta")}`}
               sx={{
                 display: "flex",
@@ -129,6 +130,7 @@ export default function MyProfile({ loaderData }: Route.ComponentProps) {
           >
             <ListItemButton
               component={Link}
+              viewTransition
               to={`${withLocale("/profile/my-profile/user-activities?step=1")}`}
               sx={{
                 display: "flex",
@@ -175,6 +177,7 @@ export default function MyProfile({ loaderData }: Route.ComponentProps) {
           >
             <ListItemButton
               component={Link}
+              viewTransition
               to={`${withLocale("/profile/my-profile/billing")}`}
               sx={{
                 display: "flex",
@@ -221,6 +224,7 @@ export default function MyProfile({ loaderData }: Route.ComponentProps) {
           >
             <ListItemButton
               component={Link}
+              viewTransition
               to={`${withLocale("/profile/my-profile/work-radius")}`}
               sx={{
                 display: "flex",
@@ -269,6 +273,7 @@ export default function MyProfile({ loaderData }: Route.ComponentProps) {
             >
               <ListItemButton
                 component={Link}
+                viewTransition
                 to={{
                   pathname: `${withLocale("/profile/my-profile/profile-edit")}`,
                   search: `?section=${item.value}`,

@@ -113,7 +113,9 @@ export default function Step7({ loaderData }: Route.ComponentProps) {
           }}
           label={t("step")}
           backAction={() => {
-            navigate(-1);
+            navigate(withLocale("/registration/step6"), {
+              viewTransition: true,
+            });
           }}
         />
 

@@ -108,6 +108,7 @@ export const StyledRadioButton = forwardRef(
                     <>
                       {props.helperInfo.link.type === "internal" ? (
                         <Link
+                          viewTransition
                           style={{
                             textDecorationLine: "underline",
                             color: theme.palette["Corp_1"],
@@ -221,8 +222,8 @@ export const StyledRadioButton = forwardRef(
                       props.error
                         ? "error"
                         : props.status === "warning"
-                          ? "warning"
-                          : "corp"
+                        ? "warning"
+                        : "corp"
                     }
                   />
                 }

@@ -38,7 +38,7 @@ export default function Documents() {
             bold: false,
           }}
           backAction={() => {
-            navigate(withLocale("/profile"));
+            navigate(withLocale("/profile"), { viewTransition: true });
           }}
         />
 
@@ -60,6 +60,7 @@ export default function Documents() {
           >
             <ListItemButton
               component={Link}
+              viewTransition
               to={`${withLocale("/profile/documents/sign")}`}
               sx={{
                 display: "flex",
@@ -114,6 +115,7 @@ export default function Documents() {
           >
             <ListItemButton
               component={Link}
+              viewTransition
               to={`${withLocale("/profile/documents/sign-a-deal")}`}
               sx={{
                 display: "flex",
@@ -168,6 +170,7 @@ export default function Documents() {
           >
             <ListItemButton
               component={Link}
+              viewTransition
               to={`${withLocale("/profile/documents/terminate-a-deal")}`}
               sx={{
                 display: "flex",
@@ -222,6 +225,7 @@ export default function Documents() {
           >
             <ListItemButton
               component={Link}
+              viewTransition
               to={`${withLocale("/profile/documents/archive")}`}
               sx={{
                 display: "flex",
@@ -276,6 +280,7 @@ export default function Documents() {
           >
             <ListItemButton
               component={Link}
+              viewTransition
               to={`${withLocale("/profile/documents/certificates")}`}
               sx={{
                 display: "flex",

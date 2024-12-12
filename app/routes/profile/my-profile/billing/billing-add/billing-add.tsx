@@ -189,7 +189,9 @@ export default function BillingAdd({ loaderData }: Route.ComponentProps) {
             bold: false,
           }}
           backAction={() => {
-            navigate(withLocale("/profile/my-profile/billing"));
+            navigate(withLocale("/profile/my-profile/billing"), {
+              viewTransition: true,
+            });
           }}
         />
 

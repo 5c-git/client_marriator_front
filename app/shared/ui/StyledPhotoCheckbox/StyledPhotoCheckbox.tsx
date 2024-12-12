@@ -122,6 +122,7 @@ export const StyledPhotoCheckbox = forwardRef(
                     <>
                       {props.helperInfo.link.type === "internal" ? (
                         <Link
+                          viewTransition
                           style={{
                             textDecorationLine: "underline",
                             color: theme.palette["Corp_1"],
@@ -367,6 +368,7 @@ export const StyledPhotoCheckbox = forwardRef(
                     <>
                       {activeItem.details?.link?.type === "internal" ? (
                         <Link
+                          viewTransition
                           style={{
                             textDecorationLine: "underline",
                           }}

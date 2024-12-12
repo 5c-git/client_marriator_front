@@ -147,7 +147,7 @@ export default function Sms({ loaderData }: Route.ComponentProps) {
             bold: false,
           }}
           backAction={() => {
-            navigate(-1);
+            navigate(withLocale("/signin/phone"), { viewTransition: true });
           }}
         />
 

@@ -42,10 +42,10 @@ export const ErrorBoundary = ({ error }: Route.ErrorBoundaryProps) => {
           useStore
             .getState()
             .setRefreshToken(newTokens.result.token.refresh_token);
-          navigate(withLocale("/signin/pin"));
+          navigate(withLocale("/signin/pin"), { viewTransition: true });
         } else {
           useStore.getState().clearStore();
-          navigate(withLocale("/signin/phone"));
+          navigate(withLocale("/signin/phone"), { viewTransition: true });
         }
       })();
     }

@@ -127,6 +127,7 @@ export const StyledInnField = forwardRef((props: StyledInnFieldProps, ref) => {
               <>
                 {props.helperInfo.link.type === "internal" ? (
                   <Link
+                    viewTransition
                     style={{
                       textDecorationLine: "underline",
                       color: theme.palette["Corp_1"],

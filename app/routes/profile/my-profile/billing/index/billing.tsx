@@ -44,11 +44,15 @@ export default function Billing({ loaderData }: Route.ComponentProps) {
           buttonAction={{
             text: t("header_action"),
             action: () => {
-              navigate(withLocale("/profile/my-profile/billing/billing-add"));
+              navigate(withLocale("/profile/my-profile/billing/billing-add"), {
+                viewTransition: true,
+              });
             },
           }}
           backAction={() => {
-            navigate(withLocale("/profile/my-profile"));
+            navigate(withLocale("/profile/my-profile"), {
+              viewTransition: true,
+            });
           }}
         />
 

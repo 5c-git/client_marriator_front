@@ -122,7 +122,9 @@ export default function UserActivities({ loaderData }: Route.ComponentProps) {
           label={`${t("step")} ${step}`}
           backAction={() => {
             if (step === 1) {
-              navigate(withLocale("/profile/my-profile"));
+              navigate(withLocale("/profile/my-profile"), {
+                viewTransition: true,
+              });
             } else {
               setSearchParams((prev) => {
                 prev.set("step", (step - 1).toString());
@@ -165,7 +167,9 @@ export default function UserActivities({ loaderData }: Route.ComponentProps) {
                 return prev;
               });
             } else if (loaderData.formStatus === "allowedNewStep") {
-              navigate(withLocale("/profile/my-profile"));
+              navigate(withLocale("/profile/my-profile"), {
+                viewTransition: true,
+              });
             }
           })}
         >
@@ -209,7 +213,9 @@ export default function UserActivities({ loaderData }: Route.ComponentProps) {
                       return prev;
                     });
                   } else if (loaderData.formStatus === "allowedNewStep") {
-                    navigate(withLocale("/profile/my-profile"));
+                    navigate(withLocale("/profile/my-profile"), {
+                      viewTransition: true,
+                    });
                   }
                 })();
               }}

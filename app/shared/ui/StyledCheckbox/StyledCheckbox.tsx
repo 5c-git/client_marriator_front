@@ -94,6 +94,7 @@ export const StyledCheckbox = forwardRef((props: StyledCheckboxProps, ref) => {
                   <>
                     {props.helperInfo.link.type === "internal" ? (
                       <Link
+                        viewTransition
                         style={{
                           textDecorationLine: "underline",
                           color: theme.palette["Corp_1"],
@@ -138,8 +139,8 @@ export const StyledCheckbox = forwardRef((props: StyledCheckboxProps, ref) => {
                 props.error
                   ? "error"
                   : props.status === "warning"
-                    ? "warning"
-                    : "corp"
+                  ? "warning"
+                  : "corp"
               }
             />
           }

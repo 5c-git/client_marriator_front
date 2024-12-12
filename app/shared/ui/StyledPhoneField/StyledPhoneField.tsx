@@ -51,7 +51,7 @@ export const StyledPhoneField = forwardRef(
     const theme = useTheme();
 
     return (
-      (<Box sx={props.styles} ref={ref}>
+      <Box sx={props.styles} ref={ref}>
         {props.dividerTop ? <Divider sx={{ marginBottom: "16px" }} /> : null}
         <Box sx={props.inputStyles}>
           {props.heading ? (
@@ -135,6 +135,7 @@ export const StyledPhoneField = forwardRef(
                 <>
                   {props.helperInfo.link.type === "internal" ? (
                     <Link
+                      viewTransition
                       style={{
                         textDecorationLine: "underline",
                         color: theme.palette["Corp_1"],
@@ -162,7 +163,7 @@ export const StyledPhoneField = forwardRef(
           ) : null}
         </Box>
         {props.dividerBottom ? <Divider sx={{ marginTop: "16px" }} /> : null}
-      </Box>)
+      </Box>
     );
   }
 );

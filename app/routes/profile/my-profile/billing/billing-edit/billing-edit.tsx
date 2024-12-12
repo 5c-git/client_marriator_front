@@ -220,7 +220,9 @@ export default function BillingEdit({ loaderData }: Route.ComponentProps) {
             bold: false,
           }}
           backAction={() => {
-            navigate(withLocale("/profile/my-profile/billing"));
+            navigate(withLocale("/profile/my-profile/billing"), {
+              viewTransition: true,
+            });
           }}
         />
 
@@ -453,7 +455,9 @@ export default function BillingEdit({ loaderData }: Route.ComponentProps) {
           <Button
             variant="contained"
             onClick={() => {
-              navigate(withLocale("/profile/my-profile/billing"));
+              navigate(withLocale("/profile/my-profile/billing"), {
+                viewTransition: true,
+              });
             }}
             sx={{
               marginTop: "16px",

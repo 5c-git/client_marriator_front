@@ -114,6 +114,7 @@ export default function Profile({ loaderData }: Route.ComponentProps) {
           >
             <ListItemButton
               component={Link}
+              viewTransition
               to={withLocale("my-profile")}
               sx={{
                 padding: "16px 0px",
@@ -168,6 +169,7 @@ export default function Profile({ loaderData }: Route.ComponentProps) {
             <ListItemButton
               disabled
               component={Link}
+              viewTransition
               to="/"
               sx={{
                 padding: "16px 0px",
@@ -219,6 +221,7 @@ export default function Profile({ loaderData }: Route.ComponentProps) {
           >
             <ListItemButton
               component={Link}
+              viewTransition
               to={withLocale("documents")}
               sx={{
                 padding: "16px 0px",
