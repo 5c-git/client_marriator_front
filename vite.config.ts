@@ -2,8 +2,9 @@ import { defineConfig } from "vite";
 import path from "path";
 import tsconfigPaths from "vite-tsconfig-paths";
 import { reactRouter } from "@react-router/dev/vite";
+import hawkVitePlugin from "@hawk.so/vite-plugin";
 
-// PIGMENT MIGRATION v6.2.0 - DOES NOT WORK
+// PIGMENT MIGRATION v6.3.0 - DOES NOT WORK
 // import { pigment } from "@pigment-css/vite-plugin";
 // import { createTheme } from "@mui/material";
 // import { pigmentTheme } from "./app/theme/themePigment";
@@ -28,6 +29,10 @@ export default defineConfig({
     // pigment(pigmentConfig),
     reactRouter(),
     tsconfigPaths(),
+    hawkVitePlugin({
+      token:
+        "eyJpbnRlZ3JhdGlvbklkIjoiZTFhZWNhMzgtOGNiOC00YzQzLThmODctNzc2MzY5NGYwMzY4Iiwic2VjcmV0IjoiMDEwMDdjYjEtNzRhNC00MDcxLTg3YzktNGMzMjU5YWJhMDM2In0=",
+    }),
   ],
 
   resolve: {

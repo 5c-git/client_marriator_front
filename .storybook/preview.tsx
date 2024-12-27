@@ -31,9 +31,10 @@ i18next
     supportedLngs: ["ru", "en"],
     lng: "ru", // default language
     fallbackLng: "ru",
-    ns: ["constructor", "rootErrorBoundry"],
+    ns: ["constructorFields", "rootErrorBoundry"],
     backend: {
-      loadPath: "/client_marriator_front/locales/{{lng}}/{{ns}}.json",
+      // loadPath: "/client_marriator_front/locales/{{lng}}/{{ns}}.json",
+      loadPath: "/locales/{{lng}}/{{ns}}.json",
       backends: [HttpBackend],
     },
   });

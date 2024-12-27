@@ -6,6 +6,7 @@ import i18next from "i18next";
 import { I18nextProvider, initReactI18next } from "react-i18next";
 import LanguageDetector from "i18next-browser-languagedetector";
 import HttpBackend from "i18next-http-backend";
+import HawkCatcher from "@hawk.so/javascript";
 
 export const supportedLngs = ["ru", "en"];
 
@@ -22,6 +23,14 @@ async function enableMocking() {
   // once the Service Worker is up and ready to intercept requests.
   return worker.start({
     onUnhandledRequest: "bypass",
+  });
+}
+
+export let hawk: HawkCatcher | null = null;
+if (process.env.NODE_ENV !== "development") {
+  hawk = new HawkCatcher({
+    token: import.meta.env.VITE_HAWK_KEY,
+    release: window.HAWK_RELEASE,
   });
 }
 
