@@ -4,13 +4,10 @@ import * as DocBlock from "@storybook/blocks";
 import { http, delay, HttpResponse } from "msw";
 
 import Sms from "./sms";
-import { json } from "react-router";
 import {
   reactRouterParameters,
   withRouter,
 } from "storybook-addon-remix-react-router";
-import { loadNamespaces } from "i18next";
-
 const meta = {
   title: "Страницы/Вход/Смс-код",
   component: Sms,
@@ -46,6 +43,13 @@ type Story = StoryObj<typeof meta>;
 
 export const Primary: Story = {
   name: "Page",
+  // @ts-expect-error we only pass loader args
+  args: {
+    loaderData: {
+      phone: "+79123152151",
+      ttl: "120",
+    },
+  },
   parameters: {
     msw: {
       handlers: [
@@ -60,15 +64,13 @@ export const Primary: Story = {
     reactRouter: reactRouterParameters({
       routing: {
         path: "/signin/sms",
-        loader: async ({ request }) => {
-          loadNamespaces("sms");
 
-          const currentURL = new URL(request.url);
+        // loader: async ({ request }) => {
+        //   const currentURL = new URL(request.url);
+        //   const ttl = currentURL.searchParams.get("ttl");
 
-          const ttl = currentURL.searchParams.get("ttl");
-
-          return json({ phone: "+79123152151", ttl });
-        },
+        //   return { phone: "+79123152151", ttl: "120" };
+        // },
         action: async () => {
           // const data = await postRegStep2({ test: "test" });
           // return data;

@@ -19,13 +19,6 @@ export default function Home() {
   return (
     <>
       <p>home</p>
-      <button
-        onClick={() => {
-          throw new Error("тестовая ошибка для Sentry");
-        }}
-      >
-        Тестовая ошибка для Sentry
-      </button>
     </>
   );
 }

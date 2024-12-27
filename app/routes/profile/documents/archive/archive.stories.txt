@@ -12,7 +12,6 @@ import {
   getDocumentArchive,
   mockResponseSuccess,
 } from "~/requests/getDocumentArchive/getDocumentArchive";
-import { json } from "react-router";
 import { delay, http, HttpResponse } from "msw";
 
 const meta = {
@@ -46,6 +45,10 @@ type Story = StoryObj<typeof meta>;
 
 export const Primary: Story = {
   name: "Page",
+  // @ts-expect-error we only pass loader args
+  args: {
+    loaderData: mockResponseSuccess.result,
+  },
   parameters: {
     msw: {
       handlers: [
@@ -62,10 +65,11 @@ export const Primary: Story = {
         children: [
           {
             index: true,
+
             useStoryElement: true,
             loader: async () => {
               const data = await getDocumentArchive("token");
-              return json(data.result);
+              return data.result;
             },
           },
         ],

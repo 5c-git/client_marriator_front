@@ -37,6 +37,8 @@ import { postCheckCode } from "~/requests/postCheckCode/postCheckCode";
 export async function clientLoader({ request }: Route.ClientLoaderArgs) {
   await loadNamespaces("sms");
 
+  console.log("here");
+
   const currentURL = new URL(request.url);
 
   const phone = useStore.getState().userPhone;
