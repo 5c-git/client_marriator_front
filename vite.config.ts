@@ -4,7 +4,10 @@ import tsconfigPaths from "vite-tsconfig-paths";
 import { reactRouter } from "@react-router/dev/vite";
 import hawkVitePlugin from "@hawk.so/vite-plugin";
 
-// PIGMENT MIGRATION v6.3.0 - DOES NOT WORK
+// MIGRATION
+// ymap3-components v1.2.3 - DOES NOT WORK / 1.1.8 - WORKS
+
+// PIGMENT CSS v6.3.1 - DOES NOT WORK
 // import { pigment } from "@pigment-css/vite-plugin";
 // import { createTheme } from "@mui/material";
 // import { pigmentTheme } from "./app/theme/themePigment";
