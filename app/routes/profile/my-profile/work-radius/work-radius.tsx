@@ -1,6 +1,15 @@
 import { ChangeEvent, useEffect, useState } from "react";
+import { renderToStaticMarkup } from "react-dom/server";
 import { useFetcher, useNavigate } from "react-router";
 import type { Route } from "./+types/work-radius";
+
+import type {
+  YMap,
+  YMapMarker,
+  YMapListener,
+  YMapFeature,
+  PolygonGeometry,
+} from "ymaps3";
 
 import { useForm, Controller } from "react-hook-form";
 
@@ -30,21 +39,47 @@ import { postSetMapField } from "~/requests/postSetMapField/postSetMapField";
 
 import { MarkerIcon } from "./icons/MarkerIcon";
 
-import {
-  YMap,
-  YMapComponentsProvider,
-  YMapDefaultSchemeLayer,
-  YMapDefaultFeaturesLayer,
-  YMapListener,
-  YMapMarker,
-  YMapFeature,
-} from "ymap3-components";
-
-import { PolygonGeometry } from "@yandex/ymaps3-types";
 import { MaskedField } from "~/shared/ui/MaskedField/MaskedField";
 import { debounce } from "~/shared/debounce";
 
+declare const window: {
+  ymaps3: typeof ymaps3 | undefined;
+} & Window;
+
 type Coordinates = [lon: number, lat: number];
+
+const langMap = {
+  ru: "ru_RU",
+  en: "en_RU",
+};
+
+const loadMap = async (locale: string): Promise<typeof ymaps3> => {
+  return new Promise((resolve) => {
+    if (window.ymaps3 === undefined) {
+      // Create script element and set attributes
+      const script = document.createElement("script");
+      script.type = "text/javascript";
+
+      script.id = "ymapsScript";
+      script.src = `https://api-maps.yandex.ru/v3/?apikey=${
+        import.meta.env.VITE_YANDEX_GEO_KEY
+      }&lang=${locale}`;
+
+      // Append the script to the DOM
+      const el = document.getElementsByTagName("script")[0];
+      const parentNode = el.parentNode as ParentNode;
+      parentNode.insertBefore(script, el);
+
+      // Wait for script to load, then resolve the promise
+      script.onload = async () => {
+        await ymaps3.ready;
+        resolve(ymaps3);
+      };
+    } else {
+      resolve(ymaps3);
+    }
+  });
+};
 
 const getCircleGeoJSON = (
   center: Coordinates,
@@ -56,12 +91,11 @@ const getCircleGeoJSON = (
   return geometry as PolygonGeometry;
 };
 
-const langMap = {
-  ru: "ru_RU",
-  en: "en_RU",
-};
-
 export async function clientLoader() {
+  const language = i18next.language as "en" | "ru";
+
+  const ymaps = await loadMap(langMap[language]);
+
   const accessToken = useStore.getState().accessToken;
 
   const geolocation = [] as unknown as Coordinates;
@@ -79,13 +113,9 @@ export async function clientLoader() {
     }
   );
 
-  const language = i18next.language as "en" | "ru";
-
   if (accessToken) {
     const mapData = await getMapField(accessToken);
     const settingsData = await getSettingsFromKey(accessToken, "radius");
-
-    console.log(settingsData);
 
     const coordinates: Coordinates =
       mapData.result.coordinates !== null
@@ -103,6 +133,7 @@ export async function clientLoader() {
         mapData.result.mapRadius === ""
           ? settingsData.result
           : mapData.result.mapRadius,
+      ymaps,
     };
   } else {
     throw new Response("Токен авторизации не обнаружен!", { status: 401 });
@@ -129,8 +160,6 @@ export async function clientAction({ request }: Route.ClientActionArgs) {
 
   if (accessToken) {
     if (yandexGeoData.response.GeoObjectCollection.featureMember.length !== 0) {
-      console.log(clientGeoData);
-
       await postSetMapField(
         accessToken,
         yandexGeoData.response.GeoObjectCollection.featureMember[0].GeoObject
@@ -168,8 +197,14 @@ export default function WorkRadius({ loaderData }: Route.ComponentProps) {
   const navigate = useNavigate();
 
   const [isActive, setIsActive] = useState<boolean>(false);
+  const [mapController, setMapController] = useState<{
+    map: YMap;
+    marker: YMapMarker;
+    radius: YMapFeature;
+    listener: YMapListener;
+  }>();
 
-  const { control, watch, reset } = useForm({
+  const { control, reset, getValues } = useForm({
     defaultValues: {
       address: loaderData.address,
       coordinates: loaderData.coordinates,
@@ -178,14 +213,132 @@ export default function WorkRadius({ loaderData }: Route.ComponentProps) {
   });
 
   useEffect(() => {
-    setTimeout(() => {
-      reset({
-        address: loaderData.address,
-        coordinates: loaderData.coordinates,
-        radius: loaderData.radius,
-      });
+    // here we init map, so it renders only once
+    const {
+      YMap,
+      YMapDefaultSchemeLayer,
+      YMapDefaultFeaturesLayer,
+      YMapListener,
+      YMapMarker,
+      YMapFeature,
+    } = loaderData.ymaps;
+
+    const container = document.querySelector("#map") as HTMLElement;
+
+    const markerElement = document.createElement("div");
+
+    const markerIcon = renderToStaticMarkup(
+      <MarkerIcon
+        style={{
+          position: "absolute",
+          left: "-8.5px",
+          top: "-20px",
+          color: theme.palette["Corp_1"],
+        }}
+      />
+    );
+
+    markerElement.innerHTML = markerIcon;
+
+    const map = new YMap(container, {
+      location: { center: [37.623082, 55.75254], zoom: 12 },
     });
-  }, [loaderData.address, loaderData.radius, loaderData.coordinates, reset]);
+
+    map.addChild(new YMapDefaultSchemeLayer({}));
+    map.addChild(new YMapDefaultFeaturesLayer({}));
+
+    const listener = new YMapListener({
+      layer: "any",
+      onTouchStart: () => {
+        setIsActive(true);
+      },
+    });
+    const marker = new YMapMarker(
+      {
+        coordinates: [37.623082, 55.75254],
+      },
+      markerElement
+    );
+    const radius = new YMapFeature({
+      geometry: getCircleGeoJSON([37.623082, 55.75254], 2),
+      style: {
+        simplificationRate: 0,
+        stroke: [{ color: theme.palette["Corp_1"], width: 3 }],
+        fill: "rgba(56, 56, 219, 0)",
+      },
+    });
+
+    map.addChild(listener);
+    map.addChild(marker);
+
+    setMapController({
+      map,
+      marker,
+      radius,
+      listener,
+    });
+
+    return () => {
+      map.destroy();
+    };
+  }, [theme, loaderData.ymaps]);
+
+  useEffect(() => {
+    // here we update and sync map with server data
+    mapController?.map.setLocation({
+      center: loaderData.coordinates,
+      zoom: 12,
+    });
+
+    mapController?.marker.update({
+      coordinates: loaderData.coordinates,
+    });
+
+    mapController?.listener.update({
+      onClick: (_, event) => {
+        fetcher.submit(
+          JSON.stringify({
+            value: `${event.coordinates[0]},${event.coordinates[1]}`,
+            radius: loaderData.radius,
+          }),
+          {
+            method: "POST",
+            encType: "application/json",
+          }
+        );
+      },
+    });
+
+    if (getValues("radius") !== "") {
+      mapController?.radius.update({
+        geometry: getCircleGeoJSON(
+          loaderData.coordinates,
+          Number(getValues("radius"))
+        ),
+      });
+      mapController?.map.addChild(mapController.radius);
+    } else {
+      mapController?.map.removeChild(mapController.radius);
+    }
+  }, [
+    fetcher,
+    getValues,
+    loaderData.coordinates,
+    loaderData.radius,
+    mapController?.listener,
+    mapController?.map,
+    mapController?.marker,
+    mapController?.radius,
+  ]);
+
+  useEffect(() => {
+    // here we update and sync form with server data
+    reset({
+      address: loaderData.address,
+      coordinates: loaderData.coordinates,
+      radius: loaderData.radius,
+    });
+  }, [reset, loaderData.address, loaderData.coordinates, loaderData.radius]);
 
   const debouncedTextFieldSubmit = debounce(
     (evt: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -336,6 +489,7 @@ export default function WorkRadius({ loaderData }: Route.ComponentProps) {
           </form>
 
           <Box
+            id="map"
             sx={{
               height: "380px",
               borderRadius: "6px",
@@ -346,7 +500,7 @@ export default function WorkRadius({ loaderData }: Route.ComponentProps) {
                   : "grayscale(0)",
             }}
           >
-            <YMapComponentsProvider
+            {/* <YMapComponentsProvider
               lang={langMap[loaderData.language]}
               apiKey={import.meta.env.VITE_YANDEX_GEO_KEY}
             >
@@ -399,7 +553,7 @@ export default function WorkRadius({ loaderData }: Route.ComponentProps) {
                   />
                 ) : null}
               </YMap>
-            </YMapComponentsProvider>
+            </YMapComponentsProvider> */}
           </Box>
         </Box>
       </Box>
