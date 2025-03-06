@@ -51,6 +51,10 @@ export const postCheckEmailCode = async (accessToken: string, code: string) => {
 
     return data;
   } catch (error) {
+    if (error instanceof Response) {
+      throw error;
+    }
+
     if (error instanceof Error) {
       throw new UnxpectedError(error.message);
     } else {

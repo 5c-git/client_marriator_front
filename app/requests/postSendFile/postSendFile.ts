@@ -53,6 +53,10 @@ export const postSendFile = async (
       throw new Response("Данные запроса postSendFile не соответствуют схеме");
     }
   } catch (error) {
+    if (error instanceof Response) {
+      throw error;
+    }
+
     if (error instanceof Error) {
       throw new UnxpectedError(error.message);
     } else {
