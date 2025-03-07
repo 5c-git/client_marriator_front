@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import {
   Links,
   Meta,
@@ -7,6 +8,8 @@ import {
   useLoaderData,
   LoaderFunctionArgs,
 } from "react-router";
+
+import HawkCatcher from "@hawk.so/javascript";
 
 // MUI
 import { theme } from "./theme/theme";
@@ -50,6 +53,16 @@ export async function clientLoader({ params }: LoaderFunctionArgs) {
 
 export function Layout({ children }: { children: React.ReactNode }) {
   const locale = useLoaderData<typeof clientLoader>();
+
+  //we have to use useEffect, because HawkCatcher is using browser apis
+  // useEffect(() => {
+  //   const hawk = new HawkCatcher({
+  //     token: import.meta.env.VITE_HAWK_KEY,
+  //     release: window.HAWK_RELEASE,
+  //   });
+
+  //   console.log(hawk);
+  // }, []);
 
   return (
     <html lang={locale}>

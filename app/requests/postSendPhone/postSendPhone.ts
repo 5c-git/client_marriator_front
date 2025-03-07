@@ -49,6 +49,10 @@ export const postSendPhone = async (
 
     return data;
   } catch (error) {
+    if (error instanceof Response) {
+      throw error;
+    }
+
     if (error instanceof Error) {
       throw new UnxpectedError(error.message);
     } else {

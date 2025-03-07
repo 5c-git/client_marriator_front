@@ -19,6 +19,14 @@ export default function Home() {
   return (
     <>
       <p>home</p>
+      <button
+        onClick={() => {
+          throw new Error("error for testing");
+        }}
+      >
+        {" "}
+        cause Error
+      </button>
     </>
   );
 }

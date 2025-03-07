@@ -40,6 +40,10 @@ export const getBik = async (accessToken: string): Promise<GetBikSuccess> => {
 
     return data;
   } catch (error) {
+    if (error instanceof Response) {
+      throw error;
+    }
+
     if (error instanceof Error) {
       throw new UnxpectedError(error.message);
     } else {
