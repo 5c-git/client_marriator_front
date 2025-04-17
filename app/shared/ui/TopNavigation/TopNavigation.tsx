@@ -20,6 +20,7 @@ type TopNavigationProps = {
   backAction?: () => void;
   buttonAction?: {
     text: string;
+    icon?: React.ReactNode;
     action: () => void;
   };
 };
@@ -79,6 +80,7 @@ export const TopNavigation = (props: TopNavigationProps) => {
               marginLeft: "auto",
               paddingTop: "6px",
               paddingBottom: "6px",
+              columnGap: "10px",
             }}
           >
             <Typography
@@ -90,6 +92,8 @@ export const TopNavigation = (props: TopNavigationProps) => {
             >
               {props.buttonAction.text}
             </Typography>
+
+            {props.buttonAction.icon ? props.buttonAction.icon : null}
           </Button>
         ) : null}
       </Box>

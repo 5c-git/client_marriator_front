@@ -595,6 +595,49 @@ export type Inputs = [
         additionalProperties?: never;
         [k: string]: unknown;
       }
+    | {
+        inputType: "bic";
+        name: string;
+        value: string;
+        placeholder: string;
+        /**
+         * @minItems 1
+         */
+        options: [
+          {
+            value: string;
+            bic: string;
+            label: string;
+            disabled: boolean;
+            [k: string]: unknown;
+          },
+          ...{
+            value: string;
+            bic: string;
+            label: string;
+            disabled: boolean;
+            [k: string]: unknown;
+          }[]
+        ];
+        disabled?: boolean;
+        validation: "none" | "default";
+        heading?: string;
+        error?: string;
+        status?: "warning";
+        dividerTop?: true;
+        dividerBottom?: true;
+        helperInfo?: {
+          text?: string;
+          link?: {
+            text: string;
+            path: string;
+            type: "internal" | "external";
+            [k: string]: unknown;
+          };
+        };
+        additionalProperties?: never;
+        [k: string]: unknown;
+      }
   ),
   ...(
     | {
@@ -1141,6 +1184,49 @@ export type Inputs = [
       }
     | {
         inputType: "autocomplete";
+        name: string;
+        value: string;
+        placeholder: string;
+        /**
+         * @minItems 1
+         */
+        options: [
+          {
+            value: string;
+            bic: string;
+            label: string;
+            disabled: boolean;
+            [k: string]: unknown;
+          },
+          ...{
+            value: string;
+            bic: string;
+            label: string;
+            disabled: boolean;
+            [k: string]: unknown;
+          }[]
+        ];
+        disabled?: boolean;
+        validation: "none" | "default";
+        heading?: string;
+        error?: string;
+        status?: "warning";
+        dividerTop?: true;
+        dividerBottom?: true;
+        helperInfo?: {
+          text?: string;
+          link?: {
+            text: string;
+            path: string;
+            type: "internal" | "external";
+            [k: string]: unknown;
+          };
+        };
+        additionalProperties?: never;
+        [k: string]: unknown;
+      }
+    | {
+        inputType: "bic";
         name: string;
         value: string;
         placeholder: string;

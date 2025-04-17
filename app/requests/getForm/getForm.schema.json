@@ -67,6 +67,9 @@
                 "$ref": "autocomplete"
               },
               {
+                "$ref": "bic"
+              },
+              {
                 "$ref": "selectMultiple"
               }
             ]

@@ -20,6 +20,7 @@ import innSchema from "../../shared/ui/StyledInnField/StyledInnField.schema.json
 import snilsSchema from "../../shared/ui/StyledSnilsField/StyledSnilsField.schema.json";
 import smsSchema from "../../shared/ui/StyledSmsField/StyledSmsField.schema.json";
 import autocompleteSchema from "../../shared/ui/StyledAutocomplete/StyledAutocomplete.schema.json";
+import autocompleteBicSchema from "../../shared/ui/StyledAutocompleteBic/StyledAutocompleteBic.schema.json";
 import selectMultipleSchema from "../../shared/ui/StyledSelectMultiple/StyledSelectMultiple.schema.json";
 
 import getFormSchema from "./getForm.schema.json";
@@ -47,6 +48,7 @@ ajv.addSchema(innSchema);
 ajv.addSchema(snilsSchema);
 ajv.addSchema(smsSchema);
 ajv.addSchema(autocompleteSchema);
+ajv.addSchema(autocompleteBicSchema);
 ajv.addSchema(selectMultipleSchema);
 
 const validateSuccess = ajv.compile(getFormSchema);
@@ -82,6 +84,7 @@ export const getForm = async (
     if (validateSuccess(response)) {
       data = response as GetFormInputsSchema;
     } else {
+      console.log(validateSuccess.errors);
       throw new Response(
         `Данные запроса getForm, шаг - ${step} не валидны схеме`
       );

@@ -92,6 +92,13 @@ export default [
       ":lang?/signin/confirm-restore-pin",
       "routes/signin/confirm-restore-pin/confirm-restore-pin.tsx"
     ),
+
+    route(":lang?/signin/client/phone", "routes/signin/client/phone/phone.tsx"),
+    route(":lang?/signin/client/meta", "routes/signin/client/meta/meta.tsx"),
+    route(
+      ":lang?/signin/client/location",
+      "routes/signin/client/location/location.tsx"
+    ),
     // signin
 
     // registration
@@ -106,6 +113,6 @@ export default [
       ":lang?/registration/confirm-email",
       "routes/registration/confirm-email/confirm-email.tsx"
     ),
-    // registration;
+    // registration
   ]),
 ] satisfies RouteConfig;

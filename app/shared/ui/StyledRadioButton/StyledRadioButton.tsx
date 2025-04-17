@@ -19,17 +19,28 @@ import viber from "./icons/viber.svg";
 
 const iconMap = { telegram, whatsapp, viber };
 
+type OptionWithIcon = {
+  value: string;
+  label: string;
+  icon?: "telegram" | "viber" | "whatsapp";
+  image?: never;
+  disabled: boolean;
+};
+
+type OptionWithImage = {
+  value: string;
+  label: string;
+  icon?: never;
+  image?: string;
+  disabled: boolean;
+};
+
 type StyledRadioButtonProps = {
   inputType: "radio";
   name: string;
   value: string;
 
-  options: {
-    value: string;
-    label: string;
-    icon?: "telegram" | "viber" | "whatsapp";
-    disabled: boolean;
-  }[];
+  options: OptionWithIcon[] | OptionWithImage[];
 
   validation: "default" | "none";
   heading?: string;
@@ -204,6 +215,20 @@ export const StyledRadioButton = forwardRef(
                         }}
                         src={iconMap[item.icon]}
                         alt="socal network"
+                      />
+                    ) : null}{" "}
+                    {item.image ? (
+                      <img
+                        style={{
+                          display: "block",
+                          width: "30px",
+                          height: "30px",
+                          borderRadius: "50%",
+                          marginTop: "10px",
+                          marginBottom: "10px",
+                        }}
+                        src={item.image}
+                        alt={item.image}
                       />
                     ) : null}{" "}
                     {item.label}

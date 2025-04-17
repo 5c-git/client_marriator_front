@@ -34,6 +34,7 @@ import { StyledInnField } from "../ui/StyledInnField/StyledInnField";
 import { StyledSnilsField } from "../ui/StyledSnilsField/StyledSnilsField";
 import { StyledSmsField } from "../ui/StyledSmsField/StyledSmsField";
 import { StyledAutocomplete } from "../ui/StyledAutocomplete/StyledAutocomplete";
+import { StyledAutocompleteBic } from "../ui/StyledAutocompleteBic/StyledAutocompleteBic";
 
 const inputMap = {
   text: StyledTextField,
@@ -55,6 +56,7 @@ const inputMap = {
   snils: StyledSnilsField,
   sms: StyledSmsField,
   autocomplete: StyledAutocomplete,
+  bic: StyledAutocompleteBic,
 };
 
 const validationMap: {
@@ -288,6 +290,12 @@ const validationMap: {
       .required(t("sms", { ns: "constructorFields" })),
   },
   autocomplete: {
+    none: Yup.string().default("").notRequired(),
+    default: Yup.string().required(
+      t("autocomplete", { ns: "constructorFields" })
+    ),
+  },
+  bic: {
     none: Yup.string().default("").notRequired(),
     default: Yup.string().required(
       t("autocomplete", { ns: "constructorFields" })

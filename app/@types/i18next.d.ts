@@ -10,6 +10,8 @@ import sms from "../../public/locales/ru/sms.json";
 import pin from "../../public/locales/ru/pin.json";
 import createPin from "../../public/locales/ru/createPin.json";
 import confirmRestorePin from "../../public/locales/ru/confirmRestorePin.json";
+
+import clientPhone from "../../public/locales/ru/clientPhone.json";
 //auth
 
 //registration
@@ -68,6 +70,8 @@ declare module "i18next" {
       pin: typeof pin;
       createPin: typeof createPin;
       confirmRestorePin: typeof confirmRestorePin;
+
+      clientPhone: typeof clientPhone;
       //auth
 
       //registration
