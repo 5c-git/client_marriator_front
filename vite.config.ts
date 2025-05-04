@@ -13,22 +13,13 @@ export default defineConfig({
   plugins: [
     reactRouter(),
     tsconfigPaths(),
-    hawkVitePlugin({
-      token:
-        "eyJpbnRlZ3JhdGlvbklkIjoiZTFhZWNhMzgtOGNiOC00YzQzLThmODctNzc2MzY5NGYwMzY4Iiwic2VjcmV0IjoiMDEwMDdjYjEtNzRhNC00MDcxLTg3YzktNGMzMjU5YWJhMDM2In0=",
-    }),
+    // hawkVitePlugin({
+    //   token:
+    //     "eyJpbnRlZ3JhdGlvbklkIjoiZTFhZWNhMzgtOGNiOC00YzQzLThmODctNzc2MzY5NGYwMzY4Iiwic2VjcmV0IjoiMDEwMDdjYjEtNzRhNC00MDcxLTg3YzktNGMzMjU5YWJhMDM2In0=",
+    // }),
   ],
 
-  resolve: {
-    alias: {
-      "@mui/x-date-pickers/AdapterDateFnsV3": path.resolve(
-        __dirname,
-        "node_modules/@mui/x-date-pickers/AdapterDateFnsV3/AdapterDateFnsV3.js"
-      ),
-    },
-  },
-
-  build: {
-    sourcemap: true,
-  },
+  // build: {
+  //   sourcemap: true,
+  // },
 });

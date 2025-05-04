@@ -6,12 +6,12 @@ import {
   PickersLocaleText,
   MobileDatePicker,
 } from "@mui/x-date-pickers";
-import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFnsV3";
+import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import { ru } from "date-fns/locale/ru";
 
 import { sub, toDate, formatISO } from "date-fns";
 
-const localeActionsText: Partial<PickersLocaleText<Date>> = {
+const localeActionsText = {
   okButtonLabel: "Принять",
   cancelButtonLabel: "Отменить",
 };
