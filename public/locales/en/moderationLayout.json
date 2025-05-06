@@ -1,0 +1,9 @@
+{
+  "header": "Users",
+  "tabs": {
+    "client": "Clients",
+    "manager": "PMs",
+    "supervisor": "Supervisors",
+    "recrut": "Recruts."
+  }
+}

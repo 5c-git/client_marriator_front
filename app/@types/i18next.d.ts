@@ -53,6 +53,10 @@ import styledFileInput from "../../public/locales/ru/styledFileInput.json";
 import styledPhotoInput from "../../public/locales/ru/styledPhotoInput.json";
 import styledAutocomplete from "../../public/locales/ru/styledAutocomplete.json";
 
+//dev
+import moderationLayout from "../../public/locales/ru/moderationLayout.json";
+//dev
+
 import "i18next";
 declare module "i18next" {
   interface CustomTypeOptions {
@@ -112,6 +116,10 @@ declare module "i18next" {
       styledFileInput: typeof styledFileInput;
       styledPhotoInput: typeof styledPhotoInput;
       styledAutocomplete: typeof styledAutocomplete;
+
+      //dev
+      moderationLayout: typeof moderationLayout;
+      //dev
     };
   }
 }
