@@ -20,7 +20,8 @@ import {
   generateValidationSchema,
 } from "~/shared/constructor/constructor";
 
-import { useTheme, Box, Typography, Button } from "@mui/material";
+import { Typography, Button } from "@mui/material";
+import Box from "@mui/material/Box";
 import { TopNavigation } from "~/shared/ui/TopNavigation/TopNavigation";
 import { Loader } from "~/shared/ui/Loader/Loader";
 
@@ -70,7 +71,6 @@ export async function clientAction({ request }: Route.ClientActionArgs) {
 
 export default function UserActivities({ loaderData }: Route.ComponentProps) {
   const { t } = useTranslation("userActivities");
-  const theme = useTheme();
 
   const fetcher = useFetcher();
   const navigation = useNavigation();
@@ -144,10 +144,10 @@ export default function UserActivities({ loaderData }: Route.ComponentProps) {
             <Typography
               component="p"
               variant="Reg_18"
-              sx={{
-                color: theme.palette["Black"],
+              sx={(theme) => ({
+                color: theme.vars.palette["Black"],
                 paddingBottom: "14px",
-              }}
+              })}
             >
               {t("additional")}{" "}
             </Typography>
@@ -189,15 +189,15 @@ export default function UserActivities({ loaderData }: Route.ComponentProps) {
           )}
 
           <Box
-            sx={{
+            sx={(theme) => ({
               position: "fixed",
               zIndex: 1,
               width: "100%",
               bottom: "0",
               left: "0",
               padding: "10px 16px 64px 16px",
-              backgroundColor: theme.palette["White"],
-            }}
+              backgroundColor: theme.vars.palette["White"],
+            })}
           >
             <Button
               variant="contained"

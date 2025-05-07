@@ -395,7 +395,7 @@ export const generateInputsMarkup = (
               onImmediateChange={onImmediateChange}
               url={import.meta.env.VITE_SEND_FILE}
               token={token}
-              inputStyles={{
+              inputStyle={{
                 paddingRight: "16px",
                 paddingLeft: "16px",
               }}
@@ -441,7 +441,7 @@ export const generateInputsMarkup = (
               <Input
                 error={errors[item.name]?.message}
                 onImmediateChange={onImmediateChange}
-                inputStyles={{
+                inputStyle={{
                   paddingRight: "16px",
                   paddingLeft: "16px",
                 }}

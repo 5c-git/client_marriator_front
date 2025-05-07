@@ -1,9 +1,8 @@
-import { styled, Box, SwipeableDrawer } from "@mui/material";
+import { SwipeableDrawer } from "@mui/material";
+import { styled } from "@mui/material/styles";
+import Box from "@mui/material/Box";
 
-export const S_Box = styled(Box, {
-  shouldForwardProp: (prop) =>
-    prop !== "error" && prop !== "status" && prop !== "disabled",
-})<{ error?: string; status?: "warning"; disabled?: boolean }>((props) => ({
+export const S_Box = styled(Box)(({ theme }) => ({
   display: "flex",
   height: "58px",
   justifyContent: "space-between",
@@ -14,29 +13,19 @@ export const S_Box = styled(Box, {
   paddingLeft: "12px",
   paddingRight: "12px",
   border: "1px solid",
-  borderColor: props.error
-    ? props.theme.palette["Red"]
-    : props.status === "warning"
-    ? props.theme.palette["Yellow"]
-    : props.theme.palette["Grey_5"],
-  backgroundColor: props.theme.palette["Grey_5"],
-  opacity: props.disabled ? 0.6 : 1,
-  pointerEvents: props.disabled ? "none" : "initial",
+  backgroundColor: theme.vars.palette["Grey_5"],
 })) as typeof Box;
 
-export const S_ButtonContainer = styled(Box)({
+export const S_ButtonContainer = styled("div")({
   display: "grid",
   rowGap: "4px",
   // truncate
   overflow: "hidden",
   textOverflow: "ellipsis",
   whiteSpace: "nowrap",
-}) as typeof Box;
+});
 
-export const S_ActivationButton = styled("button", {
-  shouldForwardProp: (prop) =>
-    prop !== "error" && prop !== "value" && prop !== "disabled",
-})<{ error?: string; value: string; disabled?: boolean }>((props) => ({
+export const S_ActivationButton = styled("button")({
   position: "relative",
   width: "100%",
   overflow: "hidden",
@@ -51,20 +40,13 @@ export const S_ActivationButton = styled("button", {
   fontWeight: 400,
   border: 0,
   backgroundColor: "transparent",
-  color: props.error
-    ? props.theme.palette["Red"]
-    : props.disabled
-    ? props.theme.palette["Grey_4"]
-    : props.value !== ""
-    ? props.theme.palette["Black"]
-    : props.theme.palette["Grey_2"],
-}));
+});
 
 export const S_SwipeableDrawer = styled(SwipeableDrawer)((props) => ({
   "& > .MuiPaper-root": {
     borderRadius: "6px 6px 0px 0px",
     padding: "0",
-    backgroundColor: props.theme.palette["White"],
+    backgroundColor: props.theme.vars.palette["White"],
   },
   "& .MuiDrawer-paper": {
     maxHeight: "calc(100dvh - 20px)",

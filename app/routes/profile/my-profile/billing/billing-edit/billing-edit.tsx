@@ -15,7 +15,9 @@ import { useForm, Controller } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { withLocale } from "~/shared/withLocale";
 
-import { Box, Button, Divider, Dialog, DialogTitle } from "@mui/material";
+import { Button, Divider, Dialog, DialogTitle } from "@mui/material";
+import Box from "@mui/material/Box";
+
 import { TopNavigation } from "~/shared/ui/TopNavigation/TopNavigation";
 import { Loader } from "~/shared/ui/Loader/Loader";
 

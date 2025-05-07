@@ -7,11 +7,8 @@ import { useTranslation } from "react-i18next";
 import { withLocale } from "~/shared/withLocale";
 
 import {
-  useTheme,
-  Box,
   Avatar,
   Typography,
-  Stack,
   List,
   ListItem,
   ListItemButton,
@@ -22,6 +19,8 @@ import {
   DialogTitle,
   Button,
 } from "@mui/material";
+import Box from "@mui/material/Box";
+import Stack from "@mui/material/Stack";
 import { TopNavigation } from "~/shared/ui/TopNavigation/TopNavigation";
 import { Loader } from "~/shared/ui/Loader/Loader";
 
@@ -61,7 +60,6 @@ export async function clientAction() {
 
 export default function Profile({ loaderData }: Route.ComponentProps) {
   const { t } = useTranslation("profile");
-  const theme = useTheme();
   const navigation = useNavigation();
 
   const fetcher = useFetcher();
@@ -122,39 +120,40 @@ export default function Profile({ loaderData }: Route.ComponentProps) {
               }}
             >
               <ListItemIcon
-                color={theme.palette["Grey_2"]}
-                sx={{
+                // color={theme.vars.palette["Grey_2"]}
+                sx={(theme) => ({
                   minWidth: "24px",
-                }}
+                  color: theme.vars.palette["Grey_2"],
+                })}
               >
                 <ProfileIcon />
               </ListItemIcon>
               <Typography
-                sx={{
+                sx={(theme) => ({
                   display: "flex",
                   alignItems: "center",
                   columnGap: "12px",
-                  color: theme.palette["Black"],
-                }}
+                  color: theme.vars.palette["Black"],
+                })}
                 component="p"
                 variant="Reg_16"
               >
                 {t("profile")}{" "}
                 {loaderData.result.userData.errorData ? (
                   <BulletIcon
-                    sx={{
+                    sx={(theme) => ({
                       width: "6px",
                       height: "6px",
-                      color: theme.palette["Red"],
-                    }}
+                      color: theme.vars.palette["Red"],
+                    })}
                   />
                 ) : null}
               </Typography>
             </ListItemButton>
             <Divider
-              sx={{
-                backgroundColor: theme.palette["Grey_4"],
-              }}
+              sx={(theme) => ({
+                backgroundColor: theme.vars.palette["Grey_4"],
+              })}
             />
           </ListItem>
           <ListItem
@@ -177,20 +176,21 @@ export default function Profile({ loaderData }: Route.ComponentProps) {
               }}
             >
               <ListItemIcon
-                color={theme.palette["Grey_2"]}
-                sx={{
+                // color={theme.vars.palette["Grey_2"]}
+                sx={(theme) => ({
                   minWidth: "24px",
-                }}
+                  color: theme.vars.palette["Grey_2"],
+                })}
               >
                 <SettingsIcon />
               </ListItemIcon>
               <Typography
-                sx={{
+                sx={(theme) => ({
                   display: "flex",
                   alignItems: "center",
                   columnGap: "12px",
-                  color: theme.palette["Black"],
-                }}
+                  color: theme.vars.palette["Black"],
+                })}
                 component="p"
                 variant="Reg_16"
               >
@@ -199,15 +199,15 @@ export default function Profile({ loaderData }: Route.ComponentProps) {
                   sx={{
                     width: "6px",
                     height: "6px",
-                    color: theme.palette["Red"],
+                    color: theme.vars.palette["Red"],
                   }}
                 /> */}
               </Typography>
             </ListItemButton>
             <Divider
-              sx={{
-                backgroundColor: theme.palette["Grey_4"],
-              }}
+              sx={(theme) => ({
+                backgroundColor: theme.vars.palette["Grey_4"],
+              })}
             />
           </ListItem>
           <ListItem
@@ -229,20 +229,21 @@ export default function Profile({ loaderData }: Route.ComponentProps) {
               }}
             >
               <ListItemIcon
-                color={theme.palette["Grey_2"]}
-                sx={{
+                // color={theme.vars.palette["Grey_2"]}
+                sx={(theme) => ({
                   minWidth: "24px",
-                }}
+                  color: theme.vars.palette["Grey_2"],
+                })}
               >
                 <DocumentsIcon />
               </ListItemIcon>
               <Typography
-                sx={{
+                sx={(theme) => ({
                   display: "flex",
                   alignItems: "center",
                   columnGap: "12px",
-                  color: theme.palette["Black"],
-                }}
+                  color: theme.vars.palette["Black"],
+                })}
                 component="p"
                 variant="Reg_16"
               >
@@ -251,15 +252,15 @@ export default function Profile({ loaderData }: Route.ComponentProps) {
                   sx={{
                     width: "6px",
                     height: "6px",
-                    color: theme.palette["Red"],
+                    color: theme.vars.palette["Red"],
                   }}
                 /> */}
               </Typography>
             </ListItemButton>
             <Divider
-              sx={{
-                backgroundColor: theme.palette["Grey_4"],
-              }}
+              sx={(theme) => ({
+                backgroundColor: theme.vars.palette["Grey_4"],
+              })}
             />
           </ListItem>
           <ListItem
@@ -283,20 +284,21 @@ export default function Profile({ loaderData }: Route.ComponentProps) {
               }}
             >
               <ListItemIcon
-                color={theme.palette["Grey_2"]}
-                sx={{
+                // color={theme.vars.palette["Grey_2"]}
+                sx={(theme) => ({
                   minWidth: "24px",
-                }}
+                  color: theme.vars.palette["Grey_2"],
+                })}
               >
                 <ExitIcon />
               </ListItemIcon>
               <Typography
-                sx={{
+                sx={(theme) => ({
                   display: "flex",
                   alignItems: "center",
                   columnGap: "12px",
-                  color: theme.palette["Black"],
-                }}
+                  color: theme.vars.palette["Black"],
+                })}
                 component="p"
                 variant="Reg_16"
               >
@@ -305,7 +307,7 @@ export default function Profile({ loaderData }: Route.ComponentProps) {
                   sx={{
                     width: "6px",
                     height: "6px",
-                    color: theme.palette["Red"],
+                    color: theme.vars.palette["Red"],
                   }}
                 /> */}
               </Typography>

@@ -1,6 +1,6 @@
 import { Outlet } from "react-router";
 
-import { Stack } from "@mui/material";
+import Stack from "@mui/material/Stack";
 import { Menu } from "~/shared/ui/Menu/Menu";
 
 import { ListIcon } from "~/shared/ui/Menu/icons/ListIcon";
@@ -43,7 +43,7 @@ export default function MenuLayout() {
       <Outlet />
 
       <Menu
-        styles={{
+        style={{
           position: "fixed",
           width: "100%",
           bottom: 0,

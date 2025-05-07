@@ -13,7 +13,6 @@ import { emailRegExp } from "~/shared/validators";
 
 import {
   Box,
-  Stack,
   Button,
   Dialog,
   DialogTitle,
@@ -21,6 +20,7 @@ import {
   Alert,
   Typography,
 } from "@mui/material";
+import Stack from "@mui/material/Stack";
 import { TopNavigation } from "~/shared/ui/TopNavigation/TopNavigation";
 import { Loader } from "~/shared/ui/Loader/Loader";
 
@@ -241,7 +241,7 @@ export default function ProfileMeta({ loaderData }: Route.ComponentProps) {
               <Typography
                 component="p"
                 variant="Reg_12"
-                sx={{ color: (theme) => theme.palette["Grey_2"] }}
+                sx={{ color: (theme) => theme.vars.palette["Grey_2"] }}
               >
                 {t("id")}
               </Typography>
@@ -249,7 +249,7 @@ export default function ProfileMeta({ loaderData }: Route.ComponentProps) {
               <Typography
                 component="p"
                 variant="Reg_14"
-                sx={{ color: (theme) => theme.palette["Black"] }}
+                sx={{ color: (theme) => theme.vars.palette["Black"] }}
               >
                 {loaderData.id}
               </Typography>
@@ -265,7 +265,7 @@ export default function ProfileMeta({ loaderData }: Route.ComponentProps) {
                 placeholder={t("field_phone")}
                 onImmediateChange={() => {}}
                 validation="default"
-                inputStyles={{
+                inputStyle={{
                   paddingRight: "16px",
                   paddingLeft: "16px",
                 }}
@@ -292,7 +292,7 @@ export default function ProfileMeta({ loaderData }: Route.ComponentProps) {
                 placeholder="E-mail"
                 onImmediateChange={() => {}}
                 validation="default"
-                inputStyles={{
+                inputStyle={{
                   paddingRight: "16px",
                   paddingLeft: "16px",
                 }}

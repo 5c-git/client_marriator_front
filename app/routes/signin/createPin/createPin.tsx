@@ -17,14 +17,9 @@ import { yupResolver } from "@hookform/resolvers/yup";
 
 import { useForm, Controller } from "react-hook-form";
 
-import {
-  Box,
-  Typography,
-  Snackbar,
-  Alert,
-  useTheme,
-  Divider,
-} from "@mui/material";
+import { Typography, Snackbar, Alert, Divider } from "@mui/material";
+import Box from "@mui/material/Box";
+
 import { StyledOptField } from "~/shared/ui/StyledOtpField/StyledOtpField";
 import { TopNavigation } from "~/shared/ui/TopNavigation/TopNavigation";
 import { Loader } from "~/shared/ui/Loader/Loader";
@@ -61,7 +56,6 @@ export async function clientAction({ request }: Route.ClientActionArgs) {
 
 export default function CreatePin() {
   const { t } = useTranslation("createPin");
-  const theme = useTheme();
   const submit = useSubmit();
   const navigation = useNavigation();
   const navigate = useNavigate();
@@ -122,11 +116,11 @@ export default function CreatePin() {
           <Typography
             component="p"
             variant="Reg_18"
-            sx={{
-              color: theme.palette["Black"],
+            sx={(theme) => ({
+              color: theme.vars.palette["Black"],
               textAlign: "center",
               paddingBottom: "24px",
-            }}
+            })}
           >
             {t("intro")}
           </Typography>
@@ -136,12 +130,12 @@ export default function CreatePin() {
           <Typography
             component="p"
             variant="Reg_14"
-            sx={{
-              color: theme.palette["Black"],
+            sx={(theme) => ({
+              color: theme.vars.palette["Black"],
               textAlign: "center",
               paddingTop: "24px",
               paddingBottom: "20px",
-            }}
+            })}
           >
             {step === 1 ? t("text") : t("text_step2")}
           </Typography>
@@ -165,7 +159,7 @@ export default function CreatePin() {
                 render={({ field }) => (
                   <StyledOptField
                     error={errors.pin ? true : false}
-                    styles={{
+                    style={{
                       margin: "0 auto",
                     }}
                     onComplete={() => {
@@ -184,7 +178,7 @@ export default function CreatePin() {
                 render={({ field }) => (
                   <StyledOptField
                     error={errors.confirmPin ? true : false}
-                    styles={{
+                    style={{
                       margin: "0 auto",
                     }}
                     onComplete={(value) => {

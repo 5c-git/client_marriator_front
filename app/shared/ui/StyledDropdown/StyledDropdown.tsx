@@ -1,15 +1,12 @@
-import { forwardRef } from "react";
+import { CSSProperties } from "react";
 
 import {
-  useTheme,
-  SxProps,
-  Theme,
-  Box,
   FormControl,
   Select,
   SelectChangeEvent,
   MenuItem,
 } from "@mui/material";
+import Box from "@mui/material/Box";
 
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 
@@ -24,19 +21,17 @@ type StyledDropdownProps = {
   }[];
 
   disabled?: boolean;
-  styles?: SxProps<Theme>;
+  style?: CSSProperties;
   onChange: (e: SelectChangeEvent) => void;
 };
 
-export const StyledDropdown = forwardRef((props: StyledDropdownProps, ref) => {
-  const theme = useTheme();
-
+export const StyledDropdown = (props: StyledDropdownProps) => {
   return (
-    <Box sx={props.styles}>
+    <Box style={props.style}>
       <Box>
         <FormControl disabled={props.disabled}>
           <Select
-            ref={ref}
+            // ref={ref}
             labelId={props.name}
             id={props.name}
             name={props.name}
@@ -47,7 +42,7 @@ export const StyledDropdown = forwardRef((props: StyledDropdownProps, ref) => {
             }}
             IconComponent={KeyboardArrowDownIcon}
             MenuProps={{
-              sx: {
+              sx: (theme) => ({
                 marginTop: "4px",
                 borderRadius: "6px",
 
@@ -57,13 +52,13 @@ export const StyledDropdown = forwardRef((props: StyledDropdownProps, ref) => {
                   paddingBottom: "6px",
                   paddingRight: 0,
                   paddingLeft: 0,
-                  backgroundColor: theme.palette["Grey_5"],
+                  backgroundColor: theme.vars.palette["Grey_5"],
                 },
-              },
+              }),
             }}
-            sx={{
+            sx={(theme) => ({
               borderRadius: "20px",
-              backgroundColor: theme.palette["White"],
+              backgroundColor: theme.vars.palette["White"],
 
               "& .MuiOutlinedInput-input": {
                 "&.MuiSelect-select": {
@@ -74,7 +69,7 @@ export const StyledDropdown = forwardRef((props: StyledDropdownProps, ref) => {
                   paddingLeft: "10px",
                 },
               },
-            }}
+            })}
             disabled={props.disabled}
           >
             <MenuItem key="empty" value="">
@@ -94,6 +89,4 @@ export const StyledDropdown = forwardRef((props: StyledDropdownProps, ref) => {
       </Box>
     </Box>
   );
-});
-
-StyledDropdown.displayName = "StyledDropdown";
+};

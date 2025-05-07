@@ -1,11 +1,11 @@
 import { useNavigate } from "react-router";
-import { Box, Typography, useTheme, Button } from "@mui/material";
+import { Typography, Button } from "@mui/material";
+import Box from "@mui/material/Box";
 import { useTranslation } from "react-i18next";
 
 import logoOffline from "./offlineLogo.svg";
 
 export default function Offline() {
-  const theme = useTheme();
   const navigate = useNavigate();
   const { t } = useTranslation("offline");
 
@@ -38,12 +38,12 @@ export default function Offline() {
         <Typography
           component="p"
           variant="Reg_14"
-          sx={{
-            color: theme.palette["Black"],
+          sx={(theme) => ({
+            color: theme.vars.palette["Black"],
             textAlign: "center",
             paddingTop: "40px",
             paddingBottom: "40px",
-          }}
+          })}
         >
           {t("title")}
         </Typography>

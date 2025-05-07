@@ -80,34 +80,24 @@ export default [
         "routes/profile/documents/certificates/certificates.tsx"
       ),
 
-      layout("routes/dev/moderation/layout/layout.tsx", [
-        route(
-          ":lang?/dev/moderation/moderation-1",
-          "routes/dev/moderation/moderation-1/page.tsx"
-        ),
-        route(
-          ":lang?/dev/moderation/moderation-2",
-          "routes/dev/moderation/moderation-2/page.tsx"
-        ),
-        route(
-          ":lang?/dev/moderation/moderation-3",
-          "routes/dev/moderation/moderation-3/page.tsx"
-        ),
-        route(
-          ":lang?/dev/moderation/moderation-4",
-          "routes/dev/moderation/moderation-4/page.tsx"
-        ),
-      ]),
-
-      //dev
-      // route(
-      //   ":lang?/dev/moderation/moderation-1",
-      //   "routes/dev/moderation/moderation-1/page.tsx"
-      // ),
-      // route(
-      //   ":lang?/dev/moderation/moderation-2",
-      //   "routes/dev/moderation/moderation-2/page.tsx"
-      // ),
+      // layout("routes/dev/moderation/layout/layout.tsx", [
+      //   route(
+      //     ":lang?/dev/moderation/moderation-1",
+      //     "routes/dev/moderation/moderation-1/page.tsx"
+      //   ),
+      //   route(
+      //     ":lang?/dev/moderation/moderation-2",
+      //     "routes/dev/moderation/moderation-2/page.tsx"
+      //   ),
+      //   route(
+      //     ":lang?/dev/moderation/moderation-3",
+      //     "routes/dev/moderation/moderation-3/page.tsx"
+      //   ),
+      //   route(
+      //     ":lang?/dev/moderation/moderation-4",
+      //     "routes/dev/moderation/moderation-4/page.tsx"
+      //   ),
+      // ]),
     ]),
 
     route(":lang?/offline", "routes/offline/offline.tsx"),

@@ -28,7 +28,7 @@ export default function ModerationLayout() {
           text: t("header"),
           bold: false,
         }}
-        sx={{
+        style={{
           boxShadow: "none",
         }}
       />

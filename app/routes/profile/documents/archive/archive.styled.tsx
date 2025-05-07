@@ -1,4 +1,4 @@
-import { styled } from "@mui/material";
+import { styled } from "@mui/material/styles";
 
 export const S_OrderedList = styled("ol")(() => ({
   margin: 0,
@@ -11,5 +11,5 @@ export const S_OrderedList = styled("ol")(() => ({
 
 export const S_OrderedItem = styled("li")(({ theme }) => ({
   ...theme.typography.Reg_14,
-  color: theme.palette["Black"],
+  color: theme.vars.palette["Black"],
 }));

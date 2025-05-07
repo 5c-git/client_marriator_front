@@ -15,14 +15,9 @@ import { phoneRegExp } from "~/shared/validators";
 
 import { useForm, Controller } from "react-hook-form";
 
-import {
-  useTheme,
-  Alert,
-  Box,
-  Button,
-  Snackbar,
-  Typography,
-} from "@mui/material";
+import { Alert, Button, Snackbar, Typography } from "@mui/material";
+import Box from "@mui/material/Box";
+
 import { StyledPhoneField } from "~/shared/ui/StyledPhoneField/StyledPhoneField";
 import { Loader } from "~/shared/ui/Loader/Loader";
 
@@ -37,7 +32,6 @@ import marriator from "./marriator.svg";
 
 export default function Phone() {
   const { t } = useTranslation("clientPhone");
-  const theme = useTheme();
 
   const submit = useSubmit();
   const navigation = useNavigation();
@@ -78,7 +72,7 @@ export default function Phone() {
           component="p"
           variant="Reg_18"
           sx={{
-            color: (theme) => theme.palette["Black"],
+            color: (theme) => theme.vars.palette["Black"],
             paddingBottom: "58px",
           }}
         >
@@ -119,7 +113,7 @@ export default function Phone() {
                 error={errors.phone?.message}
                 placeholder={t("inputPlaceholder")}
                 onImmediateChange={() => {}}
-                styles={{
+                style={{
                   paddingBottom: "16px",
                   paddingTop: "38px",
                 }}
@@ -131,11 +125,11 @@ export default function Phone() {
           <Button
             type="submit"
             variant="contained"
-            sx={{
+            sx={(theme) => ({
               paddingTop: "14px",
               paddingBottom: "14px",
               ...theme.typography.Bold_16,
-            }}
+            })}
           >
             {t("submitButton")}
           </Button>

@@ -15,7 +15,9 @@ import {
   generateValidationSchema,
 } from "~/shared/constructor/constructor";
 
-import { useTheme, Box, Typography, Button } from "@mui/material";
+import { Typography, Button } from "@mui/material";
+import Box from "@mui/material/Box";
+
 import { TopNavigation } from "~/shared/ui/TopNavigation/TopNavigation";
 import { Loader } from "~/shared/ui/Loader/Loader";
 
@@ -68,7 +70,6 @@ export async function clientAction({ request }: Route.ClientActionArgs) {
 
 export default function Step7({ loaderData }: Route.ComponentProps) {
   const { t } = useTranslation("registrationStep7");
-  const theme = useTheme();
 
   const fetcher = useFetcher();
   const navigate = useNavigate();
@@ -127,10 +128,10 @@ export default function Step7({ loaderData }: Route.ComponentProps) {
           <Typography
             component="p"
             variant="Reg_18"
-            sx={{
-              color: theme.palette["Black"],
+            sx={(theme) => ({
+              color: theme.vars.palette["Black"],
               paddingBottom: "14px",
-            }}
+            })}
           >
             {t("intro")}
           </Typography>
@@ -191,9 +192,9 @@ export default function Step7({ loaderData }: Route.ComponentProps) {
             <Typography
               component="p"
               variant="Reg_12"
-              sx={{
-                color: theme.palette["Black"],
-              }}
+              sx={(theme) => ({
+                color: theme.vars.palette["Black"],
+              })}
             >
               {t("deal")}{" "}
               <Typography
@@ -201,10 +202,10 @@ export default function Step7({ loaderData }: Route.ComponentProps) {
                 title="legal"
                 href="/legal"
                 variant="Reg_12"
-                sx={{
-                  color: theme.palette["Corp_1"],
+                sx={(theme) => ({
+                  color: theme.vars.palette["Corp_1"],
                   textDecoration: "underline",
-                }}
+                })}
               >
                 {t("deal_personal")}
               </Typography>{" "}
@@ -214,10 +215,10 @@ export default function Step7({ loaderData }: Route.ComponentProps) {
                 variant="Reg_12"
                 title="agreement"
                 href="/agreement"
-                sx={{
-                  color: theme.palette["Corp_1"],
+                sx={(theme) => ({
+                  color: theme.vars.palette["Corp_1"],
                   textDecoration: "underline",
-                }}
+                })}
               >
                 {t("deal_agreement")}
               </Typography>

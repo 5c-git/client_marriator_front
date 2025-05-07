@@ -15,7 +15,8 @@ import { phoneRegExp } from "~/shared/validators";
 
 import { useForm, Controller } from "react-hook-form";
 
-import { Alert, Box, Button, Snackbar } from "@mui/material";
+import { Alert, Button, Snackbar } from "@mui/material";
+import Box from "@mui/material/Box";
 import { StyledPhoneField } from "~/shared/ui/StyledPhoneField/StyledPhoneField";
 import { Loader } from "~/shared/ui/Loader/Loader";
 
@@ -121,7 +122,7 @@ export default function Phone() {
                 error={errors.phone?.message}
                 placeholder={t("inputPlaceholder")}
                 onImmediateChange={() => {}}
-                styles={{
+                style={{
                   paddingBottom: "16px",
                   paddingTop: "38px",
                 }}

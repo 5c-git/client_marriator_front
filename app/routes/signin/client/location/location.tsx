@@ -23,14 +23,9 @@ import { loadMap, langMap } from "~/shared/ymap/ymap";
 import type { Coordinates } from "~/shared/ymap/ymap";
 //map
 
-import {
-  useTheme,
-  Box,
-  Button,
-  Typography,
-  Stack,
-  TextField,
-} from "@mui/material";
+import { Button, Typography, TextField } from "@mui/material";
+import Box from "@mui/material/Box";
+import Stack from "@mui/material/Stack";
 
 import { TopNavigation } from "~/shared/ui/TopNavigation/TopNavigation";
 import { Loader } from "~/shared/ui/Loader/Loader";
@@ -164,7 +159,6 @@ export async function clientLoader() {
 
 export default function Location({ loaderData }: Route.ComponentProps) {
   const { t } = useTranslation("profileMeta");
-  const theme = useTheme();
   const fetcher = useFetcher<typeof clientAction>();
   const navigate = useNavigate();
   const navigation = useNavigation();
@@ -274,7 +268,7 @@ export default function Location({ loaderData }: Route.ComponentProps) {
                 map.removeChild(object.entity);
 
                 const markerElement = document.createElement("div");
-                const icon = renderIcon("image", theme.palette["Corp_1"]);
+                const icon = renderIcon("image", "var(--mui-palette-Corp_1)");
                 markerElement.innerHTML = icon;
 
                 const marker = new YMapMarker(
@@ -316,7 +310,7 @@ export default function Location({ loaderData }: Route.ComponentProps) {
 
         const icon = renderIcon(
           "image",
-          isShopSelected ? theme.palette["Corp_1"] : "red"
+          isShopSelected ? "var(--mui-palette-Corp_1)" : "red"
         );
 
         markerElement.innerHTML = icon;
@@ -341,7 +335,7 @@ export default function Location({ loaderData }: Route.ComponentProps) {
         markers,
       });
     }
-  }, [theme, showMap, loaderData.ymaps]);
+  }, [showMap, loaderData.ymaps]);
 
   useEffect(() => {
     setTimeout(() => {
@@ -361,7 +355,7 @@ export default function Location({ loaderData }: Route.ComponentProps) {
 
         const icon = renderIcon(
           "image",
-          isShopSelected ? theme.palette["Corp_1"] : "red"
+          isShopSelected ? "var(--mui-palette-Corp_1)" : "red"
         );
 
         markerElement.innerHTML = icon;
@@ -474,7 +468,7 @@ export default function Location({ loaderData }: Route.ComponentProps) {
                         const markerElement = document.createElement("div");
                         const icon = renderIcon(
                           "image",
-                          theme.palette["Corp_1"]
+                          "var(--mui-palette-Corp_1)"
                         );
                         markerElement.innerHTML = icon;
 
@@ -564,17 +558,17 @@ export default function Location({ loaderData }: Route.ComponentProps) {
             )}
 
             <Box
-              sx={{
+              sx={(theme) => ({
                 display: "flex",
                 columnGap: "14px",
                 padding: "10px",
-                backgroundColor: theme.palette["White"],
+                backgroundColor: theme.vars.palette["White"],
                 position: "fixed",
                 zIndex: 1,
                 width: "100%",
                 bottom: "0",
                 left: "0",
-              }}
+              })}
             >
               <Button type="button">Отменить</Button>
               <Button type="submit" variant="contained">

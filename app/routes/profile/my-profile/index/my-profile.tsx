@@ -4,8 +4,6 @@ import type { Route } from "./+types/my-profile";
 import { useTranslation } from "react-i18next";
 
 import {
-  useTheme,
-  Box,
   Typography,
   List,
   ListItem,
@@ -13,6 +11,8 @@ import {
   ListItemIcon,
   Divider,
 } from "@mui/material";
+import Box from "@mui/material/Box";
+
 import { TopNavigation } from "~/shared/ui/TopNavigation/TopNavigation";
 import { Loader } from "~/shared/ui/Loader/Loader";
 
@@ -46,7 +46,6 @@ export async function clientLoader() {
 
 export default function MyProfile({ loaderData }: Route.ComponentProps) {
   const { t } = useTranslation("myProfile");
-  const theme = useTheme();
   const navigate = useNavigate();
   const navigation = useNavigation();
 
@@ -92,12 +91,12 @@ export default function MyProfile({ loaderData }: Route.ComponentProps) {
               }}
             >
               <Typography
-                sx={{
-                  color: theme.palette["Black"],
+                sx={(theme) => ({
+                  color: theme.vars.palette["Black"],
                   overflow: "hidden",
                   textOverflow: "ellipsis",
                   whiteSpace: "nowrap",
-                }}
+                })}
                 component="p"
                 variant="Reg_16"
               >
@@ -110,13 +109,18 @@ export default function MyProfile({ loaderData }: Route.ComponentProps) {
                   marginLeft: "auto",
                 }}
               >
-                <ArrowForwardIosIcon htmlColor={theme.palette["Grey_2"]} />
+                <ArrowForwardIosIcon
+                  // htmlColor={theme.vars.palette["Grey_2"]}
+                  sx={(theme) => ({
+                    color: theme.vars.palette["Grey_2"],
+                  })}
+                />
               </ListItemIcon>
             </ListItemButton>
             <Divider
-              sx={{
-                backgroundColor: theme.palette["Grey_4"],
-              }}
+              sx={(theme) => ({
+                backgroundColor: theme.vars.palette["Grey_4"],
+              })}
             />
           </ListItem>
           <ListItem
@@ -139,12 +143,12 @@ export default function MyProfile({ loaderData }: Route.ComponentProps) {
               }}
             >
               <Typography
-                sx={{
-                  color: theme.palette["Black"],
+                sx={(theme) => ({
+                  color: theme.vars.palette["Black"],
                   overflow: "hidden",
                   textOverflow: "ellipsis",
                   whiteSpace: "nowrap",
-                }}
+                })}
                 component="p"
                 variant="Reg_16"
               >
@@ -157,13 +161,17 @@ export default function MyProfile({ loaderData }: Route.ComponentProps) {
                   marginLeft: "auto",
                 }}
               >
-                <ArrowForwardIosIcon htmlColor={theme.palette["Grey_2"]} />
+                <ArrowForwardIosIcon // htmlColor={theme.vars.palette["Grey_2"]}
+                  sx={(theme) => ({
+                    color: theme.vars.palette["Grey_2"],
+                  })}
+                />
               </ListItemIcon>
             </ListItemButton>
             <Divider
-              sx={{
-                backgroundColor: theme.palette["Grey_4"],
-              }}
+              sx={(theme) => ({
+                backgroundColor: theme.vars.palette["Grey_4"],
+              })}
             />
           </ListItem>
           <ListItem
@@ -186,12 +194,12 @@ export default function MyProfile({ loaderData }: Route.ComponentProps) {
               }}
             >
               <Typography
-                sx={{
-                  color: theme.palette["Black"],
+                sx={(theme) => ({
+                  color: theme.vars.palette["Black"],
                   overflow: "hidden",
                   textOverflow: "ellipsis",
                   whiteSpace: "nowrap",
-                }}
+                })}
                 component="p"
                 variant="Reg_16"
               >
@@ -204,13 +212,17 @@ export default function MyProfile({ loaderData }: Route.ComponentProps) {
                   marginLeft: "auto",
                 }}
               >
-                <ArrowForwardIosIcon htmlColor={theme.palette["Grey_2"]} />
+                <ArrowForwardIosIcon // htmlColor={theme.vars.palette["Grey_2"]}
+                  sx={(theme) => ({
+                    color: theme.vars.palette["Grey_2"],
+                  })}
+                />
               </ListItemIcon>
             </ListItemButton>
             <Divider
-              sx={{
-                backgroundColor: theme.palette["Grey_4"],
-              }}
+              sx={(theme) => ({
+                backgroundColor: theme.vars.palette["Grey_4"],
+              })}
             />
           </ListItem>
           <ListItem
@@ -233,12 +245,12 @@ export default function MyProfile({ loaderData }: Route.ComponentProps) {
               }}
             >
               <Typography
-                sx={{
-                  color: theme.palette["Black"],
+                sx={(theme) => ({
+                  color: theme.vars.palette["Black"],
                   overflow: "hidden",
                   textOverflow: "ellipsis",
                   whiteSpace: "nowrap",
-                }}
+                })}
                 component="p"
                 variant="Reg_16"
               >
@@ -251,13 +263,17 @@ export default function MyProfile({ loaderData }: Route.ComponentProps) {
                   marginLeft: "auto",
                 }}
               >
-                <ArrowForwardIosIcon htmlColor={theme.palette["Grey_2"]} />
+                <ArrowForwardIosIcon // htmlColor={theme.vars.palette["Grey_2"]}
+                  sx={(theme) => ({
+                    color: theme.vars.palette["Grey_2"],
+                  })}
+                />
               </ListItemIcon>
             </ListItemButton>
             <Divider
-              sx={{
-                backgroundColor: theme.palette["Grey_4"],
-              }}
+              sx={(theme) => ({
+                backgroundColor: theme.vars.palette["Grey_4"],
+              })}
             />
           </ListItem>
           {loaderData.result.section.map((item) => (
@@ -285,12 +301,12 @@ export default function MyProfile({ loaderData }: Route.ComponentProps) {
                 }}
               >
                 <Typography
-                  sx={{
-                    color: theme.palette["Black"],
+                  sx={(theme) => ({
+                    color: theme.vars.palette["Black"],
                     overflow: "hidden",
                     textOverflow: "ellipsis",
                     whiteSpace: "nowrap",
-                  }}
+                  })}
                   component="p"
                   variant="Reg_16"
                 >
@@ -299,11 +315,11 @@ export default function MyProfile({ loaderData }: Route.ComponentProps) {
 
                 {item.notification ? (
                   <BulletIcon
-                    sx={{
+                    sx={(theme) => ({
                       width: "6px",
                       height: "6px",
-                      color: theme.palette["Red"],
-                    }}
+                      color: theme.vars.palette["Red"],
+                    })}
                   />
                 ) : null}
 
@@ -313,13 +329,17 @@ export default function MyProfile({ loaderData }: Route.ComponentProps) {
                     marginLeft: "auto",
                   }}
                 >
-                  <ArrowForwardIosIcon htmlColor={theme.palette["Grey_2"]} />
+                  <ArrowForwardIosIcon // htmlColor={theme.vars.palette["Grey_2"]}
+                    sx={(theme) => ({
+                      color: theme.vars.palette["Grey_2"],
+                    })}
+                  />
                 </ListItemIcon>
               </ListItemButton>
               <Divider
-                sx={{
-                  backgroundColor: theme.palette["Grey_4"],
-                }}
+                sx={(theme) => ({
+                  backgroundColor: theme.vars.palette["Grey_4"],
+                })}
               />
             </ListItem>
           ))}
@@ -339,18 +359,18 @@ export default function MyProfile({ loaderData }: Route.ComponentProps) {
             }}
           >
             <BulletIcon
-              sx={{
+              sx={(theme) => ({
                 width: "6px",
                 height: "6px",
-                color: theme.palette["Red"],
-              }}
+                color: theme.vars.palette["Red"],
+              })}
             />
             <Typography
               component="p"
               variant="Reg_12"
-              sx={{
-                color: theme.palette["Grey_2"],
-              }}
+              sx={(theme) => ({
+                color: theme.vars.palette["Grey_2"],
+              })}
             >
               {t("red-dot_text")}
             </Typography>

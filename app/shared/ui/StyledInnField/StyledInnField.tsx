@@ -1,16 +1,14 @@
-import { forwardRef } from "react";
+import { CSSProperties } from "react";
 import { Link } from "react-router";
 import {
-  useTheme,
-  SxProps,
-  Theme,
-  Box,
   Typography,
   Divider,
   FormControl,
   FormHelperText,
   TextField,
 } from "@mui/material";
+import Box from "@mui/material/Box";
+
 import { MaskedField } from "../MaskedField/MaskedField";
 
 type StyledInnFieldProps = {
@@ -36,29 +34,27 @@ type StyledInnFieldProps = {
 
   dividerTop?: true;
   dividerBottom?: true;
-  styles?: SxProps<Theme>;
-  inputStyles?: SxProps<Theme>;
+  style?: CSSProperties;
+  inputStyle?: CSSProperties;
 
   onChange: (e: string) => void;
   onImmediateChange: () => void;
 };
 
-export const StyledInnField = forwardRef((props: StyledInnFieldProps, ref) => {
-  const theme = useTheme();
-
+export const StyledInnField = (props: StyledInnFieldProps) => {
   return (
-    <Box sx={props.styles} ref={ref}>
+    <Box sx={props.style}>
       {props.dividerTop ? <Divider sx={{ marginBottom: "16px" }} /> : null}
 
-      <Box sx={props.inputStyles}>
+      <Box sx={props.inputStyle}>
         {props.heading ? (
           <Typography
             component="p"
             variant="Bold_14"
-            sx={{
-              color: theme.palette["Black"],
+            sx={(theme) => ({
+              color: theme.vars.palette["Black"],
               marginBottom: "8px",
-            }}
+            })}
           >
             {props.heading}
           </Typography>
@@ -84,23 +80,35 @@ export const StyledInnField = forwardRef((props: StyledInnFieldProps, ref) => {
             error={props.error ? true : false}
             label={props.placeholder}
             //
-            sx={{
-              marginBottom: "4px",
-
-              "& .MuiOutlinedInput-root": {
-                borderColor:
-                  props.status === "warning"
-                    ? theme.palette["Yellow"]
-                    : "transparent",
+            sx={[
+              {
+                marginBottom: "4px",
+                borderColor: "transparent",
               },
-            }}
-            InputProps={{
-              inputComponent: MaskedField as never,
-              inputProps: {
-                mask: "000000000000",
+              props.error
+                ? {
+                    "& .MuiOutlinedInput-root": {
+                      borderColor: "var(--mui-palette-Red)",
+                    },
+                  }
+                : null,
+              props.status === "warning"
+                ? {
+                    "& .MuiOutlinedInput-root": {
+                      borderColor: "var(--mui-palette-Yellow)",
+                    },
+                  }
+                : null,
+            ]}
+            slotProps={{
+              input: {
+                inputComponent: MaskedField as never,
+                inputProps: {
+                  mask: "000000000000",
+                },
+                inputMode: "numeric",
+                type: "tel",
               },
-              inputMode: "numeric",
-              type: "tel",
             }}
           />
           {props.error ? (
@@ -118,9 +126,9 @@ export const StyledInnField = forwardRef((props: StyledInnFieldProps, ref) => {
           <Typography
             component="p"
             variant="Reg_12"
-            sx={{
-              color: theme.palette["Corp_1"],
-            }}
+            sx={(theme) => ({
+              color: theme.vars.palette["Corp_1"],
+            })}
           >
             {props.helperInfo.text}{" "}
             {props.helperInfo.link ? (
@@ -130,7 +138,7 @@ export const StyledInnField = forwardRef((props: StyledInnFieldProps, ref) => {
                     viewTransition
                     style={{
                       textDecorationLine: "underline",
-                      color: theme.palette["Corp_1"],
+                      color: "var(--mui-palette-Corp_1)",
                     }}
                     to={props.helperInfo.link.path}
                   >
@@ -140,7 +148,7 @@ export const StyledInnField = forwardRef((props: StyledInnFieldProps, ref) => {
                   <a
                     style={{
                       textDecorationLine: "underline",
-                      color: theme.palette["Corp_1"],
+                      color: "var(--mui-palette-Corp_1)",
                     }}
                     href={props.helperInfo.link.path}
                     target="_blank"
@@ -158,6 +166,4 @@ export const StyledInnField = forwardRef((props: StyledInnFieldProps, ref) => {
       {props.dividerBottom ? <Divider sx={{ marginTop: "16px" }} /> : null}
     </Box>
   );
-});
-
-StyledInnField.displayName = "StyledInnField";
+};

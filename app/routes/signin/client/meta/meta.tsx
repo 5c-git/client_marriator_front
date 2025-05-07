@@ -15,15 +15,9 @@ import { useForm, Controller } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { withLocale } from "~/shared/withLocale";
 
-import {
-  useTheme,
-  Box,
-  Avatar,
-  Button,
-  IconButton,
-  Typography,
-  Stack,
-} from "@mui/material";
+import { Avatar, Button, IconButton, Typography } from "@mui/material";
+import Box from "@mui/material/Box";
+import Stack from "@mui/material/Stack";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 
 import { S_SwipeableDrawer } from "./meta.styled";
@@ -50,7 +44,6 @@ const location = {
 
 export default function Meta({ loaderData }: Route.ComponentProps) {
   const { t } = useTranslation("profileMeta");
-  const theme = useTheme();
   // const fetcher = useFetcher<typeof clientAction>();
   const navigate = useNavigate();
   const navigation = useNavigation();
@@ -96,7 +89,7 @@ export default function Meta({ loaderData }: Route.ComponentProps) {
     <>
       {navigation.state !== "idle" ? <Loader /> : null}
 
-      <Box sx={{}}>
+      <Box>
         <TopNavigation
           header={{
             text: "Настройка аккаунта",
@@ -122,12 +115,12 @@ export default function Meta({ loaderData }: Route.ComponentProps) {
         >
           <Avatar
             src={getValues().logo}
-            sx={{
+            sx={(theme) => ({
               width: "88px",
               height: "88px",
               justifySelf: "center",
               ...theme.typography.Reg_16,
-            }}
+            })}
           >
             Логотип
           </Avatar>
@@ -139,7 +132,7 @@ export default function Meta({ loaderData }: Route.ComponentProps) {
               alignItems: "start",
               padding: "8px 12px",
               rowGap: "2px",
-              backgroundColor: (theme) => theme.palette["Grey_5"],
+              backgroundColor: (theme) => theme.vars.palette["Grey_5"],
               borderRadius: "6px",
             }}
             onClick={() => {
@@ -150,7 +143,7 @@ export default function Meta({ loaderData }: Route.ComponentProps) {
               component="p"
               variant="Reg_12"
               sx={{
-                color: (theme) => theme.palette["Grey_2"],
+                color: (theme) => theme.vars.palette["Grey_2"],
               }}
             >
               Аватар *
@@ -167,7 +160,7 @@ export default function Meta({ loaderData }: Route.ComponentProps) {
                 variant="Reg_14"
                 sx={{
                   flexGrow: "1",
-                  color: (theme) => theme.palette["Black"],
+                  color: (theme) => theme.vars.palette["Black"],
                   textAlign: "left",
                 }}
               >
@@ -175,7 +168,7 @@ export default function Meta({ loaderData }: Route.ComponentProps) {
               </Typography>{" "}
               <KeyboardArrowDownIcon
                 sx={{
-                  color: (theme) => theme.palette["Grey_2"],
+                  color: (theme) => theme.vars.palette["Grey_2"],
                 }}
               />
             </Stack>
@@ -266,7 +259,7 @@ export default function Meta({ loaderData }: Route.ComponentProps) {
               bottom: "0",
               left: "0",
               padding: "10px 16px 24px 16px",
-              backgroundColor: (theme) => theme.palette["White"],
+              backgroundColor: (theme) => theme.vars.palette["White"],
             }}
           >
             <Button type="submit" variant="contained" disabled={!isValid}>

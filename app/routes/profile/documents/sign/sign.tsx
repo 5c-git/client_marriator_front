@@ -5,7 +5,9 @@ import { useTranslation } from "react-i18next";
 
 import { withLocale } from "~/shared/withLocale";
 
-import { useTheme, Box, Button, Typography } from "@mui/material";
+import { Button, Typography } from "@mui/material";
+import Box from "@mui/material/Box";
+
 import { TopNavigation } from "~/shared/ui/TopNavigation/TopNavigation";
 import { S_OrderedList, S_OrderedItem } from "./sign.styled";
 
@@ -28,7 +30,6 @@ export async function clientLoader() {
 
 export default function Sign({ loaderData }: Route.ComponentProps) {
   const { t } = useTranslation("sign");
-  const theme = useTheme();
   const navigation = useNavigation();
   const navigate = useNavigate();
 
@@ -67,10 +68,10 @@ export default function Sign({ loaderData }: Route.ComponentProps) {
             <Typography
               component="h1"
               variant="Reg_18"
-              sx={{
-                color: theme.palette["Black"],
+              sx={(theme) => ({
+                color: theme.vars.palette["Black"],
                 paddingBottom: "8px",
-              }}
+              })}
             >
               {t("sign_header")}
             </Typography>

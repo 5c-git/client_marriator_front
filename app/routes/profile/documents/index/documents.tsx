@@ -5,8 +5,6 @@ import { useTranslation } from "react-i18next";
 import { withLocale } from "~/shared/withLocale";
 
 import {
-  useTheme,
-  Box,
   Typography,
   List,
   ListItem,
@@ -14,6 +12,8 @@ import {
   ListItemIcon,
   Divider,
 } from "@mui/material";
+import Box from "@mui/material/Box";
+
 import { TopNavigation } from "~/shared/ui/TopNavigation/TopNavigation";
 
 import { Loader } from "~/shared/ui/Loader/Loader";
@@ -23,7 +23,6 @@ import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 
 export default function Documents() {
   const { t } = useTranslation("documents");
-  const theme = useTheme();
   const navigation = useNavigation();
   const navigate = useNavigate();
 
@@ -69,12 +68,12 @@ export default function Documents() {
               }}
             >
               <Typography
-                sx={{
-                  color: theme.palette["Black"],
+                sx={(theme) => ({
+                  color: theme.vars.palette["Black"],
                   overflow: "hidden",
                   textOverflow: "ellipsis",
                   whiteSpace: "nowrap",
-                }}
+                })}
                 component="p"
                 variant="Reg_16"
               >
@@ -85,7 +84,7 @@ export default function Documents() {
                 sx={{
                   width: "6px",
                   height: "6px",
-                  color: theme.palette["Red"],
+                  color: theme.vars.palette["Red"],
                 }}
               /> */}
 
@@ -95,13 +94,13 @@ export default function Documents() {
                   marginLeft: "auto",
                 }}
               >
-                <ArrowForwardIosIcon htmlColor={theme.palette["Grey_2"]} />
+                <ArrowForwardIosIcon htmlColor={"var(--mui-palette-Grey_2)"} />
               </ListItemIcon>
             </ListItemButton>
             <Divider
-              sx={{
-                backgroundColor: theme.palette["Grey_4"],
-              }}
+              sx={(theme) => ({
+                backgroundColor: theme.vars.palette["Grey_4"],
+              })}
             />
           </ListItem>
           <ListItem
@@ -124,12 +123,12 @@ export default function Documents() {
               }}
             >
               <Typography
-                sx={{
-                  color: theme.palette["Black"],
+                sx={(theme) => ({
+                  color: theme.vars.palette["Black"],
                   overflow: "hidden",
                   textOverflow: "ellipsis",
                   whiteSpace: "nowrap",
-                }}
+                })}
                 component="p"
                 variant="Reg_16"
               >
@@ -140,7 +139,7 @@ export default function Documents() {
                 sx={{
                   width: "6px",
                   height: "6px",
-                  color: theme.palette["Red"],
+                  color: theme.vars.palette["Red"],
                 }}
               /> */}
 
@@ -150,13 +149,13 @@ export default function Documents() {
                   marginLeft: "auto",
                 }}
               >
-                <ArrowForwardIosIcon htmlColor={theme.palette["Grey_2"]} />
+                <ArrowForwardIosIcon htmlColor={"var(--mui-palette-Grey_2)"} />
               </ListItemIcon>
             </ListItemButton>
             <Divider
-              sx={{
-                backgroundColor: theme.palette["Grey_4"],
-              }}
+              sx={(theme) => ({
+                backgroundColor: theme.vars.palette["Grey_4"],
+              })}
             />
           </ListItem>
           <ListItem
@@ -179,12 +178,12 @@ export default function Documents() {
               }}
             >
               <Typography
-                sx={{
-                  color: theme.palette["Black"],
+                sx={(theme) => ({
+                  color: theme.vars.palette["Black"],
                   overflow: "hidden",
                   textOverflow: "ellipsis",
                   whiteSpace: "nowrap",
-                }}
+                })}
                 component="p"
                 variant="Reg_16"
               >
@@ -195,7 +194,7 @@ export default function Documents() {
                 sx={{
                   width: "6px",
                   height: "6px",
-                  color: theme.palette["Red"],
+                  color: theme.vars.palette["Red"],
                 }}
               /> */}
 
@@ -205,13 +204,13 @@ export default function Documents() {
                   marginLeft: "auto",
                 }}
               >
-                <ArrowForwardIosIcon htmlColor={theme.palette["Grey_2"]} />
+                <ArrowForwardIosIcon htmlColor={"var(--mui-palette-Grey_2)"} />
               </ListItemIcon>
             </ListItemButton>
             <Divider
-              sx={{
-                backgroundColor: theme.palette["Grey_4"],
-              }}
+              sx={(theme) => ({
+                backgroundColor: theme.vars.palette["Grey_4"],
+              })}
             />
           </ListItem>
           <ListItem
@@ -234,12 +233,12 @@ export default function Documents() {
               }}
             >
               <Typography
-                sx={{
-                  color: theme.palette["Black"],
+                sx={(theme) => ({
+                  color: theme.vars.palette["Black"],
                   overflow: "hidden",
                   textOverflow: "ellipsis",
                   whiteSpace: "nowrap",
-                }}
+                })}
                 component="p"
                 variant="Reg_16"
               >
@@ -250,7 +249,7 @@ export default function Documents() {
                 sx={{
                   width: "6px",
                   height: "6px",
-                  color: theme.palette["Red"],
+                  color: theme.vars.palette["Red"],
                 }}
               /> */}
 
@@ -260,13 +259,13 @@ export default function Documents() {
                   marginLeft: "auto",
                 }}
               >
-                <ArrowForwardIosIcon htmlColor={theme.palette["Grey_2"]} />
+                <ArrowForwardIosIcon htmlColor={"var(--mui-palette-Grey_2)"} />
               </ListItemIcon>
             </ListItemButton>
             <Divider
-              sx={{
-                backgroundColor: theme.palette["Grey_4"],
-              }}
+              sx={(theme) => ({
+                backgroundColor: theme.vars.palette["Grey_4"],
+              })}
             />
           </ListItem>
           <ListItem
@@ -289,12 +288,12 @@ export default function Documents() {
               }}
             >
               <Typography
-                sx={{
-                  color: theme.palette["Black"],
+                sx={(theme) => ({
+                  color: theme.vars.palette["Black"],
                   overflow: "hidden",
                   textOverflow: "ellipsis",
                   whiteSpace: "nowrap",
-                }}
+                })}
                 component="p"
                 variant="Reg_16"
               >
@@ -305,7 +304,7 @@ export default function Documents() {
                 sx={{
                   width: "6px",
                   height: "6px",
-                  color: theme.palette["Red"],
+                  color: theme.vars.palette["Red"],
                 }}
               /> */}
 
@@ -315,13 +314,13 @@ export default function Documents() {
                   marginLeft: "auto",
                 }}
               >
-                <ArrowForwardIosIcon htmlColor={theme.palette["Grey_2"]} />
+                <ArrowForwardIosIcon htmlColor={"var(--mui-palette-Grey_2)"} />
               </ListItemIcon>
             </ListItemButton>
             <Divider
-              sx={{
-                backgroundColor: theme.palette["Grey_4"],
-              }}
+              sx={(theme) => ({
+                backgroundColor: theme.vars.palette["Grey_4"],
+              })}
             />
           </ListItem>
         </List>

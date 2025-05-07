@@ -1,11 +1,7 @@
-import { forwardRef } from "react";
+import { CSSProperties } from "react";
 import { Link } from "react-router";
 
 import {
-  useTheme,
-  SxProps,
-  Theme,
-  Box,
   Typography,
   Divider,
   FormControl,
@@ -14,6 +10,7 @@ import {
   Select,
   SelectChangeEvent,
 } from "@mui/material";
+import Box from "@mui/material/Box";
 
 import { S_MenuItem } from "./StyledSelect.styled";
 
@@ -46,29 +43,27 @@ type StyledSelectProps = {
 
   dividerTop?: true;
   dividerBottom?: true;
-  styles?: SxProps<Theme>;
-  inputStyles?: SxProps<Theme>;
+  style?: CSSProperties;
+  inputStyle?: CSSProperties;
 
   onChange: (e: SelectChangeEvent) => void;
   onImmediateChange: () => void;
 };
 
-export const StyledSelect = forwardRef((props: StyledSelectProps, ref) => {
-  const theme = useTheme();
-
+export const StyledSelect = (props: StyledSelectProps) => {
   return (
-    <Box sx={props.styles}>
+    <Box style={props.style}>
       {props.dividerTop ? <Divider sx={{ marginBottom: "16px" }} /> : null}
 
-      <Box sx={props.inputStyles}>
+      <Box style={props.inputStyle}>
         {props.heading ? (
           <Typography
             component="p"
             variant="Bold_14"
-            sx={{
-              color: theme.palette["Black"],
+            sx={(theme) => ({
+              color: theme.vars.palette["Black"],
               marginBottom: "8px",
-            }}
+            })}
           >
             {props.heading}
           </Typography>
@@ -83,7 +78,7 @@ export const StyledSelect = forwardRef((props: StyledSelectProps, ref) => {
         >
           <InputLabel id={props.name}>{props.placeholder}</InputLabel>
           <Select
-            ref={ref}
+            // ref={ref}
             labelId={props.name}
             id={props.name}
             name={props.name}
@@ -94,7 +89,7 @@ export const StyledSelect = forwardRef((props: StyledSelectProps, ref) => {
             }}
             IconComponent={KeyboardArrowDownIcon}
             MenuProps={{
-              sx: {
+              sx: (theme) => ({
                 marginTop: "4px",
                 borderRadius: "6px",
 
@@ -105,17 +100,30 @@ export const StyledSelect = forwardRef((props: StyledSelectProps, ref) => {
                   paddingBottom: "12px",
                   paddingRight: 0,
                   paddingLeft: 0,
-                  backgroundColor: theme.palette["Grey_5"],
+                  backgroundColor: theme.vars.palette["Grey_5"],
                 },
+              }),
+            }}
+            sx={[
+              {
+                marginBottom: "4px",
+                borderColor: "transparent",
               },
-            }}
-            sx={{
-              marginBottom: "4px",
-              borderColor:
-                props.status === "warning"
-                  ? theme.palette["Yellow"]
-                  : "transparent",
-            }}
+              props.error
+                ? {
+                    "& .MuiOutlinedInput-root": {
+                      borderColor: "var(--mui-palette-Red)",
+                    },
+                  }
+                : null,
+              props.status === "warning"
+                ? {
+                    "& .MuiOutlinedInput-root": {
+                      borderColor: "var(--mui-palette-Yellow)",
+                    },
+                  }
+                : null,
+            ]}
             disabled={props.disabled}
           >
             {props.options.map((option) => (
@@ -143,9 +151,9 @@ export const StyledSelect = forwardRef((props: StyledSelectProps, ref) => {
           <Typography
             component="p"
             variant="Reg_12"
-            sx={{
-              color: theme.palette["Corp_1"],
-            }}
+            sx={(theme) => ({
+              color: theme.vars.palette["Corp_1"],
+            })}
           >
             {props.helperInfo.text}{" "}
             {props.helperInfo.link ? (
@@ -155,7 +163,7 @@ export const StyledSelect = forwardRef((props: StyledSelectProps, ref) => {
                     viewTransition
                     style={{
                       textDecorationLine: "underline",
-                      color: theme.palette["Corp_1"],
+                      color: "var(--mui-palette-Corp_1)",
                     }}
                     to={props.helperInfo.link.path}
                   >
@@ -165,7 +173,7 @@ export const StyledSelect = forwardRef((props: StyledSelectProps, ref) => {
                   <a
                     style={{
                       textDecorationLine: "underline",
-                      color: theme.palette["Corp_1"],
+                      color: "var(--mui-palette-Corp_1)",
                     }}
                     href={props.helperInfo.link.path}
                     target="_blank"
@@ -183,6 +191,4 @@ export const StyledSelect = forwardRef((props: StyledSelectProps, ref) => {
       {props.dividerBottom ? <Divider sx={{ marginTop: "16px" }} /> : null}
     </Box>
   );
-});
-
-StyledSelect.displayName = "StyledSelect";
+};

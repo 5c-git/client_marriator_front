@@ -81,7 +81,7 @@ export default function Moderation1() {
                 component="p"
                 variant="Reg_14"
                 sx={(theme) => ({
-                  color: theme.palette["Black"],
+                  color: theme.vars.palette["Black"],
                 })}
               >
                 Михельсон Конрад Карлович
@@ -90,7 +90,7 @@ export default function Moderation1() {
                 component="p"
                 variant="Reg_12"
                 sx={(theme) => ({
-                  color: theme.palette["Black"],
+                  color: theme.vars.palette["Black"],
                 })}
               >
                 ООО Ромашка

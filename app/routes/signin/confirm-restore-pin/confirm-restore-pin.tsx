@@ -17,14 +17,9 @@ import { yupResolver } from "@hookform/resolvers/yup";
 
 import { useForm, Controller } from "react-hook-form";
 
-import {
-  Box,
-  Button,
-  Typography,
-  Snackbar,
-  Alert,
-  useTheme,
-} from "@mui/material";
+import { Button, Typography, Snackbar, Alert } from "@mui/material";
+import Box from "@mui/material/Box";
+
 import { StyledSmsField } from "~/shared/ui/StyledSmsField/StyledSmsField";
 import { TopNavigation } from "~/shared/ui/TopNavigation/TopNavigation";
 import { Loader } from "~/shared/ui/Loader/Loader";
@@ -95,7 +90,6 @@ export default function СonfirmRestorePin({
   loaderData,
 }: Route.ComponentProps) {
   const { t } = useTranslation("confirmRestorePin");
-  const theme = useTheme();
   const submit = useSubmit();
   const navigation = useNavigation();
   const navigate = useNavigate();
@@ -234,18 +228,18 @@ export default function СonfirmRestorePin({
             <Typography
               component="p"
               variant="Reg_12"
-              sx={{
-                color: theme.palette["Black"],
+              sx={(theme) => ({
+                color: theme.vars.palette["Black"],
                 textAlign: "center",
-              }}
+              })}
             >
               {t("timer")}{" "}
               <Typography
                 component="span"
                 variant="Bold_12"
-                sx={{
-                  color: theme.palette["Black"],
-                }}
+                sx={(theme) => ({
+                  color: theme.vars.palette["Black"],
+                })}
               >
                 {Math.floor(seconds / 60) < 10
                   ? `0${Math.floor(seconds / 60)}`

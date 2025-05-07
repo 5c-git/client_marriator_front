@@ -1,11 +1,7 @@
-import { forwardRef } from "react";
+import { CSSProperties } from "react";
 import { Link } from "react-router";
 
 import {
-  useTheme,
-  SxProps,
-  Theme,
-  Box,
   Typography,
   Divider,
   FormControl,
@@ -13,6 +9,7 @@ import {
   FormHelperText,
   Select,
 } from "@mui/material";
+import Box from "@mui/material/Box";
 
 import { S_MenuItem } from "./StyledSelectMultiple.styled";
 
@@ -45,150 +42,157 @@ type StyledSelectMultipleProps = {
 
   dividerTop?: true;
   dividerBottom?: true;
-  styles?: SxProps<Theme>;
-  inputStyles?: SxProps<Theme>;
+  style?: CSSProperties;
+  inputStyle?: CSSProperties;
 
   onChange: (e: string[]) => void;
   onImmediateChange: () => void;
 };
 
-export const StyledSelectMultiple = forwardRef(
-  (props: StyledSelectMultipleProps, ref) => {
-    const theme = useTheme();
+export const StyledSelectMultiple = (props: StyledSelectMultipleProps) => {
+  return (
+    <Box style={props.style}>
+      {props.dividerTop ? <Divider sx={{ marginBottom: "16px" }} /> : null}
 
-    return (
-      <Box sx={props.styles}>
-        {props.dividerTop ? <Divider sx={{ marginBottom: "16px" }} /> : null}
-
-        <Box sx={props.inputStyles}>
-          {props.heading ? (
-            <Typography
-              component="p"
-              variant="Bold_14"
-              sx={{
-                color: theme.palette["Black"],
-                marginBottom: "8px",
-              }}
-            >
-              {props.heading}
-            </Typography>
-          ) : null}
-
-          <FormControl
-            sx={{
-              width: "100%",
-            }}
-            disabled={props.disabled}
-            error={props.error ? true : false}
+      <Box style={props.inputStyle}>
+        {props.heading ? (
+          <Typography
+            component="p"
+            variant="Bold_14"
+            sx={(theme) => ({
+              color: theme.vars.palette["Black"],
+              marginBottom: "8px",
+            })}
           >
-            <InputLabel id={props.name}>{props.placeholder}</InputLabel>
-            <Select
-              multiple
-              ref={ref}
-              labelId={props.name}
-              id={props.name}
-              name={props.name}
-              value={props.value}
-              onChange={(evt) => {
-                props.onChange(
-                  typeof evt.target.value === "string"
-                    ? evt.target.value.split(",")
-                    : evt.target.value
-                );
-                props.onImmediateChange();
-              }}
-              IconComponent={KeyboardArrowDownIcon}
-              MenuProps={{
-                sx: {
-                  marginTop: "4px",
-                  borderRadius: "6px",
+            {props.heading}
+          </Typography>
+        ) : null}
 
-                  "& .MuiMenu-list": {
-                    display: "grid",
-                    rowGap: "12px",
-                    paddingTop: "12px",
-                    paddingBottom: "12px",
-                    paddingRight: 0,
-                    paddingLeft: 0,
-                    backgroundColor: theme.palette["Grey_5"],
-                  },
+        <FormControl
+          sx={{
+            width: "100%",
+          }}
+          disabled={props.disabled}
+          error={props.error ? true : false}
+        >
+          <InputLabel id={props.name}>{props.placeholder}</InputLabel>
+          <Select
+            multiple
+            // ref={ref}
+            labelId={props.name}
+            id={props.name}
+            name={props.name}
+            value={props.value}
+            onChange={(evt) => {
+              props.onChange(
+                typeof evt.target.value === "string"
+                  ? evt.target.value.split(",")
+                  : evt.target.value
+              );
+              props.onImmediateChange();
+            }}
+            IconComponent={KeyboardArrowDownIcon}
+            MenuProps={{
+              sx: (theme) => ({
+                marginTop: "4px",
+                borderRadius: "6px",
+
+                "& .MuiMenu-list": {
+                  display: "grid",
+                  rowGap: "12px",
+                  paddingTop: "12px",
+                  paddingBottom: "12px",
+                  paddingRight: 0,
+                  paddingLeft: 0,
+                  backgroundColor: theme.vars.palette["Grey_5"],
                 },
-              }}
-              sx={{
+              }),
+            }}
+            sx={[
+              {
                 marginBottom: "4px",
-                borderColor:
-                  props.status === "warning"
-                    ? theme.palette["Yellow"]
-                    : "transparent",
-              }}
-              disabled={props.disabled}
-            >
-              {props.options.map((option) => (
-                <S_MenuItem
-                  key={option.value}
-                  disabled={option.disabled}
-                  value={option.value}
-                >
-                  {option.label}
-                </S_MenuItem>
-              ))}
-            </Select>
-            {props.error ? (
-              <FormHelperText
-                sx={{
-                  margin: 0,
-                }}
+                borderColor: "transparent",
+              },
+              props.error
+                ? {
+                    "& .MuiOutlinedInput-root": {
+                      borderColor: "var(--mui-palette-Red)",
+                    },
+                  }
+                : null,
+              props.status === "warning"
+                ? {
+                    "& .MuiOutlinedInput-root": {
+                      borderColor: "var(--mui-palette-Yellow)",
+                    },
+                  }
+                : null,
+            ]}
+            disabled={props.disabled}
+          >
+            {props.options.map((option) => (
+              <S_MenuItem
+                key={option.value}
+                disabled={option.disabled}
+                value={option.value}
               >
-                {props.error}
-              </FormHelperText>
-            ) : null}
-          </FormControl>
-
-          {props.helperInfo ? (
-            <Typography
-              component="p"
-              variant="Reg_12"
+                {option.label}
+              </S_MenuItem>
+            ))}
+          </Select>
+          {props.error ? (
+            <FormHelperText
               sx={{
-                color: theme.palette["Corp_1"],
+                margin: 0,
               }}
             >
-              {props.helperInfo.text}{" "}
-              {props.helperInfo.link ? (
-                <>
-                  {props.helperInfo.link.type === "internal" ? (
-                    <Link
-                      viewTransition
-                      style={{
-                        textDecorationLine: "underline",
-                        color: theme.palette["Corp_1"],
-                      }}
-                      to={props.helperInfo.link.path}
-                    >
-                      {props.helperInfo.link.text}
-                    </Link>
-                  ) : (
-                    <a
-                      style={{
-                        textDecorationLine: "underline",
-                        color: theme.palette["Corp_1"],
-                      }}
-                      href={props.helperInfo.link.path}
-                      target="_blank"
-                      rel="noreferrer"
-                    >
-                      {props.helperInfo.link.text}
-                    </a>
-                  )}
-                </>
-              ) : null}
-            </Typography>
+              {props.error}
+            </FormHelperText>
           ) : null}
-        </Box>
+        </FormControl>
 
-        {props.dividerBottom ? <Divider sx={{ marginTop: "16px" }} /> : null}
+        {props.helperInfo ? (
+          <Typography
+            component="p"
+            variant="Reg_12"
+            sx={(theme) => ({
+              color: theme.vars.palette["Corp_1"],
+            })}
+          >
+            {props.helperInfo.text}{" "}
+            {props.helperInfo.link ? (
+              <>
+                {props.helperInfo.link.type === "internal" ? (
+                  <Link
+                    viewTransition
+                    style={{
+                      textDecorationLine: "underline",
+                      color: "var(--mui-palette-Corp_1)",
+                    }}
+                    to={props.helperInfo.link.path}
+                  >
+                    {props.helperInfo.link.text}
+                  </Link>
+                ) : (
+                  <a
+                    style={{
+                      textDecorationLine: "underline",
+                      color: "var(--mui-palette-Corp_1)",
+                    }}
+                    href={props.helperInfo.link.path}
+                    target="_blank"
+                    rel="noreferrer"
+                  >
+                    {props.helperInfo.link.text}
+                  </a>
+                )}
+              </>
+            ) : null}
+          </Typography>
+        ) : null}
       </Box>
-    );
-  }
-);
 
-StyledSelectMultiple.displayName = "StyledSelectMultiple";
+      {props.dividerBottom ? <Divider sx={{ marginTop: "16px" }} /> : null}
+    </Box>
+  );
+};
