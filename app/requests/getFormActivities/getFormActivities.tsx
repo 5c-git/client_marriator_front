@@ -82,6 +82,7 @@ export const getFormActivities = async (
     if (validateSuccess(response)) {
       data = response as unknown as GetFormActivities;
     } else {
+      console.log(validateSuccess.errors);
       throw new Response(
         `Данные запроса getFormActitvities, шаг - ${step} не валидны схеме`
       );

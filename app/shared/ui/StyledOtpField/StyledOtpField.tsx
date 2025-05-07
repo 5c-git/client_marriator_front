@@ -1,6 +1,6 @@
-import { forwardRef } from "react";
+import { CSSProperties } from "react";
 import { OTPInput, SlotProps } from "input-otp";
-import { SxProps, Theme, useTheme, Box } from "@mui/material";
+import Box from "@mui/material/Box";
 
 interface SlotPropsWithError extends SlotProps {
   error?: boolean;
@@ -12,14 +12,20 @@ type StyledOptField = {
   value?: string;
   error?: boolean;
   disabled?: boolean;
-  styles?: SxProps<Theme>;
+  style?: CSSProperties;
 };
 
 const Slot = (props: SlotPropsWithError) => {
-  const theme = useTheme();
   return (
     <Box
-      sx={{
+      style={{
+        "--borderColor": props.error
+          ? "var(--mui-palette-Red)"
+          : props.char
+          ? "var(--mui-palette-Grey_1)"
+          : "var(--mui-palette-Grey_3)",
+      }}
+      sx={(theme) => ({
         position: "relative",
         display: "flex",
         justifyContent: "center",
@@ -27,23 +33,19 @@ const Slot = (props: SlotPropsWithError) => {
         height: "40px",
         fontSize: "20px",
         lineHeight: "24px",
-        color: theme.palette["Black"],
+        color: theme.vars.palette["Black"],
         transition: "0.3s",
         borderBottom: "1px solid",
-        borderColor: props.error
-          ? theme.palette["Red"]
-          : props.char
-            ? theme.palette["Grey_1"]
-            : theme.palette["Grey_3"],
-      }}
+        borderColor: "var(--borderColor)",
+      })}
     >
       {props.char !== null && <div>•</div>}
     </Box>
   );
 };
 
-export const StyledOptField = forwardRef((props: StyledOptField, ref) => (
-  <Box sx={props.styles} ref={ref}>
+export const StyledOptField = (props: StyledOptField) => (
+  <Box style={props.style}>
     <OTPInput
       // eslint-disable-next-line jsx-a11y/no-autofocus
       autoFocus={true}
@@ -54,10 +56,13 @@ export const StyledOptField = forwardRef((props: StyledOptField, ref) => (
       disabled={props.disabled}
       render={({ slots }) => (
         <Box
+          style={{
+            "--opacity": props.disabled ? 0.3 : 1,
+          }}
           sx={{
             display: "flex",
             columnGap: "16px",
-            opacity: props.disabled ? 0.3 : 1,
+            opacity: "var(--opacity)",
           }}
         >
           {slots.map((slot, idx) => (
@@ -67,6 +72,4 @@ export const StyledOptField = forwardRef((props: StyledOptField, ref) => (
       )}
     />
   </Box>
-));
-
-StyledOptField.displayName = "StyledOptField";
+);

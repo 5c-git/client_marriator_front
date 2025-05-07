@@ -34,6 +34,7 @@ import { StyledInnField } from "../ui/StyledInnField/StyledInnField";
 import { StyledSnilsField } from "../ui/StyledSnilsField/StyledSnilsField";
 import { StyledSmsField } from "../ui/StyledSmsField/StyledSmsField";
 import { StyledAutocomplete } from "../ui/StyledAutocomplete/StyledAutocomplete";
+import { StyledAutocompleteBic } from "../ui/StyledAutocompleteBic/StyledAutocompleteBic";
 
 const inputMap = {
   text: StyledTextField,
@@ -55,6 +56,7 @@ const inputMap = {
   snils: StyledSnilsField,
   sms: StyledSmsField,
   autocomplete: StyledAutocomplete,
+  bic: StyledAutocompleteBic,
 };
 
 const validationMap: {
@@ -293,6 +295,12 @@ const validationMap: {
       t("autocomplete", { ns: "constructorFields" })
     ),
   },
+  bic: {
+    none: Yup.string().default("").notRequired(),
+    default: Yup.string().required(
+      t("autocomplete", { ns: "constructorFields" })
+    ),
+  },
 };
 
 export const generateDefaultValues = (
@@ -387,7 +395,7 @@ export const generateInputsMarkup = (
               onImmediateChange={onImmediateChange}
               url={import.meta.env.VITE_SEND_FILE}
               token={token}
-              inputStyles={{
+              inputStyle={{
                 paddingRight: "16px",
                 paddingLeft: "16px",
               }}
@@ -433,7 +441,7 @@ export const generateInputsMarkup = (
               <Input
                 error={errors[item.name]?.message}
                 onImmediateChange={onImmediateChange}
-                inputStyles={{
+                inputStyle={{
                   paddingRight: "16px",
                   paddingLeft: "16px",
                 }}

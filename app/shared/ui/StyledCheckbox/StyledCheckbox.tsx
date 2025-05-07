@@ -1,14 +1,7 @@
-import { forwardRef } from "react";
-import {
-  useTheme,
-  SxProps,
-  Theme,
-  Box,
-  Divider,
-  Typography,
-  FormControlLabel,
-  Checkbox,
-} from "@mui/material";
+import { CSSProperties } from "react";
+import { Divider, Typography, FormControlLabel, Checkbox } from "@mui/material";
+import Box from "@mui/material/Box";
+
 import { Link } from "react-router";
 
 type StyledCheckboxProps = {
@@ -34,21 +27,19 @@ type StyledCheckboxProps = {
   };
   dividerTop?: true;
   dividerBottom?: true;
-  styles?: SxProps<Theme>;
-  inputStyles?: SxProps<Theme>;
+  style?: CSSProperties;
+  inputStyle?: CSSProperties;
 
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   onImmediateChange: () => void;
 };
 
-export const StyledCheckbox = forwardRef((props: StyledCheckboxProps, ref) => {
-  const theme = useTheme();
-
+export const StyledCheckbox = (props: StyledCheckboxProps) => {
   return (
-    <Box sx={props.styles} ref={ref}>
+    <Box style={props.style}>
       {props.dividerTop ? <Divider sx={{ marginBottom: "16px" }} /> : null}
 
-      <Box sx={props.inputStyles}>
+      <Box style={props.inputStyle}>
         {props.heading || props.error || props.helperInfo ? (
           <Box
             sx={{
@@ -59,10 +50,13 @@ export const StyledCheckbox = forwardRef((props: StyledCheckboxProps, ref) => {
               <Typography
                 component="p"
                 variant="Bold_14"
+                style={{
+                  "--color": props.error
+                    ? "var(--mui-palette-Red)"
+                    : "var(--mui-palette-Black)",
+                }}
                 sx={{
-                  color: props.error
-                    ? theme.palette["Red"]
-                    : theme.palette["Black"],
+                  color: "var(--color)",
                 }}
               >
                 {props.heading}
@@ -73,9 +67,9 @@ export const StyledCheckbox = forwardRef((props: StyledCheckboxProps, ref) => {
               <Typography
                 component="p"
                 variant="Reg_12"
-                sx={{
-                  color: theme.palette["Red"],
-                }}
+                sx={(theme) => ({
+                  color: theme.vars.palette["Red"],
+                })}
               >
                 {props.error}
               </Typography>
@@ -85,9 +79,9 @@ export const StyledCheckbox = forwardRef((props: StyledCheckboxProps, ref) => {
               <Typography
                 component="p"
                 variant="Reg_12"
-                sx={{
-                  color: theme.palette["Corp_1"],
-                }}
+                sx={(theme) => ({
+                  color: theme.vars.palette["Corp_1"],
+                })}
               >
                 {props.helperInfo.text}{" "}
                 {props.helperInfo.link ? (
@@ -97,7 +91,7 @@ export const StyledCheckbox = forwardRef((props: StyledCheckboxProps, ref) => {
                         viewTransition
                         style={{
                           textDecorationLine: "underline",
-                          color: theme.palette["Corp_1"],
+                          color: "var(--mui-palette-Corp_1)",
                         }}
                         to={props.helperInfo.link.path}
                       >
@@ -107,7 +101,7 @@ export const StyledCheckbox = forwardRef((props: StyledCheckboxProps, ref) => {
                       <a
                         style={{
                           textDecorationLine: "underline",
-                          color: theme.palette["Corp_1"],
+                          color: "var(--mui-palette-Corp_1)",
                         }}
                         href={props.helperInfo.link.path}
                         target="_blank"
@@ -151,6 +145,4 @@ export const StyledCheckbox = forwardRef((props: StyledCheckboxProps, ref) => {
       {props.dividerBottom ? <Divider sx={{ marginTop: "16px" }} /> : null}
     </Box>
   );
-});
-
-StyledCheckbox.displayName = "StyledCheckbox";
+};

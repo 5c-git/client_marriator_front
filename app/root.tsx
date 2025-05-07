@@ -17,6 +17,8 @@ import { CssBaseline, ThemeProvider } from "@mui/material";
 // MUI
 // import "@mui/material-pigment-css/styles.css";
 // import DefaultPropsProvider from "@mui/material/DefaultPropsProvider";
+// import { AlertIcon } from "./theme/icons/AlertIcon";
+// MUI
 
 import { QueryClient } from "@tanstack/react-query";
 
@@ -79,8 +81,11 @@ export function Layout({ children }: { children: React.ReactNode }) {
         </ThemeProvider>
         {/* <DefaultPropsProvider
           value={{
-            MuiButtonBase: {
-              disableRipple: true,
+            MuiAlert: {
+              severity: "info",
+              iconMapping: {
+                info: <AlertIcon />,
+              },
             },
           }}
         >

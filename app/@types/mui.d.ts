@@ -1,4 +1,44 @@
 import "@mui/material/styles";
+import { Theme } from "@mui/material/styles";
+import type { Theme, SxProps } from "@mui/material/styles";
+
+import type * as CSS from "csstype";
+
+declare module "csstype" {
+  interface Properties {
+    // Add a missing property
+    // WebkitRocketLauncher?: string;
+
+    // Add a CSS Custom Property
+    // "--theme-color"?: "black" | "white";
+
+    // Allow namespaced CSS Custom Properties
+    [index: `--theme-${string}`]: any;
+
+    // Allow any CSS Custom Properties
+    [index: `--${string}`]: any;
+
+    // ...or allow any other property
+    // [index: string]: any;
+  }
+}
+
+// declare global {
+//   namespace React {
+//     interface HTMLAttributes<T> {
+//       sx?: SxProps<Theme>;
+//     }
+//     interface SVGProps<T> {
+//       sx?: SxProps<Theme>;
+//     }
+//   }
+// }
+
+declare module "@mui/material-pigment-css" {
+  interface ThemeArgs {
+    theme: Theme;
+  }
+}
 
 declare module "@mui/material/styles" {
   interface TypographyVariants {

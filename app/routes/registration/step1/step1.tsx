@@ -20,7 +20,9 @@ import {
   generateValidationSchema,
 } from "~/shared/constructor/constructor";
 
-import { useTheme, Box, Typography, Button } from "@mui/material";
+import { Typography, Button } from "@mui/material";
+import Box from "@mui/material/Box";
+
 import { TopNavigation } from "~/shared/ui/TopNavigation/TopNavigation";
 import { Loader } from "~/shared/ui/Loader/Loader";
 
@@ -63,7 +65,6 @@ export async function clientAction({ request }: Route.ClientActionArgs) {
 
 export default function Step1({ loaderData }: Route.ComponentProps) {
   const { t } = useTranslation("registrationStep1");
-  const theme = useTheme();
 
   const fetcher = useFetcher();
   const navigation = useNavigation();
@@ -117,18 +118,18 @@ export default function Step1({ loaderData }: Route.ComponentProps) {
           <Typography
             component="p"
             variant="Reg_18"
-            sx={{
-              color: theme.palette["Black"],
+            sx={(theme) => ({
+              color: theme.vars.palette["Black"],
               paddingBottom: "14px",
-            }}
+            })}
           >
             {t("intro")}{" "}
             <Typography
               component="span"
               variant="Reg_18"
-              sx={{
-                color: theme.palette["Corp_2"],
-              }}
+              sx={(theme) => ({
+                color: theme.vars.palette["Corp_2"],
+              })}
             >
               {t("intro_marker")}
             </Typography>{" "}
@@ -138,10 +139,10 @@ export default function Step1({ loaderData }: Route.ComponentProps) {
           <Typography
             component="p"
             variant="Reg_14"
-            sx={{
-              color: theme.palette["Grey_2"],
+            sx={(theme) => ({
+              color: theme.vars.palette["Grey_2"],
               paddingBottom: "24px",
-            }}
+            })}
           >
             {t("text")}
           </Typography>
@@ -149,18 +150,18 @@ export default function Step1({ loaderData }: Route.ComponentProps) {
           <Typography
             component="p"
             variant="Reg_14"
-            sx={{
-              color: theme.palette["Black"],
+            sx={(theme) => ({
+              color: theme.vars.palette["Black"],
               paddingBottom: "24px",
-            }}
+            })}
           >
             {t("action")}{" "}
             <Typography
               component="span"
               variant="Reg_14"
-              sx={{
-                color: theme.palette["Corp_2"],
-              }}
+              sx={(theme) => ({
+                color: theme.vars.palette["Corp_2"],
+              })}
             >
               {t("action_marker")}
             </Typography>
@@ -192,15 +193,15 @@ export default function Step1({ loaderData }: Route.ComponentProps) {
           )}
 
           <Box
-            sx={{
+            sx={(theme) => ({
               position: "fixed",
               zIndex: 1,
               width: "100%",
               bottom: "0",
               left: "0",
               padding: "10px 16px 24px 16px",
-              backgroundColor: theme.palette["White"],
-            }}
+              backgroundColor: theme.vars.palette["White"],
+            })}
           >
             <Button
               variant="contained"

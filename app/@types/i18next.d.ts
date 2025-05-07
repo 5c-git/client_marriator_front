@@ -10,6 +10,8 @@ import sms from "../../public/locales/ru/sms.json";
 import pin from "../../public/locales/ru/pin.json";
 import createPin from "../../public/locales/ru/createPin.json";
 import confirmRestorePin from "../../public/locales/ru/confirmRestorePin.json";
+
+import clientPhone from "../../public/locales/ru/clientPhone.json";
 //auth
 
 //registration
@@ -51,6 +53,10 @@ import styledFileInput from "../../public/locales/ru/styledFileInput.json";
 import styledPhotoInput from "../../public/locales/ru/styledPhotoInput.json";
 import styledAutocomplete from "../../public/locales/ru/styledAutocomplete.json";
 
+//dev
+import moderationLayout from "../../public/locales/ru/moderationLayout.json";
+//dev
+
 import "i18next";
 declare module "i18next" {
   interface CustomTypeOptions {
@@ -68,6 +74,8 @@ declare module "i18next" {
       pin: typeof pin;
       createPin: typeof createPin;
       confirmRestorePin: typeof confirmRestorePin;
+
+      clientPhone: typeof clientPhone;
       //auth
 
       //registration
@@ -108,6 +116,10 @@ declare module "i18next" {
       styledFileInput: typeof styledFileInput;
       styledPhotoInput: typeof styledPhotoInput;
       styledAutocomplete: typeof styledAutocomplete;
+
+      //dev
+      moderationLayout: typeof moderationLayout;
+      //dev
     };
   }
 }

@@ -1586,6 +1586,107 @@
           "options",
           "validation"
         ]
+      },
+      {
+        "type": "object",
+        "properties": {
+          "inputType": {
+            "type": "string",
+            "const": "bic"
+          },
+          "name": {
+            "type": "string"
+          },
+          "value": {
+            "type": "string"
+          },
+          "placeholder": {
+            "type": "string"
+          },
+          "options": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "type": "object",
+              "properties": {
+                "value": {
+                  "type": "string"
+                },
+                "bic": {
+                  "type": "string"
+                },
+                "label": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "disabled": {
+                  "type": "boolean"
+                }
+              },
+              "required": ["value", "bic", "label", "disabled"]
+            }
+          },
+          "disabled": {
+            "type": "boolean"
+          },
+          "validation": {
+            "type": "string",
+            "enum": ["none", "default"]
+          },
+          "heading": {
+            "type": "string"
+          },
+          "error": {
+            "type": "string"
+          },
+          "status": {
+            "type": "string",
+            "const": "warning"
+          },
+          "dividerTop": {
+            "type": "boolean",
+            "const": true
+          },
+          "dividerBottom": {
+            "type": "boolean",
+            "const": true
+          },
+          "helperInfo": {
+            "type": "object",
+            "minProperties": 1,
+            "properties": {
+              "text": {
+                "type": "string"
+              },
+              "link": {
+                "type": "object",
+                "properties": {
+                  "text": {
+                    "type": "string"
+                  },
+                  "path": {
+                    "type": "string"
+                  },
+                  "type": {
+                    "type": "string",
+                    "enum": ["internal", "external"]
+                  }
+                },
+                "required": ["text", "path", "type"]
+              }
+            },
+            "additionalProperties": false
+          },
+          "additionalProperties": false
+        },
+        "required": [
+          "inputType",
+          "name",
+          "value",
+          "placeholder",
+          "options",
+          "validation"
+        ]
       }
     ]
   }

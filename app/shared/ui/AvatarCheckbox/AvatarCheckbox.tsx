@@ -1,5 +1,6 @@
 import { ChangeEvent } from "react";
-import { useTheme, Box, Typography, Checkbox, Avatar } from "@mui/material";
+import { Typography, Checkbox, Avatar } from "@mui/material";
+import Box from "@mui/material/Box";
 
 type AvatarCheckboxProps = {
   checked: boolean;
@@ -19,8 +20,6 @@ export const AvatarCheckbox = ({
   header,
   features,
 }: AvatarCheckboxProps) => {
-  const theme = useTheme();
-
   return (
     <Box
       sx={{
@@ -40,9 +39,9 @@ export const AvatarCheckbox = ({
         <Typography
           component="p"
           variant="Reg_14"
-          sx={{
-            color: theme.palette["Black"],
-          }}
+          sx={(theme) => ({
+            color: theme.vars.palette["Black"],
+          })}
         >
           {header}
         </Typography>
@@ -51,19 +50,22 @@ export const AvatarCheckbox = ({
             <Typography
               component="span"
               variant="Reg_12"
+              style={{
+                "--color": item.active
+                  ? "var(--mui-palette-Corp_1)"
+                  : "var(--mui-palette-Grey_2)",
+              }}
               sx={{
-                color: item.active
-                  ? theme.palette["Corp_1"]
-                  : theme.palette["Grey_2"],
+                color: "var(--color)",
               }}
               key={item.label}
             >
               {index > 0 ? (
                 <Typography
                   component="span"
-                  sx={{
-                    color: theme.palette["Grey_2"],
-                  }}
+                  sx={(theme) => ({
+                    color: theme.vars.palette["Grey_2"],
+                  })}
                 >
                   ,{" "}
                 </Typography>

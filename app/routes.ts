@@ -2,7 +2,7 @@ import {
   type RouteConfig,
   route,
   layout,
-  // index,
+  index,
 } from "@react-router/dev/routes";
 
 export default [
@@ -79,6 +79,25 @@ export default [
         ":lang?/profile/documents/certificates",
         "routes/profile/documents/certificates/certificates.tsx"
       ),
+
+      // layout("routes/dev/moderation/layout/layout.tsx", [
+      //   route(
+      //     ":lang?/dev/moderation/moderation-1",
+      //     "routes/dev/moderation/moderation-1/page.tsx"
+      //   ),
+      //   route(
+      //     ":lang?/dev/moderation/moderation-2",
+      //     "routes/dev/moderation/moderation-2/page.tsx"
+      //   ),
+      //   route(
+      //     ":lang?/dev/moderation/moderation-3",
+      //     "routes/dev/moderation/moderation-3/page.tsx"
+      //   ),
+      //   route(
+      //     ":lang?/dev/moderation/moderation-4",
+      //     "routes/dev/moderation/moderation-4/page.tsx"
+      //   ),
+      // ]),
     ]),
 
     route(":lang?/offline", "routes/offline/offline.tsx"),
@@ -92,6 +111,13 @@ export default [
       ":lang?/signin/confirm-restore-pin",
       "routes/signin/confirm-restore-pin/confirm-restore-pin.tsx"
     ),
+
+    // route(":lang?/signin/client/phone", "routes/signin/client/phone/phone.tsx"),
+    // route(":lang?/signin/client/meta", "routes/signin/client/meta/meta.tsx"),
+    // route(
+    //   ":lang?/signin/client/location",
+    //   "routes/signin/client/location/location.tsx"
+    // ),
     // signin
 
     // registration
@@ -106,6 +132,6 @@ export default [
       ":lang?/registration/confirm-email",
       "routes/registration/confirm-email/confirm-email.tsx"
     ),
-    // registration;
+    // registration
   ]),
 ] satisfies RouteConfig;

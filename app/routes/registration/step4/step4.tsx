@@ -16,8 +16,6 @@ import {
 import { emailRegExp } from "~/shared/validators";
 
 import {
-  useTheme,
-  Box,
   Typography,
   Button,
   Dialog,
@@ -25,6 +23,8 @@ import {
   Snackbar,
   Alert,
 } from "@mui/material";
+import Box from "@mui/material/Box";
+
 import { TopNavigation } from "~/shared/ui/TopNavigation/TopNavigation";
 import { Loader } from "~/shared/ui/Loader/Loader";
 
@@ -94,7 +94,6 @@ export async function clientAction({ request }: Route.ClientActionArgs) {
 
 export default function Step4({ loaderData }: Route.ComponentProps) {
   const { t } = useTranslation("registrationStep4");
-  const theme = useTheme();
   const fetcher = useFetcher<typeof clientAction>();
   const navigate = useNavigate();
   const navigation = useNavigation();
@@ -179,10 +178,10 @@ export default function Step4({ loaderData }: Route.ComponentProps) {
           <Typography
             component="p"
             variant="Reg_18"
-            sx={{
-              color: theme.palette["Black"],
+            sx={(theme) => ({
+              color: theme.vars.palette["Black"],
               paddingBottom: "14px",
-            }}
+            })}
           >
             {t("intro")}
           </Typography>
@@ -244,7 +243,7 @@ export default function Step4({ loaderData }: Route.ComponentProps) {
                 // }}
                 onImmediateChange={() => {}}
                 validation="default"
-                inputStyles={{
+                inputStyle={{
                   paddingRight: "16px",
                   paddingLeft: "16px",
                 }}
@@ -279,15 +278,15 @@ export default function Step4({ loaderData }: Route.ComponentProps) {
           )}
 
           <Box
-            sx={{
+            sx={(theme) => ({
               position: "fixed",
               zIndex: 1,
               width: "100%",
               bottom: "0",
               left: "0",
               padding: "10px 16px 24px 16px",
-              backgroundColor: theme.palette["White"],
-            }}
+              backgroundColor: theme.vars.palette["White"],
+            })}
           >
             <Button
               variant="contained"

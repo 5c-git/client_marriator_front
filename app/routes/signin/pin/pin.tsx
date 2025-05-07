@@ -10,14 +10,9 @@ import { yupResolver } from "@hookform/resolvers/yup";
 
 import { useForm, Controller } from "react-hook-form";
 
-import {
-  Box,
-  Typography,
-  Snackbar,
-  Alert,
-  useTheme,
-  Button,
-} from "@mui/material";
+import { Typography, Snackbar, Alert, Button } from "@mui/material";
+import Box from "@mui/material/Box";
+
 import { StyledOptField } from "~/shared/ui/StyledOtpField/StyledOtpField";
 import { Loader } from "~/shared/ui/Loader/Loader";
 
@@ -58,7 +53,6 @@ export async function clientAction({ request }: Route.ClientActionArgs) {
 
 export default function Pin({ actionData }: Route.ComponentProps) {
   const { t } = useTranslation("pin");
-  const theme = useTheme();
   const submit = useSubmit();
   const navigation = useNavigation();
 
@@ -91,11 +85,11 @@ export default function Pin({ actionData }: Route.ComponentProps) {
         <Typography
           component="p"
           variant="Bold_28"
-          sx={{
-            color: theme.palette["Black"],
+          sx={(theme) => ({
+            color: theme.vars.palette["Black"],
             textAlign: "center",
             paddingBottom: "8px",
-          }}
+          })}
         >
           {t("header")}
         </Typography>
@@ -103,11 +97,11 @@ export default function Pin({ actionData }: Route.ComponentProps) {
         <Typography
           component="p"
           variant="Reg_18"
-          sx={{
-            color: theme.palette["Black"],
+          sx={(theme) => ({
+            color: theme.vars.palette["Black"],
             textAlign: "center",
             paddingBottom: "37px",
-          }}
+          })}
         >
           {t("intro")}
         </Typography>
@@ -115,11 +109,11 @@ export default function Pin({ actionData }: Route.ComponentProps) {
         <Typography
           component="p"
           variant="Reg_14"
-          sx={{
-            color: theme.palette["Black"],
+          sx={(theme) => ({
+            color: theme.vars.palette["Black"],
             textAlign: "center",
             paddingBottom: "20px",
-          }}
+          })}
         >
           {t("text")}
         </Typography>
@@ -167,9 +161,9 @@ export default function Pin({ actionData }: Route.ComponentProps) {
           <Typography
             component="p"
             variant="Reg_16"
-            sx={{
-              color: theme.palette["Black"],
-            }}
+            sx={(theme) => ({
+              color: theme.vars.palette["Black"],
+            })}
           >
             {t("forgetPin")}
           </Typography>
@@ -190,9 +184,9 @@ export default function Pin({ actionData }: Route.ComponentProps) {
             <Typography
               component="p"
               variant="Bold_16"
-              sx={{
-                color: theme.palette["Corp_1"],
-              }}
+              sx={(theme) => ({
+                color: theme.vars.palette["Corp_1"],
+              })}
             >
               {t("restorePin")}
             </Typography>

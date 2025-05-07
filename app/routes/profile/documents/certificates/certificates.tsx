@@ -9,15 +9,9 @@ import { useTranslation } from "react-i18next";
 
 import { withLocale } from "~/shared/withLocale";
 
-import {
-  useTheme,
-  Box,
-  Button,
-  Typography,
-  Divider,
-  Stack,
-  IconButton,
-} from "@mui/material";
+import { Button, Typography, Divider, IconButton } from "@mui/material";
+import Box from "@mui/material/Box";
+import Stack from "@mui/material/Stack";
 import { TopNavigation } from "~/shared/ui/TopNavigation/TopNavigation";
 import { StyledSelect } from "~/shared/ui/StyledSelect/StyledSelect";
 
@@ -111,7 +105,6 @@ export async function clientAction({ request }: Route.ClientActionArgs) {
 
 export default function Certificates({ loaderData }: Route.ComponentProps) {
   const { t } = useTranslation("certificates");
-  const theme = useTheme();
   const navigation = useNavigation();
   const navigate = useNavigate();
   const submit = useSubmit();
@@ -185,10 +178,10 @@ export default function Certificates({ loaderData }: Route.ComponentProps) {
             <Typography
               component="h1"
               variant="Reg_18"
-              sx={{
-                color: theme.palette["Black"],
+              sx={(theme) => ({
+                color: theme.vars.palette["Black"],
                 paddingBottom: "16px",
-              }}
+              })}
             >
               {t("header_text")}
             </Typography>
@@ -244,9 +237,9 @@ export default function Certificates({ loaderData }: Route.ComponentProps) {
             </form>
           </Box>
           <Divider
-            sx={{
-              backgroundColor: theme.palette["Grey_4"],
-            }}
+            sx={(theme) => ({
+              backgroundColor: theme.vars.palette["Grey_4"],
+            })}
           />
 
           {loaderData.certificates.length !== 0 ? (
@@ -262,9 +255,9 @@ export default function Certificates({ loaderData }: Route.ComponentProps) {
               <Typography
                 component="p"
                 variant="Bold_14"
-                sx={{
-                  color: theme.palette["Black"],
-                }}
+                sx={(theme) => ({
+                  color: theme.vars.palette["Black"],
+                })}
               >
                 {t("done_documents")}
               </Typography>
@@ -284,7 +277,7 @@ export default function Certificates({ loaderData }: Route.ComponentProps) {
                       component="p"
                       variant="Reg_14"
                       sx={{
-                        color: theme.palette["Black"],
+                        color: theme.vars.palette["Black"],
                       }}
                     >
                       Организация №2
@@ -292,9 +285,9 @@ export default function Certificates({ loaderData }: Route.ComponentProps) {
                     <Typography
                       component="p"
                       variant="Reg_14"
-                      sx={{
-                        color: theme.palette["Black"],
-                      }}
+                      sx={(theme) => ({
+                        color: theme.vars.palette["Black"],
+                      })}
                     >
                       {item.name}
                     </Typography>
@@ -309,9 +302,9 @@ export default function Certificates({ loaderData }: Route.ComponentProps) {
                     aria-label="download file"
                   >
                     <FileDownloadOutlinedIcon
-                      sx={{
-                        color: theme.palette["Black"],
-                      }}
+                      sx={(theme) => ({
+                        color: theme.vars.palette["Black"],
+                      })}
                     />
                   </IconButton>
                 </Box>

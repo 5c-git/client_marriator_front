@@ -5,14 +5,8 @@ import { useTranslation } from "react-i18next";
 
 import { withLocale } from "~/shared/withLocale";
 
-import {
-  useTheme,
-  Box,
-  Typography,
-  List,
-  ListItem,
-  IconButton,
-} from "@mui/material";
+import { Typography, List, ListItem, IconButton } from "@mui/material";
+import Box from "@mui/material/Box";
 import { TopNavigation } from "~/shared/ui/TopNavigation/TopNavigation";
 
 import { Loader } from "~/shared/ui/Loader/Loader";
@@ -36,7 +30,6 @@ export async function clientLoader() {
 
 export default function Archive({ loaderData }: Route.ComponentProps) {
   const { t } = useTranslation("documentsArchive");
-  const theme = useTheme();
   const navigation = useNavigation();
   const navigate = useNavigate();
 
@@ -68,10 +61,10 @@ export default function Archive({ loaderData }: Route.ComponentProps) {
         <Typography
           component="h1"
           variant="Reg_18"
-          sx={{
-            color: theme.palette["Black"],
+          sx={(theme) => ({
+            color: theme.vars.palette["Black"],
             paddingBottom: "8px",
-          }}
+          })}
         >
           {t("archive_header")}
         </Typography>
@@ -79,10 +72,10 @@ export default function Archive({ loaderData }: Route.ComponentProps) {
         <Typography
           component="p"
           variant="Reg_14"
-          sx={{
-            color: theme.palette["Grey_2"],
+          sx={(theme) => ({
+            color: theme.vars.palette["Grey_2"],
             paddingBottom: "18px",
-          }}
+          })}
         >
           {t("archive_text")}
         </Typography>
@@ -108,9 +101,9 @@ export default function Archive({ loaderData }: Route.ComponentProps) {
                     aria-label="download file"
                   >
                     <FileDownloadOutlinedIcon
-                      sx={{
-                        color: theme.palette["Black"],
-                      }}
+                      sx={(theme) => ({
+                        color: theme.vars.palette["Black"],
+                      })}
                     />
                   </IconButton>
                 }

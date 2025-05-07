@@ -1,17 +1,11 @@
-import {
-  SxProps,
-  Theme,
-  useTheme,
-  Box,
-  Typography,
-  Button,
-  IconButton,
-} from "@mui/material";
+import { CSSProperties } from "react";
+import { Typography, Button, IconButton } from "@mui/material";
+import Box from "@mui/material/Box";
 
 import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
 
 type TopNavigationProps = {
-  sx?: SxProps<Theme>;
+  style?: CSSProperties;
   header: {
     text: string;
     bold: boolean;
@@ -20,20 +14,20 @@ type TopNavigationProps = {
   backAction?: () => void;
   buttonAction?: {
     text: string;
+    icon?: React.ReactNode;
     action: () => void;
   };
 };
 
 export const TopNavigation = (props: TopNavigationProps) => {
-  const theme = useTheme();
   return (
     <Box
-      sx={{
+      sx={(theme) => ({
         padding: "16px",
         boxShadow: "0px 2px 5px 0px rgba(0, 0, 0, 0.05)",
-        backgroundColor: theme.palette["White"],
-        ...(props.sx && { ...props.sx }),
-      }}
+        backgroundColor: theme.vars.palette["White"],
+      })}
+      style={props.style}
     >
       <Box
         sx={{
@@ -51,11 +45,11 @@ export const TopNavigation = (props: TopNavigationProps) => {
             }}
           >
             <ArrowBackIosNewIcon
-              sx={{
+              sx={(theme) => ({
                 width: "18px",
                 height: "18px",
-                color: theme.palette["Grey_2"],
-              }}
+                color: theme.vars.palette["Grey_2"],
+              })}
             />
           </IconButton>
         ) : null}
@@ -63,10 +57,10 @@ export const TopNavigation = (props: TopNavigationProps) => {
         <Typography
           component="p"
           variant={props.header.bold ? "Bold_18" : "Reg_18"}
-          sx={{
-            color: theme.palette["Black"],
+          sx={(theme) => ({
+            color: theme.vars.palette["Black"],
             flexGrow: 1,
-          }}
+          })}
         >
           {props.header.text}
         </Typography>
@@ -79,17 +73,20 @@ export const TopNavigation = (props: TopNavigationProps) => {
               marginLeft: "auto",
               paddingTop: "6px",
               paddingBottom: "6px",
+              columnGap: "10px",
             }}
           >
             <Typography
               component="p"
               variant="Bold_14"
-              sx={{
-                color: theme.palette["Corp_1"],
-              }}
+              sx={(theme) => ({
+                color: theme.vars.palette["Corp_1"],
+              })}
             >
               {props.buttonAction.text}
             </Typography>
+
+            {props.buttonAction.icon ? props.buttonAction.icon : null}
           </Button>
         ) : null}
       </Box>
@@ -97,10 +94,10 @@ export const TopNavigation = (props: TopNavigationProps) => {
         <Typography
           component="p"
           variant="Reg_12"
-          sx={{
-            color: theme.palette["Grey_1"],
+          sx={(theme) => ({
+            color: theme.vars.palette["Grey_1"],
             marginLeft: props.backAction ? "32px" : 0,
-          }}
+          })}
         >
           {props.label}
         </Typography>

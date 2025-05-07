@@ -1,4 +1,5 @@
-import { keyframes, Box, CircularProgress } from "@mui/material";
+import { keyframes, CircularProgress } from "@mui/material";
+import Box from "@mui/material/Box";
 
 const fadeIn = keyframes`
   from { opacity: 0 }

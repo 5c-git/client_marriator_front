@@ -1,6 +1,6 @@
 {
   "inputPlaceholder": "Номер телефона",
-  "inputValidation": "Обязаттельное поле",
+  "inputValidation": "Обязательное поле",
   "inputValidation_regExp": "Укажите корректный телефон",
   "submitButton": "Войти или зарегистрироваться",
   "smsError": "Не удалось отправить телефон. Попробуйте позже"

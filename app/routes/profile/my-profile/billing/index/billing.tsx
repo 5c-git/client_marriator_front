@@ -6,14 +6,15 @@ import { withLocale } from "~/shared/withLocale";
 
 import { format } from "date-fns";
 
-import { Box, Button, Typography, Stack, Divider } from "@mui/material";
+import { Button, Typography, Divider } from "@mui/material";
+import Box from "@mui/material/Box";
+import Stack from "@mui/material/Stack";
 import { TopNavigation } from "~/shared/ui/TopNavigation/TopNavigation";
 import { Loader } from "~/shared/ui/Loader/Loader";
 
 import { useStore } from "~/store/store";
 
 import { getRequisitesData } from "~/requests/getRequisitesData/getRequisitesData";
-import { theme } from "~/theme/theme";
 
 export async function clientLoader() {
   const accessToken = useStore.getState().accessToken;
@@ -60,13 +61,13 @@ export default function Billing({ loaderData }: Route.ComponentProps) {
           <Typography
             component="p"
             variant="Reg_14"
-            sx={{
-              color: theme.palette["Grey_2"],
+            sx={(theme) => ({
+              color: theme.vars.palette["Grey_2"],
               textAlign: "center",
               paddingTop: "125px",
               paddingLeft: "16px",
               paddingRight: "16px",
-            }}
+            })}
           >
             {t("empty_text")}
           </Typography>
@@ -83,7 +84,7 @@ export default function Billing({ loaderData }: Route.ComponentProps) {
                   <Typography
                     component="p"
                     variant="Bold_14"
-                    sx={{ color: theme.palette["Black"] }}
+                    sx={(theme) => ({ color: theme.vars.palette["Black"] })}
                   >
                     {t("field_fio")}
                   </Typography>
@@ -92,7 +93,7 @@ export default function Billing({ loaderData }: Route.ComponentProps) {
                     <Typography
                       component="p"
                       variant="Reg_14"
-                      sx={{ color: theme.palette["Grey_2"] }}
+                      sx={(theme) => ({ color: theme.vars.palette["Grey_2"] })}
                     >
                       {item.fio}
                     </Typography>
@@ -102,14 +103,14 @@ export default function Billing({ loaderData }: Route.ComponentProps) {
                   <Typography
                     component="p"
                     variant="Reg_12"
-                    sx={{ color: theme.palette["Grey_2"] }}
+                    sx={(theme) => ({ color: theme.vars.palette["Grey_2"] })}
                   >
                     {t("field_bik")}
                   </Typography>
                   <Typography
                     component="p"
                     variant="Reg_14"
-                    sx={{ color: theme.palette["Black"] }}
+                    sx={(theme) => ({ color: theme.vars.palette["Black"] })}
                   >
                     {item.bik}
                   </Typography>
@@ -118,14 +119,14 @@ export default function Billing({ loaderData }: Route.ComponentProps) {
                   <Typography
                     component="p"
                     variant="Reg_12"
-                    sx={{ color: theme.palette["Grey_2"] }}
+                    sx={(theme) => ({ color: theme.vars.palette["Grey_2"] })}
                   >
                     {t("field_account")}
                   </Typography>
                   <Typography
                     component="p"
                     variant="Reg_14"
-                    sx={{ color: theme.palette["Black"] }}
+                    sx={(theme) => ({ color: theme.vars.palette["Black"] })}
                   >
                     {item.account}
                   </Typography>
@@ -134,14 +135,14 @@ export default function Billing({ loaderData }: Route.ComponentProps) {
                   <Typography
                     component="p"
                     variant="Reg_12"
-                    sx={{ color: theme.palette["Grey_2"] }}
+                    sx={(theme) => ({ color: theme.vars.palette["Grey_2"] })}
                   >
                     {t("field_card")}
                   </Typography>
                   <Typography
                     component="p"
                     variant="Reg_14"
-                    sx={{ color: theme.palette["Black"] }}
+                    sx={(theme) => ({ color: theme.vars.palette["Black"] })}
                   >
                     {item.card.replace(/\d{4}(?=.)/g, "$& ")}
                   </Typography>
@@ -150,14 +151,14 @@ export default function Billing({ loaderData }: Route.ComponentProps) {
                   <Typography
                     component="p"
                     variant="Reg_12"
-                    sx={{ color: theme.palette["Grey_2"] }}
+                    sx={(theme) => ({ color: theme.vars.palette["Grey_2"] })}
                   >
                     {t("field_payWithCard")}
                   </Typography>
                   <Typography
                     component="p"
                     variant="Reg_14"
-                    sx={{ color: theme.palette["Black"] }}
+                    sx={(theme) => ({ color: theme.vars.palette["Black"] })}
                   >
                     {item.payWithCard === "yes" ? t("yes") : t("no")}
                   </Typography>
@@ -166,14 +167,14 @@ export default function Billing({ loaderData }: Route.ComponentProps) {
                   <Typography
                     component="p"
                     variant="Reg_12"
-                    sx={{ color: theme.palette["Grey_2"] }}
+                    sx={(theme) => ({ color: theme.vars.palette["Grey_2"] })}
                   >
                     {t("field_cardDue")}
                   </Typography>
                   <Typography
                     component="p"
                     variant="Reg_14"
-                    sx={{ color: theme.palette["Black"] }}
+                    sx={(theme) => ({ color: theme.vars.palette["Black"] })}
                   >
                     {format(item.cardDue, "LL.yy")}
                   </Typography>

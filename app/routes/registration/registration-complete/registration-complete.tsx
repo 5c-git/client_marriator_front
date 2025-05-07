@@ -1,13 +1,14 @@
 import {
-// Link
-useNavigation
+  // Link
+  useNavigation,
 } from "react-router";
 
 import { useTranslation } from "react-i18next";
 
 // import { withLocale } from "~/shared/withLocale";
 
-import { useTheme, Typography, Stack } from "@mui/material";
+import { Typography } from "@mui/material";
+import Stack from "@mui/material/Stack";
 import { Loader } from "~/shared/ui/Loader/Loader";
 import { TopNavigation } from "~/shared/ui/TopNavigation/TopNavigation";
 
@@ -15,7 +16,6 @@ import { SuccessIcon } from "./icons/SuccessIcon";
 
 export default function RegistrationComplete() {
   const { t } = useTranslation("registrationComplete");
-  const theme = useTheme();
   const navigation = useNavigation();
 
   return (
@@ -49,7 +49,10 @@ export default function RegistrationComplete() {
         <Typography
           component="h1"
           variant="Reg_18"
-          sx={{ color: theme.palette["Black"], marginBottom: "8px" }}
+          sx={(theme) => ({
+            color: theme.vars.palette["Black"],
+            marginBottom: "8px",
+          })}
         >
           {t("title")}
         </Typography>
@@ -57,7 +60,10 @@ export default function RegistrationComplete() {
         <Typography
           component="p"
           variant="Reg_16"
-          sx={{ color: theme.palette["Grey_2"], textAlign: "center" }}
+          sx={(theme) => ({
+            color: theme.vars.palette["Grey_2"],
+            textAlign: "center",
+          })}
         >
           {t("text_start")}
 
@@ -65,7 +71,7 @@ export default function RegistrationComplete() {
             component={Link}
             to={withLocale("/")}
             variant="Reg_16"
-            sx={{ color: theme.palette["Corp_1"], textDecoration: "underline" }}
+            sx={{ color: theme.vars.palette["Corp_1"], textDecoration: "underline" }}
           >
             {t("text_link")}
           </Typography> */}
@@ -73,7 +79,7 @@ export default function RegistrationComplete() {
           <Typography
             component="span"
             variant="Reg_16"
-            sx={{ color: theme.palette["Grey_2"] }}
+            sx={(theme) => ({ color: theme.vars.palette["Grey_2"] })}
           >
             {t("text_link")}
           </Typography>
@@ -81,7 +87,7 @@ export default function RegistrationComplete() {
           <Typography
             component="span"
             variant="Reg_16"
-            sx={{ color: theme.palette["Grey_2"] }}
+            sx={(theme) => ({ color: theme.vars.palette["Grey_2"] })}
           >
             {t("text_end")}
           </Typography>

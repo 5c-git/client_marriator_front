@@ -7,7 +7,9 @@ import { useTranslation } from "react-i18next";
 
 import { withLocale } from "~/shared/withLocale";
 
-import { useTheme, Box, Button, Typography } from "@mui/material";
+import { Button, Typography } from "@mui/material";
+import Box from "@mui/material/Box";
+
 import { TopNavigation } from "~/shared/ui/TopNavigation/TopNavigation";
 import { StyledCheckbox } from "~/shared/ui/StyledCheckbox/StyledCheckbox";
 
@@ -58,7 +60,6 @@ export async function clientAction({ request }: Route.ClientActionArgs) {
 
 export default function SignADeal({ loaderData }: Route.ComponentProps) {
   const { t } = useTranslation("signADeal");
-  const theme = useTheme();
   const navigation = useNavigation();
   const navigate = useNavigate();
   const submit = useSubmit();
@@ -106,10 +107,10 @@ export default function SignADeal({ loaderData }: Route.ComponentProps) {
           <Typography
             component="h1"
             variant="Reg_18"
-            sx={{
-              color: theme.palette["Black"],
+            sx={(theme) => ({
+              color: theme.vars.palette["Black"],
               paddingBottom: "8px",
-            }}
+            })}
           >
             {t("sign_header")}
           </Typography>
@@ -117,10 +118,10 @@ export default function SignADeal({ loaderData }: Route.ComponentProps) {
           <Typography
             component="p"
             variant="Reg_14"
-            sx={{
-              color: theme.palette["Grey_2"],
+            sx={(theme) => ({
+              color: theme.vars.palette["Grey_2"],
               paddingBottom: "18px",
-            }}
+            })}
           >
             {t("sign_text")}
           </Typography>

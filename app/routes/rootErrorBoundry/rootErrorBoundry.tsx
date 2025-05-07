@@ -8,7 +8,8 @@ import { postRefreshToken } from "~/requests/postRefreshToken/postRefreshToken";
 
 import { useStore } from "~/store/store";
 
-import { useTheme, Box, Button, Typography } from "@mui/material";
+import { Button, Typography } from "@mui/material";
+import Box from "@mui/material/Box";
 import logoTurnOff from "./logo-turnoff.svg";
 import { UnxpectedError } from "~/shared/unexpectedError/unexpectedError";
 
@@ -16,7 +17,6 @@ import { UnxpectedError } from "~/shared/unexpectedError/unexpectedError";
 
 export const ErrorBoundary = ({ error }: Route.ErrorBoundaryProps) => {
   const { t } = useTranslation("rootErrorBoundry");
-  const theme = useTheme();
   const navigate = useNavigate();
 
   // const userPhone = useStore.getState().userPhone;
@@ -91,23 +91,23 @@ export const ErrorBoundary = ({ error }: Route.ErrorBoundaryProps) => {
           <Typography
             component="h1"
             variant="Bold_28"
-            sx={{
-              color: theme.palette["Red"],
+            sx={(theme) => ({
+              color: theme.vars.palette["Red"],
               textAlign: "center",
               paddingTop: "40px",
-            }}
+            })}
           >
             {t("error")}
           </Typography>
           <Typography
             component="p"
             variant="Reg_14"
-            sx={{
-              color: theme.palette["Black"],
+            sx={(theme) => ({
+              color: theme.vars.palette["Black"],
               textAlign: "center",
               paddingTop: "40px",
               paddingBottom: "40px",
-            }}
+            })}
           >
             {error.data}
           </Typography>
@@ -151,34 +151,34 @@ export const ErrorBoundary = ({ error }: Route.ErrorBoundaryProps) => {
           <Typography
             component="h1"
             variant="Bold_28"
-            sx={{
-              color: theme.palette["Red"],
+            sx={(theme) => ({
+              color: theme.vars.palette["Red"],
               textAlign: "center",
               paddingTop: "40px",
-            }}
+            })}
           >
             {t("error")}
           </Typography>
           {/* <Typography
             component="p"
             variant="Reg_14"
-            sx={{
-              color: theme.palette["Black"],
+            sx={(theme) => ({
+              color: theme.vars.palette["Black"],
               textAlign: "center",
               paddingTop: "40px",
               paddingBottom: "10px",
-            }}
+          })}
           >
             {error.name}
           </Typography> */}
           {/* <Typography
             component="p"
             variant="Reg_14"
-            sx={{
-              color: theme.palette["Black"],
+            sx={(theme) => ({
+              color: theme.vars.palette["Black"],
               textAlign: "center",
               paddingBottom: "40px",
-            }}
+          })}
           >
             {error.message}
           </Typography> */}

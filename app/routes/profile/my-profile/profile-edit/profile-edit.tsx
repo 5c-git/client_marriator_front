@@ -11,7 +11,9 @@ import { useTranslation } from "react-i18next";
 
 import { withLocale } from "~/shared/withLocale";
 
-import { useTheme, Box, Button, Typography } from "@mui/material";
+import { Button, Typography } from "@mui/material";
+import Box from "@mui/material/Box";
+
 import { TopNavigation } from "~/shared/ui/TopNavigation/TopNavigation";
 import { Loader } from "~/shared/ui/Loader/Loader";
 
@@ -70,7 +72,6 @@ export async function clientAction({ request }: Route.ClientActionArgs) {
 
 export default function ProfileEdit({ loaderData }: Route.ComponentProps) {
   const { t } = useTranslation("profileEdit");
-  const theme = useTheme();
   const navigate = useNavigate();
   const navigation = useNavigation();
 
@@ -145,7 +146,11 @@ export default function ProfileEdit({ loaderData }: Route.ComponentProps) {
             )}
 
             <Box
-              sx={{
+              style={{
+                "--opacity": isDirty ? 1 : 0,
+                "--pointerEvents": isDirty ? "auto" : "none",
+              }}
+              sx={(theme) => ({
                 position: "fixed",
                 display: "flex",
                 columnGap: "8px",
@@ -154,11 +159,11 @@ export default function ProfileEdit({ loaderData }: Route.ComponentProps) {
                 bottom: "54px",
                 left: "0",
                 padding: "21px 16px 21px 16px",
-                backgroundColor: theme.palette["White"],
+                backgroundColor: theme.vars.palette["White"],
                 transition: "0.3s",
-                opacity: isDirty ? 1 : 0,
-                pointerEvents: isDirty ? "auto" : "none",
-              }}
+                opacity: "var(--opacity)",
+                pointerEvents: "var(--pointerEvents)",
+              })}
             >
               <Button
                 variant="outlined"
@@ -189,7 +194,7 @@ export default function ProfileEdit({ loaderData }: Route.ComponentProps) {
             component="p"
             variant="Reg_18"
             sx={{
-              color: (theme) => theme.palette["Black"],
+              color: (theme) => theme.vars.palette["Black"],
               textAlign: "center",
               paddingLeft: "16px",
               paddingRight: "16px",

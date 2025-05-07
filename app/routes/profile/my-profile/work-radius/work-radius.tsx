@@ -19,14 +19,9 @@ import i18next from "i18next";
 import { useTranslation } from "react-i18next";
 import { withLocale } from "~/shared/withLocale";
 
-import {
-  useTheme,
-  Box,
-  TextField,
-  Snackbar,
-  Alert,
-  Typography,
-} from "@mui/material";
+import { TextField, Snackbar, Alert, Typography } from "@mui/material";
+import Box from "@mui/material/Box";
+
 import { TopNavigation } from "~/shared/ui/TopNavigation/TopNavigation";
 import { Loader } from "~/shared/ui/Loader/Loader";
 
@@ -192,7 +187,6 @@ export function shouldRevalidate({
 
 export default function WorkRadius({ loaderData }: Route.ComponentProps) {
   const { t } = useTranslation("workRadius");
-  const theme = useTheme();
   const fetcher = useFetcher<typeof clientAction>();
   const navigate = useNavigate();
 
@@ -233,7 +227,7 @@ export default function WorkRadius({ loaderData }: Route.ComponentProps) {
           position: "absolute",
           left: "-8.5px",
           top: "-20px",
-          color: theme.palette["Corp_1"],
+          color: "var(--mui-palette-Corp_1)",
         }}
       />
     );
@@ -263,7 +257,7 @@ export default function WorkRadius({ loaderData }: Route.ComponentProps) {
       geometry: getCircleGeoJSON([37.623082, 55.75254], 2),
       style: {
         simplificationRate: 0,
-        stroke: [{ color: theme.palette["Corp_1"], width: 3 }],
+        stroke: [{ color: "var(--mui-palette-Corp_1)", width: 3 }],
         fill: "rgba(56, 56, 219, 0)",
       },
     });
@@ -281,7 +275,7 @@ export default function WorkRadius({ loaderData }: Route.ComponentProps) {
     return () => {
       map.destroy();
     };
-  }, [theme, loaderData.ymaps]);
+  }, [loaderData.ymaps]);
 
   useEffect(() => {
     // here we update and sync map with server data
@@ -406,10 +400,10 @@ export default function WorkRadius({ loaderData }: Route.ComponentProps) {
             <Typography
               component="h1"
               variant="Reg_18"
-              sx={{
+              sx={(theme) => ({
                 textAlign: "center",
-                color: theme.palette["Black"],
-              }}
+                color: theme.vars.palette["Black"],
+              })}
             >
               {t("header_text")}
             </Typography>
@@ -417,10 +411,10 @@ export default function WorkRadius({ loaderData }: Route.ComponentProps) {
             <Typography
               component="p"
               variant="Reg_14"
-              sx={{
+              sx={(theme) => ({
                 textAlign: "center",
-                color: theme.palette["Grey_2"],
-              }}
+                color: theme.vars.palette["Grey_2"],
+              })}
             >
               {t("header_expl")}
             </Typography>
@@ -447,9 +441,9 @@ export default function WorkRadius({ loaderData }: Route.ComponentProps) {
                     input: {
                       endAdornment: (
                         <MarkerIcon
-                          sx={{
-                            color: theme.palette["Grey_3"],
-                          }}
+                          sx={(theme) => ({
+                            color: theme.vars.palette["Grey_3"],
+                          })}
                         />
                       ),
                     },
@@ -490,14 +484,17 @@ export default function WorkRadius({ loaderData }: Route.ComponentProps) {
 
           <Box
             id="map"
+            style={{
+              "--filter":
+                loaderData.address === "" && isActive === false
+                  ? "grayscale(1)"
+                  : "grayscale(0)",
+            }}
             sx={{
               height: "380px",
               borderRadius: "6px",
               overflow: "hidden",
-              filter:
-                loaderData.address === "" && isActive === false
-                  ? "grayscale(1)"
-                  : "grayscale(0)",
+              filter: "var(--filter)",
             }}
           >
             {/* <YMapComponentsProvider
@@ -533,7 +530,7 @@ export default function WorkRadius({ loaderData }: Route.ComponentProps) {
                         position: "absolute",
                         left: "-8.5px",
                         top: "-20px",
-                        color: theme.palette["Corp_1"],
+                        color: theme.vars.palette["Corp_1"],
                       }}
                     />
                   </YMapMarker>
@@ -547,7 +544,7 @@ export default function WorkRadius({ loaderData }: Route.ComponentProps) {
                     )}
                     style={{
                       simplificationRate: 0,
-                      stroke: [{ color: theme.palette["Corp_1"], width: 3 }],
+                      stroke: [{ color: theme.vars.palette["Corp_1"], width: 3 }],
                       fill: "rgba(56, 56, 219, 0)",
                     }}
                   />
