@@ -103,8 +103,7 @@ export default function BillingAdd({ loaderData }: Route.ComponentProps) {
       account: "",
       card: "",
       payWithCard: "yes",
-      // @ts-expect-error wrong automatic type narroing
-      cardDue: null,
+      cardDue: null as unknown as string,
     },
     resolver: yupResolver(
       Yup.object({

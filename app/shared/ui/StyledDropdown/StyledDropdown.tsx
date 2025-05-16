@@ -13,7 +13,7 @@ import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 type StyledDropdownProps = {
   name: string;
   value: string;
-  placeholder: string;
+  placeholder?: string;
   options: {
     value: string;
     label: string;
@@ -72,9 +72,12 @@ export const StyledDropdown = (props: StyledDropdownProps) => {
             })}
             disabled={props.disabled}
           >
-            <MenuItem key="empty" value="">
-              {props.placeholder}
-            </MenuItem>
+            {props.placeholder ? (
+              <MenuItem key="empty" value="">
+                {props.placeholder}
+              </MenuItem>
+            ) : null}
+
             {props.options.map((option) => (
               <MenuItem
                 key={option.value}

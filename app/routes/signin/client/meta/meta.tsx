@@ -25,8 +25,8 @@ import { TopNavigation } from "~/shared/ui/TopNavigation/TopNavigation";
 import { StyledTextField } from "~/shared/ui/StyledTextField/StyledTextField";
 import { StyledRadioButton } from "~/shared/ui/StyledRadioButton/StyledRadioButton";
 import { Loader } from "~/shared/ui/Loader/Loader";
-import { PointerIcon } from "./icons/PointerIcon";
-import { DeleteIcon } from "./icons/DeleteIcon";
+import { PointerIcon } from "../../../../shared/icons/PointerIcon";
+import { DeleteIcon } from "../../../../shared/icons/DeleteIcon";
 
 // export async function clientAction({ request }: Route.ClientActionArgs) {
 //   const params = new URLSearchParams();
@@ -78,7 +78,6 @@ export default function Meta({ loaderData }: Route.ComponentProps) {
               region: Yup.string().required(),
             })
           )
-
           .required("fff"),
       })
     ),

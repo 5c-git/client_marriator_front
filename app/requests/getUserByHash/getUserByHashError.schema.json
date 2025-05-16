@@ -1,0 +1,16 @@
+{
+  "id": "getUserByHashError",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "getUserByHashError",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "error": {
+      "type": "string"
+    },
+    "status": {
+      "type": "string"
+    }
+  },
+  "required": ["error", "status"]
+}

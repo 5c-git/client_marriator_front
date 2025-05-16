@@ -1,0 +1,26 @@
+{
+  "id": "postSetPlaceError",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "postSetPlaceError",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "message": {
+      "type": "string"
+    },
+    "errors": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "placeId": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "required": ["placeId"]
+    }
+  },
+  "required": ["message", "errors"]
+}

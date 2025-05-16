@@ -80,24 +80,41 @@ export default [
         "routes/profile/documents/certificates/certificates.tsx"
       ),
 
-      // layout("routes/dev/moderation/layout/layout.tsx", [
-      //   route(
-      //     ":lang?/dev/moderation/moderation-1",
-      //     "routes/dev/moderation/moderation-1/page.tsx"
-      //   ),
-      //   route(
-      //     ":lang?/dev/moderation/moderation-2",
-      //     "routes/dev/moderation/moderation-2/page.tsx"
-      //   ),
-      //   route(
-      //     ":lang?/dev/moderation/moderation-3",
-      //     "routes/dev/moderation/moderation-3/page.tsx"
-      //   ),
-      //   route(
-      //     ":lang?/dev/moderation/moderation-4",
-      //     "routes/dev/moderation/moderation-4/page.tsx"
-      //   ),
-      // ]),
+      layout("routes/dev/moderation/layout/layout.tsx", [
+        route(
+          ":lang?/dev/moderation/moderation-1",
+          "routes/dev/moderation/moderation-1/page.tsx"
+        ),
+        route(
+          ":lang?/dev/moderation/moderation-2",
+          "routes/dev/moderation/moderation-2/page.tsx"
+        ),
+        route(
+          ":lang?/dev/moderation/moderation-3",
+          "routes/dev/moderation/moderation-3/page.tsx"
+        ),
+        route(
+          ":lang?/dev/moderation/moderation-4",
+          "routes/dev/moderation/moderation-4/page.tsx"
+        ),
+      ]),
+
+      route(
+        ":lang?/dev/moderation/moderation-1/client",
+        "routes/dev/moderation/moderation-1/client/client.tsx"
+      ),
+      route(
+        ":lang?/dev/moderation/moderation-2/project-manager",
+        "routes/dev/moderation/moderation-2/project-manager/project-manager.tsx"
+      ),
+      route(
+        ":lang?/dev/moderation/moderation-3/recruter",
+        "routes/dev/moderation/moderation-3/recruter/recruter.tsx"
+      ),
+      route(
+        ":lang?/dev/moderation/moderation-4/supervisor",
+        "routes/dev/moderation/moderation-4/supervisor/supervisor.tsx"
+      ),
     ]),
 
     route(":lang?/offline", "routes/offline/offline.tsx"),
@@ -112,12 +129,12 @@ export default [
       "routes/signin/confirm-restore-pin/confirm-restore-pin.tsx"
     ),
 
-    // route(":lang?/signin/client/phone", "routes/signin/client/phone/phone.tsx"),
-    // route(":lang?/signin/client/meta", "routes/signin/client/meta/meta.tsx"),
-    // route(
-    //   ":lang?/signin/client/location",
-    //   "routes/signin/client/location/location.tsx"
-    // ),
+    route(":lang?/signin/client/phone", "routes/signin/client/phone/phone.tsx"),
+    route(":lang?/signin/client/meta", "routes/signin/client/meta/meta.tsx"),
+    route(
+      ":lang?/signin/client/location",
+      "routes/signin/client/location/location.tsx"
+    ),
     // signin
 
     // registration
