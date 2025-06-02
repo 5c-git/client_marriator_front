@@ -34,6 +34,7 @@ export async function clientAction({ request }: Route.ClientActionArgs) {
 
   const fields = await request.json();
   const accessToken = useStore.getState().accessToken;
+  const userRole = useStore.getState().userRole;
 
   if (accessToken) {
     const data = await postSetUserPin(accessToken, fields.pin);
@@ -41,6 +42,8 @@ export async function clientAction({ request }: Route.ClientActionArgs) {
     if ("status" in data) {
       if (type && type === "restore") {
         throw redirect(withLocale("/signin/pin"));
+      } else if (userRole) {
+        throw redirect(withLocale("/signin/client/meta"));
       } else {
         throw redirect(withLocale("/registration/step1"));
       }

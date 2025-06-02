@@ -19,7 +19,7 @@ import { Loader } from "~/shared/ui/Loader/Loader";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 import { BulletIcon } from "~/shared/icons/BulletIcon";
 
-import { queryClient } from "~/root";
+import { queryClient } from "~/shared/queryClient";
 import { useStore } from "~/store/store";
 
 import {

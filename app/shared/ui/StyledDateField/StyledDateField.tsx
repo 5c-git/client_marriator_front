@@ -14,8 +14,9 @@ import { sub, toDate, formatISO } from "date-fns";
 import Box from "@mui/material/Box";
 
 const localeActionsText = {
-  okButtonLabel: "Принять",
   cancelButtonLabel: "Отменить",
+  okButtonLabel: "Принять",
+  nextStepButtonLabel: "Принять",
 };
 
 import {
@@ -83,6 +84,7 @@ export const StyledDateField = (props: StyledDateFieldProps) => {
         >
           <LocalizationProvider dateAdapter={AdapterDateFns} adapterLocale={ru}>
             <MobileDatePicker
+              enableAccessibleFieldDOMStructure={false}
               label={props.placeholder}
               name={props.name}
               value={props.value !== null ? toDate(props.value) : props.value}
@@ -124,27 +126,73 @@ export const StyledDateField = (props: StyledDateFieldProps) => {
                 return result;
               }}
               localeText={localeActionsText}
-              // sx={{
-              //   marginBottom: "4px",
+              slots={{
+                toolbar: () => undefined,
+                calendarHeader: () => undefined,
+              }}
+              slotProps={{
+                textField: {
+                  style: {
+                    "--borderColor": props.error
+                      ? "var(--mui-palette-Red)"
+                      : "transparent",
+                    "--color": props.error
+                      ? "var(--mui-palette-Red)"
+                      : "var(--mui-palette-Grey_2)",
+                  },
+                  sx: {
+                    "& .MuiOutlinedInput-root": {
+                      borderColor: "var(--borderColor)",
+                    },
+                    "& .MuiInputLabel-root": {
+                      color: "var(--color)",
+                    },
+                  },
+                },
+                yearButton: {
+                  sx: (theme) => ({
+                    "&.Mui-selected": {
+                      //@ts-ignore no typings for theme in MUI for some reason
+                      backgroundColor: theme.vars.palette["Corp_1"],
 
-              //   "& .MuiOutlinedInput-root": {
-              //     borderColor: props.error
-              //       ? theme.vars.palette["Red"]
-              //       : props.status === "warning"
-              //       ? theme.vars.palette["Yellow"]
-              //       : "transparent",
-              //   },
+                      "&:focus": {
+                        //@ts-ignore no typings for theme in MUI for some reason
+                        backgroundColor: theme.vars.palette["Corp_1"],
+                      },
 
-              //   "& .MuiInputLabel-root": {
-              //     color: props.error
-              //       ? theme.vars.palette["Red"]
-              //       : theme.vars.palette["Grey_2"],
+                      "&:hover": {
+                        //@ts-ignore no typings for theme in MUI for some reason
+                        backgroundColor: theme.vars.palette["Corp_2"],
+                      },
+                    },
+                  }),
+                },
+                monthButton: {
+                  sx: (theme) => ({
+                    "&.Mui-selected": {
+                      //@ts-ignore no typings for theme in MUI for some reason
+                      backgroundColor: theme.vars.palette["Corp_1"],
 
-              //     "&.MuiInputLabel-shrink": {
-              //       color: theme.vars.palette["Grey_2"],
-              //     },
-              //   },
-              // }}
+                      "&:focus": {
+                        //@ts-ignore no typings for theme in MUI for some reason
+                        backgroundColor: theme.vars.palette["Corp_1"],
+                      },
+
+                      "&:hover": {
+                        //@ts-ignore no typings for theme in MUI for some reason
+                        backgroundColor: theme.vars.palette["Corp_2"],
+                      },
+                    },
+                  }),
+                },
+                dialog: {
+                  sx: {
+                    "& .MuiDateCalendar-root": {
+                      height: "unset",
+                    },
+                  },
+                },
+              }}
             />
           </LocalizationProvider>
 

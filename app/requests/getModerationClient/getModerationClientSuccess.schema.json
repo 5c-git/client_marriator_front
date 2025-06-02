@@ -1,0 +1,155 @@
+{
+  "$id": "getModerationClientSuccess",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "getModerationClientSuccess",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "data": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "number"
+          },
+          "phone": {
+            "type": "number"
+          },
+          "email": {
+            "type": "string"
+          },
+          "logo": {
+            "type": "null"
+          },
+          "project": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "id": {
+                  "type": "number"
+                },
+                "name": {
+                  "type": "string"
+                },
+                "brand": {
+                  "type": "array"
+                }
+              },
+              "required": ["id", "name", "brand"]
+            }
+          },
+          "place": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "id": {
+                  "type": "number"
+                },
+                "name": {
+                  "type": "string"
+                },
+                "latitude": {
+                  "type": "string"
+                },
+                "longitude": {
+                  "type": "string"
+                },
+                "address_kladr": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "id",
+                "name",
+                "latitude",
+                "longitude",
+                "address_kladr"
+              ]
+            }
+          },
+          "roles": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "id": {
+                  "type": "number",
+                  "minimum": 2,
+                  "maximum": 6
+                },
+                "name": {
+                  "enum": [
+                    "client",
+                    "manager",
+                    "recruiter",
+                    "specialist",
+                    "supervisor"
+                  ]
+                }
+              },
+              "required": ["id", "name"]
+            }
+          }
+        },
+        "required": [
+          "id",
+          "phone",
+          "email",
+          "logo",
+          "project",
+          "place",
+          "roles"
+        ]
+      }
+    },
+    "links": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "first": {
+          "type": "string"
+        },
+        "last": {
+          "type": "null"
+        },
+        "prev": {
+          "type": "string"
+        },
+        "next": {
+          "type": "null"
+        }
+      },
+      "required": ["first", "last", "prev", "next"]
+    },
+    "meta": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "current_page": {
+          "type": "number"
+        },
+        "from": {
+          "type": ["number", "null"]
+        },
+        "path": {
+          "type": "string"
+        },
+        "per_page": {
+          "type": "number"
+        },
+        "to": {
+          "type": ["number", "null"]
+        }
+      },
+      "required": ["current_page", "from", "path", "per_page", "to"]
+    }
+  },
+  "required": ["data", "links", "meta"]
+}

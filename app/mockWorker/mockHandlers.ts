@@ -38,6 +38,14 @@ import { postSetTerminateMockResponse } from "~/requests/postSetTerminate/postSe
 import { getDocumentArchiveMockResponse } from "~/requests/getDocumentArchive/getDocumentArchive";
 import { getDocumentInquiriesMockResponse } from "~/requests/getDocumentInquiries/getDocumentInquiries";
 import { getCompanyAndCertificatesInquiriesMockResponse } from "~/requests/getCompanyAndCertificatesInquiries/getCompanyAndCertificatesInquiries";
+import { getModerationClientMockResponse } from "~/requests/getModerationClient/getModerationClient";
+import { getUserByHashMockResponse } from "~/requests/getUserByHash/getUserByHash";
+import { postConfirmUserRegisterMockResponse } from "~/requests/postConfirmUserRegister/postConfirmUserRegister";
+import { getBrandMockResponse } from "~/requests/getBrand/getBrand";
+import { postSetBrandImgMockResponse } from "~/requests/postSetBrandImg/postSetBrandImg";
+import { getPlaceMockResponse } from "~/requests/getPlace/getPlace";
+import { postSetPlaceMockResponse } from "~/requests/postSetPlace/postSetPlace";
+import { postDelPlaceMockResponse } from "~/requests/postDelPlace/postDelPlace";
 
 export const handlers = [
   getFormMockResponse,
@@ -77,4 +85,12 @@ export const handlers = [
   getDocumentArchiveMockResponse,
   getDocumentInquiriesMockResponse,
   getCompanyAndCertificatesInquiriesMockResponse,
+  getModerationClientMockResponse,
+  getUserByHashMockResponse,
+  postConfirmUserRegisterMockResponse,
+  getBrandMockResponse,
+  postSetBrandImgMockResponse,
+  getPlaceMockResponse,
+  postSetPlaceMockResponse,
+  postDelPlaceMockResponse,
 ];

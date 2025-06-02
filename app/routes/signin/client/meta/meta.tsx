@@ -25,27 +25,89 @@ import { TopNavigation } from "~/shared/ui/TopNavigation/TopNavigation";
 import { StyledTextField } from "~/shared/ui/StyledTextField/StyledTextField";
 import { StyledRadioButton } from "~/shared/ui/StyledRadioButton/StyledRadioButton";
 import { Loader } from "~/shared/ui/Loader/Loader";
-import { PointerIcon } from "./icons/PointerIcon";
-import { DeleteIcon } from "./icons/DeleteIcon";
+import { PointerIcon } from "../../../../shared/icons/PointerIcon";
+import { DeleteIcon } from "../../../../shared/icons/DeleteIcon";
 
-// export async function clientAction({ request }: Route.ClientActionArgs) {
-//   const params = new URLSearchParams();
-//   const { _action, ...fields } = await request.json();
-// }
-//
+import { useStore } from "~/store/store";
 
-const location = {
-  name: "ТЦ “Луч”",
-  icon: "https://mui.com/static/images/avatar/1.jpg",
-  coordinates: [37.623082, 55.75254],
-  address: "ул.Вахтовиков, д. 17, к.3",
-  region: "Центральный федеральный округ",
-};
+import { getBrand } from "~/requests/getBrand/getBrand";
+import { getPlace } from "~/requests/getPlace/getPlace";
+import { postDelPlace } from "~/requests/postDelPlace/postDelPlace";
+import { postFinishRegister } from "~/requests/postFinishRegister/postFinishRegister";
+
+export async function clientLoader() {
+  const accessToken = useStore.getState().accessToken;
+
+  if (accessToken) {
+    const brandsData = await getBrand(accessToken);
+    const locationsData = await getPlace(accessToken);
+
+    const brands: {
+      value: string;
+      label: string;
+      disabled: boolean;
+      image: string | null;
+    }[] = [];
+    const locations: {
+      id: number;
+      name: string;
+      icon: string;
+      coordinates: string[];
+      address: string;
+    }[] = [];
+
+    brandsData.data.forEach((item) =>
+      brands.push({
+        value: item.id.toString(),
+        label: item.name,
+        disabled: false,
+        image: item.logo,
+      })
+    );
+
+    locationsData.data.forEach((item) =>
+      locations.push({
+        id: item.id,
+        name: item.name,
+        icon: "https://mui.com/static/images/avatar/1.jpg",
+        coordinates: [item.latitude, item.longitude],
+        address: item.address_kladr,
+        // region: "Центральный федеральный округ",
+      })
+    );
+
+    return {
+      brands,
+      locations,
+    };
+  } else {
+    throw new Response("Токен авторизации не обнаружен!", { status: 401 });
+  }
+}
+
+export async function clientAction({ request }: Route.ClientActionArgs) {
+  const { _action, ...fields } = await request.json();
+  const accessToken = useStore.getState().accessToken;
+
+  if (accessToken) {
+    if (_action === "deleteLocation") {
+      await postDelPlace("accessToken", fields.placeId);
+    } else if (_action === "finishRegister") {
+      const data = await postFinishRegister(accessToken);
+
+      useStore.getState().setAccessToken(data.result.token.access_token);
+      useStore.getState().setRefreshToken(data.result.token.refresh_token);
+
+      throw redirect(withLocale("/registration/registration-complete"));
+    }
+  } else {
+    throw new Response("Токен авторизации не обнаружен!", { status: 401 });
+  }
+}
 
 export default function Meta({ loaderData }: Route.ComponentProps) {
-  const { t } = useTranslation("profileMeta");
-  // const fetcher = useFetcher<typeof clientAction>();
-  const navigate = useNavigate();
+  const { t } = useTranslation("signin_client_meta");
+  const fetcher = useFetcher();
   const navigation = useNavigation();
 
   const [open, setOpen] = useState<boolean>(false);
@@ -57,33 +119,48 @@ export default function Meta({ loaderData }: Route.ComponentProps) {
     getValues,
     handleSubmit,
     formState: { errors, isValid },
+    reset,
   } = useForm({
     defaultValues: {
       logo: "",
       fio: "",
-      locations: [location],
+      locations: loaderData.locations,
     },
     resolver: yupResolver(
       Yup.object({
-        logo: Yup.string().required("logo"),
-        fio: Yup.string().required("Обязательное поле"),
+        logo: Yup.string().required(t("form.logo")),
+        fio: Yup.string().required(t("form.fio")),
         locations: Yup.array()
           .min(1)
           .of(
             Yup.object().shape({
+              id: Yup.number().required(),
               name: Yup.string().required(),
               icon: Yup.string().required(),
-              coordinates: Yup.array().min(2).max(2).of(Yup.number()),
+              coordinates: Yup.array().min(2).max(2).of(Yup.string()),
               address: Yup.string().required(),
-              region: Yup.string().required(),
+              // region: Yup.string().required(),
             })
           )
-
-          .required("fff"),
+          .required(t("form.locations")),
       })
     ),
     mode: "onChange",
   });
+
+  useEffect(() => {
+    setTimeout(() => {
+      reset({
+        logo: getValues("logo"),
+        fio: getValues("fio"),
+        locations: loaderData.locations,
+      });
+    });
+  }, [loaderData, reset]);
+
+  const isLogoPresent = loaderData.brands.find(
+    (item) => item.value === getValues().logo
+  )?.image;
 
   return (
     <>
@@ -92,7 +169,7 @@ export default function Meta({ loaderData }: Route.ComponentProps) {
       <Box>
         <TopNavigation
           header={{
-            text: "Настройка аккаунта",
+            text: t("header"),
             bold: false,
           }}
         />
@@ -114,7 +191,7 @@ export default function Meta({ loaderData }: Route.ComponentProps) {
           }}
         >
           <Avatar
-            src={getValues().logo}
+            src={isLogoPresent ? isLogoPresent : undefined}
             sx={(theme) => ({
               width: "88px",
               height: "88px",
@@ -122,64 +199,91 @@ export default function Meta({ loaderData }: Route.ComponentProps) {
               ...theme.typography.Reg_16,
             })}
           >
-            Логотип
+            {t("avatar.placeholder")}
           </Avatar>
 
-          <Button
-            sx={{
-              display: "flex",
-              flexDirection: "column",
-              alignItems: "start",
-              padding: "8px 12px",
-              rowGap: "2px",
-              backgroundColor: (theme) => theme.vars.palette["Grey_5"],
-              borderRadius: "6px",
-            }}
-            onClick={() => {
-              setOpen(true);
-            }}
-          >
-            <Typography
-              component="p"
-              variant="Reg_12"
-              sx={{
-                color: (theme) => theme.vars.palette["Grey_2"],
+          <Box>
+            <Button
+              style={{
+                "--borderColor": errors.logo?.message
+                  ? "var(--mui-palette-Red)"
+                  : "transparent",
               }}
-            >
-              Аватар *
-            </Typography>
-            <Stack
-              direction="row"
               sx={{
-                width: "100%",
-                alignItems: "center",
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "start",
+                padding: "8px 12px",
+                marginBottom: "4px",
+                rowGap: "2px",
+                backgroundColor: (theme) => theme.vars.palette["Grey_5"],
+                borderRadius: "6px",
+                border: "1px solid",
+                borderColor: "var(--borderColor)",
+              }}
+              onClick={() => {
+                setOpen(true);
               }}
             >
               <Typography
                 component="p"
-                variant="Reg_14"
-                sx={{
-                  flexGrow: "1",
-                  color: (theme) => theme.vars.palette["Black"],
-                  textAlign: "left",
-                }}
-              >
-                Выберите
-              </Typography>{" "}
-              <KeyboardArrowDownIcon
+                variant="Reg_12"
                 sx={{
                   color: (theme) => theme.vars.palette["Grey_2"],
                 }}
-              />
-            </Stack>
-          </Button>
+              >
+                {t("avatar.text")}
+              </Typography>
+              <Stack
+                direction="row"
+                sx={{
+                  width: "100%",
+                  alignItems: "center",
+                }}
+              >
+                <Typography
+                  component="p"
+                  variant="Reg_14"
+                  style={{
+                    "--color": errors.logo?.message
+                      ? "var(--mui-palette-Red)"
+                      : "var(--mui-palette-Black)",
+                  }}
+                  sx={{
+                    flexGrow: "1",
+                    color: "var(--color)",
+                    textAlign: "left",
+                  }}
+                >
+                  {t("avatar.value")}
+                </Typography>{" "}
+                <KeyboardArrowDownIcon
+                  sx={{
+                    color: (theme) => theme.vars.palette["Grey_2"],
+                  }}
+                />
+              </Stack>
+            </Button>
+
+            {errors.logo?.message ? (
+              <Typography
+                component="p"
+                variant="Reg_12"
+                sx={(theme) => ({
+                  color: theme.vars.palette["Red"],
+                })}
+              >
+                {t("form.logo")}
+              </Typography>
+            ) : null}
+          </Box>
 
           <Controller
             name="fio"
             control={control}
             render={({ field }) => (
               <StyledTextField
-                placeholder="ФИО *"
+                placeholder={t("fioPlaceholder")}
                 onImmediateChange={() => {}}
                 inputType="text"
                 error={errors.fio?.message}
@@ -225,6 +329,17 @@ export default function Meta({ loaderData }: Route.ComponentProps) {
                     );
                     setValue("locations", updatedList);
                     trigger("locations");
+
+                    fetcher.submit(
+                      JSON.stringify({
+                        _action: "deleteLocation",
+                        placeId: location.id,
+                      }),
+                      {
+                        method: "POST",
+                        encType: "application/json",
+                      }
+                    );
                   }}
                   sx={{
                     width: "24px",
@@ -247,9 +362,31 @@ export default function Meta({ loaderData }: Route.ComponentProps) {
             to="/signin/client/location"
             variant="outlined"
             startIcon={<PointerIcon />}
+            style={{
+              "--color": errors.locations?.message
+                ? "var(--mui-palette-Red)"
+                : "var(--mui-palette-Corp_1)",
+            }}
+            sx={{
+              color: "var(--color)",
+              borderColor: "var(--color)",
+            }}
           >
-            Выбрать места проведения
+            {t("locationsButton")}
           </Button>
+
+          {errors.locations?.message ? (
+            <Typography
+              component="p"
+              variant="Reg_14"
+              sx={(theme) => ({
+                color: theme.vars.palette["Red"],
+                textAlign: "center",
+              })}
+            >
+              {t("form.locations")}
+            </Typography>
+          ) : null}
 
           <Box
             sx={{
@@ -262,8 +399,18 @@ export default function Meta({ loaderData }: Route.ComponentProps) {
               backgroundColor: (theme) => theme.vars.palette["White"],
             }}
           >
-            <Button type="submit" variant="contained" disabled={!isValid}>
-              Завершить регистрацию
+            <Button
+              type="button"
+              onClick={handleSubmit(() => {
+                fetcher.submit(JSON.stringify({ _action: "finishRegister" }), {
+                  method: "POST",
+                  encType: "application/json",
+                });
+              })}
+              variant="contained"
+              disabled={!isValid}
+            >
+              {t("completeRegistration")}
             </Button>
           </Box>
         </form>
@@ -289,30 +436,11 @@ export default function Meta({ loaderData }: Route.ComponentProps) {
             control={control}
             render={({ field }) => (
               <StyledRadioButton
+                {...field}
                 onImmediateChange={() => {}}
                 inputType="radio"
                 validation="none"
-                options={[
-                  {
-                    value: "https://mui.com/static/images/avatar/1.jpg",
-                    label: "Пятерочка",
-                    disabled: false,
-                    image: "https://mui.com/static/images/avatar/1.jpg",
-                  },
-                  {
-                    value: "https://mui.com/static/images/avatar/2.jpg",
-                    label: "Перекресток",
-                    disabled: false,
-                    image: "https://mui.com/static/images/avatar/2.jpg",
-                  },
-                  {
-                    value: "https://mui.com/static/images/avatar/3.jpg",
-                    label: "Чижик",
-                    disabled: false,
-                    image: "https://mui.com/static/images/avatar/3.jpg",
-                  },
-                ]}
-                {...field}
+                options={loaderData.brands}
               />
             )}
           />

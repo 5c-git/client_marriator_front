@@ -20,19 +20,8 @@ import { CssBaseline, ThemeProvider } from "@mui/material";
 // import { AlertIcon } from "./theme/icons/AlertIcon";
 // MUI
 
-import { QueryClient } from "@tanstack/react-query";
-
 import { changeLanguage } from "i18next";
 import { supportedLngs } from "./entry.client";
-
-export const queryClient = new QueryClient({
-  defaultOptions: {
-    queries: {
-      // 3 minines
-      staleTime: 180000,
-    },
-  },
-});
 
 export function HydrateFallback() {
   return <div></div>;

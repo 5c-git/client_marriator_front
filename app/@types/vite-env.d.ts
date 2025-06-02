@@ -45,6 +45,14 @@ interface ImportMetaEnv {
   readonly VITE_GET_DOCUMENTS_INQUIRIES: string;
   readonly VITE_GET_COMPANY_AND_CERTIFICATES_INQUIRIES: string;
   readonly VITE_REQUEST_INQUIRIES: string;
+  readonly VITE_GET_MODERATION_CLIENT: string;
+  readonly VITE_GET_USER_BY_HASH: string;
+  readonly VITE_POST_CONFIRM_USER_REGISTER: string;
+  readonly VITE_GET_BRAND: string;
+  readonly VITE_POST_SET_BRAND_IMG: string;
+  readonly VITE_GET_PLACE: string;
+  readonly VITE_POST_SET_PLACE: string;
+  readonly VITE_POST_DEL_PLACE: string;
   // more env variables...
 }
 

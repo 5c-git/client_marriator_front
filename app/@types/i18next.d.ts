@@ -11,7 +11,9 @@ import pin from "../../public/locales/ru/pin.json";
 import createPin from "../../public/locales/ru/createPin.json";
 import confirmRestorePin from "../../public/locales/ru/confirmRestorePin.json";
 
-import clientPhone from "../../public/locales/ru/clientPhone.json";
+import signin_client_phone from "../../public/locales/ru/clientPhone.json";
+import signin_client_meta from "../../public/locales/ru/signin_client_meta.json";
+import signin_client_location from "../../public/locales/ru/signin_client_location.json";
 //auth
 
 //registration
@@ -75,7 +77,9 @@ declare module "i18next" {
       createPin: typeof createPin;
       confirmRestorePin: typeof confirmRestorePin;
 
-      clientPhone: typeof clientPhone;
+      signin_client_phone: typeof signin_client_phone;
+      signin_client_meta: typeof signin_client_meta;
+      signin_client_location: typeof signin_client_location;
       //auth
 
       //registration

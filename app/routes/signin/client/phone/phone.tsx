@@ -4,6 +4,7 @@ import {
   useSearchParams,
   redirect,
 } from "react-router";
+// import type { Route } from "";
 import type { Route } from "./+types/phone";
 
 import { useTranslation } from "react-i18next";
@@ -23,15 +24,51 @@ import { Loader } from "~/shared/ui/Loader/Loader";
 
 import marriator from "./marriator.svg";
 
-// export async function clientAction({ request }: Route.ClientActionArgs) {
-//   // const currentURL = new URL(request.url);
-//   // currentURL.searchParams.set("error", "error");
-//   // throw redirect(currentURL.toString());
-//   // throw redirect(withLocale(`/signin/client/meta`));
-// }
+import { useStore } from "~/store/store";
 
-export default function Phone() {
-  const { t } = useTranslation("clientPhone");
+import { getUserByHash } from "~/requests/getUserByHash/getUserByHash";
+import { postSendPhone } from "~/requests/postSendPhone/postSendPhone";
+
+const setUserPhone = useStore.getState().setUserPhone;
+const setUserRole = useStore.getState().setUserRole;
+
+export async function clientLoader({ request }: Route.ClientLoaderArgs) {
+  const hash = new URL(request.url).searchParams.get("hash");
+
+  if (hash === null) {
+    throw redirect(withLocale("/signin/phone"));
+  }
+
+  const userData = await getUserByHash("authHash", hash);
+
+  setUserRole(userData.result.role);
+
+  return { userPhone: userData.result.phone.toString() };
+}
+
+export async function clientAction({ request }: Route.ClientActionArgs) {
+  const currentURL = new URL(request.url);
+  const params = new URLSearchParams();
+
+  const fields = await request.json();
+  setUserPhone(fields.phone);
+
+  const data = await postSendPhone(fields.phone);
+
+  if (data.result.code.status !== "errorSend") {
+    params.set("ttl", data.result.code.ttl.toString());
+    params.set("type", data.result.type);
+
+    throw redirect(withLocale(`/signin/sms?${params}`));
+  } else {
+    currentURL.searchParams.set("error", "error");
+
+    throw redirect(currentURL.toString());
+  }
+}
+
+export default function Phone({ loaderData }: Route.ComponentProps) {
+  const { t } = useTranslation("signin_client_phone");
 
   const submit = useSubmit();
   const navigation = useNavigation();
@@ -46,7 +83,7 @@ export default function Phone() {
     formState: { errors },
   } = useForm({
     defaultValues: {
-      phone: "",
+      phone: loaderData.userPhone,
     },
     resolver: yupResolver(
       Yup.object().shape({
@@ -110,6 +147,7 @@ export default function Phone() {
             render={({ field }) => (
               <StyledPhoneField
                 inputType="phone"
+                disabled
                 error={errors.phone?.message}
                 placeholder={t("inputPlaceholder")}
                 onImmediateChange={() => {}}

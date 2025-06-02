@@ -7,7 +7,7 @@ import { ListIcon } from "~/shared/ui/Menu/icons/ListIcon";
 import { WalletIcon } from "~/shared/ui/Menu/icons/WalletIcon";
 import { ProfileIcon } from "~/shared/ui/Menu/icons/ProfileIcon";
 
-import { queryClient } from "~/root";
+import { queryClient } from "~/shared/queryClient";
 import { useStore } from "~/store/store";
 import {
   getUserInfo,
