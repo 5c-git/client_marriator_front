@@ -25,9 +25,33 @@
           },
           "address_kladr": {
             "type": "string"
+          },
+          "logo": {
+            "type": "string"
+          },
+          "region": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "id": {
+                "type": "number"
+              },
+              "name": {
+                "type": "string"
+              }
+            },
+            "required": ["id", "name"]
           }
         },
-        "required": ["id", "name", "latitude", "longitude", "address_kladr"]
+        "required": [
+          "id",
+          "name",
+          "latitude",
+          "longitude",
+          "address_kladr",
+          "logo",
+          "region"
+        ]
       }
     }
   },

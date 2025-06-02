@@ -15,7 +15,7 @@ async function enableMocking() {
     return;
   }
 
-  return;
+  // return;
 
   const { worker } = await import("./mockWorker/mockWorker");
 
@@ -35,7 +35,6 @@ if (process.env.NODE_ENV !== "development") {
 }
 
 async function hydrate() {
-  // eslint-disable-next-line import/no-named-as-default-member
   await i18next
     .use(HttpBackend)
     .use(LanguageDetector)

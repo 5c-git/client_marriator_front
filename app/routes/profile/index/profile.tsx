@@ -30,7 +30,7 @@ import { DocumentsIcon } from "./icons/DocumentsIcon";
 import { ExitIcon } from "./icons/ExitIcon";
 import { BulletIcon } from "~/shared/icons/BulletIcon";
 
-import { queryClient } from "~/root";
+import { queryClient } from "~/shared/queryClient";
 import { useStore } from "~/store/store";
 import {
   getUserInfo,

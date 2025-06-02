@@ -29,7 +29,7 @@ type OptionWithImage = {
   value: string;
   label: string;
   icon?: never;
-  image?: string;
+  image?: string | null;
   disabled: boolean;
 };
 

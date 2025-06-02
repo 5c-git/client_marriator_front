@@ -12,15 +12,15 @@ const validateSuccess = ajv.compile(getBrandSuccess);
 export const getBrandKeys = ["getBrand"];
 
 export const getBrand = async (
-  accessToken: string,
-  userId: string,
-  confirm: string
+  accessToken: string
+  // userId: string,
+  // confirm: string
 ): Promise<GetBrandSuccess> => {
   try {
     const url = new URL(import.meta.env.VITE_GET_BRAND);
 
-    url.searchParams.append("userId", userId);
-    url.searchParams.append("confirm", confirm);
+    // url.searchParams.append("userId", userId);
+    // url.searchParams.append("confirm", confirm);
 
     const request = await fetch(url, {
       method: "GET",
@@ -63,22 +63,22 @@ export const getBrand = async (
 export const mockResponseSuccess = {
   data: [
     {
+      id: 1,
+      name: "бренд 1",
+      logo: "https://mui.com/static/images/avatar/1.jpg",
+      description: "Пятёрочка",
+    },
+    {
       id: 2,
-      name: "vfdv",
+      name: "бренд 2",
       logo: null,
-      description: "dvdvdvdv",
+      description: "Шестёрочка",
     },
     {
       id: 3,
-      name: "sdvsvsvs",
-      logo: "/storage/source/directory/brand/3-logo/about-main-1.jpeg",
-      description: "vsvsfvfvdvdvdvfdv",
-    },
-    {
-      id: 1,
-      name: "бренд 1",
-      logo: null,
-      description: "аммвамвмвам вам вам вм вм в мва мвамвм вмвмвмвм вмвм",
+      name: "бренд 3",
+      logo: "https://mui.com/static/images/avatar/3.jpg",
+      description: "Семёрочка",
     },
   ],
 };

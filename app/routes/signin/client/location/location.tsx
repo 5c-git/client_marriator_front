@@ -1,7 +1,7 @@
 import { renderToStaticMarkup } from "react-dom/server";
 import { useState, useEffect } from "react";
 import {
-  useFetcher,
+  useSubmit,
   useNavigate,
   useNavigation,
   Link,
@@ -23,9 +23,8 @@ import { loadMap, langMap } from "~/shared/ymap/ymap";
 import type { Coordinates } from "~/shared/ymap/ymap";
 //map
 
-import { Button, Typography, TextField } from "@mui/material";
+import { Button } from "@mui/material";
 import Box from "@mui/material/Box";
-import Stack from "@mui/material/Stack";
 
 import { TopNavigation } from "~/shared/ui/TopNavigation/TopNavigation";
 import { Loader } from "~/shared/ui/Loader/Loader";
@@ -34,18 +33,46 @@ import { StyledSearchBar } from "~/shared/ui/StyledSearchBar/StyledSearchBar";
 import { StyledDropdown } from "~/shared/ui/StyledDropdown/StyledDropdown";
 
 import { MapIcon } from "./icons/MapIcon";
-import { MarkerIcon } from "./icons/MarkerIcon";
+
+import { useStore } from "~/store/store";
+
+import { getPlace } from "~/requests/getPlace/getPlace";
+import { postSetPlace } from "~/requests/postSetPlace/postSetPlace";
 
 const renderIcon = (image: string, borderColor: string) => {
   return renderToStaticMarkup(
-    <MarkerIcon
+    // <MarkerIcon
+    //   style={{
+    //     position: "absolute",
+
+    //     color: borderColor,
+    //   }}
+    // />
+    <div
       style={{
         position: "absolute",
-        left: "-8.5px",
-        top: "-20px",
-        color: borderColor,
+        left: "-50%",
+        top: "-50%",
+        width: "41px",
+        height: "41px",
+        border: "5px solid",
+        borderRadius: "50%",
+        overflow: "hidden",
+        borderColor: borderColor,
       }}
-    />
+    >
+      <img
+        // src={image}
+        src={"https://mui.com/static/images/avatar/1.jpg"}
+        style={{
+          // position: "relative",
+          height: "100%",
+          width: "100%",
+          objectFit: "cover",
+        }}
+        alt="shop logo"
+      />
+    </div>
   );
 };
 
@@ -56,120 +83,77 @@ type Option = {
   coordinates: Coordinates;
   address: string;
   region: string;
+  regionId: string;
   disabled: boolean;
 };
 
-export async function clientAction({ request }: Route.ClientActionArgs) {
-  // const params = new URLSearchParams();
-  // const { _action, ...fields } = await request.json();
-  //
-
-  const language = i18next.language as "en" | "ru";
-
-  const ymaps = await loadMap(langMap[language]);
-
-  const shops: Option[] = [
-    {
-      value: "value",
-      name: "Пятерочка",
-      icon: "https://mui.com/static/images/avatar/1.jpg",
-      coordinates: [37.588144, 55.733842],
-      address: "ТЦ “Родео драйв”, пр. Науки, д. 24, к.1",
-      region: "Центральный федеральный округ",
-      disabled: false,
-    },
-    {
-      value: "value1",
-      name: "Перекресток",
-      icon: "https://mui.com/static/images/avatar/2.jpg",
-      coordinates: [36, 55],
-      address: "ТЦ “Родео драйв”, пр. Науки, д. 24, к.1",
-      region: "Центральный федеральный округ",
-      disabled: false,
-    },
-    {
-      value: "value2",
-      name: "Чижик",
-      icon: "https://mui.com/static/images/avatar/3.jpg",
-      coordinates: [37, 55],
-      address: "ТЦ “Родео драйв”, пр. Науки, д. 24, к.1",
-      region: "Центральный федеральный округ",
-      disabled: false,
-    },
-  ];
-  const regions = [
-    { value: "center", label: "Центральный", disabled: false },
-    { value: "west", label: "Западный", disabled: false },
-    { value: "south", label: "Южный", disabled: false },
-  ];
-
-  return {
-    ymaps,
-    shops,
-    regions,
-  };
-}
-
 export async function clientLoader() {
   const language = i18next.language as "en" | "ru";
+  const accessToken = useStore.getState().accessToken;
 
-  const ymaps = await loadMap(langMap[language]);
+  if (accessToken) {
+    const ymaps = await loadMap(langMap[language]);
 
-  const shops: Option[] = [
-    {
-      value: "value",
-      name: "Пятерочка",
-      icon: "https://mui.com/static/images/avatar/1.jpg",
-      coordinates: [37.588144, 55.733842],
-      address: "ТЦ “Родео драйв”, пр. Науки, д. 24, к.1",
-      region: "Центральный федеральный округ",
-      disabled: false,
-    },
-    {
-      value: "value1",
-      name: "Перекресток",
-      icon: "https://mui.com/static/images/avatar/2.jpg",
-      coordinates: [36, 55],
-      address: "ТЦ “Родео драйв”, пр. Науки, д. 24, к.1",
-      region: "Центральный федеральный округ",
-      disabled: false,
-    },
-    {
-      value: "value2",
-      name: "Чижик",
-      icon: "https://mui.com/static/images/avatar/3.jpg",
-      coordinates: [37, 55],
-      address: "ТЦ “Родео драйв”, пр. Науки, д. 24, к.1",
-      region: "Центральный федеральный округ",
-      disabled: false,
-    },
-  ];
-  const regions = [
-    { value: "center", label: "Центральный", disabled: false },
-    { value: "west", label: "Западный", disabled: false },
-    { value: "south", label: "Южный", disabled: false },
-  ];
+    const locationsData = await getPlace(accessToken);
 
-  return {
-    ymaps,
-    shops,
-    regions,
-  };
+    const shops: Option[] = [];
+
+    const regions: { value: string; label: string; disabled: boolean }[] = [];
+
+    locationsData.data.forEach((item, index) => {
+      shops.push({
+        value: item.id.toString(),
+        name: item.name,
+        icon: item.logo,
+        coordinates: [Number(item.latitude), Number(item.longitude)],
+        address: item.address_kladr,
+        region: item.region.name,
+        regionId: item.region.id.toString(),
+        disabled: false,
+      });
+
+      const match = regions.findIndex(
+        (region) => region.value === item.region.id.toString()
+      );
+
+      if (match === -1) {
+        regions.push({
+          value: locationsData.data[index].region.id.toString(),
+          label: locationsData.data[index].region.name,
+          disabled: false,
+        });
+      }
+    });
+
+    return { ymaps, shops, regions };
+  } else {
+    throw new Response("Токен авторизации не обнаружен!", { status: 401 });
+  }
+}
+
+export async function clientAction({ request }: Route.ClientActionArgs) {
+  const accessToken = useStore.getState().accessToken;
+
+  const shops = await request.json();
+
+  if (accessToken) {
+    await postSetPlace(accessToken, shops);
+
+    throw redirect(withLocale("/signin/client/meta"));
+  } else {
+    throw new Response("Токен авторизации не обнаружен!", { status: 401 });
+  }
 }
 
 export default function Location({ loaderData }: Route.ComponentProps) {
-  const { t } = useTranslation("profileMeta");
-  const fetcher = useFetcher<typeof clientAction>();
+  const { t } = useTranslation("signin_client_location");
   const navigate = useNavigate();
   const navigation = useNavigation();
-
-  const [mapController, setMapController] = useState<{
-    map: YMap | null;
-    markers: YMapMarker[];
-  }>({ map: null, markers: [] });
+  const submit = useSubmit();
 
   const [showMap, setShowMap] = useState<boolean>(false);
   const [selectedShops, setSelectedShops] = useState(loaderData.shops);
+  const [mapInstance, setMapInstance] = useState<YMap | null>(null);
 
   const {
     control,
@@ -201,184 +185,124 @@ export default function Location({ loaderData }: Route.ComponentProps) {
     mode: "onChange",
   });
 
+  // рисуем пустую карту
   useEffect(() => {
     if (showMap) {
-      const {
-        YMap,
-        YMapDefaultSchemeLayer,
-        YMapDefaultFeaturesLayer,
-        YMapListener,
-        YMapMarker,
-      } = loaderData.ymaps;
+      const { YMap, YMapDefaultSchemeLayer, YMapDefaultFeaturesLayer } =
+        loaderData.ymaps;
 
       const container = document.querySelector("#map") as HTMLElement;
 
       const map = new YMap(container, {
-        location: { center: [37.623082, 55.75254], zoom: 12 },
-      });
-
-      const markers: YMapMarker[] = [];
-
-      const mapListener = new YMapListener({
-        layer: "any",
-        onClick: (object) => {
-          if (object?.type === "marker") {
-            if (object.entity.properties) {
-              const clickedShop = object.entity.properties.id as string;
-              const clickedShopCoordinates = object.entity.coordinates;
-
-              const currentMarkers = [...mapController?.markers];
-
-              const currentSelectedShops = getValues("shops");
-
-              const isShopSelected = currentSelectedShops.findIndex(
-                (shop) => shop === clickedShop
-              );
-
-              if (isShopSelected > -1) {
-                currentSelectedShops.splice(isShopSelected, 1);
-                map.removeChild(object.entity);
-
-                const markerElement = document.createElement("div");
-                const icon = renderIcon("image", "red");
-                markerElement.innerHTML = icon;
-
-                const marker = new YMapMarker(
-                  {
-                    coordinates: clickedShopCoordinates,
-                    properties: {
-                      id: clickedShop,
-                    },
-                  },
-                  markerElement
-                );
-
-                currentMarkers.push(marker);
-
-                map.addChild(marker);
-
-                setMapController({
-                  map,
-                  markers: currentMarkers,
-                });
-                setValue("shops", currentSelectedShops);
-              } else {
-                currentSelectedShops.push(clickedShop);
-
-                map.removeChild(object.entity);
-
-                const markerElement = document.createElement("div");
-                const icon = renderIcon("image", "var(--mui-palette-Corp_1)");
-                markerElement.innerHTML = icon;
-
-                const marker = new YMapMarker(
-                  {
-                    coordinates: clickedShopCoordinates,
-                    properties: {
-                      id: clickedShop,
-                    },
-                  },
-                  markerElement
-                );
-
-                currentMarkers.push(marker);
-
-                map.addChild(marker);
-
-                setMapController({
-                  map,
-                  markers: currentMarkers,
-                });
-
-                setValue("shops", currentSelectedShops);
-              }
-            }
-          }
-        },
+        location: { center: selectedShops[0].coordinates, zoom: 12 },
       });
 
       map.addChild(new YMapDefaultSchemeLayer({}));
       map.addChild(new YMapDefaultFeaturesLayer({}));
 
-      map.addChild(mapListener);
-
-      selectedShops.forEach((shop) => {
-        const markerElement = document.createElement("div");
-
-        const isShopSelected =
-          getValues("shops").findIndex((item) => item === shop.value) !== -1;
-
-        const icon = renderIcon(
-          "image",
-          isShopSelected ? "var(--mui-palette-Corp_1)" : "red"
-        );
-
-        markerElement.innerHTML = icon;
-
-        const marker = new YMapMarker(
-          {
-            coordinates: shop.coordinates as LngLat,
-            properties: {
-              id: shop.value,
-            },
-          },
-          markerElement
-        );
-
-        markers.push(marker);
-
-        map.addChild(marker);
-      });
-
-      setMapController({
-        map,
-        markers,
-      });
+      setMapInstance(map);
     }
   }, [showMap, loaderData.ymaps]);
 
+  // рисуем на карте маркеры, опираясь на данные(далее по коду работаем толлько с selectedShops и этот эффект будет нам перерисовывать маркеры)
   useEffect(() => {
-    setTimeout(() => {
-      reset();
+    const { YMapMarker } = loaderData.ymaps;
 
-      const markers: YMapMarker[] = [];
+    const markers: YMapMarker[] = [];
 
-      mapController?.markers.forEach((marker) => {
-        mapController.map?.removeChild(marker);
-      });
-
-      loaderData.shops.forEach((shop) => {
-        const markerElement = document.createElement("div");
-
-        const isShopSelected =
-          getValues("shops").findIndex((item) => item === shop.value) !== -1;
-
-        const icon = renderIcon(
-          "image",
-          isShopSelected ? "var(--mui-palette-Corp_1)" : "red"
-        );
-
-        markerElement.innerHTML = icon;
-
-        const marker = new loaderData.ymaps.YMapMarker(
-          {
-            coordinates: shop.coordinates as LngLat,
-            properties: {
-              id: shop.value,
-            },
-          },
-          markerElement
-        );
-
-        markers.push(marker);
-
-        mapController.map?.addChild(marker);
-      });
-
-      setSelectedShops(loaderData.shops);
-      setMapController((prev) => ({ map: prev.map, markers }));
+    mapInstance?.children.forEach((child) => {
+      if ("coordinates" in child) {
+        markers.push(child as YMapMarker);
+      }
     });
-  }, [loaderData.shops, reset]);
+
+    markers.forEach((marker) => {
+      mapInstance?.removeChild(marker);
+    });
+
+    //рисуем новые маркеры из свежих данных
+    selectedShops.forEach((shop) => {
+      const markerElement = document.createElement("div");
+
+      const isShopSelected =
+        getValues("shops").findIndex((item) => item === shop.value) !== -1;
+
+      const icon = renderIcon(
+        "image",
+        isShopSelected ? "var(--mui-palette-Corp_1)" : "transparent"
+      );
+
+      markerElement.innerHTML = icon;
+
+      const marker = new YMapMarker(
+        {
+          coordinates: shop.coordinates as LngLat,
+          properties: {
+            id: shop.value,
+          },
+        },
+        markerElement
+      );
+
+      // markers.push(marker);
+      mapInstance?.addChild(marker);
+    });
+  }, [loaderData.ymaps, mapInstance, selectedShops]);
+
+  // обновляем слушатель событий
+  useEffect(() => {
+    const { YMapListener, YMapMarker } = loaderData.ymaps;
+
+    const mapListener = new YMapListener({
+      layer: "any",
+      onClick: (object) => {
+        if (object?.type === "marker") {
+          if (object.entity.properties) {
+            const clickedShop = object.entity.properties.id as string;
+            const clickedShopCoordinates = object.entity.coordinates;
+
+            const currentSelectedShops = getValues("shops");
+
+            const isShopSelected = currentSelectedShops.findIndex(
+              (shop) => shop === clickedShop
+            );
+
+            if (isShopSelected > -1) {
+              currentSelectedShops.splice(isShopSelected, 1);
+            } else {
+              currentSelectedShops.push(clickedShop);
+            }
+
+            mapInstance?.removeChild(object.entity);
+
+            const markerElement = document.createElement("div");
+            const icon = renderIcon(
+              "image",
+              isShopSelected > -1 ? "transparent" : "var(--mui-palette-Corp_1)"
+            );
+            markerElement.innerHTML = icon;
+
+            const marker = new YMapMarker(
+              {
+                coordinates: clickedShopCoordinates,
+                properties: {
+                  id: clickedShop,
+                },
+              },
+              markerElement
+            );
+
+            mapInstance?.addChild(marker);
+            setValue("shops", currentSelectedShops);
+          }
+        }
+      },
+    });
+
+    if (mapInstance) {
+      mapInstance.addChild(mapListener);
+    }
+  }, [loaderData.ymaps, mapInstance]);
 
   return (
     <>
@@ -387,11 +311,11 @@ export default function Location({ loaderData }: Route.ComponentProps) {
       <Box>
         <TopNavigation
           header={{
-            text: "Места проведения",
+            text: t("header"),
             bold: false,
           }}
           buttonAction={{
-            text: showMap ? "Списком" : "Картой",
+            text: showMap ? t("headerListAction") : t("headerMapAction"),
             icon: (
               <MapIcon
                 sx={{
@@ -413,11 +337,10 @@ export default function Location({ loaderData }: Route.ComponentProps) {
 
         <form
           onSubmit={handleSubmit((values) => {
-            console.log(values);
-            // submit(JSON.stringify(values), {
-            //   method: "POST",
-            //   encType: "application/json",
-            // });
+            submit(JSON.stringify(values.shops), {
+              method: "POST",
+              encType: "application/json",
+            });
           })}
         >
           <Box
@@ -435,7 +358,7 @@ export default function Location({ loaderData }: Route.ComponentProps) {
               control={control}
               render={({ field }) => (
                 <StyledSearchBar
-                  placeholder="Найти..."
+                  placeholder={t("searchbarPlaceholder")}
                   {...field}
                   onChange={(evt) => {
                     const currentFieldValue = new RegExp(
@@ -443,68 +366,12 @@ export default function Location({ loaderData }: Route.ComponentProps) {
                       "i"
                     );
 
-                    const markers: YMapMarker[] = [];
-
-                    const currentSelectedShops = getValues("shops");
-
                     const matchingShops = [
                       ...loaderData.shops.filter((item) =>
                         currentFieldValue.test(item.name)
                       ),
                     ];
 
-                    //отчищаем карту от старых маркеров
-                    mapController?.markers.forEach((marker) => {
-                      mapController.map?.removeChild(marker);
-                    });
-
-                    // рисуем новые маркеры, с учетом того, выбранны они пользователем или нет
-                    matchingShops.forEach((shop) => {
-                      const isShopSelected = currentSelectedShops.findIndex(
-                        (selectedShop) => shop.value === selectedShop
-                      );
-
-                      if (isShopSelected > -1) {
-                        const markerElement = document.createElement("div");
-                        const icon = renderIcon(
-                          "image",
-                          "var(--mui-palette-Corp_1)"
-                        );
-                        markerElement.innerHTML = icon;
-
-                        const marker = new loaderData.ymaps.YMapMarker(
-                          {
-                            coordinates: shop.coordinates,
-                            properties: {
-                              id: shop.value,
-                            },
-                          },
-                          markerElement
-                        );
-
-                        markers.push(marker);
-                        mapController?.map?.addChild(marker);
-                      } else {
-                        const markerElement = document.createElement("div");
-                        const icon = renderIcon("image", "red");
-                        markerElement.innerHTML = icon;
-
-                        const marker = new loaderData.ymaps.YMapMarker(
-                          {
-                            coordinates: shop.coordinates,
-                            properties: {
-                              id: shop.value,
-                            },
-                          },
-                          markerElement
-                        );
-
-                        markers.push(marker);
-                        mapController?.map?.addChild(marker);
-                      }
-                    });
-
-                    setMapController((prev) => ({ map: prev.map, markers }));
                     setSelectedShops(matchingShops);
 
                     field.onChange(evt);
@@ -518,14 +385,32 @@ export default function Location({ loaderData }: Route.ComponentProps) {
               control={control}
               render={({ field }) => (
                 <StyledDropdown
-                  placeholder="Регион"
+                  placeholder={t("regionPlaceholder")}
                   options={loaderData.regions}
                   {...field}
                   onChange={(evt) => {
-                    fetcher.submit(JSON.stringify(getValues()), {
-                      method: "POST",
-                      encType: "application/json",
-                    });
+                    const currentSearchbarValue = new RegExp(
+                      `^${getValues("searchbar")}`,
+                      "i"
+                    );
+
+                    const matchingRegionShops =
+                      evt.target.value !== ""
+                        ? [
+                            ...loaderData.shops.filter(
+                              (item) => item.regionId === evt.target.value
+                            ),
+                          ]
+                        : [...loaderData.shops];
+
+                    const matchingShops = [
+                      ...matchingRegionShops.filter((item) =>
+                        currentSearchbarValue.test(item.name)
+                      ),
+                    ];
+
+                    setSelectedShops(matchingShops);
+
                     field.onChange(evt);
                   }}
                 />
@@ -570,9 +455,17 @@ export default function Location({ loaderData }: Route.ComponentProps) {
                 left: "0",
               })}
             >
-              <Button type="button">Отменить</Button>
+              <Button
+                type="button"
+                onClick={() => {
+                  reset();
+                  setSelectedShops(loaderData.shops);
+                }}
+              >
+                {t("cancelButton")}
+              </Button>
               <Button type="submit" variant="contained">
-                Выбрать{" "}
+                {t("selectButton")}{" "}
                 {watch("shops").length > 0
                   ? ` ${getValues("shops").length}`
                   : null}

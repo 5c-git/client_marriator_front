@@ -68,9 +68,9 @@ export const getUserByHash = async (
 export const mockResponseSuccess = {
   result: {
     userId: 187,
-    phone: 1213123123,
+    phone: 79152142630,
     email: "dggjihn@mail.ru",
-    roles: ["manager", "client", "recruiter"],
+    role: "manager",
   },
   status: "success",
 };

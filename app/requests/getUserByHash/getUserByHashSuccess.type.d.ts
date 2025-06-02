@@ -10,7 +10,7 @@ export interface GetUserByHashSuccess {
     userId: number;
     phone: number;
     email: string;
-    roles: string[];
+    role: string;
   };
   status: string;
 }

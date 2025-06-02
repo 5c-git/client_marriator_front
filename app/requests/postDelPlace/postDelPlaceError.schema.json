@@ -1,7 +1,7 @@
 {
-  "$id": "postSetPlaceError",
+  "$id": "postDelPlaceError",
   "$schema": "http://json-schema.org/draft-07/schema#",
-  "title": "postSetPlaceError",
+  "title": "postDelPlaceError",
   "type": "object",
   "additionalProperties": false,
   "properties": {

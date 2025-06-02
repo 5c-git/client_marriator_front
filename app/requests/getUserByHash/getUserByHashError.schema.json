@@ -1,5 +1,5 @@
 {
-  "id": "getUserByHashError",
+  "$id": "getUserByHashError",
   "$schema": "http://json-schema.org/draft-07/schema#",
   "title": "getUserByHashError",
   "type": "object",

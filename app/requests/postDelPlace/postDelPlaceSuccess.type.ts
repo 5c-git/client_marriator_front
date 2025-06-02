@@ -5,17 +5,8 @@
  * and run json-schema-to-typescript to regenerate this file.
  */
 
-export interface GetPlaceSuccess {
+export interface PostDelPlaceSuccess {
   data: {
-    id: number;
-    name: string;
-    latitude: string;
-    longitude: string;
-    address_kladr: string;
-    logo: string;
-    region: {
-      id: number;
-      name: string;
-    };
-  }[];
+    success: boolean;
+  };
 }

@@ -6,9 +6,11 @@ type State = {
   userPhone: null | string;
   accessToken: null | string;
   refreshToken: null | string;
+  userRole: null | string;
 
   setUserEmail: (newUserEmail: string) => void;
   setUserPhone: (newUserPhone: string) => void;
+  setUserRole: (userRole: string) => void;
   setAccessToken: (accessToken: string) => void;
   setRefreshToken: (refreshToken: string) => void;
 
@@ -27,15 +29,18 @@ export const useStore = create<State>()(
       userPhone: null,
       accessToken: null,
       refreshToken: null,
+      userRole: null,
 
       setUserEmail: (newUserEmail) => set({ userEmail: newUserEmail }),
       setUserPhone: (newUserPhone) => set({ userPhone: newUserPhone }),
+      setUserRole: (newUserRole) => set({ userRole: newUserRole }),
       setAccessToken: (newAccessToken) => set({ accessToken: newAccessToken }),
       setRefreshToken: (newRefreshToken) =>
         set({ refreshToken: newRefreshToken }),
 
       removeUserEmail: () => set({ userEmail: null }),
       removeUserPhone: () => set({ userPhone: null }),
+      removeUserRole: () => set({ userRole: null }),
       removeAccessToken: () => set({ accessToken: null }),
       removeRefreshToken: () => set({ refreshToken: null }),
 
@@ -43,6 +48,7 @@ export const useStore = create<State>()(
         set({
           userEmail: null,
           userPhone: null,
+          userRole: null,
           accessToken: null,
           refreshToken: null,
         }),

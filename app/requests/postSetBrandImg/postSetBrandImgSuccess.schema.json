@@ -1,5 +1,5 @@
 {
-  "id": "postSetBrandImgSuccess",
+  "$id": "postSetBrandImgSuccess",
   "$schema": "http://json-schema.org/draft-07/schema#",
   "title": "postSetBrandImgSuccess",
   "type": "object",

@@ -52,6 +52,7 @@ interface ImportMetaEnv {
   readonly VITE_POST_SET_BRAND_IMG: string;
   readonly VITE_GET_PLACE: string;
   readonly VITE_POST_SET_PLACE: string;
+  readonly VITE_POST_DEL_PLACE: string;
   // more env variables...
 }
 

@@ -103,21 +103,19 @@ export const mockResponseError = {
 export const postSendPhoneMockResponse = http.post(
   `${import.meta.env.VITE_SEND_PHONE}`,
   async ({ request }) => {
-    const url = new URL(request.url);
+    const url = new URL(`${request.url}?scenario=reg`);
     const scenario = url.searchParams.get("scenario");
 
-    await delay(2000);
-    return HttpResponse.json(mockResponseError);
+    // await delay(2000);
+    // return HttpResponse.json(mockPostSendPhoneResponseRegister);
 
     if (scenario === "reg") {
       await delay(2000);
       return HttpResponse.json(mockPostSendPhoneResponseRegister);
-    }
-    // else if (scenario === "auth") {
-    //   // await delay(2000);
-    //   // return HttpResponse.json();
-    // }
-    else if (scenario === "error") {
+    } else if (scenario === "auth") {
+      // await delay(2000);
+      // return HttpResponse.json();
+    } else if (scenario === "error") {
       await delay(2000);
       return HttpResponse.json(mockResponseError);
     }

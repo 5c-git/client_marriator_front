@@ -15,13 +15,15 @@ const validateError = ajv.compile(schemaError);
 
 export const postSetPlaceKeys = ["postSetPlace"];
 
-export const postSetPlace = async (accessToken: string, placeId: string) => {
+export const postSetPlace = async (accessToken: string, placeIds: string[]) => {
   try {
     const url = new URL(import.meta.env.VITE_POST_SET_PLACE);
 
     const formData = new FormData();
 
-    formData.append("placeId", placeId);
+    placeIds.forEach((place, index) => {
+      formData.append(`placeId[${index}]`, place);
+    });
 
     const request = await fetch(url, {
       method: "POST",
@@ -79,8 +81,16 @@ export const mockResponseError = {
 
 export const postSetPlaceMockResponse = http.post(
   `${import.meta.env.VITE_POST_SET_PLACE}`,
-  async () => {
-    await delay(2000);
-    return HttpResponse.json(mockResponseSuccess);
+  async ({ request }) => {
+    const url = new URL(`${request.url}?scenario=success`);
+    const scenario = url.searchParams.get("scenario");
+
+    if (scenario === "success") {
+      await delay(2000);
+      return HttpResponse.json(mockResponseSuccess);
+    } else if (scenario === "error") {
+      await delay(2000);
+      return HttpResponse.json(mockResponseError);
+    }
   }
 );

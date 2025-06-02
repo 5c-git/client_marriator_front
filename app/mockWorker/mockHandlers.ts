@@ -45,6 +45,7 @@ import { getBrandMockResponse } from "~/requests/getBrand/getBrand";
 import { postSetBrandImgMockResponse } from "~/requests/postSetBrandImg/postSetBrandImg";
 import { getPlaceMockResponse } from "~/requests/getPlace/getPlace";
 import { postSetPlaceMockResponse } from "~/requests/postSetPlace/postSetPlace";
+import { postDelPlaceMockResponse } from "~/requests/postDelPlace/postDelPlace";
 
 export const handlers = [
   getFormMockResponse,
@@ -91,4 +92,5 @@ export const handlers = [
   postSetBrandImgMockResponse,
   getPlaceMockResponse,
   postSetPlaceMockResponse,
+  postDelPlaceMockResponse,
 ];

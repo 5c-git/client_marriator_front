@@ -1,9 +1,9 @@
 {
-  "id": "getUserByHashSuccess",
+  "$id": "getUserByHashSuccess",
   "$schema": "http://json-schema.org/draft-07/schema#",
   "title": "getUserByHashSuccess",
-  "type": "object",
   "additionalProperties": false,
+  "type": "object",
   "properties": {
     "result": {
       "type": "object",
@@ -18,14 +18,11 @@
         "email": {
           "type": "string"
         },
-        "roles": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          }
+        "role": {
+          "type": "string"
         }
       },
-      "required": ["userId", "phone", "email", "roles"]
+      "required": ["userId", "phone", "email", "role"]
     },
     "status": {
       "type": "string"

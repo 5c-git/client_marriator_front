@@ -59,17 +59,27 @@ export const mockResponseSuccess = {
   data: [
     {
       id: 1,
-      name: "вамвамвмвм",
+      name: "Чижик",
       latitude: "24.00000000",
       longitude: "42.00000000",
-      address_kladr: "вмвмвмв",
+      address_kladr: "Павелецкая, 3",
+      logo: "/storage/source/directory/brand/1-logo/achievement-1.png",
+      region: {
+        id: 1,
+        name: "Рязань",
+      },
     },
     {
       id: 2,
-      name: "fdfvdvdv",
+      name: "Walmart",
       latitude: "21.00000000",
       longitude: "11.00000000",
-      address_kladr: "dvdvdvdvdv",
+      address_kladr: "Риджинт авеню",
+      logo: "/storage/source/directory/brand/1-logo/achievement-1.png",
+      region: {
+        id: 2,
+        name: "Москва",
+      },
     },
   ],
 };
