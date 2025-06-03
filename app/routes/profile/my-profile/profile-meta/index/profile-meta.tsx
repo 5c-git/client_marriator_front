@@ -30,8 +30,8 @@ import { StyledPhoneField } from "~/shared/ui/StyledPhoneField/StyledPhoneField"
 
 import { useStore } from "~/store/store";
 
-import { getUserInfo } from "~/requests/getUserInfo/getUserInfo";
-import { postChangeUserPhone } from "~/requests/postChangeUserPhone/postChangeUserPhone";
+import { getUserInfo } from "~/requests/_personal/getUserInfo/getUserInfo";
+import { postChangeUserPhone } from "~/requests/_personal/postChangeUserPhone/postChangeUserPhone";
 import { postPersonalSetUserEmail } from "~/requests/postPersonalSetUserEmail/postPersonalSetUserEmail";
 
 export async function clientLoader() {

@@ -27,7 +27,7 @@ import { Loader } from "~/shared/ui/Loader/Loader";
 import { useStore } from "~/store/store";
 
 import { postPersonalSetUserEmail } from "~/requests/postPersonalSetUserEmail/postPersonalSetUserEmail";
-import { postPersonalCheckEmailCode } from "~/requests/postPersonalCheckEmailCode/postPersonalCheckEmailCode";
+import { postPersonalCheckEmailCode } from "~/requests/_personal/postPersonalCheckEmailCode/postPersonalCheckEmailCode";
 
 export async function clientLoader({ request }: Route.ClientLoaderArgs) {
   await loadNamespaces("confirmPersonalEmail");

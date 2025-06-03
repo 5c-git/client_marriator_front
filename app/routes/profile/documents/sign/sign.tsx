@@ -14,7 +14,7 @@ import { S_OrderedList, S_OrderedItem } from "./sign.styled";
 import { Loader } from "~/shared/ui/Loader/Loader";
 
 import { useStore } from "~/store/store";
-import { getDocumentSigned } from "~/requests/getDocumentSigned/getDocumentSigned";
+import { getDocumentSigned } from "~/requests/_personal/_documents/getDocumentSigned/getDocumentSigned";
 
 export async function clientLoader() {
   const accessToken = useStore.getState().accessToken;

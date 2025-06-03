@@ -12,7 +12,7 @@ import { TopNavigation } from "~/shared/ui/TopNavigation/TopNavigation";
 import { Loader } from "~/shared/ui/Loader/Loader";
 
 import { useStore } from "~/store/store";
-import { getDocumentArchive } from "~/requests/getDocumentArchive/getDocumentArchive";
+import { getDocumentArchive } from "~/requests/_personal/_documents/getDocumentArchive/getDocumentArchive";
 
 import FileDownloadOutlinedIcon from "@mui/icons-material/FileDownloadOutlined";
 

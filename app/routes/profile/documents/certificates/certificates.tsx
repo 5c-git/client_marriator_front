@@ -20,9 +20,9 @@ import FileDownloadOutlinedIcon from "@mui/icons-material/FileDownloadOutlined";
 import { Loader } from "~/shared/ui/Loader/Loader";
 
 import { useStore } from "~/store/store";
-import { getDocumentInquiries } from "~/requests/getDocumentInquiries/getDocumentInquiries";
-import { getCompanyAndCertificatesInquiries } from "~/requests/getCompanyAndCertificatesInquiries/getCompanyAndCertificatesInquiries";
-import { postRequestInquiries } from "~/requests/postRequestInquiries/postRequestInquiries";
+import { getDocumentInquiries } from "~/requests/_personal/_documents/getDocumentInquiries/getDocumentInquiries";
+import { getCompanyAndCertificatesInquiries } from "~/requests/_personal/_documents/getCompanyAndCertificatesInquiries/getCompanyAndCertificatesInquiries";
+import { postRequestInquiries } from "~/requests/_personal/_documents/postRequestInquiries/postRequestInquiries";
 
 const generateOrganizationOptions = (
   organizations: {

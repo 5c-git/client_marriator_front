@@ -14,7 +14,7 @@ import { Loader } from "~/shared/ui/Loader/Loader";
 
 import { useStore } from "~/store/store";
 
-import { getRequisitesData } from "~/requests/getRequisitesData/getRequisitesData";
+import { getRequisitesData } from "~/requests/_personal/getRequisitesData/getRequisitesData";
 
 export async function clientLoader() {
   const accessToken = useStore.getState().accessToken;
