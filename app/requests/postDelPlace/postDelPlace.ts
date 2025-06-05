@@ -27,7 +27,6 @@ export const postDelPlace = async (accessToken: string, placeId: string) => {
     const request = await fetch(url, {
       method: "POST",
       headers: {
-        "Content-Type": "application/json",
         Authorization: `Bearer ${accessToken}`,
       },
       body: formData,

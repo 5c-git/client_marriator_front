@@ -59,26 +59,21 @@ export const mockResponseSuccess = {
   data: [
     {
       id: 1,
-      name: "Чижик",
-      latitude: "24.00000000",
-      longitude: "42.00000000",
-      address_kladr: "Павелецкая, 3",
-      logo: "/storage/source/directory/brand/1-logo/achievement-1.png",
-      region: {
-        id: 1,
-        name: "Рязань",
-      },
-    },
-    {
-      id: 2,
-      name: "Walmart",
-      latitude: "21.00000000",
-      longitude: "11.00000000",
-      address_kladr: "Риджинт авеню",
-      logo: "/storage/source/directory/brand/1-logo/achievement-1.png",
+      name: "Ашан",
+      latitude: "56.00000000",
+      longitude: "37.00000000",
+      address_kladr: "Рязанский пр-т, д. 2, корп. 2, Москва",
+      logo: "/storage/source/directory/brand/2-logo/Лого Ашан.jpg",
       region: {
         id: 2,
         name: "Москва",
+      },
+      brand: {
+        id: 2,
+        name: "Ашан",
+        logo: "/storage/source/directory/brand/2-logo/Лого Ашан.jpg",
+        description:
+          "Розничная сеть Auchan Retail является основной составляющей группы ELO, которая, в свою очередь, контролируется семейной корпорацией «Ассоциация семьи Мюлье».",
       },
     },
   ],

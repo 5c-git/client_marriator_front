@@ -43,7 +43,11 @@ export async function clientAction({ request }: Route.ClientActionArgs) {
       if (type && type === "restore") {
         throw redirect(withLocale("/signin/pin"));
       } else if (userRole) {
-        throw redirect(withLocale("/signin/client/meta"));
+        if (userRole === "recruiter") {
+          throw redirect(withLocale("/signin/client/recruiter"));
+        } else {
+          throw redirect(withLocale("/signin/client/meta"));
+        }
       } else {
         throw redirect(withLocale("/registration/step1"));
       }

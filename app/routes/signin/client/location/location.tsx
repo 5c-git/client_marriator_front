@@ -1,12 +1,6 @@
 import { renderToStaticMarkup } from "react-dom/server";
 import { useState, useEffect } from "react";
-import {
-  useSubmit,
-  useNavigate,
-  useNavigation,
-  Link,
-  redirect,
-} from "react-router";
+import { useSubmit, useNavigate, useNavigation, redirect } from "react-router";
 import type { Route } from "./+types/location";
 
 import * as Yup from "yup";
@@ -62,8 +56,7 @@ const renderIcon = (image: string, borderColor: string) => {
       }}
     >
       <img
-        // src={image}
-        src={"https://mui.com/static/images/avatar/1.jpg"}
+        src={image}
         style={{
           // position: "relative",
           height: "100%",
@@ -104,7 +97,7 @@ export async function clientLoader() {
       shops.push({
         value: item.id.toString(),
         name: item.name,
-        icon: item.logo,
+        icon: `${import.meta.env.VITE_ASSET_PATH}${item.logo}`,
         coordinates: [Number(item.latitude), Number(item.longitude)],
         address: item.address_kladr,
         region: item.region.name,
@@ -228,7 +221,7 @@ export default function Location({ loaderData }: Route.ComponentProps) {
         getValues("shops").findIndex((item) => item === shop.value) !== -1;
 
       const icon = renderIcon(
-        "image",
+        shop.icon,
         isShopSelected ? "var(--mui-palette-Corp_1)" : "transparent"
       );
 
@@ -239,6 +232,7 @@ export default function Location({ loaderData }: Route.ComponentProps) {
           coordinates: shop.coordinates as LngLat,
           properties: {
             id: shop.value,
+            icon: shop.icon,
           },
         },
         markerElement
@@ -259,6 +253,7 @@ export default function Location({ loaderData }: Route.ComponentProps) {
         if (object?.type === "marker") {
           if (object.entity.properties) {
             const clickedShop = object.entity.properties.id as string;
+            const clickedShopIcon = object.entity.properties.icon as string;
             const clickedShopCoordinates = object.entity.coordinates;
 
             const currentSelectedShops = getValues("shops");
@@ -277,7 +272,7 @@ export default function Location({ loaderData }: Route.ComponentProps) {
 
             const markerElement = document.createElement("div");
             const icon = renderIcon(
-              "image",
+              clickedShopIcon,
               isShopSelected > -1 ? "transparent" : "var(--mui-palette-Corp_1)"
             );
             markerElement.innerHTML = icon;
@@ -287,6 +282,7 @@ export default function Location({ loaderData }: Route.ComponentProps) {
                 coordinates: clickedShopCoordinates,
                 properties: {
                   id: clickedShop,
+                  icon: clickedShopIcon,
                 },
               },
               markerElement
@@ -366,11 +362,27 @@ export default function Location({ loaderData }: Route.ComponentProps) {
                       "i"
                     );
 
-                    const matchingShops = [
-                      ...loaderData.shops.filter((item) =>
-                        currentFieldValue.test(item.name)
-                      ),
-                    ];
+                    let matchingShops: Option[] = [];
+
+                    if (evt.target.value !== "") {
+                      matchingShops = [
+                        ...selectedShops.filter(
+                          (item) =>
+                            currentFieldValue.test(item.name) ||
+                            currentFieldValue.test(item.address)
+                        ),
+                      ];
+                    } else {
+                      const currentRegion = getValues("region");
+                      matchingShops =
+                        currentRegion !== ""
+                          ? [
+                              ...loaderData.shops.filter(
+                                (item) => item.regionId === currentRegion
+                              ),
+                            ]
+                          : [...loaderData.shops];
+                    }
 
                     setSelectedShops(matchingShops);
 

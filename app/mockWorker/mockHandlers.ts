@@ -47,6 +47,7 @@ import { postSetBrandImgMockResponse } from "~/requests/postSetBrandImg/postSetB
 import { getPlaceMockResponse } from "~/requests/getPlace/getPlace";
 import { postSetPlaceMockResponse } from "~/requests/postSetPlace/postSetPlace";
 import { postDelPlaceMockResponse } from "~/requests/postDelPlace/postDelPlace";
+import { postSetUserDataMockResponse } from "~/requests/postSetUserData/postSetUserData";
 
 export const handlers = [
   getFormMockResponse,
@@ -94,4 +95,5 @@ export const handlers = [
   getPlaceMockResponse,
   postSetPlaceMockResponse,
   postDelPlaceMockResponse,
+  postSetUserDataMockResponse,
 ];

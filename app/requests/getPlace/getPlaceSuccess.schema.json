@@ -41,6 +41,25 @@
               }
             },
             "required": ["id", "name"]
+          },
+          "brand": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "id": {
+                "type": "number"
+              },
+              "name": {
+                "type": "string"
+              },
+              "logo": {
+                "type": "string"
+              },
+              "description": {
+                "type": "string"
+              }
+            },
+            "required": ["id", "name", "logo", "description"]
           }
         },
         "required": [
@@ -50,7 +69,8 @@
           "longitude",
           "address_kladr",
           "logo",
-          "region"
+          "region",
+          "brand"
         ]
       }
     }

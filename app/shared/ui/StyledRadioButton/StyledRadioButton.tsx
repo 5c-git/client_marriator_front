@@ -224,6 +224,7 @@ export const StyledRadioButton = (props: StyledRadioButtonProps) => {
                         borderRadius: "50%",
                         marginTop: "10px",
                         marginBottom: "10px",
+                        objectFit: "cover",
                       }}
                       src={item.image}
                       alt={item.image}

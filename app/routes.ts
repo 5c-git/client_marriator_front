@@ -132,9 +132,18 @@ export default [
     route(":lang?/signin/client/phone", "routes/signin/client/phone/phone.tsx"),
     route(":lang?/signin/client/meta", "routes/signin/client/meta/meta.tsx"),
     route(
+      ":lang?/signin/client/recruiter",
+      "routes/signin/client/recruiter/recruiter.tsx"
+    ),
+    route(
       ":lang?/signin/client/location",
       "routes/signin/client/location/location.tsx"
     ),
+    route(
+      ":lang?/signin/client/registration-complete",
+      "routes/signin/client/registration-complete/registration-complete.tsx"
+    ),
+
     // signin
 
     // registration

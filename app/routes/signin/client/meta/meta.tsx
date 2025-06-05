@@ -1,11 +1,5 @@
 import { useState, useEffect } from "react";
-import {
-  useFetcher,
-  useNavigate,
-  useNavigation,
-  Link,
-  redirect,
-} from "react-router";
+import { useFetcher, useNavigation, Link, redirect } from "react-router";
 import type { Route } from "./+types/meta";
 
 import * as Yup from "yup";
@@ -33,6 +27,8 @@ import { useStore } from "~/store/store";
 import { getBrand } from "~/requests/getBrand/getBrand";
 import { getPlace } from "~/requests/getPlace/getPlace";
 import { postDelPlace } from "~/requests/postDelPlace/postDelPlace";
+import { postSetBrandImg } from "~/requests/postSetBrandImg/postSetBrandImg";
+import { postSetUserData } from "~/requests/postSetUserData/postSetUserData";
 import { postFinishRegister } from "~/requests/postFinishRegister/postFinishRegister";
 
 export async function clientLoader() {
@@ -61,7 +57,7 @@ export async function clientLoader() {
         value: item.id.toString(),
         label: item.name,
         disabled: false,
-        image: item.logo,
+        image: `${import.meta.env.VITE_ASSET_PATH}${item.logo}`,
       })
     );
 
@@ -69,7 +65,7 @@ export async function clientLoader() {
       locations.push({
         id: item.id,
         name: item.name,
-        icon: "https://mui.com/static/images/avatar/1.jpg",
+        icon: item.logo,
         coordinates: [item.latitude, item.longitude],
         address: item.address_kladr,
         // region: "Центральный федеральный округ",
@@ -91,14 +87,18 @@ export async function clientAction({ request }: Route.ClientActionArgs) {
 
   if (accessToken) {
     if (_action === "deleteLocation") {
-      await postDelPlace("accessToken", fields.placeId);
+      await postDelPlace(accessToken, fields.placeId);
+    } else if (_action === "saveLogo") {
+      await postSetBrandImg(accessToken, fields.logo);
     } else if (_action === "finishRegister") {
+      await postSetUserData(accessToken, { name: fields.name });
       const data = await postFinishRegister(accessToken);
 
-      useStore.getState().setAccessToken(data.result.token.access_token);
-      useStore.getState().setRefreshToken(data.result.token.refresh_token);
-
-      throw redirect(withLocale("/registration/registration-complete"));
+      // useStore.getState().setAccessToken(data.result.token.access_token);
+      // useStore.getState().setRefreshToken(data.result.token.refresh_token);
+      // throw redirect(withLocale("/registration/registration-complete"));
+      useStore.getState().clearStore();
+      throw redirect(withLocale("/signin/client/registration-complete"));
     }
   } else {
     throw new Response("Токен авторизации не обнаружен!", { status: 401 });
@@ -175,12 +175,17 @@ export default function Meta({ loaderData }: Route.ComponentProps) {
         />
 
         <form
-          onSubmit={handleSubmit((values) => {
-            console.log(values);
-            // submit(JSON.stringify(values), {
-            //   method: "POST",
-            //   encType: "application/json",
-            // });
+          onSubmit={handleSubmit(() => {
+            fetcher.submit(
+              JSON.stringify({
+                _action: "finishRegister",
+                name: getValues("fio"),
+              }),
+              {
+                method: "POST",
+                encType: "application/json",
+              }
+            );
           })}
           style={{
             display: "grid",
@@ -307,7 +312,7 @@ export default function Meta({ loaderData }: Route.ComponentProps) {
                 }}
               >
                 <Avatar
-                  src={location.icon}
+                  src={`${import.meta.env.VITE_ASSET_PATH}${location.icon}`}
                   sx={{ width: "30px", height: "30px" }}
                 />
 
@@ -325,7 +330,7 @@ export default function Meta({ loaderData }: Route.ComponentProps) {
                   onClick={() => {
                     const currentList = getValues("locations");
                     const updatedList = currentList.filter(
-                      (item) => item.name !== location.name
+                      (item) => item.id !== location.id
                     );
                     setValue("locations", updatedList);
                     trigger("locations");
@@ -402,10 +407,16 @@ export default function Meta({ loaderData }: Route.ComponentProps) {
             <Button
               type="button"
               onClick={handleSubmit(() => {
-                fetcher.submit(JSON.stringify({ _action: "finishRegister" }), {
-                  method: "POST",
-                  encType: "application/json",
-                });
+                fetcher.submit(
+                  JSON.stringify({
+                    _action: "finishRegister",
+                    name: getValues("fio"),
+                  }),
+                  {
+                    method: "POST",
+                    encType: "application/json",
+                  }
+                );
               })}
               variant="contained"
               disabled={!isValid}
@@ -437,7 +448,18 @@ export default function Meta({ loaderData }: Route.ComponentProps) {
             render={({ field }) => (
               <StyledRadioButton
                 {...field}
-                onImmediateChange={() => {}}
+                onImmediateChange={() => {
+                  fetcher.submit(
+                    JSON.stringify({
+                      _action: "saveLogo",
+                      logo: getValues("logo"),
+                    }),
+                    {
+                      method: "POST",
+                      encType: "application/json",
+                    }
+                  );
+                }}
                 inputType="radio"
                 validation="none"
                 options={loaderData.brands}

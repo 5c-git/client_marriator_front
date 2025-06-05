@@ -15,7 +15,7 @@
       "properties": {
         "type": {
           "type": "string",
-          "enum": ["auth", "register"]
+          "enum": ["auth", "register", "moderation"]
         },
         "code": {
           "type": "object",

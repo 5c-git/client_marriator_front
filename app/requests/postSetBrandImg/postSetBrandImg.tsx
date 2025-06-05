@@ -26,7 +26,7 @@ export const postSetBrandImg = async (accessToken: string, brandId: string) => {
     const request = await fetch(url, {
       method: "POST",
       headers: {
-        "Content-Type": "application/json",
+        // "Content-Type": "application/json",
         Authorization: `Bearer ${accessToken}`,
       },
       body: formData,

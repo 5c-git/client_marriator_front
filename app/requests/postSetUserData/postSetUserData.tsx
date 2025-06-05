@@ -1,10 +1,10 @@
 import { http, delay, HttpResponse } from "msw";
 import Ajv from "ajv";
 
-import schemaSuccess from "./postSetPlaceSuccess.schema.json";
-import schemaError from "./postSetPlaceError.schema.json";
-import { PostSetPlaceSuccess } from "./postSetPlaceSuccess.type";
-import { PostSetPlaceError } from "./postSetPlaceError.type";
+import schemaSuccess from "./postSetUserDataSuccess.schema.json";
+import schemaError from "./postSetUserDataError.schema.json";
+import { PostSetUserDataSuccess } from "./postSetUserDataSuccess.type";
+import { PostSetUserDataError } from "./postSetUserDataError.type";
 
 import { UnxpectedError } from "~/shared/unexpectedError/unexpectedError";
 
@@ -13,16 +13,20 @@ const ajv = new Ajv();
 const validateSuccess = ajv.compile(schemaSuccess);
 const validateError = ajv.compile(schemaError);
 
-export const postSetPlaceKeys = ["postSetPlace"];
+export const postSetUserDataKeys = ["postSetUserData"];
 
-export const postSetPlace = async (accessToken: string, placeIds: string[]) => {
+type Fields = {
+  name?: string;
+};
+
+export const postSetUserData = async (accessToken: string, fields: Fields) => {
   try {
-    const url = new URL(import.meta.env.VITE_POST_SET_PLACE);
+    const url = new URL(import.meta.env.VITE_POST_SET_USER_DATA);
 
     const formData = new FormData();
 
-    placeIds.forEach((place, index) => {
-      formData.append(`placeId[${index}]`, place);
+    Object.entries(fields).forEach(([key, value]) => {
+      formData.append(key, value);
     });
 
     const request = await fetch(url, {
@@ -43,12 +47,12 @@ export const postSetPlace = async (accessToken: string, placeIds: string[]) => {
     }
 
     if (validateSuccess(response)) {
-      data = response as unknown as PostSetPlaceSuccess;
+      data = response as unknown as PostSetUserDataSuccess;
     } else if (validateError(response)) {
-      data = response as unknown as PostSetPlaceError;
+      data = response as unknown as PostSetUserDataError;
       throw new Response(data.message);
     } else {
-      throw new Response(`Данные запроса postSetPlace не валидны схеме`);
+      throw new Response(`Данные запроса postSetUserData не валидны схеме`);
     }
 
     return data;
@@ -78,8 +82,8 @@ export const mockResponseError = {
   },
 };
 
-export const postSetPlaceMockResponse = http.post(
-  `${import.meta.env.VITE_POST_SET_PLACE}`,
+export const postSetUserDataMockResponse = http.post(
+  `${import.meta.env.VITE_POST_SET_USER_DATA}`,
   async ({ request }) => {
     const url = new URL(`${request.url}?scenario=success`);
     const scenario = url.searchParams.get("scenario");

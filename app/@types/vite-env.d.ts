@@ -1,6 +1,7 @@
 /// <reference types="vite/client" />
 
 interface ImportMetaEnv {
+  readonly VITE_ASSET_PATH: string;
   readonly VITE_HAWK_KEY: string;
   readonly VITE_GET_FORM: string;
   readonly VITE_SAVE_FORM: string;
@@ -53,6 +54,7 @@ interface ImportMetaEnv {
   readonly VITE_GET_PLACE: string;
   readonly VITE_POST_SET_PLACE: string;
   readonly VITE_POST_DEL_PLACE: string;
+  readonly VITE_POST_SET_USER_DATA: string;
   // more env variables...
 }
 

@@ -17,5 +17,11 @@ export interface GetPlaceSuccess {
       id: number;
       name: string;
     };
+    brand: {
+      id: number;
+      name: string;
+      logo: string;
+      description: string;
+    };
   }[];
 }
