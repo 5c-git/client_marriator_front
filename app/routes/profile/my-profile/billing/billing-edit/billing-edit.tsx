@@ -30,9 +30,9 @@ import { StyledMonthField } from "~/shared/ui/StyledMonthField/StyledMonthField"
 import { StyledAutocomplete } from "~/shared/ui/StyledAutocomplete/StyledAutocomplete";
 
 import { useStore } from "~/store/store";
-import { getBik } from "~/requests/getBik/getBik";
-import { postSaveRequisitesData } from "~/requests/postSaveRequisitesData/postSaveRequisitesData";
-import { postDeleteRequisite } from "~/requests/postDeleteRequisite/postDeleteRequisite";
+import { getBik } from "~/requests/_personal/getBik/getBik";
+import { postSaveRequisitesData } from "~/requests/_personal/postSaveRequisitesData/postSaveRequisitesData";
+import { postDeleteRequisite } from "~/requests/_personal/postDeleteRequisite/postDeleteRequisite";
 
 export async function clientLoader() {
   const accessToken = useStore.getState().accessToken;

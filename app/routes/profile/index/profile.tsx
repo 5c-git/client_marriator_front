@@ -35,7 +35,7 @@ import { useStore } from "~/store/store";
 import {
   getUserInfo,
   getUserInfoKeys,
-} from "~/requests/getUserInfo/getUserInfo";
+} from "~/requests/_personal/getUserInfo/getUserInfo";
 
 export async function clientLoader() {
   const accessToken = useStore.getState().accessToken;

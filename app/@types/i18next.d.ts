@@ -14,6 +14,8 @@ import confirmRestorePin from "../../public/locales/ru/confirmRestorePin.json";
 import signin_client_phone from "../../public/locales/ru/clientPhone.json";
 import signin_client_meta from "../../public/locales/ru/signin_client_meta.json";
 import signin_client_location from "../../public/locales/ru/signin_client_location.json";
+import signin_client_recruiter from "../../public/locales/ru/signin_client_recruiter.json";
+import signin_client_registration_complete from "../../public/locales/ru/signin_client_registration_complete.json";
 //auth
 
 //registration
@@ -80,6 +82,8 @@ declare module "i18next" {
       signin_client_phone: typeof signin_client_phone;
       signin_client_meta: typeof signin_client_meta;
       signin_client_location: typeof signin_client_location;
+      signin_client_recruiter: typeof signin_client_recruiter;
+      signin_client_registration_complete: typeof signin_client_registration_complete;
       //auth
 
       //registration

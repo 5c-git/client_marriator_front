@@ -37,6 +37,10 @@ export async function clientAction({ request }: Route.ClientActionArgs) {
 
   const data = await postSendPhone(fields.phone);
 
+  if (data.result.type === "moderation") {
+    throw redirect(withLocale("/signin/client/registration-complete"));
+  }
+
   if (data.result.code.status !== "errorSend") {
     params.set("ttl", data.result.code.ttl.toString());
     params.set("type", data.result.type);

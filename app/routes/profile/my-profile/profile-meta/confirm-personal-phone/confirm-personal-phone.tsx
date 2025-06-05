@@ -25,8 +25,8 @@ import { Loader } from "~/shared/ui/Loader/Loader";
 
 import { useStore } from "~/store/store";
 
-import { postChangeUserPhone } from "~/requests/postChangeUserPhone/postChangeUserPhone";
-import { postConfirmChangeUserPhone } from "~/requests/postConfirmChangeUserPhone/postConfirmChangeUserPhone";
+import { postChangeUserPhone } from "~/requests/_personal/postChangeUserPhone/postChangeUserPhone";
+import { postConfirmChangeUserPhone } from "~/requests/_personal/postConfirmChangeUserPhone/postConfirmChangeUserPhone";
 
 export async function clientLoader({ request }: Route.ClientLoaderArgs) {
   await loadNamespaces("confirmPersonalPhone");

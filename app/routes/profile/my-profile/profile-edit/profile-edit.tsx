@@ -25,8 +25,8 @@ import {
 
 import { useStore } from "~/store/store";
 
-import { getUserFields } from "~/requests/getUserFields/getUserFields";
-import { postSaveUserFields } from "~/requests/postSaveUserFields/postSaveUserFields";
+import { getUserFields } from "~/requests/_personal/getUserFields/getUserFields";
+import { postSaveUserFields } from "~/requests/_personal/postSaveUserFields/postSaveUserFields";
 
 export async function clientLoader({ request }: Route.ClientLoaderArgs) {
   await loadNamespaces("profileEdit");

@@ -75,6 +75,16 @@ export const mockResponseSuccess = {
   status: "success",
 };
 
+export const mockResponseRecruiter = {
+  result: {
+    userId: 187,
+    phone: 79152142630,
+    email: "dggjihn@mail.ru",
+    role: "recruiter",
+  },
+  status: "success",
+};
+
 export const mockResponseError = {
   error: "Недействительная ссылка для регистрации",
   status: "error",
@@ -86,7 +96,7 @@ export const getUserByHashMockResponse = http.get(
     // const url = new URL(request.url);
 
     await delay(2000);
-    return HttpResponse.json(mockResponseSuccess);
+    return HttpResponse.json(mockResponseRecruiter);
 
     // const scenario = "step1";
     // const scenario = "error";

@@ -16,8 +16,8 @@ import { StyledCheckbox } from "~/shared/ui/StyledCheckbox/StyledCheckbox";
 import { Loader } from "~/shared/ui/Loader/Loader";
 
 import { useStore } from "~/store/store";
-import { getDocumentTerminate } from "~/requests/getDocumentTerminate/getDocumentTerminate";
-import { postSetTerminate } from "~/requests/postSetTerminate/postSetTerminate";
+import { getDocumentTerminate } from "~/requests/_personal/_documents/getDocumentTerminate/getDocumentTerminate";
+import { postSetTerminate } from "~/requests/_personal/_documents/postSetTerminate/postSetTerminate";
 
 export const generateDefaultValues = (
   items: { uuid: string; name: string }[]

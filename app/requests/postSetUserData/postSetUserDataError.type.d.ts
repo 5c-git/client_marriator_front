@@ -5,12 +5,9 @@
  * and run json-schema-to-typescript to regenerate this file.
  */
 
-export interface GetUserByHashSuccess {
-  result: {
-    userId: number;
-    phone: number;
-    email: string;
-    role: "admin" | "manager" | "client" | "recruiter";
+export interface PostSetUserDataError {
+  message: string;
+  errors: {
+    placeId: string[];
   };
-  status: string;
 }

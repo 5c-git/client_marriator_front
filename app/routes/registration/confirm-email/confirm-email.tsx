@@ -26,7 +26,7 @@ import { Loader } from "~/shared/ui/Loader/Loader";
 
 import { useStore } from "~/store/store";
 
-import { postSetUserEmail } from "~/requests/postSetUserEmail/postSetUserEmail";
+import { postSetUserEmail } from "~/requests/_personal/postSetUserEmail/postSetUserEmail";
 import { postCheckEmailCode } from "~/requests/postCheckEmailCode/postCheckEmailCode";
 
 export async function clientLoader({ request }: Route.ClientLoaderArgs) {

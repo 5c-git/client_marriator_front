@@ -28,9 +28,9 @@ import { Loader } from "~/shared/ui/Loader/Loader";
 import { useStore } from "~/store/store";
 
 import { getGeoData } from "~/requests/getGeoData/getGeoData";
-import { getMapField } from "~/requests/getMapField/getMapField";
-import { getSettingsFromKey } from "~/requests/getSettingsFromKey/getSettingsFromKey";
-import { postSetMapField } from "~/requests/postSetMapField/postSetMapField";
+import { getMapField } from "~/requests/_personal/getMapField/getMapField";
+import { getSettingsFromKey } from "~/requests/_settings/getSettingsFromKey/getSettingsFromKey";
+import { postSetMapField } from "~/requests/_personal/postSetMapField/postSetMapField";
 
 import { MarkerIcon } from "./icons/MarkerIcon";
 

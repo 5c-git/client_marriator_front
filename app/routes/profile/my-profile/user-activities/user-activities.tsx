@@ -25,8 +25,8 @@ import Box from "@mui/material/Box";
 import { TopNavigation } from "~/shared/ui/TopNavigation/TopNavigation";
 import { Loader } from "~/shared/ui/Loader/Loader";
 
-import { getFormActivities } from "~/requests/getFormActivities/getFormActivities";
-import { postSaveUserFieldsActivities } from "~/requests/postSaveUserFieldsActivities/postSaveUserFieldsActivities";
+import { getFormActivities } from "~/requests/_personal/getFormActivities/getFormActivities";
+import { postSaveUserFieldsActivities } from "~/requests/_personal/postSaveUserFieldsActivities/postSaveUserFieldsActivities";
 
 import { useStore } from "~/store/store";
 

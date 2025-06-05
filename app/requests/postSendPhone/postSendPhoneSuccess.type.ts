@@ -8,7 +8,7 @@
 export interface PostSendPhoneSuccessSchema {
   status: "success";
   result: {
-    type: "auth" | "register";
+    type: "auth" | "register" | "moderation";
     code:
       | {
           status: "errorSend";

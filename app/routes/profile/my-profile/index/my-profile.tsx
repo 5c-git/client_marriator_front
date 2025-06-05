@@ -25,7 +25,7 @@ import { useStore } from "~/store/store";
 import {
   getUserPersonalMenu,
   getUserPersonalMenuKeys,
-} from "~/requests/getUserPersonalMenu/getUserPersonalMenu";
+} from "~/requests/_personal/getUserPersonalMenu/getUserPersonalMenu";
 import { withLocale } from "~/shared/withLocale";
 
 export async function clientLoader() {

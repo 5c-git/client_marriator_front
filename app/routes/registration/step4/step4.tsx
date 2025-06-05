@@ -37,7 +37,7 @@ import { getForm } from "~/requests/getForm/getForm";
 import { transformBikOptions } from "~/requests/getForm/getFormHooks";
 import { getStaticUserInfo } from "~/requests/getStaticUserInfo/getStaticUserInfo";
 import { postSaveForm } from "~/requests/postSaveForm/postSaveForm";
-import { postSetUserEmail } from "~/requests/postSetUserEmail/postSetUserEmail";
+import { postSetUserEmail } from "~/requests/_personal/postSetUserEmail/postSetUserEmail";
 
 export async function clientLoader() {
   const accessToken = useStore.getState().accessToken;
