@@ -38,7 +38,7 @@
               "type": "number"
             },
             "data": {
-              "type": "string"
+              "type": ["string", "null"]
             },
             "img": {
               "type": "string"
@@ -78,6 +78,26 @@
             },
             "uuid": {
               "type": "string"
+            },
+            "register_hash": {
+              "type": ["null", "string"]
+            },
+            "roles": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "id": {
+                    "type": "number"
+                  },
+                  "name": {
+                    "type": "string",
+                    "enum": ["admin", "manager", "client", "recruiter"]
+                  }
+                },
+                "required": ["id", "name"]
+              }
             }
           },
           "required": [
@@ -102,7 +122,9 @@
             "mapRadius",
             "coordinates",
             "updateData",
-            "uuid"
+            "uuid",
+            "register_hash",
+            "roles"
           ]
         }
       },

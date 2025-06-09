@@ -16,7 +16,7 @@ export interface GetUserInfoSuccess {
       updated_at: string;
       api_token: null;
       phone: number;
-      data: string;
+      data: string | null;
       img: string;
       confirmRegister: number;
       pin: number;
@@ -30,6 +30,11 @@ export interface GetUserInfoSuccess {
       coordinates: null | string;
       updateData: null | string;
       uuid: string;
+      register_hash: null | string;
+      roles: {
+        id: number;
+        name: "admin" | "manager" | "client" | "recruiter";
+      }[];
     };
   };
   status: string;
