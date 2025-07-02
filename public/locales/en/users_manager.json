@@ -1,0 +1,23 @@
+{
+  "header": "Project-manager",
+  "avatar": "Avatar",
+  "fields": {
+    "avatarPlaceholder": "Avatar *",
+    "avatarValue": "Choose",
+    "agentPlaceholder": "Counteragent *",
+    "phonePlaceholder": "Phone",
+    "name": "Full name",
+    "editIntervalPlaceholder": "Task editing interval *",
+    "cancelIntervalPlaceholder": "Task cancellation interval *",
+    "durationIntervalPlaceholder": "Validity period of the task *",
+    "applicationFrequencyPlaceholder": "Frequency of application repetition *",
+    "applicationCountdownPlaceholder": "Minimum time until request exit *"
+  },
+  "project": "Project",
+  "projectSelector": "Choose project",
+  "location": "Locations",
+  "locationSelector": "Choose locations",
+  "user_id": "User ID",
+  "confirmButton": "Confirm",
+  "excludeButton": "Block"
+}

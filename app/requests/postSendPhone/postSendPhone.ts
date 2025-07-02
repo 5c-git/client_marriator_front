@@ -74,6 +74,18 @@ export const mockPostSendPhoneResponseRegister = {
   status: "success",
 };
 
+export const mockPostSendPhoneResponseAuth = {
+  result: {
+    type: "auth",
+    code: {
+      status: "success",
+      code: 1111,
+      ttl: 120,
+    },
+  },
+  status: "success",
+};
+
 export const mockPostSendPhoneResponseExists = {
   result: {
     type: "register",
@@ -103,18 +115,15 @@ export const mockResponseError = {
 export const postSendPhoneMockResponse = http.post(
   `${import.meta.env.VITE_SEND_PHONE}`,
   async ({ request }) => {
-    const url = new URL(`${request.url}?scenario=reg`);
+    const url = new URL(`${request.url}?scenario=auth`);
     const scenario = url.searchParams.get("scenario");
-
-    // await delay(2000);
-    // return HttpResponse.json(mockPostSendPhoneResponseRegister);
 
     if (scenario === "reg") {
       await delay(2000);
       return HttpResponse.json(mockPostSendPhoneResponseRegister);
     } else if (scenario === "auth") {
-      // await delay(2000);
-      // return HttpResponse.json();
+      await delay(2000);
+      return HttpResponse.json(mockPostSendPhoneResponseAuth);
     } else if (scenario === "error") {
       await delay(2000);
       return HttpResponse.json(mockResponseError);

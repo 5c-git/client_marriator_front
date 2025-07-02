@@ -1,0 +1,21 @@
+{
+  "header": "Client",
+  "avatar": "Avatar",
+  "fields": {
+    "avatarPlaceholder": "Avatar *",
+    "avatarValue": "Choose",
+    "agentPlaceholder": "Counteragent *",
+    "phonePlaceholder": "Phone",
+    "name": "Full name",
+    "editIntervalPlaceholder": "Order editing interval *",
+    "cancelIntervalPlaceholder": "Order cancellation interval *",
+    "durationIntervalPlaceholder": "Validity period of the order *"
+  },
+  "project": "Project",
+  "projectSelector": "Choose project",
+  "location": "Locations",
+  "locationSelector": "Choose locations",
+  "user_id": "User ID",
+  "confirmButton": "Confirm",
+  "excludeButton": "Block"
+}

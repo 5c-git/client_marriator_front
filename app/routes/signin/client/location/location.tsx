@@ -26,7 +26,7 @@ import { LocationCheckboxMultiple } from "~/shared/ui/LocationCheckboxMultiple/L
 import { StyledSearchBar } from "~/shared/ui/StyledSearchBar/StyledSearchBar";
 import { StyledDropdown } from "~/shared/ui/StyledDropdown/StyledDropdown";
 
-import { MapIcon } from "./icons/MapIcon";
+import { MapIcon } from "~/shared/icons/MapIcon";
 
 import { useStore } from "~/store/store";
 

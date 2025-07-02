@@ -39,15 +39,22 @@ import { postSetTerminateMockResponse } from "~/requests/_personal/_documents/po
 import { getDocumentArchiveMockResponse } from "~/requests/_personal/_documents/getDocumentArchive/getDocumentArchive";
 import { getDocumentInquiriesMockResponse } from "~/requests/_personal/_documents/getDocumentInquiries/getDocumentInquiries";
 import { getCompanyAndCertificatesInquiriesMockResponse } from "~/requests/_personal/_documents/getCompanyAndCertificatesInquiries/getCompanyAndCertificatesInquiries";
-import { getModerationClientMockResponse } from "~/requests/_personal/getModerationClient/getModerationClient";
+import { getModerationClientMockResponse } from "~/requests/_personal/_moderation/getModerationClient/getModerationClient";
 import { getUserByHashMockResponse } from "~/requests/getUserByHash/getUserByHash";
-import { postConfirmUserRegisterMockResponse } from "~/requests/_personal/postConfirmUserRegister/postConfirmUserRegister";
+import { postConfirmUserRegisterMockResponse } from "~/requests/_personal/_moderation/postConfirmUserRegister/postConfirmUserRegister";
 import { getBrandMockResponse } from "~/requests/getBrand/getBrand";
 import { postSetBrandImgMockResponse } from "~/requests/postSetBrandImg/postSetBrandImg";
 import { getPlaceMockResponse } from "~/requests/getPlace/getPlace";
 import { postSetPlaceMockResponse } from "~/requests/postSetPlace/postSetPlace";
 import { postDelPlaceMockResponse } from "~/requests/postDelPlace/postDelPlace";
 import { postSetUserDataMockResponse } from "~/requests/postSetUserData/postSetUserData";
+import { getProjectMockResponse } from "~/requests/_personal/_moderation/getProject/getProject";
+import { getPlaceModerationMockResponse } from "~/requests/_personal/_moderation/getPlaceModeration/getPlaceModeration";
+import { getModerationSingleClientMockResponse } from "~/requests/_personal/_moderation/getModerationSingleClient/getModerationSingleClient";
+import { postDelProjectMockResponse } from "~/requests/_personal/_moderation/delProject/delProject";
+import { postSetUserImgMockResponse } from "~/requests/_personal/_moderation/postSetUserImg/postSetUserImg";
+import { postSetProjectMockResponse } from "~/requests/_personal/_moderation/postSetProject/postSetProject";
+import { postSetPlaceModerationMockResponse } from "~/requests/_personal/_moderation/postSetPlaceModeration/postSetPlaceModeration";
 
 export const handlers = [
   getFormMockResponse,
@@ -96,4 +103,11 @@ export const handlers = [
   postSetPlaceMockResponse,
   postDelPlaceMockResponse,
   postSetUserDataMockResponse,
+  getProjectMockResponse,
+  getPlaceModerationMockResponse,
+  getModerationSingleClientMockResponse,
+  postDelProjectMockResponse,
+  postSetUserImgMockResponse,
+  postSetProjectMockResponse,
+  postSetPlaceModerationMockResponse,
 ];

@@ -1,0 +1,23 @@
+{
+  "header": "Проект-менеджер",
+  "avatar": "Логотип",
+  "fields": {
+    "avatarPlaceholder": "Аватар *",
+    "avatarValue": "Выберите",
+    "agentPlaceholder": "Контрагент *",
+    "phonePlaceholder": "Телефон",
+    "name": "ФИО",
+    "editIntervalPlaceholder": "Интервал редактирования задачи *",
+    "cancelIntervalPlaceholder": "Интервал отмены задачи *",
+    "durationIntervalPlaceholder": "Срок действия задачи *",
+    "applicationFrequencyPlaceholder": "Периодичность повторения заявки *",
+    "applicationCountdownPlaceholder": "Минимальное время до выхода по заявке *"
+  },
+  "project": "Проект",
+  "projectSelector": "Выбрать проект",
+  "location": "Места проведения",
+  "locationSelector": "Выбрать места проведения",
+  "user_id": "Идентификатор пользователя",
+  "confirmButton": "Подтвердить",
+  "excludeButton": "Заблокировать"
+}

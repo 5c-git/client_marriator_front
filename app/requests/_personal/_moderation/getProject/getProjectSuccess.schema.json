@@ -1,0 +1,48 @@
+{
+  "$id": "getProjectSuccess",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "getProjectSuccess",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "data": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "number"
+          },
+          "name": {
+            "type": "string"
+          },
+          "brand": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "id": {
+                  "type": "number"
+                },
+                "name": {
+                  "type": "string"
+                },
+                "logo": {
+                  "type": ["string", "null"]
+                },
+                "description": {
+                  "type": "string"
+                }
+              },
+              "required": ["id", "name", "logo", "description"]
+            }
+          }
+        },
+        "required": ["id", "name", "brand"]
+      }
+    }
+  },
+  "required": ["data"]
+}

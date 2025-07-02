@@ -27,10 +27,21 @@ export interface GetUserInfoSuccess {
       requisitesData: string | null;
       mapAddress: string;
       mapRadius: string;
-      coordinates: null | string;
+      latitude: null | number;
+      longitude: null | number;
       updateData: null | string;
       uuid: string;
       register_hash: null | string;
+      change_order: null;
+      cancel_order: null;
+      live_order: null;
+      change_task: null;
+      cancel_task: null;
+      live_task: null;
+      repeat_bid: null;
+      leave_bid: null;
+      refusal_task: null;
+      waiting_task: null;
       roles: {
         id: number;
         name: "admin" | "manager" | "client" | "recruiter";

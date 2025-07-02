@@ -1,0 +1,15 @@
+{
+  "header": "Рекрутер",
+  "avatar": "Логотип",
+  "fields": {
+    "avatarPlaceholder": "Аватар *",
+    "avatarValue": "Выберите",
+    "phonePlaceholder": "Телефон",
+    "name": "ФИО"
+  },
+  "project": "Проект",
+  "projectSelector": "Выбрать проект",
+  "user_id": "Идентификатор пользователя",
+  "confirmButton": "Подтвердить",
+  "excludeButton": "Заблокировать"
+}

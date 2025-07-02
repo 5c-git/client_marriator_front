@@ -1,0 +1,262 @@
+{
+  "$id": "getModerationClientSuccess",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "getModerationClientSuccess",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "data": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "number"
+          },
+          "name": {
+            "type": "string"
+          },
+          "phone": {
+            "type": "number"
+          },
+          "email": {
+            "type": "string"
+          },
+          "logo": {
+            "type": ["null", "string"]
+          },
+          "project": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "id": {
+                  "type": "number"
+                },
+                "name": {
+                  "type": "string"
+                },
+                "brand": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "properties": {
+                      "description": {
+                        "type": "string"
+                      },
+                      "id": {
+                        "type": "number"
+                      },
+                      "logo": {
+                        "type": "string"
+                      },
+                      "name": {
+                        "type": "string"
+                      }
+                    },
+                    "required": ["description", "id", "logo", "name"]
+                  }
+                }
+              },
+              "required": ["id", "name", "brand"]
+            }
+          },
+          "place": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "id": {
+                  "type": "number"
+                },
+                "logo": {
+                  "type": "string"
+                },
+                "name": {
+                  "type": "string"
+                },
+                "latitude": {
+                  "type": "string"
+                },
+                "longitude": {
+                  "type": "string"
+                },
+                "address_kladr": {
+                  "type": "string"
+                },
+                "region": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                    "id": {
+                      "type": "number"
+                    },
+                    "name": { "type": "string" }
+                  },
+                  "required": ["id", "name"]
+                },
+                "brand": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                    "description": {
+                      "type": "string"
+                    },
+                    "id": {
+                      "type": "number"
+                    },
+                    "logo": {
+                      "type": "string"
+                    },
+                    "name": {
+                      "type": "string"
+                    }
+                  },
+                  "required": ["description", "id", "logo", "name"]
+                }
+              },
+              "required": [
+                "id",
+                "logo",
+                "name",
+                "latitude",
+                "longitude",
+                "address_kladr",
+                "region",
+                "brand"
+              ]
+            }
+          },
+          "roles": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "id": {
+                  "type": "number",
+                  "minimum": 2,
+                  "maximum": 6
+                },
+                "name": {
+                  "enum": [
+                    "client",
+                    "manager",
+                    "recruiter",
+                    "specialist",
+                    "supervisor"
+                  ]
+                }
+              },
+              "required": ["id", "name"]
+            }
+          },
+          "change_order": {
+            "type": "null"
+          },
+          "cancel_order": {
+            "type": "null"
+          },
+          "live_order": {
+            "type": "null"
+          },
+          "change_task": {
+            "type": "null"
+          },
+          "cancel_task": {
+            "type": "null"
+          },
+          "live_task": {
+            "type": "null"
+          },
+          "repeat_bid": {
+            "type": "null"
+          },
+          "leave_bid": {
+            "type": "null"
+          },
+          "refusal_task": {
+            "type": "null"
+          },
+          "waiting_task": {
+            "type": "null"
+          },
+          "supervisors": {
+            "type": "array"
+          },
+          "manager": {
+            "type": "array"
+          }
+        },
+        "required": [
+          "id",
+          "name",
+          "phone",
+          "email",
+          "logo",
+          "project",
+          "place",
+          "roles",
+          "change_order",
+          "cancel_order",
+          "live_order",
+          "change_task",
+          "cancel_task",
+          "live_task",
+          "repeat_bid",
+          "leave_bid",
+          "refusal_task",
+          "waiting_task",
+          "supervisors",
+          "manager"
+        ]
+      }
+    },
+    "links": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "first": {
+          "type": "string"
+        },
+        "last": {
+          "type": ["null", "string"]
+        },
+        "prev": {
+          "type": ["null", "string"]
+        },
+        "next": {
+          "type": ["null", "string"]
+        }
+      },
+      "required": ["first", "last", "prev", "next"]
+    },
+    "meta": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "current_page": {
+          "type": "number"
+        },
+        "from": {
+          "type": ["number", "null"]
+        },
+        "path": {
+          "type": "string"
+        },
+        "per_page": {
+          "type": "number"
+        },
+        "to": {
+          "type": ["number", "null"]
+        }
+      },
+      "required": ["current_page", "from", "path", "per_page", "to"]
+    }
+  },
+  "required": ["data", "links", "meta"]
+}

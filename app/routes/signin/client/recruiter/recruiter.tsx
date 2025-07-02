@@ -1,4 +1,3 @@
-import { useEffect } from "react";
 import { useFetcher, useNavigation, redirect } from "react-router";
 import type { Route } from "./+types/recruiter";
 
@@ -112,15 +111,6 @@ export default function Recruiter({ loaderData }: Route.ComponentProps) {
     ),
     mode: "onChange",
   });
-
-  useEffect(() => {
-    setTimeout(() => {
-      reset({
-        fio: getValues("fio"),
-        locations: loaderData.locations,
-      });
-    });
-  }, [loaderData, reset]);
 
   return (
     <>
