@@ -16,11 +16,11 @@ import hawkVitePlugin from "@hawk.so/vite-plugin";
 // };
 
 export default defineConfig({
-  ssr: {
-    // Bundle `problematic-dependency` into the server build
-    // noExternal: [/^@mui\//, /^@pigment-css\//, /^@emotion\//],
-    noExternal: [/^@mui\//],
-  },
+  // ssr: {
+  //   // Bundle `problematic-dependency` into the server build
+  //   // noExternal: [/^@mui\//, /^@pigment-css\//, /^@emotion\//],
+  //   noExternal: [/^@mui\//],
+  // },
 
   plugins: [
     reactRouter(),
@@ -32,6 +32,16 @@ export default defineConfig({
     //     "eyJpbnRlZ3JhdGlvbklkIjoiZTFhZWNhMzgtOGNiOC00YzQzLThmODctNzc2MzY5NGYwMzY4Iiwic2VjcmV0IjoiMDEwMDdjYjEtNzRhNC00MDcxLTg3YzktNGMzMjU5YWJhMDM2In0=",
     // }),
   ],
+
+  ssr: {
+    // Workaround for resolving dependencies in the server bundle
+    // Without this, the React context will be different between direct import and transitive imports in development environment
+    // For more information, see https://github.com/mui/material-ui/issues/45878#issuecomment-2987441663
+    optimizeDeps: {
+      include: ["@emotion/*", "@mui/*"],
+    },
+    noExternal: ["@emotion/*", "@mui/*"],
+  },
 
   // build: {
   //   sourcemap: true,
