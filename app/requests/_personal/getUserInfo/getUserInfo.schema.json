@@ -38,7 +38,7 @@
               "type": "number"
             },
             "data": {
-              "type": "string"
+              "type": ["string", "null"]
             },
             "img": {
               "type": "string"
@@ -70,14 +70,69 @@
             "mapRadius": {
               "type": "string"
             },
-            "coordinates": {
-              "type": ["null", "string"]
+            "latitude": {
+              "type": ["null", "number"]
+            },
+            "longitude": {
+              "type": ["null", "number"]
             },
             "updateData": {
               "type": ["null", "string"]
             },
             "uuid": {
               "type": "string"
+            },
+            "register_hash": {
+              "type": ["null", "string"]
+            },
+
+            "change_order": {
+              "type": "null"
+            },
+            "cancel_order": {
+              "type": "null"
+            },
+            "live_order": {
+              "type": "null"
+            },
+            "change_task": {
+              "type": "null"
+            },
+            "cancel_task": {
+              "type": "null"
+            },
+            "live_task": {
+              "type": "null"
+            },
+            "repeat_bid": {
+              "type": "null"
+            },
+            "leave_bid": {
+              "type": "null"
+            },
+            "refusal_task": {
+              "type": "null"
+            },
+            "waiting_task": {
+              "type": "null"
+            },
+
+            "roles": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "id": {
+                    "type": "number"
+                  },
+                  "name": {
+                    "type": "string",
+                    "enum": ["admin", "manager", "client", "recruiter"]
+                  }
+                },
+                "required": ["id", "name"]
+              }
             }
           },
           "required": [
@@ -100,9 +155,22 @@
             "requisitesData",
             "mapAddress",
             "mapRadius",
-            "coordinates",
             "updateData",
-            "uuid"
+            "uuid",
+            "register_hash",
+            "roles",
+            "latitude",
+            "longitude",
+            "change_order",
+            "cancel_order",
+            "live_order",
+            "change_task",
+            "cancel_task",
+            "live_task",
+            "repeat_bid",
+            "leave_bid",
+            "refusal_task",
+            "waiting_task"
           ]
         }
       },

@@ -80,44 +80,36 @@ export default [
         "routes/profile/documents/certificates/certificates.tsx"
       ),
 
-      layout("routes/dev/moderation/layout/layout.tsx", [
+      layout("routes/users/layout/layout.tsx", [
+        route(":lang?/users", "routes/users/clients/clients.tsx"),
+        route(":lang?/users/managers", "routes/users/managers/managers.tsx"),
         route(
-          ":lang?/dev/moderation/moderation-1",
-          "routes/dev/moderation/moderation-1/page.tsx"
+          ":lang?/users/recruiters",
+          "routes/users/recruiters/recruiters.tsx"
         ),
         route(
-          ":lang?/dev/moderation/moderation-2",
-          "routes/dev/moderation/moderation-2/page.tsx"
-        ),
-        route(
-          ":lang?/dev/moderation/moderation-3",
-          "routes/dev/moderation/moderation-3/page.tsx"
-        ),
-        route(
-          ":lang?/dev/moderation/moderation-4",
-          "routes/dev/moderation/moderation-4/page.tsx"
+          ":lang?/users/supervisors",
+          "routes/users/supervisors/supervisors.tsx"
         ),
       ]),
 
       route(
-        ":lang?/dev/moderation/moderation-1/client",
-        "routes/dev/moderation/moderation-1/client/client.tsx"
+        ":lang?/users/client/:user",
+        "routes/users/clients/client/client.tsx"
       ),
       route(
-        ":lang?/dev/moderation/moderation-2/project-manager",
-        "routes/dev/moderation/moderation-2/project-manager/project-manager.tsx"
+        ":lang?/users/manager/:user",
+        "routes/users/managers/manager/manager.tsx"
       ),
       route(
-        ":lang?/dev/moderation/moderation-3/recruter",
-        "routes/dev/moderation/moderation-3/recruter/recruter.tsx"
+        ":lang?/users/supervisor/:user",
+        "routes/users/supervisors/supervisor/supervisor.tsx"
       ),
       route(
-        ":lang?/dev/moderation/moderation-4/supervisor",
-        "routes/dev/moderation/moderation-4/supervisor/supervisor.tsx"
+        ":lang?/users/recruiter/:user",
+        "routes/users/recruiters/recruiter/recruiter.tsx"
       ),
     ]),
-
-    route(":lang?/offline", "routes/offline/offline.tsx"),
 
     //signin
     route(":lang?/signin/phone", "routes/signin/phone/phone.tsx"),
@@ -159,5 +151,17 @@ export default [
       "routes/registration/confirm-email/confirm-email.tsx"
     ),
     // registration
+
+    // internal pages without navigation menu
+    route(
+      ":lang?/users/:user/select-projects",
+      "routes/users/selectProjects/selectProjects.tsx"
+    ),
+    route(
+      ":lang?/users/:user/select-locations",
+      "routes/users/selectLocations/selectLocations.tsx"
+    ),
+
+    route(":lang?/offline", "routes/offline/offline.tsx"),
   ]),
 ] satisfies RouteConfig;

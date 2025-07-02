@@ -1,0 +1,15 @@
+{
+  "header": "Recruiter",
+  "avatar": "Avatar",
+  "fields": {
+    "avatarPlaceholder": "Avatar *",
+    "avatarValue": "Choose",
+    "phonePlaceholder": "Phone",
+    "name": "Full name"
+  },
+  "project": "Project",
+  "projectSelector": "Choose project",
+  "user_id": "User ID",
+  "confirmButton": "Confirm",
+  "excludeButton": "Block"
+}

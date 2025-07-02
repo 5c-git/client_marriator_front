@@ -17,6 +17,7 @@ type StyledCheckboxMultipleProps = {
   options: {
     value: string;
     label: string;
+    image?: string;
     disabled: boolean;
   }[];
 
@@ -160,7 +161,33 @@ export const StyledCheckboxMultiple = (props: StyledCheckboxMultipleProps) => {
                   }
                 />
               }
-              label={item.label}
+              // label={item.label}
+              label={
+                <Box
+                  sx={{
+                    display: "flex",
+                    columnGap: "4px",
+                    alignItems: "center",
+                  }}
+                >
+                  {item.image ? (
+                    <img
+                      style={{
+                        display: "block",
+                        width: "30px",
+                        height: "30px",
+                        borderRadius: "50%",
+                        marginTop: "10px",
+                        marginBottom: "10px",
+                        objectFit: "cover",
+                      }}
+                      src={item.image}
+                      alt={item.image}
+                    />
+                  ) : null}{" "}
+                  {item.label}
+                </Box>
+              }
             />
           ))}
         </FormGroup>

@@ -1,0 +1,22 @@
+{
+  "header": "Supervisor",
+  "avatar": "Avatar",
+  "fields": {
+    "avatarPlaceholder": "Avatar *",
+    "avatarValue": "Choose",
+    "agentPlaceholder": "Counteragent *",
+    "phonePlaceholder": "Phone",
+    "name": "Full name",
+    "applicationFrequencyPlaceholder": "Frequency of application repetition *",
+    "applicationCountdownPlaceholder": "Minimum time until request exit *",
+    "taskCountdownCancelPlaceholder": "Минимальное время отказа от задания *",
+    "taskCountdownCancelDurationPlaceholder": "Minimum task abandonment time *"
+  },
+  "project": "Project",
+  "projectSelector": "Choose project",
+  "location": "Locations",
+  "locationSelector": "Choose locations",
+  "user_id": "User ID",
+  "confirmButton": "Confirm",
+  "excludeButton": "Block"
+}

@@ -7,64 +7,22 @@ import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import { S_SwipeableDrawer } from "./StatusSelect.styled";
 import { Typography } from "@mui/material";
 
-const statusSelectMap = {
-  rejected: {
-    value: "rejected",
-    colour: "var(--mui-palette-Grey_1)",
-    text: "Не принято",
-  },
-  "not-сonfirmed": {
-    value: "not-сonfirmed",
-    colour: "var(--mui-palette-Grey_1)",
-    text: "Не подтверждена",
-  },
-  сonfirmed: {
-    value: "сonfirmed",
-    colour: "var(--mui-palette-Dark_blue)",
-    text: "Подтверждена",
-  },
-  "in-review": {
-    value: "in-review",
-    colour: "var(--mui-palette-Corp_2)",
-    text: "На рассмотрении",
-  },
-  accepted: {
-    value: "accepted",
-    colour: "var(--mui-palette-Telegram)",
-    text: "Принято",
-  },
-  "in-work": {
-    value: "in-work",
-    colour: "var(--mui-palette-Green)",
-    text: "В работе",
-  },
-  approved: {
-    value: "approved",
-    colour: "var(--mui-palette-WhatsApp)",
-    text: "Одобрена",
-  },
-  cancelled: {
-    value: "cancelled",
-    colour: "var(--mui-palette-Red)",
-    text: "Отменено",
-  },
-  archived: {
-    value: "archived",
-    colour: "var(--mui-palette-Grey_2)",
-    text: "Архив",
-  },
-} as const;
-
 type StatusSelectProps = {
-  value: keyof typeof statusSelectMap;
+  value: string;
   options: {
-    id: keyof typeof statusSelectMap;
+    id: string;
+    label: string;
     count: number;
+    color: string;
   }[];
-  onChange: (value: keyof typeof statusSelectMap) => void;
+  textColor?: string;
+  onChange: (value: string) => void;
 };
 
-export const StatusSelect = (props: StatusSelectProps) => {
+export const StatusSelect = ({
+  textColor = "var(--mui-palette-White)",
+  ...props
+}: StatusSelectProps) => {
   const [open, setOpen] = useState<boolean>(false);
 
   return (
@@ -75,7 +33,9 @@ export const StatusSelect = (props: StatusSelectProps) => {
           setOpen(true);
         }}
         style={{
-          backgroundColor: statusSelectMap[props.value].colour,
+          backgroundColor: props.options.find(
+            (option) => option.id === props.value
+          )?.color,
         }}
         sx={{
           display: "flex",
@@ -89,26 +49,26 @@ export const StatusSelect = (props: StatusSelectProps) => {
         <Typography
           component="p"
           variant="Med_14"
-          sx={(theme) => ({
-            color: theme.vars.palette["White"],
-          })}
+          sx={{
+            color: textColor,
+          }}
         >
-          {statusSelectMap[props.value].text}
+          {props.options.find((option) => option.id === props.value)?.label}
         </Typography>
         <Typography
           component="p"
           variant="Reg_12"
-          sx={(theme) => ({
-            color: theme.vars.palette["White"],
-          })}
+          sx={{
+            color: textColor,
+          }}
         >
           {props.options.find((option) => option.id === props.value)?.count}
         </Typography>
         <KeyboardArrowDownIcon
-          sx={(theme) => ({
+          sx={{
             marginLeft: "auto",
-            color: theme.vars.palette["White"],
-          })}
+            color: textColor,
+          }}
         />
       </Box>
       <S_SwipeableDrawer
@@ -124,13 +84,14 @@ export const StatusSelect = (props: StatusSelectProps) => {
         <Box>
           {props.options.map((option) => (
             <Box
+              key={option.id}
               component="button"
               onClick={() => {
-                props.onChange(statusSelectMap[option.id].value);
+                props.onChange(option.id);
                 setOpen(false);
               }}
               style={{
-                backgroundColor: statusSelectMap[option.id].colour,
+                backgroundColor: option.color,
               }}
               sx={{
                 width: "100%",
@@ -145,18 +106,18 @@ export const StatusSelect = (props: StatusSelectProps) => {
               <Typography
                 component="p"
                 variant="Reg_18"
-                sx={(theme) => ({
-                  color: theme.vars.palette["White"],
-                })}
+                sx={{
+                  color: textColor,
+                }}
               >
-                {statusSelectMap[option.id].text}
+                {option.label}
               </Typography>
               <Typography
                 component="p"
                 variant="Reg_14"
-                sx={(theme) => ({
-                  color: theme.vars.palette["White"],
-                })}
+                sx={{
+                  color: textColor,
+                }}
               >
                 {option.count}
               </Typography>

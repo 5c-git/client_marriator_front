@@ -11,9 +11,9 @@ export const CheckIcon = createSvgIcon(
     <path
       d="M5 10.8889L10 17L19 6"
       stroke="currentColor"
-      stroke-width="1.5"
-      stroke-linecap="round"
-      stroke-linejoin="round"
+      strokeWidth="1.5"
+      strokeLinecap="round"
+      strokeLinejoin="round"
     />
   </svg>,
   "CheckIcon"

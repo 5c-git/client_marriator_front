@@ -1,0 +1,14 @@
+{
+  "status": {
+    "new": "New",
+    "in-work": "In work",
+    "archive": "Archive",
+    "review": "Review"
+  },
+  "searchbar": "Search",
+  "sorting": {
+    "new": "New",
+    "old": "Old",
+    "all": "All"
+  }
+}

@@ -1,5 +1,7 @@
 /// <reference types="vite/client" />
 
+import { string } from "yup";
+
 interface ImportMetaEnv {
   readonly VITE_ASSET_PATH: string;
   readonly VITE_HAWK_KEY: string;
@@ -55,6 +57,13 @@ interface ImportMetaEnv {
   readonly VITE_POST_SET_PLACE: string;
   readonly VITE_POST_DEL_PLACE: string;
   readonly VITE_POST_SET_USER_DATA: string;
+  readonly VITE_GET_PROJECT: string;
+  readonly VITE_GET_PLACE_MODERATION: string;
+  readonly VITE_GET_MODERATION_SINGLE_CLIENT: string;
+  readonly VITE_POST_DEL_PROJECT: string;
+  readonly VITE_POST_SET_USER_IMG: string;
+  readonly VITE_POST_SET_PROJECT: string;
+  readonly VITE_POST_SET_PLACE_MODERATION: string;
   // more env variables...
 }
 

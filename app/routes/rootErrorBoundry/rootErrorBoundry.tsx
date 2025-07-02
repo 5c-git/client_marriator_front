@@ -58,6 +58,8 @@ export const ErrorBoundary = ({ error }: Route.ErrorBoundaryProps) => {
   //   }
   // }, [error]);
 
+  console.log(error);
+
   return (
     <>
       {/* showing this screen only if user is authorized and we are not offline */}

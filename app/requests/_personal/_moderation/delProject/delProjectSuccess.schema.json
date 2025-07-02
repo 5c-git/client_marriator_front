@@ -1,0 +1,98 @@
+{
+  "$id": "delProjectSuccess",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "delProjectSuccess",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "data": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "type": "number"
+        },
+        "name": {
+          "type": ["string", "null"]
+        },
+        "phone": {
+          "type": "number"
+        },
+        "email": {
+          "type": "string"
+        },
+        "logo": {
+          "type": ["string", "null"]
+        },
+        "project": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "id": {
+                "type": "number"
+              },
+              "name": {
+                "type": "string"
+              },
+              "brand": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                    "id": {
+                      "type": "number"
+                    },
+                    "name": {
+                      "type": "string"
+                    },
+                    "logo": {
+                      "type": "string"
+                    },
+                    "description": {
+                      "type": "string"
+                    }
+                  },
+                  "required": ["id", "name", "description"]
+                }
+              }
+            },
+            "required": ["id", "name", "brand"]
+          }
+        },
+        "place": {
+          "type": "array"
+        },
+        "roles": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "id": {
+                "type": "number"
+              },
+              "name": {
+                "type": "string"
+              }
+            },
+            "required": ["id", "name"]
+          }
+        }
+      },
+      "required": [
+        "id",
+        "name",
+        "phone",
+        "email",
+        "logo",
+        "project",
+        "place",
+        "roles"
+      ]
+    }
+  },
+  "required": ["data"]
+}

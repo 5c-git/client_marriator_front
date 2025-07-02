@@ -55,6 +55,11 @@ export async function clientLoader() {
 export async function clientAction() {
   useStore.getState().clearStore();
 
+  queryClient.invalidateQueries({
+    queryKey: [getUserInfoKeys[0]],
+    refetchType: "none",
+  });
+
   return { status: "ok" };
 }
 
