@@ -9,7 +9,13 @@ export default [
   // index("routes/pigment/pigment.tsx"),
   layout("routes/rootErrorBoundry/rootErrorBoundry.tsx", [
     layout("routes/menuLayout/menuLayout.tsx", [
-      route(":lang?/", "routes/home/home.tsx"),
+      layout("routes/home/layout/layout.tsx", [
+        route(":lang?/", "routes/assignments/assignments.tsx"),
+        route(":lang?/tasks", "routes/tasks/tasks.tsx"),
+        route(":lang?/requests", "routes/requests/requests.tsx"),
+        route(":lang?/missions", "routes/missions/missions.tsx"),
+      ]),
+
       route(
         ":lang?/registration/registration-complete",
         "routes/registration/registration-complete/registration-complete.tsx"
@@ -160,6 +166,11 @@ export default [
     route(
       ":lang?/users/:user/select-locations",
       "routes/users/selectLocations/selectLocations.tsx"
+    ),
+    route(":lang?/new-assignment", "routes/new-assignment/new-assignment.tsx"),
+    route(
+      ":lang?/new-assignment/:orderId/new-service",
+      "routes/new-assignment/new-service/new-service.tsx"
     ),
 
     route(":lang?/offline", "routes/offline/offline.tsx"),

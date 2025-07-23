@@ -110,51 +110,49 @@ export const getModerationClient = async (
 export const mockResponseSuccess = {
   data: [
     {
-      id: 254,
-      name: "recruiter",
-      phone: 73333333333,
-      email: "recruiter@gmail.com",
-      logo: null,
-      project: [],
-      place: [
+      id: 253,
+      name: "client",
+      phone: 72222222222,
+      email: "client@gmail.com",
+      logo: "/storage/source/directory/brand/1-logo/\u041b\u043e\u0433\u043e \u041f\u044f\u0442\u0435\u0440\u043e\u0447\u043a\u0430.png",
+      project: [
         {
-          id: 3,
-          name: "Пятёрочка",
-          latitude: "55.00000000",
-          longitude: "37.00000000",
-          address_kladr: "ул. Арбат д. 24  г.Москва",
-          logo: "/storage/source/directory/brand/1-logo/Лого Пятерочка.png",
-          region: {
-            id: 2,
-            name: "Москва",
-          },
-          brand: {
-            id: 1,
-            name: "Пятёрочка",
-            logo: "/storage/source/directory/brand/1-logo/Лого Пятерочка.png",
-            description:
-              "«Пятёрочка» — крупнейшая торговая сеть магазинов «у дома» в России.",
-          },
+          id: 1,
+          name: "\u0414\u043e\u0433\u043e\u0432\u043e\u0440 \u043d\u0430 \u043e\u043a\u0430\u0437\u0430\u043d\u0438\u0435 \u0443\u0441\u043b\u0443\u0433 \u041f\u044f\u0442\u0451\u0440\u043e\u0447\u043a\u0430",
+          brand: [
+            {
+              id: 1,
+              name: "\u041f\u044f\u0442\u0451\u0440\u043e\u0447\u043a\u0430",
+              logo: "/storage/source/directory/brand/1-logo/\u041b\u043e\u0433\u043e \u041f\u044f\u0442\u0435\u0440\u043e\u0447\u043a\u0430.png",
+              description:
+                "\u00ab\u041f\u044f\u0442\u0451\u0440\u043e\u0447\u043a\u0430\u00bb \u2014 \u043a\u0440\u0443\u043f\u043d\u0435\u0439\u0448\u0430\u044f \u0442\u043e\u0440\u0433\u043e\u0432\u0430\u044f \u0441\u0435\u0442\u044c \u043c\u0430\u0433\u0430\u0437\u0438\u043d\u043e\u0432 \u00ab\u0443 \u0434\u043e\u043c\u0430\u00bb \u0432 \u0420\u043e\u0441\u0441\u0438\u0438.",
+            },
+          ],
         },
       ],
+      place: [],
       roles: [
         {
-          id: 4,
-          name: "recruiter",
+          id: 2,
+          name: "client",
         },
       ],
-      change_order: null,
-      cancel_order: null,
-      live_order: null,
-      change_task: null,
-      cancel_task: null,
-      live_task: null,
-      repeat_bid: null,
-      leave_bid: null,
-      refusal_task: null,
-      waiting_task: null,
+      change_order: "23:59",
+      cancel_order: "23:59",
+      live_order: "23:59",
+      change_task: "23:59",
+      cancel_task: "23:59",
+      live_task: "23:59",
+      repeat_bid: "23:59",
+      leave_bid: "04:00",
+      refusal_task: "23:59",
+      waiting_task: "60",
+      count_wait_bid: "1",
+      time_answer_bid: "24",
+      notification_start: "60",
       supervisors: [],
       manager: [],
+      counterparty: [],
     },
   ],
   links: {
@@ -173,133 +171,7 @@ export const mockResponseSuccess = {
   },
 };
 
-export const mockResponseSuccessShort = {
-  data: [
-    {
-      id: 230,
-      name: "Name",
-      phone: 534535345353,
-      email: "dfdvdfv@tt.tt",
-      logo: "https://mui.com/static/images/avatar/3.jpg",
-      project: [
-        {
-          id: 7,
-          name: "Проект 2",
-          brand: [],
-        },
-      ],
-      place: [
-        {
-          id: 2,
-          name: "Organization",
-          latitude: "21.00000000",
-          longitude: "11.00000000",
-          address_kladr: "dvdvdvdvdv",
-          logo: "logo",
-          brand: {
-            description: "description",
-            id: 1,
-            logo: "logo",
-            name: "name",
-          },
-          region: {
-            id: 2,
-            name: "Москва",
-          },
-        },
-      ],
-      roles: [
-        {
-          id: 2,
-          name: "client",
-        },
-        {
-          id: 3,
-          name: "manager",
-        },
-      ],
-    },
-    {
-      id: 229,
-      name: "Name",
-      phone: 534534534534,
-      email: "sfvdfvdfvdf@tt.tt",
-      logo: "https://mui.com/static/images/avatar/3.jpg",
-      project: [
-        {
-          id: 7,
-          name: "Проект 2",
-          brand: [],
-        },
-        {
-          id: 8,
-          name: "Проект 1",
-          brand: [],
-        },
-        {
-          id: 9,
-          name: "Проект 3",
-          brand: [],
-        },
-      ],
-      place: [
-        {
-          id: 2,
-          name: "Organization",
-          latitude: "21.00000000",
-          longitude: "11.00000000",
-          address_kladr: "dvdvdvdvdv",
-          logo: "logo",
-          brand: {
-            description: "description",
-            id: 1,
-            logo: "logo",
-            name: "name",
-          },
-          region: {
-            id: 2,
-            name: "Москва",
-          },
-        },
-      ],
-      roles: [
-        {
-          id: 2,
-          name: "client",
-        },
-        {
-          id: 3,
-          name: "manager",
-        },
-        {
-          id: 4,
-          name: "recruiter",
-        },
-        {
-          id: 5,
-          name: "specialist",
-        },
-        {
-          id: 6,
-          name: "supervisor",
-        },
-      ],
-    },
-  ],
-  links: {
-    first: "http://localhost/api/personal/getModerationClient?page=1",
-    last: null,
-    prev: "http://localhost/api/personal/getModerationClient?page=1",
-    next: null,
-  },
-  meta: {
-    current_page: 1,
-    from: 3,
-    path: "http://localhost/api/personal/getModerationClient",
-    per_page: 2,
-    to: 2,
-  },
-};
+export const mockResponseSuccessShort = {};
 
 export const mockResponseEmpty = {
   data: [],

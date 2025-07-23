@@ -284,6 +284,13 @@ export const pigmentTheme = createTheme({
         }),
       },
     },
+    MuiFormHelperText: {
+      styleOverrides: {
+        root: {
+          marginLeft: 0,
+        },
+      },
+    },
     MuiSelect: {
       styleOverrides: {
         icon: ({ theme }) => ({
@@ -739,5 +746,59 @@ export const pigmentTheme = createTheme({
         },
       },
     },
+    MuiFab: {
+      variants: [
+        {
+          props: { color: "Corp_1" },
+          style: ({ theme }) => ({
+            backgroundColor: theme.vars.palette["Corp_1"],
+            color: theme.vars.palette["White"],
+            boxShadow: "0px 0px 5px 0px rgba(0, 0, 0, 0.15)",
+
+            "&:hover": {
+              backgroundColor: theme.vars.palette["Corp_1"],
+              boxShadow: "0px 0px 5px 0px rgba(0, 0, 0, 0.15)",
+            },
+          }),
+        },
+      ],
+    },
+    // MUX input for new-assignment/2/new-service page
+    // MuiPickersTextField: {
+    //   styleOverrides: {
+    //     root: {
+    //       "& .MuiPickersInputBase-root": {
+    //         borderRadius: "6px",
+    //       },
+
+    //       "& .MuiPickersSectionList-root": {
+    //         padding: "16.5px 14px",
+    //         paddingTop: "23px",
+    //         paddingBottom: "12px",
+    //       },
+
+    //       "& .MuiPickersFilledInput-root": {
+    //         backgroundColor: baseTheme.vars.palette["Grey_5"],
+    //         "&:before": {
+    //           display: "none",
+    //         },
+    //         "&:after": {
+    //           display: "none",
+    //         },
+    //         "&.Mui-focused": {
+    //           backgroundColor: baseTheme.vars.palette["Grey_5"],
+    //         },
+    //       },
+
+    //       "&.Mui-error": {
+    //         borderColor: baseTheme.vars.palette["Red"],
+    //         color: baseTheme.vars.palette["Red"],
+    //       },
+    //       "&.Mui-disabled": {
+    //         opacity: "0.6",
+    //       },
+    //     },
+    //   },
+    // },
   },
 });

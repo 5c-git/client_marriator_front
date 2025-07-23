@@ -12,6 +12,8 @@ type TimeFieldProps = {
   onChange: (value: string) => void;
   placeholder: string;
 
+  minTime?: Date;
+  maxTime?: Date;
   disabled?: boolean;
   error?: string;
 };
@@ -36,6 +38,8 @@ export const TimeField = (props: TimeFieldProps) => (
         label={props.placeholder}
         value={props.value === null ? null : toDate(props.value)}
         localeText={localeActionsText}
+        minTime={props.minTime}
+        maxTime={props.maxTime}
         onChange={(newValue) => {
           if (newValue) {
             props.onChange(formatISO(newValue));

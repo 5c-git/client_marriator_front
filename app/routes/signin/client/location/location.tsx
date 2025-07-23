@@ -13,7 +13,7 @@ import { withLocale } from "~/shared/withLocale";
 
 //map
 import { YMap, LngLat, YMapMarker } from "ymaps3";
-import { loadMap, langMap } from "~/shared/ymap/ymap";
+import { loadMap, langMap, renderIcon } from "~/shared/ymap/ymap";
 import type { Coordinates } from "~/shared/ymap/ymap";
 //map
 
@@ -32,42 +32,6 @@ import { useStore } from "~/store/store";
 
 import { getPlace } from "~/requests/getPlace/getPlace";
 import { postSetPlace } from "~/requests/postSetPlace/postSetPlace";
-
-const renderIcon = (image: string, borderColor: string) => {
-  return renderToStaticMarkup(
-    // <MarkerIcon
-    //   style={{
-    //     position: "absolute",
-
-    //     color: borderColor,
-    //   }}
-    // />
-    <div
-      style={{
-        position: "absolute",
-        left: "-50%",
-        top: "-50%",
-        width: "41px",
-        height: "41px",
-        border: "5px solid",
-        borderRadius: "50%",
-        overflow: "hidden",
-        borderColor: borderColor,
-      }}
-    >
-      <img
-        src={image}
-        style={{
-          // position: "relative",
-          height: "100%",
-          width: "100%",
-          objectFit: "cover",
-        }}
-        alt="shop logo"
-      />
-    </div>
-  );
-};
 
 type Option = {
   value: string;

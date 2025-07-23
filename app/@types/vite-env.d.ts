@@ -64,6 +64,15 @@ interface ImportMetaEnv {
   readonly VITE_POST_SET_USER_IMG: string;
   readonly VITE_POST_SET_PROJECT: string;
   readonly VITE_POST_SET_PLACE_MODERATION: string;
+  readonly VITE_GET_PLACE_FOR_ORDER: string;
+  readonly VITE_POST_UPDATE_ORDER: string;
+  readonly VITE_GET_ORDER: string;
+  readonly VITE_POST_DELETE_ORDER_ACTIVITY: string;
+  readonly VITE_POST_CANCEL_ORDER: string;
+  readonly VITE_POST_SEND_ORDER: string;
+  readonly VITE_GET_VIEW_ACTIVITIES_FOR_ORDER: string;
+  readonly VITE_POST_CREATE_ORDER_ACTIVITY: string;
+  readonly VITE_GET_ORDERS: string;
   // more env variables...
 }
 

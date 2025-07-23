@@ -116,6 +116,15 @@
             "waiting_task": {
               "type": "null"
             },
+            "count_wait_bid": {
+              "type": "null"
+            },
+            "time_answer_bid": {
+              "type": "null"
+            },
+            "notification_start": {
+              "type": "null"
+            },
 
             "roles": {
               "type": "array",
@@ -170,7 +179,10 @@
             "repeat_bid",
             "leave_bid",
             "refusal_task",
-            "waiting_task"
+            "waiting_task",
+            "count_wait_bid",
+            "time_answer_bid",
+            "notification_start"
           ]
         }
       },

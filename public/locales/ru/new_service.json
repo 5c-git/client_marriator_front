@@ -1,0 +1,29 @@
+{
+  "header": "Заказ услуги",
+  "popupHeader": "Добавление точек",
+  "fields": {
+    "servicePlaceholder": "Вид услуг *",
+    "amountPlaceholder": "Количество *",
+    "startTimePlaceholder": "Дата и время начала оказания услуг *",
+    "endTimePlaceholder": "Дата и время окончания оказания услуг *",
+    "needPhotosPlaceholder": "Фотоотчет",
+    "needDaysPlaceholder": "Раскрыть по дням",
+    "needRoutePlaceholder": "Маршрут дня",
+    "searchbarPlaceholder": "Начните вводить адрес",
+    "startClockPlaceholder": "Время начала",
+    "endClockPlaceholder": "Время окончания"
+  },
+  "dayMap": {
+    "0": "ВС",
+    "1": "ПН",
+    "2": "ВТ",
+    "3": "СР",
+    "4": "ЧТ",
+    "5": "ПТ",
+    "6": "СБ"
+  },
+  "addAddressButton": "Добавить адрес",
+  "addSelectedAddressButton": "Добавить отмеченные",
+  "cancelButton": "Отменить",
+  "saveButton": "Сохранить"
+}

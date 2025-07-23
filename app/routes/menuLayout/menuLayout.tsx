@@ -16,6 +16,8 @@ import {
   getUserInfoKeys,
 } from "~/requests/_personal/getUserInfo/getUserInfo";
 
+const setUserRole = useStore.getState().setUserRole;
+
 const determineRole = (
   roles: {
     id: number;
@@ -41,6 +43,8 @@ const determineRole = (
       role = item.name;
     }
   });
+
+  setUserRole(role);
 
   return role;
 };

@@ -191,6 +191,12 @@ declare module "@mui/material/Alert" {
   }
 }
 
+declare module "@mui/material/Fab" {
+  interface FabPropsColorOverrides {
+    Corp_1: true;
+  }
+}
+
 declare module "@mui/material/Checkbox" {
   interface CheckboxPropsColorOverrides {
     corp: true;

@@ -1,0 +1,249 @@
+{
+  "$id": "postCreateOrderActivitySuccess",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "postCreateOrderActivitySuccess",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "data": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "type": "number"
+        },
+        "selfEmployed": {
+          "type": "boolean"
+        },
+        "status": {
+          "type": "string"
+        },
+        "place": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "id": {
+              "type": "number"
+            },
+            "name": {
+              "type": "string"
+            },
+            "latitude": {
+              "type": "string"
+            },
+            "longitude": {
+              "type": "string"
+            },
+            "address_kladr": {
+              "type": "string"
+            },
+            "logo": {
+              "type": "string"
+            },
+            "region": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "id": {
+                  "type": "number"
+                },
+                "name": {
+                  "type": "string"
+                }
+              },
+              "required": ["id", "name"]
+            },
+            "brand": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "id": {
+                  "type": "number"
+                },
+                "name": {
+                  "type": "string"
+                },
+                "logo": {
+                  "type": ["null", "string"]
+                },
+                "description": {
+                  "type": "string"
+                }
+              },
+              "required": ["id", "name", "logo", "description"]
+            }
+          },
+          "required": [
+            "id",
+            "name",
+            "latitude",
+            "longitude",
+            "address_kladr",
+            "logo",
+            "region",
+            "brand"
+          ]
+        },
+        "user": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "id": {
+              "type": "number"
+            },
+            "phone": {
+              "type": "number"
+            },
+            "email": {
+              "type": "string"
+            },
+            "logo": {
+              "type": "string"
+            }
+          },
+          "required": ["id", "phone", "email", "logo"]
+        },
+        "orderActivities": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "viewActivity": {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "name": {
+                    "type": "string"
+                  },
+                  "detailName": {
+                    "type": "string"
+                  },
+                  "previewText": {
+                    "type": "string"
+                  },
+                  "logo": {
+                    "type": "string"
+                  }
+                },
+                "required": ["name", "detailName", "previewText", "logo"]
+              },
+              "count": {
+                "type": "number"
+              },
+              "dateStart": {
+                "type": "string"
+              },
+              "dateEnd": {
+                "type": "string"
+              },
+              "needFoto": {
+                "type": "boolean"
+              },
+              "dateActivity": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                    "timeStart": {
+                      "type": "string"
+                    },
+                    "timeEnd": {
+                      "type": "string"
+                    },
+                    "places": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "additionalProperties": false,
+                        "properties": {
+                          "id": {
+                            "type": "number"
+                          },
+                          "name": {
+                            "type": "string"
+                          },
+                          "latitude": {
+                            "type": "string"
+                          },
+                          "longitude": {
+                            "type": "string"
+                          },
+                          "address_kladr": {
+                            "type": "string"
+                          },
+                          "logo": {
+                            "type": ["null", "string"]
+                          },
+                          "region": {
+                            "type": "object",
+                            "additionalProperties": false,
+                            "properties": {
+                              "id": {
+                                "type": "number"
+                              },
+                              "name": {
+                                "type": "string"
+                              }
+                            },
+                            "required": ["id", "name"]
+                          },
+                          "brand": {
+                            "type": ["null", "object"],
+                            "additionalProperties": false,
+                            "properties": {
+                              "id": {
+                                "type": "number"
+                              },
+                              "name": {
+                                "type": "string"
+                              },
+                              "logo": {
+                                "type": ["null", "string"]
+                              },
+                              "description": {
+                                "type": ["null", "string"]
+                              }
+                            },
+                            "required": ["id", "name", "logo", "description"]
+                          }
+                        },
+                        "required": [
+                          "id",
+                          "name",
+                          "latitude",
+                          "longitude",
+                          "address_kladr",
+                          "region"
+                        ]
+                      }
+                    }
+                  },
+                  "required": ["timeStart", "timeEnd", "places"]
+                }
+              }
+            },
+            "required": [
+              "viewActivity",
+              "count",
+              "dateStart",
+              "dateEnd",
+              "needFoto",
+              "dateActivity"
+            ]
+          }
+        }
+      },
+      "required": [
+        "id",
+        "selfEmployed",
+        "status",
+        "place",
+        "user",
+        "orderActivities"
+      ]
+    }
+  },
+  "required": ["data"]
+}

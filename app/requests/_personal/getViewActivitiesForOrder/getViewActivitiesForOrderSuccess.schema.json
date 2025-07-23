@@ -1,0 +1,45 @@
+{
+  "$id": "getViewActivitiesForOrderSuccess",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "getViewActivitiesForOrderSuccess",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "data": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "number"
+          },
+          "name": {
+            "type": "string"
+          },
+          "detailName": {
+            "type": "string"
+          },
+          "previewText": {
+            "type": "string"
+          },
+          "logo": {
+            "type": "string"
+          },
+          "traveling": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "id",
+          "name",
+          "detailName",
+          "previewText",
+          "logo",
+          "traveling"
+        ]
+      }
+    }
+  },
+  "required": ["data"]
+}

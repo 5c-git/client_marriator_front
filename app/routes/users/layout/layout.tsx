@@ -34,7 +34,7 @@ export default function ModerationLayout() {
         }}
       />
 
-      <Tabs value={location.pathname} sx={{}}>
+      <Tabs value={location.pathname}>
         <Tab
           label={t("tabs.client")}
           to={withLocale("/users")}

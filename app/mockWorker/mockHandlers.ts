@@ -55,6 +55,16 @@ import { postDelProjectMockResponse } from "~/requests/_personal/_moderation/del
 import { postSetUserImgMockResponse } from "~/requests/_personal/_moderation/postSetUserImg/postSetUserImg";
 import { postSetProjectMockResponse } from "~/requests/_personal/_moderation/postSetProject/postSetProject";
 import { postSetPlaceModerationMockResponse } from "~/requests/_personal/_moderation/postSetPlaceModeration/postSetPlaceModeration";
+import { getOrderMockResponse } from "~/requests/_personal/getOrder/getOrder";
+import { getPlaceForOrderMockResponse } from "~/requests/_personal/getPlaceForOrder/getPlaceForOrder";
+import { postCreateOrderMockResponse } from "~/requests/_personal/postCreateOrder/postCreateOrder";
+import { postUpdateOrderMockResponse } from "~/requests/_personal/postUpdateOrder/postUpdateOrder";
+import { postDeleteOrderActivityMockResponse } from "~/requests/_personal/postDeleteOrderActivity/postDeleteOrderActivity";
+import { postCancelOrderMockResponse } from "~/requests/_personal/postCancelOrder/postCancelOrder";
+import { postSendOrderMockResponse } from "~/requests/_personal/postSendOrder/postSendOrder";
+import { getViewActivitiesForOrderMockResponse } from "~/requests/_personal/getViewActivitiesForOrder/getViewActivitiesForOrder";
+import { postCreateOrderActivityMockResponse } from "~/requests/_personal/postCreateOrderActivity/postCreateOrderActivity";
+import { getOrdersMockResponse } from "~/requests/_personal/getOrders/getOrders";
 
 export const handlers = [
   getFormMockResponse,
@@ -110,4 +120,14 @@ export const handlers = [
   postSetUserImgMockResponse,
   postSetProjectMockResponse,
   postSetPlaceModerationMockResponse,
+  getOrderMockResponse,
+  getPlaceForOrderMockResponse,
+  postCreateOrderMockResponse,
+  postUpdateOrderMockResponse,
+  postDeleteOrderActivityMockResponse,
+  postCancelOrderMockResponse,
+  postSendOrderMockResponse,
+  getViewActivitiesForOrderMockResponse,
+  postCreateOrderActivityMockResponse,
+  getOrdersMockResponse,
 ];

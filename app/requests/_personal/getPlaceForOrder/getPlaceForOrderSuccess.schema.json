@@ -1,0 +1,79 @@
+{
+  "$id": "getPlaceForOrderSuccess",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "getPlaceForOrderSuccess",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "data": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "number"
+          },
+          "name": {
+            "type": "string"
+          },
+          "latitude": {
+            "type": "string"
+          },
+          "longitude": {
+            "type": "string"
+          },
+          "address_kladr": {
+            "type": "string"
+          },
+          "logo": {
+            "type": ["null", "string"]
+          },
+          "region": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "id": {
+                "type": "number"
+              },
+              "name": {
+                "type": "string"
+              }
+            },
+            "required": ["id", "name"]
+          },
+          "brand": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "id": {
+                "type": "number"
+              },
+              "name": {
+                "type": "string"
+              },
+              "logo": {
+                "type": ["null", "string"]
+              },
+              "description": {
+                "type": "string"
+              }
+            },
+            "required": ["id", "name", "logo", "description"]
+          }
+        },
+        "required": [
+          "id",
+          "name",
+          "latitude",
+          "longitude",
+          "address_kladr",
+          "logo",
+          "region",
+          "brand"
+        ]
+      }
+    }
+  },
+  "required": ["data"]
+}
