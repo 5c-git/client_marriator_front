@@ -307,6 +307,13 @@ export const theme = createTheme(baseTheme, {
         },
       },
     },
+    MuiFormHelperText: {
+      styleOverrides: {
+        root: {
+          marginLeft: 0,
+        },
+      },
+    },
     MuiSelect: {
       styleOverrides: {
         icon: {
@@ -762,6 +769,59 @@ export const theme = createTheme(baseTheme, {
         },
         message: {
           padding: 0,
+        },
+      },
+    },
+    MuiFab: {
+      variants: [
+        {
+          props: { color: "Corp_1" },
+          style: {
+            backgroundColor: baseTheme.vars.palette["Corp_1"],
+            color: baseTheme.vars.palette["White"],
+            boxShadow: "0px 0px 5px 0px rgba(0, 0, 0, 0.15)",
+
+            "&:hover": {
+              backgroundColor: baseTheme.vars.palette["Corp_1"],
+              boxShadow: "0px 0px 5px 0px rgba(0, 0, 0, 0.15)",
+            },
+          },
+        },
+      ],
+    },
+    MuiPickersTextField: {
+      styleOverrides: {
+        root: {
+          "& .MuiPickersInputBase-root": {
+            borderRadius: "6px",
+          },
+
+          "& .MuiPickersSectionList-root": {
+            padding: "16.5px 14px",
+            paddingTop: "23px",
+            paddingBottom: "12px",
+          },
+
+          "& .MuiPickersFilledInput-root": {
+            backgroundColor: baseTheme.vars.palette["Grey_5"],
+            "&:before": {
+              display: "none",
+            },
+            "&:after": {
+              display: "none",
+            },
+            "&.Mui-focused": {
+              backgroundColor: baseTheme.vars.palette["Grey_5"],
+            },
+            "&.Mui-error": {
+              border: "1px solid",
+              borderColor: baseTheme.vars.palette["Red"],
+              color: baseTheme.vars.palette["Red"],
+            },
+            "&.Mui-disabled": {
+              opacity: "0.6",
+            },
+          },
         },
       },
     },

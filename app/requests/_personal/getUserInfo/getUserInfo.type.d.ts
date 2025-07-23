@@ -42,6 +42,9 @@ export interface GetUserInfoSuccess {
       leave_bid: null;
       refusal_task: null;
       waiting_task: null;
+      count_wait_bid: null;
+      time_answer_bid: null;
+      notification_start: null;
       roles: {
         id: number;
         name: "admin" | "manager" | "client" | "recruiter";

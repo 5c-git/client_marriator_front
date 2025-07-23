@@ -1,5 +1,5 @@
 import { CSSProperties, forwardRef, JSX } from "react";
-import { NavLink } from "react-router";
+import { NavLink, useLocation } from "react-router";
 import { withLocale } from "~/shared/withLocale";
 import Box from "@mui/material/Box";
 import { BottomNavigation, BottomNavigationAction } from "@mui/material";
@@ -14,7 +14,26 @@ type MenuProps = {
   }[];
 };
 
+const rootMatchExeptions = ["missions", "requests", "tasks"];
+
+const checkIfRootMatchExeption = (location: string, to: string) => {
+  let isRootMatchExeption = false;
+
+  if (location.includes(to)) {
+    for (let i = 0; i < rootMatchExeptions.length; i++) {
+      if (location.includes(rootMatchExeptions[i])) {
+        isRootMatchExeption = true;
+        break;
+      }
+    }
+  }
+
+  return isRootMatchExeption;
+};
+
 export const Menu = ({ style, links }: MenuProps) => {
+  const location = useLocation();
+
   return (
     <BottomNavigation
       sx={(theme) => ({
@@ -37,17 +56,21 @@ export const Menu = ({ style, links }: MenuProps) => {
             return (
               <NavLink
                 viewTransition
-                end={item.to === "/" ? true : false}
+                // end={item.to === "/" ? true : false}
                 ref={ref}
                 to={withLocale(item.to)}
                 style={({ isActive }) => ({
                   transition: "0.3s",
-                  color: isActive
-                    ? "var(--mui-palette-Corp_1)"
-                    : "var(--mui-palette-Grey_2)",
-                  borderColor: isActive
-                    ? "var(--mui-palette-Corp_1)"
-                    : "transparent",
+                  color:
+                    isActive ||
+                    checkIfRootMatchExeption(location.pathname, item.to)
+                      ? "var(--mui-palette-Corp_1)"
+                      : "var(--mui-palette-Grey_2)",
+                  borderColor:
+                    isActive ||
+                    checkIfRootMatchExeption(location.pathname, item.to)
+                      ? "var(--mui-palette-Corp_1)"
+                      : "transparent",
                 })}
                 {...props}
               >

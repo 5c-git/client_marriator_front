@@ -133,6 +133,8 @@ export async function clientLoader({ request }: Route.ClientLoaderArgs) {
       });
     });
 
+    console.log(clients);
+
     return { clients, next: data.links.next ? true : false };
   } else {
     throw new Response("Токен авторизации не обнаружен!", { status: 401 });
@@ -369,9 +371,11 @@ export default function Clients({ loaderData }: Route.ComponentProps) {
                       {client.name}
                     </Typography>
 
-                    <Typography component="p" variant="Reg_12">
-                      {client.organizations[0].name}
-                    </Typography>
+                    {client.organizations.length > 0 ? (
+                      <Typography component="p" variant="Reg_12">
+                        {client.organizations[0].name}
+                      </Typography>
+                    ) : null}
                   </Box>
                 </Box>
               ))}

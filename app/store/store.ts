@@ -6,12 +6,12 @@ type State = {
   userPhone: null | string;
   accessToken: null | string;
   refreshToken: null | string;
-  userRole: null | "admin" | "manager" | "client" | "recruiter";
+  userRole: null | "admin" | "manager" | "client" | "recruiter" | "specialist";
 
   setUserEmail: (newUserEmail: string) => void;
   setUserPhone: (newUserPhone: string) => void;
   setUserRole: (
-    userRole: null | "admin" | "manager" | "client" | "recruiter"
+    userRole: null | "admin" | "manager" | "client" | "recruiter" | "specialist"
   ) => void;
   setAccessToken: (accessToken: string) => void;
   setRefreshToken: (refreshToken: string) => void;

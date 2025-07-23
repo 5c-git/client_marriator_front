@@ -154,40 +154,52 @@
           }
         },
         "change_order": {
-          "type": "null"
+          "type": ["null", "string"]
         },
         "cancel_order": {
-          "type": "null"
+          "type": ["null", "string"]
         },
         "live_order": {
-          "type": "null"
+          "type": ["null", "string"]
         },
         "change_task": {
-          "type": "null"
+          "type": ["null", "string"]
         },
         "cancel_task": {
-          "type": "null"
+          "type": ["null", "string"]
         },
         "live_task": {
-          "type": "null"
+          "type": ["null", "string"]
         },
         "repeat_bid": {
-          "type": "null"
+          "type": ["null", "string"]
         },
         "leave_bid": {
-          "type": "null"
+          "type": ["null", "string"]
         },
         "refusal_task": {
-          "type": "null"
+          "type": ["null", "string"]
         },
         "waiting_task": {
-          "type": "null"
+          "type": ["null", "string"]
         },
         "supervisors": {
           "type": "array"
         },
         "manager": {
           "type": "array"
+        },
+        "count_wait_bid": {
+          "type": "string"
+        },
+        "counterparty": {
+          "type": "array"
+        },
+        "time_answer_bid": {
+          "type": "string"
+        },
+        "notification_start": {
+          "type": "string"
         }
       },
       "required": [
@@ -210,7 +222,11 @@
         "refusal_task",
         "waiting_task",
         "supervisors",
-        "manager"
+        "manager",
+        "count_wait_bid",
+        "counterparty",
+        "time_answer_bid",
+        "notification_start"
       ]
     }
   },

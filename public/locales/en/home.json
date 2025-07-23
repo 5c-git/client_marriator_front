@@ -1,6 +1,11 @@
 {
-  "title": "Hello! This is remix-i18next (english)",
-  "components": {
-    "Button": "I am button"
+  "header": "Workspace",
+  "headerListAction": "List",
+  "headerMapAction": "Map",
+  "tabs": {
+    "assignment": "Assignments",
+    "task": "Tasks",
+    "request": "Requests",
+    "mission": "Missions"
   }
 }

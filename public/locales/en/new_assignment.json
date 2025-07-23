@@ -1,0 +1,17 @@
+{
+  "header": "New assignment",
+  "fields": {
+    "locationPlaceholder": "Assignment location *",
+    "selfEmployedPlaceholder": "Work with self-employed"
+  },
+  "activities": "Activities",
+  "activityAmount": "Amount:",
+  "serviceButton": "Add service",
+  "cancelButton": "Cancel",
+  "sendButton": "Send assignment",
+  "dialog": {
+    "title": "Remove service",
+    "no": "No",
+    "yes": "Yes"
+  }
+}
