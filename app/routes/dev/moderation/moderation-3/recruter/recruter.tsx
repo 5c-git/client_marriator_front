@@ -89,8 +89,6 @@ export default function Recruter() {
     ),
   });
 
-  console.log(errors);
-
   return (
     <>
       {navigation.state !== "idle" ? <Loader /> : null}

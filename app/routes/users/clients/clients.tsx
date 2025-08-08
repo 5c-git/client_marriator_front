@@ -124,7 +124,7 @@ export async function clientLoader({ request }: Route.ClientLoaderArgs) {
         logo: item.logo,
         agent: "AGENT PLACEHOLDER",
         phone: item.phone.toString(),
-        name: item.name,
+        name: item.name ? item.name : "",
         organizations: organizations,
         locations: locations,
         change_order: item.change_order,
@@ -132,8 +132,6 @@ export async function clientLoader({ request }: Route.ClientLoaderArgs) {
         live_order: item.live_order,
       });
     });
-
-    console.log(clients);
 
     return { clients, next: data.links.next ? true : false };
   } else {

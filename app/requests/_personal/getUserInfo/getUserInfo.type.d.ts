@@ -47,7 +47,13 @@ export interface GetUserInfoSuccess {
       notification_start: null;
       roles: {
         id: number;
-        name: "admin" | "manager" | "client" | "recruiter";
+        name:
+          | "admin"
+          | "client"
+          | "manager"
+          | "recruiter"
+          | "specialist"
+          | "supervisor";
       }[];
     };
   };

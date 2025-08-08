@@ -73,6 +73,19 @@ interface ImportMetaEnv {
   readonly VITE_GET_VIEW_ACTIVITIES_FOR_ORDER: string;
   readonly VITE_POST_CREATE_ORDER_ACTIVITY: string;
   readonly VITE_GET_ORDERS: string;
+  readonly VITE_GET_TASKS: string;
+  readonly VITE_GET_TASK: string;
+  readonly VITE_POST_CREATE_TASK: string;
+  readonly VITE_POST_UPDATE_TASK: string;
+  readonly VITE_POST_DELETE_TASK_ACTIVITY: string;
+  readonly VITE_POST_CANCEL_TASK: string;
+  readonly VITE_GET_PLACE_FOR_TASK: string;
+  readonly VITE_GET_PROJECTS_FOR_TASK: string;
+  readonly VITE_GET_SUPERVISORS_FOR_TASK: string;
+  readonly VITE_POST_INVOICE_TASK: string;
+  readonly VITE_POST_INSTRUCT_TASK: string;
+  readonly VITE_GET_VIEW_ACTIVITIES_FOR_TASK: string;
+  readonly VITE_POST_CREATE_TASK_ACTIVITY: string;
   // more env variables...
 }
 

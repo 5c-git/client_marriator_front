@@ -137,11 +137,12 @@
             "properties": {
               "id": {
                 "type": "number",
-                "minimum": 2,
+                "minimum": 1,
                 "maximum": 6
               },
               "name": {
                 "enum": [
+                  "admin",
                   "client",
                   "manager",
                   "recruiter",

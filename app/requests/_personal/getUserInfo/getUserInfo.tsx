@@ -105,10 +105,6 @@ export const mockResponseSuccessManager = {
           id: 3,
           name: "manager",
         },
-        {
-          id: 1,
-          name: "admin",
-        },
       ],
     },
   },

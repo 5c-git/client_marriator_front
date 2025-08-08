@@ -59,6 +59,8 @@ import users_select_locations from "../../public/locales/ru/users_select_locatio
 import assignments from "../../public/locales/ru/assignments.json";
 import new_assignment from "../../public/locales/ru/new_assignment.json";
 import new_service from "../../public/locales/ru/new_service.json";
+import tasks from "../../public/locales/ru/tasks.json";
+import new_task from "../../public/locales/ru/new_task.json";
 
 //internal
 
@@ -135,9 +137,13 @@ declare module "i18next" {
       users_recruiter: typeof users_recruiter;
       users_select_projects: typeof users_select_projects;
       users_select_locations: typeof users_select_locations;
+
       assignments: typeof assignments;
       new_assignment: typeof new_assignment;
       new_service: typeof new_service;
+
+      tasks: typeof tasks;
+      new_task: typeof new_task;
       //internal
 
       //components

@@ -1,5 +1,4 @@
 import { defineConfig } from "vite";
-import path from "path";
 import tsconfigPaths from "vite-tsconfig-paths";
 import { reactRouter } from "@react-router/dev/vite";
 import hawkVitePlugin from "@hawk.so/vite-plugin";
@@ -32,7 +31,6 @@ export default defineConfig({
     //     "eyJpbnRlZ3JhdGlvbklkIjoiZTFhZWNhMzgtOGNiOC00YzQzLThmODctNzc2MzY5NGYwMzY4Iiwic2VjcmV0IjoiMDEwMDdjYjEtNzRhNC00MDcxLTg3YzktNGMzMjU5YWJhMDM2In0=",
     // }),
   ],
-
   ssr: {
     // Workaround for resolving dependencies in the server bundle
     // Without this, the React context will be different between direct import and transitive imports in development environment

@@ -124,7 +124,7 @@ export async function clientLoader({ request }: Route.ClientLoaderArgs) {
         logo: item.logo,
         agent: "AGENT PLACEHOLDER",
         phone: item.phone.toString(),
-        name: item.name,
+        name: item.name ? item.name : "",
         organizations: organizations,
         locations: locations,
         change_order: item.change_order,
@@ -369,9 +369,11 @@ export default function Managers({ loaderData }: Route.ComponentProps) {
                       {client.name}
                     </Typography>
 
-                    <Typography component="p" variant="Reg_12">
-                      {client.organizations[0].name}
-                    </Typography>
+                    {client.organizations.length > 0 ? (
+                      <Typography component="p" variant="Reg_12">
+                        {client.organizations[0].name}
+                      </Typography>
+                    ) : null}
                   </Box>
                 </Box>
               ))}

@@ -1,0 +1,26 @@
+{
+  "$id": "getTaskError",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "getTaskError",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "message": {
+      "type": "string"
+    },
+    "errors": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "orderId": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "required": ["orderId"]
+    }
+  },
+  "required": ["message", "errors"]
+}

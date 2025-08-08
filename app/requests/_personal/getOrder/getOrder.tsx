@@ -73,7 +73,7 @@ export const mockResponseSuccess = {
   data: {
     id: 25,
     selfEmployed: true,
-    status: "Новый",
+    status: 1,
     place: {
       id: 1,
       name: "fdfvdvdv",
@@ -100,7 +100,7 @@ export const mockResponseSuccess = {
       roles: [
         {
           id: 2,
-          name: "Новый",
+          name: "client",
         },
       ],
     },

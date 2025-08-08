@@ -28,17 +28,19 @@ import { useStore } from "~/store/store";
 import { getOrders } from "~/requests/_personal/getOrders/getOrders";
 
 const statusColorMap = {
-  "1": "var(--mui-palette-Grey_1)",
-  "2": "var(--mui-palette-Blue)",
-  "3": "var(--mui-palette-Red)",
-  "4": "var(--mui-palette-Grey_2)",
+  1: "var(--mui-palette-Corp_1)",
+  2: "var(--mui-palette-Blue)",
+  3: "var(--mui-palette-Grey_1)",
+  4: "var(--mui-palette-Red)",
+  5: "var(--mui-palette-Grey_2)",
 };
 
 const statusMap = {
-  not_accepted: "1",
+  new: "1",
   accepted: "2",
-  cancelled: "3",
-  archived: "4",
+  notAccepted: "3",
+  canceled: "4",
+  archive: "5",
 };
 
 const sortMap = {
@@ -87,7 +89,7 @@ export async function clientLoader({ request }: Route.ClientLoaderArgs) {
     assignmentsData.data.forEach((item) => {
       assignments.push({
         id: item.id,
-        statusColor: "brown",
+        statusColor: statusColorMap[item.status],
         header: item.place.name,
         subHeader: "Сюда нужны услуги",
         address: {
@@ -105,7 +107,7 @@ export async function clientLoader({ request }: Route.ClientLoaderArgs) {
       });
     });
 
-    return { ymaps, assignments };
+    return { ymaps, assignments, sort, status };
   } else {
     throw new Response("Токен авторизации не обнаружен!", { status: 401 });
   }
@@ -127,8 +129,8 @@ export default function Assignments({ loaderData }: Route.ComponentProps) {
     sorting: string;
   }>({
     defaultValues: {
-      status: "1",
-      sorting: "",
+      status: loaderData.status ? loaderData.status : "2",
+      sorting: loaderData.sort ? loaderData.sort : "",
     },
     mode: "onChange",
   });
@@ -142,9 +144,14 @@ export default function Assignments({ loaderData }: Route.ComponentProps) {
 
     let map: YMap | null = null;
 
-    if (container && loaderData.assignments.length > 0) {
+    const coordinates: LngLat =
+      loaderData.assignments.length > 0
+        ? loaderData.assignments[0].coordinates
+        : [30.315635, 59.950258];
+
+    if (container) {
       map = new YMap(container, {
-        location: { center: loaderData.assignments[0].coordinates, zoom: 12 },
+        location: { center: coordinates, zoom: 12 },
       });
 
       map.addChild(new YMapDefaultSchemeLayer({}));
@@ -155,10 +162,11 @@ export default function Assignments({ loaderData }: Route.ComponentProps) {
 
     return () => {
       map?.destroy();
+      setMapInstance(null);
     };
   }, [showMap, loaderData.ymaps]);
 
-  // рисуем на карте маркеры, опираясь на данные(далее по коду работаем только с selectedLocations и этот эффект будет нам перерисовывать маркеры)
+  // рисуем на карте маркеры
   useEffect(() => {
     const { YMapMarker } = loaderData.ymaps;
 
@@ -178,10 +186,7 @@ export default function Assignments({ loaderData }: Route.ComponentProps) {
     loaderData.assignments.forEach((location) => {
       const markerElement = document.createElement("div");
 
-      const icon = renderIcon(
-        location.address.logo,
-        "var(--mui-palette-Corp_1)"
-      );
+      const icon = renderIcon(location.address.logo, location.statusColor);
 
       markerElement.innerHTML = icon;
 
@@ -196,14 +201,13 @@ export default function Assignments({ loaderData }: Route.ComponentProps) {
         markerElement
       );
 
-      // markers.push(marker);
       mapInstance?.addChild(marker);
     });
   }, [loaderData.ymaps, loaderData.assignments, mapInstance]);
 
   // обновляем слушатель событий
   useEffect(() => {
-    const { YMapListener, YMapMarker } = loaderData.ymaps;
+    const { YMapListener } = loaderData.ymaps;
 
     const mapListener = new YMapListener({
       layer: "any",
@@ -231,7 +235,9 @@ export default function Assignments({ loaderData }: Route.ComponentProps) {
 
   return (
     <>
-      {loaderData.assignments.length > 0 ? (
+      {loaderData.assignments.length > 0 ||
+      loaderData.sort ||
+      loaderData.status ? (
         <>
           <Box
             sx={{
@@ -258,8 +264,8 @@ export default function Assignments({ loaderData }: Route.ComponentProps) {
                   }}
                   options={[
                     {
-                      id: statusMap["not_accepted"],
-                      label: t("status.not_accepted"),
+                      id: statusMap["notAccepted"],
+                      label: t("status.notAccepted"),
                       count: 16,
                       color: "var(--mui-palette-Grey_1)",
                     },
@@ -270,14 +276,14 @@ export default function Assignments({ loaderData }: Route.ComponentProps) {
                       color: "var(--mui-palette-Blue)",
                     },
                     {
-                      id: statusMap["cancelled"],
-                      label: t("status.cancelled"),
+                      id: statusMap["canceled"],
+                      label: t("status.canceled"),
                       count: 2,
                       color: "var(--mui-palette-Red)",
                     },
                     {
-                      id: statusMap["archived"],
-                      label: t("status.archived"),
+                      id: statusMap["archive"],
+                      label: t("status.archive"),
                       count: 2,
                       color: "var(--mui-palette-Grey_2)",
                     },
@@ -348,6 +354,7 @@ export default function Assignments({ loaderData }: Route.ComponentProps) {
             >
               {loaderData.assignments.map((item) => (
                 <AssignmentCard
+                  key={item.id}
                   to={`/assignments/${item.id}`}
                   statusColor={item.statusColor}
                   header={item.header}
@@ -355,12 +362,16 @@ export default function Assignments({ loaderData }: Route.ComponentProps) {
                   id={item.id.toString()}
                   address={item.address}
                   duration={item.duration}
-                  // buttonAction={{
-                  //   action: () => {},
-                  //   text: "Отменить поручение",
-                  //   variant: "text",
-                  // }}
                   divider
+                  // {...(showMap === false
+                  //   ? {
+                  //       buttonAction: {
+                  //         action: () => {},
+                  //         text: "Отменить поручение",
+                  //         variant: "text",
+                  //       },
+                  //     }
+                  //   : {})}
                 />
               ))}
             </Box>
@@ -415,13 +426,22 @@ export default function Assignments({ loaderData }: Route.ComponentProps) {
             marginTop: "100px",
           })}
         >
-          {t("emptyHeader")}
+          {userRole === "admin" || userRole === "client"
+            ? t("emptyHeaderCreate")
+            : t("emptyHeader")}
         </Typography>
       )}
 
       {(!showMap && userRole === "admin") ||
       (!showMap && userRole === "client") ||
-      loaderData.assignments.length === 0 ? (
+      (loaderData.assignments.length === 0 &&
+        userRole === "admin" &&
+        !loaderData.sort &&
+        !loaderData.status) ||
+      (loaderData.assignments.length === 0 &&
+        userRole === "client" &&
+        !loaderData.sort &&
+        !loaderData.status) ? (
         <Fab
           component={Link}
           to={withLocale("/new-assignment")}

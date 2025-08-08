@@ -9,7 +9,7 @@ export interface GetOrderSuccess {
   data: {
     id: number;
     selfEmployed: boolean;
-    status: string;
+    status: 1 | 2 | 3 | 4 | 5;
     place: {
       id: number;
       name: string;
@@ -35,7 +35,13 @@ export interface GetOrderSuccess {
       logo: string;
       roles: {
         id: number;
-        name: string;
+        name:
+          | "admin"
+          | "client"
+          | "manager"
+          | "recruiter"
+          | "specialist"
+          | "supervisor";
       }[];
     };
     orderActivities: {

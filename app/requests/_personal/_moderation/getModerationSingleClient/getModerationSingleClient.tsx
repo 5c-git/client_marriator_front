@@ -83,7 +83,26 @@ export const mockResponseSuccess = {
         ],
       },
     ],
-    place: [],
+    place: [
+      {
+        id: 1,
+        logo: "/storage/source/directory/brand/1-logo/\u041b\u043e\u0433\u043e \u041f\u044f\u0442\u0435\u0440\u043e\u0447\u043a\u0430.png",
+        name: "Орёл",
+        latitude: "36.0672",
+        longitude: "52.9675",
+        address_kladr: "Вторая Пушкарная улица, дом 47",
+        region: {
+          id: 3,
+          name: "Орловская область",
+        },
+        brand: {
+          description: "Всегда рядом!",
+          id: 34,
+          logo: "/storage/source/directory/brand/1-logo/\u041b\u043e\u0433\u043e \u041f\u044f\u0442\u0435\u0440\u043e\u0447\u043a\u0430.png",
+          name: "Шестерочка",
+        },
+      },
+    ],
     roles: [
       {
         id: 3,

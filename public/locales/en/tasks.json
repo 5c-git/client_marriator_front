@@ -1,0 +1,16 @@
+{
+  "status": {
+    "new": "New",
+    "accepted": "Accepted",
+    "notAccepted": "Not accepted",
+    "canceled": "Cancelled",
+    "archive": "Archived"
+  },
+  "sorting": {
+    "placeholder": "Sorting",
+    "ascending": "In ascending order of the start of services",
+    "descending": "In descending order of the start of services"
+  },
+  "emptyHeaderCreate": "There are no tasks. Create the first one!",
+  "emptyHeader": "There are no tasks."
+}

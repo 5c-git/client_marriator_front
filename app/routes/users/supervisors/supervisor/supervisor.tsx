@@ -200,11 +200,14 @@ export default function Supervisor({ loaderData }: Route.ComponentProps) {
       name: loaderData.client.name,
       organizations: loaderData.client.organizations,
       locations: loaderData.client.locations,
-      repeat_bid: loaderData.client.repeat_bid as unknown as string,
-      leave_bid: loaderData.client.leave_bid as unknown as string,
-      live_task: loaderData.client.live_task as unknown as string,
+      repeat_bid:
+        `2000-01-01T${loaderData.client.repeat_bid}` as unknown as string,
+      leave_bid:
+        `2000-01-01T${loaderData.client.leave_bid}` as unknown as string,
+      live_task:
+        `2000-01-01T${loaderData.client.live_task}` as unknown as string,
       waiting_task: loaderData.client.waiting_task
-        ? loaderData.client.waiting_task
+        ? `2000-01-01T${loaderData.client.waiting_task}`
         : "",
     },
     resolver: yupResolver(

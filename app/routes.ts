@@ -6,6 +6,11 @@ import {
 } from "@react-router/dev/routes";
 
 export default [
+  route(
+    "/.well-known/appspecific/com.chrome.devtools.json",
+    "routes/chrome-null.tsx"
+  ),
+
   // index("routes/pigment/pigment.tsx"),
   layout("routes/rootErrorBoundry/rootErrorBoundry.tsx", [
     layout("routes/menuLayout/menuLayout.tsx", [
@@ -171,6 +176,12 @@ export default [
     route(
       ":lang?/new-assignment/:orderId/new-service",
       "routes/new-assignment/new-service/new-service.tsx"
+    ),
+
+    route(":lang?/new-task", "routes/new-task/new-task.tsx"),
+    route(
+      ":lang?/new-task/:taskId/new-service",
+      "routes/new-task/new-service/new-service.tsx"
     ),
 
     route(":lang?/offline", "routes/offline/offline.tsx"),

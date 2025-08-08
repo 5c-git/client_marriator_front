@@ -212,9 +212,12 @@ export default function Client({ loaderData }: Route.ComponentProps) {
       name: loaderData.client.name,
       organizations: loaderData.client.organizations,
       locations: loaderData.client.locations,
-      change_order: loaderData.client.change_order as unknown as string,
-      cancel_order: loaderData.client.cancel_order as unknown as string,
-      live_order: loaderData.client.live_order as unknown as string,
+      change_order:
+        `2000-01-01T${loaderData.client.change_order}` as unknown as string,
+      cancel_order:
+        `2000-01-01T${loaderData.client.cancel_order}` as unknown as string,
+      live_order:
+        `2000-01-01T${loaderData.client.live_order}` as unknown as string,
     },
     resolver: yupResolver(
       Yup.object({
@@ -281,55 +284,60 @@ export default function Client({ loaderData }: Route.ComponentProps) {
         />
 
         <form
-          onSubmit={handleSubmit((values) => {
-            const change_order_formated = `${
-              new Date(getValues("change_order")).getUTCHours() > 10
-                ? new Date(getValues("change_order")).getUTCHours()
-                : `0${new Date(getValues("change_order")).getUTCHours()}`
-            }:${
-              new Date(getValues("change_order")).getUTCMinutes() > 10
-                ? new Date(getValues("change_order")).getUTCMinutes()
-                : `0${new Date(getValues("change_order")).getUTCMinutes()}`
-            }`;
+          onSubmit={handleSubmit(
+            (values) => {
+              const change_order_formated = `${
+                new Date(getValues("change_order")).getUTCHours() > 10
+                  ? new Date(getValues("change_order")).getUTCHours()
+                  : `0${new Date(getValues("change_order")).getUTCHours()}`
+              }:${
+                new Date(getValues("change_order")).getUTCMinutes() > 10
+                  ? new Date(getValues("change_order")).getUTCMinutes()
+                  : `0${new Date(getValues("change_order")).getUTCMinutes()}`
+              }`;
 
-            const cancel_order_formated = `${
-              new Date(getValues("cancel_order")).getUTCHours() > 10
-                ? new Date(getValues("cancel_order")).getUTCHours()
-                : `0${new Date(getValues("cancel_order")).getUTCHours()}`
-            }:${
-              new Date(getValues("cancel_order")).getUTCMinutes() > 10
-                ? new Date(getValues("cancel_order")).getUTCMinutes()
-                : `0${new Date(getValues("cancel_order")).getUTCMinutes()}`
-            }`;
+              const cancel_order_formated = `${
+                new Date(getValues("cancel_order")).getUTCHours() > 10
+                  ? new Date(getValues("cancel_order")).getUTCHours()
+                  : `0${new Date(getValues("cancel_order")).getUTCHours()}`
+              }:${
+                new Date(getValues("cancel_order")).getUTCMinutes() > 10
+                  ? new Date(getValues("cancel_order")).getUTCMinutes()
+                  : `0${new Date(getValues("cancel_order")).getUTCMinutes()}`
+              }`;
 
-            const live_order_formated = `${
-              new Date(getValues("live_order")).getUTCHours() > 10
-                ? new Date(getValues("live_order")).getUTCHours()
-                : `0${new Date(getValues("live_order")).getUTCHours()}`
-            }:${
-              new Date(getValues("live_order")).getUTCMinutes() > 10
-                ? new Date(getValues("live_order")).getUTCMinutes()
-                : `0${new Date(getValues("live_order")).getUTCMinutes()}`
-            }`;
+              const live_order_formated = `${
+                new Date(getValues("live_order")).getUTCHours() > 10
+                  ? new Date(getValues("live_order")).getUTCHours()
+                  : `0${new Date(getValues("live_order")).getUTCHours()}`
+              }:${
+                new Date(getValues("live_order")).getUTCMinutes() > 10
+                  ? new Date(getValues("live_order")).getUTCMinutes()
+                  : `0${new Date(getValues("live_order")).getUTCMinutes()}`
+              }`;
 
-            submit(
-              JSON.stringify({
-                _action: "_confirm",
-                userId: loaderData.client.id,
-                confirm: "1",
-                fields: {
-                  ...values,
-                  change_order: change_order_formated,
-                  cancel_order: cancel_order_formated,
-                  live_order: live_order_formated,
-                },
-              }),
-              {
-                method: "POST",
-                encType: "application/json",
-              }
-            );
-          })}
+              submit(
+                JSON.stringify({
+                  _action: "_confirm",
+                  userId: loaderData.client.id,
+                  confirm: "1",
+                  fields: {
+                    ...values,
+                    change_order: change_order_formated,
+                    cancel_order: cancel_order_formated,
+                    live_order: live_order_formated,
+                  },
+                }),
+                {
+                  method: "POST",
+                  encType: "application/json",
+                }
+              );
+            },
+            (errors) => {
+              console.log(errors);
+            }
+          )}
         >
           <Box
             sx={{

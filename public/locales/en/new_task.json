@@ -1,0 +1,23 @@
+{
+  "header": "Create task",
+  "supervisorHeader": "Select supervisors",
+  "fields": {
+    "locationPlaceholder": "Task location *",
+    "projectPlaceholder": "Project *",
+    "selfEmployedPlaceholder": "Work with self-employed",
+    "supervisorSearchPlaceholder": "Search"
+  },
+  "invitedSupervisors": "Invited supervisors",
+  "activities": "Activities",
+  "activityAmount": "Amount:",
+  "serviceButton": "Add service",
+  "cancelButton": "Cancel",
+  "sendButton": "Send task",
+  "supervisorButton": "Invite supervisors",
+  "supervisorInviteButton": "Invite selected supervisors",
+  "dialog": {
+    "title": "Remove service",
+    "no": "No",
+    "yes": "Yes"
+  }
+}

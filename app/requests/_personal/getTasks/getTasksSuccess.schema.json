@@ -1,0 +1,136 @@
+{
+  "$id": "getTasksSuccess",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "getTasksSuccess",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "data": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "number"
+          },
+          "place": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "id": {
+                "type": "number"
+              },
+              "name": {
+                "type": "string"
+              },
+              "latitude": {
+                "type": "string"
+              },
+              "longitude": {
+                "type": "string"
+              },
+              "address_kladr": {
+                "type": "string"
+              },
+              "logo": {
+                "type": "string"
+              },
+              "region": {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "id": {
+                    "type": "number"
+                  },
+                  "name": {
+                    "type": "string"
+                  }
+                },
+                "required": ["id", "name"]
+              },
+              "brand": {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "id": {
+                    "type": "number"
+                  },
+                  "name": {
+                    "type": "string"
+                  },
+                  "logo": {
+                    "type": "string"
+                  },
+                  "description": {
+                    "type": "string"
+                  }
+                },
+                "required": ["id", "name", "logo", "description"]
+              }
+            },
+            "required": [
+              "id",
+              "name",
+              "latitude",
+              "longitude",
+              "address_kladr",
+              "logo",
+              "region",
+              "brand"
+            ]
+          },
+          "selfEmployed": {
+            "type": "boolean"
+          },
+          "status": {
+            "enum": [1, 2, 3, 4, 5]
+          }
+        },
+        "required": ["id", "place", "selfEmployed", "status"]
+      }
+    },
+    "links": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "first": {
+          "type": ["null", "string"]
+        },
+        "last": {
+          "type": ["null", "string"]
+        },
+        "prev": {
+          "type": ["null", "string"]
+        },
+        "next": {
+          "type": ["null", "string"]
+        }
+      },
+      "required": ["first", "last", "prev", "next"]
+    },
+    "meta": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "current_page": {
+          "type": "number"
+        },
+        "from": {
+          "type": "number"
+        },
+        "path": {
+          "type": "string"
+        },
+        "per_page": {
+          "type": "number"
+        },
+        "to": {
+          "type": "number"
+        }
+      },
+      "required": ["current_page", "from", "path", "per_page", "to"]
+    }
+  },
+  "required": ["data"]
+}

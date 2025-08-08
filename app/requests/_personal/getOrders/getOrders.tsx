@@ -91,7 +91,7 @@ export const mockResponseSuccess = {
         },
       },
       selfEmployed: false,
-      status: "Новый",
+      status: 1,
     },
     {
       id: 2,
@@ -114,7 +114,7 @@ export const mockResponseSuccess = {
         },
       },
       selfEmployed: false,
-      status: "Новый",
+      status: 2,
     },
     {
       id: 3,
@@ -137,7 +137,7 @@ export const mockResponseSuccess = {
         },
       },
       selfEmployed: false,
-      status: "Новый",
+      status: 2,
     },
     {
       id: 4,
@@ -160,7 +160,7 @@ export const mockResponseSuccess = {
         },
       },
       selfEmployed: false,
-      status: "Новый",
+      status: 2,
     },
     {
       id: 5,
@@ -183,7 +183,7 @@ export const mockResponseSuccess = {
         },
       },
       selfEmployed: false,
-      status: "Новый",
+      status: 2,
     },
     {
       id: 6,
@@ -206,7 +206,7 @@ export const mockResponseSuccess = {
         },
       },
       selfEmployed: false,
-      status: "Новый",
+      status: 2,
     },
     {
       id: 7,
@@ -229,7 +229,7 @@ export const mockResponseSuccess = {
         },
       },
       selfEmployed: false,
-      status: "Новый",
+      status: 3,
     },
     {
       id: 8,
@@ -252,7 +252,7 @@ export const mockResponseSuccess = {
         },
       },
       selfEmployed: false,
-      status: "Новый",
+      status: 3,
     },
     {
       id: 9,
@@ -275,7 +275,7 @@ export const mockResponseSuccess = {
         },
       },
       selfEmployed: false,
-      status: "Новый",
+      status: 4,
     },
     {
       id: 10,
@@ -298,7 +298,7 @@ export const mockResponseSuccess = {
         },
       },
       selfEmployed: false,
-      status: "Отменено",
+      status: 4,
     },
   ],
   links: {

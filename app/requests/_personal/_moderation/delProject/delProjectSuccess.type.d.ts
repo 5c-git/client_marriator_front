@@ -25,7 +25,13 @@ export interface DelProjectSuccess {
     place: unknown[];
     roles: {
       id: number;
-      name: string;
+      name:
+        | "admin"
+        | "client"
+        | "manager"
+        | "recruiter"
+        | "specialist"
+        | "supervisor";
     }[];
   };
 }

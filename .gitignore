@@ -8,3 +8,5 @@ node_modules
 *storybook.log
 # Sentry Config File
 .env.sentry-build-plugin
+
+storybook-static

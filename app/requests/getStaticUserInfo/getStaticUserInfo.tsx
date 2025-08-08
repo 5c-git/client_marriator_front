@@ -39,6 +39,7 @@ export const getStaticUserInfo = async (
     if (validateSuccess(response)) {
       data = response as unknown as GetStaticUserInfoSuccess;
     } else {
+      console.log(console.log(validateSuccess.errors));
       throw new Response(`Данные запроса getStaticUserInfo не валидны схеме`);
     }
 

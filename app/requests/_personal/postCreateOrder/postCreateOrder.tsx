@@ -66,7 +66,7 @@ export const mockResponseSuccess = {
   data: {
     id: 2,
     selfEmployed: false,
-    status: "\u041d\u043e\u0432\u044b\u0439",
+    status: 1,
     place: {
       id: 3,
       name: "\u041f\u044f\u0442\u0451\u0440\u043e\u0447\u043a\u0430",

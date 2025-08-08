@@ -11,6 +11,16 @@ export interface GetStaticUserInfoSuccess {
     userData: {
       email: string;
       img: string;
+      roles: {
+        id: number;
+        name:
+          | "admin"
+          | "client"
+          | "manager"
+          | "recruiter"
+          | "specialist"
+          | "supervisor";
+      }[];
     };
   };
 }

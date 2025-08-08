@@ -1,14 +1,16 @@
 {
   "status": {
-    "not_accepted": "Не принято",
+    "new": "Новый",
     "accepted": "Принято",
-    "cancelled": "Отменено",
-    "archived": "В архиве"
+    "notAccepted": "Не Принято",
+    "canceled": "Отменено",
+    "archive": "Архив"
   },
   "sorting": {
     "placeholder": "Сортировать",
     "ascending": "По возрастанию начала оказания услуг",
     "descending": "По убыванию начала оказания услуг"
   },
-  "emptyHeader": "Поручений пока нет. Создайте первое!"
+  "emptyHeaderCreate": "Поручений пока нет. Создайте первое!",
+  "emptyHeader": "Поручений пока нет."
 }

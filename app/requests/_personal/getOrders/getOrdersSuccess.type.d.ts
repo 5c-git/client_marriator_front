@@ -27,7 +27,7 @@ export interface GetOrdersSuccess {
       };
     };
     selfEmployed: boolean;
-    status: string;
+    status: 1 | 2 | 3 | 4 | 5;
   }[];
   links?: {
     first: null | string;

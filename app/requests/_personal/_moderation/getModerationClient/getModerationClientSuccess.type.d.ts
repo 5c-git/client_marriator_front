@@ -8,7 +8,7 @@
 export interface GetModerationClientSuccess {
   data: {
     id: number;
-    name: string;
+    name: null | string;
     phone: number;
     email: string;
     logo: null | string;

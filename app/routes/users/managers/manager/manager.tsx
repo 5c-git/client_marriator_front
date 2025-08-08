@@ -214,11 +214,16 @@ export default function Manager({ loaderData }: Route.ComponentProps) {
       organizations: loaderData.client.organizations,
       locations: loaderData.client.locations,
 
-      change_task: loaderData.client.change_task as unknown as string,
-      cancel_task: loaderData.client.cancel_task as unknown as string,
-      live_task: loaderData.client.live_task as unknown as string,
-      repeat_bid: loaderData.client.repeat_bid as unknown as string,
-      leave_bid: loaderData.client.leave_bid as unknown as string,
+      change_task:
+        `2000-01-01T${loaderData.client.change_task}` as unknown as string,
+      cancel_task:
+        `2000-01-01T${loaderData.client.cancel_task}` as unknown as string,
+      live_task:
+        `2000-01-01T${loaderData.client.live_task}` as unknown as string,
+      repeat_bid:
+        `2000-01-01T${loaderData.client.repeat_bid}` as unknown as string,
+      leave_bid:
+        `2000-01-01T${loaderData.client.leave_bid}` as unknown as string,
     },
     resolver: yupResolver(
       Yup.object({

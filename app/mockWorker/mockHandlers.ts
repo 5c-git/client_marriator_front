@@ -65,6 +65,19 @@ import { postSendOrderMockResponse } from "~/requests/_personal/postSendOrder/po
 import { getViewActivitiesForOrderMockResponse } from "~/requests/_personal/getViewActivitiesForOrder/getViewActivitiesForOrder";
 import { postCreateOrderActivityMockResponse } from "~/requests/_personal/postCreateOrderActivity/postCreateOrderActivity";
 import { getOrdersMockResponse } from "~/requests/_personal/getOrders/getOrders";
+import { getTasksMockResponse } from "~/requests/_personal/getTasks/getTasks";
+import { getTaskMockResponse } from "~/requests/_personal/getTask/getTask";
+import { postCreateTaskMockResponse } from "~/requests/_personal/postCreateTask/postCreateTask";
+import { postUpdateTaskMockResponse } from "~/requests/_personal/postUpdateTask/postUpdateTask";
+import { postDeleteTaskActivityMockResponse } from "~/requests/_personal/postDeleteTaskActivity/postDeleteTaskActivity";
+import { postCancelTaskMockResponse } from "~/requests/_personal/postCancelTask/postCancelTask";
+import { getPlaceForTaskMockResponse } from "~/requests/_personal/getPlaceForTask/getPlaceForTask";
+import { getProjectsForTaskMockResponse } from "~/requests/_personal/getProjectsForTask/getProjectsForTask";
+import { getSupervisorsForTaskMockResponse } from "~/requests/_personal/getSupervisorsForTask/getSupervisorsForTask";
+import { postInvoiceTaskMockResponse } from "~/requests/_personal/postInvoiceTask/postInvoiceTask";
+import { postInstructTaskMockResponse } from "~/requests/_personal/postInstructTask/postInstructTask";
+import { getViewActivitiesForTaskMockResponse } from "~/requests/_personal/getViewActivitiesForTask/getViewActivitiesForTask";
+import { postCreateTaskActivityMockResponse } from "~/requests/_personal/postCreateTaskActivity/postCreateTaskActivity";
 
 export const handlers = [
   getFormMockResponse,
@@ -130,4 +143,17 @@ export const handlers = [
   getViewActivitiesForOrderMockResponse,
   postCreateOrderActivityMockResponse,
   getOrdersMockResponse,
+  getTasksMockResponse,
+  getTaskMockResponse,
+  postCreateTaskMockResponse,
+  postUpdateTaskMockResponse,
+  postDeleteTaskActivityMockResponse,
+  postCancelTaskMockResponse,
+  getPlaceForTaskMockResponse,
+  getProjectsForTaskMockResponse,
+  getSupervisorsForTaskMockResponse,
+  postInvoiceTaskMockResponse,
+  postInstructTaskMockResponse,
+  getViewActivitiesForTaskMockResponse,
+  postCreateTaskActivityMockResponse,
 ];

@@ -15,7 +15,7 @@ export const postConfirmUserRegister = async (
   accessToken: string,
   userId: string,
   confirm: string,
-  fields?: { [key: string]: string }
+  fields?: { fields: { [key: string]: unknown } }
 ) => {
   try {
     const url = new URL(import.meta.env.VITE_POST_CONFIRM_USER_REGISTER);
@@ -26,8 +26,13 @@ export const postConfirmUserRegister = async (
     formData.append("confirm", confirm);
 
     if (fields) {
-      for (const [key, value] of Object.entries(fields)) {
-        formData.append(key, JSON.stringify(value));
+      for (const [key, value] of Object.entries(fields.fields)) {
+        console.log(typeof value);
+        if (typeof value === "object") {
+          formData.append(key, JSON.stringify(value));
+        } else {
+          formData.append(key, value as Blob);
+        }
       }
     }
 

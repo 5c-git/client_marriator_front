@@ -5,6 +5,8 @@ import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import i18next from "i18next";
 
+import { useStore } from "~/store/store";
+
 import { Tabs, Tab } from "@mui/material";
 import { TopNavigation } from "~/shared/ui/TopNavigation/TopNavigation";
 
@@ -25,6 +27,7 @@ export async function clientLoader({ request }: ClientActionFunctionArgs) {
 
 export default function Home() {
   const { t } = useTranslation("home");
+  const userRole = useStore.getState().userRole;
 
   const [showMap, setShowMap] = useState<boolean>(true);
 
