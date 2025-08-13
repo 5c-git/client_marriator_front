@@ -9,7 +9,7 @@ export interface PostCreateOrderActivitySuccess {
   data: {
     id: number;
     selfEmployed: boolean;
-    status: string;
+    status: number;
     place: {
       id: number;
       name: string;
@@ -33,13 +33,26 @@ export interface PostCreateOrderActivitySuccess {
       phone: number;
       email: string;
       logo: string;
+      roles: {
+        id: number;
+        name:
+          | "admin"
+          | "client"
+          | "manager"
+          | "recruiter"
+          | "specialist"
+          | "supervisor";
+      }[];
     };
     orderActivities: {
+      id: number;
       viewActivity: {
+        id: number;
         name: string;
         detailName: string;
         previewText: string;
         logo: string;
+        traveling: boolean;
       };
       count: number;
       dateStart: string;

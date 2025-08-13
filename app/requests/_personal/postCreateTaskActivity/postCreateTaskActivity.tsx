@@ -18,10 +18,10 @@ export type postCreateTaskActivityPayload = {
   dateStart: string;
   dateEnd: string;
   needFoto: boolean;
-  dateActivity: {
+  dateActivity?: {
     timeStart: string;
     timeEnd: string;
-    placeIds: number[];
+    placeIds?: number[];
   }[];
 };
 

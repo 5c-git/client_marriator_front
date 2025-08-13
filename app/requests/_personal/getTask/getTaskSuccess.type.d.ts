@@ -51,10 +51,12 @@ export interface GetTaskSuccess {
     orderActivities: {
       id: number;
       viewActivity: {
+        id?: number;
         name: string;
         detailName: string;
         previewText: string;
         logo: string;
+        traveling: boolean;
       };
       count: number;
       dateStart: string;

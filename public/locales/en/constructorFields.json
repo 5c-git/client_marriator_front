@@ -28,5 +28,7 @@
   "sms": "Required field",
   "sms_wrongValue": "Provide correct value",
   "autocomplete": "Required field",
-  "selectMultiple": "Required field"
+  "selectMultiple": "Required field",
+  "inFututreDate": "Selected date must be in future",
+  "lessThanStartDate": "Selected date is less than start date"
 }

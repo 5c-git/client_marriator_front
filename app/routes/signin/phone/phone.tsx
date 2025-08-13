@@ -37,17 +37,23 @@ export async function clientAction({ request }: Route.ClientActionArgs) {
 
   const data = await postSendPhone(fields.phone);
 
-  if (data.result.type === "moderation") {
-    throw redirect(withLocale("/signin/client/registration-complete"));
-  }
+  if (data.status === "success") {
+    if (data.result.type === "moderation") {
+      throw redirect(withLocale("/signin/client/registration-complete"));
+    }
 
-  if (data.result.code.status !== "errorSend") {
-    params.set("ttl", data.result.code.ttl.toString());
-    params.set("type", data.result.type);
+    if (data.result.code.status !== "errorSend") {
+      params.set("ttl", data.result.code.ttl.toString());
+      params.set("type", data.result.type);
 
-    throw redirect(withLocale(`/signin/sms?${params}`));
+      throw redirect(withLocale(`/signin/sms?${params}`));
+    } else {
+      currentURL.searchParams.set("error", "error");
+
+      throw redirect(currentURL.toString());
+    }
   } else {
-    currentURL.searchParams.set("error", "error");
+    currentURL.searchParams.set("timer", data.result.code.ttl.toString());
 
     throw redirect(currentURL.toString());
   }
@@ -62,6 +68,7 @@ export default function Phone() {
   const [searchParams, setSearchParams] = useSearchParams();
 
   const error = searchParams.get("error");
+  const timer = searchParams.get("timer");
 
   const {
     control,
@@ -140,6 +147,25 @@ export default function Phone() {
           </Button>
         </form>
       </Box>
+
+      <Snackbar
+        open={timer !== null ? true : false}
+        onClose={() => {
+          setSearchParams("");
+        }}
+        autoHideDuration={3000}
+      >
+        <Alert
+          severity="info"
+          variant="small"
+          color="Banner_Error"
+          sx={{
+            width: "100%",
+          }}
+        >
+          {t("timerError", { seconds: timer })}
+        </Alert>
+      </Snackbar>
 
       <Snackbar
         open={error !== null ? true : false}

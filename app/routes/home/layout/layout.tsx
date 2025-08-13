@@ -76,7 +76,6 @@ export default function Home() {
           to={withLocale("/tasks")}
           value={withLocale("/tasks")}
           component={Link}
-          // disabled
         />
         <Tab
           label={t("tabs.request")}
