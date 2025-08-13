@@ -16,7 +16,7 @@
           "type": "boolean"
         },
         "status": {
-          "type": "string"
+          "type": "number"
         },
         "place": {
           "type": "object",
@@ -64,7 +64,7 @@
                   "type": "string"
                 },
                 "logo": {
-                  "type": ["null", "string"]
+                  "type": "string"
                 },
                 "description": {
                   "type": "string"
@@ -99,9 +99,34 @@
             },
             "logo": {
               "type": "string"
+            },
+            "roles": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "id": {
+                    "type": "number",
+                    "minimum": 1,
+                    "maximum": 6
+                  },
+                  "name": {
+                    "enum": [
+                      "admin",
+                      "client",
+                      "manager",
+                      "recruiter",
+                      "specialist",
+                      "supervisor"
+                    ]
+                  }
+                },
+                "required": ["id", "name"]
+              }
             }
           },
-          "required": ["id", "phone", "email", "logo"]
+          "required": ["id", "phone", "email", "logo", "roles"]
         },
         "orderActivities": {
           "type": "array",
@@ -113,6 +138,9 @@
                 "type": "object",
                 "additionalProperties": false,
                 "properties": {
+                  "id": {
+                    "type": "number"
+                  },
                   "name": {
                     "type": "string"
                   },
@@ -124,9 +152,22 @@
                   },
                   "logo": {
                     "type": "string"
+                  },
+                  "traveling": {
+                    "type": "boolean"
                   }
                 },
-                "required": ["name", "detailName", "previewText", "logo"]
+                "required": [
+                  "id",
+                  "name",
+                  "detailName",
+                  "previewText",
+                  "logo",
+                  "traveling"
+                ]
+              },
+              "id": {
+                "type": "number"
               },
               "count": {
                 "type": "number"
@@ -190,7 +231,7 @@
                             "required": ["id", "name"]
                           },
                           "brand": {
-                            "type": ["null", "object"],
+                            "type": "object",
                             "additionalProperties": false,
                             "properties": {
                               "id": {
@@ -206,7 +247,7 @@
                                 "type": "string"
                               }
                             },
-                            "required": ["id", "name", "logo", "description"]
+                            "required": ["id", "name", "description"]
                           }
                         },
                         "required": [
@@ -215,7 +256,8 @@
                           "latitude",
                           "longitude",
                           "address_kladr",
-                          "region"
+                          "region",
+                          "brand"
                         ]
                       }
                     }
@@ -226,6 +268,7 @@
             },
             "required": [
               "viewActivity",
+              "id",
               "count",
               "dateStart",
               "dateEnd",
