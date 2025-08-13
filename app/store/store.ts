@@ -6,12 +6,24 @@ type State = {
   userPhone: null | string;
   accessToken: null | string;
   refreshToken: null | string;
-  userRole: null | "admin" | "manager" | "client" | "recruiter" | "specialist";
+  userRole:
+    | "admin"
+    | "supervisor"
+    | "manager"
+    | "client"
+    | "specialist"
+    | "recruiter";
 
   setUserEmail: (newUserEmail: string) => void;
   setUserPhone: (newUserPhone: string) => void;
   setUserRole: (
-    userRole: null | "admin" | "manager" | "client" | "recruiter" | "specialist"
+    userRole:
+      | "admin"
+      | "supervisor"
+      | "manager"
+      | "client"
+      | "specialist"
+      | "recruiter"
   ) => void;
   setAccessToken: (accessToken: string) => void;
   setRefreshToken: (refreshToken: string) => void;
@@ -31,7 +43,7 @@ export const useStore = create<State>()(
       userPhone: null,
       accessToken: null,
       refreshToken: null,
-      userRole: null,
+      userRole: "specialist",
 
       setUserEmail: (newUserEmail) => set({ userEmail: newUserEmail }),
       setUserPhone: (newUserPhone) => set({ userPhone: newUserPhone }),
@@ -42,7 +54,7 @@ export const useStore = create<State>()(
 
       removeUserEmail: () => set({ userEmail: null }),
       removeUserPhone: () => set({ userPhone: null }),
-      removeUserRole: () => set({ userRole: null }),
+      removeUserRole: () => set({ userRole: "specialist" }),
       removeAccessToken: () => set({ accessToken: null }),
       removeRefreshToken: () => set({ refreshToken: null }),
 
@@ -50,7 +62,7 @@ export const useStore = create<State>()(
         set({
           userEmail: null,
           userPhone: null,
-          userRole: null,
+          userRole: "specialist",
           accessToken: null,
           refreshToken: null,
         }),

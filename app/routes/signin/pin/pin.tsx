@@ -17,9 +17,11 @@ import { StyledOptField } from "~/shared/ui/StyledOtpField/StyledOtpField";
 import { Loader } from "~/shared/ui/Loader/Loader";
 
 import { postCheckPin } from "~/requests/postCheckPin/postCheckPin";
+import { getUserInfo } from "~/requests/_personal/getUserInfo/getUserInfo";
 import { postStartRestorePin } from "~/requests/postStartRestorePin/postStartRestorePin";
 
 import { useStore } from "~/store/store";
+import { determineRole } from "~/shared/determineRole";
 
 export async function clientAction({ request }: Route.ClientActionArgs) {
   const { _action, ...fields } = await request.json();
@@ -41,6 +43,13 @@ export async function clientAction({ request }: Route.ClientActionArgs) {
       if (data.status === "success") {
         useStore.getState().setAccessToken(data.result.token.access_token);
         useStore.getState().setRefreshToken(data.result.token.refresh_token);
+
+        //getting and saving userRole
+        const roleData = await getUserInfo(data.result.token.access_token);
+        const currentRole = determineRole(roleData.result.userData.roles);
+        useStore.getState().setUserRole(currentRole);
+        //getting and saving userRole
+
         throw redirect(withLocale("/"));
       } else if (data.status === "error") {
         return { error: t("pinError", { ns: "pin" }) };

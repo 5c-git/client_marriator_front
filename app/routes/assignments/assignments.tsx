@@ -62,8 +62,6 @@ type Option = {
     end?: string;
   };
   coordinates: Coordinates;
-
-  // selfEmployed: boolean;
 };
 
 export async function clientLoader({ request }: Route.ClientLoaderArgs) {
