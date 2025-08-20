@@ -35,7 +35,7 @@ export const postCreateTaskActivity = async (
     const request = await fetch(url, {
       method: "POST",
       headers: {
-        // "Content-Type": "application/json",
+        "Content-Type": "application/json",
         Authorization: `Bearer ${accessToken}`,
       },
       body: JSON.stringify(payload),

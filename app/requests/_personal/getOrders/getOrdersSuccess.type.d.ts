@@ -14,12 +14,12 @@ export interface GetOrdersSuccess {
       latitude: string;
       longitude: string;
       address_kladr: string;
-      logo: string;
+      logo: null | string;
       region: {
         id: number;
         name: string;
       };
-      brand: {
+      brand: null | {
         id: number;
         name: string;
         logo: string;

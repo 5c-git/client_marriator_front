@@ -71,7 +71,7 @@ export async function clientLoader({ request }: Route.ClientLoaderArgs) {
     };
     selfEmployed: boolean;
     isNewOrder: boolean;
-    selectedSupervisor: number;
+    selectedSupervisor: number | null;
     orderActivities: {
       id: number;
       count: number;
@@ -97,7 +97,7 @@ export async function clientLoader({ request }: Route.ClientLoaderArgs) {
     },
     selfEmployed: false,
     isNewOrder: true,
-    selectedSupervisor: -1,
+    selectedSupervisor: null,
     orderActivities: [],
     acceptedUser: [],
   };
@@ -118,9 +118,9 @@ export async function clientLoader({ request }: Route.ClientLoaderArgs) {
       task.place.name = taskData.data.place.name;
       task.place.region = taskData.data.place.region.name;
 
-      task.project.id = taskData.data.project[0].id;
-      task.project.name = taskData.data.project[0].name;
-      task.project.brand = taskData.data.project[0].brand;
+      task.project.id = taskData.data.project.id;
+      task.project.name = taskData.data.project.name;
+      task.project.brand = taskData.data.project.brand;
 
       task.selfEmployed = taskData.data.selfEmployed;
 
@@ -134,7 +134,9 @@ export async function clientLoader({ request }: Route.ClientLoaderArgs) {
 
       task.acceptedUser = taskData.data.acceptedUser;
       task.isNewOrder = false;
-      task.selectedSupervisor = taskData.data.acceptUser.id;
+      task.selectedSupervisor = taskData.data.acceptUser
+        ? taskData.data.acceptUser.id
+        : null;
 
       const supervisersData = await getSupervisorsForTask(accessToken, taskId);
 
@@ -183,7 +185,7 @@ export async function clientAction({ request }: Route.ClientActionArgs) {
       projectsData.data.forEach((item) => {
         options.push({
           value: item.id.toString(),
-          label: `${item.name} ${item.region.name}`,
+          label: item.name,
           disabled: false,
         });
       });
@@ -213,10 +215,8 @@ export async function clientAction({ request }: Route.ClientActionArgs) {
       await postCancelTask(accessToken, taskId);
       throw redirect(withLocale("/"));
     } else if (_action === "_inviteSupervisors" && taskId) {
-      await postInvoiceTask(accessToken, fields.supervisors);
+      await postInvoiceTask(accessToken, taskId, fields.supervisors);
     } else if (_action === "_save" && taskId) {
-      //туть
-      //поручить
       await postInstructTask(accessToken, taskId, fields.supervisorId);
       throw redirect(withLocale("/"));
     }
@@ -498,6 +498,7 @@ export default function NewTask({ loaderData }: Route.ComponentProps) {
                           _action: "_update",
                           placeId: getValues().location,
                           orderId: fetcher.data,
+                          projectId: getValues().project,
                           selfEmployed: getValues().selfEmployed,
                         }),
                         {
@@ -695,14 +696,14 @@ export default function NewTask({ loaderData }: Route.ComponentProps) {
             variant="contained"
             disabled={
               loaderData.task.orderActivities.length === 0 &&
-              loaderData.task.selectedSupervisor === -1
+              loaderData.task.acceptedUser.length > 0
             }
             onClick={() => {
               fetcher.submit(
                 JSON.stringify({
                   _action: "_save",
                   orderId: loaderData.task.id,
-                  supervisorId: loaderData.task.selectedSupervisor,
+                  supervisorId: loaderData.task.acceptedUser[0].id,
                 }),
                 {
                   method: "POST",

@@ -4,7 +4,7 @@ import type { Route } from "./+types/layout";
 import { useState } from "react";
 
 import { useTranslation } from "react-i18next";
-import i18next, { loadNamespaces } from "i18next";
+import { t, loadNamespaces } from "i18next";
 
 import { useStore } from "~/store/store";
 
@@ -22,97 +22,100 @@ export async function clientLoader() {
     tabsMap: {
       admin: [
         <Tab
-          label={i18next.t("tabs.assignment", { ns: "home" })}
+          label={t("tabs.assignment", { ns: "home" })}
           to={withLocale("/assignments")}
           value={withLocale("/assignments")}
           component={Link}
           key={"assignments"}
         />,
         <Tab
-          label={i18next.t("tabs.task", { ns: "home" })}
+          label={t("tabs.task", { ns: "home" })}
           to={withLocale("/tasks")}
           value={withLocale("/tasks")}
           component={Link}
           key={"tasks"}
         />,
         <Tab
-          label={i18next.t("tabs.request", { ns: "home" })}
+          label={t("tabs.request", { ns: "home" })}
           to={withLocale("/requests")}
           value={withLocale("/requests")}
           component={Link}
           key={"requests"}
         />,
         <Tab
-          label={i18next.t("tabs.mission", { ns: "home" })}
+          label={t("tabs.mission", { ns: "home" })}
           to={withLocale("/missions")}
           value={withLocale("/missions")}
           component={Link}
           key={"missions"}
+          disabled
         />,
       ],
       supervisor: [
         <Tab
-          label={i18next.t("tabs.assignment", { ns: "home" })}
+          label={t("tabs.assignment", { ns: "home" })}
           to={withLocale("/assignments")}
           value={withLocale("/assignments")}
           component={Link}
           key={"assignments"}
         />,
         <Tab
-          label={i18next.t("tabs.task", { ns: "home" })}
+          label={t("tabs.task", { ns: "home" })}
           to={withLocale("/tasks")}
           value={withLocale("/tasks")}
           component={Link}
           key={"tasks"}
         />,
         <Tab
-          label={i18next.t("tabs.request", { ns: "home" })}
+          label={t("tabs.request", { ns: "home" })}
           to={withLocale("/requests")}
           value={withLocale("/requests")}
           component={Link}
           key={"requests"}
         />,
         <Tab
-          label={i18next.t("tabs.mission", { ns: "home" })}
+          label={t("tabs.mission", { ns: "home" })}
           to={withLocale("/missions")}
           value={withLocale("/missions")}
           component={Link}
           key={"missions"}
+          disabled
         />,
       ],
       manager: [
         <Tab
-          label={i18next.t("tabs.assignment", { ns: "home" })}
+          label={t("tabs.assignment", { ns: "home" })}
           to={withLocale("/assignments")}
           value={withLocale("/assignments")}
           component={Link}
           key={"assignments"}
         />,
         <Tab
-          label={i18next.t("tabs.task", { ns: "home" })}
+          label={t("tabs.task", { ns: "home" })}
           to={withLocale("/tasks")}
           value={withLocale("/tasks")}
           component={Link}
           key={"tasks"}
         />,
         <Tab
-          label={i18next.t("tabs.request", { ns: "home" })}
+          label={t("tabs.request", { ns: "home" })}
           to={withLocale("/requests")}
           value={withLocale("/requests")}
           component={Link}
           key={"requests"}
         />,
         <Tab
-          label={i18next.t("tabs.mission", { ns: "home" })}
+          label={t("tabs.mission", { ns: "home" })}
           to={withLocale("/missions")}
           value={withLocale("/missions")}
           component={Link}
           key={"missions"}
+          disabled
         />,
       ],
       client: [
         <Tab
-          label={i18next.t("tabs.assignment", { ns: "home" })}
+          label={t("tabs.assignment", { ns: "home" })}
           to={withLocale("/assignments")}
           value={withLocale("/assignments")}
           component={Link}
@@ -124,18 +127,20 @@ export async function clientLoader() {
       ],
       specialist: [
         <Tab
-          label={i18next.t("tabs.request", { ns: "home" })}
+          label={t("tabs.request", { ns: "home" })}
           to={withLocale("/requests")}
           value={withLocale("/requests")}
           component={Link}
           key={"requests"}
+          disabled
         />,
         <Tab
-          label={i18next.t("tabs.mission", { ns: "home" })}
+          label={t("tabs.mission", { ns: "home" })}
           to={withLocale("/missions")}
           value={withLocale("/missions")}
           component={Link}
           key={"missions"}
+          disabled
         />,
       ],
       recruiter: [],

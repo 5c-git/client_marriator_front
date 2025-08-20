@@ -9,7 +9,7 @@ export interface PostDeleteOrderActivitySuccess {
   data: {
     id: number;
     selfEmployed: boolean;
-    status: number;
+    status: 1 | 2 | 3 | 4 | 5;
     place: {
       id: number;
       name: string;
@@ -28,6 +28,16 @@ export interface PostDeleteOrderActivitySuccess {
         description: string;
       };
     };
+    project: {
+      id: number;
+      name: string;
+      brand: {
+        id: number;
+        name: string;
+        logo: string;
+        description: string;
+      }[];
+    };
     user: {
       id: number;
       phone: number;
@@ -35,16 +45,17 @@ export interface PostDeleteOrderActivitySuccess {
       logo: string;
       roles: {
         id: number;
-        name:
-          | "admin"
-          | "client"
-          | "manager"
-          | "recruiter"
-          | "specialist"
-          | "supervisor";
+        name: string;
       }[];
     };
+    acceptUser: null | {
+      id: number;
+      phone: number;
+      email: string;
+      logo: string;
+    };
     orderActivities: {
+      id: number;
       viewActivity: {
         id: number;
         name: string;
@@ -53,7 +64,6 @@ export interface PostDeleteOrderActivitySuccess {
         logo: string;
         traveling: boolean;
       };
-      id: number;
       count: number;
       dateStart: string;
       dateEnd: string;
@@ -75,11 +85,17 @@ export interface PostDeleteOrderActivitySuccess {
           brand: {
             id: number;
             name: string;
-            logo?: null | string;
+            logo: null | string;
             description: string;
           };
         }[];
       }[];
+    }[];
+    acceptedUser: {
+      id: number;
+      phone: number;
+      email: string;
+      logo: string;
     }[];
   };
 }

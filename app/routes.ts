@@ -175,6 +175,12 @@ export default [
       "routes/new-assignment/new-service/new-service.tsx"
     ),
 
+    route(":lang?/new-task", "routes/new-task/new-task.tsx"),
+    route(
+      ":lang?/new-task/:taskId/new-service",
+      "routes/new-task/new-service/new-service.tsx"
+    ),
+
     route(":lang?/offline", "routes/offline/offline.tsx"),
   ]),
 ] satisfies RouteConfig;

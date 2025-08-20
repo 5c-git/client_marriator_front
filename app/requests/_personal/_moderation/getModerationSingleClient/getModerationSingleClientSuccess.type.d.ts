@@ -42,7 +42,13 @@ export interface GetModerationSingleClientSuccess {
     }[];
     roles: {
       id: number;
-      name: "client" | "manager" | "recruiter" | "specialist" | "supervisor";
+      name:
+        | "admin"
+        | "client"
+        | "manager"
+        | "recruiter"
+        | "specialist"
+        | "supervisor";
     }[];
     change_order: null | string;
     cancel_order: null | string;
@@ -54,7 +60,22 @@ export interface GetModerationSingleClientSuccess {
     leave_bid: null | string;
     refusal_task: null | string;
     waiting_task: null | string;
-    supervisors: unknown[];
+    supervisors: {
+      id: number;
+      phone: number;
+      email: string;
+      logo: string;
+      roles: {
+        id: number;
+        name:
+          | "admin"
+          | "client"
+          | "manager"
+          | "recruiter"
+          | "specialist"
+          | "supervisor";
+      }[];
+    }[];
     manager: unknown[];
     count_wait_bid: string;
     counterparty: unknown[];

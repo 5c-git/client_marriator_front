@@ -16,7 +16,7 @@
           "type": "boolean"
         },
         "status": {
-          "type": "number"
+          "enum": [1, 2, 3, 4, 5]
         },
         "place": {
           "type": "object",
@@ -127,6 +127,41 @@
             }
           },
           "required": ["id", "phone", "email", "logo", "roles"]
+        },
+        "project": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "id": {
+              "type": "number"
+            },
+            "name": {
+              "type": "string"
+            },
+            "brand": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "id": {
+                    "type": "number"
+                  },
+                  "name": {
+                    "type": "string"
+                  },
+                  "logo": {
+                    "type": "string"
+                  },
+                  "description": {
+                    "type": "string"
+                  }
+                },
+                "required": ["id", "name", "logo", "description"]
+              }
+            }
+          },
+          "required": ["id", "name", "brand"]
         },
         "orderActivities": {
           "type": "array",
@@ -276,6 +311,79 @@
               "dateActivity"
             ]
           }
+        },
+        "acceptedUser": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "id": {
+                "type": "number"
+              },
+              "phone": {
+                "type": "number"
+              },
+              "email": {
+                "type": "string"
+              },
+              "logo": {
+                "type": "string"
+              },
+              "roles": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                    "id": {
+                      "type": "number"
+                    },
+                    "name": {
+                      "type": "string"
+                    }
+                  },
+                  "required": ["id", "name"]
+                }
+              }
+            },
+            "required": ["id", "phone", "email", "logo", "roles"]
+          }
+        },
+        "acceptUser": {
+          "type": ["null", "object"],
+          "additionalProperties": false,
+          "properties": {
+            "id": {
+              "type": "number"
+            },
+            "phone": {
+              "type": "number"
+            },
+            "email": {
+              "type": "string"
+            },
+            "logo": {
+              "type": "string"
+            },
+            "roles": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "id": {
+                    "type": "number"
+                  },
+                  "name": {
+                    "type": "string"
+                  }
+                },
+                "required": ["id", "name"]
+              }
+            }
+          },
+          "required": ["id", "phone", "email", "logo", "roles"]
         }
       },
       "required": [
@@ -284,7 +392,10 @@
         "status",
         "place",
         "user",
-        "orderActivities"
+        "project",
+        "orderActivities",
+        "acceptedUser",
+        "acceptUser"
       ]
     }
   },

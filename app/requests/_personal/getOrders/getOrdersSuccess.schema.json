@@ -15,7 +15,7 @@
             "type": "number"
           },
           "place": {
-            "type": "object",
+            "type": ["object"],
             "additionalProperties": false,
             "properties": {
               "id": {
@@ -34,7 +34,7 @@
                 "type": "string"
               },
               "logo": {
-                "type": "string"
+                "type": ["null", "string"]
               },
               "region": {
                 "type": "object",
@@ -50,7 +50,7 @@
                 "required": ["id", "name"]
               },
               "brand": {
-                "type": "object",
+                "type": ["null", "object"],
                 "additionalProperties": false,
                 "properties": {
                   "id": {

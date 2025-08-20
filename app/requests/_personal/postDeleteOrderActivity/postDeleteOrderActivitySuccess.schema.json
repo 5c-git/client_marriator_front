@@ -16,7 +16,7 @@
           "type": "boolean"
         },
         "status": {
-          "type": "number"
+          "enum": [1, 2, 3, 4, 5]
         },
         "place": {
           "type": "object",
@@ -84,6 +84,41 @@
             "brand"
           ]
         },
+        "project": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "id": {
+              "type": "number"
+            },
+            "name": {
+              "type": "string"
+            },
+            "brand": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "id": {
+                    "type": "number"
+                  },
+                  "name": {
+                    "type": "string"
+                  },
+                  "logo": {
+                    "type": "string"
+                  },
+                  "description": {
+                    "type": "string"
+                  }
+                },
+                "required": ["id", "name", "logo", "description"]
+              }
+            }
+          },
+          "required": ["id", "name", "brand"]
+        },
         "user": {
           "type": "object",
           "additionalProperties": false,
@@ -107,19 +142,10 @@
                 "additionalProperties": false,
                 "properties": {
                   "id": {
-                    "type": "number",
-                    "minimum": 1,
-                    "maximum": 6
+                    "type": "number"
                   },
                   "name": {
-                    "enum": [
-                      "admin",
-                      "client",
-                      "manager",
-                      "recruiter",
-                      "specialist",
-                      "supervisor"
-                    ]
+                    "type": "string"
                   }
                 },
                 "required": ["id", "name"]
@@ -128,12 +154,34 @@
           },
           "required": ["id", "phone", "email", "logo", "roles"]
         },
+        "acceptUser": {
+          "type": ["null", "object"],
+          "additionalProperties": false,
+          "properties": {
+            "id": {
+              "type": "number"
+            },
+            "phone": {
+              "type": "number"
+            },
+            "email": {
+              "type": "string"
+            },
+            "logo": {
+              "type": "string"
+            }
+          },
+          "required": ["id", "phone", "email", "logo"]
+        },
         "orderActivities": {
           "type": "array",
           "items": {
             "type": "object",
             "additionalProperties": false,
             "properties": {
+              "id": {
+                "type": "number"
+              },
               "viewActivity": {
                 "type": "object",
                 "additionalProperties": false,
@@ -165,9 +213,6 @@
                   "logo",
                   "traveling"
                 ]
-              },
-              "id": {
-                "type": "number"
               },
               "count": {
                 "type": "number"
@@ -247,7 +292,7 @@
                                 "type": "string"
                               }
                             },
-                            "required": ["id", "name", "description"]
+                            "required": ["id", "name", "logo", "description"]
                           }
                         },
                         "required": [
@@ -267,14 +312,36 @@
               }
             },
             "required": [
-              "viewActivity",
               "id",
+              "viewActivity",
               "count",
               "dateStart",
               "dateEnd",
               "needFoto",
               "dateActivity"
             ]
+          }
+        },
+        "acceptedUser": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "id": {
+                "type": "number"
+              },
+              "phone": {
+                "type": "number"
+              },
+              "email": {
+                "type": "string"
+              },
+              "logo": {
+                "type": "string"
+              }
+            },
+            "required": ["id", "phone", "email", "logo"]
           }
         }
       },
@@ -283,8 +350,11 @@
         "selfEmployed",
         "status",
         "place",
+        "project",
         "user",
-        "orderActivities"
+        "acceptUser",
+        "orderActivities",
+        "acceptedUser"
       ]
     }
   },

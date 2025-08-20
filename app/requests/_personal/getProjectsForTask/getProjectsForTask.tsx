@@ -65,39 +65,16 @@ export const mockResponseSuccess = {
   data: [
     {
       id: 1,
-      name: "Шестёрочка",
-      latitude: "24.00000000",
-      longitude: "42.00000000",
-      address_kladr: "вмвмвмв",
-      logo: null,
-      region: {
-        id: 1,
-        name: "Татарстан Респ",
-      },
-      brand: {
-        id: 2,
-        name: "vfdv",
-        logo: null,
-        description: "dvdvdvdv",
-      },
-    },
-    {
-      id: 2,
-      name: "Семёрочка",
-      latitude: "42.00000000",
-      longitude: "24.00000000",
-      address_kladr: "вмвмвмв",
-      logo: null,
-      region: {
-        id: 1,
-        name: "Татарстан Респ",
-      },
-      brand: {
-        id: 2,
-        name: "vfdv",
-        logo: null,
-        description: "dvdvdvdv",
-      },
+      name: "\u0414\u043e\u0433\u043e\u0432\u043e\u0440 \u043d\u0430 \u043e\u043a\u0430\u0437\u0430\u043d\u0438\u0435 \u0443\u0441\u043b\u0443\u0433 \u041f\u044f\u0442\u0451\u0440\u043e\u0447\u043a\u0430",
+      brand: [
+        {
+          id: 1,
+          name: "\u041f\u044f\u0442\u0451\u0440\u043e\u0447\u043a\u0430",
+          logo: "\/storage\/source\/directory\/brand\/1-logo\/\u041b\u043e\u0433\u043e \u041f\u044f\u0442\u0435\u0440\u043e\u0447\u043a\u0430.png",
+          description:
+            "\u00ab\u041f\u044f\u0442\u0451\u0440\u043e\u0447\u043a\u0430\u00bb \u2014 \u043a\u0440\u0443\u043f\u043d\u0435\u0439\u0448\u0430\u044f \u0442\u043e\u0440\u0433\u043e\u0432\u0430\u044f \u0441\u0435\u0442\u044c \u043c\u0430\u0433\u0430\u0437\u0438\u043d\u043e\u0432 \u00ab\u0443 \u0434\u043e\u043c\u0430\u00bb \u0432 \u0420\u043e\u0441\u0441\u0438\u0438.",
+        },
+      ],
     },
   ],
 };

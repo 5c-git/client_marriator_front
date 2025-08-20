@@ -86,6 +86,9 @@ interface ImportMetaEnv {
   readonly VITE_POST_INSTRUCT_TASK: string;
   readonly VITE_GET_VIEW_ACTIVITIES_FOR_TASK: string;
   readonly VITE_POST_CREATE_TASK_ACTIVITY: string;
+  readonly VITE_GET_SUPERVISORS: string;
+  readonly VITE_POST_SET_SUPERVISORS: string;
+  readonly VITE_POST_DEL_SUPERVISOR: string;
   // more env variables...
 }
 

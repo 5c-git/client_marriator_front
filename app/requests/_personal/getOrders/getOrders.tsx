@@ -16,13 +16,18 @@ export const getOrdersKeys = ["getOrders"];
 
 export const getOrders = async (
   accessToken: string,
-  status?: string
+  status?: string,
+  sort?: string
 ): Promise<GetOrdersSuccess> => {
   try {
     const url = new URL(import.meta.env.VITE_GET_ORDERS);
 
     if (status) {
       url.searchParams.append("status", status);
+    }
+
+    if (sort) {
+      url.searchParams.append("status", sort);
     }
 
     const request = await fetch(url, {
@@ -73,21 +78,22 @@ export const mockResponseSuccess = {
     {
       id: 1,
       place: {
-        id: 2,
-        name: "fdfvdvdv",
-        latitude: "21.00000000",
-        longitude: "11.00000000",
-        address_kladr: "dvdvdvdvdv",
-        logo: "/storage/source/directory/brand/1-logo/achievement-1.png",
+        id: 3,
+        name: "Пятёрочка МСК ул. Арбат д. 24",
+        latitude: "55.00000000",
+        longitude: "37.00000000",
+        address_kladr: "ул. Арбат д. 24  г.Москва",
+        logo: "/storage/source/directory/brand/1-logo/Лого Пятерочка.png",
         region: {
           id: 2,
           name: "Москва",
         },
         brand: {
           id: 1,
-          name: "бренд 1",
-          logo: "/storage/source/directory/brand/1-logo/achievement-1.png",
-          description: "аммвамвмвам вам вам вм вм в мва мвамвм вмвмвмвм вмвм",
+          name: "Пятёрочка",
+          logo: "/storage/source/directory/brand/1-logo/Лого Пятерочка.png",
+          description:
+            "«Пятёрочка» — крупнейшая торговая сеть магазинов «у дома» в России.",
         },
       },
       selfEmployed: false,
@@ -96,224 +102,148 @@ export const mockResponseSuccess = {
     {
       id: 2,
       place: {
-        id: 2,
-        name: "fdfvdvdv",
-        latitude: "21.00000000",
-        longitude: "11.00000000",
-        address_kladr: "dvdvdvdvdv",
-        logo: "/storage/source/directory/brand/1-logo/achievement-1.png",
+        id: 3,
+        name: "Пятёрочка МСК ул. Арбат д. 24",
+        latitude: "55.00000000",
+        longitude: "37.00000000",
+        address_kladr: "ул. Арбат д. 24  г.Москва",
+        logo: "/storage/source/directory/brand/1-logo/Лого Пятерочка.png",
         region: {
           id: 2,
           name: "Москва",
         },
         brand: {
           id: 1,
-          name: "бренд 1",
-          logo: "/storage/source/directory/brand/1-logo/achievement-1.png",
-          description: "аммвамвмвам вам вам вм вм в мва мвамвм вмвмвмвм вмвм",
+          name: "Пятёрочка",
+          logo: "/storage/source/directory/brand/1-logo/Лого Пятерочка.png",
+          description:
+            "«Пятёрочка» — крупнейшая торговая сеть магазинов «у дома» в России.",
         },
       },
       selfEmployed: false,
-      status: 2,
+      status: 1,
     },
     {
       id: 3,
       place: {
-        id: 2,
-        name: "fdfvdvdv",
-        latitude: "21.00000000",
-        longitude: "11.00000000",
-        address_kladr: "dvdvdvdvdv",
-        logo: "/storage/source/directory/brand/1-logo/achievement-1.png",
+        id: 4,
+        name: "Пятёрочка Аметьевская ул, д. 24, г. Казань",
+        latitude: "55.00000000",
+        longitude: "49.00000000",
+        address_kladr: "Аметьевская ул, д. 24, г. Казань, Татарстан респ.",
+        logo: "/storage/source/directory/brand/1-logo/Лого Пятерочка.png",
         region: {
-          id: 2,
-          name: "Москва",
+          id: 1,
+          name: "Татарстан Респ",
         },
         brand: {
           id: 1,
-          name: "бренд 1",
-          logo: "/storage/source/directory/brand/1-logo/achievement-1.png",
-          description: "аммвамвмвам вам вам вм вм в мва мвамвм вмвмвмвм вмвм",
+          name: "Пятёрочка",
+          logo: "/storage/source/directory/brand/1-logo/Лого Пятерочка.png",
+          description:
+            "«Пятёрочка» — крупнейшая торговая сеть магазинов «у дома» в России.",
         },
       },
       selfEmployed: false,
-      status: 2,
+      status: 1,
     },
     {
       id: 4,
       place: {
-        id: 2,
-        name: "fdfvdvdv",
-        latitude: "21.00000000",
-        longitude: "11.00000000",
-        address_kladr: "dvdvdvdvdv",
-        logo: "/storage/source/directory/brand/1-logo/achievement-1.png",
+        id: 4,
+        name: "Пятёрочка Аметьевская ул, д. 24, г. Казань",
+        latitude: "55.00000000",
+        longitude: "49.00000000",
+        address_kladr: "Аметьевская ул, д. 24, г. Казань, Татарстан респ.",
+        logo: "/storage/source/directory/brand/1-logo/Лого Пятерочка.png",
         region: {
-          id: 2,
-          name: "Москва",
+          id: 1,
+          name: "Татарстан Респ",
         },
         brand: {
           id: 1,
-          name: "бренд 1",
-          logo: "/storage/source/directory/brand/1-logo/achievement-1.png",
-          description: "аммвамвмвам вам вам вм вм в мва мвамвм вмвмвмвм вмвм",
+          name: "Пятёрочка",
+          logo: "/storage/source/directory/brand/1-logo/Лого Пятерочка.png",
+          description:
+            "«Пятёрочка» — крупнейшая торговая сеть магазинов «у дома» в России.",
         },
       },
       selfEmployed: false,
-      status: 2,
+      status: 4,
     },
     {
       id: 5,
       place: {
-        id: 2,
-        name: "fdfvdvdv",
-        latitude: "21.00000000",
-        longitude: "11.00000000",
-        address_kladr: "dvdvdvdvdv",
-        logo: "/storage/source/directory/brand/1-logo/achievement-1.png",
+        id: 3,
+        name: "Пятёрочка МСК ул. Арбат д. 24",
+        latitude: "55.00000000",
+        longitude: "37.00000000",
+        address_kladr: "ул. Арбат д. 24  г.Москва",
+        logo: "/storage/source/directory/brand/1-logo/Лого Пятерочка.png",
         region: {
           id: 2,
           name: "Москва",
         },
         brand: {
           id: 1,
-          name: "бренд 1",
-          logo: "/storage/source/directory/brand/1-logo/achievement-1.png",
-          description: "аммвамвмвам вам вам вм вм в мва мвамвм вмвмвмвм вмвм",
+          name: "Пятёрочка",
+          logo: "/storage/source/directory/brand/1-logo/Лого Пятерочка.png",
+          description:
+            "«Пятёрочка» — крупнейшая торговая сеть магазинов «у дома» в России.",
         },
       },
       selfEmployed: false,
-      status: 2,
+      status: 4,
     },
     {
       id: 6,
       place: {
-        id: 2,
-        name: "fdfvdvdv",
-        latitude: "21.00000000",
-        longitude: "11.00000000",
-        address_kladr: "dvdvdvdvdv",
-        logo: "/storage/source/directory/brand/1-logo/achievement-1.png",
+        id: 3,
+        name: "Пятёрочка МСК ул. Арбат д. 24",
+        latitude: "55.00000000",
+        longitude: "37.00000000",
+        address_kladr: "ул. Арбат д. 24  г.Москва",
+        logo: "/storage/source/directory/brand/1-logo/Лого Пятерочка.png",
         region: {
           id: 2,
           name: "Москва",
         },
         brand: {
           id: 1,
-          name: "бренд 1",
-          logo: "/storage/source/directory/brand/1-logo/achievement-1.png",
-          description: "аммвамвмвам вам вам вм вм в мва мвамвм вмвмвмвм вмвм",
+          name: "Пятёрочка",
+          logo: "/storage/source/directory/brand/1-logo/Лого Пятерочка.png",
+          description:
+            "«Пятёрочка» — крупнейшая торговая сеть магазинов «у дома» в России.",
         },
       },
       selfEmployed: false,
-      status: 2,
+      status: 4,
     },
     {
       id: 7,
       place: {
-        id: 2,
-        name: "fdfvdvdv",
-        latitude: "21.00000000",
-        longitude: "11.00000000",
-        address_kladr: "dvdvdvdvdv",
-        logo: "/storage/source/directory/brand/1-logo/achievement-1.png",
+        id: 3,
+        name: "Пятёрочка МСК ул. Арбат д. 24",
+        latitude: "55.00000000",
+        longitude: "37.00000000",
+        address_kladr: "ул. Арбат д. 24  г.Москва",
+        logo: "/storage/source/directory/brand/1-logo/Лого Пятерочка.png",
         region: {
           id: 2,
           name: "Москва",
         },
         brand: {
           id: 1,
-          name: "бренд 1",
-          logo: "/storage/source/directory/brand/1-logo/achievement-1.png",
-          description: "аммвамвмвам вам вам вм вм в мва мвамвм вмвмвмвм вмвм",
+          name: "Пятёрочка",
+          logo: "/storage/source/directory/brand/1-logo/Лого Пятерочка.png",
+          description:
+            "«Пятёрочка» — крупнейшая торговая сеть магазинов «у дома» в России.",
         },
       },
       selfEmployed: false,
-      status: 3,
-    },
-    {
-      id: 8,
-      place: {
-        id: 2,
-        name: "fdfvdvdv",
-        latitude: "21.00000000",
-        longitude: "11.00000000",
-        address_kladr: "dvdvdvdvdv",
-        logo: "/storage/source/directory/brand/1-logo/achievement-1.png",
-        region: {
-          id: 2,
-          name: "Москва",
-        },
-        brand: {
-          id: 1,
-          name: "бренд 1",
-          logo: "/storage/source/directory/brand/1-logo/achievement-1.png",
-          description: "аммвамвмвам вам вам вм вм в мва мвамвм вмвмвмвм вмвм",
-        },
-      },
-      selfEmployed: false,
-      status: 3,
-    },
-    {
-      id: 9,
-      place: {
-        id: 2,
-        name: "fdfvdvdv",
-        latitude: "21.00000000",
-        longitude: "11.00000000",
-        address_kladr: "dvdvdvdvdv",
-        logo: "/storage/source/directory/brand/1-logo/achievement-1.png",
-        region: {
-          id: 2,
-          name: "Москва",
-        },
-        brand: {
-          id: 1,
-          name: "бренд 1",
-          logo: "/storage/source/directory/brand/1-logo/achievement-1.png",
-          description: "аммвамвмвам вам вам вм вм в мва мвамвм вмвмвмвм вмвм",
-        },
-      },
-      selfEmployed: false,
-      status: 4,
-    },
-    {
-      id: 10,
-      place: {
-        id: 2,
-        name: "fdfvdvdv",
-        latitude: "21.00000000",
-        longitude: "11.00000000",
-        address_kladr: "dvdvdvdvdv",
-        logo: "/storage/source/directory/brand/1-logo/achievement-1.png",
-        region: {
-          id: 2,
-          name: "Москва",
-        },
-        brand: {
-          id: 1,
-          name: "бренд 1",
-          logo: "/storage/source/directory/brand/1-logo/achievement-1.png",
-          description: "аммвамвмвам вам вам вм вм в мва мвамвм вмвмвмвм вмвм",
-        },
-      },
-      selfEmployed: false,
-      status: 4,
+      status: 1,
     },
   ],
-  links: {
-    first: "http://localhost/api/personal/getOrders?page=1",
-    last: null,
-    prev: null,
-    next: "http://localhost/api/personal/getOrders?page=2",
-  },
-  meta: {
-    current_page: 1,
-    from: 1,
-    path: "http://localhost/api/personal/getOrders",
-    per_page: 10,
-    to: 10,
-  },
 };
 
 export const mockResponseSuccessEmpty = {

@@ -2,7 +2,7 @@ import { HydratedRouter } from "react-router/dom";
 import { startTransition, StrictMode } from "react";
 import { hydrateRoot } from "react-dom/client";
 
-import i18next from "i18next";
+import i18next, { use } from "i18next";
 import { I18nextProvider, initReactI18next } from "react-i18next";
 import LanguageDetector from "i18next-browser-languagedetector";
 import HttpBackend from "i18next-http-backend";
@@ -35,8 +35,7 @@ if (process.env.NODE_ENV !== "development") {
 }
 
 async function hydrate() {
-  await i18next
-    .use(HttpBackend)
+  await use(HttpBackend)
     .use(LanguageDetector)
     .use(initReactI18next)
     .init({

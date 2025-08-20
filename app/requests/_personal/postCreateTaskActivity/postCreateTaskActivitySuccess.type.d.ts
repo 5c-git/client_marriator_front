@@ -9,12 +9,7 @@ export interface PostCreateTaskActivitySuccess {
   data: {
     id: number;
     selfEmployed: boolean;
-    status: number;
-    project: {
-      id: number;
-      name: string;
-      brand: unknown[];
-    }[];
+    status: 1 | 2 | 3 | 4 | 5;
     place: {
       id: number;
       name: string;
@@ -33,6 +28,16 @@ export interface PostCreateTaskActivitySuccess {
         description: string;
       };
     };
+    project: {
+      id: number;
+      name: string;
+      brand: {
+        id: number;
+        name: string;
+        logo: string;
+        description: string;
+      }[];
+    };
     user: {
       id: number;
       phone: number;
@@ -40,20 +45,18 @@ export interface PostCreateTaskActivitySuccess {
       logo: string;
       roles: {
         id: number;
-        name:
-          | "admin"
-          | "client"
-          | "manager"
-          | "recruiter"
-          | "specialist"
-          | "supervisor";
+        name: string;
       }[];
     };
-    acceptUser: {
+    acceptUser: null | {
       id: number;
       phone: number;
       email: string;
       logo: string;
+      roles: {
+        id: number;
+        name: string;
+      }[];
     };
     orderActivities: {
       id: number;
@@ -78,7 +81,7 @@ export interface PostCreateTaskActivitySuccess {
           latitude: string;
           longitude: string;
           address_kladr: string;
-          logo: null | string;
+          logo?: null | string;
           region: {
             id: number;
             name: string;
@@ -97,6 +100,10 @@ export interface PostCreateTaskActivitySuccess {
       phone: number;
       email: string;
       logo: string;
+      roles: {
+        id: number;
+        name: string;
+      }[];
     }[];
   };
 }

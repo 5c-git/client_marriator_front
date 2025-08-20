@@ -5,15 +5,8 @@
  * and run json-schema-to-typescript to regenerate this file.
  */
 
-export interface GetProjectsForTaskSuccess {
+export interface PostSetSupervisorsSuccess {
   data: {
-    id: number;
-    name: string;
-    brand: {
-      id: number;
-      name: string;
-      logo: string;
-      description: string;
-    }[];
-  }[];
+    success: boolean;
+  };
 }

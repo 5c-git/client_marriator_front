@@ -1,5 +1,5 @@
-import { useNavigate, redirect } from "react-router";
-import { useEffect } from "react";
+import { redirect } from "react-router";
+
 import { useStore } from "~/store/store";
 import { withLocale } from "~/shared/withLocale";
 

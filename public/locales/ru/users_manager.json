@@ -11,13 +11,17 @@
     "cancelIntervalPlaceholder": "Интервал отмены задачи *",
     "durationIntervalPlaceholder": "Срок действия задачи *",
     "applicationFrequencyPlaceholder": "Периодичность повторения заявки *",
-    "applicationCountdownPlaceholder": "Минимальное время до выхода по заявке *"
+    "applicationCountdownPlaceholder": "Минимальное время до выхода по заявке *",
+    "supervisorSearchPlaceholder": "Поиск"
   },
   "project": "Проект",
   "projectSelector": "Выбрать проект",
   "location": "Места проведения",
   "locationSelector": "Выбрать места проведения",
+  "supervisor": "Супервайзеры",
   "user_id": "Идентификатор пользователя",
   "confirmButton": "Подтвердить",
-  "excludeButton": "Заблокировать"
+  "excludeButton": "Заблокировать",
+  "supervisorInviteButton": "Привязать супервайзеров",
+  "supervisorHeader": "Выбор супервайзеров"
 }

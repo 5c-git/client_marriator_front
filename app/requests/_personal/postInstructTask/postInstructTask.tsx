@@ -45,7 +45,7 @@ export const postInstructTask = async (
     if (validateSuccess(response)) {
       data = response as unknown as PostInstructTaskSuccess;
     } else {
-      throw new Response(`Данные запроса PostInstructTask не валидны схеме`);
+      throw new Response(`Данные запроса postInstructTask не валидны схеме`);
     }
 
     return data;

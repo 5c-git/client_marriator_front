@@ -9,7 +9,7 @@ export interface PostDeleteTaskActivitySuccess {
   data: {
     id: number;
     selfEmployed: boolean;
-    status: number;
+    status: 1 | 2 | 3 | 4 | 5;
     place: {
       id: number;
       name: string;
@@ -42,6 +42,16 @@ export interface PostDeleteTaskActivitySuccess {
           | "recruiter"
           | "specialist"
           | "supervisor";
+      }[];
+    };
+    project: {
+      id: number;
+      name: string;
+      brand: {
+        id: number;
+        name: string;
+        logo: string;
+        description: string;
       }[];
     };
     orderActivities: {
@@ -81,5 +91,25 @@ export interface PostDeleteTaskActivitySuccess {
         }[];
       }[];
     }[];
+    acceptedUser: {
+      id: number;
+      phone: number;
+      email: string;
+      logo: string;
+      roles: {
+        id: number;
+        name: string;
+      }[];
+    }[];
+    acceptUser: null | {
+      id: number;
+      phone: number;
+      email: string;
+      logo: string;
+      roles: {
+        id: number;
+        name: string;
+      }[];
+    };
   };
 }

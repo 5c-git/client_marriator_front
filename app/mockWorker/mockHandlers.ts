@@ -78,6 +78,9 @@ import { postInvoiceTaskMockResponse } from "~/requests/_personal/postInvoiceTas
 import { postInstructTaskMockResponse } from "~/requests/_personal/postInstructTask/postInstructTask";
 import { getViewActivitiesForTaskMockResponse } from "~/requests/_personal/getViewActivitiesForTask/getViewActivitiesForTask";
 import { postCreateTaskActivityMockResponse } from "~/requests/_personal/postCreateTaskActivity/postCreateTaskActivity";
+import { getSupervisorsMockResponse } from "~/requests/_personal/_moderation/getSupervisors/getSupervisors";
+import { postSetSupervisorsMockResponse } from "~/requests/_personal/_moderation/postSetSupervisors/postSetSupervisors";
+import { postDelSupervisorMockResponse } from "~/requests/_personal/_moderation/postDelSupervisor/postDelSupervisor";
 
 export const handlers = [
   getFormMockResponse,
@@ -156,4 +159,7 @@ export const handlers = [
   postInstructTaskMockResponse,
   getViewActivitiesForTaskMockResponse,
   postCreateTaskActivityMockResponse,
+  getSupervisorsMockResponse,
+  postSetSupervisorsMockResponse,
+  postDelSupervisorMockResponse,
 ];

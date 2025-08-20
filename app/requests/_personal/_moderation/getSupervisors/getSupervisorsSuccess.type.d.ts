@@ -5,15 +5,21 @@
  * and run json-schema-to-typescript to regenerate this file.
  */
 
-export interface GetProjectsForTaskSuccess {
+export interface GetSupervisorsSuccess {
   data: {
     id: number;
-    name: string;
-    brand: {
+    phone: number;
+    email: string;
+    logo: null | string;
+    roles: {
       id: number;
-      name: string;
-      logo: string;
-      description: string;
+      name:
+        | "admin"
+        | "client"
+        | "manager"
+        | "recruiter"
+        | "specialist"
+        | "supervisor";
     }[];
   }[];
 }

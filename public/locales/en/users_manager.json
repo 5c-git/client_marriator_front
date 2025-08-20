@@ -11,13 +11,17 @@
     "cancelIntervalPlaceholder": "Task cancellation interval *",
     "durationIntervalPlaceholder": "Validity period of the task *",
     "applicationFrequencyPlaceholder": "Frequency of application repetition *",
-    "applicationCountdownPlaceholder": "Minimum time until request exit *"
+    "applicationCountdownPlaceholder": "Minimum time until request exit *",
+    "supervisorSearchPlaceholder": "Поиск"
   },
   "project": "Project",
   "projectSelector": "Choose project",
   "location": "Locations",
   "locationSelector": "Choose locations",
+  "supervisor": "Supervisors",
   "user_id": "User ID",
   "confirmButton": "Confirm",
-  "excludeButton": "Block"
+  "excludeButton": "Block",
+  "supervisorInviteButton": "Add supervisors",
+  "supervisorHeader": "Select supervisers"
 }

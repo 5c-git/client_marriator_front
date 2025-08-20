@@ -1,31 +1,28 @@
 import { http, delay, HttpResponse } from "msw";
 import Ajv from "ajv";
 
-import postInvoiceTaskSuccess from "./postInvoiceTaskSuccess.schema.json";
-import { PostInvoiceTaskSuccess } from "./postInvoiceTaskSuccess.type";
+import schemaSuccess from "./postDelSupervisorSuccess.schema.json";
+import { PostDelSupervisorSuccess } from "./postDelSupervisorSuccess.type";
 import { UnxpectedError } from "~/shared/unexpectedError/unexpectedError";
 
 const ajv = new Ajv();
 
-const validateSuccess = ajv.compile(postInvoiceTaskSuccess);
+const validateSuccess = ajv.compile(schemaSuccess);
 
-export const postInvoiceTaskKeys = ["postInvoiceTask"];
+export const postDelSupervisorKeys = ["postDelSupervisor"];
 
-export const postInvoiceTask = async (
+export const postDelSupervisor = async (
   accessToken: string,
-  taskId: string,
-  supervisors: string[]
+  userId: string,
+  supervisorId: string
 ) => {
   try {
-    const url = new URL(import.meta.env.VITE_POST_INVOICE_TASK);
+    const url = new URL(import.meta.env.VITE_POST_DEL_SUPERVISOR);
 
     const formData = new FormData();
 
-    formData.append("taskId", taskId);
-
-    supervisors.forEach((supervisor, index) => {
-      formData.append(`supervisorIds[${index}]`, supervisor);
-    });
+    formData.append("userId", userId);
+    formData.append("surepvisorId", supervisorId);
 
     const request = await fetch(url, {
       method: "POST",
@@ -46,9 +43,11 @@ export const postInvoiceTask = async (
     }
 
     if (validateSuccess(response)) {
-      data = response as unknown as PostInvoiceTaskSuccess;
+      data = response as unknown as PostDelSupervisorSuccess;
     } else {
-      throw new Response(`Данные запроса postInvoiceTask не валидны схеме`);
+      throw new Response(
+        `Данные запроса PostDelSupervisorSuccess не валидны схеме`
+      );
     }
 
     return data;
@@ -73,8 +72,8 @@ export const mockResponseSuccess = {
 };
 export const mockResponseError = {};
 
-export const postInvoiceTaskMockResponse = http.post(
-  `${import.meta.env.VITE_POST_INVOICE_TASK}`,
+export const postDelSupervisorMockResponse = http.post(
+  `${import.meta.env.VITE_POST_DEL_SUPERVISOR}`,
   async () => {
     await delay(2000);
     return HttpResponse.json(mockResponseSuccess);

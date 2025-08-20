@@ -1,6 +1,5 @@
-import { Link, useOutletContext, useSearchParams } from "react-router";
+import { Link, useOutletContext } from "react-router";
 import { useState, useEffect } from "react";
-import { useForm, Controller } from "react-hook-form";
 
 import type { Route } from "./+types/assignments";
 
@@ -12,7 +11,7 @@ import Box from "@mui/material/Box";
 import { Fab, SwipeableDrawer, Typography } from "@mui/material";
 
 import { StatusSelect } from "~/shared/ui/StatusSelect/StatusSelect";
-import { StyledDropdown } from "~/shared/ui/StyledDropdown/StyledDropdown";
+import { SortingSelect } from "~/shared/ui/SortingSelect/SortingSelect";
 import { AssignmentCard } from "~/shared/ui/AssignmentCard/AssignmentCard";
 
 import AddIcon from "@mui/icons-material/Add";
@@ -27,29 +26,25 @@ import { useStore } from "~/store/store";
 
 import { getOrders } from "~/requests/_personal/getOrders/getOrders";
 
-const statusColorMap = {
-  1: "var(--mui-palette-Corp_1)",
-  2: "var(--mui-palette-Blue)",
-  3: "var(--mui-palette-Grey_1)",
-  4: "var(--mui-palette-Red)",
-  5: "var(--mui-palette-Grey_2)",
-};
+const statusCodeMap = {
+  1: { value: "new", color: "var(--mui-palette-Corp_1)" },
+  2: { value: "accepted", color: "var(--mui-palette-Blue)" },
+  3: { value: "notAccepted", color: "var(--mui-palette-Grey_1)" },
+  4: { value: "canceled", color: "var(--mui-palette-Red)" },
+  5: { value: "archive", color: "var(--mui-palette-Grey_2)" },
+} as const;
 
-const statusMap = {
-  new: "1",
-  accepted: "2",
-  notAccepted: "3",
-  canceled: "4",
-  archive: "5",
-};
-
-const sortMap = {
-  ascending: "1",
-  descending: "2",
+const statusValueMap = {
+  [statusCodeMap[1].value]: 1,
+  [statusCodeMap[2].value]: 2,
+  [statusCodeMap[3].value]: 3,
+  [statusCodeMap[4].value]: 4,
+  [statusCodeMap[5].value]: 5,
 };
 
 type Option = {
   id: number;
+  status: number;
   statusColor: string;
   header: string;
   subHeader: string;
@@ -64,30 +59,36 @@ type Option = {
   coordinates: Coordinates;
 };
 
-export async function clientLoader({ request }: Route.ClientLoaderArgs) {
+export async function clientLoader() {
   const language = i18next.language as "en" | "ru";
   const accessToken = useStore.getState().accessToken;
 
-  const currentURL = new URL(request.url);
-
-  const sort = currentURL.searchParams.get("sort");
-  const status = currentURL.searchParams.get("status");
-  const page = currentURL.searchParams.get("page");
-
   const assignments: Option[] = [];
+
+  const filteredAssignments: {
+    new: Option[];
+    accepted: Option[];
+    notAccepted: Option[];
+    canceled: Option[];
+    archive: Option[];
+  } = {
+    new: [],
+    accepted: [],
+    notAccepted: [],
+    canceled: [],
+    archive: [],
+  };
 
   if (accessToken) {
     const ymaps = await loadMap(langMap[language]);
 
-    const assignmentsData = await getOrders(
-      accessToken,
-      status ? status : undefined
-    );
+    const assignmentsData = await getOrders(accessToken);
 
-    assignmentsData.data.forEach((item) => {
+    assignmentsData.data.forEach((item, index) => {
       assignments.push({
         id: item.id,
-        statusColor: statusColorMap[item.status],
+        status: item.status,
+        statusColor: statusCodeMap[item.status].color,
         header: item.place.name,
         subHeader: "Сюда нужны услуги",
         address: {
@@ -95,8 +96,8 @@ export async function clientLoader({ request }: Route.ClientLoaderArgs) {
           text: item.place.region.name,
         },
         duration: {
-          start: "нужна дата начала",
-          end: "нужна дата конца",
+          start: `2025-08-0${index + 1}T10:00:00.000000Z`,
+          end: `2025-08-0${index + 2}T10:00:00.000000Z`,
         },
         coordinates: [
           Number(item.place.latitude),
@@ -105,7 +106,26 @@ export async function clientLoader({ request }: Route.ClientLoaderArgs) {
       });
     });
 
-    return { ymaps, assignments, sort, status };
+    filteredAssignments.new = assignments.filter(
+      (item) => item.status === statusValueMap.new
+    );
+    filteredAssignments.accepted = assignments.filter(
+      (item) => item.status === statusValueMap.accepted
+    );
+    filteredAssignments.notAccepted = assignments.filter(
+      (item) => item.status === statusValueMap.notAccepted
+    );
+    filteredAssignments.canceled = assignments.filter(
+      (item) => item.status === statusValueMap.canceled
+    );
+    filteredAssignments.archive = assignments.filter(
+      (item) => item.status === statusValueMap.archive
+    );
+
+    return {
+      ymaps,
+      filteredAssignments,
+    };
   } else {
     throw new Response("Токен авторизации не обнаружен!", { status: 401 });
   }
@@ -113,7 +133,6 @@ export async function clientLoader({ request }: Route.ClientLoaderArgs) {
 
 export default function Assignments({ loaderData }: Route.ComponentProps) {
   const { t } = useTranslation("assignments");
-  const [_, setSearchParams] = useSearchParams();
   const userRole = useStore.getState().userRole;
 
   const showMap = useOutletContext<boolean>();
@@ -122,16 +141,13 @@ export default function Assignments({ loaderData }: Route.ComponentProps) {
     null
   );
 
-  const { control, setValue, reset, getValues } = useForm<{
-    status: string;
-    sorting: string;
-  }>({
-    defaultValues: {
-      status: loaderData.status ? loaderData.status : "2",
-      sorting: loaderData.sort ? loaderData.sort : "",
-    },
-    mode: "onChange",
-  });
+  const [filter, setFilter] = useState<keyof typeof statusValueMap>("new");
+  const [sorting, setSorting] = useState<"ascending" | "descending">(
+    "ascending"
+  );
+  const [activeAssignments, setActiveAssignments] = useState<Option[]>(
+    loaderData.filteredAssignments[filter]
+  );
 
   // рисуем пустую карту
   useEffect(() => {
@@ -142,14 +158,12 @@ export default function Assignments({ loaderData }: Route.ComponentProps) {
 
     let map: YMap | null = null;
 
-    const coordinates: LngLat =
-      loaderData.assignments.length > 0
-        ? loaderData.assignments[0].coordinates
-        : [30.315635, 59.950258];
-
     if (container) {
       map = new YMap(container, {
-        location: { center: coordinates, zoom: 12 },
+        location: {
+          center: loaderData.filteredAssignments["new"][0].coordinates,
+          zoom: 12,
+        },
       });
 
       map.addChild(new YMapDefaultSchemeLayer({}));
@@ -162,13 +176,15 @@ export default function Assignments({ loaderData }: Route.ComponentProps) {
       map?.destroy();
       setMapInstance(null);
     };
-  }, [showMap, loaderData.ymaps]);
+  }, [loaderData.ymaps, loaderData.filteredAssignments, showMap]);
 
   // рисуем на карте маркеры
   useEffect(() => {
     const { YMapMarker } = loaderData.ymaps;
 
     const markers: YMapMarker[] = [];
+
+    // mapInstance?.setLocation({ center: activeAssignments[0].coordinates });
 
     mapInstance?.children.forEach((child) => {
       if ("coordinates" in child) {
@@ -181,7 +197,7 @@ export default function Assignments({ loaderData }: Route.ComponentProps) {
     });
 
     //рисуем новые маркеры из свежих данных
-    loaderData.assignments.forEach((location) => {
+    activeAssignments.forEach((location) => {
       const markerElement = document.createElement("div");
 
       const icon = renderIcon(location.address.logo, location.statusColor);
@@ -201,9 +217,9 @@ export default function Assignments({ loaderData }: Route.ComponentProps) {
 
       mapInstance?.addChild(marker);
     });
-  }, [loaderData.ymaps, loaderData.assignments, mapInstance]);
+  }, [loaderData.ymaps, activeAssignments, mapInstance]);
 
-  // обновляем слушатель событий
+  // // обновляем слушатель событий
   useEffect(() => {
     const { YMapListener } = loaderData.ymaps;
 
@@ -214,7 +230,7 @@ export default function Assignments({ loaderData }: Route.ComponentProps) {
           if (object.entity.properties) {
             const clickedLocation = object.entity.properties.id as number;
 
-            const match = loaderData.assignments.find(
+            const match = activeAssignments.find(
               (item) => item.id === clickedLocation
             );
 
@@ -229,13 +245,34 @@ export default function Assignments({ loaderData }: Route.ComponentProps) {
     if (mapInstance) {
       mapInstance.addChild(mapListener);
     }
-  }, [loaderData.ymaps, mapInstance]);
+  }, [loaderData.ymaps, activeAssignments, mapInstance]);
+
+  //sorting and filtration
+  useEffect(() => {
+    const newActiveAssignments = loaderData.filteredAssignments[filter];
+
+    if (newActiveAssignments.length > 0 && sorting === "ascending") {
+      newActiveAssignments.sort(
+        (a, b) =>
+          new Date(a.duration.start).valueOf() -
+          new Date(b.duration.start).valueOf()
+      );
+
+      setActiveAssignments([...newActiveAssignments]);
+    } else if (newActiveAssignments.length > 0 && sorting === "descending") {
+      newActiveAssignments.sort(
+        (a, b) =>
+          new Date(b.duration.start).valueOf() -
+          new Date(a.duration.start).valueOf()
+      );
+
+      setActiveAssignments([...newActiveAssignments]);
+    }
+  }, [loaderData.filteredAssignments, filter, sorting]);
 
   return (
     <>
-      {loaderData.assignments.length > 0 ||
-      loaderData.sort ||
-      loaderData.status ? (
+      {activeAssignments.length > 0 ? (
         <>
           <Box
             sx={{
@@ -246,85 +283,91 @@ export default function Assignments({ loaderData }: Route.ComponentProps) {
               padding: "20px 16px 16px 20px",
             }}
           >
-            <Controller
-              name="status"
-              control={control}
-              render={({ field }) => (
-                <StatusSelect
-                  value={field.value}
-                  onChange={(value) => {
-                    setValue("status", value);
-                    setSearchParams((searchParams) => {
-                      searchParams.set("status", value);
-                      searchParams.set("page", "1");
-                      return searchParams;
-                    });
-                  }}
-                  options={[
-                    {
-                      id: statusMap["notAccepted"],
-                      label: t("status.notAccepted"),
-                      count: 16,
-                      color: "var(--mui-palette-Grey_1)",
-                    },
-                    {
-                      id: statusMap["accepted"],
-                      label: t("status.accepted"),
-                      count: 5,
-                      color: "var(--mui-palette-Blue)",
-                    },
-                    {
-                      id: statusMap["canceled"],
-                      label: t("status.canceled"),
-                      count: 2,
-                      color: "var(--mui-palette-Red)",
-                    },
-                    {
-                      id: statusMap["archive"],
-                      label: t("status.archive"),
-                      count: 2,
-                      color: "var(--mui-palette-Grey_2)",
-                    },
-                  ]}
-                />
-              )}
+            <StatusSelect
+              value={filter}
+              onChange={(value) => {
+                setFilter(value as typeof filter);
+              }}
+              options={[
+                ...(loaderData.filteredAssignments.new.length > 0
+                  ? [
+                      {
+                        id: statusCodeMap[
+                          statusValueMap.new as keyof typeof statusCodeMap
+                        ].value,
+                        label: t("status.new"),
+                        count: loaderData.filteredAssignments.new.length,
+                        color:
+                          statusCodeMap[
+                            statusValueMap.new as keyof typeof statusCodeMap
+                          ].color,
+                      },
+                    ]
+                  : []),
+                ...(loaderData.filteredAssignments.accepted.length > 0
+                  ? [
+                      {
+                        id: statusCodeMap[
+                          statusValueMap.accepted as keyof typeof statusCodeMap
+                        ].value,
+                        label: t("status.accepted"),
+                        count: loaderData.filteredAssignments.accepted.length,
+                        color:
+                          statusCodeMap[
+                            statusValueMap.accepted as keyof typeof statusCodeMap
+                          ].color,
+                      },
+                    ]
+                  : []),
+                ...(loaderData.filteredAssignments.canceled.length > 0
+                  ? [
+                      {
+                        id: statusCodeMap[
+                          statusValueMap.canceled as keyof typeof statusCodeMap
+                        ].value,
+                        label: t("status.canceled"),
+                        count: loaderData.filteredAssignments.canceled.length,
+                        color:
+                          statusCodeMap[
+                            statusValueMap.canceled as keyof typeof statusCodeMap
+                          ].color,
+                      },
+                    ]
+                  : []),
+                ...(loaderData.filteredAssignments.archive.length > 0
+                  ? [
+                      {
+                        id: statusCodeMap[
+                          statusValueMap.archive as keyof typeof statusCodeMap
+                        ].value,
+                        label: t("status.archive"),
+                        count: loaderData.filteredAssignments.archive.length,
+                        color:
+                          statusCodeMap[
+                            statusValueMap.archive as keyof typeof statusCodeMap
+                          ].color,
+                      },
+                    ]
+                  : []),
+              ]}
             />
 
             {!showMap ? (
-              <Controller
-                name="sorting"
-                control={control}
-                render={({ field }) => (
-                  <StyledDropdown
-                    options={[
-                      {
-                        value: "",
-                        label: t("sorting.placeholder"),
-                        disabled: true,
-                      },
-                      {
-                        value: sortMap.ascending,
-                        label: t("sorting.ascending"),
-                        disabled: false,
-                      },
-                      {
-                        value: sortMap.descending,
-                        label: t("sorting.descending"),
-                        disabled: false,
-                      },
-                    ]}
-                    {...field}
-                    onChange={(evt) => {
-                      field.onChange(evt);
-
-                      setSearchParams((searchParams) => {
-                        searchParams.set("sort", evt.target.value);
-                        searchParams.set("page", "1");
-                        return searchParams;
-                      });
-                    }}
-                  />
-                )}
+              <SortingSelect
+                value={sorting}
+                options={[
+                  {
+                    id: "ascending",
+                    label: t("sorting.ascending"),
+                  },
+                  {
+                    id: "descending",
+                    label: t("sorting.descending"),
+                  },
+                ]}
+                onChange={(value) => {
+                  setSorting(value as typeof sorting);
+                }}
               />
             ) : null}
           </Box>
@@ -350,7 +393,7 @@ export default function Assignments({ loaderData }: Route.ComponentProps) {
                 paddingBottom: "16px",
               }}
             >
-              {loaderData.assignments.map((item) => (
+              {activeAssignments.map((item) => (
                 <AssignmentCard
                   key={item.id}
                   to={`/assignments/${item.id}`}
@@ -432,14 +475,8 @@ export default function Assignments({ loaderData }: Route.ComponentProps) {
 
       {(!showMap && userRole === "admin") ||
       (!showMap && userRole === "client") ||
-      (loaderData.assignments.length === 0 &&
-        userRole === "admin" &&
-        !loaderData.sort &&
-        !loaderData.status) ||
-      (loaderData.assignments.length === 0 &&
-        userRole === "client" &&
-        !loaderData.sort &&
-        !loaderData.status) ? (
+      (activeAssignments.length === 0 && userRole === "admin") ||
+      (activeAssignments.length === 0 && userRole === "client") ? (
         <Fab
           component={Link}
           to={withLocale("/new-assignment")}

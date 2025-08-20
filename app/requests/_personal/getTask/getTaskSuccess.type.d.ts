@@ -10,11 +10,6 @@ export interface GetTaskSuccess {
     id: number;
     selfEmployed: boolean;
     status: 1 | 2 | 3 | 4 | 5;
-    project: {
-      id: number;
-      name: string;
-      brand: unknown[];
-    }[];
     place: {
       id: number;
       name: string;
@@ -33,25 +28,36 @@ export interface GetTaskSuccess {
         description: string;
       };
     };
+    project: {
+      id: number;
+      name: string;
+      brand: {
+        id: number;
+        name: string;
+        logo: string;
+        description: string;
+      }[];
+    };
     user: {
       id: number;
       phone: number;
       email: string;
       logo: string;
+      roles: {
+        id: number;
+        name: string;
+      }[];
     };
-    acceptUser: {
+    acceptUser: null | {
       id: number;
       phone: number;
       email: string;
       logo: string;
     };
-    price: string;
-    income: string;
-    scopeOfServices: string;
     orderActivities: {
       id: number;
       viewActivity: {
-        id?: number;
+        id: number;
         name: string;
         detailName: string;
         previewText: string;
@@ -79,7 +85,7 @@ export interface GetTaskSuccess {
           brand: {
             id: number;
             name: string;
-            logo?: null | string;
+            logo: null | string;
             description: string;
           };
         }[];
@@ -90,6 +96,16 @@ export interface GetTaskSuccess {
       phone: number;
       email: string;
       logo: string;
+      roles: {
+        id: number;
+        name:
+          | "admin"
+          | "client"
+          | "manager"
+          | "recruiter"
+          | "specialist"
+          | "supervisor";
+      }[];
     }[];
   };
 }
