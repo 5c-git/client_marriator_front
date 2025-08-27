@@ -81,5 +81,11 @@ export interface GetOrderSuccess {
         }[];
       }[];
     }[];
+    acceptUser: null | {
+      id: number;
+      phone: number;
+      email: string;
+      logo: string;
+    };
   };
 }

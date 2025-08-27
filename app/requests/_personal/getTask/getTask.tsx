@@ -4,8 +4,8 @@ import addFormats from "ajv-formats";
 
 import getTaskSuccess from "./getTaskSuccess.schema.json";
 import { GetTaskSuccess } from "./getTaskSuccess.type";
-import getTaskError from "./getTaskError.schema.json";
-import { GetTaskError } from "./getTaskError.type";
+// import getTaskError from "./getTaskError.schema.json";
+// import { GetTaskError } from "./getTaskError.type";
 
 import { UnxpectedError } from "~/shared/unexpectedError/unexpectedError";
 
@@ -13,7 +13,7 @@ const ajv = new Ajv();
 addFormats(ajv);
 
 const validateSuccess = ajv.compile(getTaskSuccess);
-const validateError = ajv.compile(getTaskError);
+// const validateError = ajv.compile(getTaskError);
 
 export const getTaskKeys = ["getTask"];
 

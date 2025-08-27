@@ -69,10 +69,11 @@ export const TopNavigation = (props: TopNavigationProps) => {
           <Button
             onClick={props.buttonAction.action}
             sx={{
+              minWidth: "unset",
               width: "auto",
               marginLeft: "auto",
-              paddingTop: "6px",
-              paddingBottom: "6px",
+              paddingTop: "4px",
+              paddingBottom: "4px",
               columnGap: "10px",
             }}
           >

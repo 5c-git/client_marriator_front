@@ -111,11 +111,18 @@ export async function clientAction({
 }: Route.ClientActionArgs) {
   const fields = await request.json();
   const accessToken = useStore.getState().accessToken;
+  const currentURL = new URL(request.url);
+
+  const edit = currentURL.searchParams.get("edit");
 
   if (accessToken) {
     await postCreateOrderActivity(accessToken, fields);
 
-    throw redirect(withLocale(`/new-assignment?orderId=${params.orderId}`));
+    if (edit) {
+      throw redirect(withLocale(`/assignments/${params.orderId}`));
+    } else {
+      throw redirect(withLocale(`/new-assignment?orderId=${params.orderId}`));
+    }
   } else {
     throw new Response("Токен авторизации не обнаружен!", { status: 401 });
   }
@@ -243,12 +250,7 @@ export default function NewService({ loaderData }: Route.ComponentProps) {
           bold: false,
         }}
         backAction={() => {
-          navigate(
-            withLocale(`/new-assignment?orderId=${loaderData.orderId}`),
-            {
-              viewTransition: true,
-            }
-          );
+          navigate(-1);
         }}
       />
       <Box
@@ -629,7 +631,6 @@ export default function NewService({ loaderData }: Route.ComponentProps) {
 
                           <IconButton
                             onClick={() => {
-                              debugger;
                               const currentList = getValues(
                                 `days.${index}.locations`
                               );

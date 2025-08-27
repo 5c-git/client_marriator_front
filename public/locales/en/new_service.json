@@ -25,5 +25,11 @@
   "addAddressButton": "Add location",
   "addSelectedAddressButton": "Add selected",
   "cancelButton": "Cancel",
-  "saveButton": "Save"
+  "saveButton": "Save",
+  "startDate": "Start date",
+  "endDate": "End date",
+  "startTime": "Start time",
+  "endTime": "End time",
+  "addDayButton": "Add day",
+  "deleteDayButton": "Delete day"
 }

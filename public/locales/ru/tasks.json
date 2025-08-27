@@ -12,5 +12,15 @@
     "descending": "По убыванию начала оказания услуг"
   },
   "emptyHeaderCreate": "Задач пока нет. Создайте первое!",
-  "emptyHeader": "Задач пока нет."
+  "emptyHeader": "Задач пока нет.",
+  "cardHeader": "Услуг",
+  "cancelTaskButton": "Отменить задачу",
+  "repeatTaskButton": "Повторить задачу",
+  "dialog": {
+    "cancel": "Отменить",
+    "repeat": "Повторить",
+    "title": "задачу",
+    "no": "Нет",
+    "yes": "Да"
+  }
 }

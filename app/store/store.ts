@@ -13,6 +13,7 @@ type State = {
     | "client"
     | "specialist"
     | "recruiter";
+  userId: null | number;
 
   setUserEmail: (newUserEmail: string) => void;
   setUserPhone: (newUserPhone: string) => void;
@@ -25,11 +26,13 @@ type State = {
       | "specialist"
       | "recruiter"
   ) => void;
+  setUserId: (newUserId: number) => void;
   setAccessToken: (accessToken: string) => void;
   setRefreshToken: (refreshToken: string) => void;
 
   removeUserEmail: () => void;
   removeUserPhone: () => void;
+  removeUserId: () => void;
   removeAccessToken: () => void;
   removeRefreshToken: () => void;
 
@@ -44,10 +47,12 @@ export const useStore = create<State>()(
       accessToken: null,
       refreshToken: null,
       userRole: "specialist",
+      userId: null,
 
       setUserEmail: (newUserEmail) => set({ userEmail: newUserEmail }),
       setUserPhone: (newUserPhone) => set({ userPhone: newUserPhone }),
       setUserRole: (newUserRole) => set({ userRole: newUserRole }),
+      setUserId: (newUserId) => set({ userId: newUserId }),
       setAccessToken: (newAccessToken) => set({ accessToken: newAccessToken }),
       setRefreshToken: (newRefreshToken) =>
         set({ refreshToken: newRefreshToken }),
@@ -55,6 +60,7 @@ export const useStore = create<State>()(
       removeUserEmail: () => set({ userEmail: null }),
       removeUserPhone: () => set({ userPhone: null }),
       removeUserRole: () => set({ userRole: "specialist" }),
+      removeUserId: () => set({ userId: null }),
       removeAccessToken: () => set({ accessToken: null }),
       removeRefreshToken: () => set({ refreshToken: null }),
 
@@ -63,6 +69,7 @@ export const useStore = create<State>()(
           userEmail: null,
           userPhone: null,
           userRole: "specialist",
+          userId: null,
           accessToken: null,
           refreshToken: null,
         }),

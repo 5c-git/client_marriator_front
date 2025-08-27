@@ -176,7 +176,6 @@ export default function NewAssignment({ loaderData }: Route.ComponentProps) {
     reset,
     getValues,
     formState: { errors },
-    watch,
   } = useForm({
     defaultValues: {
       location:

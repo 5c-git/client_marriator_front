@@ -63,7 +63,8 @@ export const mockResponseSuccess = {};
 export const mockResponseSuccessManager = {
   result: {
     userData: {
-      id: 286,
+      // id: 286,
+      id: 253,
       name: "\u041f\u041c\u0447\u0438\u043a",
       email: "manager@test.ru",
       email_verified_at: null,

@@ -4,8 +4,8 @@ import addFormats from "ajv-formats";
 
 import getOrderSuccess from "./getOrderSuccess.schema.json";
 import { GetOrderSuccess } from "./getOrderSuccess.type";
-import getOrderError from "./getOrderError.schema.json";
-import { GetOrderError } from "./getOrderError.type";
+// import getOrderError from "./getOrderError.schema.json";
+// import { GetOrderError } from "./getOrderError.type";
 
 import { UnxpectedError } from "~/shared/unexpectedError/unexpectedError";
 
@@ -13,7 +13,7 @@ const ajv = new Ajv();
 addFormats(ajv);
 
 const validateSuccess = ajv.compile(getOrderSuccess);
-const validateError = ajv.compile(getOrderError);
+// const validateError = ajv.compile(getOrderError);
 
 export const getOrderKeys = ["getOrder"];
 

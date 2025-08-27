@@ -1,0 +1,394 @@
+{
+  "$id": "postUpdateTaskActivitySuccess",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "postUpdateTaskActivitySuccess",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "data": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "type": "number"
+        },
+        "selfEmployed": {
+          "type": "boolean"
+        },
+        "status": {
+          "enum": [1, 2, 3, 4, 5]
+        },
+        "place": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "id": {
+              "type": "number"
+            },
+            "name": {
+              "type": "string"
+            },
+            "latitude": {
+              "type": "string"
+            },
+            "longitude": {
+              "type": "string"
+            },
+            "address_kladr": {
+              "type": "string"
+            },
+            "logo": {
+              "type": "string"
+            },
+            "region": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "id": {
+                  "type": "number"
+                },
+                "name": {
+                  "type": "string"
+                }
+              },
+              "required": ["id", "name"]
+            },
+            "brand": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "id": {
+                  "type": "number"
+                },
+                "name": {
+                  "type": "string"
+                },
+                "logo": {
+                  "type": "string"
+                },
+                "description": {
+                  "type": "string"
+                }
+              },
+              "required": ["id", "name", "logo", "description"]
+            }
+          },
+          "required": [
+            "id",
+            "name",
+            "latitude",
+            "longitude",
+            "address_kladr",
+            "logo",
+            "region",
+            "brand"
+          ]
+        },
+        "project": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "id": {
+              "type": "number"
+            },
+            "name": {
+              "type": "string"
+            },
+            "brand": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "id": {
+                    "type": "number"
+                  },
+                  "name": {
+                    "type": "string"
+                  },
+                  "logo": {
+                    "type": "string"
+                  },
+                  "description": {
+                    "type": "string"
+                  }
+                },
+                "required": ["id", "name", "logo", "description"]
+              }
+            }
+          },
+          "required": ["id", "name", "brand"]
+        },
+        "user": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "id": {
+              "type": "number"
+            },
+            "phone": {
+              "type": "number"
+            },
+            "email": {
+              "type": "string"
+            },
+            "logo": {
+              "type": "string"
+            },
+            "roles": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "id": {
+                    "type": "number"
+                  },
+                  "name": {
+                    "type": "string"
+                  }
+                },
+                "required": ["id", "name"]
+              }
+            }
+          },
+          "required": ["id", "phone", "email", "logo", "roles"]
+        },
+        "acceptUser": {
+          "type": ["null", "object"],
+          "additionalProperties": false,
+          "properties": {
+            "id": {
+              "type": "number"
+            },
+            "phone": {
+              "type": "number"
+            },
+            "email": {
+              "type": "string"
+            },
+            "logo": {
+              "type": "string"
+            },
+            "roles": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "id": {
+                    "type": "number"
+                  },
+                  "name": {
+                    "type": "string"
+                  }
+                },
+                "required": ["id", "name"]
+              }
+            }
+          },
+          "required": ["id", "phone", "email", "logo", "roles"]
+        },
+        "orderActivities": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "id": {
+                "type": "number"
+              },
+              "viewActivity": {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "id": {
+                    "type": "number"
+                  },
+                  "name": {
+                    "type": "string"
+                  },
+                  "detailName": {
+                    "type": "string"
+                  },
+                  "previewText": {
+                    "type": "string"
+                  },
+                  "logo": {
+                    "type": "string"
+                  },
+                  "traveling": {
+                    "type": "boolean"
+                  }
+                },
+                "required": [
+                  "id",
+                  "name",
+                  "detailName",
+                  "previewText",
+                  "logo",
+                  "traveling"
+                ]
+              },
+              "count": {
+                "type": "number"
+              },
+              "dateStart": {
+                "type": "string"
+              },
+              "dateEnd": {
+                "type": "string"
+              },
+              "needFoto": {
+                "type": "boolean"
+              },
+              "dateActivity": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                    "timeStart": {
+                      "type": "string"
+                    },
+                    "timeEnd": {
+                      "type": "string"
+                    },
+                    "places": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "additionalProperties": false,
+                        "properties": {
+                          "id": {
+                            "type": "number"
+                          },
+                          "name": {
+                            "type": "string"
+                          },
+                          "latitude": {
+                            "type": "string"
+                          },
+                          "longitude": {
+                            "type": "string"
+                          },
+                          "address_kladr": {
+                            "type": "string"
+                          },
+                          "logo": {
+                            "type": ["null", "string"]
+                          },
+                          "region": {
+                            "type": "object",
+                            "additionalProperties": false,
+                            "properties": {
+                              "id": {
+                                "type": "number"
+                              },
+                              "name": {
+                                "type": "string"
+                              }
+                            },
+                            "required": ["id", "name"]
+                          },
+                          "brand": {
+                            "type": "object",
+                            "additionalProperties": false,
+                            "properties": {
+                              "id": {
+                                "type": "number"
+                              },
+                              "name": {
+                                "type": "string"
+                              },
+                              "logo": {
+                                "type": ["null", "string"]
+                              },
+                              "description": {
+                                "type": "string"
+                              }
+                            },
+                            "required": ["id", "name", "logo", "description"]
+                          }
+                        },
+                        "required": [
+                          "id",
+                          "name",
+                          "latitude",
+                          "longitude",
+                          "address_kladr",
+                          "region",
+                          "brand"
+                        ]
+                      }
+                    }
+                  },
+                  "required": ["timeStart", "timeEnd", "places"]
+                }
+              }
+            },
+            "required": [
+              "id",
+              "viewActivity",
+              "count",
+              "dateStart",
+              "dateEnd",
+              "needFoto",
+              "dateActivity"
+            ]
+          }
+        },
+        "acceptedUser": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "id": {
+                "type": "number"
+              },
+              "phone": {
+                "type": "number"
+              },
+              "email": {
+                "type": "string"
+              },
+              "logo": {
+                "type": "string"
+              },
+              "roles": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                    "id": {
+                      "type": "number"
+                    },
+                    "name": {
+                      "type": "string"
+                    }
+                  },
+                  "required": ["id", "name"]
+                }
+              }
+            },
+            "required": ["id", "phone", "email", "logo", "roles"]
+          }
+        }
+      },
+      "required": [
+        "id",
+        "selfEmployed",
+        "status",
+        "place",
+        "project",
+        "user",
+        "acceptUser",
+        "orderActivities",
+        "acceptedUser"
+      ]
+    }
+  },
+  "required": ["data"]
+}

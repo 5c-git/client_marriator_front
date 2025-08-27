@@ -19,5 +19,11 @@
     "title": "Remove service",
     "no": "No",
     "yes": "Yes"
-  }
+  },
+  "startDate": "Start date",
+  "endDate": "End date",
+  "startTime": "Start time",
+  "endTime": "End time",
+  "addDayButton": "Add day",
+  "deleteDayButton": "Delete day"
 }

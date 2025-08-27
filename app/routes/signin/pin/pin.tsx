@@ -45,9 +45,10 @@ export async function clientAction({ request }: Route.ClientActionArgs) {
         useStore.getState().setRefreshToken(data.result.token.refresh_token);
 
         //getting and saving userRole
-        const roleData = await getUserInfo(data.result.token.access_token);
-        const currentRole = determineRole(roleData.result.userData.roles);
+        const userData = await getUserInfo(data.result.token.access_token);
+        const currentRole = determineRole(userData.result.userData.roles);
         useStore.getState().setUserRole(currentRole);
+        useStore.getState().setUserId(userData.result.userData.id);
         //getting and saving userRole
 
         throw redirect(withLocale("/"));

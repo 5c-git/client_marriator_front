@@ -61,6 +61,8 @@ import new_assignment from "../../public/locales/ru/new_assignment.json";
 import new_service from "../../public/locales/ru/new_service.json";
 import tasks from "../../public/locales/ru/tasks.json";
 import new_task from "../../public/locales/ru/new_task.json";
+import assignment from "../../public/locales/ru/assignment.json";
+import task from "../../public/locales/ru/task.json";
 
 //internal
 
@@ -139,8 +141,10 @@ declare module "i18next" {
       users_select_locations: typeof users_select_locations;
 
       assignments: typeof assignments;
+      assignment: typeof assignment;
       new_assignment: typeof new_assignment;
       new_service: typeof new_service;
+      task: typeof task;
 
       tasks: typeof tasks;
       new_task: typeof new_task;

@@ -84,41 +84,6 @@
             "brand"
           ]
         },
-        "project": {
-          "type": "object",
-          "additionalProperties": false,
-          "properties": {
-            "id": {
-              "type": "number"
-            },
-            "name": {
-              "type": "string"
-            },
-            "brand": {
-              "type": "array",
-              "items": {
-                "type": "object",
-                "additionalProperties": false,
-                "properties": {
-                  "id": {
-                    "type": "number"
-                  },
-                  "name": {
-                    "type": "string"
-                  },
-                  "logo": {
-                    "type": "string"
-                  },
-                  "description": {
-                    "type": "string"
-                  }
-                },
-                "required": ["id", "name", "logo", "description"]
-              }
-            }
-          },
-          "required": ["id", "name", "brand"]
-        },
         "user": {
           "type": "object",
           "additionalProperties": false,
@@ -153,25 +118,6 @@
             }
           },
           "required": ["id", "phone", "email", "logo", "roles"]
-        },
-        "acceptUser": {
-          "type": ["null", "object"],
-          "additionalProperties": false,
-          "properties": {
-            "id": {
-              "type": "number"
-            },
-            "phone": {
-              "type": "number"
-            },
-            "email": {
-              "type": "string"
-            },
-            "logo": {
-              "type": "string"
-            }
-          },
-          "required": ["id", "phone", "email", "logo"]
         },
         "orderActivities": {
           "type": "array",
@@ -321,28 +267,6 @@
               "dateActivity"
             ]
           }
-        },
-        "acceptedUser": {
-          "type": "array",
-          "items": {
-            "type": "object",
-            "additionalProperties": false,
-            "properties": {
-              "id": {
-                "type": "number"
-              },
-              "phone": {
-                "type": "number"
-              },
-              "email": {
-                "type": "string"
-              },
-              "logo": {
-                "type": "string"
-              }
-            },
-            "required": ["id", "phone", "email", "logo"]
-          }
         }
       },
       "required": [
@@ -350,11 +274,8 @@
         "selfEmployed",
         "status",
         "place",
-        "project",
         "user",
-        "acceptUser",
-        "orderActivities",
-        "acceptedUser"
+        "orderActivities"
       ]
     }
   },

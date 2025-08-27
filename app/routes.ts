@@ -1,9 +1,4 @@
-import {
-  type RouteConfig,
-  route,
-  layout,
-  index,
-} from "@react-router/dev/routes";
+import { type RouteConfig, route, layout } from "@react-router/dev/routes";
 
 export default [
   // index("routes/pigment/pigment.tsx"),
@@ -17,6 +12,12 @@ export default [
         route(":lang?/requests", "routes/requests/requests.tsx"),
         route(":lang?/missions", "routes/missions/missions.tsx"),
       ]),
+
+      route(":lang?/tasks/:taskId", "routes/tasks/task/task.tsx"),
+      route(
+        ":lang?/requests/:requestId",
+        "routes/requests/request/request.tsx"
+      ),
 
       route(
         ":lang?/registration/registration-complete",
@@ -179,6 +180,19 @@ export default [
     route(
       ":lang?/new-task/:taskId/new-service",
       "routes/new-task/new-service/new-service.tsx"
+    ),
+
+    route(
+      ":lang?/assignments/:orderId",
+      "routes/assignments/assignment/assignment.tsx"
+    ),
+    route(
+      ":lang?/assignments/:orderId/edit-service/:activityId",
+      "routes/assignments/assignment/edit-service/edit-service.tsx"
+    ),
+    route(
+      ":lang?/tasks/:taskId/edit-service/:activityId",
+      "routes/tasks/task/edit-service/edit-service.tsx"
     ),
 
     route(":lang?/offline", "routes/offline/offline.tsx"),

@@ -28,16 +28,6 @@ export interface PostDeleteOrderActivitySuccess {
         description: string;
       };
     };
-    project: {
-      id: number;
-      name: string;
-      brand: {
-        id: number;
-        name: string;
-        logo: string;
-        description: string;
-      }[];
-    };
     user: {
       id: number;
       phone: number;
@@ -47,12 +37,6 @@ export interface PostDeleteOrderActivitySuccess {
         id: number;
         name: string;
       }[];
-    };
-    acceptUser: null | {
-      id: number;
-      phone: number;
-      email: string;
-      logo: string;
     };
     orderActivities: {
       id: number;
@@ -90,12 +74,6 @@ export interface PostDeleteOrderActivitySuccess {
           };
         }[];
       }[];
-    }[];
-    acceptedUser: {
-      id: number;
-      phone: number;
-      email: string;
-      logo: string;
     }[];
   };
 }
