@@ -104,7 +104,7 @@ export const mockResponseSuccessManager = {
       roles: [
         {
           id: 3,
-          name: "client",
+          name: "manager",
         },
       ],
     },

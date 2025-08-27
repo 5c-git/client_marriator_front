@@ -8,38 +8,62 @@
 export interface GetBidsSuccess {
   data: {
     id: number;
+    user: {
+      id: number;
+      phone: number;
+      email: string;
+      logo: string;
+      roles: {
+        id: number;
+        name:
+          | "admin"
+          | "client"
+          | "manager"
+          | "recruiter"
+          | "specialist"
+          | "supervisor";
+      }[];
+    };
+    acceptUserId: null | {
+      id: number;
+      phone: number;
+      email: string;
+      logo: string;
+    };
+    status: 1 | 2 | 3 | 4 | 5;
+    selfEmployed: boolean;
     place: {
       id: number;
       name: string;
       latitude: string;
       longitude: string;
       address_kladr: string;
-      logo: null | string;
+      logo: string;
       region: {
         id: number;
         name: string;
       };
-      brand: null | {
+      brand: {
         id: number;
         name: string;
         logo: string;
         description: string;
       };
     };
-    selfEmployed: boolean;
-    status: 1 | 2 | 3 | 4 | 5;
+    radius: null;
+    price: null;
+    priceResult: number;
+    viewActivity: {
+      id: number;
+      name: string;
+      detailName: string;
+      previewText: string;
+      logo: string;
+      traveling: boolean;
+    };
+    date_start: string;
+    date_end: string;
+    need_foto: boolean;
+    date_activity: unknown[];
   }[];
-  links?: {
-    first: null | string;
-    last: null | string;
-    prev: null | string;
-    next: null | string;
-  };
-  meta?: {
-    current_page: number;
-    from: number;
-    path: string;
-    per_page: number;
-    to: number;
-  };
 }

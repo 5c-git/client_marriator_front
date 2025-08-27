@@ -47,8 +47,6 @@ export const getBid = async (
       throw new Response(`Данные запроса getBid не валидны схеме`);
     }
 
-    // const data = response as unknown as GetBidsSuccess;
-
     return data;
   } catch (error) {
     if (error instanceof Response) {
