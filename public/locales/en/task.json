@@ -1,0 +1,26 @@
+{
+  "header": "Task",
+  "activities": "Activities",
+  "activityAmount": "Amount:",
+  "statusPlaceholder": "Status",
+  "locationPlaceholder": "Location",
+  "projectPlaceholder": "Project",
+  "responsiblePlaceholder": "Responsible",
+  "responsiblePhonePlaceholder": "Phone",
+  "route": "Route: {{count}} locations",
+  "status": {
+    "new": "New",
+    "accepted": "Accepted",
+    "notAccepted": "Not accepted",
+    "canceled": "Cancelled",
+    "archive": "Archived"
+  },
+  "serviceButton": "Add activity",
+  "cancelButton": "Cancel",
+  "sendButton": "Save",
+  "dialog": {
+    "title": "Delete",
+    "no": "No",
+    "yes": "Yes"
+  }
+}

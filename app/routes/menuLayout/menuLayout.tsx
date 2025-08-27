@@ -9,48 +9,30 @@ import { WalletIcon } from "~/shared/ui/Menu/icons/WalletIcon";
 import { ProfileIcon } from "~/shared/ui/Menu/icons/ProfileIcon";
 import { UsersIcon } from "~/shared/ui/Menu/icons/UsersIcon";
 
-import { queryClient } from "~/shared/queryClient";
 import { useStore } from "~/store/store";
-import {
-  getUserInfo,
-  getUserInfoKeys,
-} from "~/requests/_personal/getUserInfo/getUserInfo";
-
-const setUserRole = useStore.getState().setUserRole;
-
-const determineRole = (
-  roles: {
-    id: number;
-    name: "admin" | "manager" | "client" | "recruiter";
-  }[]
-) => {
-  let role: "admin" | "manager" | "client" | "recruiter" | "specialist" =
-    "specialist";
-
-  const rolePoints = {
-    admin: 10,
-    manager: 8,
-    client: 6,
-    recruiter: 4,
-    specialist: 2,
-  };
-
-  let currentPoints = 2;
-
-  roles.forEach((item) => {
-    if (rolePoints[item.name] > currentPoints) {
-      currentPoints = rolePoints[item.name];
-      role = item.name;
-    }
-  });
-
-  setUserRole(role);
-
-  return role;
-};
 
 const linksMap = {
   admin: [
+    {
+      to: "/",
+      notification: false,
+      disabled: false,
+      icon: <ListIcon sx={{ width: "30px", height: "30px" }} />,
+    },
+    {
+      to: "/users",
+      notification: false,
+      disabled: false,
+      icon: <UsersIcon sx={{ width: "30px", height: "30px" }} />,
+    },
+    {
+      to: "/profile",
+      notification: false,
+      disabled: false,
+      icon: <ProfileIcon sx={{ width: "30px", height: "30px" }} />,
+    },
+  ],
+  supervisor: [
     {
       to: "/",
       notification: false,
@@ -156,15 +138,9 @@ export async function clientLoader() {
   const accessToken = useStore.getState().accessToken;
 
   if (accessToken) {
-    const data = await queryClient.fetchQuery({
-      queryKey: [getUserInfoKeys[0]],
-      queryFn: () => getUserInfo(accessToken),
-      staleTime: 60000,
-    });
+    const userRole = useStore.getState().userRole;
 
-    const currentRole = determineRole(data.result.userData.roles);
-
-    return linksMap[currentRole];
+    return linksMap[userRole];
   } else {
     throw new Response("Токен авторизации не обнаружен!", { status: 401 });
   }

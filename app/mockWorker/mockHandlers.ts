@@ -78,6 +78,15 @@ import { postInvoiceTaskMockResponse } from "~/requests/_personal/postInvoiceTas
 import { postInstructTaskMockResponse } from "~/requests/_personal/postInstructTask/postInstructTask";
 import { getViewActivitiesForTaskMockResponse } from "~/requests/_personal/getViewActivitiesForTask/getViewActivitiesForTask";
 import { postCreateTaskActivityMockResponse } from "~/requests/_personal/postCreateTaskActivity/postCreateTaskActivity";
+import { getSupervisorsMockResponse } from "~/requests/_personal/_moderation/getSupervisors/getSupervisors";
+import { postSetSupervisorsMockResponse } from "~/requests/_personal/_moderation/postSetSupervisors/postSetSupervisors";
+import { postDelSupervisorMockResponse } from "~/requests/_personal/_moderation/postDelSupervisor/postDelSupervisor";
+import { getBidsMockResponse } from "~/requests/_personal/getBids/getBids";
+import { getBidMockResponse } from "~/requests/_personal/getBid/getBid";
+import { postRepeatOrderMockResponse } from "~/requests/_personal/postRepeatOrder/postRepeatOrder";
+import { postRepeatTaskMockResponse } from "~/requests/_personal/postRepeatTask/postRepeatTask";
+import { postUpdateOrderActivityMockResponse } from "~/requests/_personal/postUpdateOrderActivity/postUpdateOrderActivity";
+import { postUpdateTaskActivityMockResponse } from "~/requests/_personal/postUpdateTaskActivity/postUpdateTaskActivity";
 
 export const handlers = [
   getFormMockResponse,
@@ -156,4 +165,13 @@ export const handlers = [
   postInstructTaskMockResponse,
   getViewActivitiesForTaskMockResponse,
   postCreateTaskActivityMockResponse,
+  getSupervisorsMockResponse,
+  postSetSupervisorsMockResponse,
+  postDelSupervisorMockResponse,
+  getBidsMockResponse,
+  getBidMockResponse,
+  postRepeatOrderMockResponse,
+  postRepeatTaskMockResponse,
+  postUpdateOrderActivityMockResponse,
+  postUpdateTaskActivityMockResponse,
 ];

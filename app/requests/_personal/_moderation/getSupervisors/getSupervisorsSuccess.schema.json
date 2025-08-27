@@ -1,0 +1,57 @@
+{
+  "$id": "getSupervisorsSuccess",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "getSupervisorsSuccess",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "data": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "number"
+          },
+          "phone": {
+            "type": "number"
+          },
+          "email": {
+            "type": "string"
+          },
+          "logo": {
+            "type": ["null", "string"]
+          },
+          "roles": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "id": {
+                  "type": "number",
+                  "minimum": 1,
+                  "maximum": 6
+                },
+                "name": {
+                  "enum": [
+                    "admin",
+                    "client",
+                    "manager",
+                    "recruiter",
+                    "specialist",
+                    "supervisor"
+                  ]
+                }
+              },
+              "required": ["id", "name"]
+            }
+          }
+        },
+        "required": ["id", "phone", "email", "logo", "roles"]
+      }
+    }
+  },
+  "required": ["data"]
+}

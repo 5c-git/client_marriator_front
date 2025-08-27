@@ -42,12 +42,10 @@ export async function clientAction({ request }: Route.ClientActionArgs) {
     if ("status" in data) {
       if (type && type === "restore") {
         throw redirect(withLocale("/signin/pin"));
-      } else if (userRole) {
-        if (userRole === "recruiter") {
-          throw redirect(withLocale("/signin/client/recruiter"));
-        } else {
-          throw redirect(withLocale("/signin/client/meta"));
-        }
+      } else if (userRole === "recruiter") {
+        throw redirect(withLocale("/signin/client/recruiter"));
+      } else if (userRole !== "specialist") {
+        throw redirect(withLocale("/signin/client/meta"));
       } else {
         throw redirect(withLocale("/registration/step1"));
       }

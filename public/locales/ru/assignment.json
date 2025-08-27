@@ -1,0 +1,25 @@
+{
+  "header": "Поручение",
+  "activities": "Услуги",
+  "activityAmount": "Количество:",
+  "statusPlaceholder": "Статус",
+  "locationPlaceholder": "Место оказания услуг",
+  "responsiblePlaceholder": "Ответственный",
+  "responsiblePhonePlaceholder": "Телефон",
+  "route": "Маршрут: {{count}} точек",
+  "status": {
+    "new": "Новый",
+    "accepted": "Принято",
+    "notAccepted": "Не Принято",
+    "canceled": "Отменено",
+    "archive": "Архив"
+  },
+  "serviceButton": "Добавить услугу",
+  "cancelButton": "Отмена",
+  "sendButton": "Сохранить",
+  "dialog": {
+    "title": "Удалить",
+    "no": "Нет",
+    "yes": "Да"
+  }
+}

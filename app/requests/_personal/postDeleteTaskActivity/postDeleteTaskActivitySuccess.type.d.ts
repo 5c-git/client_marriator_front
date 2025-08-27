@@ -9,7 +9,7 @@ export interface PostDeleteTaskActivitySuccess {
   data: {
     id: number;
     selfEmployed: boolean;
-    status: string;
+    status: 1 | 2 | 3 | 4 | 5;
     place: {
       id: number;
       name: string;
@@ -33,20 +33,37 @@ export interface PostDeleteTaskActivitySuccess {
       phone: number;
       email: string;
       logo: string;
+      roles: {
+        id: number;
+        name:
+          | "admin"
+          | "client"
+          | "manager"
+          | "recruiter"
+          | "specialist"
+          | "supervisor";
+      }[];
     };
-    acceptUser: {
+    project: {
       id: number;
-      phone: number;
-      email: string;
-      logo: string;
+      name: string;
+      brand: {
+        id: number;
+        name: string;
+        logo: string;
+        description: string;
+      }[];
     };
     orderActivities: {
       viewActivity: {
+        id: number;
         name: string;
         detailName: string;
         previewText: string;
         logo: string;
+        traveling: boolean;
       };
+      id: number;
       count: number;
       dateStart: string;
       dateEnd: string;
@@ -74,5 +91,25 @@ export interface PostDeleteTaskActivitySuccess {
         }[];
       }[];
     }[];
+    acceptedUser: {
+      id: number;
+      phone: number;
+      email: string;
+      logo: string;
+      roles: {
+        id: number;
+        name: string;
+      }[];
+    }[];
+    acceptUser: null | {
+      id: number;
+      phone: number;
+      email: string;
+      logo: string;
+      roles: {
+        id: number;
+        name: string;
+      }[];
+    };
   };
 }

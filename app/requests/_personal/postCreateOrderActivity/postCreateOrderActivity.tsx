@@ -18,10 +18,10 @@ export type postCreateOrderActivityPayload = {
   dateStart: string;
   dateEnd: string;
   needFoto: boolean;
-  dateActivity: {
+  dateActivity?: {
     timeStart: string;
     timeEnd: string;
-    placeIds: number[];
+    placeIds?: number[];
   }[];
 };
 
@@ -35,7 +35,7 @@ export const postCreateOrderActivity = async (
     const request = await fetch(url, {
       method: "POST",
       headers: {
-        // "Content-Type": "application/json",
+        "Content-Type": "application/json",
         Authorization: `Bearer ${accessToken}`,
       },
       body: JSON.stringify(payload),

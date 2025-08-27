@@ -16,6 +16,7 @@ import {
   getDate,
   getMonth,
   getDay,
+  compareAsc,
 } from "date-fns";
 
 import Box from "@mui/material/Box";
@@ -56,7 +57,10 @@ import { getPlaceForTask } from "~/requests/_personal/getPlaceForTask/getPlaceFo
 import { postCreateTaskActivity } from "~/requests/_personal/postCreateTaskActivity/postCreateTaskActivity";
 import type { postCreateTaskActivityPayload } from "~/requests/_personal/postCreateTaskActivity/postCreateTaskActivity";
 
-export async function clientLoader({ params }: Route.ClientLoaderArgs) {
+export async function clientLoader({
+  request,
+  params,
+}: Route.ClientLoaderArgs) {
   const accessToken = useStore.getState().accessToken;
 
   const activities: {
@@ -111,11 +115,18 @@ export async function clientAction({
 }: Route.ClientActionArgs) {
   const fields = await request.json();
   const accessToken = useStore.getState().accessToken;
+  const currentURL = new URL(request.url);
+
+  const edit = currentURL.searchParams.get("edit");
 
   if (accessToken) {
     await postCreateTaskActivity(accessToken, fields);
 
-    throw redirect(withLocale(`/new-task?taskId=${params.taskId}`));
+    if (edit) {
+      throw redirect(withLocale(`/tasks/${params.taskId}`));
+    } else {
+      throw redirect(withLocale(`/new-task?taskId=${params.taskId}`));
+    }
   } else {
     throw new Response("Токен авторизации не обнаружен!", { status: 401 });
   }
@@ -157,9 +168,27 @@ export default function NewService({ loaderData }: Route.ComponentProps) {
         amount: Yup.string().required(t("text", { ns: "constructorFields" })),
         dateStart: Yup.date()
           .nullable()
+          .min(new Date(), t("inFututreDate", { ns: "constructorFields" }))
           .required(t("text", { ns: "constructorFields" })),
         dateEnd: Yup.date()
           .nullable()
+          .min(new Date(), t("inFututreDate", { ns: "constructorFields" }))
+          .test(
+            "is-after",
+            t("lessThanStartDate", { ns: "constructorFields" }),
+            (value) => {
+              const result = compareAsc(
+                (value as Date) || null,
+                getValues("dateStart")
+              );
+
+              if (result > 0) {
+                return true;
+              }
+
+              return false;
+            }
+          )
           .required(t("text", { ns: "constructorFields" })),
         needDays: Yup.boolean().required(),
         needFoto: Yup.boolean().required(),
@@ -225,9 +254,7 @@ export default function NewService({ loaderData }: Route.ComponentProps) {
           bold: false,
         }}
         backAction={() => {
-          navigate(withLocale(`/new-task?taskId=${loaderData.taskId}`), {
-            viewTransition: true,
-          });
+          navigate(-1);
         }}
       />
       <Box
@@ -253,29 +280,32 @@ export default function NewService({ loaderData }: Route.ComponentProps) {
               dateStart: dateWithoutTimezone(new Date(values.dateStart)),
               dateEnd: dateWithoutTimezone(new Date(values.dateEnd)),
               needFoto: values.needFoto,
-              dateActivity: (() => {
-                const days: {
-                  timeStart: string;
-                  timeEnd: string;
-                  placeIds: number[];
-                }[] = [];
+              ...(values.days &&
+                values.days.length > 0 && {
+                  dateActivity: (() => {
+                    const days: {
+                      timeStart: string;
+                      timeEnd: string;
+                      placeIds?: number[];
+                    }[] = [];
 
-                values.days?.forEach((day) => {
-                  const places: number[] = [];
+                    values.days?.forEach((day) => {
+                      const places: number[] = [];
 
-                  day.locations?.forEach((location) => {
-                    places.push(Number(location.id));
-                  });
+                      day.locations?.forEach((location) => {
+                        places.push(Number(location.id));
+                      });
 
-                  days.push({
-                    timeStart: dateWithoutTimezone(new Date(day.timeStart)),
-                    timeEnd: dateWithoutTimezone(new Date(day.timeEnd)),
-                    placeIds: places,
-                  });
-                });
+                      days.push({
+                        timeStart: dateWithoutTimezone(new Date(day.timeStart)),
+                        timeEnd: dateWithoutTimezone(new Date(day.timeEnd)),
+                        ...(places.length > 0 && { placeIds: places }),
+                      });
+                    });
 
-                return days;
-              })(),
+                    return days;
+                  })(),
+                }),
             };
 
             submit(JSON.stringify(payload), {
@@ -346,6 +376,7 @@ export default function NewService({ loaderData }: Route.ComponentProps) {
                   variant="filled"
                   label={t("fields.startTimePlaceholder")}
                   helperText={errors.dateStart?.message}
+                  disablePast
                   {...field}
                 />
               </LocalizationProvider>
@@ -365,6 +396,7 @@ export default function NewService({ loaderData }: Route.ComponentProps) {
                   variant="filled"
                   label={t("fields.endTimePlaceholder")}
                   helperText={errors.dateStart?.message}
+                  disablePast
                   {...field}
                 />
               </LocalizationProvider>

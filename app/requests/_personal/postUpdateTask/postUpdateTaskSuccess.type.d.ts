@@ -10,11 +10,6 @@ export interface PostUpdateTaskSuccess {
     id: number;
     selfEmployed: boolean;
     status: 1 | 2 | 3 | 4 | 5;
-    project: {
-      id: number;
-      name: string;
-      brand: unknown[];
-    }[];
     place: {
       id: number;
       name: string;
@@ -33,24 +28,45 @@ export interface PostUpdateTaskSuccess {
         description: string;
       };
     };
+    project: {
+      id: number;
+      name: string;
+      brand: {
+        id: number;
+        name: string;
+        logo: string;
+        description: string;
+      }[];
+    };
     user: {
       id: number;
       phone: number;
       email: string;
       logo: string;
+      roles: {
+        id: number;
+        name: string;
+      }[];
     };
-    acceptUser: {
+    acceptUser: null | {
       id: number;
       phone: number;
       email: string;
       logo: string;
+      roles: {
+        id: number;
+        name: string;
+      }[];
     };
     orderActivities: {
+      id: number;
       viewActivity: {
+        id: number;
         name: string;
         detailName: string;
         previewText: string;
         logo: string;
+        traveling: boolean;
       };
       count: number;
       dateStart: string;
@@ -65,7 +81,7 @@ export interface PostUpdateTaskSuccess {
           latitude: string;
           longitude: string;
           address_kladr: string;
-          logo?: string;
+          logo?: null | string;
           region: {
             id: number;
             name: string;
@@ -73,7 +89,7 @@ export interface PostUpdateTaskSuccess {
           brand: {
             id: number;
             name: string;
-            logo?: string;
+            logo: null | string;
             description: string;
           };
         }[];
@@ -84,6 +100,10 @@ export interface PostUpdateTaskSuccess {
       phone: number;
       email: string;
       logo: string;
+      roles: {
+        id: number;
+        name: string;
+      }[];
     }[];
   };
 }

@@ -1,10 +1,15 @@
 import { LocalizationProvider } from "@mui/x-date-pickers";
 import { TimePicker } from "@mui/x-date-pickers/TimePicker";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
-import { toDate, formatISO } from "date-fns";
+import {
+  // toDate,
+  formatISO,
+} from "date-fns";
 import { ru } from "date-fns/locale/ru";
 
 import { FormControl, FormHelperText } from "@mui/material";
+
+import { UTCDate } from "@date-fns/utc";
 
 type TimeFieldProps = {
   name: string;
@@ -36,7 +41,7 @@ export const TimeField = (props: TimeFieldProps) => (
         enableAccessibleFieldDOMStructure={false}
         ampm={false}
         label={props.placeholder}
-        value={props.value === null ? null : toDate(props.value)}
+        value={props.value === null ? null : new UTCDate(props.value)}
         localeText={localeActionsText}
         minTime={props.minTime}
         maxTime={props.maxTime}

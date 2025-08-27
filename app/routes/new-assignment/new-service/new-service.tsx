@@ -16,6 +16,7 @@ import {
   getDate,
   getMonth,
   getDay,
+  compareAsc,
 } from "date-fns";
 
 import Box from "@mui/material/Box";
@@ -110,11 +111,18 @@ export async function clientAction({
 }: Route.ClientActionArgs) {
   const fields = await request.json();
   const accessToken = useStore.getState().accessToken;
+  const currentURL = new URL(request.url);
+
+  const edit = currentURL.searchParams.get("edit");
 
   if (accessToken) {
     await postCreateOrderActivity(accessToken, fields);
 
-    throw redirect(withLocale(`/new-assignment?orderId=${params.orderId}`));
+    if (edit) {
+      throw redirect(withLocale(`/assignments/${params.orderId}`));
+    } else {
+      throw redirect(withLocale(`/new-assignment?orderId=${params.orderId}`));
+    }
   } else {
     throw new Response("Токен авторизации не обнаружен!", { status: 401 });
   }
@@ -156,9 +164,27 @@ export default function NewService({ loaderData }: Route.ComponentProps) {
         amount: Yup.string().required(t("text", { ns: "constructorFields" })),
         dateStart: Yup.date()
           .nullable()
+          .min(new Date(), t("inFututreDate", { ns: "constructorFields" }))
           .required(t("text", { ns: "constructorFields" })),
         dateEnd: Yup.date()
           .nullable()
+          .min(new Date(), t("inFututreDate", { ns: "constructorFields" }))
+          .test(
+            "is-after",
+            t("lessThanStartDate", { ns: "constructorFields" }),
+            (value) => {
+              const result = compareAsc(
+                (value as Date) || null,
+                getValues("dateStart")
+              );
+
+              if (result > 0) {
+                return true;
+              }
+
+              return false;
+            }
+          )
           .required(t("text", { ns: "constructorFields" })),
         needDays: Yup.boolean().required(),
         needFoto: Yup.boolean().required(),
@@ -224,12 +250,7 @@ export default function NewService({ loaderData }: Route.ComponentProps) {
           bold: false,
         }}
         backAction={() => {
-          navigate(
-            withLocale(`/new-assignment?orderId=${loaderData.orderId}`),
-            {
-              viewTransition: true,
-            }
-          );
+          navigate(-1);
         }}
       />
       <Box
@@ -255,29 +276,32 @@ export default function NewService({ loaderData }: Route.ComponentProps) {
               dateStart: dateWithoutTimezone(new Date(values.dateStart)),
               dateEnd: dateWithoutTimezone(new Date(values.dateEnd)),
               needFoto: values.needFoto,
-              dateActivity: (() => {
-                const days: {
-                  timeStart: string;
-                  timeEnd: string;
-                  placeIds: number[];
-                }[] = [];
+              ...(values.days &&
+                values.days.length > 0 && {
+                  dateActivity: (() => {
+                    const days: {
+                      timeStart: string;
+                      timeEnd: string;
+                      placeIds?: number[];
+                    }[] = [];
 
-                values.days?.forEach((day) => {
-                  const places: number[] = [];
+                    values.days?.forEach((day) => {
+                      const places: number[] = [];
 
-                  day.locations?.forEach((location) => {
-                    places.push(Number(location.id));
-                  });
+                      day.locations?.forEach((location) => {
+                        places.push(Number(location.id));
+                      });
 
-                  days.push({
-                    timeStart: dateWithoutTimezone(new Date(day.timeStart)),
-                    timeEnd: dateWithoutTimezone(new Date(day.timeEnd)),
-                    placeIds: places,
-                  });
-                });
+                      days.push({
+                        timeStart: dateWithoutTimezone(new Date(day.timeStart)),
+                        timeEnd: dateWithoutTimezone(new Date(day.timeEnd)),
+                        ...(places.length > 0 && { placeIds: places }),
+                      });
+                    });
 
-                return days;
-              })(),
+                    return days;
+                  })(),
+                }),
             };
 
             submit(JSON.stringify(payload), {
@@ -364,9 +388,11 @@ export default function NewService({ loaderData }: Route.ComponentProps) {
               >
                 <DateTimeField
                   error={errors.dateEnd?.message ? true : false}
+                  // error={true}
                   variant="filled"
                   label={t("fields.endTimePlaceholder")}
-                  helperText={errors.dateStart?.message}
+                  helperText={errors.dateEnd?.message}
+                  disablePast
                   {...field}
                 />
               </LocalizationProvider>
@@ -605,7 +631,6 @@ export default function NewService({ loaderData }: Route.ComponentProps) {
 
                           <IconButton
                             onClick={() => {
-                              debugger;
                               const currentList = getValues(
                                 `days.${index}.locations`
                               );

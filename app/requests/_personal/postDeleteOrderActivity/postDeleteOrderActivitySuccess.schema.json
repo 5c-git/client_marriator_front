@@ -16,7 +16,7 @@
           "type": "boolean"
         },
         "status": {
-          "type": "string"
+          "enum": [1, 2, 3, 4, 5]
         },
         "place": {
           "type": "object",
@@ -64,7 +64,7 @@
                   "type": "string"
                 },
                 "logo": {
-                  "type": ["null", "string"]
+                  "type": "string"
                 },
                 "description": {
                   "type": "string"
@@ -99,9 +99,25 @@
             },
             "logo": {
               "type": "string"
+            },
+            "roles": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "id": {
+                    "type": "number"
+                  },
+                  "name": {
+                    "type": "string"
+                  }
+                },
+                "required": ["id", "name"]
+              }
             }
           },
-          "required": ["id", "phone", "email", "logo"]
+          "required": ["id", "phone", "email", "logo", "roles"]
         },
         "orderActivities": {
           "type": "array",
@@ -109,10 +125,16 @@
             "type": "object",
             "additionalProperties": false,
             "properties": {
+              "id": {
+                "type": "number"
+              },
               "viewActivity": {
                 "type": "object",
                 "additionalProperties": false,
                 "properties": {
+                  "id": {
+                    "type": "number"
+                  },
                   "name": {
                     "type": "string"
                   },
@@ -124,9 +146,19 @@
                   },
                   "logo": {
                     "type": "string"
+                  },
+                  "traveling": {
+                    "type": "boolean"
                   }
                 },
-                "required": ["name", "detailName", "previewText", "logo"]
+                "required": [
+                  "id",
+                  "name",
+                  "detailName",
+                  "previewText",
+                  "logo",
+                  "traveling"
+                ]
               },
               "count": {
                 "type": "number"
@@ -190,7 +222,7 @@
                             "required": ["id", "name"]
                           },
                           "brand": {
-                            "type": ["null", "object"],
+                            "type": "object",
                             "additionalProperties": false,
                             "properties": {
                               "id": {
@@ -215,7 +247,8 @@
                           "latitude",
                           "longitude",
                           "address_kladr",
-                          "region"
+                          "region",
+                          "brand"
                         ]
                       }
                     }
@@ -225,6 +258,7 @@
               }
             },
             "required": [
+              "id",
               "viewActivity",
               "count",
               "dateStart",

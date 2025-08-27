@@ -68,111 +68,42 @@ export const postDeleteOrderActivity = async (
 // MOCKS
 export const mockResponseSuccess = {
   data: {
-    id: 26,
-    selfEmployed: true,
-    status: "Новый",
+    id: 109,
+    selfEmployed: false,
+    status: 1,
     place: {
-      id: 2,
-      name: "fdfvdvdv",
-      latitude: "21.00000000",
-      longitude: "11.00000000",
-      address_kladr: "dvdvdvdvdv",
-      logo: "/storage/source/directory/brand/1-logo/achievement-1.png",
+      id: 3,
+      name: "\u041f\u044f\u0442\u0451\u0440\u043e\u0447\u043a\u0430 \u041c\u0421\u041a \u0443\u043b. \u0410\u0440\u0431\u0430\u0442 \u0434. 24",
+      latitude: "55.00000000",
+      longitude: "37.00000000",
+      address_kladr:
+        "\u0443\u043b. \u0410\u0440\u0431\u0430\u0442 \u0434. 24  \u0433.\u041c\u043e\u0441\u043a\u0432\u0430",
+      logo: "\/storage\/source\/directory\/brand\/1-logo\/\u041b\u043e\u0433\u043e \u041f\u044f\u0442\u0435\u0440\u043e\u0447\u043a\u0430.png",
       region: {
         id: 2,
-        name: "Москва",
+        name: "\u041c\u043e\u0441\u043a\u0432\u0430",
       },
       brand: {
-        id: 2,
-        name: "vfdv",
-        logo: null,
-        description: "dvdvdvdv",
+        id: 1,
+        name: "\u041f\u044f\u0442\u0451\u0440\u043e\u0447\u043a\u0430",
+        logo: "\/storage\/source\/directory\/brand\/1-logo\/\u041b\u043e\u0433\u043e \u041f\u044f\u0442\u0435\u0440\u043e\u0447\u043a\u0430.png",
+        description:
+          "\u00ab\u041f\u044f\u0442\u0451\u0440\u043e\u0447\u043a\u0430\u00bb \u2014 \u043a\u0440\u0443\u043f\u043d\u0435\u0439\u0448\u0430\u044f \u0442\u043e\u0440\u0433\u043e\u0432\u0430\u044f \u0441\u0435\u0442\u044c \u043c\u0430\u0433\u0430\u0437\u0438\u043d\u043e\u0432 \u00ab\u0443 \u0434\u043e\u043c\u0430\u00bb \u0432 \u0420\u043e\u0441\u0441\u0438\u0438.",
       },
     },
     user: {
-      id: 1,
-      phone: 79152142639,
-      email: "ilyaDevmarriator@gmail.com",
-      logo: "/storage/source/directory/brand/3-logo/about-main-1.jpeg",
-    },
-    orderActivities: [
-      {
-        viewActivity: {
-          name: "Продавец",
-          detailName: "Продавец",
-          previewText:
-            "Кассир магазина,Кассир магазина розничной сети,Мобильный кассир,Продавец прилавка,Продавец прилавка розничной сети,Продавец торгового зала,Продавец торгового зала розничной сети,Кассир общепита",
-          logo: "/storage/source/directory/view_activities/1-img/8c37f333-3b09-4686-9238-dd89e704fbc7-31-Wavebreakmedia-Shutterst.jpg",
+      id: 253,
+      phone: 72222222222,
+      email: "client@gmail.com",
+      logo: "\/storage\/source\/directory\/brand\/1-logo\/\u041b\u043e\u0433\u043e \u041f\u044f\u0442\u0435\u0440\u043e\u0447\u043a\u0430.png",
+      roles: [
+        {
+          id: 2,
+          name: "client",
         },
-        count: 5,
-        dateStart: "2025-05-25T09:00:00.000000Z",
-        dateEnd: "2025-05-25T18:00:00.000000Z",
-        needFoto: true,
-        dateActivity: [
-          {
-            timeStart: "2025-05-25 09:00",
-            timeEnd: "2025-05-25 12:00",
-            places: [
-              {
-                id: 1,
-                name: "вамвамвмвм",
-                latitude: "24.00000000",
-                longitude: "42.00000000",
-                address_kladr: "вмвмвмв",
-                logo: null,
-                region: {
-                  id: 1,
-                  name: "Татарстан Респ",
-                },
-                brand: {
-                  id: 2,
-                  name: "vfdv",
-                  logo: null,
-                  description: "dvdvdvdv",
-                },
-              },
-              {
-                id: 2,
-                name: "fdfvdvdv",
-                latitude: "21.00000000",
-                longitude: "11.00000000",
-                address_kladr: "dvdvdvdvdv",
-                logo: "/storage/source/directory/brand/1-logo/achievement-1.png",
-                region: {
-                  id: 2,
-                  name: "Москва",
-                },
-                brand: null,
-              },
-            ],
-          },
-          {
-            timeStart: "2025-05-25 14:00",
-            timeEnd: "2025-05-25 18:00",
-            places: [
-              {
-                id: 1,
-                name: "вамвамвмвм",
-                latitude: "24.00000000",
-                longitude: "42.00000000",
-                address_kladr: "вмвмвмв",
-                logo: null,
-                region: {
-                  id: 1,
-                  name: "Татарстан Респ",
-                },
-                brand: {
-                  id: 2,
-                  name: "vfdv",
-                  logo: null,
-                  description: "dvdvdvdv",
-                },
-              },
-            ],
-          },
-        ],
-      },
-    ],
+      ],
+    },
+    orderActivities: [],
   },
 };
 export const mockResponseError = {};

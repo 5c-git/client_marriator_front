@@ -46,10 +46,12 @@ export interface GetOrderSuccess {
     };
     orderActivities: {
       viewActivity: {
+        id: number;
         name: string;
         detailName: string;
         previewText: string;
         logo: string;
+        traveling: boolean;
       };
       id: number;
       count: number;
@@ -79,5 +81,11 @@ export interface GetOrderSuccess {
         }[];
       }[];
     }[];
+    acceptUser: null | {
+      id: number;
+      phone: number;
+      email: string;
+      logo: string;
+    };
   };
 }

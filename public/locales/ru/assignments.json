@@ -12,5 +12,15 @@
     "descending": "По убыванию начала оказания услуг"
   },
   "emptyHeaderCreate": "Поручений пока нет. Создайте первое!",
-  "emptyHeader": "Поручений пока нет."
+  "emptyHeader": "Поручений пока нет.",
+  "cardHeader": "Услуг",
+  "cancelAssignmentButton": "Отменить поручение",
+  "repeatAssignmentButton": "Повторить поручение",
+  "dialog": {
+    "cancel": "Отменить",
+    "repeat": "Повторить",
+    "title": "поручение",
+    "no": "Нет",
+    "yes": "Да"
+  }
 }

@@ -16,27 +16,7 @@
           "type": "boolean"
         },
         "status": {
-          "type": "number"
-        },
-        "project": {
-          "type": "array",
-          "items": {
-            "type": "object",
-            "additionalProperties": false,
-            "properties": {
-              "id": {
-                "type": "number"
-              },
-              "name": {
-                "type": "string"
-              },
-              "brand": {
-                "type": "array",
-                "items": {}
-              }
-            },
-            "required": ["id", "name", "brand"]
-          }
+          "enum": [1, 2, 3, 4, 5]
         },
         "place": {
           "type": "object",
@@ -84,7 +64,7 @@
                   "type": "string"
                 },
                 "logo": {
-                  "type": ["null", "string"]
+                  "type": "string"
                 },
                 "description": {
                   "type": "string"
@@ -104,6 +84,41 @@
             "brand"
           ]
         },
+        "project": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "id": {
+              "type": "number"
+            },
+            "name": {
+              "type": "string"
+            },
+            "brand": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "id": {
+                    "type": "number"
+                  },
+                  "name": {
+                    "type": "string"
+                  },
+                  "logo": {
+                    "type": "string"
+                  },
+                  "description": {
+                    "type": "string"
+                  }
+                },
+                "required": ["id", "name", "logo", "description"]
+              }
+            }
+          },
+          "required": ["id", "name", "brand"]
+        },
         "user": {
           "type": "object",
           "additionalProperties": false,
@@ -119,12 +134,28 @@
             },
             "logo": {
               "type": "string"
+            },
+            "roles": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "id": {
+                    "type": "number"
+                  },
+                  "name": {
+                    "type": "string"
+                  }
+                },
+                "required": ["id", "name"]
+              }
             }
           },
-          "required": ["id", "phone", "email", "logo"]
+          "required": ["id", "phone", "email", "logo", "roles"]
         },
         "acceptUser": {
-          "type": "object",
+          "type": ["null", "object"],
           "additionalProperties": false,
           "properties": {
             "id": {
@@ -138,9 +169,25 @@
             },
             "logo": {
               "type": "string"
+            },
+            "roles": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "id": {
+                    "type": "number"
+                  },
+                  "name": {
+                    "type": "string"
+                  }
+                },
+                "required": ["id", "name"]
+              }
             }
           },
-          "required": ["id", "phone", "email", "logo"]
+          "required": ["id", "phone", "email", "logo", "roles"]
         },
         "orderActivities": {
           "type": "array",
@@ -148,10 +195,16 @@
             "type": "object",
             "additionalProperties": false,
             "properties": {
+              "id": {
+                "type": "number"
+              },
               "viewActivity": {
                 "type": "object",
                 "additionalProperties": false,
                 "properties": {
+                  "id": {
+                    "type": "number"
+                  },
                   "name": {
                     "type": "string"
                   },
@@ -163,9 +216,19 @@
                   },
                   "logo": {
                     "type": "string"
+                  },
+                  "traveling": {
+                    "type": "boolean"
                   }
                 },
-                "required": ["name", "detailName", "previewText", "logo"]
+                "required": [
+                  "id",
+                  "name",
+                  "detailName",
+                  "previewText",
+                  "logo",
+                  "traveling"
+                ]
               },
               "count": {
                 "type": "number"
@@ -265,6 +328,7 @@
               }
             },
             "required": [
+              "id",
               "viewActivity",
               "count",
               "dateStart",
@@ -291,9 +355,25 @@
               },
               "logo": {
                 "type": "string"
+              },
+              "roles": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                    "id": {
+                      "type": "number"
+                    },
+                    "name": {
+                      "type": "string"
+                    }
+                  },
+                  "required": ["id", "name"]
+                }
               }
             },
-            "required": ["id", "phone", "email", "logo"]
+            "required": ["id", "phone", "email", "logo", "roles"]
           }
         }
       },
@@ -301,8 +381,8 @@
         "id",
         "selfEmployed",
         "status",
-        "project",
         "place",
+        "project",
         "user",
         "acceptUser",
         "orderActivities",

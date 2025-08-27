@@ -134,10 +134,16 @@
             "type": "object",
             "additionalProperties": false,
             "properties": {
+              "id": {
+                "type": "number"
+              },
               "viewActivity": {
                 "type": "object",
                 "additionalProperties": false,
                 "properties": {
+                  "id": {
+                    "type": "number"
+                  },
                   "name": {
                     "type": "string"
                   },
@@ -149,9 +155,19 @@
                   },
                   "logo": {
                     "type": "string"
+                  },
+                  "traveling": {
+                    "type": "boolean"
                   }
                 },
-                "required": ["name", "detailName", "previewText", "logo"]
+                "required": [
+                  "id",
+                  "name",
+                  "detailName",
+                  "previewText",
+                  "logo",
+                  "traveling"
+                ]
               },
               "count": {
                 "type": "number"
@@ -252,6 +268,7 @@
               }
             },
             "required": [
+              "id",
               "viewActivity",
               "count",
               "dateStart",

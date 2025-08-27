@@ -12,5 +12,15 @@
     "descending": "In descending order of the start of services"
   },
   "emptyHeaderCreate": "There are no assignments. Create the first one!",
-  "emptyHeader": "There are no assignments."
+  "emptyHeader": "There are no assignments.",
+  "cardHeader": "Amount of services",
+  "cancelAssignmentButton": "Cancel assignment",
+  "repeatAssignmentButton": "Repeat assignment",
+  "dialog": {
+    "cancel": "Cancel",
+    "repeat": "Repeat",
+    "title": "assignment",
+    "no": "No",
+    "yes": "Yes"
+  }
 }

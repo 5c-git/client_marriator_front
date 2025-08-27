@@ -9,19 +9,11 @@ export interface GetProjectsForTaskSuccess {
   data: {
     id: number;
     name: string;
-    latitude: string;
-    longitude: string;
-    address_kladr: string;
-    logo: null | string;
-    region: {
-      id: number;
-      name: string;
-    };
     brand: {
       id: number;
       name: string;
-      logo: null | string;
+      logo: string;
       description: string;
-    };
+    }[];
   }[];
 }

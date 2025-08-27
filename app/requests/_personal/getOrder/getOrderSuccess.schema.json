@@ -138,6 +138,9 @@
                 "type": "object",
                 "additionalProperties": false,
                 "properties": {
+                  "id": {
+                    "type": "number"
+                  },
                   "name": {
                     "type": "string"
                   },
@@ -149,9 +152,19 @@
                   },
                   "logo": {
                     "type": "string"
+                  },
+                  "traveling": {
+                    "type": "boolean"
                   }
                 },
-                "required": ["name", "detailName", "previewText", "logo"]
+                "required": [
+                  "id",
+                  "name",
+                  "detailName",
+                  "previewText",
+                  "logo",
+                  "traveling"
+                ]
               },
               "id": {
                 "type": "number"
@@ -263,6 +276,25 @@
               "dateActivity"
             ]
           }
+        },
+        "acceptUser": {
+          "type": ["null", "object"],
+          "additionalProperties": false,
+          "properties": {
+            "id": {
+              "type": "number"
+            },
+            "phone": {
+              "type": "number"
+            },
+            "email": {
+              "type": "string"
+            },
+            "logo": {
+              "type": "string"
+            }
+          },
+          "required": ["id", "phone", "email", "logo"]
         }
       },
       "required": [
@@ -271,7 +303,8 @@
         "status",
         "place",
         "user",
-        "orderActivities"
+        "orderActivities",
+        "acceptUser"
       ]
     }
   },

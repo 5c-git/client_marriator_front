@@ -13,12 +13,15 @@ export const postInvoiceTaskKeys = ["postInvoiceTask"];
 
 export const postInvoiceTask = async (
   accessToken: string,
+  taskId: string,
   supervisors: string[]
 ) => {
   try {
     const url = new URL(import.meta.env.VITE_POST_INVOICE_TASK);
 
     const formData = new FormData();
+
+    formData.append("taskId", taskId);
 
     supervisors.forEach((supervisor, index) => {
       formData.append(`supervisorIds[${index}]`, supervisor);

@@ -14,12 +14,12 @@ export interface GetOrdersSuccess {
       latitude: string;
       longitude: string;
       address_kladr: string;
-      logo: string;
+      logo: null | string;
       region: {
         id: number;
         name: string;
       };
-      brand: {
+      brand: null | {
         id: number;
         name: string;
         logo: string;
@@ -28,6 +28,101 @@ export interface GetOrdersSuccess {
     };
     selfEmployed: boolean;
     status: 1 | 2 | 3 | 4 | 5;
+    user: {
+      id: number;
+      email: string;
+      logo: string;
+      phone: number;
+      roles: {
+        id: number;
+        name:
+          | "admin"
+          | "client"
+          | "manager"
+          | "recruiter"
+          | "specialist"
+          | "supervisor";
+      }[];
+    };
+    /**
+     * @minItems 1
+     */
+    orderActivities: [
+      {
+        viewActivity: {
+          id: number;
+          name: string;
+          detailName: string;
+          previewText: string;
+          logo: string;
+          traveling: boolean;
+        };
+        id: number;
+        count: number;
+        dateStart: string;
+        dateEnd: string;
+        needFoto: boolean;
+        dateActivity: {
+          timeStart: string;
+          timeEnd: string;
+          places: {
+            id: number;
+            name: string;
+            latitude: string;
+            longitude: string;
+            address_kladr: string;
+            logo?: null | string;
+            region: {
+              id: number;
+              name: string;
+            };
+            brand: {
+              id: number;
+              name: string;
+              logo?: null | string;
+              description: string;
+            };
+          }[];
+        }[];
+      },
+      ...{
+        viewActivity: {
+          id: number;
+          name: string;
+          detailName: string;
+          previewText: string;
+          logo: string;
+          traveling: boolean;
+        };
+        id: number;
+        count: number;
+        dateStart: string;
+        dateEnd: string;
+        needFoto: boolean;
+        dateActivity: {
+          timeStart: string;
+          timeEnd: string;
+          places: {
+            id: number;
+            name: string;
+            latitude: string;
+            longitude: string;
+            address_kladr: string;
+            logo?: null | string;
+            region: {
+              id: number;
+              name: string;
+            };
+            brand: {
+              id: number;
+              name: string;
+              logo?: null | string;
+              description: string;
+            };
+          }[];
+        }[];
+      }[],
+    ];
   }[];
   links?: {
     first: null | string;

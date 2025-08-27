@@ -1,7 +1,5 @@
 /// <reference types="vite/client" />
 
-import { string } from "yup";
-
 interface ImportMetaEnv {
   readonly VITE_ASSET_PATH: string;
   readonly VITE_HAWK_KEY: string;
@@ -86,6 +84,14 @@ interface ImportMetaEnv {
   readonly VITE_POST_INSTRUCT_TASK: string;
   readonly VITE_GET_VIEW_ACTIVITIES_FOR_TASK: string;
   readonly VITE_POST_CREATE_TASK_ACTIVITY: string;
+  readonly VITE_GET_SUPERVISORS: string;
+  readonly VITE_POST_SET_SUPERVISORS: string;
+  readonly VITE_POST_DEL_SUPERVISOR: string;
+  readonly VITE_GET_BIDS: string;
+  readonly VITE_GET_BID: string;
+  readonly VITE_POST_REPEAT_ORDER: string;
+  readonly VITE_POST_UPDATE_ORDER_ACTIVITY: string;
+  readonly VITE_POST_UPDATE_TASK_ACTIVITY: string;
   // more env variables...
 }
 

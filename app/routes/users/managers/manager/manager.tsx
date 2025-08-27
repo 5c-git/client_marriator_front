@@ -17,7 +17,13 @@ import { useForm, Controller } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { withLocale } from "~/shared/withLocale";
 
-import { Button, IconButton, Avatar, Typography } from "@mui/material";
+import {
+  Button,
+  IconButton,
+  Avatar,
+  Typography,
+  SwipeableDrawer,
+} from "@mui/material";
 import Box from "@mui/material/Box";
 import Stack from "@mui/material/Stack";
 
@@ -27,11 +33,14 @@ import { StyledSelect } from "~/shared/ui/StyledSelect/StyledSelect";
 import { StyledTextField } from "~/shared/ui/StyledTextField/StyledTextField";
 import { StyledPhoneField } from "~/shared/ui/StyledPhoneField/StyledPhoneField";
 import { StyledRadioButton } from "~/shared/ui/StyledRadioButton/StyledRadioButton";
+import { StyledSearchBar } from "~/shared/ui/StyledSearchBar/StyledSearchBar";
+import { StyledCheckboxMultiple } from "~/shared/ui/StyledCheckboxMultiple/StyledCheckboxMultiple";
 import { TimeField } from "~/shared/ui/TimeField/TimeField";
 
 import { S_SwipeableDrawer } from "./manager.styled";
 
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
+import AddIcon from "@mui/icons-material/Add";
 import { FileIcon } from "~/shared/icons/FileIcon";
 import { PointerIcon } from "~/shared/icons/PointerIcon";
 import { CheckIcon } from "~/shared/icons/CheckIcon";
@@ -40,11 +49,14 @@ import { DeleteIcon } from "~/shared/icons/DeleteIcon";
 import { useStore } from "~/store/store";
 
 import { getModerationSingleClient } from "~/requests/_personal/_moderation/getModerationSingleClient/getModerationSingleClient";
+import { getSupervisors } from "~/requests/_personal/_moderation/getSupervisors/getSupervisors";
 
 import { postSetUserImg } from "~/requests/_personal/_moderation/postSetUserImg/postSetUserImg";
 import { postDelProject } from "~/requests/_personal/_moderation/delProject/delProject";
 import { postDelPlaceModeration } from "~/requests/_personal/_moderation/postDelPlaceModeration/postDelPlaceModeration";
 import { postConfirmUserRegister } from "~/requests/_personal/_moderation/postConfirmUserRegister/postConfirmUserRegister";
+import { postSetSupervisors } from "~/requests/_personal/_moderation/postSetSupervisors/postSetSupervisors";
+import { postDelSupervisor } from "~/requests/_personal/_moderation/postDelSupervisor/postDelSupervisor";
 
 type client = {
   id: number;
@@ -106,8 +118,19 @@ export async function clientLoader({ params }: Route.ClientLoaderArgs) {
     address: string;
   }[] = [];
 
+  const supervisorsToSelect: {
+    value: string;
+    label: string;
+    disabled: boolean;
+  }[] = [];
+
   if (accessToken) {
     const data = await getModerationSingleClient(
+      accessToken,
+      Number(params.user)
+    );
+
+    const supervisersData = await getSupervisors(
       accessToken,
       Number(params.user)
     );
@@ -143,7 +166,19 @@ export async function clientLoader({ params }: Route.ClientLoaderArgs) {
       leave_bid: data.data.leave_bid,
     };
 
-    return { client };
+    supervisersData.data.forEach((item) => {
+      supervisorsToSelect.push({
+        value: item.id.toString(),
+        label: item.email,
+        disabled: false,
+      });
+    });
+
+    return {
+      client,
+      supervisorsToSelect,
+      currentSupervisors: data.data.supervisors,
+    };
   } else {
     throw new Response("Токен авторизации не обнаружен!", { status: 401 });
   }
@@ -179,6 +214,10 @@ export async function clientAction({ request }: Route.ClientActionArgs) {
     } else if (_action === "_decline") {
       await postConfirmUserRegister(accessToken, fields.userId, fields.confirm);
       throw redirect(withLocale("/users"));
+    } else if (_action === "_inviteSupervisors") {
+      await postSetSupervisors(accessToken, fields.userId, fields.supervisors);
+    } else if (_action === "_deleteSupervisor") {
+      await postDelSupervisor(accessToken, fields.userId, fields.supervisorId);
     }
   } else {
     throw new Response("Токен авторизации не обнаружен!", { status: 401 });
@@ -197,6 +236,10 @@ export default function Manager({ loaderData }: Route.ComponentProps) {
     state: { status: string; statusColor: string };
   };
   const [open, setOpen] = useState<boolean>(false);
+  const [searchSupervisors, setSearchSupervisors] = useState<boolean>(false);
+  const [selectedSupervisors, setSelectedSupervisors] = useState(
+    loaderData.supervisorsToSelect
+  );
 
   const {
     control,
@@ -270,6 +313,28 @@ export default function Manager({ loaderData }: Route.ComponentProps) {
         leave_bid: Yup.string()
           .nullable()
           .required(t("text", { ns: "constructorFields" })),
+      })
+    ),
+  });
+
+  const {
+    control: controlSupervisor,
+    getValues: getValuesSupervisor,
+    reset: resetSupervisor,
+    handleSubmit: handleSupervisorSubmit,
+  } = useForm<{
+    searchbar: string;
+    supervisors: string[];
+  }>({
+    defaultValues: {
+      searchbar: "",
+      supervisors: [],
+    },
+    // @ts-expect-error
+    resolver: yupResolver(
+      Yup.object({
+        searchbar: Yup.string().notRequired(),
+        supervisors: Yup.array().of(Yup.string()).min(1),
       })
     ),
   });
@@ -706,6 +771,85 @@ export default function Manager({ loaderData }: Route.ComponentProps) {
               {t("locationSelector")}
             </Button>
 
+            {/* туть */}
+            {loaderData.currentSupervisors.length > 0 ? (
+              <>
+                {" "}
+                <Typography component="p" variant="Bold_14">
+                  {t("supervisor")}
+                </Typography>{" "}
+                <Stack
+                  sx={{
+                    rowGap: "14px",
+                  }}
+                >
+                  {loaderData.currentSupervisors.map((supervisor, index) => (
+                    <Box
+                      key={index}
+                      sx={{
+                        display: "flex",
+                        columnGap: "12px",
+                        alignItems: "center",
+                      }}
+                    >
+                      <Avatar
+                        src={`${import.meta.env.VITE_ASSET_PATH}${supervisor.logo}`}
+                        sx={{ width: "30px", height: "30px" }}
+                      />
+
+                      <Typography
+                        component="p"
+                        variant="Reg_14"
+                        sx={{
+                          flexGrow: "1",
+                        }}
+                      >
+                        {supervisor.email}
+                      </Typography>
+
+                      <IconButton
+                        onClick={() => {
+                          fetcher.submit(
+                            JSON.stringify({
+                              _action: "_deleteSupervisor",
+                              userId: loaderData.client.id,
+                              supervisorId: supervisor.id,
+                            }),
+                            {
+                              method: "POST",
+                              encType: "application/json",
+                            }
+                          );
+                        }}
+                        sx={{
+                          width: "24px",
+                          height: "24px",
+                        }}
+                      >
+                        <DeleteIcon
+                          sx={{
+                            width: "12px",
+                            height: "12px",
+                          }}
+                        />
+                      </IconButton>
+                    </Box>
+                  ))}
+                </Stack>
+              </>
+            ) : null}
+
+            <Button
+              variant="outlined"
+              onClick={() => {
+                setSearchSupervisors(true);
+              }}
+              // startIcon={<PointerIcon />}
+            >
+              {t("supervisorInviteButton")}
+            </Button>
+            {/* туть */}
+
             <Controller
               name="change_task"
               control={control}
@@ -863,6 +1007,128 @@ export default function Manager({ loaderData }: Route.ComponentProps) {
           />
         </Box>
       </S_SwipeableDrawer>
+
+      <SwipeableDrawer
+        open={searchSupervisors}
+        onClose={() => {
+          resetSupervisor();
+          setSearchSupervisors(false);
+        }}
+        onOpen={() => {}}
+        disableBackdropTransition={true}
+        disableSwipeToOpen={true}
+        anchor="bottom"
+        sx={{
+          "& .MuiDrawer-paper": {
+            borderRadius: "6px",
+          },
+        }}
+      >
+        <TopNavigation
+          header={{
+            text: t("supervisorHeader"),
+            bold: false,
+          }}
+        />
+        <form
+          onSubmit={handleSupervisorSubmit(() => {
+            const selectedSupervisors = getValuesSupervisor("supervisors");
+
+            fetcher.submit(
+              JSON.stringify({
+                _action: "_inviteSupervisors",
+                userId: loaderData.client.id,
+                supervisors: selectedSupervisors,
+              }),
+              {
+                method: "POST",
+                encType: "application/json",
+              }
+            );
+
+            resetSupervisor();
+            setSearchSupervisors(false);
+          })}
+        >
+          <Box
+            sx={{
+              position: "relative",
+              display: "grid",
+              alignContent: "flex-start",
+              rowGap: "14px",
+              paddingTop: "20px",
+              paddingLeft: "16px",
+              paddingRight: "16px",
+              height: "85vh",
+            }}
+          >
+            <Controller
+              name="searchbar"
+              control={controlSupervisor}
+              render={({ field }) => (
+                <StyledSearchBar
+                  placeholder={t("fields.supervisorSearchPlaceholder")}
+                  {...field}
+                  onChange={(evt) => {
+                    const currentFieldValue = new RegExp(
+                      `^${evt.target.value}`,
+                      "i"
+                    );
+
+                    let matchingSupervisors: typeof loaderData.supervisorsToSelect =
+                      [];
+
+                    if (evt.target.value !== "") {
+                      matchingSupervisors = [
+                        ...selectedSupervisors.filter((item) =>
+                          currentFieldValue.test(item.label)
+                        ),
+                      ];
+                    } else {
+                      matchingSupervisors = [...loaderData.supervisorsToSelect];
+                    }
+
+                    setSelectedSupervisors(matchingSupervisors);
+
+                    field.onChange(evt);
+                  }}
+                />
+              )}
+            />
+
+            <Controller
+              name="supervisors"
+              control={controlSupervisor}
+              render={({ field }) => (
+                <StyledCheckboxMultiple
+                  inputType="checkboxMultiple"
+                  onImmediateChange={() => {}}
+                  options={selectedSupervisors}
+                  {...field}
+                />
+              )}
+            />
+
+            <Box
+              sx={(theme) => ({
+                display: "flex",
+                columnGap: "14px",
+                padding: "10px",
+                backgroundColor: theme.vars.palette["White"],
+                position: "fixed",
+                zIndex: 1,
+                width: "100%",
+                bottom: "0",
+                left: "0",
+              })}
+            >
+              <Button type="submit" variant="contained" startIcon={<AddIcon />}>
+                {t("supervisorInviteButton")}
+              </Button>
+            </Box>
+          </Box>
+        </form>
+      </SwipeableDrawer>
     </>
   );
 }

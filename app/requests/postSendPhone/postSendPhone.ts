@@ -3,20 +3,21 @@ import Ajv from "ajv";
 
 import responseSuccess from "./postSendPhoneSuccess.schema.json";
 import responseError from "./postSendPhoneError.schema.json";
+import responseErrorTime from "./postSendPhoneErrorTimer.schema.json";
 
 import { PostSendPhoneSuccessSchema } from "./postSendPhoneSuccess.type";
+import { PostSendPhoneErrorTimer } from "./postSendPhoneErrorTimer.type";
 import { UnxpectedError } from "~/shared/unexpectedError/unexpectedError";
 
 const ajv = new Ajv();
 
 const validateResponseSuccess = ajv.compile(responseSuccess);
 const validateResponseError = ajv.compile(responseError);
+const validateResponseErrorTimer = ajv.compile(responseErrorTime);
 
 export const postSendPhoneKeys = ["postSendPhone"];
 
-export const postSendPhone = async (
-  phone: string
-): Promise<PostSendPhoneSuccessSchema> => {
+export const postSendPhone = async (phone: string) => {
   try {
     const url = new URL(import.meta.env.VITE_SEND_PHONE);
 
@@ -31,7 +32,7 @@ export const postSendPhone = async (
     });
     const response = await request.json();
 
-    let data: PostSendPhoneSuccessSchema;
+    let data;
 
     if (request.status === 401) {
       throw new Response("Unauthorized", {
@@ -41,6 +42,8 @@ export const postSendPhone = async (
 
     if (validateResponseSuccess(response)) {
       data = response as unknown as PostSendPhoneSuccessSchema;
+    } else if (validateResponseErrorTimer(response)) {
+      data = response as unknown as PostSendPhoneErrorTimer;
     } else if (validateResponseError(response)) {
       throw new Response("Поле телефон обязательно для заполнения");
     } else {
@@ -97,6 +100,17 @@ export const mockPostSendPhoneResponseExists = {
   status: "success",
 };
 
+export const mockPostSendPhoneResponseErrorTimer = {
+  result: {
+    type: "auth",
+    code: {
+      status: "exists",
+      ttl: 43,
+    },
+  },
+  status: "error",
+};
+
 export const mockPostSendPhoneResponseError = {
   result: {
     type: "register",
@@ -124,6 +138,9 @@ export const postSendPhoneMockResponse = http.post(
     } else if (scenario === "auth") {
       await delay(2000);
       return HttpResponse.json(mockPostSendPhoneResponseAuth);
+    } else if (scenario === "timer") {
+      await delay(2000);
+      return HttpResponse.json(mockPostSendPhoneResponseErrorTimer);
     } else if (scenario === "error") {
       await delay(2000);
       return HttpResponse.json(mockResponseError);
