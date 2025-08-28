@@ -149,10 +149,23 @@ export async function clientLoader() {
       (item) => item.status === statusValueMap.archive
     );
 
-    const activeStatus: keyof typeof statusValueMap | "empty" =
-      assignmentsData.data.length > 0
-        ? statusCodeMap[assignmentsData.data[0].status].value
-        : "empty";
+    let activeStatus: keyof typeof statusValueMap | "empty" = "empty";
+
+    if (filteredAssignments.canceled.length > 0) {
+      activeStatus = "archive";
+    }
+    if (filteredAssignments.archive.length > 0) {
+      activeStatus = "canceled";
+    }
+    if (filteredAssignments.notAccepted.length > 0) {
+      activeStatus = "notAccepted";
+    }
+    if (filteredAssignments.accepted.length > 0) {
+      activeStatus = "accepted";
+    }
+    if (filteredAssignments.new.length > 0) {
+      activeStatus = "new";
+    }
 
     return {
       ymaps,

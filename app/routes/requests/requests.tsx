@@ -108,10 +108,23 @@ export async function clientLoader() {
       (item) => item.status === statusValueMap.archive
     );
 
-    const activeStatus: keyof typeof statusValueMap | "empty" =
-      requestsData.data.length > 0
-        ? statusCodeMap[requestsData.data[0].status].value
-        : "empty";
+    let activeStatus: keyof typeof statusValueMap | "empty" = "empty";
+
+    if (filteredRequests.canceled.length > 0) {
+      activeStatus = "archive";
+    }
+    if (filteredRequests.archive.length > 0) {
+      activeStatus = "canceled";
+    }
+    if (filteredRequests.notAccepted.length > 0) {
+      activeStatus = "notAccepted";
+    }
+    if (filteredRequests.accepted.length > 0) {
+      activeStatus = "accepted";
+    }
+    if (filteredRequests.new.length > 0) {
+      activeStatus = "new";
+    }
 
     return {
       ymaps,
