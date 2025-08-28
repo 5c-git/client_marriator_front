@@ -188,16 +188,16 @@
               "traveling"
             ]
           },
-          "date_start": {
+          "dateStart": {
             "type": "string"
           },
-          "date_end": {
+          "dateEnd": {
             "type": "string"
           },
-          "need_foto": {
+          "needFoto": {
             "type": "boolean"
           },
-          "date_activity": {
+          "dateActivity": {
             "type": "array",
             "items": {}
           }
@@ -213,10 +213,10 @@
           "price",
           "priceResult",
           "viewActivity",
-          "date_start",
-          "date_end",
-          "need_foto",
-          "date_activity"
+          "dateStart",
+          "dateEnd",
+          "needFoto",
+          "dateActivity"
         ]
       }
     }

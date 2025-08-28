@@ -82,8 +82,8 @@ export async function clientLoader() {
           text: item.place.address_kladr,
         },
         duration: {
-          start: item.date_start,
-          end: item.date_end,
+          start: item.dateStart,
+          end: item.dateEnd,
         },
         coordinates: [
           Number(item.place.latitude),
@@ -434,7 +434,7 @@ export default function Requesets({ loaderData }: Route.ComponentProps) {
                   key={item.id}
                   to={withLocale(`/requests/${item.id}`)}
                   statusColor={item.statusColor}
-                  header={`${t("cardHeader")} ${item.header}`}
+                  header={item.header}
                   subHeader={item.subHeader}
                   id={item.id.toString()}
                   address={item.address}

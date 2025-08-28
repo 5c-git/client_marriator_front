@@ -61,9 +61,9 @@ export interface GetBidsSuccess {
       logo: string;
       traveling: boolean;
     };
-    date_start: string;
-    date_end: string;
-    need_foto: boolean;
-    date_activity: unknown[];
+    dateStart: string;
+    dateEnd: string;
+    needFoto: boolean;
+    dateActivity: unknown[];
   }[];
 }
