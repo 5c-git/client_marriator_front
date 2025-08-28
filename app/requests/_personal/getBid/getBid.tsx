@@ -40,13 +40,14 @@ export const getBid = async (
       });
     }
 
-    if (validateSuccess(response)) {
-      data = response as unknown as GetBidSuccess;
-    } else {
-      console.log(validateSuccess.errors);
-      throw new Response(`Данные запроса getBid не валидны схеме`);
-    }
+    // if (validateSuccess(response)) {
+    //   data = response as unknown as GetBidSuccess;
+    // } else {
+    //   console.log(validateSuccess.errors);
+    //   throw new Response(`Данные запроса getBid не валидны схеме`);
+    // }
 
+    data = response as unknown as GetBidSuccess;
     return data;
   } catch (error) {
     if (error instanceof Response) {

@@ -47,13 +47,13 @@ export const getBids = async (
       });
     }
 
-    if (validateSuccess(response)) {
-      data = response as unknown as GetBidsSuccess;
-    } else {
-      console.log(validateSuccess.errors);
-      throw new Response(`Данные запроса getBids не валидны схеме`);
-    }
-
+    // if (validateSuccess(response)) {
+    //   data = response as unknown as GetBidsSuccess;
+    // } else {
+    //   console.log(validateSuccess.errors);
+    //   throw new Response(`Данные запроса getBids не валидны схеме`);
+    // }
+    data = response as unknown as GetBidsSuccess;
     return data;
   } catch (error) {
     if (error instanceof Response) {
