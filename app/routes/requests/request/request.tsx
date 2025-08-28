@@ -20,7 +20,7 @@ export async function clientLoader({ params }: Route.ClientLoaderArgs) {
 }
 
 export default function Requests() {
-// { loaderData }: Route.ComponentProps
+  // { loaderData }: Route.ComponentProps
   // const showMap = useOutletContext<boolean>();
   return (
     <>

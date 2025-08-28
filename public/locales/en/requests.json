@@ -11,7 +11,7 @@
     "ascending": "In ascending order of the start of services",
     "descending": "In descending order of the start of services"
   },
-  "emptyHeaderCreate": "There are no requests. Create the first one!",
+  "subHeader": "Amount",
   "emptyHeader": "There are no assignments.",
   "cardHeader": "Amount of services"
 }

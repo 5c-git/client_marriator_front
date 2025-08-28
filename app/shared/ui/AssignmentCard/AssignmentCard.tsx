@@ -7,24 +7,6 @@ import { CalendarIcon } from "~/shared/icons/CalendarIcon";
 import { format } from "date-fns";
 import { UTCDate } from "@date-fns/utc";
 
-//сounters : {
-//  left: {
-//    label: string
-//    count: string
-//    color: string
-// }
-//  center: {
-//    label: string
-//    count: string
-//    color: string
-// }
-//  right: {
-//    label: string
-//    count: string
-//    color: string
-// }
-//}
-
 // subHeader - сделать жирным и розовым
 
 // avatar: {
@@ -51,6 +33,23 @@ type AssignmentCardProps = {
   duration?: {
     start: string | null;
     end?: string | null;
+  };
+  counters?: {
+    left?: {
+      label: string;
+      count: string;
+      color: string;
+    };
+    center?: {
+      label: string;
+      count: string;
+      color: string;
+    };
+    right?: {
+      label: string;
+      count: string;
+      color: string;
+    };
   };
   buttonAction?: {
     action: () => void;
@@ -148,6 +147,60 @@ export const AssignmentCard = (props: AssignmentCardProps) => (
           >
             {props.subHeader}
           </Typography>
+        ) : null}
+        {props.counters ? (
+          <Box
+            sx={{
+              display: "grid",
+              gridTemplateColumns: "1fr 1fr 1fr",
+              columnGap: "10px",
+              gridColumnStart: 1,
+              marginTop: "8px",
+            }}
+          >
+            {props.counters.left ? (
+              <Box
+                style={{
+                  color: props.counters.left.color,
+                }}
+              >
+                <Typography component="p" variant="Reg_12">
+                  {props.counters.left.label}
+                </Typography>
+                <Typography component="p" variant="Bold_12">
+                  {props.counters.left.count}
+                </Typography>
+              </Box>
+            ) : null}
+            {props.counters.center ? (
+              <Box
+                style={{
+                  color: props.counters.center.color,
+                }}
+              >
+                <Typography component="p" variant="Reg_12">
+                  {props.counters.center.label}
+                </Typography>
+                <Typography component="p" variant="Bold_12">
+                  {props.counters.center.count}
+                </Typography>
+              </Box>
+            ) : null}
+            {props.counters.right ? (
+              <Box
+                style={{
+                  color: props.counters.right.color,
+                }}
+              >
+                <Typography component="p" variant="Reg_12">
+                  {props.counters.right.label}
+                </Typography>
+                <Typography component="p" variant="Bold_12">
+                  {props.counters.right.count}
+                </Typography>
+              </Box>
+            ) : null}
+          </Box>
         ) : null}
         {props.divider ? (
           <Divider

@@ -1,4 +1,7 @@
-import { useOutletContext } from "react-router";
+import {
+  // Link,
+  useOutletContext,
+} from "react-router";
 import { useState, useEffect } from "react";
 
 import type { Route } from "./+types/requests";
@@ -435,7 +438,7 @@ export default function Requesets({ loaderData }: Route.ComponentProps) {
                   to={withLocale(`/requests/${item.id}`)}
                   statusColor={item.statusColor}
                   header={item.header}
-                  subHeader={item.subHeader}
+                  subHeader={`${t("subHeader")} ${item.subHeader}`}
                   id={item.id.toString()}
                   address={item.address}
                   duration={item.duration}
@@ -493,5 +496,16 @@ export default function Requesets({ loaderData }: Route.ComponentProps) {
         </Typography>
       )}
     </>
+
+    // <>
+    //   <p>
+    //     смотри запрос <b>getBids</b>
+    //   </p>
+    //   {loaderData.filteredRequests[filter].map((item) => (
+    //     <Link key={item.id} to={`requests/${item.id}`}>
+    //       ID карточки {item.id}
+    //     </Link>
+    //   ))}
+    // </>
   );
 }
