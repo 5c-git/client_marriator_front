@@ -278,6 +278,25 @@
                 "dateActivity"
               ]
             }
+          },
+          "acceptUser": {
+            "type": ["null", "object"],
+            "additionalProperties": false,
+            "properties": {
+              "id": {
+                "type": "number"
+              },
+              "phone": {
+                "type": "number"
+              },
+              "email": {
+                "type": "string"
+              },
+              "logo": {
+                "type": "string"
+              }
+            },
+            "required": ["id", "phone", "email", "logo"]
           }
         },
         "required": [
@@ -286,7 +305,8 @@
           "selfEmployed",
           "status",
           "user",
-          "orderActivities"
+          "orderActivities",
+          "acceptUser"
         ]
       }
     },

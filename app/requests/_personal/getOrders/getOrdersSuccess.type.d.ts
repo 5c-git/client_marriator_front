@@ -44,85 +44,49 @@ export interface GetOrdersSuccess {
           | "supervisor";
       }[];
     };
-    /**
-     * @minItems 1
-     */
-    orderActivities: [
-      {
-        viewActivity: {
+    orderActivities: {
+      viewActivity: {
+        id: number;
+        name: string;
+        detailName: string;
+        previewText: string;
+        logo: string;
+        traveling: boolean;
+      };
+      id: number;
+      count: number;
+      dateStart: string;
+      dateEnd: string;
+      needFoto: boolean;
+      dateActivity: {
+        timeStart: string;
+        timeEnd: string;
+        places: {
           id: number;
           name: string;
-          detailName: string;
-          previewText: string;
-          logo: string;
-          traveling: boolean;
-        };
-        id: number;
-        count: number;
-        dateStart: string;
-        dateEnd: string;
-        needFoto: boolean;
-        dateActivity: {
-          timeStart: string;
-          timeEnd: string;
-          places: {
+          latitude: string;
+          longitude: string;
+          address_kladr: string;
+          logo?: null | string;
+          region: {
             id: number;
             name: string;
-            latitude: string;
-            longitude: string;
-            address_kladr: string;
-            logo?: null | string;
-            region: {
-              id: number;
-              name: string;
-            };
-            brand: {
-              id: number;
-              name: string;
-              logo?: null | string;
-              description: string;
-            };
-          }[];
-        }[];
-      },
-      ...{
-        viewActivity: {
-          id: number;
-          name: string;
-          detailName: string;
-          previewText: string;
-          logo: string;
-          traveling: boolean;
-        };
-        id: number;
-        count: number;
-        dateStart: string;
-        dateEnd: string;
-        needFoto: boolean;
-        dateActivity: {
-          timeStart: string;
-          timeEnd: string;
-          places: {
+          };
+          brand: {
             id: number;
             name: string;
-            latitude: string;
-            longitude: string;
-            address_kladr: string;
             logo?: null | string;
-            region: {
-              id: number;
-              name: string;
-            };
-            brand: {
-              id: number;
-              name: string;
-              logo?: null | string;
-              description: string;
-            };
-          }[];
+            description: string;
+          };
         }[];
-      }[],
-    ];
+      }[];
+    }[];
+    acceptUser: null | {
+      id: number;
+      phone: number;
+      email: string;
+      logo: string;
+    };
   }[];
   links?: {
     first: null | string;
