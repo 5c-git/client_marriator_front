@@ -367,6 +367,8 @@ export default function Tasks({ loaderData }: Route.ComponentProps) {
     }
   }, [loaderData.filteredTasks, filter, sorting]);
 
+  console.log(loaderData.filteredTasks);
+
   return (
     <>
       {loaderData.notEmpty ? (

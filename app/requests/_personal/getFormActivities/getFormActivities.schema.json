@@ -3,7 +3,7 @@
   "$schema": "http://json-schema.org/draft-07/schema#",
   "title": "GetFormActivities",
   "type": "object",
-  "additionalProperties": false,
+
   "properties": {
     "status": {
       "type": "string",
@@ -11,7 +11,7 @@
     },
     "result": {
       "type": "object",
-      "additionalProperties": false,
+
       "properties": {
         "formData": {
           "type": "array",

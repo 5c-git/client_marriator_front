@@ -289,8 +289,6 @@ export default function EditService({ loaderData }: Route.ComponentProps) {
     ),
   });
 
-  console.log(startingActivityValues);
-
   return (
     <>
       {navigation.state !== "idle" ? <Loader /> : null}

@@ -33,21 +33,27 @@ export interface GetBidSuccess {
       phone: number;
       email: string;
       logo: string;
+      roles: {
+        id: number;
+        name:
+          | "admin"
+          | "client"
+          | "manager"
+          | "recruiter"
+          | "specialist"
+          | "supervisor";
+      }[];
     };
-    acceptUserId: {
-      id: number;
-      phone: number;
-      email: string;
-      logo: string;
-    };
-    radius: number;
-    price: number;
+    radius: null | number;
+    price: null | number;
     priceResult: number;
     viewActivity: {
+      id: number;
       name: string;
       detailName: string;
       previewText: string;
       logo: string;
+      traveling: boolean;
     };
     dateStart: string;
     dateEnd: string;
@@ -74,5 +80,55 @@ export interface GetBidSuccess {
         };
       }[];
     }[];
+    acceptUser: null | {
+      id: number;
+      phone: number;
+      email: string;
+      logo: string;
+    };
+    order: null | {
+      id: number;
+      selfEmployed: boolean;
+      status: number;
+      user: {
+        id: number;
+        phone: number;
+        email: string;
+        logo: string;
+        roles: {
+          id: number;
+          name:
+            | "admin"
+            | "client"
+            | "manager"
+            | "recruiter"
+            | "specialist"
+            | "supervisor";
+        }[];
+        [k: string]: unknown;
+      };
+    };
+    task: null | {
+      id: number;
+      selfEmployed: boolean;
+      status: number;
+      user: {
+        id: number;
+        phone: number;
+        email: string;
+        logo: string;
+        roles: {
+          id: number;
+          name:
+            | "admin"
+            | "client"
+            | "manager"
+            | "recruiter"
+            | "specialist"
+            | "supervisor";
+        }[];
+        [k: string]: unknown;
+      };
+    };
   };
 }

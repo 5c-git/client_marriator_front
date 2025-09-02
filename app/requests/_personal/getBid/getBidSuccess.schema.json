@@ -3,11 +3,11 @@
   "$schema": "http://json-schema.org/draft-07/schema#",
   "title": "getBidSuccess",
   "type": "object",
-  "additionalProperties": false,
+
   "properties": {
     "data": {
       "type": "object",
-      "additionalProperties": false,
+
       "properties": {
         "id": {
           "type": "number"
@@ -20,7 +20,7 @@
         },
         "place": {
           "type": "object",
-          "additionalProperties": false,
+
           "properties": {
             "id": {
               "type": "number"
@@ -42,7 +42,7 @@
             },
             "region": {
               "type": "object",
-              "additionalProperties": false,
+
               "properties": {
                 "id": {
                   "type": "number"
@@ -55,7 +55,7 @@
             },
             "brand": {
               "type": "object",
-              "additionalProperties": false,
+
               "properties": {
                 "id": {
                   "type": "number"
@@ -86,7 +86,7 @@
         },
         "user": {
           "type": "object",
-          "additionalProperties": false,
+
           "properties": {
             "id": {
               "type": "number"
@@ -99,42 +99,51 @@
             },
             "logo": {
               "type": "string"
+            },
+            "roles": {
+              "type": "array",
+              "items": {
+                "type": "object",
+
+                "properties": {
+                  "id": {
+                    "type": "number",
+                    "minimum": 1,
+                    "maximum": 6
+                  },
+                  "name": {
+                    "enum": [
+                      "admin",
+                      "client",
+                      "manager",
+                      "recruiter",
+                      "specialist",
+                      "supervisor"
+                    ]
+                  }
+                },
+                "required": ["id", "name"]
+              }
             }
           },
-          "required": ["id", "phone", "email", "logo"]
-        },
-        "acceptUserId": {
-          "type": "object",
-          "additionalProperties": false,
-          "properties": {
-            "id": {
-              "type": "number"
-            },
-            "phone": {
-              "type": "number"
-            },
-            "email": {
-              "type": "string"
-            },
-            "logo": {
-              "type": "string"
-            }
-          },
-          "required": ["id", "phone", "email", "logo"]
+          "required": ["id", "phone", "email", "logo", "roles"]
         },
         "radius": {
-          "type": "number"
+          "type": ["null", "number"]
         },
         "price": {
-          "type": "number"
+          "type": ["null", "number"]
         },
         "priceResult": {
           "type": "number"
         },
         "viewActivity": {
           "type": "object",
-          "additionalProperties": false,
+
           "properties": {
+            "id": {
+              "type": "number"
+            },
             "name": {
               "type": "string"
             },
@@ -146,9 +155,19 @@
             },
             "logo": {
               "type": "string"
+            },
+            "traveling": {
+              "type": "boolean"
             }
           },
-          "required": ["name", "detailName", "previewText", "logo"]
+          "required": [
+            "id",
+            "name",
+            "detailName",
+            "previewText",
+            "logo",
+            "traveling"
+          ]
         },
         "dateStart": {
           "type": "string"
@@ -163,7 +182,7 @@
           "type": "array",
           "items": {
             "type": "object",
-            "additionalProperties": false,
+
             "properties": {
               "timeStart": {
                 "type": "string"
@@ -175,7 +194,7 @@
                 "type": "array",
                 "items": {
                   "type": "object",
-                  "additionalProperties": false,
+
                   "properties": {
                     "id": {
                       "type": "number"
@@ -197,7 +216,7 @@
                     },
                     "region": {
                       "type": "object",
-                      "additionalProperties": false,
+
                       "properties": {
                         "id": {
                           "type": "number"
@@ -210,7 +229,7 @@
                     },
                     "brand": {
                       "type": "object",
-                      "additionalProperties": false,
+
                       "properties": {
                         "id": {
                           "type": "number"
@@ -243,6 +262,143 @@
             },
             "required": ["timeStart", "timeEnd", "places"]
           }
+        },
+        "acceptUser": {
+          "type": ["null", "object"],
+
+          "properties": {
+            "id": {
+              "type": "number"
+            },
+            "phone": {
+              "type": "number"
+            },
+            "email": {
+              "type": "string"
+            },
+            "logo": {
+              "type": "string"
+            }
+          },
+          "required": ["id", "phone", "email", "logo"]
+        },
+        "order": {
+          "type": ["null", "object"],
+
+          "properties": {
+            "id": {
+              "type": "number"
+            },
+            "selfEmployed": {
+              "type": "boolean"
+            },
+            "status": {
+              "type": "number"
+            },
+            "user": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "number"
+                },
+                "phone": {
+                  "type": "number"
+                },
+                "email": {
+                  "type": "string"
+                },
+                "logo": {
+                  "type": "string"
+                },
+                "roles": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+
+                    "properties": {
+                      "id": {
+                        "type": "number",
+                        "minimum": 1,
+                        "maximum": 6
+                      },
+                      "name": {
+                        "enum": [
+                          "admin",
+                          "client",
+                          "manager",
+                          "recruiter",
+                          "specialist",
+                          "supervisor"
+                        ]
+                      }
+                    },
+                    "required": ["id", "name"]
+                  }
+                }
+              },
+              "required": ["id", "phone", "email", "logo", "roles"]
+            }
+          },
+          "required": ["id", "selfEmployed", "status", "user"]
+        },
+        "task": {
+          "type": ["null", "object"],
+
+          "properties": {
+            "id": {
+              "type": "number"
+            },
+            "selfEmployed": {
+              "type": "boolean"
+            },
+            "status": {
+              "type": "number"
+            },
+            "user": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "number"
+                },
+                "phone": {
+                  "type": "number"
+                },
+                "email": {
+                  "type": "string"
+                },
+                "logo": {
+                  "type": "string"
+                },
+                "roles": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+
+                    "properties": {
+                      "id": {
+                        "type": "number",
+                        "minimum": 1,
+                        "maximum": 6
+                      },
+                      "name": {
+                        "enum": [
+                          "admin",
+                          "client",
+                          "manager",
+                          "recruiter",
+                          "specialist",
+                          "supervisor"
+                        ]
+                      }
+                    },
+                    "required": ["id", "name"]
+                  }
+                }
+              },
+              "required": ["id", "phone", "email", "logo", "roles"]
+            }
+          },
+          "required": ["id", "selfEmployed", "status", "user"]
         }
       },
       "required": [
@@ -251,7 +407,6 @@
         "status",
         "place",
         "user",
-        "acceptUserId",
         "radius",
         "price",
         "priceResult",
@@ -259,7 +414,10 @@
         "dateStart",
         "dateEnd",
         "needFoto",
-        "dateActivity"
+        "dateActivity",
+        "acceptUser",
+        "order",
+        "task"
       ]
     }
   },

@@ -1,4 +1,9 @@
-import { type RouteConfig, route, layout } from "@react-router/dev/routes";
+import {
+  type RouteConfig,
+  route,
+  layout,
+  index,
+} from "@react-router/dev/routes";
 
 export default [
   // index("routes/pigment/pigment.tsx"),
@@ -14,10 +19,21 @@ export default [
       ]),
 
       route(":lang?/tasks/:taskId", "routes/tasks/task/task.tsx"),
-      route(
-        ":lang?/requests/:requestId",
-        "routes/requests/request/request.tsx"
-      ),
+
+      layout("routes/requests/request/layout/layout.tsx", [
+        route(
+          ":lang?/requests/:requestId",
+          "routes/requests/request/index/index.tsx"
+        ),
+        route(
+          ":lang?/requests/:requestId/specialists",
+          "routes/requests/request/specialists/specialists.tsx"
+        ),
+        route(
+          ":lang?/requests/:requestId/recruitment",
+          "routes/requests/request/recruitment/recruitment.tsx"
+        ),
+      ]),
 
       route(
         ":lang?/registration/registration-complete",

@@ -3,20 +3,20 @@
   "$schema": "http://json-schema.org/draft-07/schema#",
   "title": "getBidsSuccess",
   "type": "object",
-  "additionalProperties": false,
+
   "properties": {
     "data": {
       "type": "array",
       "items": {
         "type": "object",
-        "additionalProperties": false,
+
         "properties": {
           "id": {
             "type": "number"
           },
           "user": {
             "type": "object",
-            "additionalProperties": false,
+
             "properties": {
               "id": {
                 "type": "number"
@@ -34,7 +34,7 @@
                 "type": "array",
                 "items": {
                   "type": "object",
-                  "additionalProperties": false,
+
                   "properties": {
                     "id": {
                       "type": "number",
@@ -60,7 +60,7 @@
           },
           "acceptUserId": {
             "type": ["null", "object"],
-            "additionalProperties": false,
+
             "properties": {
               "id": {
                 "type": "number"
@@ -85,7 +85,7 @@
           },
           "place": {
             "type": "object",
-            "additionalProperties": false,
+
             "properties": {
               "id": {
                 "type": "number"
@@ -107,7 +107,7 @@
               },
               "region": {
                 "type": "object",
-                "additionalProperties": false,
+
                 "properties": {
                   "id": {
                     "type": "number"
@@ -120,7 +120,7 @@
               },
               "brand": {
                 "type": "object",
-                "additionalProperties": false,
+
                 "properties": {
                   "id": {
                     "type": "number"
@@ -158,7 +158,7 @@
           },
           "viewActivity": {
             "type": "object",
-            "additionalProperties": false,
+
             "properties": {
               "id": {
                 "type": "number"

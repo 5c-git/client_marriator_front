@@ -3,7 +3,7 @@
   "$schema": "http://json-schema.org/draft-07/schema#",
   "title": "Schema for SelectMultiple",
   "type": "object",
-  "additionalProperties": false,
+
   "properties": {
     "inputType": {
       "type": "string",
@@ -26,7 +26,7 @@
       "minItems": 1,
       "items": {
         "type": "object",
-        "additionalProperties": false,
+
         "properties": {
           "value": {
             "type": "string"

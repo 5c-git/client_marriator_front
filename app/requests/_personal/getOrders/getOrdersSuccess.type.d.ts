@@ -86,6 +86,16 @@ export interface GetOrdersSuccess {
       phone: number;
       email: string;
       logo: string;
+      roles: {
+        id: number;
+        name:
+          | "admin"
+          | "client"
+          | "manager"
+          | "recruiter"
+          | "specialist"
+          | "supervisor";
+      }[];
     };
   }[];
   links?: {
