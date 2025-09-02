@@ -3,13 +3,13 @@
   "$schema": "http://json-schema.org/draft-07/schema#",
   "title": "getModerationClientSuccess",
   "type": "object",
-  "additionalProperties": false,
+
   "properties": {
     "data": {
       "type": "array",
       "items": {
         "type": "object",
-        "additionalProperties": false,
+
         "properties": {
           "id": {
             "type": "number"
@@ -30,7 +30,7 @@
             "type": "array",
             "items": {
               "type": "object",
-              "additionalProperties": false,
+
               "properties": {
                 "id": {
                   "type": "number"
@@ -42,7 +42,7 @@
                   "type": "array",
                   "items": {
                     "type": "object",
-                    "additionalProperties": false,
+
                     "properties": {
                       "description": {
                         "type": "string"
@@ -68,7 +68,7 @@
             "type": "array",
             "items": {
               "type": "object",
-              "additionalProperties": false,
+
               "properties": {
                 "id": {
                   "type": "number"
@@ -90,7 +90,7 @@
                 },
                 "region": {
                   "type": "object",
-                  "additionalProperties": false,
+
                   "properties": {
                     "id": {
                       "type": "number"
@@ -101,7 +101,7 @@
                 },
                 "brand": {
                   "type": "object",
-                  "additionalProperties": false,
+
                   "properties": {
                     "description": {
                       "type": "string"
@@ -135,7 +135,7 @@
             "type": "array",
             "items": {
               "type": "object",
-              "additionalProperties": false,
+
               "properties": {
                 "id": {
                   "type": "number",
@@ -184,7 +184,7 @@
             "type": ["null", "string"]
           },
           "waiting_task": {
-            "type": ["null", "string"]
+            "type": ["null", "number"]
           },
           "supervisors": {
             "type": "array"
@@ -193,16 +193,16 @@
             "type": "array"
           },
           "count_wait_bid": {
-            "type": "string"
+            "type": "number"
           },
           "counterparty": {
             "type": "array"
           },
           "time_answer_bid": {
-            "type": "string"
+            "type": "number"
           },
           "notification_start": {
-            "type": "string"
+            "type": "number"
           }
         },
         "required": [
@@ -235,7 +235,7 @@
     },
     "links": {
       "type": "object",
-      "additionalProperties": false,
+
       "properties": {
         "first": {
           "type": "string"
@@ -254,7 +254,7 @@
     },
     "meta": {
       "type": "object",
-      "additionalProperties": false,
+
       "properties": {
         "current_page": {
           "type": "number"

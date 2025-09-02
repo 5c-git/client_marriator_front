@@ -3,11 +3,11 @@
   "$schema": "http://json-schema.org/draft-07/schema#",
   "title": "getModerationSingleClientSuccess",
   "type": "object",
-  "additionalProperties": false,
+
   "properties": {
     "data": {
       "type": "object",
-      "additionalProperties": false,
+
       "properties": {
         "id": {
           "type": "number"
@@ -28,7 +28,7 @@
           "type": "array",
           "items": {
             "type": "object",
-            "additionalProperties": false,
+
             "properties": {
               "id": {
                 "type": "number"
@@ -40,7 +40,7 @@
                 "type": "array",
                 "items": {
                   "type": "object",
-                  "additionalProperties": false,
+
                   "properties": {
                     "description": {
                       "type": "string"
@@ -66,7 +66,7 @@
           "type": "array",
           "items": {
             "type": "object",
-            "additionalProperties": false,
+
             "properties": {
               "id": {
                 "type": "number"
@@ -88,7 +88,7 @@
               },
               "region": {
                 "type": "object",
-                "additionalProperties": false,
+
                 "properties": {
                   "id": {
                     "type": "number"
@@ -99,7 +99,7 @@
               },
               "brand": {
                 "type": "object",
-                "additionalProperties": false,
+
                 "properties": {
                   "description": {
                     "type": "string"
@@ -133,7 +133,7 @@
           "type": "array",
           "items": {
             "type": "object",
-            "additionalProperties": false,
+
             "properties": {
               "id": {
                 "type": "number",
@@ -188,7 +188,7 @@
           "type": "array",
           "items": {
             "type": "object",
-            "additionalProperties": false,
+
             "properties": {
               "id": {
                 "type": "number"
@@ -206,7 +206,7 @@
                 "type": "array",
                 "items": {
                   "type": "object",
-                  "additionalProperties": false,
+
                   "properties": {
                     "id": {
                       "type": "number",

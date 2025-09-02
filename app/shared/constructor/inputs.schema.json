@@ -910,7 +910,7 @@
             "type": "array",
             "items": {
               "type": "object",
-              "additionalProperties": false,
+
               "properties": {
                 "name": {
                   "type": "string"
@@ -1386,7 +1386,7 @@
       },
       {
         "type": "object",
-        "additionalProperties": false,
+
         "properties": {
           "inputType": {
             "type": "string",
@@ -1409,7 +1409,7 @@
             "minItems": 1,
             "items": {
               "type": "object",
-              "additionalProperties": false,
+
               "properties": {
                 "value": {
                   "type": "string"

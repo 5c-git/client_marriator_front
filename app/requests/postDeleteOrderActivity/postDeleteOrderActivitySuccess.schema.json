@@ -3,11 +3,11 @@
   "$schema": "http://json-schema.org/draft-07/schema#",
   "title": "postDeleteOrderActivitySuccess",
   "type": "object",
-  "additionalProperties": false,
+
   "properties": {
     "data": {
       "type": "object",
-      "additionalProperties": false,
+
       "properties": {
         "id": {
           "type": "number"
@@ -20,7 +20,7 @@
         },
         "place": {
           "type": "object",
-          "additionalProperties": false,
+
           "properties": {
             "id": {
               "type": "number"
@@ -42,7 +42,7 @@
             },
             "region": {
               "type": "object",
-              "additionalProperties": false,
+
               "properties": {
                 "id": {
                   "type": "number"
@@ -55,7 +55,7 @@
             },
             "brand": {
               "type": "object",
-              "additionalProperties": false,
+
               "properties": {
                 "id": {
                   "type": "number"
@@ -86,7 +86,7 @@
         },
         "user": {
           "type": "object",
-          "additionalProperties": false,
+
           "properties": {
             "id": {
               "type": "number"
@@ -107,11 +107,11 @@
           "type": "array",
           "items": {
             "type": "object",
-            "additionalProperties": false,
+
             "properties": {
               "viewActivity": {
                 "type": "object",
-                "additionalProperties": false,
+
                 "properties": {
                   "name": {
                     "type": "string"
@@ -144,7 +144,7 @@
                 "type": "array",
                 "items": {
                   "type": "object",
-                  "additionalProperties": false,
+
                   "properties": {
                     "timeStart": {
                       "type": "string"
@@ -156,7 +156,7 @@
                       "type": "array",
                       "items": {
                         "type": "object",
-                        "additionalProperties": false,
+
                         "properties": {
                           "id": {
                             "type": "number"
@@ -178,7 +178,7 @@
                           },
                           "region": {
                             "type": "object",
-                            "additionalProperties": false,
+
                             "properties": {
                               "id": {
                                 "type": "number"
@@ -191,7 +191,7 @@
                           },
                           "brand": {
                             "type": ["null", "object"],
-                            "additionalProperties": false,
+
                             "properties": {
                               "id": {
                                 "type": "number"

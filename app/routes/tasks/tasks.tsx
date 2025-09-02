@@ -74,12 +74,14 @@ export async function clientLoader() {
     notAccepted: Option[];
     canceled: Option[];
     archive: Option[];
+    empty: Option[];
   } = {
     new: [],
     accepted: [],
     notAccepted: [],
     canceled: [],
     archive: [],
+    empty: [],
   };
 
   if (accessToken) {
@@ -147,9 +149,29 @@ export async function clientLoader() {
       (item) => item.status === statusValueMap.archive
     );
 
+    let activeStatus: keyof typeof statusValueMap | "empty" = "empty";
+
+    if (filteredTasks.canceled.length > 0) {
+      activeStatus = "archive";
+    }
+    if (filteredTasks.archive.length > 0) {
+      activeStatus = "canceled";
+    }
+    if (filteredTasks.notAccepted.length > 0) {
+      activeStatus = "notAccepted";
+    }
+    if (filteredTasks.accepted.length > 0) {
+      activeStatus = "accepted";
+    }
+    if (filteredTasks.new.length > 0) {
+      activeStatus = "new";
+    }
+
     return {
       ymaps,
       filteredTasks,
+      activeStatus,
+      notEmpty: tasksData.data.length > 0 ? true : false,
     };
   } else {
     throw new Response("Токен авторизации не обнаружен!", { status: 401 });
@@ -182,7 +204,9 @@ export default function Tasks({ loaderData }: Route.ComponentProps) {
 
   const [mapInstance, setMapInstance] = useState<YMap | null>(null);
   const [selectedTask, setSelectedTask] = useState<Option | null>(null);
-  const [filter, setFilter] = useState<keyof typeof statusValueMap>("new");
+  const [filter, setFilter] = useState<keyof typeof statusValueMap | "empty">(
+    loaderData.activeStatus
+  );
   const [sorting, setSorting] = useState<"ascending" | "descending">(
     "ascending"
   );
@@ -203,10 +227,11 @@ export default function Tasks({ loaderData }: Route.ComponentProps) {
 
     let map: YMap | null = null;
 
-    if (container) {
+    if (container && loaderData.notEmpty) {
       map = new YMap(container, {
         location: {
-          center: loaderData.filteredTasks["new"][0].coordinates,
+          center:
+            loaderData.filteredTasks[loaderData.activeStatus][0].coordinates,
           zoom: 12,
         },
       });
@@ -221,7 +246,13 @@ export default function Tasks({ loaderData }: Route.ComponentProps) {
       map?.destroy();
       setMapInstance(null);
     };
-  }, [loaderData.ymaps, loaderData.filteredTasks, showMap]);
+  }, [
+    loaderData.ymaps,
+    loaderData.activeStatus,
+    loaderData.notEmpty,
+    loaderData.filteredTasks,
+    showMap,
+  ]);
 
   // рисуем на карте маркеры
   useEffect(() => {
@@ -242,27 +273,29 @@ export default function Tasks({ loaderData }: Route.ComponentProps) {
     });
 
     //рисуем новые маркеры из свежих данных
-    activeTasks.forEach((location) => {
-      const markerElement = document.createElement("div");
+    if (loaderData.notEmpty) {
+      activeTasks.forEach((location) => {
+        const markerElement = document.createElement("div");
 
-      const icon = renderIcon(location.address.logo, location.statusColor);
+        const icon = renderIcon(location.address.logo, location.statusColor);
 
-      markerElement.innerHTML = icon;
+        markerElement.innerHTML = icon;
 
-      const marker = new YMapMarker(
-        {
-          coordinates: location.coordinates as LngLat,
-          properties: {
-            id: location.id,
-            icon: location.address.logo,
+        const marker = new YMapMarker(
+          {
+            coordinates: location.coordinates as LngLat,
+            properties: {
+              id: location.id,
+              icon: location.address.logo,
+            },
           },
-        },
-        markerElement
-      );
+          markerElement
+        );
 
-      mapInstance?.addChild(marker);
-    });
-  }, [loaderData.ymaps, activeTasks, mapInstance]);
+        mapInstance?.addChild(marker);
+      });
+    }
+  }, [loaderData.ymaps, loaderData.notEmpty, activeTasks, mapInstance]);
 
   // // обновляем слушатель событий
   useEffect(() => {
@@ -287,10 +320,10 @@ export default function Tasks({ loaderData }: Route.ComponentProps) {
       },
     });
 
-    if (mapInstance) {
+    if (mapInstance && loaderData.notEmpty) {
       mapInstance.addChild(mapListener);
     }
-  }, [loaderData.ymaps, activeTasks, mapInstance]);
+  }, [loaderData.ymaps, loaderData.notEmpty, activeTasks, mapInstance]);
 
   //sorting and filtration
   useEffect(() => {
@@ -334,9 +367,11 @@ export default function Tasks({ loaderData }: Route.ComponentProps) {
     }
   }, [loaderData.filteredTasks, filter, sorting]);
 
+  console.log(loaderData.filteredTasks);
+
   return (
     <>
-      {activeTasks.length > 0 ? (
+      {loaderData.notEmpty ? (
         <>
           <Box
             sx={{

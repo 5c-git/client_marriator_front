@@ -3,18 +3,18 @@
   "$schema": "http://json-schema.org/draft-07/schema#",
   "title": "postSendPhoneErrorTimer",
   "type": "object",
-  "additionalProperties": false,
+
   "properties": {
     "result": {
       "type": "object",
-      "additionalProperties": false,
+
       "properties": {
         "type": {
           "type": "string"
         },
         "code": {
           "type": "object",
-          "additionalProperties": false,
+
           "properties": {
             "status": {
               "type": "string",

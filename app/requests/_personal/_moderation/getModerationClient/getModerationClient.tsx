@@ -110,27 +110,47 @@ export const getModerationClient = async (
 export const mockResponseSuccess = {
   data: [
     {
-      id: 253,
-      name: "client",
-      phone: 72222222222,
-      email: "client@gmail.com",
-      logo: "/storage/source/directory/brand/1-logo/\u041b\u043e\u0433\u043e \u041f\u044f\u0442\u0435\u0440\u043e\u0447\u043a\u0430.png",
+      id: 392,
+      name: "КЛИЕНТ ПЕРВЫЙ",
+      phone: 79887777777,
+      email: "client@mail.ru",
+      logo: "/storage/source/directory/brand/1-logo/Лого Пятерочка.png",
       project: [
         {
           id: 1,
-          name: "\u0414\u043e\u0433\u043e\u0432\u043e\u0440 \u043d\u0430 \u043e\u043a\u0430\u0437\u0430\u043d\u0438\u0435 \u0443\u0441\u043b\u0443\u0433 \u041f\u044f\u0442\u0451\u0440\u043e\u0447\u043a\u0430",
+          name: "Договор на оказание услуг Пятёрочка",
           brand: [
             {
               id: 1,
-              name: "\u041f\u044f\u0442\u0451\u0440\u043e\u0447\u043a\u0430",
-              logo: "/storage/source/directory/brand/1-logo/\u041b\u043e\u0433\u043e \u041f\u044f\u0442\u0435\u0440\u043e\u0447\u043a\u0430.png",
+              name: "Пятёрочка",
+              logo: "/storage/source/directory/brand/1-logo/Лого Пятерочка.png",
               description:
-                "\u00ab\u041f\u044f\u0442\u0451\u0440\u043e\u0447\u043a\u0430\u00bb \u2014 \u043a\u0440\u0443\u043f\u043d\u0435\u0439\u0448\u0430\u044f \u0442\u043e\u0440\u0433\u043e\u0432\u0430\u044f \u0441\u0435\u0442\u044c \u043c\u0430\u0433\u0430\u0437\u0438\u043d\u043e\u0432 \u00ab\u0443 \u0434\u043e\u043c\u0430\u00bb \u0432 \u0420\u043e\u0441\u0441\u0438\u0438.",
+                "«Пятёрочка» — крупнейшая торговая сеть магазинов «у дома» в России.",
             },
           ],
         },
       ],
-      place: [],
+      place: [
+        {
+          id: 3,
+          name: "Пятёрочка МСК ул. Арбат д. 24",
+          latitude: "55.00000000",
+          longitude: "37.00000000",
+          address_kladr: "ул. Арбат д. 24  г.Москва",
+          logo: "/storage/source/directory/brand/1-logo/Лого Пятерочка.png",
+          region: {
+            id: 2,
+            name: "Москва",
+          },
+          brand: {
+            id: 1,
+            name: "Пятёрочка",
+            logo: "/storage/source/directory/brand/1-logo/Лого Пятерочка.png",
+            description:
+              "«Пятёрочка» — крупнейшая торговая сеть магазинов «у дома» в России.",
+          },
+        },
+      ],
       roles: [
         {
           id: 2,
@@ -146,10 +166,10 @@ export const mockResponseSuccess = {
       repeat_bid: "23:59",
       leave_bid: "04:00",
       refusal_task: "23:59",
-      waiting_task: "60",
-      count_wait_bid: "1",
-      time_answer_bid: "24",
-      notification_start: "60",
+      waiting_task: 60,
+      count_wait_bid: 1,
+      time_answer_bid: 24,
+      notification_start: 60,
       supervisors: [],
       manager: [],
       counterparty: [],

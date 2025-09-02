@@ -3,20 +3,89 @@
   "$schema": "http://json-schema.org/draft-07/schema#",
   "title": "getBidsSuccess",
   "type": "object",
-  "additionalProperties": false,
+
   "properties": {
     "data": {
       "type": "array",
       "items": {
         "type": "object",
-        "additionalProperties": false,
+
         "properties": {
           "id": {
             "type": "number"
           },
+          "user": {
+            "type": "object",
+
+            "properties": {
+              "id": {
+                "type": "number"
+              },
+              "phone": {
+                "type": "number"
+              },
+              "email": {
+                "type": "string"
+              },
+              "logo": {
+                "type": "string"
+              },
+              "roles": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+
+                  "properties": {
+                    "id": {
+                      "type": "number",
+                      "minimum": 1,
+                      "maximum": 6
+                    },
+                    "name": {
+                      "enum": [
+                        "admin",
+                        "client",
+                        "manager",
+                        "recruiter",
+                        "specialist",
+                        "supervisor"
+                      ]
+                    }
+                  },
+                  "required": ["id", "name"]
+                }
+              }
+            },
+            "required": ["id", "phone", "email", "logo", "roles"]
+          },
+          "acceptUserId": {
+            "type": ["null", "object"],
+
+            "properties": {
+              "id": {
+                "type": "number"
+              },
+              "phone": {
+                "type": "number"
+              },
+              "email": {
+                "type": "string"
+              },
+              "logo": {
+                "type": "string"
+              }
+            },
+            "required": ["id", "phone", "email", "logo"]
+          },
+          "status": {
+            "enum": [1, 2, 3, 4, 5]
+          },
+          "selfEmployed": {
+            "type": "boolean"
+          },
           "place": {
-            "type": ["object"],
-            "additionalProperties": false,
+            "type": "object",
+
             "properties": {
               "id": {
                 "type": "number"
@@ -34,11 +103,11 @@
                 "type": "string"
               },
               "logo": {
-                "type": ["null", "string"]
+                "type": "string"
               },
               "region": {
                 "type": "object",
-                "additionalProperties": false,
+
                 "properties": {
                   "id": {
                     "type": "number"
@@ -50,8 +119,8 @@
                 "required": ["id", "name"]
               },
               "brand": {
-                "type": ["null", "object"],
-                "additionalProperties": false,
+                "type": "object",
+
                 "properties": {
                   "id": {
                     "type": "number"
@@ -80,56 +149,76 @@
               "brand"
             ]
           },
-          "selfEmployed": {
+          "radius": {
+            "type": ["null"]
+          },
+          "price": { "type": ["null"] },
+          "priceResult": {
+            "type": "number"
+          },
+          "viewActivity": {
+            "type": "object",
+
+            "properties": {
+              "id": {
+                "type": "number"
+              },
+              "name": {
+                "type": "string"
+              },
+              "detailName": {
+                "type": "string"
+              },
+              "previewText": {
+                "type": "string"
+              },
+              "logo": {
+                "type": "string"
+              },
+              "traveling": {
+                "type": "boolean"
+              }
+            },
+            "required": [
+              "id",
+              "name",
+              "detailName",
+              "previewText",
+              "logo",
+              "traveling"
+            ]
+          },
+          "dateStart": {
+            "type": "string"
+          },
+          "dateEnd": {
+            "type": "string"
+          },
+          "needFoto": {
             "type": "boolean"
           },
-          "status": {
-            "enum": [1, 2, 3, 4, 5]
+          "dateActivity": {
+            "type": "array",
+            "items": {}
           }
         },
-        "required": ["id", "place", "selfEmployed", "status"]
+        "required": [
+          "id",
+          "user",
+          "acceptUserId",
+          "status",
+          "selfEmployed",
+          "place",
+          "radius",
+          "price",
+          "priceResult",
+          "viewActivity",
+          "dateStart",
+          "dateEnd",
+          "needFoto",
+          "dateActivity"
+        ]
       }
-    },
-    "links": {
-      "type": "object",
-      "additionalProperties": false,
-      "properties": {
-        "first": {
-          "type": ["null", "string"]
-        },
-        "last": {
-          "type": ["null", "string"]
-        },
-        "prev": {
-          "type": ["null", "string"]
-        },
-        "next": {
-          "type": ["null", "string"]
-        }
-      },
-      "required": ["first", "last", "prev", "next"]
-    },
-    "meta": {
-      "type": "object",
-      "additionalProperties": false,
-      "properties": {
-        "current_page": {
-          "type": "number"
-        },
-        "from": {
-          "type": "number"
-        },
-        "path": {
-          "type": "string"
-        },
-        "per_page": {
-          "type": "number"
-        },
-        "to": {
-          "type": "number"
-        }
-      },
-      "required": ["current_page", "from", "path", "per_page", "to"]
     }
   },
   "required": ["data"]

@@ -3,7 +3,7 @@
   "$schema": "http://json-schema.org/draft-07/schema#",
   "title": "Post Send Phone Success Schema",
   "type": "object",
-  "additionalProperties": false,
+
   "properties": {
     "status": {
       "type": "string",
@@ -11,7 +11,7 @@
     },
     "result": {
       "type": "object",
-      "additionalProperties": false,
+
       "properties": {
         "type": {
           "type": "string",
@@ -22,7 +22,7 @@
           "anyOf": [
             {
               "type": "object",
-              "additionalProperties": false,
+
               "properties": {
                 "status": {
                   "type": "string",
@@ -33,7 +33,7 @@
             },
             {
               "type": "object",
-              "additionalProperties": false,
+
               "properties": {
                 "status": {
                   "type": "string",
@@ -47,7 +47,7 @@
             },
             {
               "type": "object",
-              "additionalProperties": false,
+
               "properties": {
                 "status": {
                   "type": "string",

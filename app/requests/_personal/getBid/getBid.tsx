@@ -47,8 +47,6 @@ export const getBid = async (
       throw new Response(`Данные запроса getBid не валидны схеме`);
     }
 
-    // const data = response as unknown as GetBidsSuccess;
-
     return data;
   } catch (error) {
     if (error instanceof Response) {
@@ -92,22 +90,24 @@ export const mockResponseSuccess = {
       phone: 79152142639,
       email: "ilyaDevmarriator@gmail.com",
       logo: "/storage/source/directory/brand/3-logo/about-main-1.jpeg",
-    },
-    acceptUserId: {
-      id: 1,
-      phone: 79152142639,
-      email: "ilyaDevmarriator@gmail.com",
-      logo: "/storage/source/directory/brand/3-logo/about-main-1.jpeg",
+      roles: [
+        {
+          id: 3,
+          name: "manager",
+        },
+      ],
     },
     radius: 1,
     price: 1,
     priceResult: 1,
     viewActivity: {
+      id: 5,
       name: "Продавец",
       detailName: "Продавец",
       previewText:
         "Кассир магазина,Кассир магазина розничной сети,Мобильный кассир,Продавец прилавка,Продавец прилавка розничной сети,Продавец торгового зала,Продавец торгового зала розничной сети,Кассир общепита",
       logo: "/storage/source/directory/view_activities/1-img/8c37f333-3b09-4686-9238-dd89e704fbc7-31-Wavebreakmedia-Shutterst.jpg",
+      traveling: false,
     },
     dateStart: "2025-05-25T09:00:00.000000Z",
     dateEnd: "2025-05-25T18:00:00.000000Z",
@@ -181,6 +181,25 @@ export const mockResponseSuccess = {
         ],
       },
     ],
+    acceptUser: null,
+    order: null,
+    task: {
+      id: 11,
+      selfEmployed: true,
+      status: 2,
+      user: {
+        id: 1000,
+        phone: 79152142638,
+        email: "test@mail.ru",
+        logo: "/storage/source/directory/brand/1-logo/Лого%20Пятерочка.png",
+        roles: [
+          {
+            id: 3,
+            name: "manager",
+          },
+        ],
+      },
+    },
   },
 };
 

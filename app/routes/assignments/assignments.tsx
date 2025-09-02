@@ -74,12 +74,14 @@ export async function clientLoader() {
     notAccepted: Option[];
     canceled: Option[];
     archive: Option[];
+    empty: Option[];
   } = {
     new: [],
     accepted: [],
     notAccepted: [],
     canceled: [],
     archive: [],
+    empty: [],
   };
 
   if (accessToken) {
@@ -147,9 +149,29 @@ export async function clientLoader() {
       (item) => item.status === statusValueMap.archive
     );
 
+    let activeStatus: keyof typeof statusValueMap | "empty" = "empty";
+
+    if (filteredAssignments.canceled.length > 0) {
+      activeStatus = "archive";
+    }
+    if (filteredAssignments.archive.length > 0) {
+      activeStatus = "canceled";
+    }
+    if (filteredAssignments.notAccepted.length > 0) {
+      activeStatus = "notAccepted";
+    }
+    if (filteredAssignments.accepted.length > 0) {
+      activeStatus = "accepted";
+    }
+    if (filteredAssignments.new.length > 0) {
+      activeStatus = "new";
+    }
+
     return {
       ymaps,
       filteredAssignments,
+      activeStatus,
+      notEmpty: assignmentsData.data.length > 0 ? true : false,
     };
   } else {
     throw new Response("Токен авторизации не обнаружен!", { status: 401 });
@@ -184,7 +206,9 @@ export default function Assignments({ loaderData }: Route.ComponentProps) {
   const [selectedAssignment, setSelectedAssignment] = useState<Option | null>(
     null
   );
-  const [filter, setFilter] = useState<keyof typeof statusValueMap>("new");
+  const [filter, setFilter] = useState<keyof typeof statusValueMap | "empty">(
+    loaderData.activeStatus
+  );
   const [sorting, setSorting] = useState<"ascending" | "descending">(
     "ascending"
   );
@@ -205,10 +229,12 @@ export default function Assignments({ loaderData }: Route.ComponentProps) {
 
     let map: YMap | null = null;
 
-    if (container) {
+    if (container && loaderData.notEmpty) {
       map = new YMap(container, {
         location: {
-          center: loaderData.filteredAssignments["new"][0].coordinates,
+          center:
+            loaderData.filteredAssignments[loaderData.activeStatus][0]
+              .coordinates,
           zoom: 12,
         },
       });
@@ -223,7 +249,13 @@ export default function Assignments({ loaderData }: Route.ComponentProps) {
       map?.destroy();
       setMapInstance(null);
     };
-  }, [loaderData.ymaps, loaderData.filteredAssignments, showMap]);
+  }, [
+    loaderData.ymaps,
+    loaderData.activeStatus,
+    loaderData.notEmpty,
+    loaderData.filteredAssignments,
+    showMap,
+  ]);
 
   // рисуем на карте маркеры
   useEffect(() => {
@@ -244,27 +276,29 @@ export default function Assignments({ loaderData }: Route.ComponentProps) {
     });
 
     //рисуем новые маркеры из свежих данных
-    activeAssignments.forEach((location) => {
-      const markerElement = document.createElement("div");
+    if (loaderData.notEmpty) {
+      activeAssignments.forEach((location) => {
+        const markerElement = document.createElement("div");
 
-      const icon = renderIcon(location.address.logo, location.statusColor);
+        const icon = renderIcon(location.address.logo, location.statusColor);
 
-      markerElement.innerHTML = icon;
+        markerElement.innerHTML = icon;
 
-      const marker = new YMapMarker(
-        {
-          coordinates: location.coordinates as LngLat,
-          properties: {
-            id: location.id,
-            icon: location.address.logo,
+        const marker = new YMapMarker(
+          {
+            coordinates: location.coordinates as LngLat,
+            properties: {
+              id: location.id,
+              icon: location.address.logo,
+            },
           },
-        },
-        markerElement
-      );
+          markerElement
+        );
 
-      mapInstance?.addChild(marker);
-    });
-  }, [loaderData.ymaps, activeAssignments, mapInstance]);
+        mapInstance?.addChild(marker);
+      });
+    }
+  }, [loaderData.ymaps, loaderData.notEmpty, activeAssignments, mapInstance]);
 
   // // обновляем слушатель событий
   useEffect(() => {
@@ -289,10 +323,10 @@ export default function Assignments({ loaderData }: Route.ComponentProps) {
       },
     });
 
-    if (mapInstance) {
+    if (mapInstance && loaderData.notEmpty) {
       mapInstance.addChild(mapListener);
     }
-  }, [loaderData.ymaps, activeAssignments, mapInstance]);
+  }, [loaderData.ymaps, loaderData.notEmpty, activeAssignments, mapInstance]);
 
   //sorting and filtration
   useEffect(() => {
@@ -341,7 +375,7 @@ export default function Assignments({ loaderData }: Route.ComponentProps) {
 
   return (
     <>
-      {activeAssignments.length > 0 ? (
+      {loaderData.notEmpty ? (
         <>
           <Box
             sx={{

@@ -11,7 +11,7 @@ import pin from "../../public/locales/ru/pin.json";
 import createPin from "../../public/locales/ru/createPin.json";
 import confirmRestorePin from "../../public/locales/ru/confirmRestorePin.json";
 
-import signin_client_phone from "../../public/locales/ru/clientPhone.json";
+import signin_client_phone from "../../public/locales/ru/signin_client_phone.json";
 import signin_client_meta from "../../public/locales/ru/signin_client_meta.json";
 import signin_client_location from "../../public/locales/ru/signin_client_location.json";
 import signin_client_recruiter from "../../public/locales/ru/signin_client_recruiter.json";
@@ -63,6 +63,7 @@ import tasks from "../../public/locales/ru/tasks.json";
 import new_task from "../../public/locales/ru/new_task.json";
 import assignment from "../../public/locales/ru/assignment.json";
 import task from "../../public/locales/ru/task.json";
+import requests from "../../public/locales/ru/requests.json";
 
 //internal
 
@@ -148,6 +149,7 @@ declare module "i18next" {
 
       tasks: typeof tasks;
       new_task: typeof new_task;
+      requests: typeof requests;
       //internal
 
       //components

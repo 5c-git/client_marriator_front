@@ -3,17 +3,17 @@
   "$schema": "http://json-schema.org/draft-07/schema#",
   "title": "getBikSuccess",
   "type": "object",
-  "additionalProperties": false,
+
   "properties": {
     "result": {
       "type": "object",
-      "additionalProperties": false,
+
       "properties": {
         "bankData": {
           "type": "array",
           "items": {
             "type": "object",
-            "additionalProperties": false,
+
             "properties": {
               "value": {
                 "type": "string"
