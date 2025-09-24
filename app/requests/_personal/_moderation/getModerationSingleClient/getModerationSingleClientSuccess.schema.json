@@ -182,7 +182,7 @@
           "type": ["null", "string"]
         },
         "waiting_task": {
-          "type": ["null", "string"]
+          "type": ["null", "number"]
         },
         "supervisors": {
           "type": "array",
@@ -235,16 +235,16 @@
           "type": "array"
         },
         "count_wait_bid": {
-          "type": "string"
+          "type": "number"
         },
         "counterparty": {
           "type": "array"
         },
         "time_answer_bid": {
-          "type": "string"
+          "type": "number"
         },
         "notification_start": {
-          "type": "string"
+          "type": "number"
         }
       },
       "required": [

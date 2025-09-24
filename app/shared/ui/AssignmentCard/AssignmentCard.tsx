@@ -7,24 +7,17 @@ import { CalendarIcon } from "~/shared/icons/CalendarIcon";
 import { format } from "date-fns";
 import { UTCDate } from "@date-fns/utc";
 
-// subHeader - сделать жирным и розовым
-
-// avatar: {
-// logo?: string
-// name: string
-//address?: string
-//skils?: {
-//  label: string
-// active: boolean }[]
-// }
-
 type AssignmentCardProps = {
   id: string;
   statusColor?: string;
   to?: string;
-  header: string;
+  header?: string;
   progress?: number;
-  subHeader?: string;
+  subHeader?: {
+    text: string;
+    bold: boolean;
+    divider?: true;
+  };
   divider?: true;
   address?: {
     logo?: string;
@@ -50,6 +43,19 @@ type AssignmentCardProps = {
       count: string;
       color: string;
     };
+  };
+  avatar?: {
+    logo?: string;
+    name: string;
+    address?: string;
+    skills?: {
+      label: string;
+      active: boolean;
+    }[];
+  };
+  buttonsTray?: {
+    leftTray: React.ReactNode[];
+    rightTray?: React.ReactNode[];
   };
   buttonAction?: {
     action: () => void;
@@ -78,75 +84,170 @@ export const AssignmentCard = (props: AssignmentCardProps) => (
           textDecoration: "none",
         }}
       >
-        {" "}
-        <Box
-          sx={{
-            display: "flex",
-            justifyContent: "space-between",
-            alignItems: "center",
-          }}
-        >
-          <Typography
-            component="p"
-            variant="Reg_16"
-            sx={(theme) => ({
-              color: theme.vars.palette.Black,
-            })}
+        {props.header ? (
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
+            }}
           >
-            {props.header}
-          </Typography>
-          <Typography
-            component="p"
-            variant="Reg_12"
-            sx={(theme) => ({
-              color: theme.vars.palette.Grey_2,
-            })}
-          >
-            {props.id}
-          </Typography>
+            <Typography
+              component="p"
+              variant="Reg_16"
+              sx={(theme) => ({
+                color: theme.vars.palette.Black,
+              })}
+            >
+              {props.header}
+            </Typography>
+            <Typography
+              component="p"
+              variant="Reg_12"
+              sx={(theme) => ({
+                color: theme.vars.palette.Grey_2,
+              })}
+            >
+              {props.id}
+            </Typography>
 
-          {props.progress ? (
-            <Box
-              sx={{
-                display: "flex",
-                justifyContent: "center",
-                minWidth: "28px",
-                paddingLeft: "3px",
-                paddingRight: "3px",
-                borderRadius: "3px",
-              }}
+            {props.progress ? (
+              <Box
+                sx={{
+                  display: "flex",
+                  justifyContent: "center",
+                  minWidth: "28px",
+                  paddingLeft: "3px",
+                  paddingRight: "3px",
+                  borderRadius: "3px",
+                }}
+                style={{
+                  ...(props.progress === 100 && {
+                    background: "var(--mui-palette-WhatsApp)",
+                    color: "var(--mui-palette-White)",
+                  }),
+                  ...(props.progress < 100 && {
+                    background: `linear-gradient(to right, var(--mui-palette-Grey_3) ${props.progress}%, var(--mui-palette-Grey_4) ${props.progress}%)`,
+                    color: "var(--mui-palette-Grey_2)",
+                  }),
+                }}
+              >
+                <Typography component="p" variant="Bold_12">
+                  {props.progress}
+                </Typography>
+              </Box>
+            ) : null}
+          </Box>
+        ) : null}
+        {props.subHeader ? (
+          <Box>
+            <Typography
+              component="p"
+              variant={props.subHeader.bold ? "Bold_16" : "Reg_12"}
+              sx={(theme) => ({
+                color: theme.vars.palette["Grey_2"],
+                marginTop: "4px",
+                // truncate
+                // overflow: "hidden",
+                // textOverflow: "ellipsis",
+                // whiteSpace: "nowrap",
+              })}
               style={{
-                ...(props.progress === 100 && {
-                  background: "var(--mui-palette-WhatsApp)",
-                  color: "var(--mui-palette-White)",
-                }),
-                ...(props.progress < 100 && {
-                  background: `linear-gradient(to right, var(--mui-palette-Grey_3) ${props.progress}%, var(--mui-palette-Grey_4) ${props.progress}%)`,
-                  color: "var(--mui-palette-Grey_2)",
-                }),
+                color: props.subHeader.bold
+                  ? "var(--mui-palette-Corp_1)"
+                  : "var(--mui-palette-Grey_2)",
               }}
             >
-              <Typography component="p" variant="Bold_12">
-                {props.progress}
-              </Typography>
-            </Box>
-          ) : null}
-        </Box>
-        {props.subHeader ? (
-          <Typography
-            component="p"
-            variant="Reg_12"
-            sx={(theme) => ({
-              color: theme.vars.palette["Grey_2"],
-              marginTop: "4px",
-              // truncate
-              // overflow: "hidden",
-              // textOverflow: "ellipsis",
-              // whiteSpace: "nowrap",
-            })}
+              {props.subHeader.text}
+            </Typography>
+
+            {props.subHeader.divider ? (
+              <Divider
+                sx={{
+                  marginTop: "8px",
+                  marginBottom: "8px",
+                }}
+              />
+            ) : null}
+          </Box>
+        ) : null}
+        {props.avatar ? (
+          <Box
+            sx={{
+              display: "flex",
+              columnGap: "4px",
+              alignItems: "flex-start",
+            }}
           >
-            {props.subHeader}
-          </Typography>
+            {props.avatar.logo ? (
+              <img
+                style={{
+                  display: "block",
+                  width: "30px",
+                  height: "30px",
+                  borderRadius: "50%",
+                  marginTop: "10px",
+                  marginBottom: "10px",
+                  objectFit: "cover",
+                }}
+                src={props.avatar.logo}
+                alt={props.avatar.logo}
+              />
+            ) : null}{" "}
+            <Box
+              sx={{
+                overflow: "hidden",
+              }}
+            >
+              {props.avatar.name}
+              {props.avatar.address ? (
+                <Typography
+                  component="p"
+                  variant="Reg_12"
+                  style={{
+                    margin: 0,
+                    fontFamily: "Golos UI",
+                    fontStyle: "normal",
+                    fontWeight: 400,
+                    fontSize: "0.75rem",
+                    lineHeight: "1rem",
+                    color: "var(--mui-palette-Black)",
+                  }}
+                >
+                  {props.avatar.address}
+                </Typography>
+              ) : null}
+              {props.avatar.skills ? (
+                <Box
+                  sx={{
+                    display: "flex",
+                  }}
+                >
+                  {props.avatar.skills.map((item, index) => (
+                    <span
+                      style={{
+                        "--color": item.active
+                          ? "var(--mui-palette-Corp_1)"
+                          : "var(--mui-palette-Grey_2)",
+                        color: "var(--color)",
+                        margin: 0,
+                        fontFamily: "Golos UI",
+                        fontStyle: "normal",
+                        fontWeight: 400,
+                        fontSize: "0.75rem",
+                        lineHeight: "1rem",
+                        whiteSpace: "nowrap",
+                      }}
+                      key={item.label}
+                    >
+                      {index > 0 ? ", " : null}
+                      {item.label}
+                    </span>
+                  ))}
+                </Box>
+              ) : null}
+            </Box>
+          </Box>
         ) : null}
         {props.counters ? (
           <Box
@@ -263,6 +364,46 @@ export const AssignmentCard = (props: AssignmentCardProps) => (
                     : ""
                 }`}
               </Typography>
+            ) : null}
+          </Box>
+        ) : null}
+        {props.buttonsTray ? (
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
+              paddingTop: "8px",
+            }}
+          >
+            <Box
+              sx={{
+                display: "flex",
+                columnGap: "16px",
+                alignItems: "center",
+              }}
+            >
+              {props.buttonsTray.leftTray.map((item) => item)}
+            </Box>
+            <Typography
+              component="p"
+              variant="Reg_12"
+              sx={(theme) => ({
+                color: theme.vars.palette.Grey_2,
+              })}
+            >
+              {props.id}
+            </Typography>
+            {props.buttonsTray.rightTray ? (
+              <Box
+                sx={{
+                  display: "flex",
+                  columnGap: "16px",
+                  alignItems: "center",
+                }}
+              >
+                {props.buttonsTray.rightTray.map((item) => item)}
+              </Box>
             ) : null}
           </Box>
         ) : null}

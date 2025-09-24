@@ -5,29 +5,11 @@
  * and run json-schema-to-typescript to regenerate this file.
  */
 
-export interface GetBidSuccess {
+export interface PostUpdateBidSuccess {
   data: {
     id: number;
-    user: {
-      id: number;
-      phone: number;
-      email: string;
-      logo: string;
-      roles: {
-        id: number;
-        name:
-          | "admin"
-          | "client"
-          | "manager"
-          | "recruiter"
-          | "specialist"
-          | "supervisor";
-        [k: string]: unknown;
-      }[];
-      [k: string]: unknown;
-    };
-    status: 1 | 2 | 3 | 4 | 5;
     selfEmployed: boolean;
+    status: 1 | 2 | 3 | 4 | 5;
     place: {
       id: number;
       name: string;
@@ -49,16 +31,21 @@ export interface GetBidSuccess {
       };
       [k: string]: unknown;
     };
-    radius: null | number;
-    price: null | number;
+    user: {
+      id: number;
+      phone: number;
+      email: string;
+      logo: string;
+      [k: string]: unknown;
+    };
+    radius: number;
+    price: number;
     priceResult: number;
     viewActivity: {
-      id: number;
       name: string;
       detailName: string;
       previewText: string;
       logo: string;
-      traveling: boolean;
       [k: string]: unknown;
     };
     dateStart: string;
@@ -73,7 +60,7 @@ export interface GetBidSuccess {
         latitude: string;
         longitude: string;
         address_kladr: string;
-        logo: string;
+        logo?: null | string;
         region: {
           id: number;
           name: string;
@@ -82,7 +69,7 @@ export interface GetBidSuccess {
         brand: {
           id: number;
           name: string;
-          logo: string;
+          logo?: null | string;
           description: string;
           [k: string]: unknown;
         };
@@ -99,17 +86,6 @@ export interface GetBidSuccess {
         phone: number;
         email: string;
         logo: string;
-        roles: {
-          id: number;
-          name:
-            | "admin"
-            | "client"
-            | "manager"
-            | "recruiter"
-            | "specialist"
-            | "supervisor";
-          [k: string]: unknown;
-        }[];
         [k: string]: unknown;
       };
       [k: string]: unknown;
@@ -123,17 +99,6 @@ export interface GetBidSuccess {
         phone: number;
         email: string;
         logo: string;
-        roles: {
-          id: number;
-          name:
-            | "admin"
-            | "client"
-            | "manager"
-            | "recruiter"
-            | "specialist"
-            | "supervisor";
-          [k: string]: unknown;
-        }[];
         [k: string]: unknown;
       };
       [k: string]: unknown;
@@ -154,18 +119,6 @@ export interface GetBidSuccess {
           | "supervisor";
         [k: string]: unknown;
       }[];
-      radius: string;
-      name: string;
-      age: string;
-      country: string;
-      viewActivities: string[];
-      status: 1 | 2 | 3 | 4 | 5;
-      [k: string]: unknown;
-    }[];
-    count: number;
-    statistic: {
-      accepted: number;
-      count: number;
       [k: string]: unknown;
     }[];
     [k: string]: unknown;

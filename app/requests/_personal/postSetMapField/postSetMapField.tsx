@@ -14,8 +14,9 @@ export const postSetMapFieldKeys = ["postSetMapField"];
 export const postSetMapField = async (
   accessToken: string,
   mapAddress: string,
-  coordinates: string,
-  mapRadius: string | null
+  mapRadius: string | null,
+  latitude: string,
+  longitude: string
 ): Promise<PostSetMapFieldSuccess> => {
   try {
     const url = new URL(import.meta.env.VITE_POST_MAP_FIELD);
@@ -28,8 +29,9 @@ export const postSetMapField = async (
       },
       body: JSON.stringify({
         mapAddress,
-        coordinates,
         mapRadius,
+        latitude,
+        longitude,
       }),
     });
     const response = await request.json();
@@ -45,6 +47,7 @@ export const postSetMapField = async (
     if (validateSuccess(response)) {
       data = response as unknown as PostSetMapFieldSuccess;
     } else {
+      console.log(validateSuccess.errors);
       throw new Response(`Данные запроса postSetMapField не валидны схеме`);
     }
 
@@ -63,13 +66,14 @@ export const postSetMapField = async (
 };
 
 // MOCKS
-export const mockResponseSuccess = {
-  status: "success",
+export const mockResponseSuccess: PostSetMapFieldSuccess = {
   result: {
-    mapAddress: "Россия, Москва, парк Зарядье",
-    mapRadius: "2",
-    coordinates: "37.627939 55.751188",
+    mapAddress: "",
+    mapRadius: "",
+    latitude: null,
+    longitude: null,
   },
+  status: "success",
 };
 
 export const mockResponseError = {};

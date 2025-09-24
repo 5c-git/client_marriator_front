@@ -62,34 +62,14 @@ export const getBid = async (
 };
 
 // MOCKS
-export const mockResponseSuccess = {
+export const mockResponseSuccess: GetBidSuccess = {
   data: {
-    id: 25,
-    selfEmployed: true,
-    status: 1,
-    place: {
-      id: 2,
-      name: "fdfvdvdv",
-      latitude: "21.00000000",
-      longitude: "11.00000000",
-      address_kladr: "dvdvdvdvdv",
-      logo: "/storage/source/directory/brand/1-logo/achievement-1.png",
-      region: {
-        id: 2,
-        name: "Москва",
-      },
-      brand: {
-        id: 1,
-        name: "бренд 1",
-        logo: "/storage/source/directory/brand/1-logo/achievement-1.png",
-        description: "аммвамвмвам вам вам вм вм в мва мвамвм вмвмвмвм вмвм",
-      },
-    },
+    id: 11,
     user: {
-      id: 1,
-      phone: 79152142639,
-      email: "ilyaDevmarriator@gmail.com",
-      logo: "/storage/source/directory/brand/3-logo/about-main-1.jpeg",
+      id: 398,
+      phone: 79887951515,
+      email: "manager3@mail.ru",
+      logo: "/storage/source/directory/brand/2-logo/Лого Ашан.jpg",
       roles: [
         {
           id: 3,
@@ -97,101 +77,103 @@ export const mockResponseSuccess = {
         },
       ],
     },
-    radius: 1,
-    price: 1,
-    priceResult: 1,
-    viewActivity: {
-      id: 5,
-      name: "Продавец",
-      detailName: "Продавец",
-      previewText:
-        "Кассир магазина,Кассир магазина розничной сети,Мобильный кассир,Продавец прилавка,Продавец прилавка розничной сети,Продавец торгового зала,Продавец торгового зала розничной сети,Кассир общепита",
-      logo: "/storage/source/directory/view_activities/1-img/8c37f333-3b09-4686-9238-dd89e704fbc7-31-Wavebreakmedia-Shutterst.jpg",
-      traveling: false,
+    status: 1,
+    selfEmployed: true,
+    place: {
+      id: 1,
+      name: "Ашан МСК",
+      latitude: "37.73043700",
+      longitude: "55.72987300",
+      address_kladr: "Рязанский пр-т, д. 2, корп. 2, Москва",
+      logo: "/storage/source/directory/brand/2-logo/Лого Ашан.jpg",
+      region: {
+        id: 2,
+        name: "Москва",
+      },
+      brand: {
+        id: 2,
+        name: "Ашан",
+        logo: "/storage/source/directory/brand/2-logo/Лого Ашан.jpg",
+        description:
+          "Розничная сеть Auchan Retail является основной составляющей группы ELO, которая, в свою очередь, контролируется семейной корпорацией «Ассоциация семьи Мюлье».",
+      },
     },
-    dateStart: "2025-05-25T09:00:00.000000Z",
-    dateEnd: "2025-05-25T18:00:00.000000Z",
+    radius: 0,
+    price: 1000,
+    priceResult: 940,
+    viewActivity: {
+      id: 2,
+      name: "Курьер  (Физическое лицо)",
+      detailName: "Курьер  (Физическое лицо)",
+      previewText: "Доставка под разные задачи, быстрая курьерская доставка",
+      logo: "/storage/source/directory/view_activities/2-img/1675359703_www-funnyart-club-p-kurer-prikol-vkontakte-61.jpg",
+      traveling: true,
+    },
+    dateStart: "2025-09-19T12:00:00.000000Z",
+    dateEnd: "2025-09-20T21:00:00.000000Z",
     needFoto: true,
     dateActivity: [
       {
-        timeStart: "2025-05-25 09:00",
-        timeEnd: "2025-05-25 12:00",
+        timeStart: "2025-09-19T09:00:00.000Z",
+        timeEnd: "2025-09-19T12:00:00.000Z",
         places: [
           {
             id: 1,
-            name: "вамвамвмвм",
-            latitude: "24.00000000",
-            longitude: "42.00000000",
-            address_kladr: "вмвмвмв",
-            logo: null,
-            region: {
-              id: 1,
-              name: "Татарстан Респ",
-            },
-            brand: {
-              id: 2,
-              name: "vfdv",
-              logo: null,
-              description: "dvdvdvdv",
-            },
-          },
-          {
-            id: 2,
-            name: "fdfvdvdv",
-            latitude: "21.00000000",
-            longitude: "11.00000000",
-            address_kladr: "dvdvdvdvdv",
-            logo: "/storage/source/directory/brand/1-logo/achievement-1.png",
+            name: "Ашан МСК",
+            latitude: "37.73043700",
+            longitude: "55.72987300",
+            address_kladr: "Рязанский пр-т, д. 2, корп. 2, Москва",
+            logo: "/storage/source/directory/brand/2-logo/Лого Ашан.jpg",
             region: {
               id: 2,
               name: "Москва",
             },
             brand: {
-              id: 1,
-              name: "бренд 1",
-              logo: "/storage/source/directory/brand/1-logo/achievement-1.png",
+              id: 2,
+              name: "Ашан",
+              logo: "/storage/source/directory/brand/2-logo/Лого Ашан.jpg",
               description:
-                "аммвамвмвам вам вам вм вм в мва мвамвм вмвмвмвм вмвм",
+                "Розничная сеть Auchan Retail является основной составляющей группы ELO, которая, в свою очередь, контролируется семейной корпорацией «Ассоциация семьи Мюлье».",
             },
           },
         ],
       },
       {
-        timeStart: "2025-05-25 14:00",
-        timeEnd: "2025-05-25 18:00",
+        timeStart: "2025-09-20T14:00:00.000Z",
+        timeEnd: "2025-09-20T18:00:00.000Z",
         places: [
           {
             id: 1,
-            name: "вамвамвмвм",
-            latitude: "24.00000000",
-            longitude: "42.00000000",
-            address_kladr: "вмвмвмв",
-            logo: null,
+            name: "Ашан МСК",
+            latitude: "37.73043700",
+            longitude: "55.72987300",
+            address_kladr: "Рязанский пр-т, д. 2, корп. 2, Москва",
+            logo: "/storage/source/directory/brand/2-logo/Лого Ашан.jpg",
             region: {
-              id: 1,
-              name: "Татарстан Респ",
+              id: 2,
+              name: "Москва",
             },
             brand: {
               id: 2,
-              name: "vfdv",
-              logo: null,
-              description: "dvdvdvdv",
+              name: "Ашан",
+              logo: "/storage/source/directory/brand/2-logo/Лого Ашан.jpg",
+              description:
+                "Розничная сеть Auchan Retail является основной составляющей группы ELO, которая, в свою очередь, контролируется семейной корпорацией «Ассоциация семьи Мюлье».",
             },
           },
         ],
       },
     ],
-    acceptUser: null,
     order: null,
     task: {
-      id: 11,
+      id: 47,
       selfEmployed: true,
-      status: 2,
+      status: 1,
       user: {
-        id: 1000,
-        phone: 79152142638,
-        email: "test@mail.ru",
-        logo: "/storage/source/directory/brand/1-logo/Лого%20Пятерочка.png",
+        id: 398,
+        phone: 79887951515,
+        email: "manager3@mail.ru",
+        logo: "/storage/source/directory/brand/2-logo/Лого Ашан.jpg",
         roles: [
           {
             id: 3,
@@ -200,6 +182,8 @@ export const mockResponseSuccess = {
         ],
       },
     },
+    acceptingUsers: [],
+    count: 1,
   },
 };
 

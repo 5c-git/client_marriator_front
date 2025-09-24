@@ -1,0 +1,27 @@
+{
+  "$id": "getRadiusSelectSuccess",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "getRadiusSelectSuccess",
+  "type": "object",
+  "properties": {
+    "data": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "number"
+          },
+          "value": {
+            "type": "number"
+          },
+          "default": {
+            "type": "boolean"
+          }
+        },
+        "required": ["id", "value", "default"]
+      }
+    }
+  },
+  "required": ["data"]
+}

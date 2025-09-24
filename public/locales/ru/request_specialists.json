@@ -1,0 +1,12 @@
+{
+  "status": {
+    "notAccepted": "Не Принято",
+    "accepted": "Принято",
+    "declined": "Отменено",
+    "consideration": "На рассмотрении",
+    "work": "В работе"
+  },
+  "searchbarPlaceholder": "Поиск",
+  "selectAllPlaceholder": "Выбрать всех",
+  "inviteButton": "Пригласить"
+}
