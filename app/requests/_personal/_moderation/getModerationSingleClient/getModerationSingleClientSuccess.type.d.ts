@@ -20,7 +20,9 @@ export interface GetModerationSingleClientSuccess {
         id: number;
         logo: string;
         name: string;
+        [k: string]: unknown;
       }[];
+      [k: string]: unknown;
     }[];
     place: {
       id: number;
@@ -32,13 +34,16 @@ export interface GetModerationSingleClientSuccess {
       region: {
         id: number;
         name: string;
+        [k: string]: unknown;
       };
       brand: {
         description: string;
         id: number;
         logo: string;
         name: string;
+        [k: string]: unknown;
       };
+      [k: string]: unknown;
     }[];
     roles: {
       id: number;
@@ -49,6 +54,7 @@ export interface GetModerationSingleClientSuccess {
         | "recruiter"
         | "specialist"
         | "supervisor";
+      [k: string]: unknown;
     }[];
     change_order: null | string;
     cancel_order: null | string;
@@ -59,7 +65,7 @@ export interface GetModerationSingleClientSuccess {
     repeat_bid: null | string;
     leave_bid: null | string;
     refusal_task: null | string;
-    waiting_task: null | string;
+    waiting_task: null | number;
     supervisors: {
       id: number;
       phone: number;
@@ -74,12 +80,16 @@ export interface GetModerationSingleClientSuccess {
           | "recruiter"
           | "specialist"
           | "supervisor";
+        [k: string]: unknown;
       }[];
+      [k: string]: unknown;
     }[];
     manager: unknown[];
-    count_wait_bid: string;
+    count_wait_bid: number;
     counterparty: unknown[];
-    time_answer_bid: string;
-    notification_start: string;
+    time_answer_bid: number;
+    notification_start: number;
+    [k: string]: unknown;
   };
+  [k: string]: unknown;
 }

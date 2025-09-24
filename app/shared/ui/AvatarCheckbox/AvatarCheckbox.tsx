@@ -7,6 +7,7 @@ type AvatarCheckboxProps = {
   onChange: (evt: ChangeEvent<HTMLInputElement>) => void;
   avatar: string;
   header: string;
+  subHeader: string;
   features: {
     label: string;
     active: boolean;
@@ -18,13 +19,14 @@ export const AvatarCheckbox = ({
   onChange,
   avatar,
   header,
+  subHeader,
   features,
 }: AvatarCheckboxProps) => {
   return (
     <Box
       sx={{
         display: "flex",
-        columnGap: "10px",
+        columnGap: "4px",
         alignItems: "center",
       }}
     >
@@ -45,7 +47,20 @@ export const AvatarCheckbox = ({
         >
           {header}
         </Typography>
-        <Box>
+        <Typography
+          component="p"
+          variant="Reg_12"
+          sx={(theme) => ({
+            color: theme.vars.palette["Black"],
+          })}
+        >
+          {subHeader}
+        </Typography>
+        <Box
+          sx={{
+            display: "flex",
+          }}
+        >
           {features.map((item, index) => (
             <Typography
               component="span"
@@ -60,16 +75,7 @@ export const AvatarCheckbox = ({
               }}
               key={item.label}
             >
-              {index > 0 ? (
-                <Typography
-                  component="span"
-                  sx={(theme) => ({
-                    color: theme.vars.palette["Grey_2"],
-                  })}
-                >
-                  ,{" "}
-                </Typography>
-              ) : null}
+              {index > 0 ? ", " : null}
               {item.label}
             </Typography>
           ))}

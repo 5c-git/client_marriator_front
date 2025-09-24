@@ -1,0 +1,53 @@
+{
+  "status": {
+    "new": "Новый",
+    "accepted": "Принято",
+    "notAccepted": "Не Принято",
+    "canceled": "Отменено",
+    "archive": "Архив"
+  },
+  "role": {
+    "admin": "Администратор",
+    "supervisor": "Супервайзор",
+    "manager": "Менеджер",
+    "client": "Клиент",
+    "recruiter": "Рекрутёр",
+    "specialist": "Специалист"
+  },
+  "dayMap": {
+    "0": "ВС",
+    "1": "ПН",
+    "2": "ВТ",
+    "3": "СР",
+    "4": "ЧТ",
+    "5": "ПТ",
+    "6": "СБ"
+  },
+  "statusPlaceholder": "Статус",
+  "locationPlaceholder": "Место оказания услуг",
+  "serviceTypePlaceholder": "Вид услуги",
+  "amountPlaceholder": "Количество",
+  "unitPricePlaceholder": "Цена за (Ед.измерения) *",
+  "paxPricePlaceholder": "Стоимость (с налогом)",
+  "finalPricePlaceholder": "ИТОГО на руки",
+  "radiusPlaceholder": "Радиус",
+  "dayStartPlaceholder": "Дата начала",
+  "dayEndPlaceholder": "Дата окончания",
+  "taxStatusPlaceholder": "Налоговый статус",
+  "timeStartPlaceholder": "Время начала",
+  "timeEndPlaceholder": "Время окончания",
+  "routePlaceholder": "Маршрут дня",
+  "addressButton": "Добавить адрес",
+  "removeDayButton": "Удалить день",
+  "needPhotoPlaceholder": "Фотоотчет",
+  "parentTask": "Родительская задача",
+  "parentOrder": "Родительское поручение",
+  "responsible": "Ответственный",
+  "saveRequestButton": "Сохранить заявку",
+  "cancelRequestButton": "Отменить заявку",
+  "drawerHeader": "Места проведения",
+  "searchPlaceholder": "Поиск",
+  "addLocationsButton": "Добавить адреса",
+  "selfEmployed": "Самозанятый",
+  "notSelfEmployed": "Наемный"
+}

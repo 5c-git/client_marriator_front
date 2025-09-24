@@ -1,21 +1,23 @@
 import { http, delay, HttpResponse } from "msw";
 import Ajv from "ajv";
+import addFormats from "ajv-formats";
 
-import getMapFieldSuccess from "./getMapFieldSuccess.schema.json";
-import { GetMapFieldSuccess } from "./getMapFieldSuccess.type";
+import getRadiusSelectSuccess from "./getRadiusSelectSuccess.schema.json";
+import { GetRadiusSelectSuccess } from "./getRadiusSelectSuccess.type";
 import { UnxpectedError } from "~/shared/unexpectedError/unexpectedError";
 
 const ajv = new Ajv();
+addFormats(ajv);
 
-const validateSuccess = ajv.compile(getMapFieldSuccess);
+const validateSuccess = ajv.compile(getRadiusSelectSuccess);
 
-export const getMapFieldKeys = ["getMapField"];
+export const getRadiusSelectKeys = ["getRadiusSelect"];
 
-export const getMapField = async (
+export const getRadiusSelect = async (
   accessToken: string
-): Promise<GetMapFieldSuccess> => {
+): Promise<GetRadiusSelectSuccess> => {
   try {
-    const url = new URL(import.meta.env.VITE_GET_MAP_FIELD);
+    const url = new URL(import.meta.env.VITE_GET_RADIUS_SELECT);
 
     const request = await fetch(url, {
       method: "GET",
@@ -35,9 +37,10 @@ export const getMapField = async (
     }
 
     if (validateSuccess(response)) {
-      data = response as unknown as GetMapFieldSuccess;
+      data = response as unknown as GetRadiusSelectSuccess;
     } else {
-      throw new Response(`Данные запроса getMapField не валидны схеме`);
+      console.log(validateSuccess.errors);
+      throw new Response(`Данные запроса getRadiusSelect не валидны схеме`);
     }
 
     return data;
@@ -55,20 +58,25 @@ export const getMapField = async (
 };
 
 // MOCKS
-export const mockResponseSuccess: GetMapFieldSuccess = {
-  result: {
-    mapAddress: "",
-    mapRadius: "",
-    latitude: null,
-    longitude: null,
-  },
-  status: "success",
+export const mockResponseSuccess: GetRadiusSelectSuccess = {
+  data: [
+    {
+      id: 1,
+      value: 10,
+      default: true,
+    },
+    {
+      id: 2,
+      value: 20,
+      default: false,
+    },
+  ],
 };
 
 export const mockResponseError = {};
 
-export const getMapFieldMockResponse = http.get(
-  import.meta.env.VITE_GET_MAP_FIELD,
+export const getRadiusSelectMockResponse = http.get(
+  `${import.meta.env.VITE_GET_RADIUS_SELECT}`,
   async () => {
     await delay(2000);
     return HttpResponse.json(mockResponseSuccess);

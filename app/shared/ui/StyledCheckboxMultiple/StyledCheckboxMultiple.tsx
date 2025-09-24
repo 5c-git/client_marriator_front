@@ -18,6 +18,11 @@ type StyledCheckboxMultipleProps = {
     value: string;
     label: string;
     image?: string;
+    subHeader?: string;
+    features?: {
+      label: string;
+      active: boolean;
+    }[];
     disabled: boolean;
   }[];
 
@@ -126,7 +131,11 @@ export const StyledCheckboxMultiple = (props: StyledCheckboxMultipleProps) => {
           </Box>
         ) : null}
 
-        <FormGroup>
+        <FormGroup
+          sx={{
+            overflow: "hidden",
+          }}
+        >
           {props.options.map((item) => (
             <FormControlLabel
               key={item.value}
@@ -156,12 +165,11 @@ export const StyledCheckboxMultiple = (props: StyledCheckboxMultipleProps) => {
                     props.error
                       ? "error"
                       : props.status === "warning"
-                      ? "warning"
-                      : "corp"
+                        ? "warning"
+                        : "corp"
                   }
                 />
               }
-              // label={item.label}
               label={
                 <Box
                   sx={{
@@ -185,7 +193,55 @@ export const StyledCheckboxMultiple = (props: StyledCheckboxMultipleProps) => {
                       alt={item.image}
                     />
                   ) : null}{" "}
-                  {item.label}
+                  <Box>
+                    {item.label}
+                    {item.subHeader ? (
+                      <Typography
+                        component="p"
+                        variant="Reg_12"
+                        style={{
+                          margin: 0,
+                          fontFamily: "Golos UI",
+                          fontStyle: "normal",
+                          fontWeight: 400,
+                          fontSize: "0.75rem",
+                          lineHeight: "1rem",
+                          color: "var(--mui-palette-Black)",
+                        }}
+                      >
+                        {item.subHeader}
+                      </Typography>
+                    ) : null}
+                    {item.features ? (
+                      <Box
+                        sx={{
+                          display: "flex",
+                        }}
+                      >
+                        {item.features.map((item, index) => (
+                          <span
+                            style={{
+                              "--color": item.active
+                                ? "var(--mui-palette-Corp_1)"
+                                : "var(--mui-palette-Grey_2)",
+                              color: "var(--color)",
+                              margin: 0,
+                              fontFamily: "Golos UI",
+                              fontStyle: "normal",
+                              fontWeight: 400,
+                              fontSize: "0.75rem",
+                              lineHeight: "1rem",
+                              whiteSpace: "nowrap",
+                            }}
+                            key={item.label}
+                          >
+                            {index > 0 ? ", " : null}
+                            {item.label}
+                          </span>
+                        ))}
+                      </Box>
+                    ) : null}
+                  </Box>
                 </Box>
               }
             />

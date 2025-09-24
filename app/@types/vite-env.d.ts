@@ -92,6 +92,11 @@ interface ImportMetaEnv {
   readonly VITE_POST_REPEAT_ORDER: string;
   readonly VITE_POST_UPDATE_ORDER_ACTIVITY: string;
   readonly VITE_POST_UPDATE_TASK_ACTIVITY: string;
+  readonly VITE_GET_PLACE_FOR_BID: string;
+  readonly VITE_GET_RADIUS_SELECT: string;
+  readonly VITE_POST_UPDATE_BID: string;
+  readonly VITE_GET_SPECIALIST_FOR_BID: string;
+  readonly VITE_POST_INVOICE_BID: string;
   // more env variables...
 }
 

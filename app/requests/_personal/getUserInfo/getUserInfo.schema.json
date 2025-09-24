@@ -71,10 +71,10 @@
               "type": "string"
             },
             "latitude": {
-              "type": ["null", "number"]
+              "type": ["null", "string"]
             },
             "longitude": {
-              "type": ["null", "number"]
+              "type": ["null", "string"]
             },
             "updateData": {
               "type": ["null", "string"]

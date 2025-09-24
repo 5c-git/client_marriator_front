@@ -438,7 +438,10 @@ export default function Requesets({ loaderData }: Route.ComponentProps) {
                   to={withLocale(`/requests/${item.id}`)}
                   statusColor={item.statusColor}
                   header={item.header}
-                  subHeader={`${t("subHeader")} ${item.subHeader}`}
+                  subHeader={{
+                    text: `${t("subHeader")} ${item.subHeader}`,
+                    bold: false,
+                  }}
                   id={item.id.toString()}
                   address={item.address}
                   duration={item.duration}
@@ -472,7 +475,10 @@ export default function Requesets({ loaderData }: Route.ComponentProps) {
                 <AssignmentCard
                   to={withLocale(`/requests/${selectedRequest.id}`)}
                   header={`${t("cardHeader")} ${selectedRequest.header}`}
-                  subHeader={selectedRequest.subHeader}
+                  subHeader={{
+                    text: selectedRequest.subHeader,
+                    bold: false,
+                  }}
                   id={selectedRequest.id.toString()}
                   address={selectedRequest.address}
                   duration={selectedRequest.duration}

@@ -5,14 +5,12 @@
  * and run json-schema-to-typescript to regenerate this file.
  */
 
-export interface PostSetMapFieldSuccess {
-  result: {
-    mapAddress: string;
-    mapRadius: string;
-    latitude: null | string;
-    longitude: null | string;
+export interface GetRadiusSelectSuccess {
+  data: {
+    id: number;
+    value: number;
+    default: boolean;
     [k: string]: unknown;
-  };
-  status: "success";
+  }[];
   [k: string]: unknown;
 }

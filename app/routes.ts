@@ -28,6 +28,7 @@ export default [
         route(
           ":lang?/requests/:requestId/specialists",
           "routes/requests/request/specialists/specialists.tsx"
+          // "routes/requests/request/specialists/placeholder.tsx"
         ),
         route(
           ":lang?/requests/:requestId/recruitment",

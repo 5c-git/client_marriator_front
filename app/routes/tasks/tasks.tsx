@@ -498,7 +498,10 @@ export default function Tasks({ loaderData }: Route.ComponentProps) {
                   to={withLocale(`/tasks/${item.id}`)}
                   statusColor={item.statusColor}
                   header={`${t("cardHeader")} ${item.header}`}
-                  subHeader={item.subHeader}
+                  subHeader={{
+                    text: item.subHeader,
+                    bold: false,
+                  }}
                   id={item.id.toString()}
                   address={item.address}
                   duration={item.duration}
@@ -600,7 +603,10 @@ export default function Tasks({ loaderData }: Route.ComponentProps) {
                 <AssignmentCard
                   to={withLocale(`/tasks/${selectedTask.id}`)}
                   header={`${t("cardHeader")} ${selectedTask.header}`}
-                  subHeader={selectedTask.subHeader}
+                  subHeader={{
+                    text: selectedTask.subHeader,
+                    bold: false,
+                  }}
                   id={selectedTask.id.toString()}
                   address={selectedTask.address}
                   duration={selectedTask.duration}

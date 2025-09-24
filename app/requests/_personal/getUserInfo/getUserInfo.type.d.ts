@@ -27,8 +27,8 @@ export interface GetUserInfoSuccess {
       requisitesData: string | null;
       mapAddress: string;
       mapRadius: string;
-      latitude: null | number;
-      longitude: null | number;
+      latitude: null | string;
+      longitude: null | string;
       updateData: null | string;
       uuid: string;
       register_hash: null | string;
@@ -54,8 +54,12 @@ export interface GetUserInfoSuccess {
           | "recruiter"
           | "specialist"
           | "supervisor";
+        [k: string]: unknown;
       }[];
+      [k: string]: unknown;
     };
+    [k: string]: unknown;
   };
   status: string;
+  [k: string]: unknown;
 }

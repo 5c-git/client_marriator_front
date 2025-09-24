@@ -2,6 +2,8 @@ import { Link, Outlet, useNavigate } from "react-router";
 import type { Route } from "./+types/layout";
 import { useState } from "react";
 
+import { useTranslation } from "react-i18next";
+
 import { withLocale } from "~/shared/withLocale";
 import { useStore } from "~/store/store";
 
@@ -30,6 +32,7 @@ export async function clientLoader({ params }: Route.ClientLoaderArgs) {
 
 export default function Layout({ loaderData }: Route.ComponentProps) {
   const navigate = useNavigate();
+  const { t } = useTranslation("request_layout");
   const [editMode, setEditMode] = useState<boolean>(false);
   return (
     <>
@@ -72,37 +75,29 @@ export default function Layout({ loaderData }: Route.ComponentProps) {
         }}
       >
         <Tab
-          // label={t("tabs.assignment")}
-          label="Детали"
+          label={t("tabs.details")}
           to={withLocale(`/requests/${loaderData.request.id}`)}
           value={withLocale(`/requests/${loaderData.request.id}`)}
           component={Link}
         />
         ,
         <Tab
-          // label={t("tabs.assignment")}
-          label="Специалисты"
+          label={t("tabs.specialists")}
           to={withLocale(`/requests/${loaderData.request.id}/specialists`)}
           value={withLocale(`/requests/${loaderData.request.id}/specialists`)}
           component={Link}
         />
         ,
-        <Tab
-          // label={t("tabs.assignment")}
-          label="Подбор"
+        {/*<Tab
+          label={t("tabs.recruitment")}
           to={withLocale(`/requests/${loaderData.request.id}/recruitment`)}
           value={withLocale(`/requests/${loaderData.request.id}/recruitment`)}
           component={Link}
-        />
+        />*/}
         ,
       </Tabs>
 
       <Outlet context={{ request: loaderData.request, editMode }} />
     </>
-    // <>
-    //   <p>
-    //     смотри запрос <b>getBid</b>
-    //   </p>
-    // </>
   );
 }

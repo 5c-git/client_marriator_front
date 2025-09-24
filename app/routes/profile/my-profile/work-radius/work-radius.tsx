@@ -113,11 +113,8 @@ export async function clientLoader() {
     const settingsData = await getSettingsFromKey(accessToken, "radius");
 
     const coordinates: Coordinates =
-      mapData.result.coordinates !== null
-        ? [
-            Number(mapData.result.coordinates.split(" ")[0]),
-            Number(mapData.result.coordinates.split(" ")[1]),
-          ]
+      mapData.result.latitude !== null && mapData.result.longitude !== null
+        ? [Number(mapData.result.latitude), Number(mapData.result.longitude)]
         : geolocation;
 
     return {
@@ -159,9 +156,13 @@ export async function clientAction({ request }: Route.ClientActionArgs) {
         accessToken,
         yandexGeoData.response.GeoObjectCollection.featureMember[0].GeoObject
           .metaDataProperty.GeocoderMetaData.text,
-        yandexGeoData.response.GeoObjectCollection.featureMember[0].GeoObject
-          .Point.pos,
-        clientGeoData.radius
+        clientGeoData.radius,
+        yandexGeoData.response.GeoObjectCollection.featureMember[0].GeoObject.Point.pos.split(
+          " "
+        )[0],
+        yandexGeoData.response.GeoObjectCollection.featureMember[0].GeoObject.Point.pos.split(
+          " "
+        )[1]
       );
       return null;
     } else {

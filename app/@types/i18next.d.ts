@@ -64,6 +64,9 @@ import new_task from "../../public/locales/ru/new_task.json";
 import assignment from "../../public/locales/ru/assignment.json";
 import task from "../../public/locales/ru/task.json";
 import requests from "../../public/locales/ru/requests.json";
+import request_layout from "../../public/locales/ru/request_layout.json";
+import request_index from "../../public/locales/ru/request_index.json";
+import request_specialists from "../../public/locales/ru/request_specialists.json";
 
 //internal
 
@@ -140,6 +143,7 @@ declare module "i18next" {
       users_recruiter: typeof users_recruiter;
       users_select_projects: typeof users_select_projects;
       users_select_locations: typeof users_select_locations;
+      request_layout: typeof request_layout;
 
       assignments: typeof assignments;
       assignment: typeof assignment;
@@ -150,6 +154,8 @@ declare module "i18next" {
       tasks: typeof tasks;
       new_task: typeof new_task;
       requests: typeof requests;
+      request_index: typeof request_index;
+      request_specialists: typeof request_specialists;
       //internal
 
       //components

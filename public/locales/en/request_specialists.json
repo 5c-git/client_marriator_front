@@ -1,0 +1,12 @@
+{
+  "status": {
+    "notAccepted": "Not accepted",
+    "accepted": "Accepted",
+    "declined": "Declined",
+    "consideration": "In consideration",
+    "work": "In work"
+  },
+  "searchbarPlaceholder": "Search",
+  "selectAllPlaceholder": "Select all",
+  "inviteButton": "Invite"
+}

@@ -502,7 +502,10 @@ export default function Assignments({ loaderData }: Route.ComponentProps) {
                   to={withLocale(`/assignments/${item.id}`)}
                   statusColor={item.statusColor}
                   header={`${t("cardHeader")} ${item.header}`}
-                  subHeader={item.subHeader}
+                  subHeader={{
+                    text: item.subHeader,
+                    bold: false,
+                  }}
                   id={item.id.toString()}
                   address={item.address}
                   duration={item.duration}
@@ -604,7 +607,10 @@ export default function Assignments({ loaderData }: Route.ComponentProps) {
                 <AssignmentCard
                   to={withLocale(`/assignments/${selectedAssignment.id}`)}
                   header={`${t("cardHeader")} ${selectedAssignment.header}`}
-                  subHeader={selectedAssignment.subHeader}
+                  subHeader={{
+                    text: selectedAssignment.subHeader,
+                    bold: false,
+                  }}
                   id={selectedAssignment.id.toString()}
                   address={selectedAssignment.address}
                   duration={selectedAssignment.duration}

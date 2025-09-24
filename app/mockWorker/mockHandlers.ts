@@ -87,6 +87,10 @@ import { postRepeatOrderMockResponse } from "~/requests/_personal/postRepeatOrde
 import { postRepeatTaskMockResponse } from "~/requests/_personal/postRepeatTask/postRepeatTask";
 import { postUpdateOrderActivityMockResponse } from "~/requests/_personal/postUpdateOrderActivity/postUpdateOrderActivity";
 import { postUpdateTaskActivityMockResponse } from "~/requests/_personal/postUpdateTaskActivity/postUpdateTaskActivity";
+import { getPlaceForBidMockResponse } from "~/requests/_personal/getPlaceForBid/getPlaceForBid";
+import { postUpdateBidMockResponse } from "~/requests/_personal/postUpdateBid/postUpdateBid";
+import { getSpecialistForBidMockResponse } from "~/requests/_personal/getSpecialistForBid/getSpecialistForBid";
+import { postInvoiceBidMockResponse } from "~/requests/_personal/postInvoiceBid/postInvoiceBid";
 
 export const handlers = [
   getFormMockResponse,
@@ -174,4 +178,8 @@ export const handlers = [
   postRepeatTaskMockResponse,
   postUpdateOrderActivityMockResponse,
   postUpdateTaskActivityMockResponse,
+  getPlaceForBidMockResponse,
+  postUpdateBidMockResponse,
+  getSpecialistForBidMockResponse,
+  postInvoiceBidMockResponse,
 ];

@@ -6,10 +6,13 @@
  */
 
 export interface GetMapFieldSuccess {
-  status: "success";
   result: {
     mapAddress: string;
     mapRadius: string;
-    coordinates: string | null;
+    latitude: null | string;
+    longitude: null | string;
+    [k: string]: unknown;
   };
+  status: "success";
+  [k: string]: unknown;
 }
