@@ -53,12 +53,6 @@ export default function ModerationLayout() {
           value={withLocale("/users/supervisors")}
           component={Link}
         />
-        <Tab
-          label={t("tabs.recrut")}
-          to={withLocale("/users/recruiters")}
-          value={withLocale("/users/recruiters")}
-          component={Link}
-        />
       </Tabs>
 
       <Outlet />

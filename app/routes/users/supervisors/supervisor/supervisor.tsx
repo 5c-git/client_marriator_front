@@ -54,7 +54,7 @@ import { postConfirmUserRegister } from "~/requests/_personal/_moderation/postCo
 import { MaskedField } from "~/shared/ui/MaskedField/MaskedField";
 
 const getRadioButtons = (
-  list: { id: number; name: string; logo: string }[]
+  list: { id: number; name: string; logo: string }[],
 ) => {
   const options: {
     id: number;
@@ -95,7 +95,7 @@ export async function clientLoader({ params }: Route.ClientLoaderArgs) {
   if (accessToken) {
     const data = await getModerationSingleClient(
       accessToken,
-      Number(params.user)
+      Number(params.user),
     );
 
     data.data.project.forEach((org) => {
@@ -146,7 +146,7 @@ export async function clientAction({ request }: Route.ClientActionArgs) {
         accessToken,
         fields.userId,
         fields.confirm,
-        fields
+        fields,
       );
       throw redirect(withLocale("/users"));
     } else if (_action === "_saveLogo") {
@@ -159,7 +159,7 @@ export async function clientAction({ request }: Route.ClientActionArgs) {
       await postDelPlaceModeration(
         accessToken,
         fields.userId,
-        fields.projectId
+        fields.projectId,
       );
       return;
     } else if (_action === "_decline") {
@@ -223,7 +223,7 @@ export default function Supervisor({ loaderData }: Route.ComponentProps) {
               id: Yup.number().required(),
               logo: Yup.string().required(),
               name: Yup.string().required(),
-            })
+            }),
           )
           .required(t("text", { ns: "constructorFields" })),
         locations: Yup.array()
@@ -237,7 +237,7 @@ export default function Supervisor({ loaderData }: Route.ComponentProps) {
               // name: Yup.string().required(),
               // coordinates: Yup.array().min(2).max(2).of(Yup.number()),
               // region: Yup.string().required(),
-            })
+            }),
           )
           .required(t("text", { ns: "constructorFields" })),
         repeat_bid: Yup.string()
@@ -250,9 +250,9 @@ export default function Supervisor({ loaderData }: Route.ComponentProps) {
           .nullable()
           .required(t("text", { ns: "constructorFields" })),
         waiting_task: Yup.string().required(
-          t("text", { ns: "constructorFields" })
+          t("text", { ns: "constructorFields" }),
         ),
-      })
+      }),
     ),
   });
 
@@ -324,7 +324,7 @@ export default function Supervisor({ loaderData }: Route.ComponentProps) {
               {
                 method: "POST",
                 encType: "application/json",
-              }
+              },
             );
           })}
         >
@@ -532,7 +532,7 @@ export default function Supervisor({ loaderData }: Route.ComponentProps) {
                     onClick={() => {
                       const currentList = getValues("organizations");
                       const updatedList = currentList.filter(
-                        (item) => item.name !== organization.name
+                        (item) => item.name !== organization.name,
                       );
                       setValue("organizations", updatedList);
                       trigger("organizations");
@@ -546,7 +546,7 @@ export default function Supervisor({ loaderData }: Route.ComponentProps) {
                         {
                           method: "POST",
                           encType: "application/json",
-                        }
+                        },
                       );
                     }}
                     sx={{
@@ -619,7 +619,7 @@ export default function Supervisor({ loaderData }: Route.ComponentProps) {
                     onClick={() => {
                       const currentList = getValues("locations");
                       const updatedList = currentList.filter(
-                        (item) => item.address !== location.address
+                        (item) => item.address !== location.address,
                       );
                       setValue("locations", updatedList);
                       trigger("locations");
@@ -633,7 +633,7 @@ export default function Supervisor({ loaderData }: Route.ComponentProps) {
                         {
                           method: "POST",
                           encType: "application/json",
-                        }
+                        },
                       );
                     }}
                     sx={{
@@ -757,7 +757,7 @@ export default function Supervisor({ loaderData }: Route.ComponentProps) {
                   {
                     method: "POST",
                     encType: "application/json",
-                  }
+                  },
                 );
               }}
             >
@@ -798,7 +798,7 @@ export default function Supervisor({ loaderData }: Route.ComponentProps) {
 
                   const selectedOrganization =
                     loaderData.client.organizations.find(
-                      (item) => item.logo === evt.target.value
+                      (item) => item.logo === evt.target.value,
                     );
 
                   if (selectedOrganization) {
@@ -811,7 +811,7 @@ export default function Supervisor({ loaderData }: Route.ComponentProps) {
                       {
                         method: "POST",
                         encType: "application/json",
-                      }
+                      },
                     );
                   }
                 }}
