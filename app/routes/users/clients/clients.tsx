@@ -68,7 +68,7 @@ export async function clientLoader({ request }: Route.ClientLoaderArgs) {
       page,
       status,
       sort,
-      search
+      search,
     );
 
     const clients: {
@@ -121,7 +121,7 @@ export async function clientLoader({ request }: Route.ClientLoaderArgs) {
 
       clients.push({
         id: item.id,
-        logo: item.logo,
+        logo: `${import.meta.env.VITE_ASSET_PATH}${item.logo}`,
         agent: "AGENT PLACEHOLDER",
         phone: item.phone.toString(),
         name: item.name ? item.name : "",
@@ -132,6 +132,8 @@ export async function clientLoader({ request }: Route.ClientLoaderArgs) {
         live_order: item.live_order,
       });
     });
+
+    console.log(clients);
 
     return { clients, next: data.links.next ? true : false };
   } else {
@@ -317,7 +319,7 @@ export default function Clients({ loaderData }: Route.ComponentProps) {
                 setSearchParams((searchParams) => {
                   searchParams.set(
                     "page",
-                    (Number(currentPage) + 1).toString()
+                    (Number(currentPage) + 1).toString(),
                   );
                   return searchParams;
                 });
@@ -351,7 +353,7 @@ export default function Clients({ loaderData }: Route.ComponentProps) {
                   state={{
                     status: t(
                       // @ts-expect-error translation mapping
-                      `status.${statusTranslationMap[getValues("status")]}`
+                      `status.${statusTranslationMap[getValues("status")]}`,
                     ),
                     // @ts-expect-error color mapping
                     statusColor: statusColorMap[getValues("status")],
