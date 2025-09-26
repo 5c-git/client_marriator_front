@@ -97,6 +97,8 @@ interface ImportMetaEnv {
   readonly VITE_POST_UPDATE_BID: string;
   readonly VITE_GET_SPECIALIST_FOR_BID: string;
   readonly VITE_POST_INVOICE_BID: string;
+  readonly VITE_POST_DEL_MANAGER: string;
+  readonly VITE_POST_SET_MANAGERS: string;
   // more env variables...
 }
 

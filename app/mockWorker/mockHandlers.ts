@@ -91,6 +91,9 @@ import { getPlaceForBidMockResponse } from "~/requests/_personal/getPlaceForBid/
 import { postUpdateBidMockResponse } from "~/requests/_personal/postUpdateBid/postUpdateBid";
 import { getSpecialistForBidMockResponse } from "~/requests/_personal/getSpecialistForBid/getSpecialistForBid";
 import { postInvoiceBidMockResponse } from "~/requests/_personal/postInvoiceBid/postInvoiceBid";
+import { getManagerMockResponse } from "~/requests/_personal/getManager/getManager";
+import { postDelManagerMockResponse } from "~/requests/_personal/postDelManager/postDelManager";
+import { postSetManagersMockResponse } from "~/requests/_personal/postSetManagers/postSetManagers";
 
 export const handlers = [
   getFormMockResponse,
@@ -182,4 +185,7 @@ export const handlers = [
   postUpdateBidMockResponse,
   getSpecialistForBidMockResponse,
   postInvoiceBidMockResponse,
+  getManagerMockResponse,
+  postDelManagerMockResponse,
+  postSetManagersMockResponse,
 ];

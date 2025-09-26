@@ -23,6 +23,7 @@ import {
   Avatar,
   Typography,
   TextField,
+  SwipeableDrawer,
 } from "@mui/material";
 import Box from "@mui/material/Box";
 import Stack from "@mui/material/Stack";
@@ -33,11 +34,15 @@ import { StyledSelect } from "~/shared/ui/StyledSelect/StyledSelect";
 import { StyledTextField } from "~/shared/ui/StyledTextField/StyledTextField";
 import { StyledPhoneField } from "~/shared/ui/StyledPhoneField/StyledPhoneField";
 import { StyledRadioButton } from "~/shared/ui/StyledRadioButton/StyledRadioButton";
+import { StyledCheckboxMultiple } from "~/shared/ui/StyledCheckboxMultiple/StyledCheckboxMultiple";
+import { StyledSearchBar } from "~/shared/ui/StyledSearchBar/StyledSearchBar";
 import { TimeField } from "~/shared/ui/TimeField/TimeField";
+import { MaskedField } from "~/shared/ui/MaskedField/MaskedField";
 
 import { S_SwipeableDrawer } from "./supervisor.styled";
 
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
+import AddIcon from "@mui/icons-material/Add";
 import { FileIcon } from "~/shared/icons/FileIcon";
 import { PointerIcon } from "~/shared/icons/PointerIcon";
 import { CheckIcon } from "~/shared/icons/CheckIcon";
@@ -46,12 +51,14 @@ import { DeleteIcon } from "~/shared/icons/DeleteIcon";
 import { useStore } from "~/store/store";
 
 import { getModerationSingleClient } from "~/requests/_personal/_moderation/getModerationSingleClient/getModerationSingleClient";
+import { getManager } from "~/requests/_personal/getManager/getManager";
 
 import { postSetUserImg } from "~/requests/_personal/_moderation/postSetUserImg/postSetUserImg";
 import { postDelProject } from "~/requests/_personal/_moderation/delProject/delProject";
 import { postDelPlaceModeration } from "~/requests/_personal/_moderation/postDelPlaceModeration/postDelPlaceModeration";
 import { postConfirmUserRegister } from "~/requests/_personal/_moderation/postConfirmUserRegister/postConfirmUserRegister";
-import { MaskedField } from "~/shared/ui/MaskedField/MaskedField";
+import { postDelManager } from "~/requests/_personal/postDelManager/postDelManager";
+import { postSetManagers } from "~/requests/_personal/postSetManagers/postSetManagers";
 
 const getRadioButtons = (
   list: { id: number; name: string; logo: string }[],
@@ -92,11 +99,19 @@ export async function clientLoader({ params }: Route.ClientLoaderArgs) {
     address: string;
   }[] = [];
 
+  const managersToSelect: {
+    value: string;
+    label: string;
+    disabled: boolean;
+  }[] = [];
+
   if (accessToken) {
     const data = await getModerationSingleClient(
       accessToken,
       Number(params.user),
     );
+
+    const managersData = await getManager(accessToken, Number(params.user));
 
     data.data.project.forEach((org) => {
       organizations.push({
@@ -129,7 +144,19 @@ export async function clientLoader({ params }: Route.ClientLoaderArgs) {
       waiting_task: data.data.waiting_task,
     };
 
-    return { client };
+    managersData.data.forEach((item) => {
+      managersToSelect.push({
+        value: item.id.toString(),
+        label: item.email,
+        disabled: false,
+      });
+    });
+
+    return {
+      client,
+      managersToSelect,
+      currentManagers: data.data.manager,
+    };
   } else {
     throw new Response("Токен авторизации не обнаружен!", { status: 401 });
   }
@@ -165,6 +192,10 @@ export async function clientAction({ request }: Route.ClientActionArgs) {
     } else if (_action === "_decline") {
       await postConfirmUserRegister(accessToken, fields.userId, fields.confirm);
       throw redirect(withLocale("/users"));
+    } else if (_action === "_deleteManager") {
+      await postDelManager(accessToken, fields.userId, fields.managerId);
+    } else if (_action === "_inviteManagers") {
+      await postSetManagers(accessToken, fields.userId, fields.managers);
     }
   } else {
     throw new Response("Токен авторизации не обнаружен!", { status: 401 });
@@ -182,7 +213,12 @@ export default function Supervisor({ loaderData }: Route.ComponentProps) {
   const { state } = location as {
     state: { status: string; statusColor: string };
   };
+
   const [open, setOpen] = useState<boolean>(false);
+  const [searchManagers, setSearchManagers] = useState<boolean>(false);
+  const [selectedManagers, setSelectedManagers] = useState(
+    loaderData.managersToSelect,
+  );
 
   const {
     control,
@@ -252,6 +288,28 @@ export default function Supervisor({ loaderData }: Route.ComponentProps) {
         waiting_task: Yup.string().required(
           t("text", { ns: "constructorFields" }),
         ),
+      }),
+    ),
+  });
+
+  const {
+    control: controlManager,
+    getValues: getValuesManager,
+    reset: resetManager,
+    handleSubmit: handleManagerSubmit,
+  } = useForm<{
+    searchbar: string;
+    managers: string[];
+  }>({
+    defaultValues: {
+      searchbar: "",
+      managers: [],
+    },
+    // @ts-expect-error
+    resolver: yupResolver(
+      Yup.object({
+        searchbar: Yup.string().notRequired(),
+        supervisors: Yup.array().of(Yup.string()).min(1),
       }),
     ),
   });
@@ -666,6 +724,85 @@ export default function Supervisor({ loaderData }: Route.ComponentProps) {
               {t("locationSelector")}
             </Button>
 
+            {/* туть */}
+            {loaderData.currentManagers.length > 0 ? (
+              <>
+                {" "}
+                <Typography component="p" variant="Bold_14">
+                  {t("manager")}
+                </Typography>{" "}
+                <Stack
+                  sx={{
+                    rowGap: "14px",
+                  }}
+                >
+                  {loaderData.currentManagers.map((manager, index) => (
+                    <Box
+                      key={index}
+                      sx={{
+                        display: "flex",
+                        columnGap: "12px",
+                        alignItems: "center",
+                      }}
+                    >
+                      <Avatar
+                        src={`${import.meta.env.VITE_ASSET_PATH}${manager.logo}`}
+                        sx={{ width: "30px", height: "30px" }}
+                      />
+
+                      <Typography
+                        component="p"
+                        variant="Reg_14"
+                        sx={{
+                          flexGrow: "1",
+                        }}
+                      >
+                        {manager.email}
+                      </Typography>
+
+                      <IconButton
+                        onClick={() => {
+                          fetcher.submit(
+                            JSON.stringify({
+                              _action: "_deleteManager",
+                              userId: loaderData.client.id,
+                              managerId: manager.id,
+                            }),
+                            {
+                              method: "POST",
+                              encType: "application/json",
+                            },
+                          );
+                        }}
+                        sx={{
+                          width: "24px",
+                          height: "24px",
+                        }}
+                      >
+                        <DeleteIcon
+                          sx={{
+                            width: "12px",
+                            height: "12px",
+                          }}
+                        />
+                      </IconButton>
+                    </Box>
+                  ))}
+                </Stack>
+              </>
+            ) : null}
+
+            <Button
+              variant="outlined"
+              onClick={() => {
+                setSearchManagers(true);
+              }}
+              // startIcon={<PointerIcon />}
+            >
+              {t("managerInviteButton")}
+            </Button>
+            {/* туть */}
+
             <Controller
               name="repeat_bid"
               control={control}
@@ -820,6 +957,128 @@ export default function Supervisor({ loaderData }: Route.ComponentProps) {
           />
         </Box>
       </S_SwipeableDrawer>
+
+      <SwipeableDrawer
+        open={searchManagers}
+        onClose={() => {
+          resetManager();
+          setSearchManagers(false);
+        }}
+        onOpen={() => {}}
+        disableBackdropTransition={true}
+        disableSwipeToOpen={true}
+        anchor="bottom"
+        sx={{
+          "& .MuiDrawer-paper": {
+            borderRadius: "6px",
+          },
+        }}
+      >
+        <TopNavigation
+          header={{
+            text: t("managerHeader"),
+            bold: false,
+          }}
+        />
+        <form
+          onSubmit={handleManagerSubmit(() => {
+            const selectedManagers = getValuesManager("managers");
+
+            fetcher.submit(
+              JSON.stringify({
+                _action: "_inviteManagers",
+                userId: loaderData.client.id,
+                managers: selectedManagers,
+              }),
+              {
+                method: "POST",
+                encType: "application/json",
+              },
+            );
+
+            resetManager();
+            setSearchManagers(false);
+          })}
+        >
+          <Box
+            sx={{
+              position: "relative",
+              display: "grid",
+              alignContent: "flex-start",
+              rowGap: "14px",
+              paddingTop: "20px",
+              paddingLeft: "16px",
+              paddingRight: "16px",
+              height: "85vh",
+            }}
+          >
+            <Controller
+              name="searchbar"
+              control={controlManager}
+              render={({ field }) => (
+                <StyledSearchBar
+                  placeholder={t("fields.managerSearchPlaceholder")}
+                  {...field}
+                  onChange={(evt) => {
+                    const currentFieldValue = new RegExp(
+                      `^${evt.target.value}`,
+                      "i",
+                    );
+
+                    let matchingManagers: typeof loaderData.managersToSelect =
+                      [];
+
+                    if (evt.target.value !== "") {
+                      matchingManagers = [
+                        ...selectedManagers.filter((item) =>
+                          currentFieldValue.test(item.label),
+                        ),
+                      ];
+                    } else {
+                      matchingManagers = [...loaderData.managersToSelect];
+                    }
+
+                    setSelectedManagers(matchingManagers);
+
+                    field.onChange(evt);
+                  }}
+                />
+              )}
+            />
+
+            <Controller
+              name="managers"
+              control={controlManager}
+              render={({ field }) => (
+                <StyledCheckboxMultiple
+                  inputType="checkboxMultiple"
+                  onImmediateChange={() => {}}
+                  options={selectedManagers}
+                  {...field}
+                />
+              )}
+            />
+
+            <Box
+              sx={(theme) => ({
+                display: "flex",
+                columnGap: "14px",
+                padding: "10px",
+                backgroundColor: theme.vars.palette["White"],
+                position: "fixed",
+                zIndex: 1,
+                width: "100%",
+                bottom: "0",
+                left: "0",
+              })}
+            >
+              <Button type="submit" variant="contained" startIcon={<AddIcon />}>
+                {t("managerInviteButton")}
+              </Button>
+            </Box>
+          </Box>
+        </form>
+      </SwipeableDrawer>
     </>
   );
 }
