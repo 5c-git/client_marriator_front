@@ -232,7 +232,51 @@
           }
         },
         "manager": {
-          "type": "array"
+          "type": "array",
+          "items": {
+            "type": "object",
+
+            "properties": {
+              "id": {
+                "type": "number"
+              },
+              "phone": {
+                "type": "number"
+              },
+              "email": {
+                "type": "string"
+              },
+              "logo": {
+                "type": "string"
+              },
+              "roles": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+
+                  "properties": {
+                    "id": {
+                      "type": "number",
+                      "minimum": 1,
+                      "maximum": 6
+                    },
+                    "name": {
+                      "enum": [
+                        "admin",
+                        "client",
+                        "manager",
+                        "recruiter",
+                        "specialist",
+                        "supervisor"
+                      ]
+                    }
+                  },
+                  "required": ["id", "name"]
+                }
+              }
+            },
+            "required": ["id", "phone", "email", "logo", "roles"]
+          }
         },
         "count_wait_bid": {
           "type": "number"

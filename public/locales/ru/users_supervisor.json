@@ -10,7 +10,8 @@
     "applicationFrequencyPlaceholder": "Периодичность повторения заявки *",
     "applicationCountdownPlaceholder": "Минимальное время до выхода по заявке *",
     "taskCountdownCancelPlaceholder": "Минимальное время отказа от задания *",
-    "taskCountdownCancelDurationPlaceholder": "Максимально время ожидания Заданий специалистом (дней)"
+    "taskCountdownCancelDurationPlaceholder": "Максимально время ожидания Заданий специалистом (дней)",
+    "managerSearchPlaceholder": "Поиск"
   },
   "project": "Проект",
   "projectSelector": "Выбрать проект",
@@ -18,5 +19,8 @@
   "locationSelector": "Выбрать места проведения",
   "user_id": "Идентификатор пользователя",
   "confirmButton": "Подтвердить",
-  "excludeButton": "Заблокировать"
+  "excludeButton": "Заблокировать",
+  "manager": "Менеджеры",
+  "managerInviteButton": "Привязать менеджеров",
+  "managerHeader": "Выбор менеджеров"
 }
