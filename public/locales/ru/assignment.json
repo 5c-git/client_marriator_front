@@ -17,6 +17,7 @@
   "serviceButton": "Добавить услугу",
   "cancelButton": "Отмена",
   "sendButton": "Сохранить",
+  "convertToTask": "Конвертировать в задачу",
   "dialog": {
     "title": "Удалить",
     "no": "Нет",

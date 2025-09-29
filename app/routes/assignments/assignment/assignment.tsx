@@ -1,5 +1,11 @@
 import { useState } from "react";
-import { useNavigation, useNavigate, useFetcher, Link } from "react-router";
+import {
+  useNavigation,
+  useNavigate,
+  useFetcher,
+  Link,
+  redirect,
+} from "react-router";
 import type { Route } from "./+types/assignment";
 
 import { useTranslation } from "react-i18next";
@@ -22,6 +28,7 @@ import { TopNavigation } from "~/shared/ui/TopNavigation/TopNavigation";
 
 import AddIcon from "@mui/icons-material/Add";
 import ClearIcon from "@mui/icons-material/Clear";
+import CheckIcon from "@mui/icons-material/Check";
 import { EditIcon } from "~/shared/icons/EditIcon";
 
 import { useStore } from "~/store/store";
@@ -32,6 +39,7 @@ import { RouteIcon } from "~/shared/icons/RouteIcon";
 
 import { getOrder } from "~/requests/_personal/getOrder/getOrder";
 import { postDeleteOrderActivity } from "~/requests/_personal/postDeleteOrderActivity/postDeleteOrderActivity";
+import { postConvertTask } from "~/requests/_personal/postConvertTask/postConvertTask";
 
 export async function clientLoader({ params }: Route.ClientLoaderArgs) {
   const accessToken = useStore.getState().accessToken;
@@ -110,14 +118,22 @@ export async function clientLoader({ params }: Route.ClientLoaderArgs) {
 
 export async function clientAction({ request }: Route.ClientActionArgs) {
   // const currentURL = new URL(request.url);
-  const fields = await request.json();
+  const { _action, ...fields } = await request.json();
   const accessToken = useStore.getState().accessToken;
   if (accessToken) {
-    await postDeleteOrderActivity(
-      accessToken,
-      fields.orderId,
-      fields.orderActivityId
-    );
+    if (_action === "deleteActivity") {
+      await postDeleteOrderActivity(
+        accessToken,
+        fields.orderId,
+        fields.orderActivityId,
+      );
+    } else if (_action === "transformAssignment") {
+      const transformedTaskData = await postConvertTask(
+        accessToken,
+        fields.orderId,
+      );
+      throw redirect(withLocale(`/tasks/${transformedTaskData.data.id}`));
+    }
   } else {
     throw new Response("Токен авторизации не обнаружен!", { status: 401 });
   }
@@ -127,6 +143,7 @@ export default function Assignment({ loaderData }: Route.ComponentProps) {
   const navigate = useNavigate();
   const navigation = useNavigation();
   const { t } = useTranslation("assignment");
+  const userRole = useStore.getState().userRole;
 
   const fetcher = useFetcher();
 
@@ -237,7 +254,7 @@ export default function Assignment({ loaderData }: Route.ComponentProps) {
                   statusCodeMap[
                     loaderData.order.status as keyof typeof statusCodeMap
                   ].value
-                }`
+                }`,
               )}
             </Typography>
           </Box>
@@ -373,11 +390,11 @@ export default function Assignment({ loaderData }: Route.ComponentProps) {
                   <Box
                     component={Link}
                     to={withLocale(
-                      `/assignments/${loaderData.order.id}/edit-service/${item.id}`
+                      `/assignments/${loaderData.order.id}/edit-service/${item.id}`,
                     )}
                     state={{
                       service: loaderData.orderActivities.find(
-                        (service) => service.id === item.id
+                        (service) => service.id === item.id,
                       ),
                     }}
                     sx={{
@@ -464,7 +481,7 @@ export default function Assignment({ loaderData }: Route.ComponentProps) {
           <Button
             component={Link}
             to={withLocale(
-              `/new-assignment/${loaderData.order.id}/new-service?edit=true`
+              `/new-assignment/${loaderData.order.id}/new-service?edit=true`,
             )}
             variant="outlined"
             startIcon={<AddIcon />}
@@ -505,6 +522,31 @@ export default function Assignment({ loaderData }: Route.ComponentProps) {
             </Button>
           </Box>
         ) : null}
+
+        {(!editMode && userRole === "admin") ||
+        (!editMode && userRole === "manager") ? (
+          <Button
+            variant="contained"
+            sx={{
+              marginTop: "8px",
+            }}
+            startIcon={<CheckIcon />}
+            onClick={() => {
+              fetcher.submit(
+                JSON.stringify({
+                  _action: "transformAssignment",
+                  orderId: loaderData.order.id,
+                }),
+                {
+                  method: "POST",
+                  encType: "application/json",
+                },
+              );
+            }}
+          >
+            {t("convertToTask")}
+          </Button>
+        ) : null}
       </Box>
 
       <Dialog
@@ -540,13 +582,14 @@ export default function Assignment({ loaderData }: Route.ComponentProps) {
             onClick={() => {
               fetcher.submit(
                 JSON.stringify({
+                  _action: "deleteActivity",
                   orderId: loaderData.order.id,
                   orderActivityId: activityToDelete?.id,
                 }),
                 {
                   method: "POST",
                   encType: "application/json",
-                }
+                },
               );
               setActivityToDelete(null);
             }}
