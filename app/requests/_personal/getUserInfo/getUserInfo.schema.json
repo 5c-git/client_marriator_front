@@ -3,15 +3,15 @@
   "$schema": "http://json-schema.org/draft-07/schema#",
   "title": "getUserInfoSuccess",
   "type": "object",
-
+  "additionalProperties": false,
   "properties": {
     "result": {
       "type": "object",
-
+      "additionalProperties": false,
       "properties": {
         "userData": {
           "type": "object",
-
+          "additionalProperties": false,
           "properties": {
             "id": {
               "type": "number"
@@ -85,52 +85,53 @@
             "register_hash": {
               "type": ["null", "string"]
             },
-
             "change_order": {
-              "type": "null"
+              "type": ["null", "string"]
             },
             "cancel_order": {
-              "type": "null"
+              "type": ["null", "string"]
             },
             "live_order": {
-              "type": "null"
+              "type": ["null", "string"]
             },
             "change_task": {
-              "type": "null"
+              "type": ["null", "string"]
             },
             "cancel_task": {
-              "type": "null"
+              "type": ["null", "string"]
             },
             "live_task": {
-              "type": "null"
+              "type": ["null", "string"]
             },
             "repeat_bid": {
-              "type": "null"
+              "type": ["null", "string"]
             },
             "leave_bid": {
-              "type": "null"
+              "type": ["null", "string"]
             },
             "refusal_task": {
-              "type": "null"
+              "type": ["null", "string"]
             },
             "waiting_task": {
-              "type": "null"
+              "type": ["null", "number"]
             },
             "count_wait_bid": {
-              "type": "null"
+              "type": ["null", "number"]
             },
             "time_answer_bid": {
-              "type": "null"
+              "type": ["null", "number"]
             },
             "notification_start": {
-              "type": "null"
+              "type": ["null", "number"]
             },
-
+            "verme_id": {
+              "type": "number"
+            },
             "roles": {
               "type": "array",
               "items": {
                 "type": "object",
-
+                "additionalProperties": false,
                 "properties": {
                   "id": {
                     "type": "number",
