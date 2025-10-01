@@ -67,6 +67,7 @@ import requests from "../../public/locales/ru/requests.json";
 import request_layout from "../../public/locales/ru/request_layout.json";
 import request_index from "../../public/locales/ru/request_index.json";
 import request_specialists from "../../public/locales/ru/request_specialists.json";
+import missions from "../../public/locales/ru/missions.json";
 
 //internal
 
@@ -156,6 +157,7 @@ declare module "i18next" {
       requests: typeof requests;
       request_index: typeof request_index;
       request_specialists: typeof request_specialists;
+      missions: typeof missions;
       //internal
 
       //components

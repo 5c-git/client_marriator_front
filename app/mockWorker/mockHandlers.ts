@@ -96,6 +96,7 @@ import { postDelManagerMockResponse } from "~/requests/_personal/postDelManager/
 import { postSetManagersMockResponse } from "~/requests/_personal/postSetManagers/postSetManagers";
 import { postCreateBidFromTaskMockResponse } from "~/requests/_personal/postCreateBidFromTask/postCreateBidFromTask";
 import { postConvertTaskMockResponse } from "~/requests/_personal/postConvertTask/postConvertTask";
+import { getJobsMockResponse } from "~/requests/_personal/getJobs/getJobs";
 
 export const handlers = [
   getFormMockResponse,
@@ -192,4 +193,5 @@ export const handlers = [
   postSetManagersMockResponse,
   postCreateBidFromTaskMockResponse,
   postConvertTaskMockResponse,
+  getJobsMockResponse,
 ];

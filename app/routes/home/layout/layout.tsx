@@ -126,22 +126,22 @@ export async function clientLoader() {
         />,
       ],
       specialist: [
-        <Tab
-          label={t("tabs.request", { ns: "home" })}
-          to={withLocale("/requests")}
-          value={withLocale("/requests")}
-          component={Link}
-          key={"requests"}
-          disabled
-        />,
-        <Tab
-          label={t("tabs.mission", { ns: "home" })}
-          to={withLocale("/missions")}
-          value={withLocale("/missions")}
-          component={Link}
-          key={"missions"}
-          disabled
-        />,
+        // <Tab
+        //   label={t("tabs.request", { ns: "home" })}
+        //   to={withLocale("/requests")}
+        //   value={withLocale("/requests")}
+        //   component={Link}
+        //   key={"requests"}
+        //   disabled
+        // />,
+        // <Tab
+        //   label={t("tabs.mission", { ns: "home" })}
+        //   to={withLocale("/missions")}
+        //   value={withLocale("/missions")}
+        //   component={Link}
+        //   key={"missions"}
+        //   disabled
+        // />,
       ],
       recruiter: [],
     },
@@ -186,6 +186,17 @@ export default function HomeLayout({ loaderData }: Route.ComponentProps) {
           boxShadow: "none",
         }}
       />
+
+      {/* {loaderData.tabsMap[userRole].length > 0 ? (
+        <Tabs
+          value={location.pathname}
+          sx={{
+            width: "100%",
+          }}
+        >
+          {loaderData.tabsMap[userRole]}
+        </Tabs>
+      ) : null} */}
 
       <Tabs
         value={location.pathname}

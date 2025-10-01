@@ -1,0 +1,482 @@
+{
+  "$id": "getJobsSuccess",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "getJobsSuccess",
+  "type": "object",
+  "properties": {
+    "data": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "number"
+          },
+          "selfEmployed": {
+            "type": "boolean"
+          },
+          "status": {
+            "enum": [1, 2, 3, 4, 5]
+          },
+          "place": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "number"
+              },
+              "name": {
+                "type": "string"
+              },
+              "latitude": {
+                "type": "string"
+              },
+              "longitude": {
+                "type": "string"
+              },
+              "address_kladr": {
+                "type": "string"
+              },
+              "logo": {
+                "type": "string"
+              },
+              "region": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "number"
+                  },
+                  "name": {
+                    "type": "string"
+                  }
+                },
+                "required": ["id", "name"]
+              },
+              "brand": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "number"
+                  },
+                  "name": {
+                    "type": "string"
+                  },
+                  "logo": {
+                    "type": "string"
+                  },
+                  "description": {
+                    "type": "string"
+                  }
+                },
+                "required": ["id", "name", "logo", "description"]
+              }
+            },
+            "required": [
+              "id",
+              "name",
+              "latitude",
+              "longitude",
+              "address_kladr",
+              "logo",
+              "region",
+              "brand"
+            ]
+          },
+          "user": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "number"
+              },
+              "phone": {
+                "type": "number"
+              },
+              "email": {
+                "type": "string"
+              },
+              "logo": {
+                "type": "string"
+              }
+            },
+            "required": ["id", "phone", "email", "logo"]
+          },
+          "radius": {
+            "type": "number"
+          },
+          "price": {
+            "type": "number"
+          },
+          "priceResult": {
+            "type": "number"
+          },
+          "income": {
+            "type": "number"
+          },
+          "forPay": {
+            "type": "number"
+          },
+          "viewActivity": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string"
+              },
+              "detailName": {
+                "type": "string"
+              },
+              "previewText": {
+                "type": "string"
+              },
+              "logo": {
+                "type": "string"
+              }
+            },
+            "required": ["name", "detailName", "previewText", "logo"]
+          },
+          "dateStart": {
+            "type": "string"
+          },
+          "dateEnd": {
+            "type": "string"
+          },
+          "needFoto": {
+            "type": "boolean"
+          },
+          "dateActivity": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "number"
+                },
+                "timeStart": {
+                  "type": "string"
+                },
+                "timeEnd": {
+                  "type": "string"
+                },
+                "places": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "type": "number"
+                      },
+                      "name": {
+                        "type": "string"
+                      },
+                      "latitude": {
+                        "type": "string"
+                      },
+                      "longitude": {
+                        "type": "string"
+                      },
+                      "address_kladr": {
+                        "type": "string"
+                      },
+                      "logo": {
+                        "type": "string"
+                      },
+                      "region": {
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "type": "number"
+                          },
+                          "name": {
+                            "type": "string"
+                          }
+                        },
+                        "required": ["id", "name"]
+                      },
+                      "brand": {
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "type": "number"
+                          },
+                          "name": {
+                            "type": "string"
+                          },
+                          "logo": {
+                            "type": "string"
+                          },
+                          "description": {
+                            "type": "string"
+                          }
+                        },
+                        "required": ["id", "name", "description"]
+                      }
+                    },
+                    "required": [
+                      "id",
+                      "name",
+                      "latitude",
+                      "longitude",
+                      "address_kladr",
+                      "region",
+                      "brand"
+                    ]
+                  }
+                }
+              },
+              "required": ["id", "timeStart", "timeEnd", "places"]
+            }
+          },
+          "order": {
+            "type": ["null", "object"],
+
+            "properties": {
+              "id": {
+                "type": "number"
+              },
+              "selfEmployed": {
+                "type": "boolean"
+              },
+              "status": {
+                "type": "number"
+              },
+              "user": {
+                "type": "object",
+
+                "properties": {
+                  "id": {
+                    "type": "number"
+                  },
+                  "phone": {
+                    "type": "number"
+                  },
+                  "email": {
+                    "type": "string"
+                  },
+                  "logo": {
+                    "type": "string"
+                  },
+                  "roles": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+
+                      "properties": {
+                        "id": {
+                          "type": "number",
+                          "minimum": 1,
+                          "maximum": 6
+                        },
+                        "name": {
+                          "enum": [
+                            "admin",
+                            "client",
+                            "manager",
+                            "recruiter",
+                            "specialist",
+                            "supervisor"
+                          ]
+                        }
+                      },
+                      "required": ["id", "name"]
+                    }
+                  }
+                },
+                "required": ["id", "phone", "email", "logo", "roles"]
+              }
+            },
+            "required": ["id", "selfEmployed", "status", "user"]
+          },
+          "task": {
+            "type": ["null", "object"],
+
+            "properties": {
+              "id": {
+                "type": "number"
+              },
+              "selfEmployed": {
+                "type": "boolean"
+              },
+              "status": {
+                "type": "number"
+              },
+              "user": {
+                "type": "object",
+
+                "properties": {
+                  "id": {
+                    "type": "number"
+                  },
+                  "phone": {
+                    "type": "number"
+                  },
+                  "email": {
+                    "type": "string"
+                  },
+                  "logo": {
+                    "type": "string"
+                  },
+                  "roles": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+
+                      "properties": {
+                        "id": {
+                          "type": "number",
+                          "minimum": 1,
+                          "maximum": 6
+                        },
+                        "name": {
+                          "enum": [
+                            "admin",
+                            "client",
+                            "manager",
+                            "recruiter",
+                            "specialist",
+                            "supervisor"
+                          ]
+                        }
+                      },
+                      "required": ["id", "name"]
+                    }
+                  }
+                },
+                "required": ["id", "phone", "email", "logo", "roles"]
+              }
+            },
+            "required": ["id", "selfEmployed", "status", "user"]
+          },
+          "acceptingUser": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "number"
+              },
+              "phone": {
+                "type": "number"
+              },
+              "email": {
+                "type": "string"
+              },
+              "logo": {
+                "type": "string"
+              },
+              "roles": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+
+                  "properties": {
+                    "id": {
+                      "type": "number",
+                      "minimum": 1,
+                      "maximum": 6
+                    },
+                    "name": {
+                      "enum": [
+                        "admin",
+                        "client",
+                        "manager",
+                        "recruiter",
+                        "specialist",
+                        "supervisor"
+                      ]
+                    }
+                  },
+                  "required": ["id", "name"]
+                }
+              },
+              "radius": {
+                "type": "string"
+              },
+              "name": {
+                "type": "string"
+              },
+              "age": {
+                "type": "string"
+              },
+              "country": {
+                "type": "string"
+              },
+              "viewActivities": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "status": {
+                "type": "number"
+              }
+            },
+            "required": [
+              "id",
+              "phone",
+              "email",
+              "logo",
+              "roles",
+              "radius",
+              "name",
+              "age",
+              "country",
+              "viewActivities",
+              "status"
+            ]
+          },
+          "reports": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "dateStart": {
+                  "type": "string"
+                },
+                "dateEnd": {
+                  "type": "string"
+                },
+                "report": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "dayActivityId": {
+                  "type": "number"
+                },
+                "status": {
+                  "type": "number"
+                }
+              },
+              "required": [
+                "dateStart",
+                "dateEnd",
+                "report",
+                "dayActivityId",
+                "status"
+              ]
+            }
+          }
+        },
+        "required": [
+          "id",
+          "selfEmployed",
+          "status",
+          "place",
+          "user",
+          "radius",
+          "price",
+          "priceResult",
+          "income",
+          "forPay",
+          "viewActivity",
+          "dateStart",
+          "dateEnd",
+          "needFoto",
+          "dateActivity",
+          "order",
+          "task",
+          "acceptingUser",
+          "reports"
+        ]
+      }
+    }
+  },
+  "required": ["data"]
+}
