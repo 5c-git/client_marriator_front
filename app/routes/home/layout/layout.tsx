@@ -187,7 +187,7 @@ export default function HomeLayout({ loaderData }: Route.ComponentProps) {
         }}
       />
 
-      {/* {loaderData.tabsMap[userRole].length > 0 ? (
+      {loaderData.tabsMap[userRole].length > 0 ? (
         <Tabs
           value={location.pathname}
           sx={{
@@ -196,16 +196,7 @@ export default function HomeLayout({ loaderData }: Route.ComponentProps) {
         >
           {loaderData.tabsMap[userRole]}
         </Tabs>
-      ) : null} */}
-
-      <Tabs
-        value={location.pathname}
-        sx={{
-          width: "100%",
-        }}
-      >
-        {loaderData.tabsMap[userRole]}
-      </Tabs>
+      ) : null}
 
       <Outlet context={showMap} />
     </>
