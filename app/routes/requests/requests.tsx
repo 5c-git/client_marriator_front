@@ -96,19 +96,19 @@ export async function clientLoader() {
     });
 
     filteredRequests.new = requests.filter(
-      (item) => item.status === statusValueMap.new
+      (item) => item.status === statusValueMap.new,
     );
     filteredRequests.accepted = requests.filter(
-      (item) => item.status === statusValueMap.accepted
+      (item) => item.status === statusValueMap.accepted,
     );
     filteredRequests.notAccepted = requests.filter(
-      (item) => item.status === statusValueMap.notAccepted
+      (item) => item.status === statusValueMap.notAccepted,
     );
     filteredRequests.canceled = requests.filter(
-      (item) => item.status === statusValueMap.canceled
+      (item) => item.status === statusValueMap.canceled,
     );
     filteredRequests.archive = requests.filter(
-      (item) => item.status === statusValueMap.archive
+      (item) => item.status === statusValueMap.archive,
     );
 
     let activeStatus: keyof typeof statusValueMap | "empty" = "empty";
@@ -148,13 +148,13 @@ export default function Requesets({ loaderData }: Route.ComponentProps) {
   const [mapInstance, setMapInstance] = useState<YMap | null>(null);
   const [selectedRequest, setSelectedRequest] = useState<Option | null>(null);
   const [filter, setFilter] = useState<keyof typeof statusValueMap | "empty">(
-    loaderData.activeStatus
+    loaderData.activeStatus,
   );
   const [sorting, setSorting] = useState<"ascending" | "descending">(
-    "ascending"
+    "ascending",
   );
   const [activeRequests, setActiveRequests] = useState<Option[]>(
-    loaderData.filteredRequests[filter]
+    loaderData.filteredRequests[filter],
   );
 
   // рисуем пустую карту
@@ -228,7 +228,7 @@ export default function Requesets({ loaderData }: Route.ComponentProps) {
               icon: location.address.logo,
             },
           },
-          markerElement
+          markerElement,
         );
 
         mapInstance?.addChild(marker);
@@ -248,7 +248,7 @@ export default function Requesets({ loaderData }: Route.ComponentProps) {
             const clickedLocation = object.entity.properties.id as number;
 
             const match = activeRequests.find(
-              (item) => item.id === clickedLocation
+              (item) => item.id === clickedLocation,
             );
 
             if (match) {
@@ -270,17 +270,17 @@ export default function Requesets({ loaderData }: Route.ComponentProps) {
 
     if (newActiveRequests.length > 0 && sorting === "ascending") {
       const emptyDurationRequests = newActiveRequests.filter(
-        (item) => item.duration.start === null && item.duration.end === null
+        (item) => item.duration.start === null && item.duration.end === null,
       );
 
       const notEmptyDurationRequests = newActiveRequests.filter(
-        (item) => item.duration.start !== null && item.duration.end !== null
+        (item) => item.duration.start !== null && item.duration.end !== null,
       );
 
       notEmptyDurationRequests.sort(
         (a, b) =>
           new Date(a.duration.start as string).valueOf() -
-          new Date(b.duration.start as string).valueOf()
+          new Date(b.duration.start as string).valueOf(),
       );
 
       setActiveRequests([
@@ -289,17 +289,17 @@ export default function Requesets({ loaderData }: Route.ComponentProps) {
       ]);
     } else if (newActiveRequests.length > 0 && sorting === "descending") {
       const emptyDurationRequests = newActiveRequests.filter(
-        (item) => item.duration.start === null && item.duration.end === null
+        (item) => item.duration.start === null && item.duration.end === null,
       );
 
       const notEmptyDurationRequests = newActiveRequests.filter(
-        (item) => item.duration.start !== null && item.duration.end !== null
+        (item) => item.duration.start !== null && item.duration.end !== null,
       );
 
       notEmptyDurationRequests.sort(
         (a, b) =>
           new Date(b.duration.start as string).valueOf() -
-          new Date(a.duration.start as string).valueOf()
+          new Date(a.duration.start as string).valueOf(),
       );
 
       setActiveRequests([
@@ -339,6 +339,21 @@ export default function Requesets({ loaderData }: Route.ComponentProps) {
                         color:
                           statusCodeMap[
                             statusValueMap.new as keyof typeof statusCodeMap
+                          ].color,
+                      },
+                    ]
+                  : []),
+                ...(loaderData.filteredRequests.notAccepted.length > 0
+                  ? [
+                      {
+                        id: statusCodeMap[
+                          statusValueMap.notAccepted as keyof typeof statusCodeMap
+                        ].value,
+                        label: t("status.notAccepted"),
+                        count: loaderData.filteredRequests.notAccepted.length,
+                        color:
+                          statusCodeMap[
+                            statusValueMap.notAccepted as keyof typeof statusCodeMap
                           ].color,
                       },
                     ]

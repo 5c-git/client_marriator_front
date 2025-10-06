@@ -94,6 +94,9 @@ import { postInvoiceBidMockResponse } from "~/requests/_personal/postInvoiceBid/
 import { getManagerMockResponse } from "~/requests/_personal/getManager/getManager";
 import { postDelManagerMockResponse } from "~/requests/_personal/postDelManager/postDelManager";
 import { postSetManagersMockResponse } from "~/requests/_personal/postSetManagers/postSetManagers";
+import { postCreateBidFromTaskMockResponse } from "~/requests/_personal/postCreateBidFromTask/postCreateBidFromTask";
+import { postConvertTaskMockResponse } from "~/requests/_personal/postConvertTask/postConvertTask";
+import { getJobsMockResponse } from "~/requests/_personal/getJobs/getJobs";
 
 export const handlers = [
   getFormMockResponse,
@@ -188,4 +191,7 @@ export const handlers = [
   getManagerMockResponse,
   postDelManagerMockResponse,
   postSetManagersMockResponse,
+  postCreateBidFromTaskMockResponse,
+  postConvertTaskMockResponse,
+  getJobsMockResponse,
 ];

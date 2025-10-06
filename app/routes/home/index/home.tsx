@@ -17,7 +17,7 @@ export async function clientLoader() {
     ) {
       throw redirect(withLocale("/assignments"));
     } else if (userRole === "specialist") {
-      throw redirect(withLocale("/requests"));
+      throw redirect(withLocale("/missions"));
     }
   } else {
     throw new Response("Токен авторизации не обнаружен!", { status: 401 });

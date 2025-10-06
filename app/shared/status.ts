@@ -1,7 +1,7 @@
 export const statusCodeMap = {
   1: { value: "new", color: "var(--mui-palette-Corp_1)" },
-  2: { value: "accepted", color: "var(--mui-palette-Blue)" },
-  3: { value: "notAccepted", color: "var(--mui-palette-Grey_1)" },
+  2: { value: "notAccepted", color: "var(--mui-palette-Grey_1)" },
+  3: { value: "accepted", color: "var(--mui-palette-Blue)" },
   4: { value: "canceled", color: "var(--mui-palette-Red)" },
   5: { value: "archive", color: "var(--mui-palette-Grey_2)" },
 } as const;

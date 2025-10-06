@@ -170,6 +170,7 @@ export default function Specialists({ loaderData }: Route.ComponentProps) {
     declined: typeof request.acceptingUsers;
     consideration: typeof request.acceptingUsers;
     work: typeof request.acceptingUsers;
+    canceled: typeof request.acceptingUsers;
     empty: typeof request.acceptingUsers;
   } = {
     notAccepted: [],
@@ -177,6 +178,7 @@ export default function Specialists({ loaderData }: Route.ComponentProps) {
     declined: [],
     consideration: [],
     work: [],
+    canceled: [],
     empty: [],
   };
 
@@ -195,6 +197,9 @@ export default function Specialists({ loaderData }: Route.ComponentProps) {
   filteredSpecialists.work = request.acceptingUsers.filter(
     (item) => item.status === statusValueMap.work,
   );
+  filteredSpecialists.canceled = request.acceptingUsers.filter(
+    (item) => item.status === statusValueMap.canceled,
+  );
 
   let activeStatus: keyof typeof statusValueMap | "empty" = "empty";
 
@@ -212,6 +217,9 @@ export default function Specialists({ loaderData }: Route.ComponentProps) {
   }
   if (filteredSpecialists.work.length > 0) {
     activeStatus = "work";
+  }
+  if (filteredSpecialists.canceled.length > 0) {
+    activeStatus = "canceled";
   }
 
   const daysRange = eachDayOfInterval({

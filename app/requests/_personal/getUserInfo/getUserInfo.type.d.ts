@@ -32,19 +32,20 @@ export interface GetUserInfoSuccess {
       updateData: null | string;
       uuid: string;
       register_hash: null | string;
-      change_order: null;
-      cancel_order: null;
-      live_order: null;
-      change_task: null;
-      cancel_task: null;
-      live_task: null;
-      repeat_bid: null;
-      leave_bid: null;
-      refusal_task: null;
-      waiting_task: null;
-      count_wait_bid: null;
-      time_answer_bid: null;
-      notification_start: null;
+      change_order: null | string;
+      cancel_order: null | string;
+      live_order: null | string;
+      change_task: null | string;
+      cancel_task: null | string;
+      live_task: null | string;
+      repeat_bid: null | string;
+      leave_bid: null | string;
+      refusal_task: null | string;
+      waiting_task: null | number;
+      count_wait_bid: null | number;
+      time_answer_bid: null | number;
+      notification_start: null | number;
+      verme_id?: number;
       roles: {
         id: number;
         name:
@@ -54,12 +55,8 @@ export interface GetUserInfoSuccess {
           | "recruiter"
           | "specialist"
           | "supervisor";
-        [k: string]: unknown;
       }[];
-      [k: string]: unknown;
     };
-    [k: string]: unknown;
   };
   status: string;
-  [k: string]: unknown;
 }

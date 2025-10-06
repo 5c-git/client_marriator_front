@@ -1,0 +1,27 @@
+{
+  "status": {
+    "new": "Новый",
+    "accepted": "Принято",
+    "notAccepted": "Не Принято",
+    "canceled": "Отменено",
+    "archive": "Архив"
+  },
+  "sorting": {
+    "placeholder": "Сортировать",
+    "ascending": "По возрастанию начала оказания услуг",
+    "descending": "По убыванию начала оказания услуг"
+  },
+  "emptyHeaderCreate": "Поручений пока нет. Создайте первое!",
+  "emptyHeader": "Поручений пока нет.",
+  "cardHeader": "Услуг",
+  "cancelAssignmentButton": "Отменить задание",
+  "repeatAssignmentButton": "Повторить задание",
+  "amount": "{{price}} {{curency}} / {{measure}}",
+  "dialog": {
+    "cancel": "Отменить",
+    "repeat": "Повторить",
+    "title": "задание",
+    "no": "Нет",
+    "yes": "Да"
+  }
+}

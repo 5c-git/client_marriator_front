@@ -16,6 +16,7 @@
     "archive": "Archived"
   },
   "serviceButton": "Add activity",
+  "convertToRequest": "Сonvert to request",
   "cancelButton": "Cancel",
   "sendButton": "Save",
   "dialog": {

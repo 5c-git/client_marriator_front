@@ -1,5 +1,11 @@
 import { useState } from "react";
-import { useNavigation, useNavigate, useFetcher, Link } from "react-router";
+import {
+  useNavigation,
+  useNavigate,
+  useFetcher,
+  Link,
+  redirect,
+} from "react-router";
 import type { Route } from "./+types/task";
 
 import { useTranslation } from "react-i18next";
@@ -22,6 +28,7 @@ import { TopNavigation } from "~/shared/ui/TopNavigation/TopNavigation";
 
 import AddIcon from "@mui/icons-material/Add";
 import ClearIcon from "@mui/icons-material/Clear";
+import CheckIcon from "@mui/icons-material/Check";
 import { EditIcon } from "~/shared/icons/EditIcon";
 
 import { useStore } from "~/store/store";
@@ -32,6 +39,7 @@ import { RouteIcon } from "~/shared/icons/RouteIcon";
 
 import { getTask } from "~/requests/_personal/getTask/getTask";
 import { postDeleteTaskActivity } from "~/requests/_personal/postDeleteTaskActivity/postDeleteTaskActivity";
+import { postCreateBidFromTask } from "~/requests/_personal/postCreateBidFromTask/postCreateBidFromTask";
 
 export async function clientLoader({ params }: Route.ClientLoaderArgs) {
   const accessToken = useStore.getState().accessToken;
@@ -120,14 +128,23 @@ export async function clientLoader({ params }: Route.ClientLoaderArgs) {
 
 export async function clientAction({ request }: Route.ClientActionArgs) {
   // const currentURL = new URL(request.url);
-  const fields = await request.json();
+  const { _action, ...fields } = await request.json();
   const accessToken = useStore.getState().accessToken;
   if (accessToken) {
-    await postDeleteTaskActivity(
-      accessToken,
-      fields.taskId,
-      fields.taskActivityId
-    );
+    if (_action === "deleteActivity") {
+      await postDeleteTaskActivity(
+        accessToken,
+        fields.taskId,
+        fields.taskActivityId,
+      );
+    } else if (_action === "transformActivity") {
+      const transformedRequestData = await postCreateBidFromTask(
+        accessToken,
+        fields.taskId,
+        fields.taskActivityId,
+      );
+      throw redirect(withLocale(`/requests/${transformedRequestData.data.id}`));
+    }
   } else {
     throw new Response("Токен авторизации не обнаружен!", { status: 401 });
   }
@@ -137,6 +154,7 @@ export default function Task({ loaderData }: Route.ComponentProps) {
   const navigate = useNavigate();
   const navigation = useNavigation();
   const { t } = useTranslation("task");
+  const userRole = useStore.getState().userRole;
 
   const fetcher = useFetcher();
 
@@ -247,7 +265,7 @@ export default function Task({ loaderData }: Route.ComponentProps) {
                   statusCodeMap[
                     loaderData.task.status as keyof typeof statusCodeMap
                   ].value
-                }`
+                }`,
               )}
             </Typography>
           </Box>
@@ -407,11 +425,11 @@ export default function Task({ loaderData }: Route.ComponentProps) {
                   <Box
                     component={Link}
                     to={withLocale(
-                      `/tasks/${loaderData.task.id}/edit-service/${item.id}`
+                      `/tasks/${loaderData.task.id}/edit-service/${item.id}`,
                     )}
                     state={{
                       service: loaderData.orderActivities.find(
-                        (service) => service.id === item.id
+                        (service) => service.id === item.id,
                       ),
                     }}
                     sx={{
@@ -489,6 +507,32 @@ export default function Task({ loaderData }: Route.ComponentProps) {
                     </Box>
                   </>
                 ) : null}
+
+                {(!editMode && userRole === "admin") ||
+                (!editMode && userRole === "manager") ? (
+                  <Button
+                    variant="contained"
+                    sx={{
+                      marginTop: "8px",
+                    }}
+                    startIcon={<CheckIcon />}
+                    onClick={() => {
+                      fetcher.submit(
+                        JSON.stringify({
+                          _action: "transformActivity",
+                          taskId: loaderData.task.id,
+                          taskActivityId: item.id,
+                        }),
+                        {
+                          method: "POST",
+                          encType: "application/json",
+                        },
+                      );
+                    }}
+                  >
+                    {t("convertToRequest")}
+                  </Button>
+                ) : null}
               </Box>
             ))}
           </Box>
@@ -498,7 +542,7 @@ export default function Task({ loaderData }: Route.ComponentProps) {
           <Button
             component={Link}
             to={withLocale(
-              `/new-task/${loaderData.task.id}/new-service?edit=true`
+              `/new-task/${loaderData.task.id}/new-service?edit=true`,
             )}
             variant="outlined"
             startIcon={<AddIcon />}
@@ -573,13 +617,14 @@ export default function Task({ loaderData }: Route.ComponentProps) {
             onClick={() => {
               fetcher.submit(
                 JSON.stringify({
+                  _action: "deleteActivity",
                   taskId: loaderData.task.id,
                   taskActivityId: taskToDelete?.id,
                 }),
                 {
                   method: "POST",
                   encType: "application/json",
-                }
+                },
               );
               setTaskToDelete(null);
             }}

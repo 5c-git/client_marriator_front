@@ -102,11 +102,11 @@ export async function clientLoader() {
       });
 
       earliestStartDate.sort(
-        (a, b) => new Date(a).valueOf() - new Date(b).valueOf()
+        (a, b) => new Date(a).valueOf() - new Date(b).valueOf(),
       );
 
       latestEndDate.sort(
-        (a, b) => new Date(b).valueOf() - new Date(a).valueOf()
+        (a, b) => new Date(b).valueOf() - new Date(a).valueOf(),
       );
 
       tasks.push({
@@ -134,19 +134,19 @@ export async function clientLoader() {
     });
 
     filteredTasks.new = tasks.filter(
-      (item) => item.status === statusValueMap.new
+      (item) => item.status === statusValueMap.new,
     );
     filteredTasks.accepted = tasks.filter(
-      (item) => item.status === statusValueMap.accepted
+      (item) => item.status === statusValueMap.accepted,
     );
     filteredTasks.notAccepted = tasks.filter(
-      (item) => item.status === statusValueMap.notAccepted
+      (item) => item.status === statusValueMap.notAccepted,
     );
     filteredTasks.canceled = tasks.filter(
-      (item) => item.status === statusValueMap.canceled
+      (item) => item.status === statusValueMap.canceled,
     );
     filteredTasks.archive = tasks.filter(
-      (item) => item.status === statusValueMap.archive
+      (item) => item.status === statusValueMap.archive,
     );
 
     let activeStatus: keyof typeof statusValueMap | "empty" = "empty";
@@ -205,13 +205,13 @@ export default function Tasks({ loaderData }: Route.ComponentProps) {
   const [mapInstance, setMapInstance] = useState<YMap | null>(null);
   const [selectedTask, setSelectedTask] = useState<Option | null>(null);
   const [filter, setFilter] = useState<keyof typeof statusValueMap | "empty">(
-    loaderData.activeStatus
+    loaderData.activeStatus,
   );
   const [sorting, setSorting] = useState<"ascending" | "descending">(
-    "ascending"
+    "ascending",
   );
   const [activeTasks, setActiveTasks] = useState<Option[]>(
-    loaderData.filteredTasks[filter]
+    loaderData.filteredTasks[filter],
   );
   const [taskToAct, setTaskToAct] = useState<{
     action: "cancel" | "repeat";
@@ -289,7 +289,7 @@ export default function Tasks({ loaderData }: Route.ComponentProps) {
               icon: location.address.logo,
             },
           },
-          markerElement
+          markerElement,
         );
 
         mapInstance?.addChild(marker);
@@ -309,7 +309,7 @@ export default function Tasks({ loaderData }: Route.ComponentProps) {
             const clickedLocation = object.entity.properties.id as number;
 
             const match = activeTasks.find(
-              (item) => item.id === clickedLocation
+              (item) => item.id === clickedLocation,
             );
 
             if (match) {
@@ -331,33 +331,33 @@ export default function Tasks({ loaderData }: Route.ComponentProps) {
 
     if (newActiveTasks.length > 0 && sorting === "ascending") {
       const emptyDurationTasks = newActiveTasks.filter(
-        (item) => item.duration.start === null && item.duration.end === null
+        (item) => item.duration.start === null && item.duration.end === null,
       );
 
       const notEmptyDurationTasks = newActiveTasks.filter(
-        (item) => item.duration.start !== null && item.duration.end !== null
+        (item) => item.duration.start !== null && item.duration.end !== null,
       );
 
       notEmptyDurationTasks.sort(
         (a, b) =>
           new Date(a.duration.start as string).valueOf() -
-          new Date(b.duration.start as string).valueOf()
+          new Date(b.duration.start as string).valueOf(),
       );
 
       setActiveTasks([...emptyDurationTasks, ...notEmptyDurationTasks]);
     } else if (newActiveTasks.length > 0 && sorting === "descending") {
       const emptyDurationAssignments = newActiveTasks.filter(
-        (item) => item.duration.start === null && item.duration.end === null
+        (item) => item.duration.start === null && item.duration.end === null,
       );
 
       const notEmptyDurationAssignments = newActiveTasks.filter(
-        (item) => item.duration.start !== null && item.duration.end !== null
+        (item) => item.duration.start !== null && item.duration.end !== null,
       );
 
       notEmptyDurationAssignments.sort(
         (a, b) =>
           new Date(b.duration.start as string).valueOf() -
-          new Date(a.duration.start as string).valueOf()
+          new Date(a.duration.start as string).valueOf(),
       );
 
       setActiveTasks([
@@ -399,6 +399,21 @@ export default function Tasks({ loaderData }: Route.ComponentProps) {
                         color:
                           statusCodeMap[
                             statusValueMap.new as keyof typeof statusCodeMap
+                          ].color,
+                      },
+                    ]
+                  : []),
+                ...(loaderData.filteredTasks.notAccepted.length > 0
+                  ? [
+                      {
+                        id: statusCodeMap[
+                          statusValueMap.notAccepted as keyof typeof statusCodeMap
+                        ].value,
+                        label: t("status.notAccepted"),
+                        count: loaderData.filteredTasks.notAccepted.length,
+                        color:
+                          statusCodeMap[
+                            statusValueMap.notAccepted as keyof typeof statusCodeMap
                           ].color,
                       },
                     ]
@@ -511,7 +526,7 @@ export default function Tasks({ loaderData }: Route.ComponentProps) {
                     userId ? userId : -1,
                     item.userId,
                     item.status,
-                    item.duration.start
+                    item.duration.start,
                   )
                     ? {
                         buttonAction: {
@@ -531,7 +546,7 @@ export default function Tasks({ loaderData }: Route.ComponentProps) {
                     userId ? userId : -1,
                     item.userId,
                     item.status,
-                    item.duration.end
+                    item.duration.end,
                   )
                     ? {
                         buttonAction: {
@@ -551,7 +566,7 @@ export default function Tasks({ loaderData }: Route.ComponentProps) {
                     userId ? userId : -1,
                     item.userId,
                     item.status,
-                    item.duration.start
+                    item.duration.start,
                   )
                     ? {
                         buttonAction: {
@@ -616,7 +631,7 @@ export default function Tasks({ loaderData }: Route.ComponentProps) {
                     userId ? userId : -1,
                     selectedTask.userId,
                     selectedTask.status,
-                    selectedTask.duration.start
+                    selectedTask.duration.start,
                   )
                     ? {
                         buttonAction: {
@@ -636,7 +651,7 @@ export default function Tasks({ loaderData }: Route.ComponentProps) {
                     userId ? userId : -1,
                     selectedTask.userId,
                     selectedTask.status,
-                    selectedTask.duration.end
+                    selectedTask.duration.end,
                   )
                     ? {
                         buttonAction: {
@@ -656,7 +671,7 @@ export default function Tasks({ loaderData }: Route.ComponentProps) {
                     userId ? userId : -1,
                     selectedTask.userId,
                     selectedTask.status,
-                    selectedTask.duration.start
+                    selectedTask.duration.start,
                   )
                     ? {
                         buttonAction: {
@@ -768,7 +783,7 @@ export default function Tasks({ loaderData }: Route.ComponentProps) {
                 {
                   method: "POST",
                   encType: "application/json",
-                }
+                },
               );
               setTaskToAct(null);
             }}

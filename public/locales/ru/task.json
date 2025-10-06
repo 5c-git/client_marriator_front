@@ -16,6 +16,7 @@
     "archive": "Архив"
   },
   "serviceButton": "Добавить услугу",
+  "convertToRequest": "Создать заявку",
   "cancelButton": "Отмена",
   "sendButton": "Сохранить",
   "dialog": {
