@@ -183,7 +183,9 @@ export default function HomeLayout({ loaderData }: Route.ComponentProps) {
           },
         }}
         style={{
+          position: "relative",
           boxShadow: "none",
+          zIndex: 1,
         }}
       />
 

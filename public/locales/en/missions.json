@@ -11,6 +11,10 @@
     "ascending": "In ascending order of the start of services",
     "descending": "In descending order of the start of services"
   },
+  "tabs": {
+    "missions": "Missions",
+    "requests": "Requests"
+  },
   "emptyHeaderCreate": "There are no assignments. Create the first one!",
   "emptyHeader": "There are no assignments.",
   "cardHeader": "Amount of services",

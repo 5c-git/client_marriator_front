@@ -465,10 +465,10 @@ export default function Missions({ loaderData }: Route.ComponentProps) {
               id="map"
               sx={{
                 position: "absolute",
-                top: "108px",
+                top: "0",
                 left: "0",
                 width: "100%",
-                height: "calc(100vh - 162px)",
+                height: "100%",
               }}
             ></Box>
           ) : (
@@ -485,6 +485,7 @@ export default function Missions({ loaderData }: Route.ComponentProps) {
                 <AssignmentCard
                   key={item.id}
                   to={withLocale(`/missisons/${item.id}`)}
+                  status="Задание/Заявка"
                   statusColor={item.statusColor}
                   header={`${t("cardHeader")} ${item.header}`}
                   subHeader={{
@@ -595,7 +596,8 @@ export default function Missions({ loaderData }: Route.ComponentProps) {
               {selectedMission !== null ? (
                 <AssignmentCard
                   to={withLocale(`/missions/${selectedMission.id}`)}
-                  header={`${t("cardHeader")} ${selectedMission.header}`}
+                  status="Задание/Заявка"
+                  header={` ${selectedMission.header}`}
                   subHeader={{
                     text: t("amount", {
                       price: selectedMission.subHeader,

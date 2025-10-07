@@ -9,6 +9,7 @@ import { UTCDate } from "@date-fns/utc";
 
 type AssignmentCardProps = {
   id: string;
+  status?: string;
   statusColor?: string;
   to?: string;
   header?: string;
@@ -84,6 +85,17 @@ export const AssignmentCard = (props: AssignmentCardProps) => (
           textDecoration: "none",
         }}
       >
+        {props.status ? (
+          <Typography
+            component="p"
+            variant="Bold_18"
+            sx={(theme) => ({
+              color: theme.vars.palette.Black,
+            })}
+          >
+            {props.status}
+          </Typography>
+        ) : null}
         {props.header ? (
           <Box
             sx={{
