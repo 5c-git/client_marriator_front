@@ -5,10 +5,10 @@ import { Avatar, Button, Divider, Typography } from "@mui/material";
 import { CalendarIcon } from "~/shared/icons/CalendarIcon";
 
 import { format } from "date-fns";
-import { UTCDate } from "@date-fns/utc";
 
 type AssignmentCardProps = {
   id: string;
+  status?: string;
   statusColor?: string;
   to?: string;
   header?: string;
@@ -84,6 +84,17 @@ export const AssignmentCard = (props: AssignmentCardProps) => (
           textDecoration: "none",
         }}
       >
+        {props.status ? (
+          <Typography
+            component="p"
+            variant="Bold_18"
+            sx={(theme) => ({
+              color: theme.vars.palette.Black,
+            })}
+          >
+            {props.status}
+          </Typography>
+        ) : null}
         {props.header ? (
           <Box
             sx={{
@@ -195,9 +206,10 @@ export const AssignmentCard = (props: AssignmentCardProps) => (
               />
             ) : null}{" "}
             <Box
-              sx={{
+              sx={(theme) => ({
                 overflow: "hidden",
-              }}
+                color: theme.vars.palette["Black"],
+              })}
             >
               {props.avatar.name}
               {props.avatar.address ? (
@@ -358,24 +370,45 @@ export const AssignmentCard = (props: AssignmentCardProps) => (
                 variant="Reg_12"
                 sx={(theme) => ({ color: theme.vars.palette["Corp_1"] })}
               >
-                {`${format(new UTCDate(props.duration.start), "kk:mm dd.LL.yyyy")}${
+                {`${format(new Date(props.duration.start), "HH:mm dd.LL.yyyy")}${
                   props.duration.end
-                    ? ` — ${format(new UTCDate(props.duration.end), "kk:mm dd.LL.yyyy")}`
+                    ? ` — ${format(new Date(props.duration.end), "HH:mm dd.LL.yyyy")}`
                     : ""
                 }`}
               </Typography>
             ) : null}
           </Box>
         ) : null}
-        {props.buttonsTray ? (
+      </Box>
+
+      {props.buttonsTray ? (
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+            paddingTop: "8px",
+          }}
+        >
           <Box
             sx={{
               display: "flex",
-              justifyContent: "space-between",
+              columnGap: "16px",
               alignItems: "center",
-              paddingTop: "8px",
             }}
           >
+            {props.buttonsTray.leftTray.map((item) => item)}
+          </Box>
+          <Typography
+            component="p"
+            variant="Reg_12"
+            sx={(theme) => ({
+              color: theme.vars.palette.Grey_2,
+            })}
+          >
+            {props.id}
+          </Typography>
+          {props.buttonsTray.rightTray ? (
             <Box
               sx={{
                 display: "flex",
@@ -383,31 +416,11 @@ export const AssignmentCard = (props: AssignmentCardProps) => (
                 alignItems: "center",
               }}
             >
-              {props.buttonsTray.leftTray.map((item) => item)}
+              {props.buttonsTray.rightTray.map((item) => item)}
             </Box>
-            <Typography
-              component="p"
-              variant="Reg_12"
-              sx={(theme) => ({
-                color: theme.vars.palette.Grey_2,
-              })}
-            >
-              {props.id}
-            </Typography>
-            {props.buttonsTray.rightTray ? (
-              <Box
-                sx={{
-                  display: "flex",
-                  columnGap: "16px",
-                  alignItems: "center",
-                }}
-              >
-                {props.buttonsTray.rightTray.map((item) => item)}
-              </Box>
-            ) : null}
-          </Box>
-        ) : null}
-      </Box>
+          ) : null}
+        </Box>
+      ) : null}
 
       {props.buttonAction ? (
         <Button

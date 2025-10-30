@@ -1,0 +1,66 @@
+{
+  "components": {
+    "FilesPopup": {
+      "header": "Приложите не менее 4-х фотографии для отчета",
+      "submitButton": "Завершить",
+      "cancelButton": "Отменить"
+    }
+  },
+  "status": {
+    "notAccepted": "Новая",
+    "accepted": "Одобрена",
+    "declined": "Отклонена",
+    "consideration": "На рассмотрении",
+    "work": "В работе",
+    "canceled": "Отменена"
+  },
+  "dayStatus": {
+    "start": "День запущен",
+    "end": "День завершен",
+    "reported": "Отчёт отправлен",
+    "accept": "Принят",
+    "forPay": "К оплате",
+    "forPayManager": "Оплата одобрена",
+    "paid": "Оплачено",
+    "notEnded": "Не окончен"
+  },
+  "actions": {
+    "accept": "Принять",
+    "acceptAll": "Проверить всё",
+    "cancel": "Отказаться",
+    "start": "Приступить",
+    "end": "Закончить",
+    "forPay": "К оплате",
+    "report": "Отправить отчёт",
+    "check": "Проверить"
+  },
+  "role": {
+    "admin": "Администратор",
+    "supervisor": "Супервайзор",
+    "manager": "Менеджер",
+    "client": "Клиент",
+    "recruiter": "Рекрутёр",
+    "specialist": "Специалист"
+  },
+  "dayMap": {
+    "0": "ВС",
+    "1": "ПН",
+    "2": "ВТ",
+    "3": "СР",
+    "4": "ЧТ",
+    "5": "ПТ",
+    "6": "СБ"
+  },
+  "request": "Заявка",
+  "mission": "Задание",
+  "statusText": "Статус",
+  "locationText": "Место оказания услуг",
+  "serviceTypeText": "Вид услуги",
+  "pricePerUnitText": "Цена за ед. измерения",
+  "dateStartText": "Дата начала",
+  "dateEndText": "Дата окончания",
+  "timeStartText": "Время начала",
+  "timeEndText": "Время окончания",
+  "route": "Маршрут дня",
+  "photoCheckbox": "Фотоотчёт"
+}

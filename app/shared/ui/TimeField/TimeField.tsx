@@ -9,8 +9,6 @@ import { ru } from "date-fns/locale/ru";
 
 import { FormControl, FormHelperText } from "@mui/material";
 
-import { UTCDate } from "@date-fns/utc";
-
 type TimeFieldProps = {
   name: string;
   value: null | string;
@@ -41,7 +39,7 @@ export const TimeField = (props: TimeFieldProps) => (
         enableAccessibleFieldDOMStructure={false}
         ampm={false}
         label={props.placeholder}
-        value={props.value === null ? null : new UTCDate(props.value)}
+        value={props.value === null ? null : new Date(props.value)}
         localeText={localeActionsText}
         minTime={props.minTime}
         maxTime={props.maxTime}

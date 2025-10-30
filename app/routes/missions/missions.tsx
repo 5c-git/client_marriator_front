@@ -8,15 +8,7 @@ import { useTranslation } from "react-i18next";
 import { withLocale } from "~/shared/withLocale";
 
 import Box from "@mui/material/Box";
-import {
-  Button,
-  Dialog,
-  DialogActions,
-  DialogTitle,
-  Fab,
-  SwipeableDrawer,
-  Typography,
-} from "@mui/material";
+import { SwipeableDrawer, Typography } from "@mui/material";
 
 import { StatusSelect } from "~/shared/ui/StatusSelect/StatusSelect";
 import { SortingSelect } from "~/shared/ui/SortingSelect/SortingSelect";
@@ -38,14 +30,15 @@ import {
   canRepeatCancelled,
 } from "~/shared/buttonHelpers";
 
-import { statusCodeMap, statusValueMap } from "~/shared/status";
+import { statusCodeMap, statusValueMap } from "~/shared/specialistStatus";
 
 import { getJobs } from "~/requests/_personal/getJobs/getJobs";
 
 type Option = {
   id: number;
   userId: number;
-  status: number;
+  specialistId: number;
+  status: 1 | 2 | 3 | 4 | 5 | 6;
   statusColor: string;
   header: string;
   subHeader: string;
@@ -67,18 +60,20 @@ export async function clientLoader() {
   const missions: Option[] = [];
 
   const filteredMissions: {
-    new: Option[];
-    accepted: Option[];
     notAccepted: Option[];
+    accepted: Option[];
+    declined: Option[];
+    consideration: Option[];
+    work: Option[];
     canceled: Option[];
-    archive: Option[];
     empty: Option[];
   } = {
-    new: [],
-    accepted: [],
     notAccepted: [],
+    accepted: [],
+    declined: [],
+    consideration: [],
+    work: [],
     canceled: [],
-    archive: [],
     empty: [],
   };
 
@@ -91,8 +86,9 @@ export async function clientLoader() {
       missions.push({
         id: item.id,
         userId: item.user.id,
-        status: item.status,
-        statusColor: statusCodeMap[item.status].color,
+        specialistId: item.acceptingUser.id,
+        status: item.acceptingUser.status,
+        statusColor: statusCodeMap[item.acceptingUser.status].color,
         header: item.viewActivity.name,
         subHeader: item.priceResult.toString(),
         address: {
@@ -110,38 +106,44 @@ export async function clientLoader() {
       });
     });
 
-    filteredMissions.new = missions.filter(
-      (item) => item.status === statusValueMap.new
+    filteredMissions.notAccepted = missions.filter(
+      (item) => item.status === statusValueMap.notAccepted
     );
     filteredMissions.accepted = missions.filter(
       (item) => item.status === statusValueMap.accepted
     );
-    filteredMissions.notAccepted = missions.filter(
-      (item) => item.status === statusValueMap.notAccepted
+    filteredMissions.declined = missions.filter(
+      (item) => item.status === statusValueMap.declined
+    );
+    filteredMissions.consideration = missions.filter(
+      (item) => item.status === statusValueMap.consideration
+    );
+    filteredMissions.work = missions.filter(
+      (item) => item.status === statusValueMap.work
     );
     filteredMissions.canceled = missions.filter(
       (item) => item.status === statusValueMap.canceled
     );
-    filteredMissions.archive = missions.filter(
-      (item) => item.status === statusValueMap.archive
-    );
 
     let activeStatus: keyof typeof statusValueMap | "empty" = "empty";
 
-    if (filteredMissions.canceled.length > 0) {
-      activeStatus = "archive";
-    }
-    if (filteredMissions.archive.length > 0) {
-      activeStatus = "canceled";
-    }
-    if (filteredMissions.notAccepted.length > 0) {
-      activeStatus = "notAccepted";
-    }
     if (filteredMissions.accepted.length > 0) {
       activeStatus = "accepted";
     }
-    if (filteredMissions.new.length > 0) {
-      activeStatus = "new";
+    if (filteredMissions.declined.length > 0) {
+      activeStatus = "declined";
+    }
+    if (filteredMissions.consideration.length > 0) {
+      activeStatus = "consideration";
+    }
+    if (filteredMissions.canceled.length > 0) {
+      activeStatus = "canceled";
+    }
+    if (filteredMissions.work.length > 0) {
+      activeStatus = "work";
+    }
+    if (filteredMissions.notAccepted.length > 0) {
+      activeStatus = "notAccepted";
     }
 
     return {
@@ -362,21 +364,6 @@ export default function Missions({ loaderData }: Route.ComponentProps) {
                 setFilter(value as typeof filter);
               }}
               options={[
-                ...(loaderData.filteredMissions.new.length > 0
-                  ? [
-                      {
-                        id: statusCodeMap[
-                          statusValueMap.new as keyof typeof statusCodeMap
-                        ].value,
-                        label: t("status.new"),
-                        count: loaderData.filteredMissions.new.length,
-                        color:
-                          statusCodeMap[
-                            statusValueMap.new as keyof typeof statusCodeMap
-                          ].color,
-                      },
-                    ]
-                  : []),
                 ...(loaderData.filteredMissions.notAccepted.length > 0
                   ? [
                       {
@@ -407,6 +394,51 @@ export default function Missions({ loaderData }: Route.ComponentProps) {
                       },
                     ]
                   : []),
+                ...(loaderData.filteredMissions.declined.length > 0
+                  ? [
+                      {
+                        id: statusCodeMap[
+                          statusValueMap.declined as keyof typeof statusCodeMap
+                        ].value,
+                        label: t("status.declined"),
+                        count: loaderData.filteredMissions.declined.length,
+                        color:
+                          statusCodeMap[
+                            statusValueMap.declined as keyof typeof statusCodeMap
+                          ].color,
+                      },
+                    ]
+                  : []),
+                ...(loaderData.filteredMissions.consideration.length > 0
+                  ? [
+                      {
+                        id: statusCodeMap[
+                          statusValueMap.consideration as keyof typeof statusCodeMap
+                        ].value,
+                        label: t("status.consideration"),
+                        count: loaderData.filteredMissions.consideration.length,
+                        color:
+                          statusCodeMap[
+                            statusValueMap.consideration as keyof typeof statusCodeMap
+                          ].color,
+                      },
+                    ]
+                  : []),
+                ...(loaderData.filteredMissions.work.length > 0
+                  ? [
+                      {
+                        id: statusCodeMap[
+                          statusValueMap.work as keyof typeof statusCodeMap
+                        ].value,
+                        label: t("status.work"),
+                        count: loaderData.filteredMissions.work.length,
+                        color:
+                          statusCodeMap[
+                            statusValueMap.work as keyof typeof statusCodeMap
+                          ].color,
+                      },
+                    ]
+                  : []),
                 ...(loaderData.filteredMissions.canceled.length > 0
                   ? [
                       {
@@ -418,21 +450,6 @@ export default function Missions({ loaderData }: Route.ComponentProps) {
                         color:
                           statusCodeMap[
                             statusValueMap.canceled as keyof typeof statusCodeMap
-                          ].color,
-                      },
-                    ]
-                  : []),
-                ...(loaderData.filteredMissions.archive.length > 0
-                  ? [
-                      {
-                        id: statusCodeMap[
-                          statusValueMap.archive as keyof typeof statusCodeMap
-                        ].value,
-                        label: t("status.archive"),
-                        count: loaderData.filteredMissions.archive.length,
-                        color:
-                          statusCodeMap[
-                            statusValueMap.archive as keyof typeof statusCodeMap
                           ].color,
                       },
                     ]
@@ -465,10 +482,10 @@ export default function Missions({ loaderData }: Route.ComponentProps) {
               id="map"
               sx={{
                 position: "absolute",
-                top: "108px",
+                top: "0",
                 left: "0",
                 width: "100%",
-                height: "calc(100vh - 162px)",
+                height: "100%",
               }}
             ></Box>
           ) : (
@@ -484,7 +501,12 @@ export default function Missions({ loaderData }: Route.ComponentProps) {
               {activeMissions.map((item) => (
                 <AssignmentCard
                   key={item.id}
-                  to={withLocale(`/missisons/${item.id}`)}
+                  to={withLocale(`/missions/${item.id}/${item.specialistId}`)}
+                  status={
+                    item.status === 1 || item.status === 4
+                      ? t("requestStatus")
+                      : t("missionStatus")
+                  }
                   statusColor={item.statusColor}
                   header={`${t("cardHeader")} ${item.header}`}
                   subHeader={{
@@ -594,8 +616,15 @@ export default function Missions({ loaderData }: Route.ComponentProps) {
             >
               {selectedMission !== null ? (
                 <AssignmentCard
-                  to={withLocale(`/missions/${selectedMission.id}`)}
-                  header={`${t("cardHeader")} ${selectedMission.header}`}
+                  to={withLocale(
+                    `/missions/${selectedMission.id}/${selectedMission.specialistId}`
+                  )}
+                  status={
+                    selectedMission.status === 1 || selectedMission.status === 4
+                      ? t("requestStatus")
+                      : t("missionStatus")
+                  }
+                  header={` ${selectedMission.header}`}
                   subHeader={{
                     text: t("amount", {
                       price: selectedMission.subHeader,

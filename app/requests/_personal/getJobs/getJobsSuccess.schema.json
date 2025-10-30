@@ -403,7 +403,7 @@
                 }
               },
               "status": {
-                "type": "number"
+                "enum": [1, 2, 3, 4, 5, 6]
               }
             },
             "required": [
@@ -426,19 +426,19 @@
               "type": "object",
               "properties": {
                 "dateStart": {
-                  "type": "string"
+                  "type": ["null", "string"]
                 },
                 "dateEnd": {
-                  "type": "string"
+                  "type": ["null", "string"]
                 },
                 "report": {
-                  "type": "array",
+                  "type": ["null", "array"],
                   "items": {
                     "type": "string"
                   }
                 },
                 "dayActivityId": {
-                  "type": "number"
+                  "type": ["null", "number"]
                 },
                 "status": {
                   "type": "number"

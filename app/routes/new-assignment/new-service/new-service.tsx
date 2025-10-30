@@ -13,10 +13,9 @@ import {
   intervalToDuration,
   eachDayOfInterval,
   set,
-  getDate,
-  getMonth,
   getDay,
   compareAsc,
+  format,
 } from "date-fns";
 
 import Box from "@mui/material/Box";
@@ -48,8 +47,6 @@ import { PointerIcon } from "~/shared/icons/PointerIcon";
 import { DeleteIcon } from "~/shared/icons/DeleteIcon";
 
 import { useStore } from "~/store/store";
-
-import { dateWithoutTimezone } from "~/shared/dateWithoutTimezone";
 
 import { getViewActivitiesForOrder } from "~/requests/_personal/getViewActivitiesForOrder/getViewActivitiesForOrder";
 import { getPlaceForOrder } from "~/requests/_personal/getPlaceForOrder/getPlaceForOrder";
@@ -273,8 +270,8 @@ export default function NewService({ loaderData }: Route.ComponentProps) {
               orderId: Number(loaderData.orderId),
               viewActivityId: Number(values.activity),
               count: Number(values.amount),
-              dateStart: dateWithoutTimezone(new Date(values.dateStart)),
-              dateEnd: dateWithoutTimezone(new Date(values.dateEnd)),
+              dateStart: new Date(values.dateStart).toISOString(),
+              dateEnd: new Date(values.dateEnd).toISOString(),
               needFoto: values.needFoto,
               ...(values.days &&
                 values.days.length > 0 && {
@@ -293,8 +290,8 @@ export default function NewService({ loaderData }: Route.ComponentProps) {
                       });
 
                       days.push({
-                        timeStart: dateWithoutTimezone(new Date(day.timeStart)),
-                        timeEnd: dateWithoutTimezone(new Date(day.timeEnd)),
+                        timeStart: new Date(day.timeStart).toISOString(),
+                        timeEnd: new Date(day.timeEnd).toISOString(),
                         ...(places.length > 0 && { placeIds: places }),
                       });
                     });
@@ -515,10 +512,7 @@ export default function NewService({ loaderData }: Route.ComponentProps) {
                   color: theme.vars.palette["Black"],
                 })}
               >
-                {getDate(day.timeStart)}.
-                {getMonth(day.timeStart) < 10
-                  ? `0${getMonth(day.timeStart) + 1}`
-                  : getMonth(day.timeStart) + 1}
+                {format(day.timeStart, "dd.MM")}
                 &nbsp;
                 {/*@ts-expect-error https://www.i18next.com/overview/typescript#type-error-template-literal */}
                 {t(`dayMap.${getDay(day.timeStart)}`)}

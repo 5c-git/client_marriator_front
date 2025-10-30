@@ -46,6 +46,8 @@ export interface GetUserInfoSuccess {
       time_answer_bid: null | number;
       notification_start: null | number;
       verme_id?: number;
+      nopaper_guid: null | string;
+      nopaper_certificate_id: null | string;
       roles: {
         id: number;
         name:

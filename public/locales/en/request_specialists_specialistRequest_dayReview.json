@@ -1,0 +1,21 @@
+{
+  "header": "Days review",
+  "income": "Income",
+  "unitPrice": "Unit price ₽",
+  "amountPrice": "Amount price ₽",
+  "finesAndIncentives": "Fines and incentives",
+  "criterionName": "Criterion",
+  "criterionAmount": "Amount",
+  "criterionButton": "Add criterion",
+  "total": "TOTAL",
+  "acceptButton": "Accept",
+  "dayMap": {
+    "0": "SUN",
+    "1": "MON",
+    "2": "TUE",
+    "3": "WED",
+    "4": "THU",
+    "5": "FRI",
+    "6": "SAT"
+  }
+}

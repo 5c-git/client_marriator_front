@@ -17,7 +17,9 @@
   "serviceButton": "Add activity",
   "cancelButton": "Cancel",
   "sendButton": "Save",
+  "saveButton": "Send assignment",
   "convertToTask": "Convert to task",
+  "acceptButton": "Accept",
   "dialog": {
     "title": "Delete",
     "no": "No",

@@ -1,16 +1,19 @@
 {
   "status": {
-    "new": "New",
+    "notAccepted": "New",
     "accepted": "Accepted",
-    "notAccepted": "Not accepted",
-    "canceled": "Cancelled",
-    "archive": "Archived"
+    "declined": "Declined",
+    "consideration": "Consideration",
+    "work": "In work",
+    "canceled": "Cancelled"
   },
   "sorting": {
     "placeholder": "Sorting",
     "ascending": "In ascending order of the start of services",
     "descending": "In descending order of the start of services"
   },
+  "requestStatus": "Request",
+  "missionStatus": "Mission",
   "emptyHeaderCreate": "There are no assignments. Create the first one!",
   "emptyHeader": "There are no assignments.",
   "cardHeader": "Amount of services",
