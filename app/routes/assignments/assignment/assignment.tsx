@@ -30,6 +30,7 @@ import AddIcon from "@mui/icons-material/Add";
 import ClearIcon from "@mui/icons-material/Clear";
 import CheckIcon from "@mui/icons-material/Check";
 import { EditIcon } from "~/shared/icons/EditIcon";
+import LogoutIcon from "@mui/icons-material/Logout";
 
 import { useStore } from "~/store/store";
 
@@ -40,6 +41,8 @@ import { RouteIcon } from "~/shared/icons/RouteIcon";
 import { getOrder } from "~/requests/_personal/getOrder/getOrder";
 import { postDeleteOrderActivity } from "~/requests/_personal/postDeleteOrderActivity/postDeleteOrderActivity";
 import { postConvertTask } from "~/requests/_personal/postConvertTask/postConvertTask";
+import { postAcceptOrder } from "~/requests/_personal/postAcceptOrder/postAcceptOrder";
+import { postSendOrder } from "~/requests/_personal/postSendOrder/postSendOrder";
 
 export async function clientLoader({ params }: Route.ClientLoaderArgs) {
   const accessToken = useStore.getState().accessToken;
@@ -117,7 +120,7 @@ export async function clientLoader({ params }: Route.ClientLoaderArgs) {
 }
 
 export async function clientAction({ request }: Route.ClientActionArgs) {
-  // const currentURL = new URL(request.url);
+  const currentURL = new URL(request.url);
   const { _action, ...fields } = await request.json();
   const accessToken = useStore.getState().accessToken;
   if (accessToken) {
@@ -125,14 +128,20 @@ export async function clientAction({ request }: Route.ClientActionArgs) {
       await postDeleteOrderActivity(
         accessToken,
         fields.orderId,
-        fields.orderActivityId,
+        fields.orderActivityId
       );
     } else if (_action === "transformAssignment") {
       const transformedTaskData = await postConvertTask(
         accessToken,
-        fields.orderId,
+        fields.orderId
       );
       throw redirect(withLocale(`/tasks/${transformedTaskData.data.id}`));
+    } else if (_action === "acceptAssignment") {
+      await postAcceptOrder(accessToken, fields.orderId);
+      throw redirect(currentURL.toString());
+    } else if (_action === "save") {
+      await postSendOrder(accessToken, fields.orderId);
+      throw redirect(currentURL.toString());
     }
   } else {
     throw new Response("Токен авторизации не обнаружен!", { status: 401 });
@@ -254,7 +263,7 @@ export default function Assignment({ loaderData }: Route.ComponentProps) {
                   statusCodeMap[
                     loaderData.order.status as keyof typeof statusCodeMap
                   ].value
-                }`,
+                }`
               )}
             </Typography>
           </Box>
@@ -390,11 +399,11 @@ export default function Assignment({ loaderData }: Route.ComponentProps) {
                   <Box
                     component={Link}
                     to={withLocale(
-                      `/assignments/${loaderData.order.id}/edit-service/${item.id}`,
+                      `/assignments/${loaderData.order.id}/edit-service/${item.id}`
                     )}
                     state={{
                       service: loaderData.orderActivities.find(
-                        (service) => service.id === item.id,
+                        (service) => service.id === item.id
                       ),
                     }}
                     sx={{
@@ -481,7 +490,7 @@ export default function Assignment({ loaderData }: Route.ComponentProps) {
           <Button
             component={Link}
             to={withLocale(
-              `/new-assignment/${loaderData.order.id}/new-service?edit=true`,
+              `/new-assignment/${loaderData.order.id}/new-service?edit=true`
             )}
             variant="outlined"
             startIcon={<AddIcon />}
@@ -523,8 +532,10 @@ export default function Assignment({ loaderData }: Route.ComponentProps) {
           </Box>
         ) : null}
 
-        {(!editMode && userRole === "admin") ||
-        (!editMode && userRole === "manager") ? (
+        {(!editMode && userRole === "admin" && loaderData.order.status === 3) ||
+        (!editMode &&
+          userRole === "manager" &&
+          loaderData.order.status === 3) ? (
           <Button
             variant="contained"
             sx={{
@@ -540,11 +551,65 @@ export default function Assignment({ loaderData }: Route.ComponentProps) {
                 {
                   method: "POST",
                   encType: "application/json",
-                },
+                }
               );
             }}
           >
             {t("convertToTask")}
+          </Button>
+        ) : null}
+
+        {(!editMode && userRole === "admin" && loaderData.order.status === 2) ||
+        (!editMode &&
+          userRole === "manager" &&
+          loaderData.order.status === 2) ? (
+          <Button
+            variant="contained"
+            sx={{
+              marginTop: "8px",
+            }}
+            startIcon={<CheckIcon />}
+            onClick={() => {
+              fetcher.submit(
+                JSON.stringify({
+                  _action: "acceptAssignment",
+                  orderId: loaderData.order.id,
+                }),
+                {
+                  method: "POST",
+                  encType: "application/json",
+                }
+              );
+            }}
+          >
+            {t("acceptButton")}
+          </Button>
+        ) : null}
+
+        {!editMode && loaderData.order.status === 1 ? (
+          <Button
+            variant="contained"
+            onClick={() => {
+              fetcher.submit(
+                JSON.stringify({
+                  _action: "save",
+                  orderId: loaderData.order.id,
+                }),
+                {
+                  method: "POST",
+                  encType: "application/json",
+                }
+              );
+            }}
+            startIcon={
+              <LogoutIcon
+                sx={{
+                  transform: "rotate(-90deg)",
+                }}
+              />
+            }
+          >
+            {t("saveButton")}
           </Button>
         ) : null}
       </Box>
@@ -589,7 +654,7 @@ export default function Assignment({ loaderData }: Route.ComponentProps) {
                 {
                   method: "POST",
                   encType: "application/json",
-                },
+                }
               );
               setActivityToDelete(null);
             }}

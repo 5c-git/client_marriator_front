@@ -102,11 +102,11 @@ export async function clientLoader() {
       });
 
       earliestStartDate.sort(
-        (a, b) => new Date(a).valueOf() - new Date(b).valueOf(),
+        (a, b) => new Date(a).valueOf() - new Date(b).valueOf()
       );
 
       latestEndDate.sort(
-        (a, b) => new Date(b).valueOf() - new Date(a).valueOf(),
+        (a, b) => new Date(b).valueOf() - new Date(a).valueOf()
       );
 
       assignments.push({
@@ -134,19 +134,19 @@ export async function clientLoader() {
     });
 
     filteredAssignments.new = assignments.filter(
-      (item) => item.status === statusValueMap.new,
+      (item) => item.status === statusValueMap.new
     );
     filteredAssignments.accepted = assignments.filter(
-      (item) => item.status === statusValueMap.accepted,
+      (item) => item.status === statusValueMap.accepted
     );
     filteredAssignments.notAccepted = assignments.filter(
-      (item) => item.status === statusValueMap.notAccepted,
+      (item) => item.status === statusValueMap.notAccepted
     );
     filteredAssignments.canceled = assignments.filter(
-      (item) => item.status === statusValueMap.canceled,
+      (item) => item.status === statusValueMap.canceled
     );
     filteredAssignments.archive = assignments.filter(
-      (item) => item.status === statusValueMap.archive,
+      (item) => item.status === statusValueMap.archive
     );
 
     let activeStatus: keyof typeof statusValueMap | "empty" = "empty";
@@ -204,16 +204,16 @@ export default function Assignments({ loaderData }: Route.ComponentProps) {
 
   const [mapInstance, setMapInstance] = useState<YMap | null>(null);
   const [selectedAssignment, setSelectedAssignment] = useState<Option | null>(
-    null,
+    null
   );
   const [filter, setFilter] = useState<keyof typeof statusValueMap | "empty">(
-    loaderData.activeStatus,
+    loaderData.activeStatus
   );
   const [sorting, setSorting] = useState<"ascending" | "descending">(
-    "ascending",
+    "ascending"
   );
   const [activeAssignments, setActiveAssignments] = useState<Option[]>(
-    loaderData.filteredAssignments[filter],
+    loaderData.filteredAssignments[filter]
   );
   const [assignmentToAct, setAssignmentToAct] = useState<{
     action: "cancel" | "repeat";
@@ -292,7 +292,7 @@ export default function Assignments({ loaderData }: Route.ComponentProps) {
               icon: location.address.logo,
             },
           },
-          markerElement,
+          markerElement
         );
 
         mapInstance?.addChild(marker);
@@ -312,7 +312,7 @@ export default function Assignments({ loaderData }: Route.ComponentProps) {
             const clickedLocation = object.entity.properties.id as number;
 
             const match = activeAssignments.find(
-              (item) => item.id === clickedLocation,
+              (item) => item.id === clickedLocation
             );
 
             if (match) {
@@ -334,17 +334,17 @@ export default function Assignments({ loaderData }: Route.ComponentProps) {
 
     if (newActiveAssignments.length > 0 && sorting === "ascending") {
       const emptyDurationAssignments = newActiveAssignments.filter(
-        (item) => item.duration.start === null && item.duration.end === null,
+        (item) => item.duration.start === null && item.duration.end === null
       );
 
       const notEmptyDurationAssignments = newActiveAssignments.filter(
-        (item) => item.duration.start !== null && item.duration.end !== null,
+        (item) => item.duration.start !== null && item.duration.end !== null
       );
 
       notEmptyDurationAssignments.sort(
         (a, b) =>
           new Date(a.duration.start as string).valueOf() -
-          new Date(b.duration.start as string).valueOf(),
+          new Date(b.duration.start as string).valueOf()
       );
 
       setActiveAssignments([
@@ -353,17 +353,17 @@ export default function Assignments({ loaderData }: Route.ComponentProps) {
       ]);
     } else if (newActiveAssignments.length > 0 && sorting === "descending") {
       const emptyDurationAssignments = newActiveAssignments.filter(
-        (item) => item.duration.start === null && item.duration.end === null,
+        (item) => item.duration.start === null && item.duration.end === null
       );
 
       const notEmptyDurationAssignments = newActiveAssignments.filter(
-        (item) => item.duration.start !== null && item.duration.end !== null,
+        (item) => item.duration.start !== null && item.duration.end !== null
       );
 
       notEmptyDurationAssignments.sort(
         (a, b) =>
           new Date(b.duration.start as string).valueOf() -
-          new Date(a.duration.start as string).valueOf(),
+          new Date(a.duration.start as string).valueOf()
       );
 
       setActiveAssignments([
@@ -531,7 +531,7 @@ export default function Assignments({ loaderData }: Route.ComponentProps) {
                     userId ? userId : -1,
                     item.userId,
                     item.status,
-                    item.duration.start,
+                    item.duration.start
                   )
                     ? {
                         buttonAction: {
@@ -551,7 +551,7 @@ export default function Assignments({ loaderData }: Route.ComponentProps) {
                     userId ? userId : -1,
                     item.userId,
                     item.status,
-                    item.duration.end,
+                    item.duration.end
                   )
                     ? {
                         buttonAction: {
@@ -571,11 +571,12 @@ export default function Assignments({ loaderData }: Route.ComponentProps) {
                     userId ? userId : -1,
                     item.userId,
                     item.status,
-                    item.duration.start,
+                    item.duration.start
                   )
                     ? {
                         buttonAction: {
                           action: () => {
+                            setFilter("new");
                             setAssignmentToAct({
                               action: "repeat",
                               id: item.id,
@@ -636,7 +637,7 @@ export default function Assignments({ loaderData }: Route.ComponentProps) {
                     userId ? userId : -1,
                     selectedAssignment.userId,
                     selectedAssignment.status,
-                    selectedAssignment.duration.start,
+                    selectedAssignment.duration.start
                   )
                     ? {
                         buttonAction: {
@@ -656,7 +657,7 @@ export default function Assignments({ loaderData }: Route.ComponentProps) {
                     userId ? userId : -1,
                     selectedAssignment.userId,
                     selectedAssignment.status,
-                    selectedAssignment.duration.end,
+                    selectedAssignment.duration.end
                   )
                     ? {
                         buttonAction: {
@@ -676,7 +677,7 @@ export default function Assignments({ loaderData }: Route.ComponentProps) {
                     userId ? userId : -1,
                     selectedAssignment.userId,
                     selectedAssignment.status,
-                    selectedAssignment.duration.start,
+                    selectedAssignment.duration.start
                   )
                     ? {
                         buttonAction: {
@@ -788,8 +789,11 @@ export default function Assignments({ loaderData }: Route.ComponentProps) {
                 {
                   method: "POST",
                   encType: "application/json",
-                },
+                }
               );
+              if (assignmentToAct?.action === "repeat") {
+                setFilter("new");
+              }
               setAssignmentToAct(null);
             }}
           >

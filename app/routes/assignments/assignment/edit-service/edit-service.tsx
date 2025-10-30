@@ -19,14 +19,11 @@ import {
   intervalToDuration,
   eachDayOfInterval,
   set,
-  getDate,
-  getMonth,
   getDay,
   compareAsc,
   addDays,
   format,
 } from "date-fns";
-import { UTCDate } from "@date-fns/utc";
 
 import { LocalizationProvider, DateTimeField } from "@mui/x-date-pickers";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
@@ -66,7 +63,6 @@ import { ExpandIcon } from "~/shared/icons/ExpandIcon";
 import { DeleteIcon } from "~/shared/icons/DeleteIcon";
 
 import { useStore } from "~/store/store";
-import { dateWithoutTimezone } from "~/shared/dateWithoutTimezone";
 
 import type { postUpdateOrderActivityPayload } from "~/requests/_personal/postUpdateOrderActivity/postUpdateOrderActivity";
 import type { GetOrderSuccess } from "~/requests/_personal/getOrder/getOrderSuccess.type";
@@ -173,8 +169,8 @@ export default function EditService({ loaderData }: Route.ComponentProps) {
     defaultValues: {
       activity: startingActivityValues.viewActivity.id.toString(),
       amount: startingActivityValues.count.toString(),
-      dateStart: new UTCDate(startingActivityValues.dateStart),
-      dateEnd: new UTCDate(startingActivityValues.dateEnd),
+      dateStart: new Date(startingActivityValues.dateStart),
+      dateEnd: new Date(startingActivityValues.dateEnd),
       needDays: startingActivityValues.dateActivity.length > 0 ? true : false,
       needFoto: startingActivityValues.needFoto,
       days: (() => {
@@ -348,8 +344,8 @@ export default function EditService({ loaderData }: Route.ComponentProps) {
               orderActivity: Number(loaderData.orderActivity),
               viewActivityId: Number(values.activity),
               count: Number(values.amount),
-              dateStart: dateWithoutTimezone(new Date(values.dateStart)),
-              dateEnd: dateWithoutTimezone(new Date(values.dateEnd)),
+              dateStart: new Date(values.dateStart).toISOString(),
+              dateEnd: new Date(values.dateEnd).toISOString(),
               needFoto: values.needFoto,
               ...(values.days &&
                 values.days.length > 0 && {
@@ -368,8 +364,8 @@ export default function EditService({ loaderData }: Route.ComponentProps) {
                       });
 
                       days.push({
-                        timeStart: dateWithoutTimezone(new Date(day.timeStart)),
-                        timeEnd: dateWithoutTimezone(new Date(day.timeEnd)),
+                        timeStart: new Date(day.timeStart).toISOString(),
+                        timeEnd: new Date(day.timeEnd).toISOString(),
                         ...(places.length > 0 && { placeIds: places }),
                       });
                     });
@@ -516,8 +512,8 @@ export default function EditService({ loaderData }: Route.ComponentProps) {
                     sx={(theme) => ({ color: theme.vars.palette["Black"] })}
                   >
                     {format(
-                      new UTCDate(getValues("dateStart")),
-                      "kk:mm dd.LL.yyyy"
+                      new Date(getValues("dateStart")),
+                      "HH:mm dd.LL.yyyy"
                     )}
                   </Typography>
                 </Box>
@@ -541,10 +537,7 @@ export default function EditService({ loaderData }: Route.ComponentProps) {
                     variant="Reg_14"
                     sx={(theme) => ({ color: theme.vars.palette["Black"] })}
                   >
-                    {format(
-                      new UTCDate(getValues("dateEnd")),
-                      "kk:mm dd.LL.yyyy"
-                    )}
+                    {format(new Date(getValues("dateEnd")), "HH:mm dd.LL.yyyy")}
                   </Typography>
                 </Box>
               </Box>
@@ -567,7 +560,7 @@ export default function EditService({ loaderData }: Route.ComponentProps) {
                     label={t("fields.startTimePlaceholder")}
                     helperText={errors.dateStart?.message}
                     {...field}
-                    value={new UTCDate(field.value)}
+                    value={new Date(field.value)}
                   />
                 </LocalizationProvider>
               ) : (
@@ -593,7 +586,7 @@ export default function EditService({ loaderData }: Route.ComponentProps) {
                     helperText={errors.dateEnd?.message}
                     disablePast
                     {...field}
-                    value={new UTCDate(field.value)}
+                    value={new Date(field.value)}
                   />
                 </LocalizationProvider>
               ) : (
@@ -739,10 +732,7 @@ export default function EditService({ loaderData }: Route.ComponentProps) {
                         color: theme.vars.palette["Black"],
                       })}
                     >
-                      {getDate(day.timeStart)}.
-                      {getMonth(day.timeStart) < 10
-                        ? `0${getMonth(day.timeStart) + 1}`
-                        : getMonth(day.timeStart) + 1}
+                      {format(day.timeStart, "dd.MM")}
                       &nbsp;
                       {/*@ts-expect-error https://www.i18next.com/overview/typescript#type-error-template-literal */}
                       {t(`dayMap.${getDay(day.timeStart)}`)}
@@ -756,12 +746,12 @@ export default function EditService({ loaderData }: Route.ComponentProps) {
                       })}
                     >
                       {format(
-                        new UTCDate(getValues(`days.${index}.timeStart`)),
+                        new Date(getValues(`days.${index}.timeStart`)),
                         "kk:mm"
                       )}
                       -
                       {format(
-                        new UTCDate(getValues(`days.${index}.timeEnd`)),
+                        new Date(getValues(`days.${index}.timeEnd`)),
                         "kk:mm"
                       )}
                     </Typography>
@@ -818,8 +808,8 @@ export default function EditService({ loaderData }: Route.ComponentProps) {
                             control={control}
                             render={({ field }) => (
                               <TimeField
-                                minTime={new UTCDate(field.value)}
-                                maxTime={set(new UTCDate(field.value), {
+                                minTime={new Date(field.value)}
+                                maxTime={set(new Date(field.value), {
                                   hours: 21,
                                 })}
                                 placeholder={t("fields.startClockPlaceholder")}
@@ -833,10 +823,10 @@ export default function EditService({ loaderData }: Route.ComponentProps) {
                             control={control}
                             render={({ field }) => (
                               <TimeField
-                                minTime={set(new UTCDate(field.value), {
+                                minTime={set(new Date(field.value), {
                                   hours: 9,
                                 })}
-                                maxTime={new UTCDate(field.value)}
+                                maxTime={new Date(field.value)}
                                 placeholder={t("fields.endClockPlaceholder")}
                                 // error={errors.days[index]?.message}
                                 {...field}
@@ -876,9 +866,7 @@ export default function EditService({ loaderData }: Route.ComponentProps) {
                               })}
                             >
                               {format(
-                                new UTCDate(
-                                  getValues(`days.${index}.timeStart`)
-                                ),
+                                new Date(getValues(`days.${index}.timeStart`)),
                                 "kk:mm"
                               )}
                             </Typography>
@@ -906,7 +894,7 @@ export default function EditService({ loaderData }: Route.ComponentProps) {
                               })}
                             >
                               {format(
-                                new UTCDate(getValues(`days.${index}.timeEnd`)),
+                                new Date(getValues(`days.${index}.timeEnd`)),
                                 "kk:mm"
                               )}
                             </Typography>
@@ -1062,19 +1050,18 @@ export default function EditService({ loaderData }: Route.ComponentProps) {
 
               if (lastDay) {
                 append({
-                  timeStart: dateWithoutTimezone(
-                    addDays(new UTCDate(lastDay.timeStart), 1)
-                  ),
-                  timeEnd: dateWithoutTimezone(
-                    addDays(new UTCDate(lastDay.timeEnd), 2)
-                  ),
+                  timeStart: addDays(
+                    new Date(lastDay.timeStart),
+                    1
+                  ).toISOString(),
+                  timeEnd: addDays(new Date(lastDay.timeEnd), 2).toISOString(),
                   needRoute: false,
                   locations: [],
                 });
               } else {
                 append({
-                  timeStart: dateWithoutTimezone(addDays(new UTCDate(), 1)),
-                  timeEnd: dateWithoutTimezone(addDays(new UTCDate(), 2)),
+                  timeStart: addDays(new Date(), 1).toISOString(),
+                  timeEnd: addDays(new Date(), 2).toISOString(),
                   needRoute: false,
                   locations: [],
                 });

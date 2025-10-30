@@ -55,7 +55,7 @@ export async function clientLoader({ params }: Route.ClientLoaderArgs) {
   if (accessToken) {
     const specialistsData = await getSpecialistForBid(
       accessToken,
-      params.requestId,
+      params.requestId
     );
     specialistsData.data.forEach((item) => {
       specialists.push({
@@ -92,7 +92,7 @@ export async function clientLoader({ params }: Route.ClientLoaderArgs) {
     }
 
     const startingSpecialists = specialists.filter(
-      (item) => item.radius <= startingRadius,
+      (item) => item.radius <= startingRadius
     );
 
     return {
@@ -147,7 +147,7 @@ export default function Specialists({ loaderData }: Route.ComponentProps) {
       Yup.object({
         searchbar: Yup.string().notRequired(),
         users: Yup.array().of(Yup.string()).min(1),
-      }),
+      })
     ),
   });
 
@@ -160,7 +160,7 @@ export default function Specialists({ loaderData }: Route.ComponentProps) {
   });
 
   const [selectedSpecialists, setSelectedSpecialists] = useState(
-    loaderData.startingSpecialists,
+    loaderData.startingSpecialists
   );
 
   // cards page
@@ -183,22 +183,22 @@ export default function Specialists({ loaderData }: Route.ComponentProps) {
   };
 
   filteredSpecialists.notAccepted = request.acceptingUsers.filter(
-    (item) => item.status === statusValueMap.notAccepted,
+    (item) => item.status === statusValueMap.notAccepted
   );
   filteredSpecialists.accepted = request.acceptingUsers.filter(
-    (item) => item.status === statusValueMap.accepted,
+    (item) => item.status === statusValueMap.accepted
   );
   filteredSpecialists.declined = request.acceptingUsers.filter(
-    (item) => item.status === statusValueMap.declined,
+    (item) => item.status === statusValueMap.declined
   );
   filteredSpecialists.consideration = request.acceptingUsers.filter(
-    (item) => item.status === statusValueMap.consideration,
+    (item) => item.status === statusValueMap.consideration
   );
   filteredSpecialists.work = request.acceptingUsers.filter(
-    (item) => item.status === statusValueMap.work,
+    (item) => item.status === statusValueMap.work
   );
   filteredSpecialists.canceled = request.acceptingUsers.filter(
-    (item) => item.status === statusValueMap.canceled,
+    (item) => item.status === statusValueMap.canceled
   );
 
   let activeStatus: keyof typeof statusValueMap | "empty" = "empty";
@@ -228,7 +228,7 @@ export default function Specialists({ loaderData }: Route.ComponentProps) {
   });
 
   const [filter, setFilter] = useState<keyof typeof statusValueMap | "empty">(
-    activeStatus,
+    activeStatus
   );
   const [selectedDate, setSelectedDate] = useState<UTCDate>(daysRange[0]);
 
@@ -271,7 +271,7 @@ export default function Specialists({ loaderData }: Route.ComponentProps) {
                   onChange={(evt) => {
                     const currentFieldValue = new RegExp(
                       `^${evt.target.value}`,
-                      "i",
+                      "i"
                     );
                     const currentRadius = getValues("radius");
                     const isSelectedAll = getValues("selectAll");
@@ -282,7 +282,7 @@ export default function Specialists({ loaderData }: Route.ComponentProps) {
                     if (evt.target.value !== "") {
                       matchingSpecialists = [
                         ...selectedSpecialists.filter((item) =>
-                          currentFieldValue.test(item.label),
+                          currentFieldValue.test(item.label)
                         ),
                       ];
                     } else {
@@ -291,7 +291,7 @@ export default function Specialists({ loaderData }: Route.ComponentProps) {
 
                     //обрабатываем радиус
                     const sortedSpecialists = matchingSpecialists.filter(
-                      (item) => item.radius <= currentRadius,
+                      (item) => item.radius <= currentRadius
                     );
 
                     //обрабатываем "выбрать всё"
@@ -357,7 +357,7 @@ export default function Specialists({ loaderData }: Route.ComponentProps) {
                       const selectedValue: number = Number(evt.target.value);
 
                       const sortedSpecialists = loaderData.specialists.filter(
-                        (item) => item.radius <= selectedValue,
+                        (item) => item.radius <= selectedValue
                       );
 
                       setSelectedSpecialists(sortedSpecialists);
@@ -514,6 +514,9 @@ export default function Specialists({ loaderData }: Route.ComponentProps) {
               <AssignmentCard
                 key={user.id}
                 id={user.id.toString()}
+                to={withLocale(
+                  `/requests/${request.id}/specialists/${user.id}`
+                )}
                 avatar={{
                   logo: `${import.meta.env.VITE_ASSET_PATH}${user.logo}`,
                   name: user.name,

@@ -1,20 +1,19 @@
 {
   "status": {
-    "new": "Новый",
+    "notAccepted": "Новая",
     "accepted": "Принято",
-    "notAccepted": "Не Принято",
-    "canceled": "Отменено",
-    "archive": "Архив"
+    "declined": "Отклонено",
+    "consideration": "На рассмотрении",
+    "work": "В работе",
+    "canceled": "Отменено"
   },
   "sorting": {
     "placeholder": "Сортировать",
     "ascending": "По возрастанию начала оказания услуг",
     "descending": "По убыванию начала оказания услуг"
   },
-  "tabs": {
-    "missions": "Задания",
-    "requests": "Заявки"
-  },
+  "requestStatus": "Заявка",
+  "missionStatus": "Задание",
   "emptyHeaderCreate": "Поручений пока нет. Создайте первое!",
   "emptyHeader": "Поручений пока нет.",
   "cardHeader": "Услуг",

@@ -68,6 +68,8 @@ import request_layout from "../../public/locales/ru/request_layout.json";
 import request_index from "../../public/locales/ru/request_index.json";
 import request_specialists from "../../public/locales/ru/request_specialists.json";
 import missions from "../../public/locales/ru/missions.json";
+import mission from "../../public/locales/ru/mission.json";
+import request_specialists_specialistRequest_dayReview from "../../public/locales/ru/request_specialists_specialistRequest_dayReview.json";
 
 //internal
 
@@ -158,6 +160,8 @@ declare module "i18next" {
       request_index: typeof request_index;
       request_specialists: typeof request_specialists;
       missions: typeof missions;
+      mission: typeof mission;
+      request_specialists_specialistRequest_dayReview: typeof request_specialists_specialistRequest_dayReview;
       //internal
 
       //components

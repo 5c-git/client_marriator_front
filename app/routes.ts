@@ -19,6 +19,10 @@ export default [
       ]),
 
       route(":lang?/tasks/:taskId", "routes/tasks/task/task.tsx"),
+      route(
+        ":lang?/missions/:missionId/:specialistId",
+        "routes/missions/mission/mission.tsx"
+      ),
 
       layout("routes/requests/request/layout/layout.tsx", [
         route(
@@ -28,13 +32,20 @@ export default [
         route(
           ":lang?/requests/:requestId/specialists",
           "routes/requests/request/specialists/specialists.tsx"
-          // "routes/requests/request/specialists/placeholder.tsx"
         ),
         route(
           ":lang?/requests/:requestId/recruitment",
           "routes/requests/request/recruitment/recruitment.tsx"
         ),
       ]),
+      route(
+        ":lang?/requests/:requestId/specialists/:specialistId",
+        "routes/requests/request/specialists/specialist-request/specialist-request.tsx"
+      ),
+      route(
+        ":lang?/requests/:requestId/specialists/:specialistId/day-review/:reportId?",
+        "routes/requests/request/specialists/specialist-request/day-review/day-review.tsx"
+      ),
 
       route(
         ":lang?/registration/registration-complete",

@@ -3,15 +3,12 @@
   "$schema": "http://json-schema.org/draft-07/schema#",
   "title": "getUserInfoSuccess",
   "type": "object",
-  "additionalProperties": false,
   "properties": {
     "result": {
       "type": "object",
-      "additionalProperties": false,
       "properties": {
         "userData": {
           "type": "object",
-          "additionalProperties": false,
           "properties": {
             "id": {
               "type": "number"
@@ -127,11 +124,16 @@
             "verme_id": {
               "type": "number"
             },
+            "nopaper_guid": {
+              "type": ["null", "string"]
+            },
+            "nopaper_certificate_id": {
+              "type": ["null", "string"]
+            },
             "roles": {
               "type": "array",
               "items": {
                 "type": "object",
-                "additionalProperties": false,
                 "properties": {
                   "id": {
                     "type": "number",
@@ -191,7 +193,9 @@
             "waiting_task",
             "count_wait_bid",
             "time_answer_bid",
-            "notification_start"
+            "notification_start",
+            "nopaper_guid",
+            "nopaper_certificate_id"
           ]
         }
       },

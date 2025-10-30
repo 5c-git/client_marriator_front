@@ -149,14 +149,14 @@ export interface GetJobsSuccess {
       age: string;
       country: string;
       viewActivities: string[];
-      status: number;
+      status: 1 | 2 | 3 | 4 | 5 | 6;
       [k: string]: unknown;
     };
     reports: {
-      dateStart: string;
-      dateEnd: string;
-      report: string[];
-      dayActivityId: number;
+      dateStart: null | string;
+      dateEnd: null | string;
+      report: null | string[];
+      dayActivityId: null | number;
       status: number;
       [k: string]: unknown;
     }[];

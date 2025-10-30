@@ -102,6 +102,19 @@ interface ImportMetaEnv {
   readonly VITE_POST_CREATE_BID_FROM_TASK: string;
   readonly VITE_POST_CONVERT_TASK: string;
   readonly VITE_GET_JOBS: string;
+  readonly VITE_GET_JOB: string;
+  readonly VITE_POST_REJECT_BID: string;
+  readonly VITE_POST_ACCEPT_BID: string;
+  readonly VITE_POST_START_DAY: string;
+  readonly VITE_POST_END_JOB: string;
+  readonly VITE_POST_ACCEPT_ORDER: string;
+  readonly VITE_POST_ACCEPT_SPECIALIST: string;
+  readonly VITE_POST_END_DAY: string;
+  readonly VITE_POST_END_SPECIALIST_JOB: string;
+  readonly VITE_POST_PAY_REPORT: string;
+  readonly VITE_POST_ACCEPT_ALL_REPORT_JOB: string;
+  readonly VITE_POST_ACCEPT_REPORT: string;
+  readonly VITE_POST_PAY_REPORT_FOR_MANAGER: string;
   // more env variables...
 }
 

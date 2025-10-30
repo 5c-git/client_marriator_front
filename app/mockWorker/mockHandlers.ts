@@ -97,6 +97,19 @@ import { postSetManagersMockResponse } from "~/requests/_personal/postSetManager
 import { postCreateBidFromTaskMockResponse } from "~/requests/_personal/postCreateBidFromTask/postCreateBidFromTask";
 import { postConvertTaskMockResponse } from "~/requests/_personal/postConvertTask/postConvertTask";
 import { getJobsMockResponse } from "~/requests/_personal/getJobs/getJobs";
+import { getJobMockResponse } from "~/requests/_personal/getJob/getJob";
+import { postRejectBidMockResponse } from "~/requests/_personal/postRejectBid/postRejectBid";
+import { postAcceptBidMockResponse } from "~/requests/_personal/postAcceptBid/postAcceptBid";
+import { postStartDayMockResponse } from "~/requests/_personal/postStartDay/postStartDay";
+import { postEndJobMockResponse } from "~/requests/_personal/postEndJob/postEndJob";
+import { postAcceptOrderMockResponse } from "~/requests/_personal/postAcceptOrder/postAcceptOrder";
+import { postAcceptSpecialistMockResponse } from "~/requests/_personal/postAcceptSpecialist/postAcceptSpecialist";
+import { postEndDayMockResponse } from "~/requests/_personal/postEndDay/postEndDay";
+import { postEndSpecialistJobMockResponse } from "~/requests/_personal/postEndSpecialistJob/postEndSpecialistJob";
+import { postPayReportMockResponse } from "~/requests/_personal/postPayReport/postPayReport";
+import { postAcceptAllReportJobMockResponse } from "~/requests/_personal/postAcceptAllReportJob/postAcceptAllReportJob";
+import { postAcceptReportMockResponse } from "~/requests/_personal/postAcceptReport/postAcceptReport";
+import { postPayReportForManagerMockResponse } from "~/requests/_personal/postPayReportForManager/postPayReportForManager";
 
 export const handlers = [
   getFormMockResponse,
@@ -194,4 +207,17 @@ export const handlers = [
   postCreateBidFromTaskMockResponse,
   postConvertTaskMockResponse,
   getJobsMockResponse,
+  getJobMockResponse,
+  postRejectBidMockResponse,
+  postAcceptBidMockResponse,
+  postStartDayMockResponse,
+  postEndJobMockResponse,
+  postAcceptOrderMockResponse,
+  postAcceptSpecialistMockResponse,
+  postEndDayMockResponse,
+  postEndSpecialistJobMockResponse,
+  postPayReportMockResponse,
+  postAcceptAllReportJobMockResponse,
+  postAcceptReportMockResponse,
+  postPayReportForManagerMockResponse,
 ];
