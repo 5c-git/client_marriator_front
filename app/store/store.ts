@@ -8,8 +8,8 @@ type State = {
   refreshToken: null | string;
   userRole:
     | "admin"
-    | "supervisor"
     | "manager"
+    | "supervisor"
     | "client"
     | "specialist"
     | "recruiter";
