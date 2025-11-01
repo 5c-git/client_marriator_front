@@ -470,7 +470,7 @@ export default function DayReview({ loaderData }: Route.ComponentProps) {
                   control={control}
                   render={({ field }) => (
                     <TextField
-                      disabled
+                      // disabled
                       label={t("unitPrice")}
                       slotProps={{
                         input: {
@@ -491,7 +491,7 @@ export default function DayReview({ loaderData }: Route.ComponentProps) {
                   control={control}
                   render={({ field }) => (
                     <TextField
-                      disabled
+                      // disabled
                       label={t("amountPrice")}
                       slotProps={{
                         input: {
@@ -620,7 +620,7 @@ export default function DayReview({ loaderData }: Route.ComponentProps) {
                 ))}
 
                 <Button
-                  disabled
+                  // disabled
                   variant="outlined"
                   onClick={() => {
                     const currentDay = getValues(`days.${index}`);

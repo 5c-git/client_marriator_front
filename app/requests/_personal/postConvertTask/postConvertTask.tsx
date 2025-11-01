@@ -17,6 +17,7 @@ export const postConvertTaskKeys = ["postConvertTask"];
 export const postConvertTask = async (
   accessToken: string,
   orderId: string,
+  responsibleId: string
 ): Promise<PostConvertTaskSuccess> => {
   try {
     const url = new URL(import.meta.env.VITE_POST_CONVERT_TASK);
@@ -24,6 +25,7 @@ export const postConvertTask = async (
     const formData = new FormData();
 
     formData.append("orderId", orderId);
+    formData.append("responsibleId", responsibleId);
 
     const request = await fetch(url, {
       method: "POST",
@@ -165,5 +167,5 @@ export const postConvertTaskMockResponse = http.post(
   async () => {
     await delay(2000);
     return HttpResponse.json(mockResponseSuccess);
-  },
+  }
 );

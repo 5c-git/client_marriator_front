@@ -38,7 +38,7 @@ type StyledRadioButtonProps = {
   name: string;
   value: string;
 
-  options: OptionWithIcon[] | OptionWithImage[];
+  options: (OptionWithIcon | OptionWithImage)[];
 
   validation: "default" | "none";
   heading?: string;
@@ -246,8 +246,8 @@ export const StyledRadioButton = (props: StyledRadioButtonProps) => {
                     props.error
                       ? "error"
                       : props.status === "warning"
-                      ? "warning"
-                      : "corp"
+                        ? "warning"
+                        : "corp"
                   }
                 />
               }

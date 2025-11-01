@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { ComponentPropsWithoutRef, useState } from "react";
 import {
   useNavigation,
   useNavigate,
@@ -11,6 +11,14 @@ import type { Route } from "./+types/assignment";
 import { useTranslation } from "react-i18next";
 import { withLocale } from "~/shared/withLocale";
 
+import * as Yup from "yup";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { useForm, Controller } from "react-hook-form";
+
+import { useStore } from "~/store/store";
+
+import { statusCodeMap } from "~/shared/status";
+
 import Box from "@mui/material/Box";
 import {
   Avatar,
@@ -21,28 +29,27 @@ import {
   Divider,
   IconButton,
   Typography,
+  SwipeableDrawer,
 } from "@mui/material";
 
 import { Loader } from "~/shared/ui/Loader/Loader";
 import { TopNavigation } from "~/shared/ui/TopNavigation/TopNavigation";
+import { StyledSearchBar } from "~/shared/ui/StyledSearchBar/StyledSearchBar";
+import { StyledRadioButton } from "~/shared/ui/StyledRadioButton/StyledRadioButton";
 
 import AddIcon from "@mui/icons-material/Add";
 import ClearIcon from "@mui/icons-material/Clear";
 import CheckIcon from "@mui/icons-material/Check";
-import { EditIcon } from "~/shared/icons/EditIcon";
 import LogoutIcon from "@mui/icons-material/Logout";
-
-import { useStore } from "~/store/store";
-
-import { statusCodeMap } from "~/shared/status";
-
 import { RouteIcon } from "~/shared/icons/RouteIcon";
+import { EditIcon } from "~/shared/icons/EditIcon";
 
 import { getOrder } from "~/requests/_personal/getOrder/getOrder";
 import { postDeleteOrderActivity } from "~/requests/_personal/postDeleteOrderActivity/postDeleteOrderActivity";
 import { postConvertTask } from "~/requests/_personal/postConvertTask/postConvertTask";
 import { postAcceptOrder } from "~/requests/_personal/postAcceptOrder/postAcceptOrder";
 import { postSendOrder } from "~/requests/_personal/postSendOrder/postSendOrder";
+import { getSupervisorsForTask } from "~/requests/_personal/getSupervisorsForTask/getSupervisorsForTask";
 
 export async function clientLoader({ params }: Route.ClientLoaderArgs) {
   const accessToken = useStore.getState().accessToken;
@@ -85,8 +92,16 @@ export async function clientLoader({ params }: Route.ClientLoaderArgs) {
     acceptUser: null,
   };
 
+  const supervisorsToSelect: ComponentPropsWithoutRef<
+    typeof StyledRadioButton
+  >["options"] = [];
+
   if (accessToken) {
     const orderData = await getOrder(accessToken, params.orderId);
+    const supervisersData = await getSupervisorsForTask(
+      accessToken,
+      params.orderId
+    );
 
     order.status = orderData.data.status;
     order.place.name = orderData.data.place.name;
@@ -113,7 +128,20 @@ export async function clientLoader({ params }: Route.ClientLoaderArgs) {
       });
     });
 
-    return { order, orderActivities: orderData.data.orderActivities };
+    supervisersData.data.forEach((item) => {
+      supervisorsToSelect.push({
+        value: item.id.toString(),
+        label: item.name,
+
+        disabled: false,
+      });
+    });
+
+    return {
+      order,
+      orderActivities: orderData.data.orderActivities,
+      supervisorsToSelect,
+    };
   } else {
     throw new Response("Токен авторизации не обнаружен!", { status: 401 });
   }
@@ -133,7 +161,8 @@ export async function clientAction({ request }: Route.ClientActionArgs) {
     } else if (_action === "transformAssignment") {
       const transformedTaskData = await postConvertTask(
         accessToken,
-        fields.orderId
+        fields.orderId,
+        fields.responsibleId
       );
       throw redirect(withLocale(`/tasks/${transformedTaskData.data.id}`));
     } else if (_action === "acceptAssignment") {
@@ -162,6 +191,33 @@ export default function Assignment({ loaderData }: Route.ComponentProps) {
     count: number;
     name: string;
   } | null>(null);
+
+  const [searchSupervisors, setSearchSupervisors] = useState<boolean>(false);
+  const [selectedSupervisors, setSelectedSupervisors] = useState(
+    loaderData.supervisorsToSelect
+  );
+
+  const {
+    control: controlSupervisor,
+    getValues: getValuesSupervisor,
+    reset: resetSupervisor,
+    handleSubmit: handleSupervisorSubmit,
+  } = useForm<{
+    searchbar: string;
+    supervisor: string;
+  }>({
+    defaultValues: {
+      searchbar: "",
+      supervisor: "",
+    },
+    // @ts-expect-error
+    resolver: yupResolver(
+      Yup.object({
+        searchbar: Yup.string().notRequired(),
+        supervisor: Yup.string().required(),
+      })
+    ),
+  });
 
   return (
     <>
@@ -543,16 +599,7 @@ export default function Assignment({ loaderData }: Route.ComponentProps) {
             }}
             startIcon={<CheckIcon />}
             onClick={() => {
-              fetcher.submit(
-                JSON.stringify({
-                  _action: "transformAssignment",
-                  orderId: loaderData.order.id,
-                }),
-                {
-                  method: "POST",
-                  encType: "application/json",
-                }
-              );
+              setSearchSupervisors(true);
             }}
           >
             {t("convertToTask")}
@@ -663,6 +710,132 @@ export default function Assignment({ loaderData }: Route.ComponentProps) {
           </Button>
         </DialogActions>
       </Dialog>
+
+      <SwipeableDrawer
+        open={searchSupervisors}
+        onClose={() => {
+          resetSupervisor();
+          setSearchSupervisors(false);
+        }}
+        onOpen={() => {}}
+        disableBackdropTransition={true}
+        disableSwipeToOpen={true}
+        anchor="bottom"
+        sx={{
+          "& .MuiDrawer-paper": {
+            borderRadius: "6px",
+          },
+        }}
+      >
+        <TopNavigation
+          header={{
+            // text: t("supervisorHeader"),
+            text: "Назначить ответственным",
+            bold: false,
+          }}
+        />
+        <form
+          onSubmit={handleSupervisorSubmit(() => {
+            const selectedSupervisor = getValuesSupervisor("supervisor");
+
+            fetcher.submit(
+              JSON.stringify({
+                _action: "transformAssignment",
+                orderId: loaderData.order.id,
+                responsibleId: selectedSupervisor,
+              }),
+              {
+                method: "POST",
+                encType: "application/json",
+              }
+            );
+
+            resetSupervisor();
+            setSearchSupervisors(false);
+          })}
+        >
+          <Box
+            sx={{
+              position: "relative",
+              display: "grid",
+              alignContent: "flex-start",
+              rowGap: "14px",
+              paddingTop: "20px",
+              paddingLeft: "16px",
+              paddingRight: "16px",
+              height: "85vh",
+            }}
+          >
+            <Controller
+              name="searchbar"
+              control={controlSupervisor}
+              render={({ field }) => (
+                <StyledSearchBar
+                  // placeholder={t("fields.supervisorSearchPlaceholder")}
+                  placeholder={"Поиск"}
+                  {...field}
+                  onChange={(evt) => {
+                    const currentFieldValue = new RegExp(
+                      `^${evt.target.value}`,
+                      "i"
+                    );
+
+                    let matchingSupervisors: typeof loaderData.supervisorsToSelect =
+                      [];
+
+                    if (evt.target.value !== "") {
+                      matchingSupervisors = [
+                        ...selectedSupervisors.filter((item) =>
+                          currentFieldValue.test(item.label)
+                        ),
+                      ];
+                    } else {
+                      matchingSupervisors = [...loaderData.supervisorsToSelect];
+                    }
+
+                    setSelectedSupervisors(matchingSupervisors);
+
+                    field.onChange(evt);
+                  }}
+                />
+              )}
+            />
+
+            <Controller
+              name="supervisor"
+              control={controlSupervisor}
+              render={({ field }) => (
+                <StyledRadioButton
+                  inputType="radio"
+                  validation="none"
+                  onImmediateChange={() => {}}
+                  options={selectedSupervisors}
+                  {...field}
+                />
+              )}
+            />
+
+            <Box
+              sx={(theme) => ({
+                display: "flex",
+                columnGap: "14px",
+                padding: "10px",
+                backgroundColor: theme.vars.palette["White"],
+                position: "fixed",
+                zIndex: 1,
+                width: "100%",
+                bottom: "0",
+                left: "0",
+              })}
+            >
+              <Button type="submit" variant="contained">
+                {/* {t("supervisorInviteButton")} */}
+                Конвертировать в задачу
+              </Button>
+            </Box>
+          </Box>
+        </form>
+      </SwipeableDrawer>
     </>
   );
 }

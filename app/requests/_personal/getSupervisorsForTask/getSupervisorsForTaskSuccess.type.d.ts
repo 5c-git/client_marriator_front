@@ -8,6 +8,7 @@
 export interface GetSupervisorsForTaskSuccess {
   data: {
     id: number;
+    name: string;
     phone: number;
     email: string;
     logo: null | string;
@@ -20,6 +21,9 @@ export interface GetSupervisorsForTaskSuccess {
         | "recruiter"
         | "specialist"
         | "supervisor";
+      [k: string]: unknown;
     }[];
+    [k: string]: unknown;
   }[];
+  [k: string]: unknown;
 }
