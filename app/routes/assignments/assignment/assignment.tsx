@@ -8,6 +8,7 @@ import {
 } from "react-router";
 import type { Route } from "./+types/assignment";
 
+import { t, loadNamespaces } from "i18next";
 import { useTranslation } from "react-i18next";
 import { withLocale } from "~/shared/withLocale";
 
@@ -52,6 +53,7 @@ import { postSendOrder } from "~/requests/_personal/postSendOrder/postSendOrder"
 import { getSupervisorsForTask } from "~/requests/_personal/getSupervisorsForTask/getSupervisorsForTask";
 
 export async function clientLoader({ params }: Route.ClientLoaderArgs) {
+  await loadNamespaces("assignment");
   const accessToken = useStore.getState().accessToken;
 
   const order: {
@@ -128,6 +130,14 @@ export async function clientLoader({ params }: Route.ClientLoaderArgs) {
       });
     });
 
+    if (orderData.data.acceptUser) {
+      supervisorsToSelect.push({
+        value: orderData.data.acceptUser.id.toString(),
+        label: t("resposiblePopUp.yourselfOption", { ns: "assignment" }),
+        disabled: false,
+      });
+    }
+
     supervisersData.data.forEach((item) => {
       supervisorsToSelect.push({
         value: item.id.toString(),
@@ -202,6 +212,7 @@ export default function Assignment({ loaderData }: Route.ComponentProps) {
     getValues: getValuesSupervisor,
     reset: resetSupervisor,
     handleSubmit: handleSupervisorSubmit,
+    formState: { errors },
   } = useForm<{
     searchbar: string;
     supervisor: string;
@@ -214,7 +225,7 @@ export default function Assignment({ loaderData }: Route.ComponentProps) {
     resolver: yupResolver(
       Yup.object({
         searchbar: Yup.string().notRequired(),
-        supervisor: Yup.string().required(),
+        supervisor: Yup.string().required(t("resposiblePopUp.error")),
       })
     ),
   });
@@ -729,8 +740,7 @@ export default function Assignment({ loaderData }: Route.ComponentProps) {
       >
         <TopNavigation
           header={{
-            // text: t("supervisorHeader"),
-            text: "Назначить ответственным",
+            text: t("resposiblePopUp.header"),
             bold: false,
           }}
         />
@@ -771,8 +781,7 @@ export default function Assignment({ loaderData }: Route.ComponentProps) {
               control={controlSupervisor}
               render={({ field }) => (
                 <StyledSearchBar
-                  // placeholder={t("fields.supervisorSearchPlaceholder")}
-                  placeholder={"Поиск"}
+                  placeholder={t("resposiblePopUp.searchbar")}
                   {...field}
                   onChange={(evt) => {
                     const currentFieldValue = new RegExp(
@@ -810,6 +819,7 @@ export default function Assignment({ loaderData }: Route.ComponentProps) {
                   validation="none"
                   onImmediateChange={() => {}}
                   options={selectedSupervisors}
+                  error={errors.supervisor?.message}
                   {...field}
                 />
               )}
@@ -829,8 +839,7 @@ export default function Assignment({ loaderData }: Route.ComponentProps) {
               })}
             >
               <Button type="submit" variant="contained">
-                {/* {t("supervisorInviteButton")} */}
-                Конвертировать в задачу
+                {t("resposiblePopUp.submit")}
               </Button>
             </Box>
           </Box>
