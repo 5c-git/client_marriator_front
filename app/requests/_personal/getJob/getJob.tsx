@@ -66,7 +66,7 @@ export const getJob = async (
 // MOCKS
 export const mockResponseSuccess: GetJobSuccess = {
   data: {
-    id: 28,
+    id: 69,
     user: {
       id: 397,
       phone: 79887951616,
@@ -80,7 +80,7 @@ export const mockResponseSuccess: GetJobSuccess = {
       ],
       name: "МЕНЕДЖЕР ВТОРОЙ ПЯТЕРОЧКА",
     },
-    status: 3,
+    status: 4,
     selfEmployed: false,
     place: {
       id: 3,
@@ -102,25 +102,44 @@ export const mockResponseSuccess: GetJobSuccess = {
       },
     },
     radius: 5,
-    price: 1000,
-    priceResult: 870,
+    price: 3000,
+    priceResult: 2610,
     income: 0,
     forPay: 0,
     viewActivity: {
-      id: 1,
-      name: "Продавец  (Физическое лицо)",
-      detailName: "Продавец  (Физическое лицо)",
+      id: 3,
+      name: "Пекарь (Физическое лицо)",
+      detailName: "Пекарь  (Физическое лицо)",
       previewText:
-        "Кассир магазина,Кассир магазина розничной сети,Мобильный кассир,Продавец прилавка,Продавец прилавка розничной сети,Продавец торгового зала,Продавец торгового зала розничной сети,Кассир общепита",
-      logo: "/storage/source/directory/view_activities/1-img/8c37f333-3b09-4686-9238-dd89e704fbc7-31-Wavebreakmedia-Shutterst.jpg",
+        "Помощник повара,Пиццмейкер розничной сети,Пиццмейкер,Тестомес,Тестомес розничной сети,Пекарь розничной сети",
+      logo: "/storage/source/directory/view_activities/3-img/1661081678_53-pofoto-club-p-beloborodii-pekari-65.jpg",
       traveling: false,
     },
-    dateStart: "2025-09-29T02:30:00.000000Z",
-    dateEnd: "2025-09-30T19:00:00.000000Z",
-    needFoto: false,
-    dateActivity: [],
+    dateStart: "2025-10-29T21:20:00.000000Z",
+    dateEnd: "2025-11-01T17:00:00.000000Z",
+    needFoto: true,
+    dateActivity: [
+      {
+        id: 1,
+        timeStart: "2025-10-29T21:20:00.000Z",
+        timeEnd: "2025-10-30T18:00:00.000Z",
+        places: [],
+      },
+      {
+        id: 2,
+        timeStart: "2025-10-31T06:00:00.000Z",
+        timeEnd: "2025-10-31T18:00:00.000Z",
+        places: [],
+      },
+      {
+        id: 3,
+        timeStart: "2025-11-02T06:00:00.000Z",
+        timeEnd: "2025-11-02T21:00:00.000Z",
+        places: [],
+      },
+    ],
     order: {
-      id: 240,
+      id: 300,
       selfEmployed: false,
       status: 3,
       user: {
@@ -138,17 +157,13 @@ export const mockResponseSuccess: GetJobSuccess = {
       },
       statistic: [
         {
-          accepted: 6,
+          accepted: 5,
           count: 1,
-        },
-        {
-          accepted: 1,
-          count: 2,
         },
       ],
     },
     task: {
-      id: 81,
+      id: 141,
       selfEmployed: false,
       status: 3,
       user: {
@@ -166,12 +181,8 @@ export const mockResponseSuccess: GetJobSuccess = {
       },
       statistic: [
         {
-          accepted: 6,
+          accepted: 5,
           count: 1,
-        },
-        {
-          accepted: 1,
-          count: 2,
         },
       ],
     },
@@ -195,16 +206,23 @@ export const mockResponseSuccess: GetJobSuccess = {
         "Пекарь (Физическое лицо)",
         "Продавец  (Физическое лицо)",
       ],
-      status: 6,
+      status: 5,
     },
     reports: [
       {
-        dateStart: "2025-09-29T11:32:51.000000Z",
-        dateEnd: null,
-        report: null,
-        dayActivityId: null,
-        status: 2,
-        hours: "1.00",
+        id: 19,
+        dateStart: "2025-10-29T21:25:49.000000Z",
+        dateEnd: "2025-10-29T21:25:59.000000Z",
+        report: [
+          "/storage/source/reports/406/19/AVtyxlMRrXQfQDq5So38BdPJZR2dAVUPnSwtpmNm.png",
+          "/storage/source/reports/406/19/lDI2c1OtkEGxn5Rcl5UN3Lv8H9xlq2gVrvIzC5AO.png",
+          "/storage/source/reports/406/19/OQg73rZmpdXG5ud0Md2pYifJJ1OADEszpxZhbabX.png",
+          "/storage/source/reports/406/19/1kt6qNXCOaWl3qdmscbi8FXDEP3SKuqySsXYPjAX.png",
+        ],
+        dayActivityId: 1,
+        status: 6,
+        hours: "0.00",
+        reasons: [],
       },
     ],
   },

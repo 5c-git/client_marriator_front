@@ -8,7 +8,12 @@ import { useStore } from "~/store/store";
 import { withLocale } from "~/shared/withLocale";
 import { determineRole } from "~/shared/determineRole";
 
-import { isWithinInterval } from "date-fns";
+import {
+  isWithinInterval,
+  differenceInHours,
+  addHours,
+  subHours,
+} from "date-fns";
 
 import { StaticView } from "./StaticView";
 import { FormView } from "./FormView";
@@ -88,9 +93,11 @@ export async function clientLoader({
               const now = new Date();
 
               const canStart = isWithinInterval(now, {
-                start: new Date(day.timeStart),
-                end: new Date(day.timeEnd),
+                start: subHours(new Date(day.timeStart), 1),
+                end: addHours(new Date(day.timeEnd), 1),
               });
+
+              console.log(canStart);
 
               if (
                 canStart &&
