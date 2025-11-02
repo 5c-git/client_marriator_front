@@ -133,8 +133,8 @@ export const mockResponseSuccess: GetJobSuccess = {
       },
       {
         id: 3,
-        timeStart: "2025-11-02T06:00:00.000Z",
-        timeEnd: "2025-11-02T21:00:00.000Z",
+        timeStart: "2025-11-01T06:00:00.000Z",
+        timeEnd: "2025-11-01T17:00:00.000Z",
         places: [],
       },
     ],

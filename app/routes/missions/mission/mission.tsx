@@ -97,8 +97,6 @@ export async function clientLoader({
                 end: addHours(new Date(day.timeEnd), 1),
               });
 
-              console.log(canStart);
-
               if (
                 canStart &&
                 !actedDay &&
@@ -254,6 +252,12 @@ export default function Index({ loaderData }: Route.ComponentProps) {
                       key="inProgress"
                       startIcon={<CheckIcon />}
                       variant="contained"
+                      disabled={
+                        !isWithinInterval(new Date(), {
+                          start: subHours(new Date(day.timeEnd), 1),
+                          end: new Date(day.timeEnd),
+                        })
+                      }
                       onClick={() => {
                         if (loaderData.needPhoto) {
                           setOpenFilesPopup(true);
