@@ -23,6 +23,7 @@ import Box from "@mui/material/Box";
 import { Button, Typography } from "@mui/material";
 import { Loader } from "~/shared/ui/Loader/Loader";
 import { TopNavigation } from "~/shared/ui/TopNavigation/TopNavigation";
+import { CountDownTimer } from "./CountDownTimer";
 
 import CheckIcon from "@mui/icons-material/Check";
 import PlayArrowOutlinedIcon from "@mui/icons-material/PlayArrowOutlined";
@@ -273,7 +274,8 @@ export default function Index({ loaderData }: Route.ComponentProps) {
                         }
                       }}
                     >
-                      {t("actions.end")}
+                      {t("actions.end")}&nbsp;
+                      <CountDownTimer countDownDate={new Date(day.timeEnd)} />
                     </Button>
                   ) : null,
                 (
