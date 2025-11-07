@@ -5,6 +5,11 @@ export type PageInterface = {
     photos?: string[];
     unitPrice: string;
     unitAmount: string;
+    criteria: {
+      count: number;
+      amount: number;
+      value: string;
+    }[];
   }[];
   criteria: {
     amount: number;

@@ -1,16 +1,8 @@
 import { http, delay, HttpResponse } from "msw";
-import Ajv from "ajv";
-import addFormats from "ajv-formats";
-
-import successSchema from "./getJobSuccess.schema.json";
-import { GetJobSuccess } from "./getJobSuccess.type";
 
 import { UnxpectedError } from "~/shared/unexpectedError/unexpectedError";
 
-const ajv = new Ajv();
-addFormats(ajv);
-
-const validateSuccess = ajv.compile(successSchema);
+import { getJobSuccessSchema, GetJobSuccess } from "./getJobSuccess.schema";
 
 export const getJobKeys = ["getJob"];
 
@@ -42,10 +34,11 @@ export const getJob = async (
       });
     }
 
-    if (validateSuccess(response)) {
-      data = response as unknown as GetJobSuccess;
+    const parsed = getJobSuccessSchema.safeParse(response);
+    if (parsed.success) {
+      data = parsed.data;
     } else {
-      console.log(validateSuccess.errors);
+      console.log(parsed.error);
       throw new Response(`Данные запроса getJob не валидны схеме`);
     }
 
@@ -66,7 +59,7 @@ export const getJob = async (
 // MOCKS
 export const mockResponseSuccess: GetJobSuccess = {
   data: {
-    id: 69,
+    id: 75,
     user: {
       id: 397,
       phone: 79887951616,
@@ -80,7 +73,7 @@ export const mockResponseSuccess: GetJobSuccess = {
       ],
       name: "МЕНЕДЖЕР ВТОРОЙ ПЯТЕРОЧКА",
     },
-    status: 4,
+    status: 3,
     selfEmployed: false,
     place: {
       id: 3,
@@ -105,7 +98,7 @@ export const mockResponseSuccess: GetJobSuccess = {
     price: 3000,
     priceResult: 2610,
     income: 0,
-    forPay: 0,
+    forPay: 780,
     viewActivity: {
       id: 3,
       name: "Пекарь (Физическое лицо)",
@@ -115,31 +108,43 @@ export const mockResponseSuccess: GetJobSuccess = {
       logo: "/storage/source/directory/view_activities/3-img/1661081678_53-pofoto-club-p-beloborodii-pekari-65.jpg",
       traveling: false,
     },
-    dateStart: "2025-10-29T21:20:00.000000Z",
-    dateEnd: "2025-11-01T17:00:00.000000Z",
-    needFoto: true,
+    dateStart: "2025-11-05T16:30:00.000000Z",
+    dateEnd: "2025-11-09T20:00:00.000000Z",
+    needFoto: false,
     dateActivity: [
       {
         id: 1,
-        timeStart: "2025-10-29T21:20:00.000Z",
-        timeEnd: "2025-10-30T18:00:00.000Z",
+        timeStart: "2025-11-05T16:30:00.000Z",
+        timeEnd: "2025-11-05T20:00:00.000Z",
         places: [],
       },
       {
         id: 2,
-        timeStart: "2025-10-31T06:00:00.000Z",
-        timeEnd: "2025-10-31T18:00:00.000Z",
+        timeStart: "2025-11-06T06:00:00.000Z",
+        timeEnd: "2025-11-06T20:00:00.000Z",
         places: [],
       },
       {
         id: 3,
-        timeStart: "2025-11-01T06:00:00.000Z",
-        timeEnd: "2025-11-01T17:00:00.000Z",
+        timeStart: "2025-11-07T06:00:00.000Z",
+        timeEnd: "2025-11-07T20:00:00.000Z",
+        places: [],
+      },
+      {
+        id: 4,
+        timeStart: "2025-11-08T06:00:00.000Z",
+        timeEnd: "2025-11-08T20:00:00.000Z",
+        places: [],
+      },
+      {
+        id: 5,
+        timeStart: "2025-11-09T06:00:00.000Z",
+        timeEnd: "2025-11-09T20:00:00.000Z",
         places: [],
       },
     ],
     order: {
-      id: 300,
+      id: 310,
       selfEmployed: false,
       status: 3,
       user: {
@@ -163,7 +168,7 @@ export const mockResponseSuccess: GetJobSuccess = {
       ],
     },
     task: {
-      id: 141,
+      id: 148,
       selfEmployed: false,
       status: 3,
       user: {
@@ -187,19 +192,19 @@ export const mockResponseSuccess: GetJobSuccess = {
       ],
     },
     acceptingUser: {
-      id: 406,
-      phone: 79881234455,
-      email: "test121@mail.ru",
-      logo: "/storage/source/userImg/406/iFd0ZnKTlG1da5WiFdAG.jpeg",
+      id: 409,
+      phone: 79881234567,
+      email: "tt@mail.ru",
+      logo: "/storage/source/userImg/409/lvQA2xIcemehfKaMFIqM.jpeg",
       roles: [
         {
           id: 5,
           name: "specialist",
         },
       ],
-      radius: "1",
-      name: "ТЕСТЕР СПЕЦИАЛИСТ",
-      age: "27",
+      radius: "2",
+      name: "Супервайзер Тестовый",
+      age: "22",
       country: "РОССИЯ",
       viewActivities: [
         "Курьер  (Физическое лицо)",
@@ -210,18 +215,23 @@ export const mockResponseSuccess: GetJobSuccess = {
     },
     reports: [
       {
-        id: 19,
-        dateStart: "2025-10-29T21:25:49.000000Z",
-        dateEnd: "2025-10-29T21:25:59.000000Z",
-        report: [
-          "/storage/source/reports/406/19/AVtyxlMRrXQfQDq5So38BdPJZR2dAVUPnSwtpmNm.png",
-          "/storage/source/reports/406/19/lDI2c1OtkEGxn5Rcl5UN3Lv8H9xlq2gVrvIzC5AO.png",
-          "/storage/source/reports/406/19/OQg73rZmpdXG5ud0Md2pYifJJ1OADEszpxZhbabX.png",
-          "/storage/source/reports/406/19/1kt6qNXCOaWl3qdmscbi8FXDEP3SKuqySsXYPjAX.png",
-        ],
+        id: 27,
+        dateStart: "2025-11-05T18:51:38.000000Z",
+        dateEnd: "2025-11-05T19:07:26.000000Z",
+        report: null,
         dayActivityId: 1,
-        status: 6,
-        hours: "0.00",
+        status: 4,
+        hours: "0.26",
+        reasons: [],
+      },
+      {
+        id: 28,
+        dateStart: "2025-11-06T11:22:47.000000Z",
+        dateEnd: "2025-11-06T11:23:25.000000Z",
+        report: null,
+        dayActivityId: 2,
+        status: 3,
+        hours: "0.01",
         reasons: [],
       },
     ],

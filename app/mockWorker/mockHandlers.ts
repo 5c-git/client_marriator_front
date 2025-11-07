@@ -110,6 +110,7 @@ import { postPayReportMockResponse } from "~/requests/_personal/postPayReport/po
 import { postAcceptAllReportJobMockResponse } from "~/requests/_personal/postAcceptAllReportJob/postAcceptAllReportJob";
 import { postAcceptReportMockResponse } from "~/requests/_personal/postAcceptReport/postAcceptReport";
 import { postPayReportForManagerMockResponse } from "~/requests/_personal/postPayReportForManager/postPayReportForManager";
+import { getReasonsMockResponse } from "~/requests/_personal/getReasons/getReasons";
 
 export const handlers = [
   getFormMockResponse,
@@ -220,4 +221,5 @@ export const handlers = [
   postAcceptAllReportJobMockResponse,
   postAcceptReportMockResponse,
   postPayReportForManagerMockResponse,
+  getReasonsMockResponse,
 ];

@@ -9,6 +9,8 @@ import { withLocale } from "~/shared/withLocale";
 
 import * as Yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { z } from "zod";
 import { useForm, Controller, useFieldArray } from "react-hook-form";
 
 import { format, getDay } from "date-fns";
@@ -31,6 +33,7 @@ import { ExpandIcon } from "~/shared/icons/ExpandIcon";
 import { CheckIcon } from "~/shared/icons/CheckIcon";
 
 import { getJob } from "~/requests/_personal/getJob/getJob";
+import { getReasons } from "~/requests/_personal/getReasons/getReasons";
 import { postAcceptReport } from "~/requests/_personal/postAcceptReport/postAcceptReport";
 import { postAcceptAllReportJob } from "~/requests/_personal/postAcceptAllReportJob/postAcceptAllReportJob";
 
@@ -79,6 +82,7 @@ export async function clientLoader({ params }: Route.ClientLoaderArgs) {
     //       ],
     //       unitPrice: "1000",
     //       unitAmount: "4",
+    //       criteria: [],
     //     },
     //     {
     //       id: 2,
@@ -92,6 +96,18 @@ export async function clientLoader({ params }: Route.ClientLoaderArgs) {
     //       ],
     //       unitPrice: "2000",
     //       unitAmount: "6",
+    //       criteria: [
+    //         {
+    //           amount: -100,
+    //           count: 2,
+    //           value: "late",
+    //         },
+    //         {
+    //           amount: -100,
+    //           count: 1,
+    //           value: "smoking",
+    //         },
+    //       ],
     //     },
     //   ],
     //   criteria: [
@@ -120,28 +136,7 @@ export async function clientLoader({ params }: Route.ClientLoaderArgs) {
 
     const data: PageInterface = {
       days: [],
-      criteria: [
-        {
-          amount: -100,
-          label: "Cвоевременность, нарушение режима(минута)",
-          value: "late",
-        },
-        {
-          amount: 250,
-          label: "Ведение переговоров на иностранном языке",
-          value: "foreign talk",
-        },
-        {
-          amount: -100,
-          label: "Курение во время работы(разы)",
-          value: "smoking",
-        },
-        {
-          amount: -500,
-          label: "Нарушение трудового кодекса",
-          value: "break of terms",
-        },
-      ],
+      criteria: [],
     };
 
     const missionData = await getJob(
@@ -149,6 +144,16 @@ export async function clientLoader({ params }: Route.ClientLoaderArgs) {
       params.specialistId,
       params.requestId
     );
+
+    const criteriaData = await getReasons(accessToken);
+
+    criteriaData.data.forEach((criterion) => {
+      data.criteria.push({
+        amount: -100,
+        label: criterion.value,
+        value: criterion.id.toString(),
+      });
+    });
 
     if (params.reportId) {
       const particularDay = missionData.data.reports.find(
@@ -166,6 +171,19 @@ export async function clientLoader({ params }: Route.ClientLoaderArgs) {
           unitPrice: "0",
           unitAmount: particularDay.hours ? particularDay.hours : "",
           ...(particularDay.report && { photos: particularDay.report }),
+          criteria: (() => {
+            const criteria: PageInterface["days"][0]["criteria"] = [];
+
+            particularDay.reasons.forEach((item) => {
+              criteria.push({
+                amount: item.amount,
+                count: 3,
+                value: item.id.toString(),
+              });
+            });
+
+            return criteria;
+          })(),
         });
       }
     } else {
@@ -177,6 +195,19 @@ export async function clientLoader({ params }: Route.ClientLoaderArgs) {
             unitPrice: "0",
             unitAmount: report.hours ? report.hours : "",
             ...(report.report && { photos: report.report }),
+            criteria: (() => {
+              const criteria: PageInterface["days"][0]["criteria"] = [];
+
+              report.reasons.forEach((item) => {
+                criteria.push({
+                  amount: item.amount,
+                  count: 3,
+                  value: item.id.toString(),
+                });
+              });
+
+              return criteria;
+            })(),
           });
         }
       });
@@ -270,28 +301,20 @@ export default function DayReview({ loaderData }: Route.ComponentProps) {
     defaultValues: {
       days: loaderData.data.days,
     },
-    resolver: yupResolver(
-      Yup.object({
-        days: Yup.array().of(
-          Yup.object().shape({
-            id: Yup.number().required(t("text", { ns: "constructorFields" })),
-            date: Yup.string()
-              .nullable()
-              .required(t("text", { ns: "constructorFields" })),
-            photos: Yup.array().of(Yup.string()),
-            unitPrice: Yup.string().required(
-              t("text", { ns: "constructorFields" })
-            ),
-            unitAmount: Yup.string().required(
-              t("text", { ns: "constructorFields" })
-            ),
-            criteria: Yup.array().of(
-              Yup.object().shape({
-                value: Yup.string().required(),
-                amount: Yup.number().required(
-                  t("text", { ns: "constructorFields" })
-                ),
-                count: Yup.number().required(),
+    resolver: zodResolver(
+      z.object({
+        days: z.array(
+          z.object({
+            id: z.number(t("text", { ns: "constructorFields" })),
+            date: z.iso.date(t("text", { ns: "constructorFields" })),
+            photos: z.array(z.string()).optional(),
+            unitPrice: z.string(t("text", { ns: "constructorFields" })),
+            unitAmount: z.string(t("text", { ns: "constructorFields" })),
+            criteria: z.array(
+              z.object({
+                count: z.number(),
+                value: z.string(),
+                amount: z.number(t("text", { ns: "constructorFields" })),
               })
             ),
           })
@@ -470,7 +493,6 @@ export default function DayReview({ loaderData }: Route.ComponentProps) {
                   control={control}
                   render={({ field }) => (
                     <TextField
-                      // disabled
                       label={t("unitPrice")}
                       slotProps={{
                         input: {
@@ -620,7 +642,6 @@ export default function DayReview({ loaderData }: Route.ComponentProps) {
                 ))}
 
                 <Button
-                  // disabled
                   variant="outlined"
                   onClick={() => {
                     const currentDay = getValues(`days.${index}`);
