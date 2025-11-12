@@ -12,7 +12,8 @@
     "declined": "Declined",
     "consideration": "In consideration",
     "work": "In work",
-    "canceled": "Cancelled"
+    "canceled": "Cancelled",
+    "edit": "Edit"
   },
   "dayStatus": {
     "start": "Stared",
@@ -51,7 +52,6 @@
     "5": "FRI",
     "6": "SAT"
   },
-
   "request": "Request",
   "mission": "Mission",
   "statusText": "Status",

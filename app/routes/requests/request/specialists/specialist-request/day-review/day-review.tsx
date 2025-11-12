@@ -16,7 +16,13 @@ import { useForm, Controller, useFieldArray } from "react-hook-form";
 import { format, getDay } from "date-fns";
 
 import Box from "@mui/material/Box";
-import { Button, Divider, Typography, TextField } from "@mui/material";
+import {
+  Button,
+  Divider,
+  Typography,
+  TextField,
+  IconButton,
+} from "@mui/material";
 
 import { Loader } from "~/shared/ui/Loader/Loader";
 import { TopNavigation } from "~/shared/ui/TopNavigation/TopNavigation";
@@ -29,12 +35,14 @@ import {
   S_AccordionSummary,
 } from "./day-review.styled";
 
+import CloseIcon from "@mui/icons-material/Close";
 import { ExpandIcon } from "~/shared/icons/ExpandIcon";
 import { CheckIcon } from "~/shared/icons/CheckIcon";
 
 import { getJob } from "~/requests/_personal/getJob/getJob";
 import { getReasons } from "~/requests/_personal/getReasons/getReasons";
 import { postAcceptReport } from "~/requests/_personal/postAcceptReport/postAcceptReport";
+import { postUpdateReport } from "~/requests/_personal/postUpdateReport/postUpdateReport";
 import { postAcceptAllReportJob } from "~/requests/_personal/postAcceptAllReportJob/postAcceptAllReportJob";
 
 const calculatePrice = (day: {
@@ -68,72 +76,6 @@ export async function clientLoader({ params }: Route.ClientLoaderArgs) {
   const accessToken = useStore.getState().accessToken;
 
   if (accessToken) {
-    // const data: PageInterface = {
-    //   days: [
-    //     {
-    //       id: 1,
-    //       date: "2025-10-27T08:10:00.000Z",
-    //       photos: [
-    //         "https://images.unsplash.com/photo-1551963831-b3b1ca40c98e",
-    //         "https://images.unsplash.com/photo-1551782450-a2132b4ba21d",
-    //         "https://images.unsplash.com/photo-1444418776041-9c7e33cc5a9c",
-    //         "https://images.unsplash.com/photo-1558642452-9d2a7deb7f62",
-    //         "https://images.unsplash.com/photo-1567306301408-9b74779a11af",
-    //       ],
-    //       unitPrice: "1000",
-    //       unitAmount: "4",
-    //       criteria: [],
-    //     },
-    //     {
-    //       id: 2,
-    //       date: "2025-10-28T08:10:00.000Z",
-    //       photos: [
-    //         "https://images.unsplash.com/photo-1551963831-b3b1ca40c98e",
-    //         "https://images.unsplash.com/photo-1551782450-a2132b4ba21d",
-    //         "https://images.unsplash.com/photo-1444418776041-9c7e33cc5a9c",
-    //         "https://images.unsplash.com/photo-1558642452-9d2a7deb7f62",
-    //         "https://images.unsplash.com/photo-1567306301408-9b74779a11af",
-    //       ],
-    //       unitPrice: "2000",
-    //       unitAmount: "6",
-    //       criteria: [
-    //         {
-    //           amount: -100,
-    //           count: 2,
-    //           value: "late",
-    //         },
-    //         {
-    //           amount: -100,
-    //           count: 1,
-    //           value: "smoking",
-    //         },
-    //       ],
-    //     },
-    //   ],
-    //   criteria: [
-    //     {
-    //       amount: -100,
-    //       label: "Cвоевременность, нарушение режима(минута)",
-    //       value: "late",
-    //     },
-    //     {
-    //       amount: 250,
-    //       label: "Ведение переговоров на иностранном языке",
-    //       value: "foreign talk",
-    //     },
-    //     {
-    //       amount: -100,
-    //       label: "Курение во время работы(разы)",
-    //       value: "smoking",
-    //     },
-    //     {
-    //       amount: -500,
-    //       label: "Нарушение трудового кодекса",
-    //       value: "break of terms",
-    //     },
-    //   ],
-    // };
-
     const data: PageInterface = {
       days: [],
       criteria: [],
@@ -149,7 +91,7 @@ export async function clientLoader({ params }: Route.ClientLoaderArgs) {
 
     criteriaData.data.forEach((criterion) => {
       data.criteria.push({
-        amount: -100,
+        amount: criterion.amount,
         label: criterion.value,
         value: criterion.id.toString(),
       });
@@ -163,12 +105,13 @@ export async function clientLoader({ params }: Route.ClientLoaderArgs) {
       if (
         (particularDay && particularDay.status === 2) ||
         (particularDay && particularDay.status === 3) ||
+        (particularDay && particularDay.status === 4) ||
         (particularDay && particularDay.status === 7)
       ) {
         data.days.push({
           id: Number(particularDay.id),
           date: particularDay.dateStart ? particularDay.dateStart : "",
-          unitPrice: "0",
+          unitPrice: missionData.data.price.toString(),
           unitAmount: particularDay.hours ? particularDay.hours : "",
           ...(particularDay.report && { photos: particularDay.report }),
           criteria: (() => {
@@ -239,7 +182,7 @@ export async function clientAction({
   const fields: {
     days: {
       photos?: string[];
-      criteria?: {
+      criteria: {
         value: string;
         amount: number;
         count: number;
@@ -254,11 +197,41 @@ export async function clientAction({
 
   if (accessToken) {
     if (fields.days.length > 1) {
-      await postAcceptAllReportJob(
-        accessToken,
-        params.requestId,
-        params.specialistId
-      );
+      (params.requestId, params.specialistId);
+      await postAcceptAllReportJob(accessToken, {
+        bidId: Number(params.requestId),
+        specialistId: Number(params.specialistId),
+        reports: (() => {
+          const reports: Parameters<
+            typeof postAcceptAllReportJob
+          >["1"]["reports"] = [];
+
+          fields.days.forEach((day) => {
+            reports.push({
+              reportId: day.id,
+              hours: Number(day.unitAmount),
+              reasons: (() => {
+                const criteria = day.criteria;
+
+                const reasons: Parameters<
+                  typeof postAcceptAllReportJob
+                >["1"]["reports"][0]["reasons"] = [];
+
+                criteria.forEach((criterion) => {
+                  reasons.push({
+                    reasonId: Number(criterion.value),
+                    count: criterion.amount,
+                  });
+                });
+
+                return reasons;
+              })(),
+            });
+          });
+
+          return reports;
+        })(),
+      });
       // throw redirect(currentURL.toString());
       throw redirect(
         withLocale(
@@ -266,7 +239,31 @@ export async function clientAction({
         )
       );
     } else if (fields.days.length === 1) {
-      await postAcceptReport(accessToken, fields.days[0].id.toString());
+      const payload = {
+        reportId: fields.days[0].id,
+        hours: Number(fields.days[0].unitAmount),
+        reasons: (() => {
+          const criteria = fields.days[0].criteria;
+
+          const reasons: Parameters<typeof postAcceptReport>[1]["reasons"] = [];
+
+          criteria.forEach((criterion) => {
+            reasons.push({
+              reasonId: Number(criterion.value),
+              count: criterion.amount,
+            });
+          });
+
+          return reasons;
+        })(),
+      };
+
+      if (currentURL.searchParams.has("edit", "true")) {
+        await postUpdateReport(accessToken, payload);
+      } else {
+        await postAcceptReport(accessToken, payload);
+      }
+
       throw redirect(
         withLocale(
           `/requests/${params.requestId}/specialists/${params.specialistId}`
@@ -291,12 +288,10 @@ export default function DayReview({ loaderData }: Route.ComponentProps) {
   const {
     control,
     handleSubmit,
-    reset,
     formState: { errors },
     watch,
     getValues,
     setValue,
-    trigger,
   } = useForm({
     defaultValues: {
       days: loaderData.data.days,
@@ -306,7 +301,7 @@ export default function DayReview({ loaderData }: Route.ComponentProps) {
         days: z.array(
           z.object({
             id: z.number(t("text", { ns: "constructorFields" })),
-            date: z.iso.date(t("text", { ns: "constructorFields" })),
+            date: z.string(t("text", { ns: "constructorFields" })),
             photos: z.array(z.string()).optional(),
             unitPrice: z.string(t("text", { ns: "constructorFields" })),
             unitAmount: z.string(t("text", { ns: "constructorFields" })),
@@ -488,12 +483,13 @@ export default function DayReview({ loaderData }: Route.ComponentProps) {
                   {t("income")}
                 </Typography>
 
-                <Controller
+                {/* <Controller
                   name={`days.${index}.unitPrice` as const}
                   control={control}
                   render={({ field }) => (
                     <TextField
                       label={t("unitPrice")}
+                      disabled
                       slotProps={{
                         input: {
                           inputComponent: MaskedField as never,
@@ -507,6 +503,21 @@ export default function DayReview({ loaderData }: Route.ComponentProps) {
                       {...field}
                     />
                   )}
+                /> */}
+                <TextField
+                  label={t("unitPrice")}
+                  disabled
+                  slotProps={{
+                    input: {
+                      inputComponent: MaskedField as never,
+                      inputProps: {
+                        mask: "0000000000",
+                      },
+                      inputMode: "numeric",
+                      type: "tel",
+                    },
+                  }}
+                  value={day.unitPrice}
                 />
                 <Controller
                   name={`days.${index}.unitAmount` as const}
@@ -562,15 +573,46 @@ export default function DayReview({ loaderData }: Route.ComponentProps) {
 
                 {watch(`days.${index}.criteria`)?.map((criterion, indx) => (
                   <Fragment key={indx}>
-                    <Typography
-                      component="p"
-                      variant="Bold_16"
-                      sx={(theme) => ({
-                        color: theme.vars.palette["Black"],
-                      })}
+                    <Box
+                      sx={{
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "space-between",
+                      }}
                     >
-                      {t("finesAndIncentives")}
-                    </Typography>
+                      <Typography
+                        component="p"
+                        variant="Bold_16"
+                        sx={(theme) => ({
+                          color: theme.vars.palette["Black"],
+                        })}
+                      >
+                        {t("finesAndIncentives")}
+                      </Typography>{" "}
+                      <IconButton
+                        sx={{
+                          width: "24px",
+                          height: "24px",
+                        }}
+                        onClick={() => {
+                          const currentDay = getValues(`days.${index}`);
+
+                          const updatedDay = {
+                            ...currentDay,
+                          };
+
+                          updatedDay.criteria.splice(indx, 1);
+
+                          update(index, updatedDay);
+                        }}
+                      >
+                        <CloseIcon
+                          sx={(theme) => ({
+                            color: theme.vars.palette["Grey_2"],
+                          })}
+                        />
+                      </IconButton>
+                    </Box>
 
                     <Controller
                       name={`days.${index}.criteria.${indx}.value` as const}
@@ -635,6 +677,9 @@ export default function DayReview({ loaderData }: Route.ComponentProps) {
                           }}
                           {...field}
                           value={field.value.toString()}
+                          onChange={(evt) => {
+                            field.onChange(Number(evt.target.value));
+                          }}
                         />
                       )}
                     />

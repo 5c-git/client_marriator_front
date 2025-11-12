@@ -116,6 +116,7 @@ interface ImportMetaEnv {
   readonly VITE_POST_ACCEPT_REPORT: string;
   readonly VITE_POST_PAY_REPORT_FOR_MANAGER: string;
   readonly VITE_GET_REASONS: string;
+  readonly VITE_POST_UPDATE_REPORT: string;
   // more env variables...
 }
 

@@ -29,7 +29,6 @@ import CheckIcon from "@mui/icons-material/Check";
 import { getJob } from "~/requests/_personal/getJob/getJob";
 import { postAcceptSpecialist } from "~/requests/_personal/postAcceptSpecialist/postAcceptSpecialist";
 import { postEndSpecialistJob } from "~/requests/_personal/postEndSpecialistJob/postEndSpecialistJob";
-import { postAcceptAllReportJob } from "~/requests/_personal/postAcceptAllReportJob/postAcceptAllReportJob";
 import { postPayReportForManager } from "~/requests/_personal/postPayReportForManager/postPayReportForManager";
 
 export async function clientLoader({
@@ -120,10 +119,22 @@ export async function clientLoader({
       specialist: {
         id: missionData.data.acceptingUser.id,
       },
-      canCheckAll: missionData.data.reports.length > 1 ? true : false,
-    };
+      canCheckAll: (() => {
+        const validReports: number[] = [];
 
-    console.log(data);
+        missionData.data.reports.forEach((report) => {
+          if (
+            report.status === 2 ||
+            report.status === 3 ||
+            report.status === 7
+          ) {
+            validReports.push(report.id);
+          }
+        });
+
+        return validReports.length > 1 ? true : false;
+      })(),
+    };
     return data;
   } else {
     throw new Response("Токен авторизации не обнаружен!", { status: 401 });
@@ -148,13 +159,6 @@ export async function clientAction({
       throw redirect(currentURL.toString());
     } else if (_action === "end") {
       await postEndSpecialistJob(
-        accessToken,
-        fields.bidId,
-        params.specialistId
-      );
-      throw redirect(currentURL.toString());
-    } else if (_action === "acceptAllDays") {
-      await postAcceptAllReportJob(
         accessToken,
         fields.bidId,
         params.specialistId
@@ -535,35 +539,46 @@ export default function SpecialistRequest({
                 ) : null}
 
                 {day.action === "accept" ? (
-                  <Button
-                    variant="contained"
-                    onClick={() => {
-                      submit(
-                        JSON.stringify({
-                          _action: "forPay",
-                          reportId: day.reportId,
-                        }),
-                        {
-                          method: "POST",
-                          encType: "application/json",
-                        }
-                      );
-                    }}
-                  >
-                    {t("actions.forPay")}
-                  </Button>
+                  <>
+                    <Button
+                      component={Link}
+                      to={`/requests/${loaderData.id}/specialists/${loaderData.specialist.id}/day-review/${day.reportId}?edit=true`}
+                      variant="outlined"
+                    >
+                      {t("actions.edit")}
+                    </Button>
+                    <Button
+                      variant="contained"
+                      onClick={() => {
+                        submit(
+                          JSON.stringify({
+                            _action: "forPay",
+                            reportId: day.reportId,
+                          }),
+                          {
+                            method: "POST",
+                            encType: "application/json",
+                          }
+                        );
+                      }}
+                    >
+                      {t("actions.forPay")}
+                    </Button>
+                  </>
                 ) : null}
 
                 {day.action === "forPay" ? (
-                  <Typography
-                    component={"p"}
-                    variant="Bold_14"
-                    sx={(theme) => ({
-                      color: theme.vars.palette["Corp_1"],
-                    })}
-                  >
-                    {t("dayStatus.forPayManager")}
-                  </Typography>
+                  <>
+                    <Typography
+                      component={"p"}
+                      variant="Bold_14"
+                      sx={(theme) => ({
+                        color: theme.vars.palette["Corp_1"],
+                      })}
+                    >
+                      {t("dayStatus.forPayManager")}
+                    </Typography>
+                  </>
                 ) : null}
 
                 {day.action === "paid" ? (
@@ -625,24 +640,6 @@ export default function SpecialistRequest({
         ) : null}
 
         {loaderData.canCheckAll ? (
-          // <Button
-          //   startIcon={<CheckIcon />}
-          //   variant="contained"
-          //   onClick={() => {
-          //     submit(
-          //       JSON.stringify({
-          //         _action: "acceptAllDays",
-          //         bidId: loaderData.id,
-          //       }),
-          //       {
-          //         method: "POST",
-          //         encType: "application/json",
-          //       }
-          //     );
-          //   }}
-          // >
-          //   {t("actions.acceptAll")}
-          // </Button>
           <Button
             component={Link}
             to={`/requests/${loaderData.id}/specialists/${loaderData.specialist.id}/day-review`}

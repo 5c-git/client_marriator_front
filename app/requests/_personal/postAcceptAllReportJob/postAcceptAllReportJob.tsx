@@ -1,36 +1,39 @@
 import { http, delay, HttpResponse } from "msw";
-import Ajv from "ajv";
 
-import schemaSuccess from "./postAcceptAllReportJobSuccess.schema.json";
-import { PostAcceptAllReportJobSuccess } from "./postAcceptAllReportJobSuccess.type";
+import {
+  postAcceptAllReportJobSuccess,
+  PostAcceptAllReportJobSuccess,
+} from "./postAcceptAllReportJobSuccess.schema";
+
 import { UnxpectedError } from "~/shared/unexpectedError/unexpectedError";
-
-const ajv = new Ajv();
-
-const validateSuccess = ajv.compile(schemaSuccess);
 
 export const postAcceptAllReportJobKeys = ["postAcceptAllReportJob"];
 
 export const postAcceptAllReportJob = async (
   accessToken: string,
-  bidId: string,
-  specialistId: string
+  payload: {
+    bidId: number;
+    specialistId: number;
+    reports: {
+      reportId: number;
+      hours: number;
+      reasons: {
+        reasonId: number;
+        count: number;
+      }[];
+    }[];
+  }
 ): Promise<PostAcceptAllReportJobSuccess> => {
   try {
     const url = new URL(import.meta.env.VITE_POST_ACCEPT_ALL_REPORT_JOB);
 
-    const formData = new FormData();
-
-    formData.append("bidId", bidId);
-    formData.append("specialistId", specialistId);
-
     const request = await fetch(url, {
       method: "POST",
       headers: {
-        // "Content-Type": "application/json",
+        "Content-Type": "application/json",
         Authorization: `Bearer ${accessToken}`,
       },
-      body: formData,
+      body: JSON.stringify(payload),
     });
     const response = await request.json();
 
@@ -42,10 +45,12 @@ export const postAcceptAllReportJob = async (
       });
     }
 
-    if (validateSuccess(response)) {
-      data = response as unknown as PostAcceptAllReportJobSuccess;
+    const parsed = postAcceptAllReportJobSuccess.safeParse(response);
+
+    if (parsed.success) {
+      data = parsed.data;
     } else {
-      console.log(validateSuccess.errors);
+      console.log(parsed.error);
       throw new Response(
         `Данные запроса postAcceptAllReportJob не валидны схеме`
       );

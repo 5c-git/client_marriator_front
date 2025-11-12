@@ -1,14 +1,14 @@
 import { http, delay, HttpResponse } from "msw";
 
 import {
-  postAcceptReportSuccess,
-  PostAcceptReportSuccess,
-} from "./postAcceptReportSuccess.schema";
+  postUpdateReportSuccess,
+  PostUpdateReportSuccess,
+} from "./postUpdateReportSuccess.schema";
 import { UnxpectedError } from "~/shared/unexpectedError/unexpectedError";
 
-export const postAcceptReportKeys = ["postAcceptReport"];
+export const postUpdateReportKeys = ["postUpdateReport"];
 
-export const postAcceptReport = async (
+export const postUpdateReport = async (
   accessToken: string,
   payload: {
     reportId: number;
@@ -18,9 +18,9 @@ export const postAcceptReport = async (
       count: number;
     }[];
   }
-): Promise<PostAcceptReportSuccess> => {
+): Promise<PostUpdateReportSuccess> => {
   try {
-    const url = new URL(import.meta.env.VITE_POST_ACCEPT_REPORT);
+    const url = new URL(import.meta.env.VITE_POST_UPDATE_REPORT);
 
     const request = await fetch(url, {
       method: "POST",
@@ -40,12 +40,12 @@ export const postAcceptReport = async (
       });
     }
 
-    const parsed = postAcceptReportSuccess.safeParse(response);
+    const parsed = postUpdateReportSuccess.safeParse(response);
     if (parsed.success) {
       data = parsed.data;
     } else {
       console.log(parsed.error);
-      throw new Response(`Данные запроса postAcceptReport не валидны схеме`);
+      throw new Response(`Данные запроса postUpdateReport не валидны схеме`);
     }
 
     return data;
@@ -63,15 +63,15 @@ export const postAcceptReport = async (
 };
 
 // MOCKS
-export const mockResponseSuccess: PostAcceptReportSuccess = {
+export const mockResponseSuccess: PostUpdateReportSuccess = {
   data: {
     success: true,
   },
 };
 export const mockResponseError = {};
 
-export const postAcceptReportMockResponse = http.post(
-  `${import.meta.env.VITE_POST_ACCEPT_REPORT}`,
+export const postUpdateReportMockResponse = http.post(
+  `${import.meta.env.VITE_POST_UPDATE_REPORT}`,
   async () => {
     await delay(2000);
     return HttpResponse.json(mockResponseSuccess);
