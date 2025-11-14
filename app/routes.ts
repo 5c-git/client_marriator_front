@@ -12,7 +12,7 @@ export default [
     layout("routes/menuLayout/menuLayout.tsx", [
       layout("routes/home/layout/layout.tsx", [
         route(":lang?/", "routes/home/index/home.tsx"),
-        route(":lang?/assignments", "routes/assignments/assignments.tsx"),
+        route(":lang?/assignments", "routes/assignments/index.tsx"),
         route(":lang?/tasks", "routes/tasks/tasks.tsx"),
         route(":lang?/requests", "routes/requests/requests.tsx"),
         route(":lang?/missions", "routes/missions/missions.tsx"),

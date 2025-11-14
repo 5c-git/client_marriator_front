@@ -220,7 +220,8 @@ export async function clientAction({
                 criteria.forEach((criterion) => {
                   reasons.push({
                     reasonId: Number(criterion.value),
-                    count: criterion.amount,
+                    count: criterion.count,
+                    amount: criterion.amount,
                   });
                 });
 
@@ -250,7 +251,8 @@ export async function clientAction({
           criteria.forEach((criterion) => {
             reasons.push({
               reasonId: Number(criterion.value),
-              count: criterion.amount,
+              count: criterion.count,
+              amount: criterion.amount,
             });
           });
 

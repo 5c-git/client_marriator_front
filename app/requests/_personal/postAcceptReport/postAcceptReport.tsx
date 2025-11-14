@@ -16,6 +16,7 @@ export const postAcceptReport = async (
     reasons: {
       reasonId: number;
       count: number;
+      amount: number;
     }[];
   }
 ): Promise<PostAcceptReportSuccess> => {

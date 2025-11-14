@@ -20,6 +20,7 @@ export const postAcceptAllReportJob = async (
       reasons: {
         reasonId: number;
         count: number;
+        amount: number;
       }[];
     }[];
   }

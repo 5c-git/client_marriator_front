@@ -95,7 +95,7 @@ export async function clientLoader({
 
               const canStart = isWithinInterval(now, {
                 start: subHours(new Date(day.timeStart), 1),
-                end: addHours(new Date(day.timeEnd), 1),
+                end: subHours(new Date(day.timeEnd), 1),
               });
 
               if (
@@ -405,6 +405,7 @@ export default function Index({ loaderData }: Route.ComponentProps) {
           rowGap: "8px",
         }}
       >
+        {/* loaderData.status === 4 */}
         {loaderData.status === 1 ? (
           <>
             <Button
@@ -466,9 +467,7 @@ export default function Index({ loaderData }: Route.ComponentProps) {
           </Button>
         ) : null}
 
-        {loaderData.status === 2 ||
-        loaderData.status === 4 ||
-        loaderData.status === 5 ? (
+        {loaderData.status === 2 || loaderData.status === 5 ? (
           <Button
             variant="text"
             onClick={() => {
