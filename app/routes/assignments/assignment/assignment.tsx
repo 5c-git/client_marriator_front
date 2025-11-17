@@ -54,7 +54,9 @@ import { getSupervisorsForTask } from "~/requests/_personal/getSupervisorsForTas
 
 export async function clientLoader({ params }: Route.ClientLoaderArgs) {
   await loadNamespaces("assignment");
+
   const accessToken = useStore.getState().accessToken;
+  const userRole = useStore.getState().userRole;
 
   const order: {
     id: string;
@@ -100,10 +102,6 @@ export async function clientLoader({ params }: Route.ClientLoaderArgs) {
 
   if (accessToken) {
     const orderData = await getOrder(accessToken, params.orderId);
-    const supervisersData = await getSupervisorsForTask(
-      accessToken,
-      params.orderId
-    );
 
     order.status = orderData.data.status;
     order.place.name = orderData.data.place.name;
@@ -138,14 +136,21 @@ export async function clientLoader({ params }: Route.ClientLoaderArgs) {
       });
     }
 
-    supervisersData.data.forEach((item) => {
-      supervisorsToSelect.push({
-        value: item.id.toString(),
-        label: item.name,
+    if (userRole === "manager") {
+      const supervisersData = await getSupervisorsForTask(
+        accessToken,
+        params.orderId
+      );
 
-        disabled: false,
+      supervisersData.data.forEach((item) => {
+        supervisorsToSelect.push({
+          value: item.id.toString(),
+          label: item.name,
+
+          disabled: false,
+        });
       });
-    });
+    }
 
     return {
       order,
@@ -192,6 +197,7 @@ export default function Assignment({ loaderData }: Route.ComponentProps) {
   const navigation = useNavigation();
   const { t } = useTranslation("assignment");
   const userRole = useStore.getState().userRole;
+  const userId = useStore.getState().userId;
 
   const fetcher = useFetcher();
 
@@ -611,6 +617,33 @@ export default function Assignment({ loaderData }: Route.ComponentProps) {
             startIcon={<CheckIcon />}
             onClick={() => {
               setSearchSupervisors(true);
+            }}
+          >
+            {t("convertToTask")}
+          </Button>
+        ) : null}
+
+        {!editMode &&
+        userRole === "supervisor" &&
+        loaderData.order.status === 2 ? (
+          <Button
+            variant="contained"
+            sx={{
+              marginTop: "8px",
+            }}
+            startIcon={<CheckIcon />}
+            onClick={() => {
+              fetcher.submit(
+                JSON.stringify({
+                  _action: "transformAssignment",
+                  orderId: loaderData.order.id,
+                  responsibleId: userId,
+                }),
+                {
+                  method: "POST",
+                  encType: "application/json",
+                }
+              );
             }}
           >
             {t("convertToTask")}

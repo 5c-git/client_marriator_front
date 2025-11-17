@@ -1,7 +1,7 @@
-import { Link, useOutletContext, useFetcher } from "react-router";
+import { Link, useOutletContext, useFetcher, Outlet } from "react-router";
 import { useState, useEffect } from "react";
 
-import type { Route } from "./+types/assignments";
+import type { Route } from "./+types/index";
 
 import i18next from "i18next";
 import { useTranslation } from "react-i18next";
@@ -801,6 +801,8 @@ export default function Assignments({ loaderData }: Route.ComponentProps) {
           </Button>
         </DialogActions>
       </Dialog>
+
+      <Outlet />
     </>
   );
 }

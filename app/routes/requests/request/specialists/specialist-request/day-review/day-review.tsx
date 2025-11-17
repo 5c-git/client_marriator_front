@@ -120,7 +120,7 @@ export async function clientLoader({ params }: Route.ClientLoaderArgs) {
             particularDay.reasons.forEach((item) => {
               criteria.push({
                 amount: item.amount,
-                count: 3,
+                count: item.count,
                 value: item.id.toString(),
               });
             });

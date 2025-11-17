@@ -201,6 +201,7 @@ export const getJobSuccessSchema = z.object({
             id: z.number(),
             value: z.string(),
             amount: z.number(),
+            count: z.number(),
           })
         ),
       })
