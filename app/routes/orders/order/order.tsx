@@ -224,7 +224,7 @@ export default function Assignment({ loaderData }: Route.ComponentProps) {
               translation={"assignment"}
               entity={loaderData.entity}
               headerBackAction={() => {
-                navigate(withLocale("/assignments"), {
+                navigate(withLocale("/orders"), {
                   viewTransition: true,
                 });
               }}
@@ -249,7 +249,7 @@ export default function Assignment({ loaderData }: Route.ComponentProps) {
                     <Box
                       component={Link}
                       to={withLocale(
-                        `/assignments/${loaderData.entity.id}/edit-service/${activity.id}`
+                        `/orders/${loaderData.entity.id}/edit-service/${activity.id}`
                       )}
                       sx={{
                         display: "grid",
@@ -295,7 +295,7 @@ export default function Assignment({ loaderData }: Route.ComponentProps) {
                   <Button
                     component={Link}
                     to={withLocale(
-                      `/new-assignment/${loaderData.entity.id}/new-service?edit=true`
+                      `/new-order/${loaderData.entity.id}/new-service?edit=true`
                     )}
                     variant="outlined"
                     startIcon={<AddIcon />}
@@ -326,7 +326,7 @@ export default function Assignment({ loaderData }: Route.ComponentProps) {
                     </Button>
                     <Button
                       component={Link}
-                      to={withLocale(`/assignments`)}
+                      to={withLocale(`/orders`)}
                       variant="contained"
                     >
                       {t("sendButton")}
@@ -340,7 +340,7 @@ export default function Assignment({ loaderData }: Route.ComponentProps) {
               translation={"assignment"}
               entity={loaderData.entity}
               headerBackAction={() => {
-                navigate(withLocale("/assignments"), {
+                navigate(withLocale("/orders"), {
                   viewTransition: true,
                 });
               }}
@@ -372,7 +372,7 @@ export default function Assignment({ loaderData }: Route.ComponentProps) {
                     <Box
                       component={Link}
                       to={withLocale(
-                        `/assignments/${loaderData.entity.id}/edit-service/${activity.id}`
+                        `/orders/${loaderData.entity.id}/edit-service/${activity.id}`
                       )}
                       state={{
                         service: loaderData.orderActivities.find(

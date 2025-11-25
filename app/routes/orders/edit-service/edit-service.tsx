@@ -125,7 +125,7 @@ export async function clientLoader({ params }: Route.ClientLoaderArgs) {
           locations,
         } as MobileModeData;
       } else {
-        throw redirect(withLocale(`/assignments/${params.orderId}`));
+        throw redirect(withLocale(`/orders/${params.orderId}`));
       }
     }
 
@@ -144,7 +144,7 @@ export async function clientAction({
 
   if (accessToken) {
     await postUpdateOrderActivity(accessToken, fields);
-    throw redirect(withLocale(`/assignments/${params.orderId}`));
+    throw redirect(withLocale(`/orders/${params.orderId}`));
   } else {
     throw new Response("Токен авторизации не обнаружен!", { status: 401 });
   }
@@ -152,7 +152,6 @@ export async function clientAction({
 
 export default function EditService({ loaderData }: Route.ComponentProps) {
   const navigate = useNavigate();
-  const navigation = useNavigation();
   const submit = useSubmit();
 
   const [editMode, setEditMode] = useState<boolean>(false);
@@ -166,7 +165,7 @@ export default function EditService({ loaderData }: Route.ComponentProps) {
         activities={loaderData.activities}
         locations={loaderData.locations}
         headerBackAction={() => {
-          navigate(withLocale(`/assignments/${loaderData.orderId}`));
+          navigate(withLocale(`/orders/${loaderData.orderId}`));
         }}
         cancelAction={() => {
           setEditMode(false);

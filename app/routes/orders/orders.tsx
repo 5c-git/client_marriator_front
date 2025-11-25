@@ -1,7 +1,7 @@
 import { Link, useOutletContext, useFetcher, Outlet } from "react-router";
 import { useState, useEffect } from "react";
 
-import type { Route } from "./+types/index";
+import type { Route } from "./+types/orders";
 
 import i18next from "i18next";
 import { useTranslation } from "react-i18next";
@@ -515,7 +515,7 @@ export default function Assignments({ loaderData }: Route.ComponentProps) {
               {activeAssignments.map((item) => (
                 <AssignmentCard
                   key={item.id}
-                  to={withLocale(`/assignments/${item.id}`)}
+                  to={withLocale(`/orders/${item.id}`)}
                   statusColor={item.statusColor}
                   header={`${t("cardHeader")} ${item.header}`}
                   subHeader={{
@@ -622,7 +622,7 @@ export default function Assignments({ loaderData }: Route.ComponentProps) {
             >
               {selectedAssignment !== null ? (
                 <AssignmentCard
-                  to={withLocale(`/assignments/${selectedAssignment.id}`)}
+                  to={withLocale(`/orders/${selectedAssignment.id}`)}
                   header={`${t("cardHeader")} ${selectedAssignment.header}`}
                   subHeader={{
                     text: selectedAssignment.subHeader,

@@ -20,13 +20,13 @@ export async function clientLoader() {
 
   return {
     tabsMap: {
-      admin: [
+      manager: [
         <Tab
           label={t("tabs.assignment", { ns: "home" })}
-          to={withLocale("/assignments")}
-          value={withLocale("/assignments")}
+          to={withLocale("/orders")}
+          value={withLocale("/orders")}
           component={Link}
-          key={"assignments"}
+          key={"orders"}
         />,
         <Tab
           label={t("tabs.task", { ns: "home" })}
@@ -54,41 +54,10 @@ export async function clientLoader() {
       supervisor: [
         <Tab
           label={t("tabs.assignment", { ns: "home" })}
-          to={withLocale("/assignments")}
-          value={withLocale("/assignments")}
+          to={withLocale("/orders")}
+          value={withLocale("/orders")}
           component={Link}
-          key={"assignments"}
-        />,
-        <Tab
-          label={t("tabs.task", { ns: "home" })}
-          to={withLocale("/tasks")}
-          value={withLocale("/tasks")}
-          component={Link}
-          key={"tasks"}
-        />,
-        <Tab
-          label={t("tabs.request", { ns: "home" })}
-          to={withLocale("/requests")}
-          value={withLocale("/requests")}
-          component={Link}
-          key={"requests"}
-        />,
-        <Tab
-          label={t("tabs.mission", { ns: "home" })}
-          to={withLocale("/missions")}
-          value={withLocale("/missions")}
-          component={Link}
-          key={"missions"}
-          disabled
-        />,
-      ],
-      manager: [
-        <Tab
-          label={t("tabs.assignment", { ns: "home" })}
-          to={withLocale("/assignments")}
-          value={withLocale("/assignments")}
-          component={Link}
-          key={"assignments"}
+          key={"orders"}
         />,
         <Tab
           label={t("tabs.task", { ns: "home" })}
@@ -116,10 +85,10 @@ export async function clientLoader() {
       client: [
         <Tab
           label={t("tabs.assignment", { ns: "home" })}
-          to={withLocale("/assignments")}
-          value={withLocale("/assignments")}
+          to={withLocale("/orders")}
+          value={withLocale("/orders")}
           component={Link}
-          key={"assignments"}
+          key={"orders"}
           sx={{
             maxWidth: "unset",
           }}

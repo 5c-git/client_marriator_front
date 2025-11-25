@@ -5,7 +5,7 @@ export default [
     layout("routes/menuLayout/menuLayout.tsx", [
       layout("routes/home/layout/layout.tsx", [
         route(":lang?/", "routes/home/index/home.tsx"),
-        route(":lang?/assignments", "routes/assignments/assignments.tsx"),
+        route(":lang?/orders", "routes/orders/orders.tsx"),
         route(":lang?/tasks", "routes/tasks/tasks.tsx"),
         route(":lang?/requests", "routes/requests/requests.tsx"),
         route(":lang?/missions", "routes/missions/missions.tsx"),
@@ -191,11 +191,19 @@ export default [
       ":lang?/users/:user/select-locations",
       "routes/users/selectLocations/selectLocations.tsx"
     ),
-    route(":lang?/new-assignment", "routes/new-assignment/new-assignment.tsx"),
+
+    //order
+    route(":lang?/orders/:orderId", "routes/orders/order/order.tsx"),
+    route(":lang?/new-order", "routes/orders/new-order/new-order.tsx"),
     route(
-      ":lang?/new-assignment/:orderId/new-service",
-      "routes/new-assignment/new-service/new-service.tsx"
+      ":lang?/new-order/:orderId/new-service",
+      "routes/orders/new-service/new-service.tsx"
     ),
+    route(
+      ":lang?/orders/:orderId/edit-service/:activityId",
+      "routes/orders/edit-service/edit-service.tsx"
+    ),
+    //order
 
     route(":lang?/new-task", "routes/new-task/new-task.tsx"),
     route(
@@ -203,15 +211,6 @@ export default [
       "routes/new-task/new-service/new-service.tsx"
     ),
 
-    route(
-      ":lang?/assignments/:orderId",
-      "routes/assignments/assignment/assignment.tsx"
-    ),
-
-    route(
-      ":lang?/assignments/:orderId/edit-service/:activityId",
-      "routes/assignments/assignment/edit-service/edit-service.tsx"
-    ),
     route(
       ":lang?/tasks/:taskId/edit-service/:activityId",
       "routes/tasks/task/edit-service/edit-service.tsx"

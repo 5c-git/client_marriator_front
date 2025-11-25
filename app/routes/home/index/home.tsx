@@ -15,7 +15,7 @@ export async function clientLoader() {
       userRole === "manager" ||
       userRole === "client"
     ) {
-      throw redirect(withLocale("/assignments"));
+      throw redirect(withLocale("/orders"));
     } else if (userRole === "specialist") {
       throw redirect(withLocale("/missions"));
     }
