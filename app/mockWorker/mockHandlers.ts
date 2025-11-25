@@ -112,6 +112,7 @@ import { postAcceptReportMockResponse } from "~/requests/_personal/postAcceptRep
 import { postPayReportForManagerMockResponse } from "~/requests/_personal/postPayReportForManager/postPayReportForManager";
 import { getReasonsMockResponse } from "~/requests/_personal/getReasons/getReasons";
 import { postUpdateReportMockResponse } from "~/requests/_personal/postUpdateReport/postUpdateReport";
+import { postCreateBidFromOrderMockResponse } from "~/requests/_personal/postCreateBidFromOrder/postCreateBidFromOrder";
 
 export const handlers = [
   getFormMockResponse,
@@ -224,4 +225,5 @@ export const handlers = [
   postPayReportForManagerMockResponse,
   getReasonsMockResponse,
   postUpdateReportMockResponse,
+  postCreateBidFromOrderMockResponse,
 ];

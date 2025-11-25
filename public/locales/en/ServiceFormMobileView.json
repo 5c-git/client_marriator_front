@@ -1,0 +1,36 @@
+{
+  "service": {
+    "header": "New service",
+    "fields": {
+      "servicePlaceholder": "Type of service *",
+      "amountPlaceholder": "Amount *",
+      "startTimePlaceholder": "Start date and time *",
+      "endTimePlaceholder": "End date and time *",
+      "needPhotosPlaceholder": "Photo report",
+      "needDaysPlaceholder": "By day",
+      "needRoutePlaceholder": "Route",
+      "searchbarPlaceholder": "Search location",
+      "startClockPlaceholder": "Start time",
+      "endClockPlaceholder": "End time"
+    },
+    "dayMap": {
+      "0": "SUN",
+      "1": "MON",
+      "2": "TUE",
+      "3": "WED",
+      "4": "THU",
+      "5": "FRI",
+      "6": "SAT"
+    },
+    "addAddressButton": "Add location",
+    "addSelectedAddressButton": "Add selected",
+    "cancelButton": "Cancel",
+    "saveButton": "Save",
+    "startDate": "Start date",
+    "endDate": "End date",
+    "startTime": "Start time",
+    "endTime": "End time",
+    "addDayButton": "Add day",
+    "deleteDayButton": "Delete day"
+  }
+}

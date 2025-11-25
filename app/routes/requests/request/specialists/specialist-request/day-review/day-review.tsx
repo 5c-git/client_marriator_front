@@ -7,8 +7,6 @@ import { useTranslation } from "react-i18next";
 import { useStore } from "~/store/store";
 import { withLocale } from "~/shared/withLocale";
 
-import * as Yup from "yup";
-import { yupResolver } from "@hookform/resolvers/yup";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { useForm, Controller, useFieldArray } from "react-hook-form";

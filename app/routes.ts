@@ -1,13 +1,6 @@
-import {
-  type RouteConfig,
-  route,
-  layout,
-  index,
-} from "@react-router/dev/routes";
+import { type RouteConfig, route, layout } from "@react-router/dev/routes";
 
 export default [
-  // index("routes/pigment/pigment.tsx"),
-
   layout("routes/rootErrorBoundry/rootErrorBoundry.tsx", [
     layout("routes/menuLayout/menuLayout.tsx", [
       layout("routes/home/layout/layout.tsx", [
@@ -214,6 +207,7 @@ export default [
       ":lang?/assignments/:orderId",
       "routes/assignments/assignment/assignment.tsx"
     ),
+
     route(
       ":lang?/assignments/:orderId/edit-service/:activityId",
       "routes/assignments/assignment/edit-service/edit-service.tsx"

@@ -1,4 +1,5 @@
 {
+  "DELETE": "YES",
   "header": "Заказ услуги",
   "popupHeader": "Добавление точек",
   "fields": {

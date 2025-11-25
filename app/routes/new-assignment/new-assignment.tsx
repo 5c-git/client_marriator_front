@@ -366,7 +366,12 @@ export default function NewAssignment({ loaderData }: Route.ComponentProps) {
                   sx={{
                     display: "grid",
                     rowGap: "4px",
+                    textDecoration: "none",
                   }}
+                  component={Link}
+                  to={withLocale(
+                    `/assignments/${loaderData.order.id}/edit-service/${item.id}`
+                  )}
                 >
                   <Typography
                     component="p"

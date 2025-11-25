@@ -73,15 +73,17 @@ import request_specialists_specialistRequest_dayReview from "../../public/locale
 
 //internal
 
+//views
+import EntityMobileView from "../../public/locales/ru/EntityMobileView.json";
+import ServiceFormMobileView from "../../public/locales/ru/ServiceFormMobileView.json";
+
 //components
 import styledPhotoCheckbox from "../../public/locales/ru/styledPhotoCheckbox.json";
 import styledFileInput from "../../public/locales/ru/styledFileInput.json";
 import styledPhotoInput from "../../public/locales/ru/styledPhotoInput.json";
 import styledAutocomplete from "../../public/locales/ru/styledAutocomplete.json";
-
-//dev
-import moderationLayout from "../../public/locales/ru/moderationLayout.json";
-//dev
+import RadioSearchableDrawer from "../../public/locales/ru/RadioSearchableDrawer.json";
+import CheckboxSearchableDrawer from "../../public/locales/ru/CheckboxSearchableDrawer.json";
 
 import "i18next";
 declare module "i18next" {
@@ -164,15 +166,17 @@ declare module "i18next" {
       request_specialists_specialistRequest_dayReview: typeof request_specialists_specialistRequest_dayReview;
       //internal
 
+      //views
+      EntityMobileView: typeof EntityMobileView;
+      ServiceFormMobileView: typeof ServiceFormMobileView;
+
       //components
       styledPhotoCheckbox: typeof styledPhotoCheckbox;
       styledFileInput: typeof styledFileInput;
       styledPhotoInput: typeof styledPhotoInput;
       styledAutocomplete: typeof styledAutocomplete;
-
-      //dev
-      moderationLayout: typeof moderationLayout;
-      //dev
+      RadioSearchableDrawer: typeof RadioSearchableDrawer;
+      CheckboxSearchableDrawer: typeof CheckboxSearchableDrawer;
     };
   }
 }
