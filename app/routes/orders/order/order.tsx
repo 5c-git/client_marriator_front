@@ -7,7 +7,7 @@ import {
   redirect,
 } from "react-router";
 
-import type { Route } from "./+types/assignment";
+import type { Route } from "./+types/order";
 import type { EntityMobileViewInterface } from "./_views/mobileView/EntityMobileViewInterface";
 import { GetOrderSuccess } from "~/requests/_personal/getOrder/getOrderSuccess.type";
 
@@ -249,7 +249,7 @@ export default function Assignment({ loaderData }: Route.ComponentProps) {
                     <Box
                       component={Link}
                       to={withLocale(
-                        `/orders/${loaderData.entity.id}/edit-service/${activity.id}`
+                        `/orders/${loaderData.entity.id}/service/${activity.id}`
                       )}
                       sx={{
                         display: "grid",
@@ -295,7 +295,7 @@ export default function Assignment({ loaderData }: Route.ComponentProps) {
                   <Button
                     component={Link}
                     to={withLocale(
-                      `/new-order/${loaderData.entity.id}/new-service?edit=true`
+                      `/orders/new-order/${loaderData.entity.id}/new-service?edit=true`
                     )}
                     variant="outlined"
                     startIcon={<AddIcon />}
@@ -372,7 +372,7 @@ export default function Assignment({ loaderData }: Route.ComponentProps) {
                     <Box
                       component={Link}
                       to={withLocale(
-                        `/orders/${loaderData.entity.id}/edit-service/${activity.id}`
+                        `/orders/${loaderData.entity.id}/service/${activity.id}`
                       )}
                       state={{
                         service: loaderData.orderActivities.find(

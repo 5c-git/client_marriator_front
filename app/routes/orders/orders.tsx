@@ -727,9 +727,9 @@ export default function Assignments({ loaderData }: Route.ComponentProps) {
       (activeAssignments.length === 0 && userRole === "client") ? (
         <Fab
           component={Link}
-          to={withLocale("/new-assignment")}
+          to={withLocale("/orders/new-order")}
           color="Corp_1"
-          aria-label="Create new assignment"
+          aria-label="Create new order"
           sx={{
             position: "fixed",
             bottom: "60px",

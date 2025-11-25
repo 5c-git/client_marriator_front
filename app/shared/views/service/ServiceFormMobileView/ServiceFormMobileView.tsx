@@ -228,6 +228,11 @@ export function ServiceFormMobileView(props: ServiceFormMobileViewInterface) {
                   helperText={errors.dateStart?.message}
                   {...field}
                   value={field.value}
+                  onChange={(evt) => {
+                    field.onChange(evt);
+                    remove();
+                    setValue("needDays", false);
+                  }}
                 />
               </LocalizationProvider>
             )}
@@ -250,6 +255,11 @@ export function ServiceFormMobileView(props: ServiceFormMobileViewInterface) {
                   disablePast
                   {...field}
                   value={field.value}
+                  onChange={(evt) => {
+                    field.onChange(evt);
+                    remove();
+                    setValue("needDays", false);
+                  }}
                 />
               </LocalizationProvider>
             )}

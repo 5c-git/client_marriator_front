@@ -194,14 +194,10 @@ export default [
 
     //order
     route(":lang?/orders/:orderId", "routes/orders/order/order.tsx"),
-    route(":lang?/new-order", "routes/orders/new-order/new-order.tsx"),
+    route(":lang?/orders/new-order", "routes/orders/new-order/new-order.tsx"),
     route(
-      ":lang?/new-order/:orderId/new-service",
-      "routes/orders/new-service/new-service.tsx"
-    ),
-    route(
-      ":lang?/orders/:orderId/edit-service/:activityId",
-      "routes/orders/edit-service/edit-service.tsx"
+      ":lang?/orders/:orderId/service/:serviceId?",
+      "routes/orders/service/service.tsx"
     ),
     //order
 

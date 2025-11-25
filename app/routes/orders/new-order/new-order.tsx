@@ -6,7 +6,7 @@ import {
   Link,
   redirect,
 } from "react-router";
-import type { Route } from "./+types/new-assignment";
+import type { Route } from "./+types/new-order";
 
 import { useTranslation } from "react-i18next";
 import { withLocale } from "~/shared/withLocale";
@@ -370,7 +370,7 @@ export default function NewAssignment({ loaderData }: Route.ComponentProps) {
                   }}
                   component={Link}
                   to={withLocale(
-                    `/assignments/${loaderData.order.id}/edit-service/${item.id}`
+                    `/orders/${loaderData.order.id}/service/${item.id}`
                   )}
                 >
                   <Typography
@@ -410,7 +410,7 @@ export default function NewAssignment({ loaderData }: Route.ComponentProps) {
 
         <Button
           component={Link}
-          to={withLocale(`/new-assignment/${loaderData.order.id}/new-service`)}
+          to={withLocale(`/orders/${loaderData.order.id}/service`)}
           variant="outlined"
           disabled={loaderData.order.isNewOrder}
           startIcon={<AddIcon />}
