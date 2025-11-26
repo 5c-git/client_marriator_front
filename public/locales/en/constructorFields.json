@@ -30,5 +30,6 @@
   "autocomplete": "Required field",
   "selectMultiple": "Required field",
   "inFututreDate": "Selected date must be in future",
-  "lessThanStartDate": "Selected date is less than start date"
+  "lessThanStartDate": "Selected date is less than start date",
+  "locationsNeeded": "Please provide route locations"
 }

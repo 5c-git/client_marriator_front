@@ -30,5 +30,6 @@
   "autocomplete": "Обязательное поле",
   "selectMultiple": "Обязательное полe",
   "inFututreDate": "Выбранная дата должна быть в будущем",
-  "lessThanStartDate": "Выбранная дата раньше даты старта"
+  "lessThanStartDate": "Выбранная дата раньше даты старта",
+  "locationsNeeded": "Укажите точки маршрута"
 }

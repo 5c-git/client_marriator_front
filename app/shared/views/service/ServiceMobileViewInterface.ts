@@ -2,24 +2,7 @@ import { ComponentPropsWithoutRef } from "react";
 
 import { CheckboxSearchableDrawer } from "~/shared/ui/CheckboxSearchableDrawer/CheckboxSearchableDrawer";
 
-type submitValues = {
-  activity: string;
-  amount: string;
-  dateStart: Date | null;
-  dateEnd: Date | null;
-  needDays: boolean;
-  needFoto: boolean;
-  days: {
-    timeStart: Date;
-    timeEnd: Date;
-    needRoute?: boolean;
-    locations?: {
-      id: string;
-      name: string;
-      logo?: string;
-    }[];
-  }[];
-};
+import type { submitValues } from "./ServiceFormMobileView/ServiceFormMobileView";
 
 export type ServiceMobileViewInterface = {
   translation: "service";

@@ -3,10 +3,11 @@ import type { ServiceMobileViewInterface } from "../ServiceMobileViewInterface";
 import { useState } from "react";
 
 import { useTranslation } from "react-i18next";
+import { t } from "i18next";
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import { useForm, Controller, useFieldArray } from "react-hook-form";
+import { useForm, Controller, useFieldArray, useWatch } from "react-hook-form";
 
 import {
   intervalToDuration,
@@ -57,6 +58,98 @@ type ServiceFormMobileViewInterface = Omit<
   "headerButtonAction" | "logo"
 >;
 
+const serviceFormSchema = z
+  .object({
+    activity: z
+      .string()
+      .trim()
+      .min(1, { error: t("text", { ns: "constructorFields" }) }),
+    amount: z
+      .string()
+      .trim()
+      .min(1, { error: t("text", { ns: "constructorFields" }) }),
+    dateStart: z
+      .union([
+        z.date().min(new Date(), {
+          error: t("inFututreDate", { ns: "constructorFields" }),
+        }),
+        z.null(),
+      ])
+      .pipe(z.date({ message: t("text", { ns: "constructorFields" }) })),
+    dateEnd: z
+      .union([
+        z.date().min(new Date(), {
+          error: t("inFututreDate", { ns: "constructorFields" }),
+        }),
+
+        z.null(),
+      ])
+      .pipe(z.date({ message: t("text", { ns: "constructorFields" }) })),
+    needDays: z.boolean(),
+    needFoto: z.boolean(),
+    days: z
+      .array(
+        z.object({
+          timeStart: z.date({
+            error: t("text", { ns: "constructorFields" }),
+          }),
+          timeEnd: z.date({
+            error: t("text", { ns: "constructorFields" }),
+          }),
+          needRoute: z.boolean().optional(),
+          locations: z
+            .array(
+              z.object({
+                id: z
+                  .string()
+                  .trim()
+                  .min(1, {
+                    error: t("text", { ns: "constructorFields" }),
+                  }),
+                name: z
+                  .string()
+                  .trim()
+                  .min(1, {
+                    error: t("text", { ns: "constructorFields" }),
+                  }),
+                logo: z.string().optional(),
+              }),
+            )
+            .optional(),
+        }),
+      )
+      .superRefine((days, ctx) => {
+        days.forEach((day, index) => {
+          const locations = day.locations;
+          if (locations && locations.length < 1 && day.needRoute === true) {
+            ctx.addIssue({
+              code: "custom",
+              message: t("locationsNeeded", { ns: "constructorFields" }),
+              input: day.locations,
+              path: [index],
+            });
+          }
+        });
+      }),
+  })
+  .superRefine((values, ctx) => {
+    const dateStart = values.dateStart;
+    const dateEnd = values.dateEnd;
+
+    const result = compareAsc(dateStart, dateEnd);
+
+    if (result > 0) {
+      ctx.addIssue({
+        code: "custom",
+        message: t("lessThanStartDate", { ns: "constructorFields" }),
+        input: values.dateEnd,
+        path: ["dateEnd"],
+      });
+    }
+  });
+
+export type submitValues = z.output<typeof serviceFormSchema>;
+
 export function ServiceFormMobileView(props: ServiceFormMobileViewInterface) {
   const { t } = useTranslation("ServiceFormMobileView");
 
@@ -71,6 +164,7 @@ export function ServiceFormMobileView(props: ServiceFormMobileViewInterface) {
     getValues,
     setValue,
     trigger,
+    register,
   } = useForm({
     defaultValues: {
       activity: props.entity.id,
@@ -81,54 +175,7 @@ export function ServiceFormMobileView(props: ServiceFormMobileViewInterface) {
       needFoto: props.entity.needPhoto,
       days: props.entity.days,
     },
-    resolver: zodResolver(
-      z.object({
-        activity: z.string(t("text", { ns: "constructorFields" })),
-        amount: z.string(t("text", { ns: "constructorFields" })),
-        dateStart: z
-          .date(t("text", { ns: "constructorFields" }))
-          .min(new Date(), t("inFututreDate", { ns: "constructorFields" }))
-          .nullable(),
-
-        dateEnd: z
-          .date(t("text", { ns: "constructorFields" }))
-          .min(new Date(), t("inFututreDate", { ns: "constructorFields" }))
-          .nullable()
-          .refine(
-            (value) => {
-              const dateStart = getValues("dateStart");
-
-              if (dateStart) {
-                const result = compareAsc(value as Date, dateStart);
-                if (result > 0) {
-                  return true;
-                }
-              }
-
-              return false;
-            },
-            { error: t("lessThanStartDate", { ns: "constructorFields" }) }
-          ),
-        needDays: z.boolean(),
-        needFoto: z.boolean(),
-        days: z.array(
-          z.object({
-            timeStart: z.date(t("text", { ns: "constructorFields" })),
-            timeEnd: z.date(t("text", { ns: "constructorFields" })),
-            needRoute: z.boolean().optional(),
-            locations: z
-              .array(
-                z.object({
-                  id: z.string(t("text", { ns: "constructorFields" })),
-                  name: z.string(t("text", { ns: "constructorFields" })),
-                  logo: z.string().optional(),
-                })
-              )
-              .optional(),
-          })
-        ),
-      })
-    ),
+    resolver: zodResolver(serviceFormSchema),
   });
   const { fields, append, remove } = useFieldArray({
     control,
@@ -174,7 +221,7 @@ export function ServiceFormMobileView(props: ServiceFormMobileViewInterface) {
               <StyledSelect
                 inputType="select"
                 placeholder={t(
-                  `${props.translation}.fields.servicePlaceholder`
+                  `${props.translation}.fields.servicePlaceholder`,
                 )}
                 onImmediateChange={() => {}}
                 validation="none"
@@ -222,17 +269,17 @@ export function ServiceFormMobileView(props: ServiceFormMobileViewInterface) {
                 adapterLocale={ru}
               >
                 <DateTimeField
-                  error={errors.dateStart?.message ? true : false}
+                  // error={errors.dateStart?.message ? true : false}
                   variant="filled"
                   label={t(`${props.translation}.fields.startTimePlaceholder`)}
                   helperText={errors.dateStart?.message}
                   {...field}
-                  value={field.value}
-                  onChange={(evt) => {
-                    field.onChange(evt);
-                    remove();
-                    setValue("needDays", false);
-                  }}
+                  // value={field.value}
+                  // onChange={(evt) => {
+                  //   field.onChange(evt);
+                  //   remove();
+                  //   setValue("needDays", false);
+                  // }}
                 />
               </LocalizationProvider>
             )}
@@ -310,11 +357,10 @@ export function ServiceFormMobileView(props: ServiceFormMobileViewInterface) {
                           append({
                             timeStart: dateStart,
                             timeEnd: set(days[i], { hours: 21 }),
-                            needRoute: false,
                             ...((() => {
                               let result = false;
                               const match = props.activities.find(
-                                (item) => item.value === getValues("activity")
+                                (item) => item.value === getValues("activity"),
                               );
 
                               if (match) {
@@ -331,7 +377,7 @@ export function ServiceFormMobileView(props: ServiceFormMobileViewInterface) {
                             ...((() => {
                               let result = false;
                               const match = props.activities.find(
-                                (item) => item.value === getValues("activity")
+                                (item) => item.value === getValues("activity"),
                               );
 
                               if (match) {
@@ -348,7 +394,7 @@ export function ServiceFormMobileView(props: ServiceFormMobileViewInterface) {
                             ...((() => {
                               let result = false;
                               const match = props.activities.find(
-                                (item) => item.value === getValues("activity")
+                                (item) => item.value === getValues("activity"),
                               );
 
                               if (match) {
@@ -408,7 +454,7 @@ export function ServiceFormMobileView(props: ServiceFormMobileViewInterface) {
                       &nbsp;
                       {t(
                         //@ts-expect-error https://www.i18next.com/overview/typescript#type-error-template-literal
-                        `${props.translation}.dayMap.${getDay(day.timeStart)}`
+                        `${props.translation}.dayMap.${getDay(day.timeStart)}`,
                       )}
                     </Typography>
 
@@ -420,18 +466,18 @@ export function ServiceFormMobileView(props: ServiceFormMobileViewInterface) {
                       })}
                     >
                       {format(
-                        new Date(getValues(`days.${index}.timeStart`)),
-                        "kk:mm"
+                        new Date(watch(`days.${index}.timeStart`)),
+                        "kk:mm",
                       )}
                       -
                       {format(
-                        new Date(getValues(`days.${index}.timeEnd`)),
-                        "kk:mm"
+                        new Date(watch(`days.${index}.timeEnd`)),
+                        "kk:mm",
                       )}
                     </Typography>
 
                     {(() => {
-                      const locations = getValues(`days.${index}.locations`);
+                      const locations = watch(`days.${index}.locations`);
 
                       if (locations && locations.length > 0) {
                         return (
@@ -485,11 +531,17 @@ export function ServiceFormMobileView(props: ServiceFormMobileViewInterface) {
                               hours: 21,
                             })}
                             placeholder={t(
-                              `${props.translation}.fields.startClockPlaceholder`
+                              `${props.translation}.fields.startClockPlaceholder`,
                             )}
                             // error={errors.days[index]?.message}
                             {...field}
                             value={field.value.toString()}
+                            onChange={(evt) => {
+                              setValue(
+                                `days.${index}.timeStart`,
+                                new Date(evt),
+                              );
+                            }}
                           />
                         )}
                       />
@@ -503,11 +555,14 @@ export function ServiceFormMobileView(props: ServiceFormMobileViewInterface) {
                             })}
                             maxTime={field.value}
                             placeholder={t(
-                              `${props.translation}.fields.endClockPlaceholder`
+                              `${props.translation}.fields.endClockPlaceholder`,
                             )}
                             // error={errors.days[index]?.message}
                             {...field}
                             value={field.value.toString()}
+                            onChange={(evt) => {
+                              setValue(`days.${index}.timeEnd`, new Date(evt));
+                            }}
                           />
                         )}
                       />
@@ -523,12 +578,35 @@ export function ServiceFormMobileView(props: ServiceFormMobileViewInterface) {
                               {...field}
                               inputType="checkbox"
                               label={t(
-                                `${props.translation}.fields.needRoutePlaceholder`
+                                `${props.translation}.fields.needRoutePlaceholder`,
                               )}
                               onImmediateChange={() => {}}
                               validation="none"
                               value={field.value as boolean}
+                              onChange={(evt) => {
+                                if (evt.target.value === "true") {
+                                  setValue(`days.${index}.locations`, []);
+                                }
+
+                                field.onChange(evt);
+                              }}
                             />
+
+                            {errors.days ? (
+                              <Typography
+                                component="p"
+                                variant="Reg_14"
+                                sx={(theme) => ({
+                                  flexGrow: "1",
+                                  color: theme.vars.palette["Red"],
+                                  paddingTop: "8px",
+                                  paddingBottom: "8px",
+                                  textAlign: "center",
+                                })}
+                              >
+                                {errors.days[index]?.message}
+                              </Typography>
+                            ) : null}
 
                             <Box
                               sx={{
@@ -572,17 +650,17 @@ export function ServiceFormMobileView(props: ServiceFormMobileViewInterface) {
                                         <IconButton
                                           onClick={() => {
                                             const currentList = getValues(
-                                              `days.${index}.locations`
+                                              `days.${index}.locations`,
                                             );
 
                                             const updatedList =
                                               currentList?.filter(
                                                 (item) =>
-                                                  item.id !== location.id
+                                                  item.id !== location.id,
                                               );
                                             setValue(
                                               `days.${index}.locations`,
-                                              updatedList
+                                              updatedList,
                                             );
                                             trigger(`days.${index}.locations`);
                                           }}
@@ -599,7 +677,7 @@ export function ServiceFormMobileView(props: ServiceFormMobileViewInterface) {
                                           />
                                         </IconButton>
                                       </Box>
-                                    )
+                                    ),
                                   )
                                 : null}
 
@@ -644,34 +722,56 @@ export function ServiceFormMobileView(props: ServiceFormMobileViewInterface) {
           </Box>
         ) : null}
 
-        <Button
-          variant="outlined"
-          type="button"
-          startIcon={<CalendarIcon />}
-          onClick={() => {
-            const days = getValues("days");
+        {watch("activity") !== "" && fields.length > 0 ? (
+          <Button
+            variant="outlined"
+            type="button"
+            startIcon={<CalendarIcon />}
+            onClick={() => {
+              const days = getValues("days");
 
-            const lastDay = days ? [...days].pop() : undefined;
+              const lastDay = days ? [...days].pop() : undefined;
 
-            if (lastDay) {
-              append({
-                timeStart: addDays(lastDay.timeStart, 1),
-                timeEnd: addDays(lastDay.timeEnd, 2),
-                needRoute: false,
-                locations: [],
-              });
-            } else {
-              append({
-                timeStart: addDays(new Date(), 1),
-                timeEnd: addDays(new Date(), 2),
-                needRoute: false,
-                locations: [],
-              });
-            }
-          }}
-        >
-          {t(`${props.translation}.addDayButton`)}
-        </Button>
+              if (lastDay) {
+                append({
+                  timeStart: addDays(lastDay.timeStart, 1),
+                  timeEnd: addDays(lastDay.timeEnd, 2),
+                  ...((() => {
+                    let result = false;
+                    const match = props.activities.find(
+                      (item) => item.value === getValues("activity"),
+                    );
+
+                    if (match) {
+                      result = match.needRoute;
+                    }
+
+                    return result;
+                  })() && { needRoute: false, locations: [] }),
+                });
+              } else {
+                append({
+                  timeStart: addDays(new Date(), 1),
+                  timeEnd: addDays(new Date(), 2),
+                  ...((() => {
+                    let result = false;
+                    const match = props.activities.find(
+                      (item) => item.value === getValues("activity"),
+                    );
+
+                    if (match) {
+                      result = match.needRoute;
+                    }
+
+                    return result;
+                  })() && { needRoute: false, locations: [] }),
+                });
+              }
+            }}
+          >
+            {t(`${props.translation}.addDayButton`)}
+          </Button>
+        ) : null}
 
         <Controller
           name="needFoto"
@@ -727,11 +827,11 @@ export function ServiceFormMobileView(props: ServiceFormMobileViewInterface) {
 
           selectedLoactions.forEach((item) => {
             const match = props.locations.find(
-              (location) => location.value === item
+              (location) => location.value === item,
             );
 
             const isAlreadySelected = selectedDayLocations?.find(
-              (location) => location.id === item
+              (location) => location.id === item,
             );
 
             if (match && isAlreadySelected === undefined) {
@@ -742,6 +842,8 @@ export function ServiceFormMobileView(props: ServiceFormMobileViewInterface) {
               });
             }
           });
+
+          trigger();
           setDayIndex(-1);
         }}
         items={props.locations}

@@ -8,6 +8,7 @@ import { ServiceStaticMobileView } from "~/shared/views/service/ServiceStaticMob
 
 import { useStore } from "~/store/store";
 
+import type { postCreateOrderActivityPayload } from "~/requests/_personal/postCreateOrderActivity/postCreateOrderActivity";
 import type { postUpdateOrderActivityPayload } from "~/requests/_personal/postUpdateOrderActivity/postUpdateOrderActivity";
 import type { ServiceMobileViewInterface } from "~/shared/views/service/ServiceMobileViewInterface";
 
@@ -16,6 +17,7 @@ import { Loader } from "~/shared/ui/Loader/Loader";
 import { getOrder } from "~/requests/_personal/getOrder/getOrder";
 import { getViewActivitiesForOrder } from "~/requests/_personal/getViewActivitiesForOrder/getViewActivitiesForOrder";
 import { getPlaceForOrder } from "~/requests/_personal/getPlaceForOrder/getPlaceForOrder";
+import { postCreateOrderActivity } from "~/requests/_personal/postCreateOrderActivity/postCreateOrderActivity";
 import { postUpdateOrderActivity } from "~/requests/_personal/postUpdateOrderActivity/postUpdateOrderActivity";
 
 type MobileModeData = Omit<
@@ -68,7 +70,7 @@ export async function clientLoader({ params }: Route.ClientLoaderArgs) {
         const orderData = await getOrder(accessToken, params.orderId);
 
         const service = orderData.data.orderActivities.find(
-          (item) => item.id.toString() === params.serviceId
+          (item) => item.id.toString() === params.serviceId,
         );
 
         if (service) {
@@ -122,7 +124,7 @@ export async function clientLoader({ params }: Route.ClientLoaderArgs) {
 
       const activitiesData = await getViewActivitiesForOrder(
         accessToken,
-        params.orderId
+        params.orderId,
       );
 
       const locationsData = await getPlaceForOrder(accessToken);
@@ -169,12 +171,17 @@ export async function clientAction({
   params,
   request,
 }: Route.ClientActionArgs) {
-  const fields = await request.json();
+  const { _action, ...fields } = await request.json();
   const accessToken = useStore.getState().accessToken;
 
   if (accessToken) {
-    await postUpdateOrderActivity(accessToken, fields);
-    throw redirect(withLocale(`/orders/${params.orderId}`));
+    if (_action === "createService") {
+      await postCreateOrderActivity(accessToken, fields.payload);
+      throw redirect(withLocale(`/orders/${params.orderId}`));
+    } else if (_action === "updateService") {
+      await postUpdateOrderActivity(accessToken, fields.payload);
+      throw redirect(withLocale(`/orders/${params.orderId}`));
+    }
   } else {
     throw new Response("Токен авторизации не обнаружен!", { status: 401 });
   }
@@ -200,14 +207,59 @@ export default function Service({ loaderData }: Route.ComponentProps) {
             activities={loaderData.activities}
             locations={loaderData.locations}
             headerBackAction={() => {
-              navigate(withLocale(`/orders/${loaderData.orderId}`));
+              navigate(-1);
             }}
             cancelAction={() => {
               setEditMode(false);
             }}
             submitAction={(values) => {
-              if (values.dateStart && values.dateEnd) {
-                const payload: postUpdateOrderActivityPayload = {
+              if (loaderData.setting_isNew) {
+                const createPayload: postCreateOrderActivityPayload = {
+                  orderId: Number(loaderData.orderId),
+                  viewActivityId: Number(values.activity),
+                  count: Number(values.amount),
+                  dateStart: values.dateStart.toISOString(),
+                  dateEnd: values.dateEnd.toISOString(),
+                  needFoto: values.needFoto,
+                  ...(values.days &&
+                    values.days.length > 0 && {
+                      dateActivity: (() => {
+                        const days: {
+                          timeStart: string;
+                          timeEnd: string;
+                          placeIds?: number[];
+                        }[] = [];
+
+                        values.days?.forEach((day) => {
+                          const places: number[] = [];
+
+                          day.locations?.forEach((location) => {
+                            places.push(Number(location.id));
+                          });
+
+                          days.push({
+                            timeStart: new Date(day.timeStart).toISOString(),
+                            timeEnd: new Date(day.timeEnd).toISOString(),
+                            ...(places.length > 0 && { placeIds: places }),
+                          });
+                        });
+
+                        return days;
+                      })(),
+                    }),
+                };
+                submit(
+                  JSON.stringify({
+                    _action: "createService",
+                    payload: createPayload,
+                  }),
+                  {
+                    method: "POST",
+                    encType: "application/json",
+                  },
+                );
+              } else {
+                const updatePayload: postUpdateOrderActivityPayload = {
                   orderId: Number(loaderData.orderId),
                   orderActivity: Number(loaderData.serviceId),
                   viewActivityId: Number(values.activity),
@@ -243,10 +295,16 @@ export default function Service({ loaderData }: Route.ComponentProps) {
                     }),
                 };
 
-                submit(JSON.stringify(payload), {
-                  method: "POST",
-                  encType: "application/json",
-                });
+                submit(
+                  JSON.stringify({
+                    _action: "updateService",
+                    payload: updatePayload,
+                  }),
+                  {
+                    method: "POST",
+                    encType: "application/json",
+                  },
+                );
               }
             }}
           />
