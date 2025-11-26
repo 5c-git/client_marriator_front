@@ -134,7 +134,7 @@ export async function clientLoader({ params }: Route.ClientLoaderArgs) {
       if (userRole === "manager") {
         const supervisersData = await getSupervisorsForTask(
           accessToken,
-          params.orderId
+          params.orderId,
         );
 
         supervisersData.data.forEach((item) => {
@@ -169,20 +169,20 @@ export async function clientAction({ request }: Route.ClientActionArgs) {
       await postDeleteOrderActivity(
         accessToken,
         fields.orderId,
-        fields.orderActivityId
+        fields.orderActivityId,
       );
     } else if (_action === "transformAssignment") {
       const transformedTaskData = await postConvertTask(
         accessToken,
         fields.orderId,
-        fields.responsibleId
+        fields.responsibleId,
       );
       throw redirect(withLocale(`/tasks/${transformedTaskData.data.id}`));
     } else if (_action === "transformAssignmentToRequest") {
       const transformedRequestData = await postCreateBidFromOrder(
         accessToken,
         fields.orderId,
-        fields.orderActivityId
+        fields.orderActivityId,
       );
       throw redirect(withLocale(`/requests/${transformedRequestData.data.id}`));
     } else if (_action === "acceptAssignment") {
@@ -197,7 +197,7 @@ export async function clientAction({ request }: Route.ClientActionArgs) {
   }
 }
 
-export default function Assignment({ loaderData }: Route.ComponentProps) {
+export default function Order({ loaderData }: Route.ComponentProps) {
   const navigate = useNavigate();
   const navigation = useNavigation();
   const { t } = useTranslation("assignment");
@@ -249,7 +249,7 @@ export default function Assignment({ loaderData }: Route.ComponentProps) {
                     <Box
                       component={Link}
                       to={withLocale(
-                        `/orders/${loaderData.entity.id}/service/${activity.id}`
+                        `/orders/${loaderData.entity.id}/service/${activity.id}`,
                       )}
                       sx={{
                         display: "grid",
@@ -294,9 +294,7 @@ export default function Assignment({ loaderData }: Route.ComponentProps) {
                 <>
                   <Button
                     component={Link}
-                    to={withLocale(
-                      `/orders/new-order/${loaderData.entity.id}/new-service?edit=true`
-                    )}
+                    to={withLocale(`/orders/${loaderData.entity.id}/service`)}
                     variant="outlined"
                     startIcon={<AddIcon />}
                   >
@@ -372,11 +370,11 @@ export default function Assignment({ loaderData }: Route.ComponentProps) {
                     <Box
                       component={Link}
                       to={withLocale(
-                        `/orders/${loaderData.entity.id}/service/${activity.id}`
+                        `/orders/${loaderData.entity.id}/service/${activity.id}`,
                       )}
                       state={{
                         service: loaderData.orderActivities.find(
-                          (service) => service.id === activity.id
+                          (service) => service.id === activity.id,
                         ),
                       }}
                       sx={{
@@ -460,7 +458,7 @@ export default function Assignment({ loaderData }: Route.ComponentProps) {
                           {
                             method: "POST",
                             encType: "application/json",
-                          }
+                          },
                         );
                       }}
                     >
@@ -504,7 +502,7 @@ export default function Assignment({ loaderData }: Route.ComponentProps) {
                           {
                             method: "POST",
                             encType: "application/json",
-                          }
+                          },
                         );
                       }}
                     >
@@ -524,7 +522,7 @@ export default function Assignment({ loaderData }: Route.ComponentProps) {
                           {
                             method: "POST",
                             encType: "application/json",
-                          }
+                          },
                         );
                       }}
                       startIcon={
@@ -558,7 +556,7 @@ export default function Assignment({ loaderData }: Route.ComponentProps) {
                 {
                   method: "POST",
                   encType: "application/json",
-                }
+                },
               );
             }}
             items={loaderData.supervisorsToSelect}
@@ -604,7 +602,7 @@ export default function Assignment({ loaderData }: Route.ComponentProps) {
                     {
                       method: "POST",
                       encType: "application/json",
-                    }
+                    },
                   );
                   setActivityToDelete(null);
                 }}
