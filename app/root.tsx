@@ -8,7 +8,7 @@ import {
   LoaderFunctionArgs,
 } from "react-router";
 
-import { UAParser } from "ua-parser-js";
+// import { UAParser } from "ua-parser-js";
 
 import HawkCatcher from "@hawk.so/javascript";
 
@@ -31,11 +31,8 @@ export function HydrateFallback() {
 export async function clientLoader({ request, params }: LoaderFunctionArgs) {
   const locale = params.lang ?? "ru";
 
-  const test = request.headers.get("user-agent");
-  // const { device } = UAParser(request.headers.get("user-agent"));
-  const { device } = UAParser();
-
-  console.log(device);
+  // const { device } = UAParser();
+  // console.log(device);
 
   if (!supportedLngs.includes(locale)) {
     throw new Response(null, {
