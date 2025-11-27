@@ -5,6 +5,7 @@ export const S_MenuItem = styled(MenuItem)({
   paddingRight: "16px",
   paddingLeft: "16px",
   minHeight: "unset",
+  whiteSpace: "normal",
 
   "&:hover": {
     backgroundColor: "rgba(199, 50, 155, 0.3)",
