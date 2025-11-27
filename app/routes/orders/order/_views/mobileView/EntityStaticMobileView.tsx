@@ -5,11 +5,12 @@ import { useTranslation } from "react-i18next";
 import { statusCodeMap } from "~/shared/status";
 
 import Box from "@mui/material/Box";
-import { Avatar, Typography } from "@mui/material";
+import { Avatar, Typography, IconButton } from "@mui/material";
 
 import { TopNavigation } from "~/shared/ui/TopNavigation/TopNavigation";
 
 import { EditIcon } from "~/shared/icons/EditIcon";
+import { PhoneIcon } from "~/shared/icons/PhoneIcon";
 
 export function EntityStaticMobileView(props: EntityMobileViewInterface) {
   const { t } = useTranslation("EntityMobileView");
@@ -103,7 +104,7 @@ export function EntityStaticMobileView(props: EntityMobileViewInterface) {
                   statusCodeMap[
                     props.entity.status as keyof typeof statusCodeMap
                   ].value
-                }`
+                }`,
               )}
             </Typography>
           </Box>
@@ -143,7 +144,7 @@ export function EntityStaticMobileView(props: EntityMobileViewInterface) {
             </Typography>
           </Box>
         </Box>
-        {props.entity.responsiblePerson ? (
+        {props.entity.creatingPerson ? (
           <>
             <Box>
               <Typography
@@ -153,7 +154,9 @@ export function EntityStaticMobileView(props: EntityMobileViewInterface) {
                   color: theme.vars.palette["Grey_2"],
                 })}
               >
-                {t(`${props.translation}.responsiblePlaceholder`)}
+                {t(
+                  `${props.translation}.role.${props.entity.creatingPerson.role}`,
+                )}
               </Typography>
               <Box
                 sx={{
@@ -163,7 +166,7 @@ export function EntityStaticMobileView(props: EntityMobileViewInterface) {
                 }}
               >
                 <Avatar
-                  src={`${import.meta.env.VITE_ASSET_PATH}${props.entity.responsiblePerson.logo}`}
+                  src={`${import.meta.env.VITE_ASSET_PATH}${props.entity.creatingPerson.logo}`}
                   sx={{ width: "30px", height: "30px" }}
                 />
                 <Typography
@@ -171,10 +174,62 @@ export function EntityStaticMobileView(props: EntityMobileViewInterface) {
                   variant="Reg_14"
                   sx={(theme) => ({ color: theme.vars.palette["Black"] })}
                 >
-                  {props.entity.responsiblePerson.email}
+                  {props.entity.creatingPerson.name}
                 </Typography>
               </Box>
             </Box>
+            <Box
+              sx={{
+                display: "flex",
+                justifyContent: "space-between",
+                alignItems: "center",
+              }}
+            >
+              <Box>
+                <Typography
+                  component="p"
+                  variant="Reg_12"
+                  sx={(theme) => ({
+                    color: theme.vars.palette["Grey_2"],
+                  })}
+                >
+                  {t(`${props.translation}.phonePlaceholder`)}
+                </Typography>
+                <Typography
+                  component="a"
+                  variant="Reg_14"
+                  href={`tel:${props.entity.creatingPerson.phone}`}
+                  sx={(theme) => ({
+                    color: theme.vars.palette["Black"],
+                    textDecoration: "none",
+                  })}
+                >
+                  {props.entity.creatingPerson.phone}
+                </Typography>
+              </Box>
+              <IconButton
+                component="a"
+                href={`tel:+${props.entity.creatingPerson.phone}`}
+                sx={(theme) => ({
+                  display: "flex",
+                  padding: "7px",
+                  color: theme.vars.palette["Corp_1"],
+                  backgroundColor: theme.vars.palette["Grey_4"],
+                  borderRadius: "5px",
+                })}
+              >
+                <PhoneIcon
+                  sx={{
+                    width: "16px",
+                    height: "16px",
+                  }}
+                />
+              </IconButton>
+            </Box>
+          </>
+        ) : null}
+        {props.entity.acceptingPerson ? (
+          <>
             <Box>
               <Typography
                 component="p"
@@ -183,24 +238,82 @@ export function EntityStaticMobileView(props: EntityMobileViewInterface) {
                   color: theme.vars.palette["Grey_2"],
                 })}
               >
-                {t(`${props.translation}.responsiblePhonePlaceholder`)}
+                {t(
+                  `${props.translation}.role.${props.entity.acceptingPerson.role}`,
+                )}
               </Typography>
-              <Typography
+              <Box
+                sx={{
+                  display: "flex",
+                  columnGap: "8px",
+                  alignItems: "center",
+                }}
+              >
+                <Avatar
+                  src={`${import.meta.env.VITE_ASSET_PATH}${props.entity.acceptingPerson.logo}`}
+                  sx={{ width: "30px", height: "30px" }}
+                />
+                <Typography
+                  component="p"
+                  variant="Reg_14"
+                  sx={(theme) => ({ color: theme.vars.palette["Black"] })}
+                >
+                  {props.entity.acceptingPerson.name}
+                </Typography>
+              </Box>
+            </Box>
+            <Box
+              sx={{
+                display: "flex",
+                justifyContent: "space-between",
+                alignItems: "center",
+              }}
+            >
+              <Box>
+                <Typography
+                  component="p"
+                  variant="Reg_12"
+                  sx={(theme) => ({
+                    color: theme.vars.palette["Grey_2"],
+                  })}
+                >
+                  {t(`${props.translation}.phonePlaceholder`)}
+                </Typography>
+                <Typography
+                  component="a"
+                  variant="Reg_14"
+                  href={`tel:${props.entity.acceptingPerson.phone}`}
+                  sx={(theme) => ({
+                    color: theme.vars.palette["Black"],
+                    textDecoration: "none",
+                  })}
+                >
+                  {props.entity.acceptingPerson.phone}
+                </Typography>
+              </Box>
+              <IconButton
                 component="a"
-                variant="Reg_14"
-                href={`tel:${props.entity.responsiblePerson.phone}`}
+                href={`tel:+${props.entity.acceptingPerson.phone}`}
                 sx={(theme) => ({
-                  color: theme.vars.palette["Black"],
-                  textDecoration: "none",
+                  display: "flex",
+                  padding: "7px",
+                  color: theme.vars.palette["Corp_1"],
+                  backgroundColor: theme.vars.palette["Grey_4"],
+                  borderRadius: "5px",
                 })}
               >
-                {props.entity.responsiblePerson.phone}
-              </Typography>
+                <PhoneIcon
+                  sx={{
+                    width: "16px",
+                    height: "16px",
+                  }}
+                />
+              </IconButton>
             </Box>
           </>
         ) : null}
 
-        {props.entity.activities.length > 0 ? (
+        {props.entity.services.length > 0 ? (
           <Box
             sx={{
               display: "grid",
@@ -214,11 +327,11 @@ export function EntityStaticMobileView(props: EntityMobileViewInterface) {
                 color: theme.vars.palette["Black"],
               })}
             >
-              {t(`${props.translation}.activities`)}
+              {t(`${props.translation}.services`)}
             </Typography>
 
-            {props.entity.activities.map((activity) =>
-              props.activitySlot(activity)
+            {props.entity.services.map((service) =>
+              props.activitySlot(service),
             )}
           </Box>
         ) : null}

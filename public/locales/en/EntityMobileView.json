@@ -1,0 +1,22 @@
+{
+  "order": {
+    "header": "Assignment",
+    "statusPlaceholder": "Status",
+    "locationPlaceholder": "Location",
+    "phonePlaceholder": "Phone",
+    "services": "Services",
+    "status": {
+      "new": "New",
+      "accepted": "Accepted",
+      "notAccepted": "Not Accepted",
+      "canceled": "Canceled",
+      "archive": "Archive"
+    },
+    "role": {
+      "manager": "Manager",
+      "supervisor": "Supervisor",
+      "client": "Client",
+      "specialist": "Specialist"
+    }
+  }
+}

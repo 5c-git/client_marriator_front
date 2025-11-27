@@ -11,14 +11,24 @@ type Entity = {
   };
   selfEmployed: boolean;
   route: number;
-  activities: {
+  services: {
     id: number;
     name: string;
     count: number;
     route: number;
   }[];
-  responsiblePerson: null | {
+  creatingPerson: null | {
     id: number;
+    role: "manager" | "supervisor" | "client" | "specialist";
+    name: string;
+    phone: number;
+    email: string;
+    logo: string;
+  };
+  acceptingPerson: null | {
+    id: number;
+    role: "manager" | "supervisor" | "client" | "specialist";
+    name: string;
     phone: number;
     email: string;
     logo: string;
@@ -26,10 +36,10 @@ type Entity = {
 };
 
 export type EntityMobileViewInterface = {
-  translation: "assignment";
+  translation: "order";
   entity: Entity;
   headerBackAction: () => void;
   headerButtonAction?: () => void;
-  activitySlot: (activity: Entity["activities"][0]) => React.ReactNode;
+  activitySlot: (activity: Entity["services"][0]) => React.ReactNode;
   actionSlot: () => React.ReactNode;
 };

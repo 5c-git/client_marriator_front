@@ -11,6 +11,8 @@ import type { Route } from "./+types/order";
 import type { EntityMobileViewInterface } from "./_views/mobileView/EntityMobileViewInterface";
 import { GetOrderSuccess } from "~/requests/_personal/getOrder/getOrderSuccess.type";
 
+import { determineRole } from "~/shared/determineRole";
+
 import { t, loadNamespaces } from "i18next";
 import { useTranslation } from "react-i18next";
 import { withLocale } from "~/shared/withLocale";
@@ -87,9 +89,10 @@ export async function clientLoader({ params }: Route.ClientLoaderArgs) {
           region: "",
         },
         selfEmployed: false,
-        activities: [],
+        services: [],
         route: 0,
-        responsiblePerson: null,
+        creatingPerson: null,
+        acceptingPerson: null,
       };
 
       const supervisorsToSelect: ComponentPropsWithoutRef<
@@ -103,8 +106,25 @@ export async function clientLoader({ params }: Route.ClientLoaderArgs) {
       order.place.logo = orderData.data.place.logo;
       order.place.region = orderData.data.place.region.name;
       order.selfEmployed = orderData.data.selfEmployed;
-      order.responsiblePerson = orderData.data.acceptUser
-        ? orderData.data.acceptUser
+      order.creatingPerson = orderData.data.user
+        ? {
+            id: orderData.data.user.id,
+            role: determineRole(orderData.data.user.roles),
+            name: orderData.data.user.name,
+            phone: orderData.data.user.phone,
+            email: orderData.data.user.email,
+            logo: orderData.data.user.logo,
+          }
+        : null;
+      order.acceptingPerson = orderData.data.acceptUser
+        ? {
+            id: orderData.data.acceptUser.id,
+            role: determineRole(orderData.data.acceptUser.roles),
+            name: orderData.data.acceptUser.name,
+            phone: orderData.data.acceptUser.phone,
+            email: orderData.data.acceptUser.email,
+            logo: orderData.data.acceptUser.logo,
+          }
         : null;
 
       orderData.data.orderActivities.forEach((item) => {
@@ -115,7 +135,7 @@ export async function clientLoader({ params }: Route.ClientLoaderArgs) {
         });
         // считаем количество точек в маршруте
 
-        order.activities.push({
+        order.services.push({
           id: item.id,
           count: item.count,
           name: item.viewActivity.name,
@@ -221,7 +241,7 @@ export default function Order({ loaderData }: Route.ComponentProps) {
           {navigation.state !== "idle" ? <Loader /> : null}{" "}
           {editMode ? (
             <EntityEditMobileView
-              translation={"assignment"}
+              translation={"order"}
               entity={loaderData.entity}
               headerBackAction={() => {
                 navigate(withLocale("/orders"), {
@@ -335,7 +355,7 @@ export default function Order({ loaderData }: Route.ComponentProps) {
             />
           ) : (
             <EntityStaticMobileView
-              translation={"assignment"}
+              translation={"order"}
               entity={loaderData.entity}
               headerBackAction={() => {
                 navigate(withLocale("/orders"), {

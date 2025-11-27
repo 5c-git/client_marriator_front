@@ -1,17 +1,22 @@
 {
-  "assignment": {
+  "order": {
     "header": "Поручение",
     "statusPlaceholder": "Статус",
     "locationPlaceholder": "Место оказания услуг",
-    "responsiblePlaceholder": "Ответственный",
-    "responsiblePhonePlaceholder": "Телефон",
-    "activities": "Услуги",
+    "phonePlaceholder": "Телефон",
+    "services": "Услуги",
     "status": {
       "new": "Новый",
       "accepted": "Принято",
       "notAccepted": "Не Принято",
       "canceled": "Отменено",
       "archive": "Архив"
+    },
+    "role": {
+      "manager": "Менеджер",
+      "supervisor": "Супервайзор",
+      "client": "Клиент",
+      "specialist": "Специалист"
     }
   }
 }

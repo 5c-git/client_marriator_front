@@ -80,7 +80,7 @@ export function EntityEditMobileView(props: EntityMobileViewInterface) {
                   statusCodeMap[
                     props.entity.status as keyof typeof statusCodeMap
                   ].value
-                }`
+                }`,
               )}
             </Typography>
           </Box>
@@ -122,7 +122,7 @@ export function EntityEditMobileView(props: EntityMobileViewInterface) {
           </Box>
         </Box>
 
-        {props.entity.responsiblePerson ? (
+        {props.entity.creatingPerson ? (
           <>
             <Box>
               <Typography
@@ -132,7 +132,9 @@ export function EntityEditMobileView(props: EntityMobileViewInterface) {
                   color: theme.vars.palette["Grey_2"],
                 })}
               >
-                {t(`${props.translation}.responsiblePlaceholder`)}
+                {t(
+                  `${props.translation}.role.${props.entity.creatingPerson.role}`,
+                )}
               </Typography>
               <Box
                 sx={{
@@ -142,7 +144,7 @@ export function EntityEditMobileView(props: EntityMobileViewInterface) {
                 }}
               >
                 <Avatar
-                  src={`${import.meta.env.VITE_ASSET_PATH}${props.entity.responsiblePerson.logo}`}
+                  src={`${import.meta.env.VITE_ASSET_PATH}${props.entity.creatingPerson.logo}`}
                   sx={{ width: "30px", height: "30px" }}
                 />
                 <Typography
@@ -150,7 +152,7 @@ export function EntityEditMobileView(props: EntityMobileViewInterface) {
                   variant="Reg_14"
                   sx={(theme) => ({ color: theme.vars.palette["Black"] })}
                 >
-                  {props.entity.responsiblePerson.email}
+                  {props.entity.creatingPerson.email}
                 </Typography>
               </Box>
             </Box>
@@ -162,24 +164,82 @@ export function EntityEditMobileView(props: EntityMobileViewInterface) {
                   color: theme.vars.palette["Grey_2"],
                 })}
               >
-                {t(`${props.translation}.responsiblePhonePlaceholder`)}
+                {t(`${props.translation}.phonePlaceholder`)}
               </Typography>
               <Typography
                 component="a"
                 variant="Reg_14"
-                href={`tel:${props.entity.responsiblePerson.phone}`}
+                href={`tel:${props.entity.creatingPerson.phone}`}
                 sx={(theme) => ({
                   color: theme.vars.palette["Black"],
                   textDecoration: "none",
                 })}
               >
-                {props.entity.responsiblePerson.phone}
+                {props.entity.creatingPerson.phone}
+              </Typography>
+            </Box>
+          </>
+        ) : null}
+        {props.entity.acceptingPerson ? (
+          <>
+            <Box>
+              <Typography
+                component="p"
+                variant="Reg_12"
+                sx={(theme) => ({
+                  color: theme.vars.palette["Grey_2"],
+                })}
+              >
+                {t(
+                  `${props.translation}.role.${props.entity.acceptingPerson.role}`,
+                )}
+              </Typography>
+              <Box
+                sx={{
+                  display: "flex",
+                  columnGap: "8px",
+                  alignItems: "center",
+                }}
+              >
+                <Avatar
+                  src={`${import.meta.env.VITE_ASSET_PATH}${props.entity.acceptingPerson.logo}`}
+                  sx={{ width: "30px", height: "30px" }}
+                />
+                <Typography
+                  component="p"
+                  variant="Reg_14"
+                  sx={(theme) => ({ color: theme.vars.palette["Black"] })}
+                >
+                  {props.entity.acceptingPerson.email}
+                </Typography>
+              </Box>
+            </Box>
+            <Box>
+              <Typography
+                component="p"
+                variant="Reg_12"
+                sx={(theme) => ({
+                  color: theme.vars.palette["Grey_2"],
+                })}
+              >
+                {t(`${props.translation}.phonePlaceholder`)}
+              </Typography>
+              <Typography
+                component="a"
+                variant="Reg_14"
+                href={`tel:${props.entity.acceptingPerson.phone}`}
+                sx={(theme) => ({
+                  color: theme.vars.palette["Black"],
+                  textDecoration: "none",
+                })}
+              >
+                {props.entity.acceptingPerson.phone}
               </Typography>
             </Box>
           </>
         ) : null}
 
-        {props.entity.activities.length > 0 ? (
+        {props.entity.services.length > 0 ? (
           <Box
             sx={{
               display: "grid",
@@ -193,11 +253,11 @@ export function EntityEditMobileView(props: EntityMobileViewInterface) {
                 color: theme.vars.palette["Black"],
               })}
             >
-              {t(`${props.translation}.activities`)}
+              {t(`${props.translation}.services`)}
             </Typography>
 
-            {props.entity.activities.map((activity) =>
-              props.activitySlot(activity)
+            {props.entity.services.map((service) =>
+              props.activitySlot(service),
             )}
           </Box>
         ) : null}

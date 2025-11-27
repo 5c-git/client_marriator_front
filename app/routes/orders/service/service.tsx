@@ -122,21 +122,23 @@ export async function clientLoader({ params }: Route.ClientLoaderArgs) {
         }
       }
 
-      const activitiesData = await getViewActivitiesForOrder(
-        accessToken,
-        params.orderId,
-      );
+      if (userRole === "client") {
+        const activitiesData = await getViewActivitiesForOrder(
+          accessToken,
+          params.orderId,
+        );
+
+        activitiesData.data.forEach((item) => {
+          activities.push({
+            value: item.id.toString(),
+            label: item.detailName,
+            needRoute: item.traveling,
+            disabled: false,
+          });
+        });
+      }
 
       const locationsData = await getPlaceForOrder(accessToken);
-
-      activitiesData.data.forEach((item) => {
-        activities.push({
-          value: item.id.toString(),
-          label: item.detailName,
-          needRoute: item.traveling,
-          disabled: false,
-        });
-      });
 
       locationsData.data.forEach((item) => {
         locations.push({
