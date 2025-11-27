@@ -7,7 +7,7 @@ import { t } from "i18next";
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import { useForm, Controller, useFieldArray, useWatch } from "react-hook-form";
+import { useForm, Controller, useFieldArray } from "react-hook-form";
 
 import {
   intervalToDuration,
@@ -16,7 +16,9 @@ import {
   getDay,
   compareAsc,
   addDays,
+  subDays,
   format,
+  isSameDay,
 } from "date-fns";
 
 import { LocalizationProvider, DateTimeField } from "@mui/x-date-pickers";
@@ -177,7 +179,7 @@ export function ServiceFormMobileView(props: ServiceFormMobileViewInterface) {
     },
     resolver: zodResolver(serviceFormSchema),
   });
-  const { fields, append, remove } = useFieldArray({
+  const { fields, append, prepend, insert, remove } = useFieldArray({
     control,
     name: "days",
   });
@@ -422,306 +424,448 @@ export function ServiceFormMobileView(props: ServiceFormMobileViewInterface) {
               rowGap: "8px",
             }}
           >
-            {fields.map((day, index) => (
-              <S_Accordion key={day.id}>
-                <S_AccordionSummary
-                  expandIcon={
-                    <ExpandIcon
-                      sx={(theme) => ({
-                        color: theme.vars.palette["Grey_2"],
-                        padding: "4px",
-                      })}
-                    />
-                  }
-                >
-                  <Box
-                    sx={{
-                      width: "100%",
-                      display: "flex",
-                      justifyContent: "space-between",
-                      alignItems: "center",
+            {(() => {
+              const startDate = getValues("dateStart") as Date;
+
+              //надо проверить является ли текущий день датой старта
+              const sameDay = isSameDay(fields[0].timeStart, startDate);
+
+              if (!sameDay) {
+                //если день не один и тотже, значит есть промежуток, вставляем кнопку
+                return (
+                  <Button
+                    variant="outlined"
+                    type="button"
+                    startIcon={<CalendarIcon />}
+                    onClick={() => {
+                      prepend({
+                        timeStart: startDate,
+                        timeEnd: subDays(fields[0].timeEnd, 2),
+                        ...((() => {
+                          let result = false;
+                          const match = props.activities.find(
+                            (item) => item.value === getValues("activity"),
+                          );
+
+                          if (match) {
+                            result = match.needRoute;
+                          }
+
+                          return result;
+                        })() && { needRoute: false, locations: [] }),
+                      });
                     }}
                   >
-                    <Typography
-                      component="p"
-                      variant="Bold_14"
-                      sx={(theme) => ({
-                        color: theme.vars.palette["Black"],
-                      })}
-                    >
-                      {format(day.timeStart, "dd.MM")}
-                      &nbsp;
-                      {t(
-                        //@ts-expect-error https://www.i18next.com/overview/typescript#type-error-template-literal
-                        `${props.translation}.dayMap.${getDay(day.timeStart)}`,
-                      )}
-                    </Typography>
+                    {t(`${props.translation}.addDayButton`)}
+                  </Button>
+                );
+              } else {
+                return null;
+              }
+            })()}
 
-                    <Typography
-                      component="p"
-                      variant="Reg_14"
-                      sx={(theme) => ({
-                        color: theme.vars.palette["Black"],
-                      })}
-                    >
-                      {format(
-                        new Date(watch(`days.${index}.timeStart`)),
-                        "kk:mm",
-                      )}
-                      -
-                      {format(
-                        new Date(watch(`days.${index}.timeEnd`)),
-                        "kk:mm",
-                      )}
-                    </Typography>
-
-                    {(() => {
-                      const locations = watch(`days.${index}.locations`);
-
-                      if (locations && locations.length > 0) {
-                        return (
-                          <Box
-                            sx={{
-                              display: "flex",
-                              alignItems: "center",
-                              columnGap: "4px",
-                            }}
-                          >
-                            <LocationIcon
-                              sx={(theme) => ({
-                                color: theme.vars.palette["Grey_2"],
-                                padding: "2px",
-                              })}
-                            />
-                            <Typography
-                              component="p"
-                              variant="Reg_14"
-                              sx={(theme) => ({
-                                color: theme.vars.palette["Black"],
-                              })}
-                            >
-                              {locations.length}
-                            </Typography>
-                          </Box>
-                        );
-                      } else {
-                        return null;
-                      }
-                    })()}
-                  </Box>
-                </S_AccordionSummary>
-                <S_AccordionDetails>
-                  {" "}
-                  <Box>
+            {fields.map((day, index) => (
+              <Box
+                sx={{
+                  display: "grid",
+                  rowGap: "8px",
+                }}
+                key={day.id}
+              >
+                <S_Accordion>
+                  <S_AccordionSummary
+                    expandIcon={
+                      <ExpandIcon
+                        sx={(theme) => ({
+                          color: theme.vars.palette["Grey_2"],
+                          padding: "4px",
+                        })}
+                      />
+                    }
+                  >
                     <Box
                       sx={{
+                        width: "100%",
                         display: "flex",
-                        columnGap: "10px",
-                        marginBottom: "14px",
+                        justifyContent: "space-between",
+                        alignItems: "center",
                       }}
                     >
-                      <Controller
-                        name={`days.${index}.timeStart` as const}
-                        control={control}
-                        render={({ field }) => (
-                          <TimeField
-                            minTime={field.value}
-                            maxTime={set(field.value, {
-                              hours: 21,
-                            })}
-                            placeholder={t(
-                              `${props.translation}.fields.startClockPlaceholder`,
-                            )}
-                            // error={errors.days[index]?.message}
-                            {...field}
-                            value={field.value.toString()}
-                            onChange={(evt) => {
-                              setValue(
-                                `days.${index}.timeStart`,
-                                new Date(evt),
-                              );
-                            }}
-                          />
+                      <Typography
+                        component="p"
+                        variant="Bold_14"
+                        sx={(theme) => ({
+                          color: theme.vars.palette["Black"],
+                        })}
+                      >
+                        {format(day.timeStart, "dd.MM")}
+                        &nbsp;
+                        {t(
+                          //@ts-expect-error https://www.i18next.com/overview/typescript#type-error-template-literal
+                          `${props.translation}.dayMap.${getDay(day.timeStart)}`,
                         )}
-                      />
-                      <Controller
-                        name={`days.${index}.timeEnd` as const}
-                        control={control}
-                        render={({ field }) => (
-                          <TimeField
-                            minTime={set(field.value, {
-                              hours: 9,
-                            })}
-                            maxTime={field.value}
-                            placeholder={t(
-                              `${props.translation}.fields.endClockPlaceholder`,
-                            )}
-                            // error={errors.days[index]?.message}
-                            {...field}
-                            value={field.value.toString()}
-                            onChange={(evt) => {
-                              setValue(`days.${index}.timeEnd`, new Date(evt));
-                            }}
-                          />
+                      </Typography>
+
+                      <Typography
+                        component="p"
+                        variant="Reg_14"
+                        sx={(theme) => ({
+                          color: theme.vars.palette["Black"],
+                        })}
+                      >
+                        {format(
+                          new Date(watch(`days.${index}.timeStart`)),
+                          "kk:mm",
                         )}
-                      />
-                    </Box>
+                        -
+                        {format(
+                          new Date(watch(`days.${index}.timeEnd`)),
+                          "kk:mm",
+                        )}
+                      </Typography>
 
-                    {getValues(`days.${index}.needRoute`) !== undefined ? (
-                      <Controller
-                        name={`days.${index}.needRoute` as const}
-                        control={control}
-                        render={({ field }) => (
-                          <>
-                            <StyledCheckbox
-                              {...field}
-                              inputType="checkbox"
-                              label={t(
-                                `${props.translation}.fields.needRoutePlaceholder`,
-                              )}
-                              onImmediateChange={() => {}}
-                              validation="none"
-                              value={field.value as boolean}
-                              onChange={(evt) => {
-                                if (evt.target.value === "true") {
-                                  setValue(`days.${index}.locations`, []);
-                                }
+                      {(() => {
+                        const locations = watch(`days.${index}.locations`);
 
-                                field.onChange(evt);
+                        if (locations && locations.length > 0) {
+                          return (
+                            <Box
+                              sx={{
+                                display: "flex",
+                                alignItems: "center",
+                                columnGap: "4px",
                               }}
-                            />
-
-                            {errors.days ? (
+                            >
+                              <LocationIcon
+                                sx={(theme) => ({
+                                  color: theme.vars.palette["Grey_2"],
+                                  padding: "2px",
+                                })}
+                              />
                               <Typography
                                 component="p"
                                 variant="Reg_14"
                                 sx={(theme) => ({
-                                  flexGrow: "1",
-                                  color: theme.vars.palette["Red"],
-                                  paddingTop: "8px",
-                                  paddingBottom: "8px",
-                                  textAlign: "center",
+                                  color: theme.vars.palette["Black"],
                                 })}
                               >
-                                {errors.days[index]?.message}
+                                {locations.length}
                               </Typography>
-                            ) : null}
-
-                            <Box
-                              sx={{
-                                display: "grid",
-                                rowGap: "14px",
-                              }}
-                            >
-                              {getValues(`days.${index}.needRoute`) === true
-                                ? getValues(`days.${index}.locations`)?.map(
-                                    (location) => (
-                                      <Box
-                                        key={location.id}
-                                        sx={{
-                                          display: "flex",
-                                          columnGap: "12px",
-                                          alignItems: "center",
-                                        }}
-                                      >
-                                        {location.logo ? (
-                                          <Avatar
-                                            src={`${import.meta.env.VITE_ASSET_PATH}${
-                                              location.logo
-                                            }`}
-                                            sx={{
-                                              width: "30px",
-                                              height: "30px",
-                                            }}
-                                          />
-                                        ) : null}
-
-                                        <Typography
-                                          component="p"
-                                          variant="Reg_14"
-                                          sx={{
-                                            flexGrow: "1",
-                                          }}
-                                        >
-                                          {location.name}
-                                        </Typography>
-
-                                        <IconButton
-                                          onClick={() => {
-                                            const currentList = getValues(
-                                              `days.${index}.locations`,
-                                            );
-
-                                            const updatedList =
-                                              currentList?.filter(
-                                                (item) =>
-                                                  item.id !== location.id,
-                                              );
-                                            setValue(
-                                              `days.${index}.locations`,
-                                              updatedList,
-                                            );
-                                            trigger(`days.${index}.locations`);
-                                          }}
-                                          sx={{
-                                            width: "24px",
-                                            height: "24px",
-                                          }}
-                                        >
-                                          <DeleteIcon
-                                            sx={{
-                                              width: "12px",
-                                              height: "12px",
-                                            }}
-                                          />
-                                        </IconButton>
-                                      </Box>
-                                    ),
-                                  )
-                                : null}
-
-                              {getValues(`days.${index}.needRoute`) === true ? (
-                                <Button
-                                  variant="outlined"
-                                  startIcon={<PointerIcon />}
-                                  onClick={() => {
-                                    setDayIndex(index);
-                                  }}
-                                >
-                                  {t(`${props.translation}.addAddressButton`)}
-                                </Button>
-                              ) : null}
                             </Box>
-                          </>
-                        )}
-                      />
-                    ) : null}
-
-                    <Button
-                      type="button"
-                      variant="text"
-                      sx={{
-                        marginTop: "14px",
-                      }}
-                      onClick={() => {
-                        remove(index);
-                        if (getValues("days")?.length === 0) {
-                          setValue("needDays", false);
+                          );
+                        } else {
+                          return null;
                         }
-                      }}
-                    >
-                      {t(`${props.translation}.deleteDayButton`)}
-                    </Button>
+                      })()}
+                    </Box>
+                  </S_AccordionSummary>
+                  <S_AccordionDetails>
+                    {" "}
+                    <Box>
+                      <Box
+                        sx={{
+                          display: "flex",
+                          columnGap: "10px",
+                          marginBottom: "14px",
+                        }}
+                      >
+                        <Controller
+                          name={`days.${index}.timeStart` as const}
+                          control={control}
+                          render={({ field }) => (
+                            <TimeField
+                              minTime={field.value}
+                              maxTime={set(field.value, {
+                                hours: 21,
+                              })}
+                              placeholder={t(
+                                `${props.translation}.fields.startClockPlaceholder`,
+                              )}
+                              // error={errors.days[index]?.message}
+                              {...field}
+                              value={field.value.toString()}
+                              onChange={(evt) => {
+                                setValue(
+                                  `days.${index}.timeStart`,
+                                  new Date(evt),
+                                );
+                              }}
+                            />
+                          )}
+                        />
+                        <Controller
+                          name={`days.${index}.timeEnd` as const}
+                          control={control}
+                          key={day.key}
+                          render={({ field }) => (
+                            <TimeField
+                              minTime={set(field.value, {
+                                hours: 9,
+                              })}
+                              maxTime={field.value}
+                              placeholder={t(
+                                `${props.translation}.fields.endClockPlaceholder`,
+                              )}
+                              // error={errors.days[index]?.message}
+                              {...field}
+                              value={field.value.toString()}
+                              onChange={(evt) => {
+                                setValue(
+                                  `days.${index}.timeEnd`,
+                                  new Date(evt),
+                                );
+                              }}
+                            />
+                          )}
+                        />
+                      </Box>
 
-                    <Divider sx={{ marginTop: "8px" }} />
-                  </Box>
-                </S_AccordionDetails>
-              </S_Accordion>
+                      {getValues(`days.${index}.needRoute`) !== undefined ? (
+                        <Controller
+                          name={`days.${index}.needRoute` as const}
+                          control={control}
+                          render={({ field }) => (
+                            <>
+                              <StyledCheckbox
+                                {...field}
+                                inputType="checkbox"
+                                label={t(
+                                  `${props.translation}.fields.needRoutePlaceholder`,
+                                )}
+                                onImmediateChange={() => {}}
+                                validation="none"
+                                value={field.value as boolean}
+                                onChange={(evt) => {
+                                  if (evt.target.value === "true") {
+                                    setValue(`days.${index}.locations`, []);
+                                  }
+
+                                  field.onChange(evt);
+                                }}
+                              />
+
+                              {errors.days ? (
+                                <Typography
+                                  component="p"
+                                  variant="Reg_14"
+                                  sx={(theme) => ({
+                                    flexGrow: "1",
+                                    color: theme.vars.palette["Red"],
+                                    paddingTop: "8px",
+                                    paddingBottom: "8px",
+                                    textAlign: "center",
+                                  })}
+                                >
+                                  {errors.days[index]?.message}
+                                </Typography>
+                              ) : null}
+
+                              <Box
+                                sx={{
+                                  display: "grid",
+                                  rowGap: "14px",
+                                }}
+                              >
+                                {getValues(`days.${index}.needRoute`) === true
+                                  ? getValues(`days.${index}.locations`)?.map(
+                                      (location) => (
+                                        <Box
+                                          key={location.id}
+                                          sx={{
+                                            display: "flex",
+                                            columnGap: "12px",
+                                            alignItems: "center",
+                                          }}
+                                        >
+                                          {location.logo ? (
+                                            <Avatar
+                                              src={`${import.meta.env.VITE_ASSET_PATH}${
+                                                location.logo
+                                              }`}
+                                              sx={{
+                                                width: "30px",
+                                                height: "30px",
+                                              }}
+                                            />
+                                          ) : null}
+
+                                          <Typography
+                                            component="p"
+                                            variant="Reg_14"
+                                            sx={{
+                                              flexGrow: "1",
+                                            }}
+                                          >
+                                            {location.name}
+                                          </Typography>
+
+                                          <IconButton
+                                            onClick={() => {
+                                              const currentList = getValues(
+                                                `days.${index}.locations`,
+                                              );
+
+                                              const updatedList =
+                                                currentList?.filter(
+                                                  (item) =>
+                                                    item.id !== location.id,
+                                                );
+                                              setValue(
+                                                `days.${index}.locations`,
+                                                updatedList,
+                                              );
+                                              trigger(
+                                                `days.${index}.locations`,
+                                              );
+                                            }}
+                                            sx={{
+                                              width: "24px",
+                                              height: "24px",
+                                            }}
+                                          >
+                                            <DeleteIcon
+                                              sx={{
+                                                width: "12px",
+                                                height: "12px",
+                                              }}
+                                            />
+                                          </IconButton>
+                                        </Box>
+                                      ),
+                                    )
+                                  : null}
+
+                                {getValues(`days.${index}.needRoute`) ===
+                                true ? (
+                                  <Button
+                                    variant="outlined"
+                                    startIcon={<PointerIcon />}
+                                    onClick={() => {
+                                      setDayIndex(index);
+                                    }}
+                                  >
+                                    {t(`${props.translation}.addAddressButton`)}
+                                  </Button>
+                                ) : null}
+                              </Box>
+                            </>
+                          )}
+                        />
+                      ) : null}
+
+                      <Button
+                        type="button"
+                        variant="text"
+                        sx={{
+                          marginTop: "14px",
+                        }}
+                        onClick={() => {
+                          remove(index);
+                          if (getValues("days")?.length === 0) {
+                            setValue("needDays", false);
+                          }
+                        }}
+                      >
+                        {t(`${props.translation}.deleteDayButton`)}
+                      </Button>
+
+                      <Divider sx={{ marginTop: "8px" }} />
+                    </Box>
+                  </S_AccordionDetails>
+                </S_Accordion>
+
+                {(() => {
+                  const endDate = getValues("dateEnd") as Date;
+
+                  // смотрим есть ли в массиве дней после текущего дня ещё день
+                  const nextDayinArray = fields[index + 1];
+
+                  if (nextDayinArray) {
+                    //дни есть, нужно проверить есть ли промежуток между днями или они идут друг за другом, для этого берем текущий день, прибавляем к нему 24 часа и берем следующий день в массиве и сравниваем, если день один и тотже, то дни идут друг за другом
+                    const sameDay = isSameDay(
+                      addDays(day.timeStart, 1),
+                      nextDayinArray.timeStart,
+                    );
+
+                    //если день не один и тотже, значит есть промежуток, вставляем кнопку
+                    if (!sameDay) {
+                      return (
+                        <Button
+                          variant="outlined"
+                          type="button"
+                          startIcon={<CalendarIcon />}
+                          onClick={() => {
+                            insert(index + 1, {
+                              timeStart: addDays(day.timeStart, 1),
+                              timeEnd: addDays(day.timeEnd, 2),
+                              ...((() => {
+                                let result = false;
+                                const match = props.activities.find(
+                                  (item) =>
+                                    item.value === getValues("activity"),
+                                );
+
+                                if (match) {
+                                  result = match.needRoute;
+                                }
+
+                                return result;
+                              })() && { needRoute: false, locations: [] }),
+                            });
+                          }}
+                        >
+                          {t(`${props.translation}.addDayButton`)}
+                        </Button>
+                      );
+                    } else {
+                      return null;
+                    }
+                  } else {
+                    //если после текущего дня дней больше нет, надо проверить является ли текущий день датой окончания
+
+                    const sameDay = isSameDay(day.timeStart, endDate);
+                    //если день не один и тотже, значит есть промежуток, вставляем кнопку
+                    if (!sameDay) {
+                      // текущий день не является датой окончания, рисуем кнопку
+                      return (
+                        <Button
+                          variant="outlined"
+                          type="button"
+                          startIcon={<CalendarIcon />}
+                          onClick={() => {
+                            append({
+                              timeStart: addDays(day.timeStart, 1),
+                              timeEnd: addDays(day.timeEnd, 2),
+                              ...((() => {
+                                let result = false;
+                                const match = props.activities.find(
+                                  (item) =>
+                                    item.value === getValues("activity"),
+                                );
+
+                                if (match) {
+                                  result = match.needRoute;
+                                }
+
+                                return result;
+                              })() && { needRoute: false, locations: [] }),
+                            });
+                          }}
+                        >
+                          {t(`${props.translation}.addDayButton`)}
+                        </Button>
+                      );
+                    } else {
+                      return null;
+                    }
+                  }
+                })()}
+              </Box>
             ))}
           </Box>
         ) : null}
 
-        {watch("activity") !== "" && fields.length > 0 ? (
+        {/*{watch("activity") !== "" && fields.length > 0 ? (
           <Button
             variant="outlined"
             type="button"
@@ -770,7 +914,7 @@ export function ServiceFormMobileView(props: ServiceFormMobileViewInterface) {
           >
             {t(`${props.translation}.addDayButton`)}
           </Button>
-        ) : null}
+        ) : null}*/}
 
         <Controller
           name="needFoto"
