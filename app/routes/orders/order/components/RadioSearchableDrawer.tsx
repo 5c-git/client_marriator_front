@@ -46,8 +46,8 @@ export function RadioSearchableDrawer(props: RadioDrawerProps) {
     resolver: zodResolver(
       z.object({
         searchbar: z.string(),
-        selectedItem: z.string(t(`${props.translation}.error`)),
-      })
+        selectedItem: z.string({ error: t(`${props.translation}.error`) }),
+      }),
     ),
   });
 
@@ -105,15 +105,15 @@ export function RadioSearchableDrawer(props: RadioDrawerProps) {
                 onChange={(evt) => {
                   const currentFieldValue = new RegExp(
                     `^${evt.target.value}`,
-                    "i"
+                    "i",
                   );
 
                   let matchingItems: typeof props.items = [];
 
                   if (evt.target.value !== "") {
                     matchingItems = [
-                      ...selectedItems.filter((item) =>
-                        currentFieldValue.test(item.label)
+                      ...props.items.filter((item) =>
+                        currentFieldValue.test(item.label),
                       ),
                     ];
                   } else {
