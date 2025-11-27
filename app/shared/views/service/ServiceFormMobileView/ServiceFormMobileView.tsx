@@ -269,17 +269,17 @@ export function ServiceFormMobileView(props: ServiceFormMobileViewInterface) {
                 adapterLocale={ru}
               >
                 <DateTimeField
-                  // error={errors.dateStart?.message ? true : false}
+                  error={errors.dateStart?.message ? true : false}
                   variant="filled"
                   label={t(`${props.translation}.fields.startTimePlaceholder`)}
                   helperText={errors.dateStart?.message}
                   {...field}
-                  // value={field.value}
-                  // onChange={(evt) => {
-                  //   field.onChange(evt);
-                  //   remove();
-                  //   setValue("needDays", false);
-                  // }}
+                  value={field.value}
+                  onChange={(evt) => {
+                    field.onChange(evt);
+                    remove();
+                    setValue("needDays", false);
+                  }}
                 />
               </LocalizationProvider>
             )}
@@ -295,7 +295,6 @@ export function ServiceFormMobileView(props: ServiceFormMobileViewInterface) {
               >
                 <DateTimeField
                   error={errors.dateEnd?.message ? true : false}
-                  // error={true}
                   variant="filled"
                   label={t(`${props.translation}.fields.endTimePlaceholder`)}
                   helperText={errors.dateEnd?.message}
