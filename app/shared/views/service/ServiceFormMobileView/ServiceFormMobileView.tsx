@@ -153,7 +153,7 @@ const serviceFormSchema = z
 export type submitValues = z.output<typeof serviceFormSchema>;
 
 export function ServiceFormMobileView(props: ServiceFormMobileViewInterface) {
-  const { t } = useTranslation("ServiceFormMobileView");
+  const { t } = useTranslation("ServiceMobileView");
 
   const [dayIndex, setDayIndex] = useState<number>(-1);
 

@@ -25,9 +25,9 @@ type ServiceStaticMobileViewInterface = Omit<
 >;
 
 export function ServiceStaticMobileView(
-  props: ServiceStaticMobileViewInterface
+  props: ServiceStaticMobileViewInterface,
 ) {
-  const { t } = useTranslation("ServiceFormMobileView");
+  const { t } = useTranslation("ServiceMobileView");
 
   return (
     <>
@@ -226,7 +226,7 @@ export function ServiceStaticMobileView(
                       &nbsp;
                       {t(
                         //@ts-expect-error https://www.i18next.com/overview/typescript#type-error-template-literal
-                        `${props.translation}.dayMap.${getDay(day.timeStart)}`
+                        `${props.translation}.dayMap.${getDay(day.timeStart)}`,
                       )}
                     </Typography>
 

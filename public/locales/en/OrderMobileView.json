@@ -1,0 +1,19 @@
+{
+  "new-order": {
+    "header": "New order",
+    "fields": {
+      "locationPlaceholder": "Order location *",
+      "selfEmployedPlaceholder": "Work with self-employed"
+    },
+    "services": "Services",
+    "serviceAmount": "Amount:",
+    "serviceButton": "Add service",
+    "cancelButton": "Cancel",
+    "sendButton": "Send order",
+    "dialog": {
+      "title": "Remove service",
+      "no": "No",
+      "yes": "Yes"
+    }
+  }
+}

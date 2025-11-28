@@ -57,8 +57,6 @@ import users_recruiter from "../../public/locales/ru/users_recruiter.json";
 import users_select_projects from "../../public/locales/ru/users_select_projects.json";
 import users_select_locations from "../../public/locales/ru/users_select_locations.json";
 import assignments from "../../public/locales/ru/assignments.json";
-import new_assignment from "../../public/locales/ru/new_assignment.json";
-import new_service from "../../public/locales/ru/new_service.json";
 import tasks from "../../public/locales/ru/tasks.json";
 import new_task from "../../public/locales/ru/new_task.json";
 import assignment from "../../public/locales/ru/assignment.json";
@@ -74,8 +72,9 @@ import request_specialists_specialistRequest_dayReview from "../../public/locale
 //internal
 
 //views
+import OrderMobileView from "../../public/locales/OrderMobileView/OrderMobileView.json";
 import EntityMobileView from "../../public/locales/ru/EntityMobileView.json";
-import ServiceFormMobileView from "../../public/locales/ru/ServiceFormMobileView.json";
+import ServiceMobileView from "../../public/locales/ru/ServiceFormMobileView.json";
 
 //components
 import styledPhotoCheckbox from "../../public/locales/ru/styledPhotoCheckbox.json";
@@ -167,8 +166,9 @@ declare module "i18next" {
       //internal
 
       //views
+      OrderMobileView: typeof OrderMobileView;
       EntityMobileView: typeof EntityMobileView;
-      ServiceFormMobileView: typeof ServiceFormMobileView;
+      ServiceMobileView: typeof ServiceFormMobileView;
 
       //components
       styledPhotoCheckbox: typeof styledPhotoCheckbox;

@@ -19,11 +19,8 @@ import { withLocale } from "~/shared/withLocale";
 
 import { useStore } from "~/store/store";
 
-import { statusCodeMap } from "~/shared/status";
-
 import Box from "@mui/material/Box";
 import {
-  Avatar,
   Button,
   Dialog,
   DialogActions,
@@ -31,12 +28,9 @@ import {
   Divider,
   IconButton,
   Typography,
-  SwipeableDrawer,
 } from "@mui/material";
 
 import { Loader } from "~/shared/ui/Loader/Loader";
-import { TopNavigation } from "~/shared/ui/TopNavigation/TopNavigation";
-import { StyledSearchBar } from "~/shared/ui/StyledSearchBar/StyledSearchBar";
 import { StyledRadioButton } from "~/shared/ui/StyledRadioButton/StyledRadioButton";
 import { RadioSearchableDrawer } from "./components/RadioSearchableDrawer";
 
@@ -48,7 +42,6 @@ import ClearIcon from "@mui/icons-material/Clear";
 import CheckIcon from "@mui/icons-material/Check";
 import LogoutIcon from "@mui/icons-material/Logout";
 import { RouteIcon } from "~/shared/icons/RouteIcon";
-import { EditIcon } from "~/shared/icons/EditIcon";
 
 import { getOrder } from "~/requests/_personal/getOrder/getOrder";
 import { postDeleteOrderActivity } from "~/requests/_personal/postDeleteOrderActivity/postDeleteOrderActivity";
