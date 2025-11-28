@@ -168,7 +168,7 @@ export default function OrderMobileView(props: OrderMobileViewInterface) {
                   }}
                   component={Link}
                   to={withLocale(
-                    `/orders/${props.order.id}/service/${item.id}`,
+                    `/orders/${props.order.id}/service/${item.id}?new=true`,
                   )}
                 >
                   <Typography
@@ -208,7 +208,7 @@ export default function OrderMobileView(props: OrderMobileViewInterface) {
 
         <Button
           component={Link}
-          to={withLocale(`/orders/${props.order.id}/service`)}
+          to={withLocale(`/orders/${props.order.id}/service?new=true`)}
           variant="outlined"
           disabled={props.order.isNewOrder}
           startIcon={<AddIcon />}

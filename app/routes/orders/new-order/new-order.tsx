@@ -134,7 +134,7 @@ export async function clientAction({ request }: Route.ClientActionArgs) {
   }
 }
 
-export default function NewAssignment({ loaderData }: Route.ComponentProps) {
+export default function NewOrder({ loaderData }: Route.ComponentProps) {
   const navigate = useNavigate();
   const navigation = useNavigation();
 

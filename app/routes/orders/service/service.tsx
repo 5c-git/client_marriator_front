@@ -37,7 +37,10 @@ type MobileModeData = Omit<
   setting_canEdit: boolean;
 };
 
-export async function clientLoader({ params }: Route.ClientLoaderArgs) {
+export async function clientLoader({
+  params,
+  request,
+}: Route.ClientLoaderArgs) {
   const accessToken = useStore.getState().accessToken;
   const userRole = useStore.getState().userRole;
 
@@ -174,15 +177,27 @@ export async function clientAction({
   request,
 }: Route.ClientActionArgs) {
   const { _action, ...fields } = await request.json();
+  const searchParams = new URL(request.url).searchParams;
   const accessToken = useStore.getState().accessToken;
 
+  const isNew = searchParams.get("new");
+
+  console.log(isNew);
   if (accessToken) {
     if (_action === "createService") {
       await postCreateOrderActivity(accessToken, fields.payload);
-      throw redirect(withLocale(`/orders/${params.orderId}`));
+      if (isNew) {
+        throw redirect(`/orders/new-order?orderId=${params.orderId}`);
+      } else {
+        throw redirect(withLocale(`/orders/${params.orderId}`));
+      }
     } else if (_action === "updateService") {
       await postUpdateOrderActivity(accessToken, fields.payload);
-      throw redirect(withLocale(`/orders/${params.orderId}`));
+      if (isNew) {
+        throw redirect(`/orders/new-order?orderId=${params.orderId}`);
+      } else {
+        throw redirect(withLocale(`/orders/${params.orderId}`));
+      }
     }
   } else {
     throw new Response("Токен авторизации не обнаружен!", { status: 401 });
