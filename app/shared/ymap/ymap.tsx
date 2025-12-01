@@ -45,7 +45,7 @@ export const loadMap = async (locale: string): Promise<typeof ymaps3> => {
 
 export const getCircleGeoJSON = (
   center: Coordinates,
-  radiusMeters: number
+  radiusMeters: number,
 ): PolygonGeometry => {
   const { geometry } = circle(center, radiusMeters, {
     units: "kilometers",
@@ -78,6 +78,36 @@ export const renderIcon = (image: string, borderColor: string) => {
         }}
         alt="shop logo"
       />
-    </div>
+    </div>,
+  );
+};
+
+export const renderClusterCounter = (count: number, color: string) => {
+  return renderToStaticMarkup(
+    <div
+      style={{
+        position: "absolute",
+        left: "-50%",
+        top: "-50%",
+        width: "60px",
+        height: "60px",
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        borderRadius: "50%",
+        overflow: "hidden",
+        backgroundColor: color,
+        color: "white",
+      }}
+    >
+      <span
+        style={{
+          fontSize: "18px",
+          fontWeight: "700",
+        }}
+      >
+        {count}
+      </span>
+    </div>,
   );
 };

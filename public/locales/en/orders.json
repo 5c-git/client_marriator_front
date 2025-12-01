@@ -1,0 +1,12 @@
+{
+  "cardHeader": "Amount of services",
+  "cancelAssignmentButton": "Cancel order",
+  "repeatAssignmentButton": "Repeat order",
+  "dialog": {
+    "cancel": "Cancel",
+    "repeat": "Repeat",
+    "title": "order",
+    "no": "No",
+    "yes": "Yes"
+  }
+}

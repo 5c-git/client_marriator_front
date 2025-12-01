@@ -65,6 +65,11 @@ export function Layout({ children }: { children: React.ReactNode }) {
         {/* <meta charSet="utf-8" /> */}
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <meta name="google" content="notranslate" />
+        <script
+          src={`https://api-maps.yandex.ru/v3/?apikey=${
+            import.meta.env.VITE_YANDEX_GEO_KEY
+          }&lang=ru_RU`}
+        ></script>
         <Meta />
         <Links />
       </head>

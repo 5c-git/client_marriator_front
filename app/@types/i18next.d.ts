@@ -56,10 +56,9 @@ import users_supervisor from "../../public/locales/ru/users_supervisor.json";
 import users_recruiter from "../../public/locales/ru/users_recruiter.json";
 import users_select_projects from "../../public/locales/ru/users_select_projects.json";
 import users_select_locations from "../../public/locales/ru/users_select_locations.json";
-import assignments from "../../public/locales/ru/assignments.json";
+
 import tasks from "../../public/locales/ru/tasks.json";
 import new_task from "../../public/locales/ru/new_task.json";
-import assignment from "../../public/locales/ru/assignment.json";
 import task from "../../public/locales/ru/task.json";
 import requests from "../../public/locales/ru/requests.json";
 import request_layout from "../../public/locales/ru/request_layout.json";
@@ -68,13 +67,18 @@ import request_specialists from "../../public/locales/ru/request_specialists.jso
 import missions from "../../public/locales/ru/missions.json";
 import mission from "../../public/locales/ru/mission.json";
 import request_specialists_specialistRequest_dayReview from "../../public/locales/ru/request_specialists_specialistRequest_dayReview.json";
-
 //internal
 
+//routes
+import order from "../../public/locales/ru/order.json";
+import orders from "../../public/locales/ru/orders.json";
+//routes
+
 //views
+import ServiceMobileView from "../../public/locales/ru/ServiceFormMobileView.json";
 import OrderMobileView from "../../public/locales/OrderMobileView/OrderMobileView.json";
 import EntityMobileView from "../../public/locales/ru/EntityMobileView.json";
-import ServiceMobileView from "../../public/locales/ru/ServiceFormMobileView.json";
+import EntitiesListView from "../../public/locales/ru/EntitiesListView.json";
 
 //components
 import styledPhotoCheckbox from "../../public/locales/ru/styledPhotoCheckbox.json";
@@ -149,9 +153,8 @@ declare module "i18next" {
       users_select_locations: typeof users_select_locations;
       request_layout: typeof request_layout;
 
-      assignments: typeof assignments;
-      assignment: typeof assignment;
-      new_assignment: typeof new_assignment;
+      orders: typeof orders;
+      order: typeof order;
       new_service: typeof new_service;
       task: typeof task;
 
@@ -168,6 +171,7 @@ declare module "i18next" {
       //views
       OrderMobileView: typeof OrderMobileView;
       EntityMobileView: typeof EntityMobileView;
+      EntitiesListView: typeof EntitiesListView;
       ServiceMobileView: typeof ServiceFormMobileView;
 
       //components

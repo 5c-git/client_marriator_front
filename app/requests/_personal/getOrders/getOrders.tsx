@@ -17,7 +17,7 @@ export const getOrdersKeys = ["getOrders"];
 export const getOrders = async (
   accessToken: string,
   status?: string,
-  sort?: string
+  sort?: string,
 ): Promise<GetOrdersSuccess> => {
   try {
     const url = new URL(import.meta.env.VITE_GET_ORDERS);
@@ -78,12 +78,12 @@ export const mockResponseSuccess = {
     {
       id: 206,
       selfEmployed: false,
-      status: 2,
+      status: 1,
       place: {
         id: 3,
         name: "Пятёрочка МСК ул. Арбат д. 24",
-        latitude: "55.00000000",
-        longitude: "37.00000000",
+        latitude: "37.64",
+        longitude: "55.76",
         address_kladr: "ул. Арбат д. 24  г.Москва",
         logo: "/storage/source/directory/brand/1-logo/Лого Пятерочка.png",
         region: {
@@ -145,12 +145,580 @@ export const mockResponseSuccess = {
     {
       id: 208,
       selfEmployed: false,
-      status: 3,
+      status: 1,
       place: {
         id: 3,
         name: "Пятёрочка МСК ул. Арбат д. 24",
-        latitude: "55.00000000",
-        longitude: "37.00000000",
+        latitude: "37.63",
+        longitude: "55.7",
+        address_kladr: "ул. Арбат д. 24  г.Москва",
+        logo: "/storage/source/directory/brand/1-logo/Лого Пятерочка.png",
+        region: {
+          id: 2,
+          name: "Москва",
+        },
+        brand: {
+          id: 1,
+          name: "Пятёрочка",
+          logo: "/storage/source/directory/brand/1-logo/Лого Пятерочка.png",
+          description:
+            "«Пятёрочка» — крупнейшая торговая сеть магазинов «у дома» в России.",
+        },
+      },
+      user: {
+        id: 392,
+        phone: 79887777777,
+        email: "client@mail.ru",
+        logo: "/storage/source/directory/brand/1-logo/Лого Пятерочка.png",
+        roles: [
+          {
+            id: 2,
+            name: "client",
+          },
+        ],
+      },
+      orderActivities: [
+        {
+          id: 118,
+          viewActivity: {
+            id: 1,
+            name: "Продавец  (Физическое лицо)",
+            detailName: "Продавец  (Физическое лицо)",
+            previewText:
+              "Кассир магазина,Кассир магазина розничной сети,Мобильный кассир,Продавец прилавка,Продавец прилавка розничной сети,Продавец торгового зала,Продавец торгового зала розничной сети,Кассир общепита",
+            logo: "/storage/source/directory/view_activities/1-img/8c37f333-3b09-4686-9238-dd89e704fbc7-31-Wavebreakmedia-Shutterst.jpg",
+            traveling: false,
+          },
+          count: 1,
+          dateStart: "2025-09-02T11:00:00.000000Z",
+          dateEnd: "2025-09-02T18:00:00.000000Z",
+          needFoto: false,
+          dateActivity: [],
+        },
+      ],
+      acceptUser: {
+        id: 391,
+        phone: 79887951717,
+        email: "manager@mail.ru",
+        logo: "/storage/source/directory/brand/1-logo/Лого Пятерочка.png",
+        roles: [
+          {
+            id: 3,
+            name: "manager",
+          },
+          {
+            id: 1,
+            name: "admin",
+          },
+        ],
+      },
+    },
+    {
+      id: 208,
+      selfEmployed: false,
+      status: 1,
+      place: {
+        id: 3,
+        name: "Пятёрочка МСК ул. Арбат д. 24",
+        latitude: "37.43",
+        longitude: "55.69",
+        address_kladr: "ул. Арбат д. 24  г.Москва",
+        logo: "/storage/source/directory/brand/1-logo/Лого Пятерочка.png",
+        region: {
+          id: 2,
+          name: "Москва",
+        },
+        brand: {
+          id: 1,
+          name: "Пятёрочка",
+          logo: "/storage/source/directory/brand/1-logo/Лого Пятерочка.png",
+          description:
+            "«Пятёрочка» — крупнейшая торговая сеть магазинов «у дома» в России.",
+        },
+      },
+      user: {
+        id: 392,
+        phone: 79887777777,
+        email: "client@mail.ru",
+        logo: "/storage/source/directory/brand/1-logo/Лого Пятерочка.png",
+        roles: [
+          {
+            id: 2,
+            name: "client",
+          },
+        ],
+      },
+      orderActivities: [
+        {
+          id: 118,
+          viewActivity: {
+            id: 1,
+            name: "Продавец  (Физическое лицо)",
+            detailName: "Продавец  (Физическое лицо)",
+            previewText:
+              "Кассир магазина,Кассир магазина розничной сети,Мобильный кассир,Продавец прилавка,Продавец прилавка розничной сети,Продавец торгового зала,Продавец торгового зала розничной сети,Кассир общепита",
+            logo: "/storage/source/directory/view_activities/1-img/8c37f333-3b09-4686-9238-dd89e704fbc7-31-Wavebreakmedia-Shutterst.jpg",
+            traveling: false,
+          },
+          count: 1,
+          dateStart: "2025-09-02T11:00:00.000000Z",
+          dateEnd: "2025-09-02T18:00:00.000000Z",
+          needFoto: false,
+          dateActivity: [],
+        },
+      ],
+      acceptUser: {
+        id: 391,
+        phone: 79887951717,
+        email: "manager@mail.ru",
+        logo: "/storage/source/directory/brand/1-logo/Лого Пятерочка.png",
+        roles: [
+          {
+            id: 3,
+            name: "manager",
+          },
+          {
+            id: 1,
+            name: "admin",
+          },
+        ],
+      },
+    },
+    {
+      id: 208,
+      selfEmployed: false,
+      status: 1,
+      place: {
+        id: 3,
+        name: "Пятёрочка МСК ул. Арбат д. 24",
+        latitude: "37.47",
+        longitude: "55.68",
+        address_kladr: "ул. Арбат д. 24  г.Москва",
+        logo: "/storage/source/directory/brand/1-logo/Лого Пятерочка.png",
+        region: {
+          id: 2,
+          name: "Москва",
+        },
+        brand: {
+          id: 1,
+          name: "Пятёрочка",
+          logo: "/storage/source/directory/brand/1-logo/Лого Пятерочка.png",
+          description:
+            "«Пятёрочка» — крупнейшая торговая сеть магазинов «у дома» в России.",
+        },
+      },
+      user: {
+        id: 392,
+        phone: 79887777777,
+        email: "client@mail.ru",
+        logo: "/storage/source/directory/brand/1-logo/Лого Пятерочка.png",
+        roles: [
+          {
+            id: 2,
+            name: "client",
+          },
+        ],
+      },
+      orderActivities: [
+        {
+          id: 118,
+          viewActivity: {
+            id: 1,
+            name: "Продавец  (Физическое лицо)",
+            detailName: "Продавец  (Физическое лицо)",
+            previewText:
+              "Кассир магазина,Кассир магазина розничной сети,Мобильный кассир,Продавец прилавка,Продавец прилавка розничной сети,Продавец торгового зала,Продавец торгового зала розничной сети,Кассир общепита",
+            logo: "/storage/source/directory/view_activities/1-img/8c37f333-3b09-4686-9238-dd89e704fbc7-31-Wavebreakmedia-Shutterst.jpg",
+            traveling: false,
+          },
+          count: 1,
+          dateStart: "2025-09-02T11:00:00.000000Z",
+          dateEnd: "2025-09-02T18:00:00.000000Z",
+          needFoto: false,
+          dateActivity: [],
+        },
+      ],
+      acceptUser: {
+        id: 391,
+        phone: 79887951717,
+        email: "manager@mail.ru",
+        logo: "/storage/source/directory/brand/1-logo/Лого Пятерочка.png",
+        roles: [
+          {
+            id: 3,
+            name: "manager",
+          },
+          {
+            id: 1,
+            name: "admin",
+          },
+        ],
+      },
+    },
+    {
+      id: 208,
+      selfEmployed: false,
+      status: 1,
+      place: {
+        id: 3,
+        name: "Пятёрочка МСК ул. Арбат д. 24",
+        latitude: "38.53",
+        longitude: "58.6",
+        address_kladr: "ул. Арбат д. 24  г.Москва",
+        logo: "/storage/source/directory/brand/1-logo/Лого Пятерочка.png",
+        region: {
+          id: 2,
+          name: "Москва",
+        },
+        brand: {
+          id: 1,
+          name: "Пятёрочка",
+          logo: "/storage/source/directory/brand/1-logo/Лого Пятерочка.png",
+          description:
+            "«Пятёрочка» — крупнейшая торговая сеть магазинов «у дома» в России.",
+        },
+      },
+      user: {
+        id: 392,
+        phone: 79887777777,
+        email: "client@mail.ru",
+        logo: "/storage/source/directory/brand/1-logo/Лого Пятерочка.png",
+        roles: [
+          {
+            id: 2,
+            name: "client",
+          },
+        ],
+      },
+      orderActivities: [
+        {
+          id: 118,
+          viewActivity: {
+            id: 1,
+            name: "Продавец  (Физическое лицо)",
+            detailName: "Продавец  (Физическое лицо)",
+            previewText:
+              "Кассир магазина,Кассир магазина розничной сети,Мобильный кассир,Продавец прилавка,Продавец прилавка розничной сети,Продавец торгового зала,Продавец торгового зала розничной сети,Кассир общепита",
+            logo: "/storage/source/directory/view_activities/1-img/8c37f333-3b09-4686-9238-dd89e704fbc7-31-Wavebreakmedia-Shutterst.jpg",
+            traveling: false,
+          },
+          count: 1,
+          dateStart: "2025-09-02T11:00:00.000000Z",
+          dateEnd: "2025-09-02T18:00:00.000000Z",
+          needFoto: false,
+          dateActivity: [],
+        },
+      ],
+      acceptUser: {
+        id: 391,
+        phone: 79887951717,
+        email: "manager@mail.ru",
+        logo: "/storage/source/directory/brand/1-logo/Лого Пятерочка.png",
+        roles: [
+          {
+            id: 3,
+            name: "manager",
+          },
+          {
+            id: 1,
+            name: "admin",
+          },
+        ],
+      },
+    },
+    {
+      id: 208,
+      selfEmployed: false,
+      status: 1,
+      place: {
+        id: 3,
+        name: "Пятёрочка МСК ул. Арбат д. 24",
+        latitude: "37.59",
+        longitude: "55.71",
+        address_kladr: "ул. Арбат д. 24  г.Москва",
+        logo: "/storage/source/directory/brand/1-logo/Лого Пятерочка.png",
+        region: {
+          id: 2,
+          name: "Москва",
+        },
+        brand: {
+          id: 1,
+          name: "Пятёрочка",
+          logo: "/storage/source/directory/brand/1-logo/Лого Пятерочка.png",
+          description:
+            "«Пятёрочка» — крупнейшая торговая сеть магазинов «у дома» в России.",
+        },
+      },
+      user: {
+        id: 392,
+        phone: 79887777777,
+        email: "client@mail.ru",
+        logo: "/storage/source/directory/brand/1-logo/Лого Пятерочка.png",
+        roles: [
+          {
+            id: 2,
+            name: "client",
+          },
+        ],
+      },
+      orderActivities: [
+        {
+          id: 118,
+          viewActivity: {
+            id: 1,
+            name: "Продавец  (Физическое лицо)",
+            detailName: "Продавец  (Физическое лицо)",
+            previewText:
+              "Кассир магазина,Кассир магазина розничной сети,Мобильный кассир,Продавец прилавка,Продавец прилавка розничной сети,Продавец торгового зала,Продавец торгового зала розничной сети,Кассир общепита",
+            logo: "/storage/source/directory/view_activities/1-img/8c37f333-3b09-4686-9238-dd89e704fbc7-31-Wavebreakmedia-Shutterst.jpg",
+            traveling: false,
+          },
+          count: 1,
+          dateStart: "2025-09-02T11:00:00.000000Z",
+          dateEnd: "2025-09-02T18:00:00.000000Z",
+          needFoto: false,
+          dateActivity: [],
+        },
+      ],
+      acceptUser: {
+        id: 391,
+        phone: 79887951717,
+        email: "manager@mail.ru",
+        logo: "/storage/source/directory/brand/1-logo/Лого Пятерочка.png",
+        roles: [
+          {
+            id: 3,
+            name: "manager",
+          },
+          {
+            id: 1,
+            name: "admin",
+          },
+        ],
+      },
+    },
+    {
+      id: 208,
+      selfEmployed: false,
+      status: 2,
+      place: {
+        id: 3,
+        name: "Пятёрочка МСК ул. Арбат д. 24",
+        latitude: "37.5",
+        longitude: "55.63",
+        address_kladr: "ул. Арбат д. 24  г.Москва",
+        logo: "/storage/source/directory/brand/1-logo/Лого Пятерочка.png",
+        region: {
+          id: 2,
+          name: "Москва",
+        },
+        brand: {
+          id: 1,
+          name: "Пятёрочка",
+          logo: "/storage/source/directory/brand/1-logo/Лого Пятерочка.png",
+          description:
+            "«Пятёрочка» — крупнейшая торговая сеть магазинов «у дома» в России.",
+        },
+      },
+      user: {
+        id: 392,
+        phone: 79887777777,
+        email: "client@mail.ru",
+        logo: "/storage/source/directory/brand/1-logo/Лого Пятерочка.png",
+        roles: [
+          {
+            id: 2,
+            name: "client",
+          },
+        ],
+      },
+      orderActivities: [
+        {
+          id: 118,
+          viewActivity: {
+            id: 1,
+            name: "Продавец  (Физическое лицо)",
+            detailName: "Продавец  (Физическое лицо)",
+            previewText:
+              "Кассир магазина,Кассир магазина розничной сети,Мобильный кассир,Продавец прилавка,Продавец прилавка розничной сети,Продавец торгового зала,Продавец торгового зала розничной сети,Кассир общепита",
+            logo: "/storage/source/directory/view_activities/1-img/8c37f333-3b09-4686-9238-dd89e704fbc7-31-Wavebreakmedia-Shutterst.jpg",
+            traveling: false,
+          },
+          count: 1,
+          dateStart: "2025-09-02T11:00:00.000000Z",
+          dateEnd: "2025-09-02T18:00:00.000000Z",
+          needFoto: false,
+          dateActivity: [],
+        },
+      ],
+      acceptUser: {
+        id: 391,
+        phone: 79887951717,
+        email: "manager@mail.ru",
+        logo: "/storage/source/directory/brand/1-logo/Лого Пятерочка.png",
+        roles: [
+          {
+            id: 3,
+            name: "manager",
+          },
+          {
+            id: 1,
+            name: "admin",
+          },
+        ],
+      },
+    },
+    {
+      id: 208,
+      selfEmployed: false,
+      status: 2,
+      place: {
+        id: 3,
+        name: "Пятёрочка МСК ул. Арбат д. 24",
+        latitude: "37.52",
+        longitude: "55.57",
+        address_kladr: "ул. Арбат д. 24  г.Москва",
+        logo: "/storage/source/directory/brand/1-logo/Лого Пятерочка.png",
+        region: {
+          id: 2,
+          name: "Москва",
+        },
+        brand: {
+          id: 1,
+          name: "Пятёрочка",
+          logo: "/storage/source/directory/brand/1-logo/Лого Пятерочка.png",
+          description:
+            "«Пятёрочка» — крупнейшая торговая сеть магазинов «у дома» в России.",
+        },
+      },
+      user: {
+        id: 392,
+        phone: 79887777777,
+        email: "client@mail.ru",
+        logo: "/storage/source/directory/brand/1-logo/Лого Пятерочка.png",
+        roles: [
+          {
+            id: 2,
+            name: "client",
+          },
+        ],
+      },
+      orderActivities: [
+        {
+          id: 118,
+          viewActivity: {
+            id: 1,
+            name: "Продавец  (Физическое лицо)",
+            detailName: "Продавец  (Физическое лицо)",
+            previewText:
+              "Кассир магазина,Кассир магазина розничной сети,Мобильный кассир,Продавец прилавка,Продавец прилавка розничной сети,Продавец торгового зала,Продавец торгового зала розничной сети,Кассир общепита",
+            logo: "/storage/source/directory/view_activities/1-img/8c37f333-3b09-4686-9238-dd89e704fbc7-31-Wavebreakmedia-Shutterst.jpg",
+            traveling: false,
+          },
+          count: 1,
+          dateStart: "2025-09-02T11:00:00.000000Z",
+          dateEnd: "2025-09-02T18:00:00.000000Z",
+          needFoto: false,
+          dateActivity: [],
+        },
+      ],
+      acceptUser: {
+        id: 391,
+        phone: 79887951717,
+        email: "manager@mail.ru",
+        logo: "/storage/source/directory/brand/1-logo/Лого Пятерочка.png",
+        roles: [
+          {
+            id: 3,
+            name: "manager",
+          },
+          {
+            id: 1,
+            name: "admin",
+          },
+        ],
+      },
+    },
+    {
+      id: 208,
+      selfEmployed: false,
+      status: 2,
+      place: {
+        id: 3,
+        name: "Пятёрочка МСК ул. Арбат д. 24",
+        latitude: "37.52",
+        longitude: "58.57",
+        address_kladr: "ул. Арбат д. 24  г.Москва",
+        logo: "/storage/source/directory/brand/1-logo/Лого Пятерочка.png",
+        region: {
+          id: 2,
+          name: "Москва",
+        },
+        brand: {
+          id: 1,
+          name: "Пятёрочка",
+          logo: "/storage/source/directory/brand/1-logo/Лого Пятерочка.png",
+          description:
+            "«Пятёрочка» — крупнейшая торговая сеть магазинов «у дома» в России.",
+        },
+      },
+      user: {
+        id: 392,
+        phone: 79887777777,
+        email: "client@mail.ru",
+        logo: "/storage/source/directory/brand/1-logo/Лого Пятерочка.png",
+        roles: [
+          {
+            id: 2,
+            name: "client",
+          },
+        ],
+      },
+      orderActivities: [
+        {
+          id: 118,
+          viewActivity: {
+            id: 1,
+            name: "Продавец  (Физическое лицо)",
+            detailName: "Продавец  (Физическое лицо)",
+            previewText:
+              "Кассир магазина,Кассир магазина розничной сети,Мобильный кассир,Продавец прилавка,Продавец прилавка розничной сети,Продавец торгового зала,Продавец торгового зала розничной сети,Кассир общепита",
+            logo: "/storage/source/directory/view_activities/1-img/8c37f333-3b09-4686-9238-dd89e704fbc7-31-Wavebreakmedia-Shutterst.jpg",
+            traveling: false,
+          },
+          count: 1,
+          dateStart: "2025-09-02T11:00:00.000000Z",
+          dateEnd: "2025-09-02T18:00:00.000000Z",
+          needFoto: false,
+          dateActivity: [],
+        },
+      ],
+      acceptUser: {
+        id: 391,
+        phone: 79887951717,
+        email: "manager@mail.ru",
+        logo: "/storage/source/directory/brand/1-logo/Лого Пятерочка.png",
+        roles: [
+          {
+            id: 3,
+            name: "manager",
+          },
+          {
+            id: 1,
+            name: "admin",
+          },
+        ],
+      },
+    },
+    {
+      id: 208,
+      selfEmployed: false,
+      status: 2,
+      place: {
+        id: 3,
+        name: "Пятёрочка МСК ул. Арбат д. 24",
+        latitude: "40.52",
+        longitude: "58.57",
         address_kladr: "ул. Арбат д. 24  г.Москва",
         logo: "/storage/source/directory/brand/1-logo/Лого Пятерочка.png",
         region: {
@@ -227,5 +795,5 @@ export const getOrdersMockResponse = http.get(
   async () => {
     await delay(2000);
     return HttpResponse.json(mockResponseSuccess);
-  }
+  },
 );

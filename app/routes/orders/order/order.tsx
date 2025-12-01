@@ -61,7 +61,7 @@ type MobileModeData = {
 };
 
 export async function clientLoader({ params }: Route.ClientLoaderArgs) {
-  await loadNamespaces("assignment");
+  await loadNamespaces("order");
 
   const mode = "mobile";
 
@@ -139,7 +139,7 @@ export async function clientLoader({ params }: Route.ClientLoaderArgs) {
       if (orderData.data.acceptUser) {
         supervisorsToSelect.push({
           value: orderData.data.acceptUser.id.toString(),
-          label: t("yourselfOption", { ns: "assignment" }),
+          label: t("yourselfOption", { ns: "order" }),
           disabled: false,
         });
       }
@@ -213,7 +213,7 @@ export async function clientAction({ request }: Route.ClientActionArgs) {
 export default function Order({ loaderData }: Route.ComponentProps) {
   const navigate = useNavigate();
   const navigation = useNavigation();
-  const { t } = useTranslation("assignment");
+  const { t } = useTranslation("order");
   const userRole = useStore.getState().userRole;
 
   const fetcher = useFetcher();
@@ -355,7 +355,10 @@ export default function Order({ loaderData }: Route.ComponentProps) {
                   viewTransition: true,
                 });
               }}
-              {...(userRole === "client" && loaderData.entity.status === 1
+              {...((userRole === "client" && loaderData.entity.status === 1) ||
+              (userRole === "client" && loaderData.entity.status === 2) ||
+              (userRole === "manager" && loaderData.entity.status === 1) ||
+              (userRole === "manager" && loaderData.entity.status === 2)
                 ? {
                     headerButtonAction: () => {
                       setEditMode(true);

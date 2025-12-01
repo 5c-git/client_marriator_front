@@ -1,10 +1,10 @@
 {
   "activityAmount": "Amount:",
   "route": "Route: {{count}} locations",
-  "serviceButton": "Add activity",
+  "serviceButton": "Add service",
   "cancelButton": "Cancel",
   "sendButton": "Save",
-  "saveButton": "Send assignment",
+  "saveButton": "Send order",
   "convertToTask": "Convert to task",
   "convertToBid": "Сonvert to request",
   "acceptButton": "Accept",

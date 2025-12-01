@@ -57,7 +57,7 @@ async function hydrate() {
           <StrictMode>
             <HydratedRouter />
           </StrictMode>
-        </I18nextProvider>
+        </I18nextProvider>,
       );
     });
   });

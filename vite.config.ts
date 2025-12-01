@@ -37,11 +37,14 @@ export default defineConfig({
     // For more information, see https://github.com/mui/material-ui/issues/45878#issuecomment-2987441663
     optimizeDeps: {
       include: ["@emotion/*", "@mui/*"],
+      esbuildOptions: {
+        target: "esnext",
+      },
     },
     noExternal: ["@emotion/*", "@mui/*"],
   },
-
-  // build: {
-  //   sourcemap: true,
-  // },
+  build: {
+    // sourcemap: true,
+    target: "esnext",
+  },
 });
