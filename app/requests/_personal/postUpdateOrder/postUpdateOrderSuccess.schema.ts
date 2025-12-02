@@ -1,10 +1,18 @@
+// PostUpdateOrderSuccess
+
 import { z } from "zod";
 
-export const postCreateOrderActivitySuccessSchema = z.object({
+export const postUpdateOrderSuccessSchema = z.object({
   data: z.object({
     id: z.number(),
     selfEmployed: z.boolean(),
-    status: z.number(),
+    status: z.union([
+      z.literal(1),
+      z.literal(2),
+      z.literal(3),
+      z.literal(4),
+      z.literal(5),
+    ]),
     place: z.object({
       id: z.number(),
       name: z.string(),
@@ -13,12 +21,14 @@ export const postCreateOrderActivitySuccessSchema = z.object({
       address_kladr: z.string(),
       logo: z.string(),
       region: z.object({ id: z.number(), name: z.string() }),
-      brand: z.object({
-        id: z.number(),
-        name: z.string(),
-        logo: z.union([z.null(), z.string()]),
-        description: z.string(),
-      }),
+      brand: z.union([
+        z.object({
+          id: z.number(),
+          name: z.string(),
+          logo: z.union([z.null(), z.string()]),
+          description: z.string(),
+        }),
+      ]),
     }),
     user: z.object({
       id: z.number(),
@@ -65,19 +75,17 @@ export const postCreateOrderActivitySuccessSchema = z.object({
                 latitude: z.string(),
                 longitude: z.string(),
                 address_kladr: z.string(),
-                logo: z.union([z.null(), z.string()]).optional(),
+                logo: z.union([z.null(), z.string()]),
                 region: z.object({ id: z.number(), name: z.string() }),
-                brand: z
-                  .union([
-                    z.null(),
-                    z.object({
-                      id: z.number(),
-                      name: z.string(),
-                      logo: z.union([z.null(), z.string()]),
-                      description: z.union([z.null(), z.string()]),
-                    }),
-                  ])
-                  .optional(),
+                brand: z.union([
+                  z.null(),
+                  z.object({
+                    id: z.number(),
+                    name: z.string(),
+                    logo: z.union([z.null(), z.string()]),
+                    description: z.string(),
+                  }),
+                ]),
               }),
             ),
           }),
@@ -87,6 +95,6 @@ export const postCreateOrderActivitySuccessSchema = z.object({
   }),
 });
 
-export type PostCreateOrderActivitySuccess = z.infer<
-  typeof postCreateOrderActivitySuccessSchema
+export type PostUpdateOrderSuccess = z.infer<
+  typeof postUpdateOrderSuccessSchema
 >;

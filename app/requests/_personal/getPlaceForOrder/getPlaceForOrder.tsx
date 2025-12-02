@@ -1,20 +1,16 @@
 import { http, delay, HttpResponse } from "msw";
-import Ajv from "ajv";
-import addFormats from "ajv-formats";
 
-import getPlaceForOrderSuccess from "./getPlaceForOrderSuccess.schema.json";
-import { GetPlaceForOrderSuccess } from "./getPlaceForOrderSuccess.type";
+import {
+  getPlaceForOrderSuccessSchema,
+  GetPlaceForOrderSuccess,
+} from "./getPlaceForOrderSuccess.schema";
+
 import { UnxpectedError } from "~/shared/unexpectedError/unexpectedError";
-
-const ajv = new Ajv();
-addFormats(ajv);
-
-const validateSuccess = ajv.compile(getPlaceForOrderSuccess);
 
 export const getPlaceForOrderKeys = ["getPlaceForOrder"];
 
 export const getPlaceForOrder = async (
-  accessToken: string
+  accessToken: string,
 ): Promise<GetPlaceForOrderSuccess> => {
   try {
     const url = new URL(import.meta.env.VITE_GET_PLACE_FOR_ORDER);
@@ -36,10 +32,12 @@ export const getPlaceForOrder = async (
       });
     }
 
-    if (validateSuccess(response)) {
-      data = response as unknown as GetPlaceForOrderSuccess;
+    const parsed = getPlaceForOrderSuccessSchema.safeParse(response);
+
+    if (parsed.success) {
+      data = parsed.data;
     } else {
-      console.log(validateSuccess.errors);
+      console.log(parsed.error);
       throw new Response(`Данные запроса getPlaceForOrder не валидны схеме`);
     }
 
@@ -58,7 +56,7 @@ export const getPlaceForOrder = async (
 };
 
 // MOCKS
-export const mockResponseSuccess = {
+export const mockResponseSuccess: GetPlaceForOrderSuccess = {
   data: [
     {
       id: 1,
@@ -106,5 +104,5 @@ export const getPlaceForOrderMockResponse = http.get(
   async () => {
     await delay(2000);
     return HttpResponse.json(mockResponseSuccess);
-  }
+  },
 );

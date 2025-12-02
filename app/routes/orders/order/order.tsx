@@ -9,7 +9,7 @@ import {
 
 import type { Route } from "./+types/order";
 import type { EntityMobileViewInterface } from "./_views/mobileView/EntityMobileViewInterface";
-import { GetOrderSuccess } from "~/requests/_personal/getOrder/getOrderSuccess.type";
+import { GetOrderSuccess } from "~/requests/_personal/getOrder/getOrderSuccess.schema";
 
 import { determineRole } from "~/shared/determineRole";
 

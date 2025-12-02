@@ -1,6 +1,4 @@
 import { http, delay, HttpResponse } from "msw";
-import Ajv from "ajv";
-import addFormats from "ajv-formats";
 
 import {
   postCreateBidFromOrderSuccessSchema,
@@ -14,7 +12,7 @@ export const postCreateBidFromOrderKeys = ["postCreateBidFromOrder"];
 export const postCreateBidFromOrder = async (
   accessToken: string,
   orderId: string,
-  orderActivityId: string
+  orderActivityId: string,
 ): Promise<PostCreateBidFromOrderSuccess> => {
   try {
     const url = new URL(import.meta.env.VITE_POST_CREATE_BID_FROM_ORDER);
@@ -49,7 +47,7 @@ export const postCreateBidFromOrder = async (
     } else {
       console.log(parsed.error);
       throw new Response(
-        `Данные запроса postCreateBidFromOrder не валидны схеме`
+        `Данные запроса postCreateBidFromOrder не валидны схеме`,
       );
     }
 
@@ -258,5 +256,5 @@ export const postCreateBidFromOrderMockResponse = http.post(
   async () => {
     await delay(2000);
     return HttpResponse.json(mockResponseSuccess);
-  }
+  },
 );

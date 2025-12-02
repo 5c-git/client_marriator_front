@@ -1,20 +1,18 @@
 import { http, delay, HttpResponse } from "msw";
-import Ajv from "ajv";
 
-import schemaSuccess from "./postCreateOrderSuccess.schema.json";
-import { PostCreateOrderSuccess } from "./postCreateOrderSuccess.type";
+import {
+  postCreateOrderSuccessSchema,
+  PostCreateOrderSuccess,
+} from "./postCreateOrderSuccess.schema";
+
 import { UnxpectedError } from "~/shared/unexpectedError/unexpectedError";
-
-const ajv = new Ajv();
-
-const validateSuccess = ajv.compile(schemaSuccess);
 
 export const postCreateOrderKeys = ["postCreateOrder"];
 
 export const postCreateOrder = async (
   accessToken: string,
   placeId: number,
-  selfEmployed: boolean
+  selfEmployed: boolean,
 ): Promise<PostCreateOrderSuccess> => {
   try {
     const url = new URL(import.meta.env.VITE_POST_CREATE_ORDER);
@@ -40,10 +38,12 @@ export const postCreateOrder = async (
       });
     }
 
-    if (validateSuccess(response)) {
-      data = response as unknown as PostCreateOrderSuccess;
+    const parsed = postCreateOrderSuccessSchema.safeParse(response);
+
+    if (parsed.success) {
+      data = parsed.data;
     } else {
-      console.log(validateSuccess.errors);
+      console.log(parsed.error);
       throw new Response(`Данные запроса postCreateOrder не валидны схеме`);
     }
 
@@ -62,7 +62,7 @@ export const postCreateOrder = async (
 };
 
 // MOCKS
-export const mockResponseSuccess = {
+export const mockResponseSuccess: PostCreateOrderSuccess = {
   data: {
     id: 2,
     selfEmployed: false,
@@ -109,5 +109,5 @@ export const postCreateOrderMockResponse = http.post(
   async () => {
     await delay(2000);
     return HttpResponse.json(mockResponseSuccess);
-  }
+  },
 );

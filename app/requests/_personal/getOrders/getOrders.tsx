@@ -1,16 +1,11 @@
 import { http, delay, HttpResponse } from "msw";
-import Ajv from "ajv";
-import addFormats from "ajv-formats";
 
-import getOrdersSuccess from "./getOrdersSuccess.schema.json";
-import { GetOrdersSuccess } from "./getOrdersSuccess.type";
+import {
+  getOrdersSuccessSchema,
+  GetOrdersSuccess,
+} from "./getOrdersSuccess.schema";
 
 import { UnxpectedError } from "~/shared/unexpectedError/unexpectedError";
-
-const ajv = new Ajv();
-addFormats(ajv);
-
-const validateSuccess = ajv.compile(getOrdersSuccess);
 
 export const getOrdersKeys = ["getOrders"];
 
@@ -47,14 +42,12 @@ export const getOrders = async (
       });
     }
 
-    if (validateSuccess(response)) {
-      data = response as unknown as GetOrdersSuccess;
-    }
-    // else if (validateError(response)) {
-    //   data = response as unknown as GetOrderError;
-    // }
-    else {
-      console.log(validateSuccess.errors);
+    const parsed = getOrdersSuccessSchema.safeParse(response);
+
+    if (parsed.success) {
+      data = parsed.data;
+    } else {
+      console.log(parsed.error);
       throw new Response(`Данные запроса getOrders не валидны схеме`);
     }
 
@@ -73,7 +66,7 @@ export const getOrders = async (
 };
 
 // MOCKS
-export const mockResponseSuccess = {
+export const mockResponseSuccess: GetOrdersSuccess = {
   data: [
     {
       id: 206,

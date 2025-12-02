@@ -1,13 +1,11 @@
 import { http, delay, HttpResponse } from "msw";
-import Ajv from "ajv";
 
-import schemaSuccess from "./postUpdateOrderSuccess.schema.json";
-import { PostUpdateOrderSuccess } from "./postUpdateOrderSuccess.type";
+import {
+  postUpdateOrderSuccessSchema,
+  PostUpdateOrderSuccess,
+} from "./postUpdateOrderSuccess.schema";
+
 import { UnxpectedError } from "~/shared/unexpectedError/unexpectedError";
-
-const ajv = new Ajv();
-
-const validateSuccess = ajv.compile(schemaSuccess);
 
 export const postUpdateOrderKeys = ["postUpdateOrder"];
 
@@ -15,7 +13,7 @@ export const postUpdateOrder = async (
   accessToken: string,
   placeId: number,
   orderId: number,
-  selfEmployed: boolean
+  selfEmployed: boolean,
 ): Promise<PostUpdateOrderSuccess> => {
   try {
     const url = new URL(import.meta.env.VITE_POST_UPDATE_ORDER);
@@ -42,10 +40,12 @@ export const postUpdateOrder = async (
       });
     }
 
-    if (validateSuccess(response)) {
-      data = response as unknown as PostUpdateOrderSuccess;
+    const parsed = postUpdateOrderSuccessSchema.safeParse(response);
+
+    if (parsed.success) {
+      data = parsed.data;
     } else {
-      console.log(validateSuccess.errors);
+      console.log(parsed.error);
       throw new Response(`Данные запроса postUpdateOrder не валидны схеме`);
     }
 
@@ -68,7 +68,7 @@ export const mockResponseSuccess = {
   data: {
     id: 26,
     selfEmployed: true,
-    status: "Новый",
+    status: 1,
     place: {
       id: 2,
       name: "fdfvdvdv",
@@ -180,5 +180,5 @@ export const postUpdateOrderMockResponse = http.post(
   async () => {
     await delay(2000);
     return HttpResponse.json(mockResponseSuccess);
-  }
+  },
 );

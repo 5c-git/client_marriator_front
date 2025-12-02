@@ -1,19 +1,17 @@
 import { http, delay, HttpResponse } from "msw";
-import Ajv from "ajv";
 
-import schemaSuccess from "./postAcceptOrderSuccess.schema.json";
-import { PostAcceptOrderSuccess } from "./postAcceptOrderSuccess.type";
+import {
+  postAcceptOrderSuccessSchema,
+  PostAcceptOrderSuccess,
+} from "./postAcceptOrderSuccess.type";
+
 import { UnxpectedError } from "~/shared/unexpectedError/unexpectedError";
-
-const ajv = new Ajv();
-
-const validateSuccess = ajv.compile(schemaSuccess);
 
 export const postAcceptOrderKeys = ["postAcceptOrder"];
 
 export const postAcceptOrder = async (
   accessToken: string,
-  orderId: string
+  orderId: string,
 ): Promise<PostAcceptOrderSuccess> => {
   try {
     const url = new URL(import.meta.env.VITE_POST_ACCEPT_ORDER);
@@ -40,10 +38,12 @@ export const postAcceptOrder = async (
       });
     }
 
-    if (validateSuccess(response)) {
-      data = response as unknown as PostAcceptOrderSuccess;
+    const parsed = postAcceptOrderSuccessSchema.safeParse(response);
+
+    if (parsed.success) {
+      data = parsed.data;
     } else {
-      console.log(validateSuccess.errors);
+      console.log(parsed.error);
       throw new Response(`Данные запроса postAcceptOrder не валидны схеме`);
     }
 
@@ -74,5 +74,5 @@ export const postAcceptOrderMockResponse = http.post(
   async () => {
     await delay(2000);
     return HttpResponse.json(mockResponseSuccess);
-  }
+  },
 );

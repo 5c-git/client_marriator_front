@@ -1,25 +1,17 @@
 import { http, delay, HttpResponse } from "msw";
-import Ajv from "ajv";
-import addFormats from "ajv-formats";
 
-import getOrderSuccess from "./getOrderSuccess.schema.json";
-import { GetOrderSuccess } from "./getOrderSuccess.type";
-// import getOrderError from "./getOrderError.schema.json";
-// import { GetOrderError } from "./getOrderError.type";
+import {
+  getOrderSuccessSchema,
+  GetOrderSuccess,
+} from "./getOrderSuccess.schema";
 
 import { UnxpectedError } from "~/shared/unexpectedError/unexpectedError";
-
-const ajv = new Ajv();
-addFormats(ajv);
-
-const validateSuccess = ajv.compile(getOrderSuccess);
-// const validateError = ajv.compile(getOrderError);
 
 export const getOrderKeys = ["getOrder"];
 
 export const getOrder = async (
   accessToken: string,
-  orderId: string
+  orderId: string,
 ): Promise<GetOrderSuccess> => {
   try {
     const url = new URL(import.meta.env.VITE_GET_ORDER);
@@ -43,14 +35,12 @@ export const getOrder = async (
       });
     }
 
-    if (validateSuccess(response)) {
-      data = response as unknown as GetOrderSuccess;
-    }
-    // else if (validateError(response)) {
-    //   data = response as unknown as GetOrderError;
-    // }
-    else {
-      console.log(validateSuccess.errors);
+    const parsed = getOrderSuccessSchema.safeParse(response);
+
+    if (parsed.success) {
+      data = parsed.data;
+    } else {
+      console.log(parsed.error);
       throw new Response(`Данные запроса getOrder не валидны схеме`);
     }
 
@@ -151,5 +141,5 @@ export const getOrderMockResponse = http.get(
   async () => {
     await delay(2000);
     return HttpResponse.json(mockResponseSuccess);
-  }
+  },
 );

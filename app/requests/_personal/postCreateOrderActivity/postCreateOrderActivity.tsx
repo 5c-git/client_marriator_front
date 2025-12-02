@@ -1,13 +1,11 @@
 import { http, delay, HttpResponse } from "msw";
-import Ajv from "ajv";
 
-import schemaSuccess from "./postCreateOrderActivitySuccess.schema.json";
-import { PostCreateOrderActivitySuccess } from "./postCreateOrderActivitySuccess.type";
+import {
+  postCreateOrderActivitySuccessSchema,
+  PostCreateOrderActivitySuccess,
+} from "./postCreateOrderActivitySuccess.type";
+
 import { UnxpectedError } from "~/shared/unexpectedError/unexpectedError";
-
-const ajv = new Ajv();
-
-const validateSuccess = ajv.compile(schemaSuccess);
 
 export const postCreateOrderActivityKeys = ["postCreateOrderActivity"];
 
@@ -27,7 +25,7 @@ export type postCreateOrderActivityPayload = {
 
 export const postCreateOrderActivity = async (
   accessToken: string,
-  payload: postCreateOrderActivityPayload
+  payload: postCreateOrderActivityPayload,
 ): Promise<PostCreateOrderActivitySuccess> => {
   try {
     const url = new URL(import.meta.env.VITE_POST_CREATE_ORDER_ACTIVITY);
@@ -50,12 +48,14 @@ export const postCreateOrderActivity = async (
       });
     }
 
-    if (validateSuccess(response)) {
-      data = response as unknown as PostCreateOrderActivitySuccess;
+    const parsed = postCreateOrderActivitySuccessSchema.safeParse(response);
+
+    if (parsed.success) {
+      data = parsed.data;
     } else {
-      console.log(validateSuccess.errors);
+      console.log(parsed.error);
       throw new Response(
-        `Данные запроса postCreateOrderActivity не валидны схеме`
+        `Данные запроса postCreateOrderActivity не валидны схеме`,
       );
     }
 
@@ -190,5 +190,5 @@ export const postCreateOrderActivityMockResponse = http.post(
   async () => {
     await delay(2000);
     return HttpResponse.json(mockResponseSuccess);
-  }
+  },
 );

@@ -1,22 +1,17 @@
 import { http, delay, HttpResponse } from "msw";
-import Ajv from "ajv";
-import addFormats from "ajv-formats";
 
-import schemaSuccess from "./getViewActivitiesForOrderSuccess.schema.json";
-import { GetViewActivitiesForOrderSuccess } from "./getViewActivitiesForOrderSuccess.type";
+import {
+  getViewActivitiesForOrderSuccessSchema,
+  GetViewActivitiesForOrderSuccess,
+} from "./getViewActivitiesForOrderSuccess.type";
 
 import { UnxpectedError } from "~/shared/unexpectedError/unexpectedError";
-
-const ajv = new Ajv();
-addFormats(ajv);
-
-const validateSuccess = ajv.compile(schemaSuccess);
 
 export const getViewActivitiesForOrderKeys = ["GetViewActivitiesForOrder"];
 
 export const getViewActivitiesForOrder = async (
   accessToken: string,
-  orderId: string
+  orderId: string,
 ): Promise<GetViewActivitiesForOrderSuccess> => {
   try {
     const url = new URL(import.meta.env.VITE_GET_VIEW_ACTIVITIES_FOR_ORDER);
@@ -40,12 +35,14 @@ export const getViewActivitiesForOrder = async (
       });
     }
 
-    if (validateSuccess(response)) {
-      data = response as unknown as GetViewActivitiesForOrderSuccess;
+    const parsed = getViewActivitiesForOrderSuccessSchema.safeParse(response);
+
+    if (parsed.success) {
+      data = parsed.data;
     } else {
-      console.log(validateSuccess.errors);
+      console.log(parsed.error);
       throw new Response(
-        `Данные запроса getViewActivitiesForOrder не валидны схеме`
+        `Данные запроса getViewActivitiesForOrder не валидны схеме`,
       );
     }
 
@@ -102,5 +99,5 @@ export const getViewActivitiesForOrderMockResponse = http.get(
   async () => {
     await delay(2000);
     return HttpResponse.json(mockResponseSuccess);
-  }
+  },
 );

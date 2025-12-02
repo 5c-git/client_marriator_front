@@ -1,19 +1,16 @@
 import { http, delay, HttpResponse } from "msw";
-import Ajv from "ajv";
 
-import schemaSuccess from "./postRepeatOrderSuccess.schema.json";
-import { PostRepeatOrderSuccess } from "./postRepeatOrderSuccess.type";
+import {
+  postRepeatOrderSuccessSchema,
+  PostRepeatOrderSuccess,
+} from "./postRepeatOrderSuccess.schema";
 import { UnxpectedError } from "~/shared/unexpectedError/unexpectedError";
-
-const ajv = new Ajv();
-
-const validateSuccess = ajv.compile(schemaSuccess);
 
 export const postRepeatOrderKeys = ["postRepeatOrder"];
 
 export const postRepeatOrder = async (
   accessToken: string,
-  orderId: string
+  orderId: string,
 ): Promise<PostRepeatOrderSuccess> => {
   try {
     const url = new URL(import.meta.env.VITE_POST_REPEAT_ORDER);
@@ -40,10 +37,12 @@ export const postRepeatOrder = async (
       });
     }
 
-    if (validateSuccess(response)) {
-      data = response as unknown as PostRepeatOrderSuccess;
+    const parsed = postRepeatOrderSuccessSchema.safeParse(response);
+
+    if (parsed.success) {
+      data = parsed.data;
     } else {
-      console.log(validateSuccess.errors);
+      console.log(parsed.error);
       throw new Response(`Данные запроса postRepeatOrder не валидны схеме`);
     }
 
@@ -74,5 +73,5 @@ export const postRepeatOrderMockResponse = http.post(
   async () => {
     await delay(2000);
     return HttpResponse.json(mockResponseSuccess);
-  }
+  },
 );

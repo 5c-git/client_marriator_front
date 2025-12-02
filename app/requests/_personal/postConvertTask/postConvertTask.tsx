@@ -1,23 +1,18 @@
 import { http, delay, HttpResponse } from "msw";
-import Ajv from "ajv";
-import addFormats from "ajv-formats";
 
-import successSchema from "./postConvertTaskSuccess.schema.json";
-import { PostConvertTaskSuccess } from "./postConvertTaskSuccess.type";
+import {
+  postConvertTaskSuccessSchema,
+  PostConvertTaskSuccess,
+} from "./postConvertTaskSuccess.type";
 
 import { UnxpectedError } from "~/shared/unexpectedError/unexpectedError";
-
-const ajv = new Ajv();
-addFormats(ajv);
-
-const validateSuccess = ajv.compile(successSchema);
 
 export const postConvertTaskKeys = ["postConvertTask"];
 
 export const postConvertTask = async (
   accessToken: string,
   orderId: string,
-  responsibleId: string
+  responsibleId: string,
 ): Promise<PostConvertTaskSuccess> => {
   try {
     const url = new URL(import.meta.env.VITE_POST_CONVERT_TASK);
@@ -45,10 +40,12 @@ export const postConvertTask = async (
       });
     }
 
-    if (validateSuccess(response)) {
-      data = response as unknown as PostConvertTaskSuccess;
+    const parsed = postConvertTaskSuccessSchema.safeParse(response);
+
+    if (parsed.success) {
+      data = parsed.data;
     } else {
-      console.log(validateSuccess.errors);
+      console.log(parsed.error);
       throw new Response(`Данные запроса getTask не валидны схеме`);
     }
 
@@ -167,5 +164,5 @@ export const postConvertTaskMockResponse = http.post(
   async () => {
     await delay(2000);
     return HttpResponse.json(mockResponseSuccess);
-  }
+  },
 );

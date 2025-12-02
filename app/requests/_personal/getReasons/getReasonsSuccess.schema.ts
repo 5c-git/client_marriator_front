@@ -2,7 +2,7 @@ import { z } from "zod";
 
 export const getReasonsSuccessSchema = z.object({
   data: z.array(
-    z.object({ id: z.number(), value: z.string(), amount: z.number() })
+    z.object({ id: z.number(), value: z.string(), amount: z.number() }),
   ),
 });
 
