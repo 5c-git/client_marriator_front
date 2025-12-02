@@ -11,7 +11,6 @@ export default [
         route(":lang?/missions", "routes/missions/missions.tsx"),
       ]),
 
-      route(":lang?/tasks/:taskId", "routes/tasks/task/task.tsx"),
       route(
         ":lang?/missions/:missionId/:specialistId",
         "routes/missions/mission/mission.tsx",
@@ -201,7 +200,9 @@ export default [
     ),
     //order
 
-    // route(":lang?/new-task", "routes/new-task/new-task.tsx"),
+    //task
+    route(":lang?/tasks/:taskId", "routes/tasks/task/task.tsx"),
+    route(":lang?/tasks/new-task", "routes/tasks/new-task/new-task.tsx"),
     // route(
     //   ":lang?/new-task/:taskId/new-service",
     //   "routes/new-task/new-service/new-service.tsx"

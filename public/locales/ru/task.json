@@ -1,24 +1,10 @@
 {
-  "header": "Задача",
-  "activities": "Услуги",
-  "activityAmount": "Количество:",
-  "statusPlaceholder": "Статус",
-  "locationPlaceholder": "Место оказания услуг",
-  "projectPlaceholder": "Проект",
-  "responsiblePlaceholder": "Ответственный",
-  "responsiblePhonePlaceholder": "Телефон",
+  "serviceAmount": "Количество:",
   "route": "Маршрут: {{count}} точек",
-  "status": {
-    "new": "Новый",
-    "accepted": "Принято",
-    "notAccepted": "Не Принято",
-    "canceled": "Отменено",
-    "archive": "Архив"
-  },
   "serviceButton": "Добавить услугу",
-  "convertToRequest": "Создать заявку",
   "cancelButton": "Отмена",
   "sendButton": "Сохранить",
+  "convertToBid": "Конвертировать в заявку",
   "dialog": {
     "title": "Удалить",
     "no": "Нет",

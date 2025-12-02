@@ -1,20 +1,18 @@
 import { http, delay, HttpResponse } from "msw";
-import Ajv from "ajv";
 
-import schemaSuccess from "./postDeleteTaskActivitySuccess.schema.json";
-import { PostDeleteTaskActivitySuccess } from "./postDeleteTaskActivitySuccess.type";
+import {
+  postDeleteTaskActivitySuccessSchema,
+  PostDeleteTaskActivitySuccess,
+} from "./postDeleteTaskActivitySuccess.schema";
+
 import { UnxpectedError } from "~/shared/unexpectedError/unexpectedError";
-
-const ajv = new Ajv();
-
-const validateSuccess = ajv.compile(schemaSuccess);
 
 export const postDeleteTaskActivityKeys = ["postDeleteTaskActivity"];
 
 export const postDeleteTaskActivity = async (
   accessToken: string,
   taskId: string,
-  taskActivityId: string
+  taskActivityId: string,
 ): Promise<PostDeleteTaskActivitySuccess> => {
   try {
     const url = new URL(import.meta.env.VITE_POST_DELETE_TASK_ACTIVITY);
@@ -42,12 +40,14 @@ export const postDeleteTaskActivity = async (
       });
     }
 
-    if (validateSuccess(response)) {
-      data = response as unknown as PostDeleteTaskActivitySuccess;
+    const parsed = postDeleteTaskActivitySuccessSchema.safeParse(response);
+
+    if (parsed.success) {
+      data = parsed.data;
     } else {
-      console.log(validateSuccess.errors);
+      console.log(parsed.error);
       throw new Response(
-        `Данные запроса postDeleteTaskActivity не валидны схеме`
+        `Данные запроса postDeleteTaskActivity не валидны схеме`,
       );
     }
 
@@ -113,5 +113,5 @@ export const postDeleteTaskActivityMockResponse = http.post(
   async () => {
     await delay(2000);
     return HttpResponse.json(mockResponseSuccess);
-  }
+  },
 );

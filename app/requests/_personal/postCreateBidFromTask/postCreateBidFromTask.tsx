@@ -1,16 +1,11 @@
 import { http, delay, HttpResponse } from "msw";
-import Ajv from "ajv";
-import addFormats from "ajv-formats";
 
-import successSchema from "./postCreateBidFromTaskSuccess.schema.json";
-import { PostCreateBidFromTaskSuccess } from "./postCreateBidFromTaskSuccess.type";
+import {
+  postCreateBidFromTaskSuccessSchema,
+  PostCreateBidFromTaskSuccess,
+} from "./postCreateBidFromTaskSuccess.schema";
 
 import { UnxpectedError } from "~/shared/unexpectedError/unexpectedError";
-
-const ajv = new Ajv();
-addFormats(ajv);
-
-const validateSuccess = ajv.compile(successSchema);
 
 export const postCreateBidFromTaskKeys = ["postCreateBidFromTask"];
 
@@ -45,10 +40,12 @@ export const postCreateBidFromTask = async (
       });
     }
 
-    if (validateSuccess(response)) {
-      data = response as unknown as PostCreateBidFromTaskSuccess;
+    const parsed = postCreateBidFromTaskSuccessSchema.safeParse(response);
+
+    if (parsed.success) {
+      data = parsed.data;
     } else {
-      console.log(validateSuccess.errors);
+      console.log(parsed.error);
       throw new Response(
         `Данные запроса postCreateBidFromTask не валидны схеме`,
       );
