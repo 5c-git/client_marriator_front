@@ -316,8 +316,8 @@ export default function Tasks({ loaderData }: Route.ComponentProps) {
               />
             )}
           />
-          {(!showMap && userRole === "client") ||
-          (loaderData.tasks.length === 0 && userRole === "client") ? (
+          {(!showMap && userRole === "manager") ||
+          (loaderData.tasks.length === 0 && userRole === "manager") ? (
             <Fab
               component={Link}
               to={withLocale("/tasks/new-order")}
