@@ -120,12 +120,6 @@ export async function clientLoader({
               orderData.data.status === 1) ||
             (params.serviceId &&
               userRole === "client" &&
-              orderData.data.status === 2) ||
-            (params.serviceId &&
-              userRole === "manager" &&
-              orderData.data.status === 1) ||
-            (params.serviceId &&
-              userRole === "manager" &&
               orderData.data.status === 2)
               ? true
               : false;
@@ -134,19 +128,21 @@ export async function clientLoader({
         }
       }
 
-      const activitiesData = await getViewActivitiesForOrder(
-        accessToken,
-        params.orderId,
-      );
+      if (userRole === "client") {
+        const activitiesData = await getViewActivitiesForOrder(
+          accessToken,
+          params.orderId,
+        );
 
-      activitiesData.data.forEach((item) => {
-        activities.push({
-          value: item.id.toString(),
-          label: item.detailName,
-          needRoute: item.traveling,
-          disabled: false,
+        activitiesData.data.forEach((item) => {
+          activities.push({
+            value: item.id.toString(),
+            label: item.detailName,
+            needRoute: item.traveling,
+            disabled: false,
+          });
         });
-      });
+      }
 
       const locationsData = await getPlaceForOrder(accessToken);
 

@@ -355,10 +355,8 @@ export default function Order({ loaderData }: Route.ComponentProps) {
                   viewTransition: true,
                 });
               }}
-              {...((userRole === "client" && loaderData.entity.status === 1) ||
-              (userRole === "client" && loaderData.entity.status === 2) ||
-              (userRole === "manager" && loaderData.entity.status === 1) ||
-              (userRole === "manager" && loaderData.entity.status === 2)
+              {...(userRole === "client" &&
+              (loaderData.entity.status === 1 || loaderData.entity.status === 2)
                 ? {
                     headerButtonAction: () => {
                       setEditMode(true);
