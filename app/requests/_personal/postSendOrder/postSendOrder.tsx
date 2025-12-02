@@ -1,10 +1,10 @@
 import { http, delay, HttpResponse } from "msw";
-import Ajv from "ajv";
 
 import {
   postSendOrderSuccessSchema,
   PostSendOrderSuccess,
-} from "./postSendOrderSuccess.type";
+} from "./postSendOrderSuccess.schema";
+
 import { UnxpectedError } from "~/shared/unexpectedError/unexpectedError";
 
 export const postSendOrderKeys = ["postSendOrder"];
