@@ -1,14 +1,18 @@
 import type { EntityMobileViewInterface } from "./EntityMobileViewInterface";
 
 import { useTranslation } from "react-i18next";
+
 import { statusCodeMap } from "~/shared/status";
 
 import Box from "@mui/material/Box";
-import { Avatar, Typography } from "@mui/material";
+import { Avatar, Typography, IconButton } from "@mui/material";
 
 import { TopNavigation } from "~/shared/ui/TopNavigation/TopNavigation";
 
-export function EntityEditMobileView(props: EntityMobileViewInterface) {
+import { EditIcon } from "~/shared/icons/EditIcon";
+import { PhoneIcon } from "~/shared/icons/PhoneIcon";
+
+export function EntityStaticMobileView(props: EntityMobileViewInterface) {
   const { t } = useTranslation("EntityMobileView");
 
   return (
@@ -19,6 +23,22 @@ export function EntityEditMobileView(props: EntityMobileViewInterface) {
           bold: false,
         }}
         backAction={props.headerBackAction}
+        {...(props.headerButtonAction
+          ? {
+              buttonAction: {
+                text: "",
+                icon: (
+                  <EditIcon
+                    sx={{
+                      width: "16px",
+                      height: "16px",
+                    }}
+                  />
+                ),
+                action: props.headerButtonAction,
+              },
+            }
+          : null)}
       />
 
       <Box
@@ -33,6 +53,10 @@ export function EntityEditMobileView(props: EntityMobileViewInterface) {
           paddingTop: "20px",
         }}
       >
+        <Avatar
+          src={`${import.meta.env.VITE_ASSET_PATH}${props.entity.place.logo}`}
+          sx={{ width: "100px", height: "100px", margin: "0 auto" }}
+        />
         <Box
           sx={{
             display: "grid",
@@ -85,7 +109,6 @@ export function EntityEditMobileView(props: EntityMobileViewInterface) {
             </Typography>
           </Box>
         </Box>
-
         <Box
           sx={{
             display: "grid",
@@ -121,7 +144,31 @@ export function EntityEditMobileView(props: EntityMobileViewInterface) {
             </Typography>
           </Box>
         </Box>
-
+        {props.entity.project ? (
+          <Box
+            sx={{
+              display: "grid",
+              rowGap: "4px",
+            }}
+          >
+            <Typography
+              component="p"
+              variant="Reg_12"
+              sx={(theme) => ({
+                color: theme.vars.palette["Grey_2"],
+              })}
+            >
+              {t(`${props.translation}.projectPlaceholder`)}
+            </Typography>
+            <Typography
+              component="p"
+              variant="Reg_14"
+              sx={(theme) => ({ color: theme.vars.palette["Black"] })}
+            >
+              {props.entity.project.name}
+            </Typography>
+          </Box>
+        ) : null}
         {props.entity.creatingPerson ? (
           <>
             <Box>
@@ -132,6 +179,7 @@ export function EntityEditMobileView(props: EntityMobileViewInterface) {
                   color: theme.vars.palette["Grey_2"],
                 })}
               >
+                {t(`${props.translation}.creatingPerson`)} {` - `}
                 {t(
                   `${props.translation}.role.${props.entity.creatingPerson.role}`,
                 )}
@@ -152,31 +200,57 @@ export function EntityEditMobileView(props: EntityMobileViewInterface) {
                   variant="Reg_14"
                   sx={(theme) => ({ color: theme.vars.palette["Black"] })}
                 >
-                  {props.entity.creatingPerson.email}
+                  {props.entity.creatingPerson.name}
                 </Typography>
               </Box>
             </Box>
-            <Box>
-              <Typography
-                component="p"
-                variant="Reg_12"
-                sx={(theme) => ({
-                  color: theme.vars.palette["Grey_2"],
-                })}
-              >
-                {t(`${props.translation}.phonePlaceholder`)}
-              </Typography>
-              <Typography
+            <Box
+              sx={{
+                display: "flex",
+                justifyContent: "space-between",
+                alignItems: "center",
+              }}
+            >
+              <Box>
+                <Typography
+                  component="p"
+                  variant="Reg_12"
+                  sx={(theme) => ({
+                    color: theme.vars.palette["Grey_2"],
+                  })}
+                >
+                  {t(`${props.translation}.phonePlaceholder`)}
+                </Typography>
+                <Typography
+                  component="a"
+                  variant="Reg_14"
+                  href={`tel:${props.entity.creatingPerson.phone}`}
+                  sx={(theme) => ({
+                    color: theme.vars.palette["Black"],
+                    textDecoration: "none",
+                  })}
+                >
+                  {props.entity.creatingPerson.phone}
+                </Typography>
+              </Box>
+              <IconButton
                 component="a"
-                variant="Reg_14"
-                href={`tel:${props.entity.creatingPerson.phone}`}
+                href={`tel:+${props.entity.creatingPerson.phone}`}
                 sx={(theme) => ({
-                  color: theme.vars.palette["Black"],
-                  textDecoration: "none",
+                  display: "flex",
+                  padding: "7px",
+                  color: theme.vars.palette["Corp_1"],
+                  backgroundColor: theme.vars.palette["Grey_4"],
+                  borderRadius: "5px",
                 })}
               >
-                {props.entity.creatingPerson.phone}
-              </Typography>
+                <PhoneIcon
+                  sx={{
+                    width: "16px",
+                    height: "16px",
+                  }}
+                />
+              </IconButton>
             </Box>
           </>
         ) : null}
@@ -190,6 +264,7 @@ export function EntityEditMobileView(props: EntityMobileViewInterface) {
                   color: theme.vars.palette["Grey_2"],
                 })}
               >
+                {t(`${props.translation}.acceptingPerson`)} {` - `}
                 {t(
                   `${props.translation}.role.${props.entity.acceptingPerson.role}`,
                 )}
@@ -210,31 +285,57 @@ export function EntityEditMobileView(props: EntityMobileViewInterface) {
                   variant="Reg_14"
                   sx={(theme) => ({ color: theme.vars.palette["Black"] })}
                 >
-                  {props.entity.acceptingPerson.email}
+                  {props.entity.acceptingPerson.name}
                 </Typography>
               </Box>
             </Box>
-            <Box>
-              <Typography
-                component="p"
-                variant="Reg_12"
-                sx={(theme) => ({
-                  color: theme.vars.palette["Grey_2"],
-                })}
-              >
-                {t(`${props.translation}.phonePlaceholder`)}
-              </Typography>
-              <Typography
+            <Box
+              sx={{
+                display: "flex",
+                justifyContent: "space-between",
+                alignItems: "center",
+              }}
+            >
+              <Box>
+                <Typography
+                  component="p"
+                  variant="Reg_12"
+                  sx={(theme) => ({
+                    color: theme.vars.palette["Grey_2"],
+                  })}
+                >
+                  {t(`${props.translation}.phonePlaceholder`)}
+                </Typography>
+                <Typography
+                  component="a"
+                  variant="Reg_14"
+                  href={`tel:${props.entity.acceptingPerson.phone}`}
+                  sx={(theme) => ({
+                    color: theme.vars.palette["Black"],
+                    textDecoration: "none",
+                  })}
+                >
+                  {props.entity.acceptingPerson.phone}
+                </Typography>
+              </Box>
+              <IconButton
                 component="a"
-                variant="Reg_14"
-                href={`tel:${props.entity.acceptingPerson.phone}`}
+                href={`tel:+${props.entity.acceptingPerson.phone}`}
                 sx={(theme) => ({
-                  color: theme.vars.palette["Black"],
-                  textDecoration: "none",
+                  display: "flex",
+                  padding: "7px",
+                  color: theme.vars.palette["Corp_1"],
+                  backgroundColor: theme.vars.palette["Grey_4"],
+                  borderRadius: "5px",
                 })}
               >
-                {props.entity.acceptingPerson.phone}
-              </Typography>
+                <PhoneIcon
+                  sx={{
+                    width: "16px",
+                    height: "16px",
+                  }}
+                />
+              </IconButton>
             </Box>
           </>
         ) : null}
@@ -256,9 +357,7 @@ export function EntityEditMobileView(props: EntityMobileViewInterface) {
               {t(`${props.translation}.services`)}
             </Typography>
 
-            {props.entity.services.map((service) =>
-              props.activitySlot(service),
-            )}
+            {props.entity.services.map((service) => props.serviceSlot(service))}
           </Box>
         ) : null}
 

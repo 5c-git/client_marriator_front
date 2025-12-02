@@ -8,8 +8,7 @@ import {
 } from "react-router";
 
 import type { Route } from "./+types/order";
-import type { EntityMobileViewInterface } from "./_views/mobileView/EntityMobileViewInterface";
-import { GetOrderSuccess } from "~/requests/_personal/getOrder/getOrderSuccess.schema";
+import type { EntityMobileViewInterface } from "../../../shared/EntityMobileView/EntityMobileViewInterface";
 
 import { determineRole } from "~/shared/determineRole";
 
@@ -34,8 +33,8 @@ import { Loader } from "~/shared/ui/Loader/Loader";
 import { StyledRadioButton } from "~/shared/ui/StyledRadioButton/StyledRadioButton";
 import { RadioSearchableDrawer } from "./_components/RadioSearchableDrawer";
 
-import { EntityStaticMobileView } from "./_views/mobileView/EntityStaticMobileView";
-import { EntityEditMobileView } from "./_views/mobileView/EntityEditMobileView";
+import { EntityStaticMobileView } from "../../../shared/EntityMobileView/EntityStaticMobileView";
+import { EntityEditMobileView } from "../../../shared/EntityMobileView/EntityEditMobileView";
 
 import AddIcon from "@mui/icons-material/Add";
 import ClearIcon from "@mui/icons-material/Clear";
@@ -54,7 +53,6 @@ import { postCreateBidFromOrder } from "~/requests/_personal/postCreateBidFromOr
 type MobileModeData = {
   mode: "mobile";
   entity: EntityMobileViewInterface["entity"];
-  orderActivities: GetOrderSuccess["data"]["orderActivities"];
   supervisorsToSelect: ComponentPropsWithoutRef<
     typeof StyledRadioButton
   >["options"];
@@ -84,6 +82,7 @@ export async function clientLoader({ params }: Route.ClientLoaderArgs) {
         selfEmployed: false,
         services: [],
         route: 0,
+        project: null,
         creatingPerson: null,
         acceptingPerson: null,
       };
@@ -219,7 +218,7 @@ export default function Order({ loaderData }: Route.ComponentProps) {
   const fetcher = useFetcher();
 
   const [editMode, setEditMode] = useState<boolean>(false);
-  const [activityToDelete, setActivityToDelete] = useState<{
+  const [serviceToDelete, setServiceToDelete] = useState<{
     id: number;
     count: number;
     name: string;
@@ -241,9 +240,9 @@ export default function Order({ loaderData }: Route.ComponentProps) {
                   viewTransition: true,
                 });
               }}
-              activitySlot={(activity) => (
+              serviceSlot={(service) => (
                 <Box
-                  key={activity.id}
+                  key={service.id}
                   sx={(theme) => ({
                     padding: "10px 14px",
                     border: "1px solid",
@@ -262,7 +261,7 @@ export default function Order({ loaderData }: Route.ComponentProps) {
                     <Box
                       component={Link}
                       to={withLocale(
-                        `/orders/${loaderData.entity.id}/service/${activity.id}`,
+                        `/orders/${loaderData.entity.id}/service/${service.id}`,
                       )}
                       sx={{
                         display: "grid",
@@ -277,7 +276,7 @@ export default function Order({ loaderData }: Route.ComponentProps) {
                           color: theme.vars.palette["Black"],
                         })}
                       >
-                        {activity.name}
+                        {service.name}
                       </Typography>
                       <Typography
                         component="p"
@@ -286,7 +285,7 @@ export default function Order({ loaderData }: Route.ComponentProps) {
                           color: theme.vars.palette["Grey_1"],
                         })}
                       >
-                        {t("activityAmount")} {activity.count}
+                        {t("serviceAmount")} {service.count}
                       </Typography>
                     </Box>
 
@@ -295,7 +294,7 @@ export default function Order({ loaderData }: Route.ComponentProps) {
                         padding: 0,
                       }}
                       onClick={() => {
-                        setActivityToDelete(activity);
+                        setServiceToDelete(service);
                       }}
                     >
                       <ClearIcon />
@@ -363,9 +362,9 @@ export default function Order({ loaderData }: Route.ComponentProps) {
                     },
                   }
                 : null)}
-              activitySlot={(activity) => (
+              serviceSlot={(service) => (
                 <Box
-                  key={activity.id}
+                  key={service.id}
                   sx={(theme) => ({
                     padding: "10px 14px",
                     border: "1px solid",
@@ -384,13 +383,8 @@ export default function Order({ loaderData }: Route.ComponentProps) {
                     <Box
                       component={Link}
                       to={withLocale(
-                        `/orders/${loaderData.entity.id}/service/${activity.id}`,
+                        `/orders/${loaderData.entity.id}/service/${service.id}`,
                       )}
-                      state={{
-                        service: loaderData.orderActivities.find(
-                          (service) => service.id === activity.id,
-                        ),
-                      }}
                       sx={{
                         display: "grid",
                         rowGap: "4px",
@@ -404,7 +398,7 @@ export default function Order({ loaderData }: Route.ComponentProps) {
                           color: theme.vars.palette["Black"],
                         })}
                       >
-                        {activity.name}
+                        {service.name}
                       </Typography>
                       <Typography
                         component="p"
@@ -413,12 +407,12 @@ export default function Order({ loaderData }: Route.ComponentProps) {
                           color: theme.vars.palette["Grey_1"],
                         })}
                       >
-                        {t("activityAmount")} {activity.count}
+                        {t("serviceAmount")} {service.count}
                       </Typography>
                     </Box>
                   </Box>
 
-                  {activity.route > 0 ? (
+                  {service.route > 0 ? (
                     <>
                       <Divider
                         sx={{
@@ -448,7 +442,7 @@ export default function Order({ loaderData }: Route.ComponentProps) {
                             color: theme.vars.palette["Black"],
                           })}
                         >
-                          {t("route", { count: activity.route })}
+                          {t("route", { count: service.route })}
                         </Typography>
                       </Box>
                     </>
@@ -467,7 +461,7 @@ export default function Order({ loaderData }: Route.ComponentProps) {
                           JSON.stringify({
                             _action: "transformAssignmentToRequest",
                             orderId: loaderData.entity.id,
-                            orderActivityId: activity.id,
+                            orderActivityId: service.id,
                           }),
                           {
                             method: "POST",
@@ -576,9 +570,9 @@ export default function Order({ loaderData }: Route.ComponentProps) {
             items={loaderData.supervisorsToSelect}
           />
           <Dialog
-            open={activityToDelete ? true : false}
+            open={serviceToDelete ? true : false}
             onClose={() => {
-              setActivityToDelete(null);
+              setServiceToDelete(null);
             }}
             sx={{
               "& .MuiDialog-paper": {
@@ -592,14 +586,14 @@ export default function Order({ loaderData }: Route.ComponentProps) {
                 fontSize: "1.125rem",
               }}
             >
-              {t("dialog.title")}&nbsp;&quot;{activityToDelete?.name}
+              {t("dialog.title")}&nbsp;&quot;{serviceToDelete?.name}
               &quot;&nbsp;?
             </DialogTitle>
             <DialogActions>
               <Button
                 variant="outlined"
                 onClick={() => {
-                  setActivityToDelete(null);
+                  setServiceToDelete(null);
                 }}
               >
                 {t("dialog.no")}
@@ -611,14 +605,14 @@ export default function Order({ loaderData }: Route.ComponentProps) {
                     JSON.stringify({
                       _action: "deleteActivity",
                       orderId: loaderData.entity.id,
-                      orderActivityId: activityToDelete?.id,
+                      orderActivityId: serviceToDelete?.id,
                     }),
                     {
                       method: "POST",
                       encType: "application/json",
                     },
                   );
-                  setActivityToDelete(null);
+                  setServiceToDelete(null);
                 }}
               >
                 {t("dialog.yes")}

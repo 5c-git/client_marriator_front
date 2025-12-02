@@ -17,6 +17,11 @@ type Entity = {
     count: number;
     route: number;
   }[];
+  project: null | {
+    id: number;
+    logo: string;
+    name: string;
+  };
   creatingPerson: null | {
     id: number;
     role: "manager" | "supervisor" | "client" | "specialist";
@@ -40,6 +45,6 @@ export type EntityMobileViewInterface = {
   entity: Entity;
   headerBackAction: () => void;
   headerButtonAction?: () => void;
-  activitySlot: (activity: Entity["services"][0]) => React.ReactNode;
+  serviceSlot: (service: Entity["services"][0]) => React.ReactNode;
   actionSlot: () => React.ReactNode;
 };

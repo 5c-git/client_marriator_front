@@ -4,7 +4,10 @@
     "statusPlaceholder": "Статус",
     "locationPlaceholder": "Место оказания услуг",
     "phonePlaceholder": "Телефон",
+    "projectPlaceholder": "Проект",
     "services": "Услуги",
+    "creatingPerson": "Создатель",
+    "acceptingPerson": "Ответственный",
     "status": {
       "new": "Новый",
       "accepted": "Принято",

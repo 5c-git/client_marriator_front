@@ -4,7 +4,10 @@
     "statusPlaceholder": "Status",
     "locationPlaceholder": "Location",
     "phonePlaceholder": "Phone",
+    "projectPlaceholder": "Project",
     "services": "Services",
+    "creatingPerson": "Creator",
+    "acceptingPerson": "Responsible",
     "status": {
       "new": "New",
       "accepted": "Accepted",

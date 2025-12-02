@@ -1,5 +1,5 @@
 {
-  "activityAmount": "Количество:",
+  "serviceAmount": "Количество:",
   "route": "Маршрут: {{count}} точек",
   "serviceButton": "Добавить услугу",
   "cancelButton": "Отмена",

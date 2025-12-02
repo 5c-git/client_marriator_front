@@ -1,5 +1,5 @@
 {
-  "activityAmount": "Amount:",
+  "serviceAmount": "Amount:",
   "route": "Route: {{count}} locations",
   "serviceButton": "Add service",
   "cancelButton": "Cancel",
