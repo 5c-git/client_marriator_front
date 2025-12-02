@@ -3,7 +3,7 @@ import { http, delay, HttpResponse } from "msw";
 import {
   postDeleteOrderActivitySuccessSchema,
   PostDeleteOrderActivitySuccess,
-} from "./postDeleteOrderActivitySuccess.type";
+} from "./postDeleteOrderActivitySuccess.schema";
 
 import { UnxpectedError } from "~/shared/unexpectedError/unexpectedError";
 

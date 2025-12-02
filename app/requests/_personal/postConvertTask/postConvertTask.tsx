@@ -3,7 +3,7 @@ import { http, delay, HttpResponse } from "msw";
 import {
   postConvertTaskSuccessSchema,
   PostConvertTaskSuccess,
-} from "./postConvertTaskSuccess.type";
+} from "./postConvertTaskSuccess.schema";
 
 import { UnxpectedError } from "~/shared/unexpectedError/unexpectedError";
 

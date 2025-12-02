@@ -3,7 +3,7 @@ import { http, delay, HttpResponse } from "msw";
 import {
   postAcceptOrderSuccessSchema,
   PostAcceptOrderSuccess,
-} from "./postAcceptOrderSuccess.type";
+} from "./postAcceptOrderSuccess.schema";
 
 import { UnxpectedError } from "~/shared/unexpectedError/unexpectedError";
 

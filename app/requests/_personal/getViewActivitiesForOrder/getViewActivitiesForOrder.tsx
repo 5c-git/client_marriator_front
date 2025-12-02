@@ -3,7 +3,7 @@ import { http, delay, HttpResponse } from "msw";
 import {
   getViewActivitiesForOrderSuccessSchema,
   GetViewActivitiesForOrderSuccess,
-} from "./getViewActivitiesForOrderSuccess.type";
+} from "./getViewActivitiesForOrderSuccess.schema";
 
 import { UnxpectedError } from "~/shared/unexpectedError/unexpectedError";
 
