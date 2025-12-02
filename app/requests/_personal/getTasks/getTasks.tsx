@@ -1,23 +1,18 @@
 import { http, delay, HttpResponse } from "msw";
-import Ajv from "ajv";
-import addFormats from "ajv-formats";
 
-import getTasksSuccess from "./getTasksSuccess.schema.json";
-import { GetTasksSuccess } from "./getTasksSuccess.type";
+import {
+  getTasksSuccessSchema,
+  GetTasksSuccess,
+} from "./getTasksSuccess.schema";
 
 import { UnxpectedError } from "~/shared/unexpectedError/unexpectedError";
-
-const ajv = new Ajv();
-addFormats(ajv);
-
-const validateSuccess = ajv.compile(getTasksSuccess);
 
 export const getTasksKeys = ["getTasks"];
 
 export const getTasks = async (
   accessToken: string,
   status?: string,
-  sort?: string
+  sort?: string,
 ): Promise<GetTasksSuccess> => {
   try {
     const url = new URL(import.meta.env.VITE_GET_TASKS);
@@ -47,14 +42,12 @@ export const getTasks = async (
       });
     }
 
-    if (validateSuccess(response)) {
-      data = response as unknown as GetTasksSuccess;
-    }
-    // else if (validateError(response)) {
-    //   data = response as unknown as GetOrderError;
-    // }
-    else {
-      console.log(validateSuccess.errors);
+    const parsed = getTasksSuccessSchema.safeParse(response);
+
+    if (parsed.success) {
+      data = parsed.data;
+    } else {
+      console.log(parsed.error);
       throw new Response(`Данные запроса getTasks не валидны схеме`);
     }
 
@@ -658,5 +651,5 @@ export const getTasksMockResponse = http.get(
   async () => {
     await delay(2000);
     return HttpResponse.json(mockResponseBug);
-  }
+  },
 );

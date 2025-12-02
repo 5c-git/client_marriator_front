@@ -13,5 +13,20 @@
       "5": "Archived"
     },
     "emptyHeader": "There are no orders."
+  },
+  "tasks": {
+    "sorting": {
+      "placeholder": "Sorting",
+      "ascending": "In ascending order of the start of services",
+      "descending": "In descending order of the start of services"
+    },
+    "status": {
+      "1": "New",
+      "2": "Not accepted",
+      "3": "Accepted",
+      "4": "Cancelled",
+      "5": "Archived"
+    },
+    "emptyHeader": "There are no tasks."
   }
 }

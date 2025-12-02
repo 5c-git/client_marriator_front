@@ -1,18 +1,4 @@
 {
-  "status": {
-    "new": "Новый",
-    "accepted": "Принято",
-    "notAccepted": "Не Принято",
-    "canceled": "Отменено",
-    "archive": "Архив"
-  },
-  "sorting": {
-    "placeholder": "Сортировать",
-    "ascending": "По возрастанию начала оказания услуг",
-    "descending": "По убыванию начала оказания услуг"
-  },
-  "emptyHeaderCreate": "Задач пока нет. Создайте первое!",
-  "emptyHeader": "Задач пока нет.",
   "cardHeader": "Услуг",
   "cancelTaskButton": "Отменить задачу",
   "repeatTaskButton": "Повторить задачу",

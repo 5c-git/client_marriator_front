@@ -1,19 +1,17 @@
 import { http, delay, HttpResponse } from "msw";
-import Ajv from "ajv";
 
-import schemaSuccess from "./postCancelTaskSuccess.schema.json";
-import { PostCancelTaskSuccess } from "./postCancelTaskSuccess.type";
+import {
+  postCancelTaskSuccessSchema,
+  PostCancelTaskSuccess,
+} from "./postCancelTaskSuccess.schema";
+
 import { UnxpectedError } from "~/shared/unexpectedError/unexpectedError";
-
-const ajv = new Ajv();
-
-const validateSuccess = ajv.compile(schemaSuccess);
 
 export const postCancelTaskKeys = ["postCancelTask"];
 
 export const postCancelTask = async (
   accessToken: string,
-  taskId: string
+  taskId: string,
 ): Promise<PostCancelTaskSuccess> => {
   try {
     const url = new URL(import.meta.env.VITE_POST_CANCEL_TASK);
@@ -40,10 +38,12 @@ export const postCancelTask = async (
       });
     }
 
-    if (validateSuccess(response)) {
-      data = response as unknown as PostCancelTaskSuccess;
+    const parsed = postCancelTaskSuccessSchema.safeParse(response);
+
+    if (parsed.success) {
+      data = parsed.data;
     } else {
-      console.log(validateSuccess.errors);
+      console.log(parsed.error);
       throw new Response(`Данные запроса postCancelTask не валидны схеме`);
     }
 
@@ -74,5 +74,5 @@ export const postCancelTaskMockResponse = http.post(
   async () => {
     await delay(2000);
     return HttpResponse.json(mockResponseSuccess);
-  }
+  },
 );

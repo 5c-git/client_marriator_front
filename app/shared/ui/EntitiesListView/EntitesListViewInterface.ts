@@ -19,7 +19,7 @@ export type Entity = {
 };
 
 export type EntitiesListViewInterface = {
-  translation: "orders";
+  translation: "orders" | "tasks";
   mapView: boolean;
   entities: Entity[];
   entityListView: (entity: Entity) => React.ReactNode;

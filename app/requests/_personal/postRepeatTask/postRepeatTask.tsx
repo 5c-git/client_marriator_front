@@ -1,19 +1,17 @@
 import { http, delay, HttpResponse } from "msw";
-import Ajv from "ajv";
 
-import schemaSuccess from "./postRepeatTaskSuccess.schema.json";
-import { PostRepeatTaskSuccess } from "./postRepeatTaskSuccess.type";
+import {
+  postRepeatTaskSuccessSchema,
+  PostRepeatTaskSuccess,
+} from "./postRepeatTaskSuccess.schema";
+
 import { UnxpectedError } from "~/shared/unexpectedError/unexpectedError";
-
-const ajv = new Ajv();
-
-const validateSuccess = ajv.compile(schemaSuccess);
 
 export const postRepeatTaskKeys = ["postRepeatTask"];
 
 export const postRepeatTask = async (
   accessToken: string,
-  taskId: string
+  taskId: string,
 ): Promise<PostRepeatTaskSuccess> => {
   try {
     const url = new URL(import.meta.env.VITE_POST_REPEAT_TASK);
@@ -40,10 +38,12 @@ export const postRepeatTask = async (
       });
     }
 
-    if (validateSuccess(response)) {
-      data = response as unknown as PostRepeatTaskSuccess;
+    const parsed = postRepeatTaskSuccessSchema.safeParse(response);
+
+    if (parsed.success) {
+      data = parsed.data;
     } else {
-      console.log(validateSuccess.errors);
+      console.log(parsed.error);
       throw new Response(`Данные запроса postRepeatTask не валидны схеме`);
     }
 
@@ -74,5 +74,5 @@ export const postRepeatTaskMockResponse = http.post(
   async () => {
     await delay(2000);
     return HttpResponse.json(mockResponseSuccess);
-  }
+  },
 );
