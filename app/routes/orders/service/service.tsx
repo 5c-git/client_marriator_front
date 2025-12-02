@@ -115,9 +115,18 @@ export async function clientLoader({
           setting_logo = service.viewActivity.logo;
 
           setting_canEdit =
-            params.serviceId &&
-            userRole === "client" &&
-            orderData.data.status === 1
+            (params.serviceId &&
+              userRole === "client" &&
+              orderData.data.status === 1) ||
+            (params.serviceId &&
+              userRole === "client" &&
+              orderData.data.status === 2) ||
+            (params.serviceId &&
+              userRole === "manager" &&
+              orderData.data.status === 1) ||
+            (params.serviceId &&
+              userRole === "manager" &&
+              orderData.data.status === 2)
               ? true
               : false;
         } else {
@@ -125,21 +134,19 @@ export async function clientLoader({
         }
       }
 
-      if (userRole === "client") {
-        const activitiesData = await getViewActivitiesForOrder(
-          accessToken,
-          params.orderId,
-        );
+      const activitiesData = await getViewActivitiesForOrder(
+        accessToken,
+        params.orderId,
+      );
 
-        activitiesData.data.forEach((item) => {
-          activities.push({
-            value: item.id.toString(),
-            label: item.detailName,
-            needRoute: item.traveling,
-            disabled: false,
-          });
+      activitiesData.data.forEach((item) => {
+        activities.push({
+          value: item.id.toString(),
+          label: item.detailName,
+          needRoute: item.traveling,
+          disabled: false,
         });
-      }
+      });
 
       const locationsData = await getPlaceForOrder(accessToken);
 
