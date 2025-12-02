@@ -1,13 +1,11 @@
 import { http, delay, HttpResponse } from "msw";
-import Ajv from "ajv";
 
-import schemaSuccess from "./postUpdateTaskActivitySuccess.schema.json";
-import { PostUpdateTaskActivitySuccess } from "./postUpdateTaskActivitySuccess.type";
+import {
+  postUpdateTaskActivitySuccessSchema,
+  PostUpdateTaskActivitySuccess,
+} from "./postUpdateTaskActivitySuccess.schema";
+
 import { UnxpectedError } from "~/shared/unexpectedError/unexpectedError";
-
-const ajv = new Ajv();
-
-const validateSuccess = ajv.compile(schemaSuccess);
 
 export const postUpdateTaskActivityKeys = ["postUpdateTaskActivity"];
 
@@ -28,7 +26,7 @@ export type postUpdateTaskActivityPayload = {
 
 export const postUpdateTaskActivity = async (
   accessToken: string,
-  payload: postUpdateTaskActivityPayload
+  payload: postUpdateTaskActivityPayload,
 ): Promise<PostUpdateTaskActivitySuccess> => {
   try {
     const url = new URL(import.meta.env.VITE_POST_UPDATE_TASK_ACTIVITY);
@@ -51,12 +49,14 @@ export const postUpdateTaskActivity = async (
       });
     }
 
-    if (validateSuccess(response)) {
-      data = response as unknown as PostUpdateTaskActivitySuccess;
+    const parsed = postUpdateTaskActivitySuccessSchema.safeParse(response);
+
+    if (parsed.success) {
+      data = parsed.data;
     } else {
-      console.log(validateSuccess.errors);
+      console.log(parsed.error);
       throw new Response(
-        `Данные запроса postUpdateTaskActivity не валидны схеме`
+        `Данные запроса postUpdateTaskActivity не валидны схеме`,
       );
     }
 
@@ -230,5 +230,5 @@ export const postUpdateTaskActivityMockResponse = http.post(
   async () => {
     await delay(2000);
     return HttpResponse.json(mockResponseSuccess);
-  }
+  },
 );

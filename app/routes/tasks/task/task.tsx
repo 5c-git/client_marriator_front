@@ -456,8 +456,8 @@ export default function Task({ loaderData }: Route.ComponentProps) {
                   fetcher.submit(
                     JSON.stringify({
                       _action: "deleteActivity",
-                      orderId: loaderData.entity.id,
-                      orderActivityId: serviceToDelete?.id,
+                      taskId: loaderData.entity.id,
+                      taskActivityId: serviceToDelete?.id,
                     }),
                     {
                       method: "POST",

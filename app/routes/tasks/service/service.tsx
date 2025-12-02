@@ -8,17 +8,18 @@ import { ServiceStaticMobileView } from "~/shared/views/service/ServiceStaticMob
 
 import { useStore } from "~/store/store";
 
-import type { postCreateOrderActivityPayload } from "~/requests/_personal/postCreateOrderActivity/postCreateOrderActivity";
-import type { postUpdateOrderActivityPayload } from "~/requests/_personal/postUpdateOrderActivity/postUpdateOrderActivity";
+import type { postCreateTaskActivityPayload } from "~/requests/_personal/postCreateTaskActivity/postCreateTaskActivity";
+import type { postUpdateTaskActivityPayload } from "~/requests/_personal/postUpdateTaskActivity/postUpdateTaskActivity";
+
 import type { ServiceMobileViewInterface } from "~/shared/views/service/ServiceMobileViewInterface";
 
 import { Loader } from "~/shared/ui/Loader/Loader";
 
-import { getOrder } from "~/requests/_personal/getOrder/getOrder";
-import { getViewActivitiesForOrder } from "~/requests/_personal/getViewActivitiesForOrder/getViewActivitiesForOrder";
-import { getPlaceForOrder } from "~/requests/_personal/getPlaceForOrder/getPlaceForOrder";
-import { postCreateOrderActivity } from "~/requests/_personal/postCreateOrderActivity/postCreateOrderActivity";
-import { postUpdateOrderActivity } from "~/requests/_personal/postUpdateOrderActivity/postUpdateOrderActivity";
+import { getTask } from "~/requests/_personal/getTask/getTask";
+import { getViewActivitiesForTask } from "~/requests/_personal/getViewActivitiesForTask/getViewActivitiesForTask";
+import { getPlaceForTask } from "~/requests/_personal/getPlaceForTask/getPlaceForTask";
+import { postCreateTaskActivity } from "~/requests/_personal/postCreateTaskActivity/postCreateTaskActivity";
+import { postUpdateTaskActivity } from "~/requests/_personal/postUpdateTaskActivity/postUpdateTaskActivity";
 
 type MobileModeData = Omit<
   ServiceMobileViewInterface,
@@ -29,7 +30,7 @@ type MobileModeData = Omit<
   | "cancelAction"
   | "submitAction"
 > & {
-  orderId: string;
+  taskId: string;
   serviceId?: string;
 
   setting_mode: "mobile";
@@ -70,9 +71,9 @@ export async function clientLoader({
       if (params.serviceId) {
         setting_isNew = false;
 
-        const orderData = await getOrder(accessToken, params.orderId);
+        const taskData = await getTask(accessToken, params.taskId);
 
-        const service = orderData.data.orderActivities.find(
+        const service = taskData.data.orderActivities.find(
           (item) => item.id.toString() === params.serviceId,
         );
 
@@ -116,27 +117,21 @@ export async function clientLoader({
 
           setting_canEdit =
             (params.serviceId &&
-              userRole === "client" &&
-              orderData.data.status === 1) ||
-            (params.serviceId &&
-              userRole === "client" &&
-              orderData.data.status === 2) ||
+              userRole === "manager" &&
+              taskData.data.status === 1) ||
             (params.serviceId &&
               userRole === "manager" &&
-              orderData.data.status === 1) ||
-            (params.serviceId &&
-              userRole === "manager" &&
-              orderData.data.status === 2)
+              taskData.data.status === 2)
               ? true
               : false;
         } else {
-          throw redirect(withLocale(`/orders/${params.orderId}`));
+          throw redirect(withLocale(`/tasks/${params.taskId}`));
         }
       }
 
-      const activitiesData = await getViewActivitiesForOrder(
+      const activitiesData = await getViewActivitiesForTask(
         accessToken,
-        params.orderId,
+        params.taskId,
       );
 
       activitiesData.data.forEach((item) => {
@@ -148,7 +143,7 @@ export async function clientLoader({
         });
       });
 
-      const locationsData = await getPlaceForOrder(accessToken);
+      const locationsData = await getPlaceForTask(accessToken);
 
       locationsData.data.forEach((item) => {
         locations.push({
@@ -160,7 +155,7 @@ export async function clientLoader({
       });
 
       data = {
-        orderId: params.orderId,
+        taskId: params.taskId,
         entity,
         activities,
         locations,
@@ -189,21 +184,20 @@ export async function clientAction({
 
   const isNew = searchParams.get("new");
 
-  console.log(isNew);
   if (accessToken) {
     if (_action === "createService") {
-      await postCreateOrderActivity(accessToken, fields.payload);
+      await postCreateTaskActivity(accessToken, fields.payload);
       if (isNew) {
-        throw redirect(`/orders/new-order?orderId=${params.orderId}`);
+        throw redirect(`/tasks/new-task?taskId=${params.taskId}`);
       } else {
-        throw redirect(withLocale(`/orders/${params.orderId}`));
+        throw redirect(withLocale(`/tasks/${params.taskId}`));
       }
     } else if (_action === "updateService") {
-      await postUpdateOrderActivity(accessToken, fields.payload);
+      await postUpdateTaskActivity(accessToken, fields.payload);
       if (isNew) {
-        throw redirect(`/orders/new-order?orderId=${params.orderId}`);
+        throw redirect(`/tasks/new-task?taskId=${params.taskId}`);
       } else {
-        throw redirect(withLocale(`/orders/${params.orderId}`));
+        throw redirect(withLocale(`/tasks/${params.taskId}`));
       }
     }
   } else {
@@ -238,8 +232,8 @@ export default function Service({ loaderData }: Route.ComponentProps) {
             }}
             submitAction={(values) => {
               if (loaderData.setting_isNew) {
-                const createPayload: postCreateOrderActivityPayload = {
-                  orderId: Number(loaderData.orderId),
+                const createPayload: postCreateTaskActivityPayload = {
+                  taskId: Number(loaderData.taskId),
                   viewActivityId: Number(values.activity),
                   count: Number(values.amount),
                   dateStart: values.dateStart.toISOString(),
@@ -283,9 +277,9 @@ export default function Service({ loaderData }: Route.ComponentProps) {
                   },
                 );
               } else {
-                const updatePayload: postUpdateOrderActivityPayload = {
-                  orderId: Number(loaderData.orderId),
-                  orderActivity: Number(loaderData.serviceId),
+                const updatePayload: postUpdateTaskActivityPayload = {
+                  taskId: Number(loaderData.taskId),
+                  taskActivity: Number(loaderData.serviceId),
                   viewActivityId: Number(values.activity),
                   count: Number(values.amount),
                   dateStart: values.dateStart.toISOString(),

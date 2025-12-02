@@ -376,7 +376,7 @@ export default function Tasks({ loaderData }: Route.ComponentProps) {
                   fetcher.submit(
                     JSON.stringify({
                       _action: taskToAct?.action,
-                      orderId: taskToAct?.id,
+                      taskId: taskToAct?.id,
                     }),
                     {
                       method: "POST",

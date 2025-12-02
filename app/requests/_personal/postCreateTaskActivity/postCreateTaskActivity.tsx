@@ -1,13 +1,11 @@
 import { http, delay, HttpResponse } from "msw";
-import Ajv from "ajv";
 
-import schemaSuccess from "./postCreateTaskActivitySuccess.schema.json";
-import { PostCreateTaskActivitySuccess } from "./postCreateTaskActivitySuccess.type";
+import {
+  postCreateTaskActivitySuccessSchema,
+  PostCreateTaskActivitySuccess,
+} from "./postCreateTaskActivitySuccess.schema";
+
 import { UnxpectedError } from "~/shared/unexpectedError/unexpectedError";
-
-const ajv = new Ajv();
-
-const validateSuccess = ajv.compile(schemaSuccess);
 
 export const postCreateTaskActivityKeys = ["postCreateTaskActivity"];
 
@@ -27,7 +25,7 @@ export type postCreateTaskActivityPayload = {
 
 export const postCreateTaskActivity = async (
   accessToken: string,
-  payload: postCreateTaskActivityPayload
+  payload: postCreateTaskActivityPayload,
 ): Promise<PostCreateTaskActivitySuccess> => {
   try {
     const url = new URL(import.meta.env.VITE_POST_CREATE_TASK_ACTIVITY);
@@ -50,12 +48,14 @@ export const postCreateTaskActivity = async (
       });
     }
 
-    if (validateSuccess(response)) {
-      data = response as unknown as PostCreateTaskActivitySuccess;
+    const parsed = postCreateTaskActivitySuccessSchema.safeParse(response);
+
+    if (parsed.success) {
+      data = parsed.data;
     } else {
-      console.log(validateSuccess.errors);
+      console.log(parsed.error);
       throw new Response(
-        `Данные запроса postCreateTaskActivity не валидны схеме`
+        `Данные запроса postCreateTaskActivity не валидны схеме`,
       );
     }
 
@@ -229,5 +229,5 @@ export const postCreateTaskActivityMockResponse = http.post(
   async () => {
     await delay(2000);
     return HttpResponse.json(mockResponseSuccess);
-  }
+  },
 );

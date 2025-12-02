@@ -1,22 +1,17 @@
 import { http, delay, HttpResponse } from "msw";
-import Ajv from "ajv";
-import addFormats from "ajv-formats";
 
-import schemaSuccess from "./getViewActivitiesForTaskSuccess.schema.json";
-import { GetViewActivitiesForTaskSuccess } from "./getViewActivitiesForTaskSuccess.type";
+import {
+  getViewActivitiesForTaskSuccessSchema,
+  GetViewActivitiesForTaskSuccess,
+} from "./getViewActivitiesForTaskSuccess.schema";
 
 import { UnxpectedError } from "~/shared/unexpectedError/unexpectedError";
-
-const ajv = new Ajv();
-addFormats(ajv);
-
-const validateSuccess = ajv.compile(schemaSuccess);
 
 export const getViewActivitiesForTaskKeys = ["getViewActivitiesForTask"];
 
 export const getViewActivitiesForTask = async (
   accessToken: string,
-  taskId: string
+  taskId: string,
 ): Promise<GetViewActivitiesForTaskSuccess> => {
   try {
     const url = new URL(import.meta.env.VITE_GET_VIEW_ACTIVITIES_FOR_TASK);
@@ -40,12 +35,14 @@ export const getViewActivitiesForTask = async (
       });
     }
 
-    if (validateSuccess(response)) {
-      data = response as unknown as GetViewActivitiesForTaskSuccess;
+    const parsed = getViewActivitiesForTaskSuccessSchema.safeParse(response);
+
+    if (parsed.success) {
+      data = parsed.data;
     } else {
-      console.log(validateSuccess.errors);
+      console.log(parsed.error);
       throw new Response(
-        `Данные запроса getViewActivitiesForTask не валидны схеме`
+        `Данные запроса getViewActivitiesForTask не валидны схеме`,
       );
     }
 
@@ -102,5 +99,5 @@ export const getViewActivitiesForTaskMockResponse = http.get(
   async () => {
     await delay(2000);
     return HttpResponse.json(mockResponseSuccess);
-  }
+  },
 );

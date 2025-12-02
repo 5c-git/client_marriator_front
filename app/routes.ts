@@ -203,6 +203,10 @@ export default [
     //task
     route(":lang?/tasks/:taskId", "routes/tasks/task/task.tsx"),
     route(":lang?/tasks/new-task", "routes/tasks/new-task/new-task.tsx"),
+    route(
+      ":lang?/tasks/:taskId/service/:serviceId?",
+      "routes/tasks/service/service.tsx",
+    ),
     // route(
     //   ":lang?/new-task/:taskId/new-service",
     //   "routes/new-task/new-service/new-service.tsx"
