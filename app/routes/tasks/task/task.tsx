@@ -58,6 +58,7 @@ export async function clientLoader({ params }: Route.ClientLoaderArgs) {
   const mode = "mobile";
 
   const accessToken = useStore.getState().accessToken;
+  const userRole = useStore.getState().userRole;
 
   let data;
 
@@ -141,18 +142,20 @@ export async function clientLoader({ params }: Route.ClientLoaderArgs) {
         });
       });
 
-      const supervisorsToSelectData = await getSupervisorsForTask(
-        accessToken,
-        params.taskId,
-      );
+      if (userRole === "manager") {
+        const supervisorsToSelectData = await getSupervisorsForTask(
+          accessToken,
+          params.taskId,
+        );
 
-      supervisorsToSelectData.data.forEach((sepervisorToSelect) => {
-        supervisorsToSelect.push({
-          value: sepervisorToSelect.id.toString(),
-          label: sepervisorToSelect.name,
-          disabled: false,
+        supervisorsToSelectData.data.forEach((sepervisorToSelect) => {
+          supervisorsToSelect.push({
+            value: sepervisorToSelect.id.toString(),
+            label: sepervisorToSelect.name,
+            disabled: false,
+          });
         });
-      });
+      }
 
       data = {
         mode: "mobile",
