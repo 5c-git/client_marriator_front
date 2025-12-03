@@ -13,7 +13,7 @@ import { StyledSearchBar } from "~/shared/ui/StyledSearchBar/StyledSearchBar";
 import { StyledCheckboxMultiple } from "~/shared/ui/StyledCheckboxMultiple/StyledCheckboxMultiple";
 
 type CheckboxDrawerProps = {
-  translation: "address";
+  translation: "address" | "supervisor";
   open: boolean;
   onClose: () => void;
   onSubmit: (value: string[]) => void;
@@ -23,9 +23,7 @@ type CheckboxDrawerProps = {
 export function CheckboxSearchableDrawer(props: CheckboxDrawerProps) {
   const { t } = useTranslation("CheckboxSearchableDrawer");
 
-  const [selectedItems, setSelectedItems] = useState<typeof props.items>(
-    props.items,
-  );
+  const [selectedItems, setSelectedItems] = useState<typeof props.items>([]);
 
   const {
     control,
@@ -47,7 +45,12 @@ export function CheckboxSearchableDrawer(props: CheckboxDrawerProps) {
         selectedItems: z.array(z.string()).min(1),
       }),
     ),
+    shouldUnregister: true,
   });
+
+  useEffect(() => {
+    setSelectedItems(props.items);
+  }, [props.items]);
 
   return (
     <SwipeableDrawer

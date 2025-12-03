@@ -8,6 +8,7 @@
     "services": "Услуги",
     "creatingPerson": "Создатель",
     "acceptingPerson": "Ответственный",
+    "invitedPersons": "Приглашенные исполнители",
     "status": {
       "new": "Новый",
       "accepted": "Принято",
@@ -17,7 +18,31 @@
     },
     "role": {
       "manager": "Менеджер",
-      "supervisor": "Супервайзор",
+      "supervisor": "Супервайзер",
+      "client": "Клиент",
+      "specialist": "Специалист"
+    }
+  },
+  "task": {
+    "header": "Задача",
+    "statusPlaceholder": "Статус",
+    "locationPlaceholder": "Место оказания услуг",
+    "phonePlaceholder": "Телефон",
+    "projectPlaceholder": "Проект",
+    "services": "Услуги",
+    "creatingPerson": "Создатель",
+    "acceptingPerson": "Ответственный",
+    "invitedPersons": "Приглашенные исполнители",
+    "status": {
+      "new": "Новый",
+      "accepted": "Принято",
+      "notAccepted": "Не Принято",
+      "canceled": "Отменено",
+      "archive": "Архив"
+    },
+    "role": {
+      "manager": "Менеджер",
+      "supervisor": "Супервайзер",
       "client": "Клиент",
       "specialist": "Специалист"
     }

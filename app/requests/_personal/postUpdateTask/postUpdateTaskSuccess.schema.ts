@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-export const getTaskSuccessSchema = z.object({
+export const postUpdateTaskSuccesSchema = z.object({
   data: z.object({
     id: z.number(),
     selfEmployed: z.boolean(),
@@ -43,13 +43,7 @@ export const getTaskSuccessSchema = z.object({
       phone: z.number(),
       email: z.string(),
       logo: z.string(),
-      name: z.string(),
-      roles: z.array(
-        z.object({
-          id: z.number().gte(1).lte(6),
-          name: z.enum(["client", "manager", "specialist", "supervisor"]),
-        }),
-      ),
+      roles: z.array(z.object({ id: z.number(), name: z.string() })),
     }),
     acceptUser: z.union([
       z.null(),
@@ -57,14 +51,8 @@ export const getTaskSuccessSchema = z.object({
         id: z.number(),
         phone: z.number(),
         email: z.string(),
-        name: z.string(),
         logo: z.string(),
-        roles: z.array(
-          z.object({
-            id: z.number().gte(1).lte(6),
-            name: z.enum(["client", "manager", "specialist", "supervisor"]),
-          }),
-        ),
+        roles: z.array(z.object({ id: z.number(), name: z.string() })),
       }),
     ]),
     orderActivities: z.array(
@@ -111,18 +99,12 @@ export const getTaskSuccessSchema = z.object({
       z.object({
         id: z.number(),
         phone: z.number(),
-        name: z.string(),
         email: z.string(),
         logo: z.string(),
-        roles: z.array(
-          z.object({
-            id: z.number().gte(1).lte(6),
-            name: z.enum(["client", "manager", "specialist", "supervisor"]),
-          }),
-        ),
+        roles: z.array(z.object({ id: z.number(), name: z.string() })),
       }),
     ),
   }),
 });
 
-export type GetTaskSuccess = z.infer<typeof getTaskSuccessSchema>;
+export type PostUpdateTaskSuccess = z.infer<typeof postUpdateTaskSuccesSchema>;

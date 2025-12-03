@@ -1,42 +1,22 @@
-import { useState, useEffect } from "react";
+import { useState, ComponentPropsWithoutRef } from "react";
 import {
   useNavigation,
   useNavigate,
   useFetcher,
-  Link,
   redirect,
+  useSearchParams,
 } from "react-router";
 import type { Route } from "./+types/new-task";
 
 import { useTranslation } from "react-i18next";
 import { withLocale } from "~/shared/withLocale";
 
-import * as Yup from "yup";
-import { yupResolver } from "@hookform/resolvers/yup";
-import { useForm, Controller } from "react-hook-form";
-
-import Box from "@mui/material/Box";
-import {
-  Avatar,
-  Button,
-  Dialog,
-  DialogActions,
-  DialogTitle,
-  IconButton,
-  SwipeableDrawer,
-  Typography,
-} from "@mui/material";
+import { TaskMobileView } from "./_views/TaskMobileView";
+import type { TaskMobileViewInterface } from "./_views/TaskMobileViewInterface";
 
 import { Loader } from "~/shared/ui/Loader/Loader";
-import { TopNavigation } from "~/shared/ui/TopNavigation/TopNavigation";
-import { StyledSelect } from "~/shared/ui/StyledSelect/StyledSelect";
-import { StyledCheckbox } from "~/shared/ui/StyledCheckbox/StyledCheckbox";
-import { StyledSearchBar } from "~/shared/ui/StyledSearchBar/StyledSearchBar";
 import { StyledCheckboxMultiple } from "~/shared/ui/StyledCheckboxMultiple/StyledCheckboxMultiple";
-
-import AddIcon from "@mui/icons-material/Add";
-import LogoutIcon from "@mui/icons-material/Logout";
-import ClearIcon from "@mui/icons-material/Clear";
+import { CheckboxSearchableDrawer } from "~/shared/ui/CheckboxSearchableDrawer/CheckboxSearchableDrawer";
 
 import { useStore } from "~/store/store";
 
@@ -44,7 +24,6 @@ import { getTask } from "~/requests/_personal/getTask/getTask";
 import { getPlaceForTask } from "~/requests/_personal/getPlaceForTask/getPlaceForTask";
 import { getProjectsForTask } from "~/requests/_personal/getProjectsForTask/getProjectsForTask";
 import { getSupervisorsForTask } from "~/requests/_personal/getSupervisorsForTask/getSupervisorsForTask";
-
 import { postCreateTask } from "~/requests/_personal/postCreateTask/postCreateTask";
 import { postUpdateTask } from "~/requests/_personal/postUpdateTask/postUpdateTask";
 import { postDeleteTaskActivity } from "~/requests/_personal/postDeleteTaskActivity/postDeleteTaskActivity";
@@ -52,114 +31,126 @@ import { postCancelTask } from "~/requests/_personal/postCancelTask/postCancelTa
 import { postInvoiceTask } from "~/requests/_personal/postInvoiceTask/postInvoiceTask";
 import { postInstructTask } from "~/requests/_personal/postInstructTask/postInstructTask";
 
+type MobileModeData = {
+  mode: "mobile";
+  task: TaskMobileViewInterface["task"];
+  placesOptions: TaskMobileViewInterface["placesOptions"];
+  projectOptions: TaskMobileViewInterface["projectsOptions"];
+  supervisorsToSelect: ComponentPropsWithoutRef<
+    typeof StyledCheckboxMultiple
+  >["options"];
+};
+
 export async function clientLoader({ request }: Route.ClientLoaderArgs) {
+  const mode = "mobile";
+
   const currentURL = new URL(request.url);
   const accessToken = useStore.getState().accessToken;
   const taskId = currentURL.searchParams.get("taskId");
+  const placeId = currentURL.searchParams.get("placeId");
 
-  const task: {
-    id: string;
-    place: {
-      id: number;
-      name: string;
-      region: string;
-    };
-    project: {
-      id: number;
-      name: string;
-      brand: unknown[];
-    };
-    selfEmployed: boolean;
-    isNewOrder: boolean;
-    selectedSupervisor: number | null;
-    orderActivities: {
-      id: number;
-      count: number;
-      name: string;
-    }[];
-    acceptedUser: {
-      id: number;
-      phone: number;
-      email: string;
-      logo: string;
-    }[];
-  } = {
-    id: (-1).toString(),
-    place: {
-      id: -1,
-      name: "",
-      region: "",
-    },
-    project: {
-      id: -1,
-      name: "",
-      brand: [],
-    },
-    selfEmployed: false,
-    isNewOrder: true,
-    selectedSupervisor: null,
-    orderActivities: [],
-    acceptedUser: [],
-  };
-
-  const options: { value: string; label: string; disabled: boolean }[] = [];
-  const supervisorsToSelect: {
-    value: string;
-    label: string;
-    disabled: boolean;
-  }[] = [];
+  let data;
 
   if (accessToken) {
-    if (taskId) {
-      const taskData = await getTask(accessToken, taskId);
+    if (mode === "mobile") {
+      let task: MobileModeData["task"] = {
+        id: "",
+        projectId: null,
+        place: {
+          id: "",
+          name: "",
+          region: "",
+        },
+        selfEmployed: false,
+        isNewTask: true,
+        taskServices: [],
+        invitedSupervisors: [],
+        responsibleSupervisorId: null,
+      };
 
-      task.id = taskId;
-      task.place.id = taskData.data.place.id;
-      task.place.name = taskData.data.place.name;
-      task.place.region = taskData.data.place.region.name;
+      const placesOptions: MobileModeData["placesOptions"] = [];
+      const projectOptions: MobileModeData["projectOptions"] = [];
 
-      task.project.id = taskData.data.project.id;
-      task.project.name = taskData.data.project.name;
-      task.project.brand = taskData.data.project.brand;
+      const supervisorsToSelect: MobileModeData["supervisorsToSelect"] = [];
 
-      task.selfEmployed = taskData.data.selfEmployed;
+      if (taskId) {
+        const taskData = await getTask(accessToken, taskId);
 
-      taskData.data.orderActivities.forEach((item) => {
-        task.orderActivities.push({
-          id: item.id,
-          count: item.count,
-          name: item.viewActivity.name,
+        task.id = taskId;
+        ((task.projectId = taskData.data.project.id.toString()),
+          (task.place.id = taskData.data.place.id.toString()));
+        task.place.name = taskData.data.place.name;
+        task.place.region = taskData.data.place.region.name;
+        task.selfEmployed = taskData.data.selfEmployed;
+        task.isNewTask = false;
+        taskData.data.orderActivities.forEach((service) => {
+          task.taskServices.push({
+            id: service.id,
+            count: service.count,
+            name: service.viewActivity.name,
+          });
         });
-      });
+        taskData.data.acceptedUser.forEach((supervisor) => {
+          task.invitedSupervisors.push({
+            id: supervisor.id,
+            phone: supervisor.phone,
+            email: supervisor.email,
+            name: supervisor.name,
+            logo: supervisor.logo,
+          });
+        });
+        task.responsibleSupervisorId = taskData.data.acceptUser
+          ? taskData.data.acceptUser.id
+          : null;
 
-      task.acceptedUser = taskData.data.acceptedUser;
-      task.isNewOrder = false;
-      task.selectedSupervisor = taskData.data.acceptUser
-        ? taskData.data.acceptUser.id
-        : null;
+        const supervisorsToSelectData = await getSupervisorsForTask(
+          accessToken,
+          taskId,
+        );
 
-      const supervisersData = await getSupervisorsForTask(accessToken, taskId);
+        supervisorsToSelectData.data.forEach((sepervisorToSelect) => {
+          supervisorsToSelect.push({
+            value: sepervisorToSelect.id.toString(),
+            label: sepervisorToSelect.name,
+            disabled: false,
+          });
+        });
+      }
 
-      supervisersData.data.forEach((item) => {
-        supervisorsToSelect.push({
+      const placesOptionsData = await getPlaceForTask(accessToken);
+
+      placesOptionsData.data.forEach((item) => {
+        placesOptions.push({
           value: item.id.toString(),
-          label: item.email,
+          label: `${item.name} ${item.region.name}`,
           disabled: false,
         });
       });
+
+      if (placeId) {
+        const projectsOptionsData = await getProjectsForTask(
+          accessToken,
+          placeId,
+        );
+        projectsOptionsData.data.forEach((item) => {
+          projectOptions.push({
+            value: item.id.toString(),
+            label: item.name,
+            disabled: false,
+          });
+        });
+      }
+
+      data = {
+        mode: "mobile",
+        task,
+        placesOptions,
+        projectOptions,
+        supervisorsToSelect,
+      } as MobileModeData;
     }
 
-    const optionsData = await getPlaceForTask(accessToken);
-
-    optionsData.data.forEach((item) => {
-      options.push({
-        value: item.id.toString(),
-        label: `${item.name} ${item.region.name}`,
-        disabled: false,
-      });
-    });
-
-    return { task, options, supervisorsToSelect };
+    return data as MobileModeData | { mode: "desktop" };
   } else {
     throw new Response("Токен авторизации не обнаружен!", { status: 401 });
   }
@@ -175,28 +166,12 @@ export async function clientAction({ request }: Route.ClientActionArgs) {
   const taskId = currentURL.searchParams.get("taskId");
 
   if (accessToken) {
-    if (_action === "_getProjects") {
-      const projectsData = await getProjectsForTask(
-        accessToken,
-        fields.placeId
-      );
-      const options: { value: string; label: string; disabled: boolean }[] = [];
-
-      projectsData.data.forEach((item) => {
-        options.push({
-          value: item.id.toString(),
-          label: item.name,
-          disabled: false,
-        });
-      });
-
-      return options;
-    } else if (_action === "_create") {
+    if (_action === "_create") {
       const task = await postCreateTask(
         accessToken,
         fields.placeId,
         fields.projectId,
-        fields.selfEmployed
+        fields.selfEmployed,
       );
       currentURL.searchParams.set("taskId", task.data.id.toString());
 
@@ -207,18 +182,18 @@ export async function clientAction({ request }: Route.ClientActionArgs) {
         fields.placeId,
         Number(taskId),
         fields.projectId,
-        fields.selfEmployed
+        fields.selfEmployed,
       );
     } else if (_action === "_delete" && taskId) {
       await postDeleteTaskActivity(accessToken, taskId, fields.orderActivityId);
     } else if (_action === "_cancel" && taskId) {
       await postCancelTask(accessToken, taskId);
-      throw redirect(withLocale("/"));
+      throw redirect(withLocale("/tasks"));
     } else if (_action === "_inviteSupervisors" && taskId) {
       await postInvoiceTask(accessToken, taskId, fields.supervisors);
     } else if (_action === "_save" && taskId) {
       await postInstructTask(accessToken, taskId, fields.supervisorId);
-      throw redirect(withLocale("/"));
+      throw redirect(withLocale(`/tasks/${taskId}`));
     }
   } else {
     throw new Response("Токен авторизации не обнаружен!", { status: 401 });
@@ -228,6 +203,7 @@ export async function clientAction({ request }: Route.ClientActionArgs) {
 export default function NewTask({ loaderData }: Route.ComponentProps) {
   const navigate = useNavigate();
   const navigation = useNavigation();
+  const [searchParams, setSearchParams] = useSearchParams();
   const { t } = useTranslation("new_task");
 
   const fetcher = useFetcher();
@@ -238,662 +214,125 @@ export default function NewTask({ loaderData }: Route.ComponentProps) {
     count: number;
     name: string;
   } | null>(null);
-  const [selectedSupervisors, setSelectedSupervisors] = useState(
-    loaderData.supervisorsToSelect
-  );
 
-  const {
-    control,
-    handleSubmit,
-    reset,
-    getValues,
-    setValue,
-    formState: { errors },
-  } = useForm({
-    defaultValues: {
-      location:
-        loaderData.task.place.id === -1
-          ? ""
-          : loaderData.task.place.id.toString(),
-      project:
-        loaderData.task.project.id === -1
-          ? ""
-          : loaderData.task.project.id.toString(),
-      selfEmployed: loaderData.task.selfEmployed,
-    },
-    resolver: yupResolver(
-      Yup.object({
-        location: Yup.string().required(t("text", { ns: "constructorFields" })),
-        project: Yup.string().required(t("text", { ns: "constructorFields" })),
-        selfEmployed: Yup.boolean().required(),
-      })
-    ),
-    mode: "onChange",
-    shouldUnregister: true,
-  });
+  console.log(loaderData);
 
-  const {
-    control: controlSupervisor,
-    getValues: getValuesSupervisor,
-    reset: resetSupervisor,
-    handleSubmit: handleSupervisorSubmit,
-  } = useForm<{
-    searchbar: string;
-    supervisors: string[];
-  }>({
-    defaultValues: {
-      searchbar: "",
-      supervisors: [],
-    },
-    // @ts-expect-error
-    resolver: yupResolver(
-      Yup.object({
-        searchbar: Yup.string().notRequired(),
-        supervisors: Yup.array().of(Yup.string()).min(1),
-      })
-    ),
-  });
-
-  useEffect(() => {
-    setTimeout(() => {
-      reset(undefined, {
-        keepValues: true,
-      });
-      // reset({
-      //   location:
-      //     loaderData.task.place.id === -1
-      //       ? ""
-      //       : loaderData.task.place.id.toString(),
-      //   selfEmployed: loaderData.task.selfEmployed,
-      // });
-    });
-  }, [loaderData, reset]);
-
-  useEffect(() => {
-    if (loaderData.task.isNewOrder === false) {
-      fetcher.submit(
-        JSON.stringify({
-          _action: "_getProjects",
-          placeId: getValues().location,
-        }),
-        {
-          method: "POST",
-          encType: "application/json",
-        }
-      );
-    }
-  }, [loaderData.task.isNewOrder]);
-
-  useEffect(() => {
-    setSelectedSupervisors(loaderData.supervisorsToSelect);
-  }, [loaderData.supervisorsToSelect]);
-
-  return (
+  return loaderData.mode === "mobile" ? (
     <>
       {navigation.state !== "idle" ? <Loader /> : null}
 
-      <TopNavigation
-        header={{
-          text: t("header"),
-          bold: false,
-        }}
-        backAction={() => {
-          navigate(withLocale("/"), {
+      <TaskMobileView
+        translation="new-task"
+        task={loaderData.task}
+        placesOptions={loaderData.placesOptions}
+        projectsOptions={loaderData.projectOptions}
+        headerBackAction={() => {
+          navigate(withLocale("/tasks"), {
             viewTransition: true,
           });
         }}
-      />
-      <Box
-        sx={{
-          height: "calc(100vh - 190px)",
-          overflow: "auto",
-          display: "flex",
-          flexDirection: "column",
+        submitAction={(placeId, projectId, selfEmployed) => {
+          const placeIdParam = searchParams.get("placeId");
 
-          rowGap: "14px",
-          paddingLeft: "16px",
-          paddingRight: "16px",
-          paddingTop: "20px",
-        }}
-      >
-        <form
-          onSubmit={handleSubmit((values) => {
-            // fetcher.submit(JSON.stringify(values), {
-            //   method: "POST",
-            //   encType: "application/json",
-            // });
-          })}
-          style={{
-            display: "grid",
-            rowGap: "14px",
-          }}
-        >
-          <Controller
-            name="location"
-            control={control}
-            render={({ field }) => (
-              <StyledSelect
-                inputType="select"
-                placeholder={t("fields.locationPlaceholder")}
-                // onImmediateChange={() => {
-                //   if (loaderData.task.isNewOrder) {
-                //     fetcher.submit(
-                //       JSON.stringify({
-                //         _action: "_create",
-                //         placeId: getValues().location,
-                //         selfEmployed: getValues().selfEmployed,
-                //       }),
-                //       {
-                //         method: "POST",
-                //         encType: "application/json",
-                //       }
-                //     );
-                //   } else {
-                //     fetcher.submit(
-                //       JSON.stringify({
-                //         _action: "_update",
-                //         placeId: getValues().location,
-                //         orderId: fetcher.data,
-                //         selfEmployed: getValues().selfEmployed,
-                //       }),
-                //       {
-                //         method: "POST",
-                //         encType: "application/json",
-                //       }
-                //     );
-                //   }
-                // }}
-                onImmediateChange={() => {
-                  setValue("project", "");
-                  fetcher.submit(
-                    JSON.stringify({
-                      _action: "_getProjects",
-                      placeId: getValues().location,
-                    }),
-                    {
-                      method: "POST",
-                      encType: "application/json",
-                    }
-                  );
-                }}
-                validation="none"
-                error={errors.location?.message}
-                options={loaderData.options}
-                {...field}
-              />
-            )}
-          />
-
-          {fetcher.data ? (
-            <Controller
-              name="project"
-              control={control}
-              render={({ field }) => (
-                <StyledSelect
-                  inputType="select"
-                  placeholder={t("fields.projectPlaceholder")}
-                  onImmediateChange={() => {
-                    if (loaderData.task.isNewOrder) {
-                      fetcher.submit(
-                        JSON.stringify({
-                          _action: "_create",
-                          placeId: getValues().location,
-                          projectId: getValues().project,
-                          selfEmployed: getValues().selfEmployed,
-                        }),
-                        {
-                          method: "POST",
-                          encType: "application/json",
-                        }
-                      );
-                    } else {
-                      fetcher.submit(
-                        JSON.stringify({
-                          _action: "_update",
-                          placeId: getValues().location,
-                          orderId: fetcher.data,
-                          projectId: getValues().project,
-                          selfEmployed: getValues().selfEmployed,
-                        }),
-                        {
-                          method: "POST",
-                          encType: "application/json",
-                        }
-                      );
-                    }
-                  }}
-                  validation="none"
-                  error={errors.project?.message}
-                  options={fetcher.data}
-                  {...field}
-                />
-              )}
-            />
-          ) : null}
-
-          {!loaderData.task.isNewOrder ? (
-            <Controller
-              name="selfEmployed"
-              control={control}
-              render={({ field }) => (
-                <StyledCheckbox
-                  inputType="checkbox"
-                  label={t("fields.selfEmployedPlaceholder")}
-                  onImmediateChange={() => {
-                    if (loaderData.task.isNewOrder) {
-                      fetcher.submit(
-                        JSON.stringify({
-                          _action: "_create",
-                          placeId: getValues().location,
-                          selfEmployed: getValues().selfEmployed,
-                        }),
-                        {
-                          method: "POST",
-                          encType: "application/json",
-                        }
-                      );
-                    } else {
-                      fetcher.submit(
-                        JSON.stringify({
-                          _action: "_update",
-                          placeId: getValues().location,
-                          orderId: fetcher.data,
-                          projectId: getValues().project,
-                          selfEmployed: getValues().selfEmployed,
-                        }),
-                        {
-                          method: "POST",
-                          encType: "application/json",
-                        }
-                      );
-                    }
-                  }}
-                  validation="none"
-                  error={errors.selfEmployed?.message}
-                  {...field}
-                />
-              )}
-            />
-          ) : null}
-        </form>
-
-        {loaderData.task.orderActivities.length > 0 ? (
-          <Box
-            sx={{
-              display: "grid",
-              rowGap: "14px",
-            }}
-          >
-            <Typography
-              component="p"
-              variant="Bold_14"
-              sx={(theme) => ({
-                color: theme.vars.palette["Black"],
-              })}
-            >
-              {t("activities")}
-            </Typography>
-            {loaderData.task.orderActivities.map((item) => (
-              <Box
-                key={item.id}
-                sx={(theme) => ({
-                  display: "flex",
-                  justifyContent: "space-between",
-                  alignItems: "flex-start",
-                  columnGap: "10px",
-                  padding: "10px 14px",
-                  border: "1px solid",
-                  borderColor: theme.vars.palette["Grey_3"],
-                  borderRadius: "6px",
-                })}
-              >
-                <Box
-                  sx={{
-                    display: "grid",
-                    rowGap: "4px",
-                  }}
-                >
-                  <Typography
-                    component="p"
-                    variant="Reg_16"
-                    sx={(theme) => ({
-                      color: theme.vars.palette["Black"],
-                    })}
-                  >
-                    {item.name}
-                  </Typography>
-                  <Typography
-                    component="p"
-                    variant="Reg_12"
-                    sx={(theme) => ({
-                      color: theme.vars.palette["Grey_1"],
-                    })}
-                  >
-                    {t("activityAmount")} {item.count}
-                  </Typography>
-                </Box>
-
-                <IconButton
-                  sx={{
-                    padding: 0,
-                  }}
-                  onClick={() => {
-                    setActivityToDelete(item);
-                  }}
-                >
-                  <ClearIcon />
-                </IconButton>
-              </Box>
-            ))}
-          </Box>
-        ) : null}
-
-        <Button
-          component={Link}
-          to={withLocale(`/new-task/${loaderData.task.id}/new-service`)}
-          variant="outlined"
-          disabled={loaderData.task.isNewOrder}
-          startIcon={<AddIcon />}
-        >
-          {t("serviceButton")}
-        </Button>
-
-        {loaderData.task.acceptedUser.length > 0 ? (
-          <Box
-            sx={{
-              display: "grid",
-              rowGap: "14px",
-            }}
-          >
-            <Typography
-              component="p"
-              variant="Bold_14"
-              sx={(theme) => ({
-                color: theme.vars.palette["Black"],
-              })}
-            >
-              {t("invitedSupervisors")}
-            </Typography>
-            {loaderData.task.acceptedUser.map((item) => (
-              <Box
-                key={item.id}
-                sx={{
-                  display: "flex",
-                  columnGap: "4px",
-
-                  alignItems: "center",
-                }}
-              >
-                <Avatar
-                  src={`${import.meta.env.VITE_ASSET_PATH}${item.logo}`}
-                  sx={{ width: "30px", height: "30px" }}
-                />
-                <Typography
-                  component="p"
-                  variant="Reg_14"
-                  sx={(theme) => ({
-                    color: theme.vars.palette["Black"],
-                  })}
-                >
-                  {item.id}
-                </Typography>
-                <Typography
-                  component="p"
-                  variant="Reg_14"
-                  sx={(theme) => ({
-                    color: theme.vars.palette["Black"],
-                  })}
-                >
-                  {item.email}
-                </Typography>
-              </Box>
-            ))}
-          </Box>
-        ) : null}
-
-        <Button
-          variant="outlined"
-          disabled={loaderData.task.isNewOrder}
-          startIcon={<AddIcon />}
-          onClick={() => {
-            setSearchSupervisors(true);
-          }}
-        >
-          {t("supervisorButton")}
-        </Button>
-
-        <Box
-          sx={(theme) => ({
-            display: "grid",
-            rowGap: "14px",
-            position: "absolute",
-            width: "100%",
-            bottom: 0,
-            left: 0,
-            padding: "16px",
-            backgroundColor: theme.vars.palette["White"],
-          })}
-        >
-          <Button
-            variant="text"
-            disabled={loaderData.task.isNewOrder}
-            onClick={() => {
-              fetcher.submit(
-                JSON.stringify({
-                  _action: "_cancel",
-                  orderId: loaderData.task.id,
-                }),
-                {
-                  method: "POST",
-                  encType: "application/json",
-                }
-              );
-            }}
-          >
-            {t("cancelButton")}
-          </Button>
-          <Button
-            variant="contained"
-            disabled={
-              loaderData.task.orderActivities.length === 0 &&
-              loaderData.task.acceptedUser.length > 0
-            }
-            onClick={() => {
-              fetcher.submit(
-                JSON.stringify({
-                  _action: "_save",
-                  orderId: loaderData.task.id,
-                  supervisorId: loaderData.task.acceptedUser[0].id,
-                }),
-                {
-                  method: "POST",
-                  encType: "application/json",
-                }
-              );
-            }}
-            startIcon={
-              <LogoutIcon
-                sx={{
-                  transform: "rotate(-90deg)",
-                }}
-              />
-            }
-          >
-            {t("sendButton")}
-          </Button>
-        </Box>
-      </Box>
-
-      <Dialog
-        open={activityToDelete ? true : false}
-        onClose={() => {
-          setActivityToDelete(null);
-        }}
-        sx={{
-          "& .MuiDialog-paper": {
-            borderRadius: "8px",
-          },
-        }}
-      >
-        <DialogTitle
-          sx={{
-            fontWeight: "400",
-            fontSize: "1.125rem",
-          }}
-        >
-          {t("dialog.title")}&nbsp;"{activityToDelete?.name}"&nbsp;?
-        </DialogTitle>
-        <DialogActions>
-          <Button
-            variant="outlined"
-            onClick={() => {
-              setActivityToDelete(null);
-            }}
-          >
-            {t("dialog.no")}
-          </Button>
-          <Button
-            variant="contained"
-            onClick={() => {
-              fetcher.submit(
-                JSON.stringify({
-                  _action: "_delete",
-                  orderId: loaderData.task.id,
-                  orderActivityId: activityToDelete?.id,
-                }),
-                {
-                  method: "POST",
-                  encType: "application/json",
-                }
-              );
-              setActivityToDelete(null);
-            }}
-          >
-            {t("dialog.yes")}
-          </Button>
-        </DialogActions>
-      </Dialog>
-
-      <SwipeableDrawer
-        open={searchSupervisors}
-        onClose={() => {
-          resetSupervisor();
-          setSearchSupervisors(false);
-        }}
-        onOpen={() => {}}
-        disableBackdropTransition={true}
-        disableSwipeToOpen={true}
-        anchor="bottom"
-        sx={{
-          "& .MuiDrawer-paper": {
-            borderRadius: "6px",
-          },
-        }}
-      >
-        <TopNavigation
-          header={{
-            text: t("supervisorHeader"),
-            bold: false,
-          }}
-        />
-        <form
-          onSubmit={handleSupervisorSubmit(() => {
-            const selectedSupervisors = getValuesSupervisor("supervisors");
-
+          if (placeId !== placeIdParam) {
+            setSearchParams((prev) => {
+              prev.set("placeId", placeId);
+              return prev;
+            });
+          }
+          if (loaderData.task.isNewTask && projectId !== "") {
             fetcher.submit(
               JSON.stringify({
-                _action: "_inviteSupervisors",
-                supervisors: selectedSupervisors,
+                _action: "_create",
+                placeId: placeId,
+                projectId: projectId,
+                selfEmployed: selfEmployed,
               }),
               {
                 method: "POST",
                 encType: "application/json",
-              }
+              },
             );
+          } else if (projectId !== "") {
+            fetcher.submit(
+              JSON.stringify({
+                _action: "_update",
+                placeId: placeId,
+                taskId: loaderData.task.id,
+                projectId: projectId,
+                selfEmployed: selfEmployed,
+              }),
+              {
+                method: "POST",
+                encType: "application/json",
+              },
+            );
+          }
+        }}
+        cancelAction={() => {
+          fetcher.submit(
+            JSON.stringify({
+              _action: "_cancel",
+              orderId: loaderData.task.id,
+            }),
+            {
+              method: "POST",
+              encType: "application/json",
+            },
+          );
+        }}
+        saveAction={() => {
+          fetcher.submit(
+            JSON.stringify({
+              _action: "_save",
+              orderId: loaderData.task.id,
+              supervisorId: loaderData.task.invitedSupervisors[0].id,
+            }),
+            {
+              method: "POST",
+              encType: "application/json",
+            },
+          );
+        }}
+        deleteAction={(serviceId) => {
+          fetcher.submit(
+            JSON.stringify({
+              _action: "_delete",
+              orderId: loaderData.task.id,
+              orderActivityId: serviceId,
+            }),
+            {
+              method: "POST",
+              encType: "application/json",
+            },
+          );
+          setActivityToDelete(null);
+        }}
+        drawerAction={() => {
+          setSearchSupervisors(true);
+        }}
+      />
 
-            resetSupervisor();
-            setSearchSupervisors(false);
-          })}
-        >
-          <Box
-            sx={{
-              position: "relative",
-              display: "grid",
-              alignContent: "flex-start",
-              rowGap: "14px",
-              paddingTop: "20px",
-              paddingLeft: "16px",
-              paddingRight: "16px",
-              height: "85vh",
-            }}
-          >
-            <Controller
-              name="searchbar"
-              control={controlSupervisor}
-              render={({ field }) => (
-                <StyledSearchBar
-                  placeholder={t("fields.supervisorSearchPlaceholder")}
-                  {...field}
-                  onChange={(evt) => {
-                    const currentFieldValue = new RegExp(
-                      `^${evt.target.value}`,
-                      "i"
-                    );
-
-                    let matchingSupervisors: typeof loaderData.supervisorsToSelect =
-                      [];
-
-                    if (evt.target.value !== "") {
-                      matchingSupervisors = [
-                        ...selectedSupervisors.filter((item) =>
-                          currentFieldValue.test(item.label)
-                        ),
-                      ];
-                    } else {
-                      matchingSupervisors = [...loaderData.supervisorsToSelect];
-                    }
-
-                    setSelectedSupervisors(matchingSupervisors);
-
-                    field.onChange(evt);
-                  }}
-                />
-              )}
-            />
-
-            <Controller
-              name="supervisors"
-              control={controlSupervisor}
-              render={({ field }) => (
-                <StyledCheckboxMultiple
-                  inputType="checkboxMultiple"
-                  onImmediateChange={() => {}}
-                  options={selectedSupervisors}
-                  {...field}
-                />
-              )}
-            />
-
-            <Box
-              sx={(theme) => ({
-                display: "flex",
-                columnGap: "14px",
-                padding: "10px",
-                backgroundColor: theme.vars.palette["White"],
-                position: "fixed",
-                zIndex: 1,
-                width: "100%",
-                bottom: "0",
-                left: "0",
-              })}
-            >
-              <Button type="submit" variant="contained" startIcon={<AddIcon />}>
-                {t("supervisorInviteButton")}
-              </Button>
-            </Box>
-          </Box>
-        </form>
-      </SwipeableDrawer>
+      <CheckboxSearchableDrawer
+        translation="supervisor"
+        open={searchSupervisors}
+        onClose={() => {
+          setSearchSupervisors(false);
+        }}
+        onSubmit={(values) => {
+          fetcher.submit(
+            JSON.stringify({
+              _action: "_inviteSupervisors",
+              supervisors: values,
+            }),
+            {
+              method: "POST",
+              encType: "application/json",
+            },
+          );
+        }}
+        items={loaderData.supervisorsToSelect}
+      />
     </>
-  );
+  ) : null;
 }

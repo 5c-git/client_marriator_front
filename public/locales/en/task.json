@@ -3,8 +3,10 @@
   "route": "Route: {{count}} locations",
   "serviceButton": "Add activity",
   "cancelButton": "Cancel",
-  "sendButton": "Save",
-  "convertToBid": "Сonvert to request",
+  "inviteSupervisorsButton": "Invite supervisors",
+  "sendButton": "Send",
+  "saveButton": "Save",
+  "convertToBid": "Create request",
   "dialog": {
     "title": "Delete",
     "no": "No",

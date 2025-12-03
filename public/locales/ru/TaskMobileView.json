@@ -1,0 +1,28 @@
+{
+  "new-task": {
+    "header": "Создание задачи",
+    "fields": {
+      "locationPlaceholder": "Место оказания услуг *",
+      "projectPlaceholder": "Проект *",
+      "selfEmployedPlaceholder": "Работать с самозанятыми"
+    },
+    "invitedSupervisors": "Приглашённые супервайзеры",
+    "services": "Услуги",
+    "serviceAmount": "Количество:",
+    "serviceButton": "Добавить услугу",
+    "cancelButton": "Отменить",
+    "sendButton": "Отправить задачу",
+    "supervisorButton": "Пригласить супервайзеров",
+
+    "dialog": {
+      "title": "Удалить услугу",
+      "no": "Нет",
+      "yes": "Да"
+    },
+    "endDate": "Дата окончания",
+    "startTime": "Время начала",
+    "endTime": "Время окончания",
+    "addDayButton": "Добавить день",
+    "deleteDayButton": "Удалить день"
+  }
+}

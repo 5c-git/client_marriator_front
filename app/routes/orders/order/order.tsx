@@ -8,7 +8,7 @@ import {
 } from "react-router";
 
 import type { Route } from "./+types/order";
-import type { EntityMobileViewInterface } from "../../../shared/EntityMobileView/EntityMobileViewInterface";
+import type { EntityMobileViewInterface } from "../../../shared/ui/EntityMobileView/EntityMobileViewInterface";
 
 import { determineRole } from "~/shared/determineRole";
 
@@ -33,8 +33,8 @@ import { Loader } from "~/shared/ui/Loader/Loader";
 import { StyledRadioButton } from "~/shared/ui/StyledRadioButton/StyledRadioButton";
 import { RadioSearchableDrawer } from "./_components/RadioSearchableDrawer";
 
-import { EntityStaticMobileView } from "../../../shared/EntityMobileView/EntityStaticMobileView";
-import { EntityEditMobileView } from "../../../shared/EntityMobileView/EntityEditMobileView";
+import { EntityStaticMobileView } from "../../../shared/ui/EntityMobileView/EntityStaticMobileView";
+import { EntityEditMobileView } from "../../../shared/ui/EntityMobileView/EntityEditMobileView";
 
 import AddIcon from "@mui/icons-material/Add";
 import ClearIcon from "@mui/icons-material/Clear";
@@ -85,6 +85,7 @@ export async function clientLoader({ params }: Route.ClientLoaderArgs) {
         project: null,
         creatingPerson: null,
         acceptingPerson: null,
+        invitedPersons: [],
       };
 
       const supervisorsToSelect: ComponentPropsWithoutRef<

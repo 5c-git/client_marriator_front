@@ -320,7 +320,7 @@ export default function Tasks({ loaderData }: Route.ComponentProps) {
           (loaderData.tasks.length === 0 && userRole === "manager") ? (
             <Fab
               component={Link}
-              to={withLocale("/tasks/new-order")}
+              to={withLocale("/tasks/new-task")}
               color="Corp_1"
               aria-label="Create new task"
               sx={{

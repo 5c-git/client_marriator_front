@@ -3,5 +3,10 @@
     "header": "Add locations",
     "searchbar": "Search location",
     "submit": "Add selected"
+  },
+  "supervisor": {
+    "header": "Invite supervisors",
+    "searchbar": "Search supervisors",
+    "submit": "Add selected"
   }
 }

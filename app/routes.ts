@@ -207,15 +207,6 @@ export default [
       ":lang?/tasks/:taskId/service/:serviceId?",
       "routes/tasks/service/service.tsx",
     ),
-    // route(
-    //   ":lang?/new-task/:taskId/new-service",
-    //   "routes/new-task/new-service/new-service.tsx"
-    // ),
-
-    route(
-      ":lang?/tasks/:taskId/edit-service/:activityId",
-      "routes/tasks/task/edit-service/edit-service.tsx",
-    ),
 
     route(":lang?/offline", "routes/offline/offline.tsx"),
   ]),

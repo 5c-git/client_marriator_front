@@ -8,7 +8,7 @@
   },
   "role": {
     "admin": "Администратор",
-    "supervisor": "Супервайзор",
+    "supervisor": "Супервайзер",
     "manager": "Менеджер",
     "client": "Клиент",
     "recruiter": "Рекрутёр",

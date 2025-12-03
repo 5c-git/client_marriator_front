@@ -1,0 +1,28 @@
+{
+  "new-task": {
+    "header": "Create task",
+    "fields": {
+      "locationPlaceholder": "Location *",
+      "projectPlaceholder": "Project *",
+      "selfEmployedPlaceholder": "Work with selfEmployed"
+    },
+    "invitedSupervisors": "Invited supervisors",
+    "services": "Services",
+    "serviceAmount": "Services amount:",
+    "serviceButton": "Add service",
+    "cancelButton": "Cancel",
+    "sendButton": "Send task",
+    "supervisorButton": "Invite supervisors",
+
+    "dialog": {
+      "title": "Delete service",
+      "no": "No",
+      "yes": "Yes"
+    },
+    "endDate": "End date",
+    "startTime": "Start date",
+    "endTime": "Ent time",
+    "addDayButton": "Add day",
+    "deleteDayButton": "Remove day"
+  }
+}

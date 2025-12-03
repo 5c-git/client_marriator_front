@@ -1,6 +1,6 @@
 {
   "order": {
-    "header": "Assignment",
+    "header": "Order",
     "statusPlaceholder": "Status",
     "locationPlaceholder": "Location",
     "phonePlaceholder": "Phone",
@@ -8,6 +8,31 @@
     "services": "Services",
     "creatingPerson": "Creator",
     "acceptingPerson": "Responsible",
+    "invitedPersons": "Invited users",
+    "status": {
+      "new": "New",
+      "accepted": "Accepted",
+      "notAccepted": "Not Accepted",
+      "canceled": "Canceled",
+      "archive": "Archive"
+    },
+    "role": {
+      "manager": "Manager",
+      "supervisor": "Supervisor",
+      "client": "Client",
+      "specialist": "Specialist"
+    }
+  },
+  "task": {
+    "header": "Task",
+    "statusPlaceholder": "Status",
+    "locationPlaceholder": "Location",
+    "phonePlaceholder": "Phone",
+    "projectPlaceholder": "Project",
+    "services": "Services",
+    "creatingPerson": "Creator",
+    "acceptingPerson": "Responsible",
+    "invitedPersons": "Invited users",
     "status": {
       "new": "New",
       "accepted": "Accepted",

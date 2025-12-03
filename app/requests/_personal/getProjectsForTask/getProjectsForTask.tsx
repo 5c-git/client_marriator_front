@@ -1,21 +1,17 @@
 import { http, delay, HttpResponse } from "msw";
-import Ajv from "ajv";
-import addFormats from "ajv-formats";
 
-import getProjectsForTaskSuccess from "./getProjectsForTaskSuccess.schema.json";
-import { GetProjectsForTaskSuccess } from "./getProjectsForTaskSuccess.type";
+import {
+  getProjectsForTaskSuccessSchema,
+  GetProjectsForTaskSuccess,
+} from "./getProjectsForTaskSuccess.schema";
+
 import { UnxpectedError } from "~/shared/unexpectedError/unexpectedError";
-
-const ajv = new Ajv();
-addFormats(ajv);
-
-const validateSuccess = ajv.compile(getProjectsForTaskSuccess);
 
 export const getProjectsForTaskKeys = ["getProjectsForTask"];
 
 export const getProjectsForTask = async (
   accessToken: string,
-  placeId: string
+  placeId: string,
 ): Promise<GetProjectsForTaskSuccess> => {
   try {
     const url = new URL(import.meta.env.VITE_GET_PROJECTS_FOR_TASK);
@@ -39,10 +35,12 @@ export const getProjectsForTask = async (
       });
     }
 
-    if (validateSuccess(response)) {
-      data = response as unknown as GetProjectsForTaskSuccess;
+    const parsed = getProjectsForTaskSuccessSchema.safeParse(response);
+
+    if (parsed.success) {
+      data = parsed.data;
     } else {
-      console.log(validateSuccess.errors);
+      console.log(parsed.error);
       throw new Response(`Данные запроса getProjectsForTask не валидны схеме`);
     }
 
@@ -86,5 +84,5 @@ export const getProjectsForTaskMockResponse = http.get(
   async () => {
     await delay(2000);
     return HttpResponse.json(mockResponseSuccess);
-  }
+  },
 );

@@ -1,21 +1,19 @@
 import { http, delay, HttpResponse } from "msw";
-import Ajv from "ajv";
 
-import postInstructTaskSuccess from "./postInstructTaskSuccess.schema.json";
-import { PostInstructTaskSuccess } from "./postInstructTaskSuccess.type";
+import {
+  postInstructTaskSuccessSchema,
+  PostInstructTaskSuccess,
+} from "./postInstructTaskSuccess.schema";
+
 import { UnxpectedError } from "~/shared/unexpectedError/unexpectedError";
-
-const ajv = new Ajv();
-
-const validateSuccess = ajv.compile(postInstructTaskSuccess);
 
 export const postInstructTaskKeys = ["postInstructTask"];
 
 export const postInstructTask = async (
   accessToken: string,
   taskId: string,
-  supervisorId: string
-) => {
+  supervisorId: string,
+): Promise<PostInstructTaskSuccess> => {
   try {
     const url = new URL(import.meta.env.VITE_POST_INSTRUCT_TASK);
 
@@ -42,9 +40,12 @@ export const postInstructTask = async (
       });
     }
 
-    if (validateSuccess(response)) {
-      data = response as unknown as PostInstructTaskSuccess;
+    const parsed = postInstructTaskSuccessSchema.safeParse(response);
+
+    if (parsed.success) {
+      data = parsed.data;
     } else {
+      console.log(parsed.error);
       throw new Response(`Данные запроса postInstructTask не валидны схеме`);
     }
 
@@ -75,5 +76,5 @@ export const postInstructTaskMockResponse = http.post(
   async () => {
     await delay(2000);
     return HttpResponse.json(mockResponseSuccess);
-  }
+  },
 );

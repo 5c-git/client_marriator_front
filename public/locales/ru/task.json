@@ -3,8 +3,11 @@
   "route": "Маршрут: {{count}} точек",
   "serviceButton": "Добавить услугу",
   "cancelButton": "Отмена",
-  "sendButton": "Сохранить",
-  "convertToBid": "Конвертировать в заявку",
+  "inviteSupervisorsButton": "Пригласить супервайзеров",
+  "sendButton": "Отправить",
+  "saveButton": "Сохранить",
+
+  "convertToBid": "Создать заявку",
   "dialog": {
     "title": "Удалить",
     "no": "Нет",

@@ -38,10 +38,18 @@ type Entity = {
     email: string;
     logo: string;
   };
+  invitedPersons: {
+    id: number;
+    role: "manager" | "supervisor" | "client" | "specialist";
+    name: string;
+    phone: number;
+    email: string;
+    logo: string;
+  }[];
 };
 
 export type EntityMobileViewInterface = {
-  translation: "order";
+  translation: "order" | "task";
   entity: Entity;
   headerBackAction: () => void;
   headerButtonAction?: () => void;

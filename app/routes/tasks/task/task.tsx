@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, ComponentPropsWithoutRef } from "react";
 import {
   useNavigation,
   useNavigate,
@@ -7,17 +7,19 @@ import {
   redirect,
 } from "react-router";
 import type { Route } from "./+types/task";
-import type { EntityMobileViewInterface } from "../../../shared/EntityMobileView/EntityMobileViewInterface";
+import type { EntityMobileViewInterface } from "../../../shared/ui/EntityMobileView/EntityMobileViewInterface";
 
 import { useStore } from "~/store/store";
 import { useTranslation } from "react-i18next";
 import { withLocale } from "~/shared/withLocale";
 import { determineRole } from "~/shared/determineRole";
 
-import { EntityStaticMobileView } from "../../../shared/EntityMobileView/EntityStaticMobileView";
-import { EntityEditMobileView } from "../../../shared/EntityMobileView/EntityEditMobileView";
+import { EntityStaticMobileView } from "../../../shared/ui/EntityMobileView/EntityStaticMobileView";
+import { EntityEditMobileView } from "../../../shared/ui/EntityMobileView/EntityEditMobileView";
+import { CheckboxSearchableDrawer } from "~/shared/ui/CheckboxSearchableDrawer/CheckboxSearchableDrawer";
 
 import { Loader } from "~/shared/ui/Loader/Loader";
+import { StyledCheckboxMultiple } from "~/shared/ui/StyledCheckboxMultiple/StyledCheckboxMultiple";
 
 import Box from "@mui/material/Box";
 import {
@@ -35,14 +37,21 @@ import AddIcon from "@mui/icons-material/Add";
 import ClearIcon from "@mui/icons-material/Clear";
 import CheckIcon from "@mui/icons-material/Check";
 import { RouteIcon } from "~/shared/icons/RouteIcon";
+import LogoutIcon from "@mui/icons-material/Logout";
 
 import { getTask } from "~/requests/_personal/getTask/getTask";
+import { getSupervisorsForTask } from "~/requests/_personal/getSupervisorsForTask/getSupervisorsForTask";
 import { postDeleteTaskActivity } from "~/requests/_personal/postDeleteTaskActivity/postDeleteTaskActivity";
 import { postCreateBidFromTask } from "~/requests/_personal/postCreateBidFromTask/postCreateBidFromTask";
+import { postInstructTask } from "~/requests/_personal/postInstructTask/postInstructTask";
+import { postInvoiceTask } from "~/requests/_personal/postInvoiceTask/postInvoiceTask";
 
 type MobileModeData = {
   mode: "mobile";
   entity: EntityMobileViewInterface["entity"];
+  supervisorsToSelect: ComponentPropsWithoutRef<
+    typeof StyledCheckboxMultiple
+  >["options"];
 };
 
 export async function clientLoader({ params }: Route.ClientLoaderArgs) {
@@ -69,7 +78,10 @@ export async function clientLoader({ params }: Route.ClientLoaderArgs) {
         project: null,
         creatingPerson: null,
         acceptingPerson: null,
+        invitedPersons: [],
       };
+
+      const supervisorsToSelect: MobileModeData["supervisorsToSelect"] = [];
 
       const taskData = await getTask(accessToken, params.taskId);
 
@@ -103,7 +115,6 @@ export async function clientLoader({ params }: Route.ClientLoaderArgs) {
             logo: taskData.data.acceptUser.logo,
           }
         : null;
-
       taskData.data.orderActivities.forEach((item) => {
         let routeCount = 0;
         // считаем количество точек в маршруте
@@ -119,10 +130,34 @@ export async function clientLoader({ params }: Route.ClientLoaderArgs) {
           route: routeCount,
         });
       });
+      taskData.data.acceptedUser.forEach((item) => {
+        task.invitedPersons.push({
+          id: item.id,
+          role: determineRole(item.roles),
+          name: item.name,
+          phone: item.phone,
+          email: item.email,
+          logo: item.logo,
+        });
+      });
+
+      const supervisorsToSelectData = await getSupervisorsForTask(
+        accessToken,
+        params.taskId,
+      );
+
+      supervisorsToSelectData.data.forEach((sepervisorToSelect) => {
+        supervisorsToSelect.push({
+          value: sepervisorToSelect.id.toString(),
+          label: sepervisorToSelect.name,
+          disabled: false,
+        });
+      });
 
       data = {
         mode: "mobile",
         entity: task,
+        supervisorsToSelect,
       } as MobileModeData;
     }
     return data as MobileModeData | { mode: "desktop" };
@@ -131,8 +166,11 @@ export async function clientLoader({ params }: Route.ClientLoaderArgs) {
   }
 }
 
-export async function clientAction({ request }: Route.ClientActionArgs) {
-  // const currentURL = new URL(request.url);
+export async function clientAction({
+  request,
+  params,
+}: Route.ClientActionArgs) {
+  const currentURL = new URL(request.url);
   const { _action, ...fields } = await request.json();
   const accessToken = useStore.getState().accessToken;
   if (accessToken) {
@@ -149,6 +187,11 @@ export async function clientAction({ request }: Route.ClientActionArgs) {
         fields.taskActivityId,
       );
       throw redirect(withLocale(`/requests/${transformedRequestData.data.id}`));
+    } else if (_action === "_inviteSupervisors") {
+      await postInvoiceTask(accessToken, params.taskId, fields.supervisors);
+    } else if (_action === "_save") {
+      await postInstructTask(accessToken, fields.taskId, fields.supervisorId);
+      throw redirect(currentURL.toString());
     }
   } else {
     throw new Response("Токен авторизации не обнаружен!", { status: 401 });
@@ -164,6 +207,7 @@ export default function Task({ loaderData }: Route.ComponentProps) {
   const fetcher = useFetcher();
 
   const [editMode, setEditMode] = useState<boolean>(false);
+  const [searchSupervisors, setSearchSupervisors] = useState<boolean>(false);
   const [serviceToDelete, setServiceToDelete] = useState<{
     id: number;
     count: number;
@@ -177,7 +221,7 @@ export default function Task({ loaderData }: Route.ComponentProps) {
           {navigation.state !== "idle" ? <Loader /> : null}{" "}
           {editMode ? (
             <EntityEditMobileView
-              translation={"order"}
+              translation={"task"}
               entity={loaderData.entity}
               headerBackAction={() => {
                 navigate(withLocale("/tasks"), {
@@ -256,6 +300,16 @@ export default function Task({ loaderData }: Route.ComponentProps) {
                   >
                     {t("serviceButton")}
                   </Button>
+
+                  <Button
+                    variant="outlined"
+                    startIcon={<AddIcon />}
+                    onClick={() => {
+                      setSearchSupervisors(true);
+                    }}
+                  >
+                    {t("inviteSupervisorsButton")}
+                  </Button>
                   <Box
                     sx={(theme) => ({
                       display: "flex",
@@ -279,11 +333,29 @@ export default function Task({ loaderData }: Route.ComponentProps) {
                       {t("cancelButton")}
                     </Button>
                     <Button
-                      component={Link}
-                      to={withLocale(`/tasks`)}
                       variant="contained"
+                      disabled={
+                        loaderData.entity.status === 2 &&
+                        loaderData.entity.invitedPersons.length >= 1
+                          ? false
+                          : true
+                      }
+                      onClick={() => {
+                        fetcher.submit(
+                          JSON.stringify({
+                            _action: "_save",
+                            taskId: loaderData.entity.id,
+                            supervisorId:
+                              loaderData.entity.invitedPersons[0].id,
+                          }),
+                          {
+                            method: "POST",
+                            encType: "application/json",
+                          },
+                        );
+                      }}
                     >
-                      {t("sendButton")}
+                      {t("saveButton")}
                     </Button>
                   </Box>
                 </>
@@ -291,7 +363,7 @@ export default function Task({ loaderData }: Route.ComponentProps) {
             />
           ) : (
             <EntityStaticMobileView
-              translation={"order"}
+              translation={"task"}
               entity={loaderData.entity}
               headerBackAction={() => {
                 navigate(withLocale("/tasks"), {
@@ -418,9 +490,62 @@ export default function Task({ loaderData }: Route.ComponentProps) {
                   ) : null}
                 </Box>
               )}
-              actionSlot={() => null}
+              actionSlot={() => (
+                <>
+                  {loaderData.entity.status === 2 &&
+                  userRole === "manager" &&
+                  loaderData.entity.invitedPersons.length >= 1 ? (
+                    <Button
+                      variant="contained"
+                      onClick={() => {
+                        fetcher.submit(
+                          JSON.stringify({
+                            _action: "_save",
+                            taskId: loaderData.entity.id,
+                            supervisorId:
+                              loaderData.entity.invitedPersons[0].id,
+                          }),
+                          {
+                            method: "POST",
+                            encType: "application/json",
+                          },
+                        );
+                      }}
+                      startIcon={
+                        <LogoutIcon
+                          sx={{
+                            transform: "rotate(-90deg)",
+                          }}
+                        />
+                      }
+                    >
+                      {t("sendButton")}
+                    </Button>
+                  ) : null}
+                </>
+              )}
             />
           )}
+          <CheckboxSearchableDrawer
+            translation="supervisor"
+            open={searchSupervisors}
+            onClose={() => {
+              setSearchSupervisors(false);
+            }}
+            onSubmit={(values) => {
+              fetcher.submit(
+                JSON.stringify({
+                  _action: "_inviteSupervisors",
+                  supervisors: values,
+                }),
+                {
+                  method: "POST",
+                  encType: "application/json",
+                },
+              );
+            }}
+            items={loaderData.supervisorsToSelect}
+          />
           <Dialog
             open={serviceToDelete ? true : false}
             onClose={() => {

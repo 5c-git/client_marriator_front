@@ -1,21 +1,19 @@
 import { http, delay, HttpResponse } from "msw";
-import Ajv from "ajv";
 
-import postInvoiceTaskSuccess from "./postInvoiceTaskSuccess.schema.json";
-import { PostInvoiceTaskSuccess } from "./postInvoiceTaskSuccess.type";
+import {
+  postInvoiceTaskSuccessSchema,
+  PostInvoiceTaskSuccess,
+} from "./postInvoiceTaskSuccess.schema";
+
 import { UnxpectedError } from "~/shared/unexpectedError/unexpectedError";
-
-const ajv = new Ajv();
-
-const validateSuccess = ajv.compile(postInvoiceTaskSuccess);
 
 export const postInvoiceTaskKeys = ["postInvoiceTask"];
 
 export const postInvoiceTask = async (
   accessToken: string,
   taskId: string,
-  supervisors: string[]
-) => {
+  supervisors: string[],
+): Promise<PostInvoiceTaskSuccess> => {
   try {
     const url = new URL(import.meta.env.VITE_POST_INVOICE_TASK);
 
@@ -45,9 +43,12 @@ export const postInvoiceTask = async (
       });
     }
 
-    if (validateSuccess(response)) {
-      data = response as unknown as PostInvoiceTaskSuccess;
+    const parsed = postInvoiceTaskSuccessSchema.safeParse(response);
+
+    if (parsed.success) {
+      data = parsed.data;
     } else {
+      console.log(parsed.error);
       throw new Response(`Данные запроса postInvoiceTask не валидны схеме`);
     }
 
@@ -78,5 +79,5 @@ export const postInvoiceTaskMockResponse = http.post(
   async () => {
     await delay(2000);
     return HttpResponse.json(mockResponseSuccess);
-  }
+  },
 );
