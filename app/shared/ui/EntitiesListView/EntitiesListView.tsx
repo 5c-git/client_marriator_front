@@ -53,27 +53,31 @@ export function EntitiesListView(props: EntitiesListViewInterface) {
 
   //стартовая фильтрация сущностей
   useEffect(() => {
-    const allFilters = [
-      ...new Set(props.entities.map((entity) => entity["status"])),
-    ].sort((a, b) => a - b);
+    if (props.entities.length > 0) {
+      const allFilters = [
+        ...new Set(props.entities.map((entity) => entity["status"])),
+      ].sort((a, b) => a - b);
 
-    const filteredEntites: { [key: (typeof allFilters)[number]]: Entity[] } =
-      {};
+      const filteredEntites: { [key: (typeof allFilters)[number]]: Entity[] } =
+        {};
 
-    allFilters.forEach((filter) => {
-      filteredEntites[filter] = [];
-    });
+      allFilters.forEach((filter) => {
+        filteredEntites[filter] = [];
+      });
 
-    for (const key in filteredEntites) {
-      filteredEntites[key] = props.entities.filter(
-        (item) => item.status === Number(key),
+      for (const key in filteredEntites) {
+        filteredEntites[key] = props.entities.filter(
+          (item) => item.status === Number(key),
+        );
+      }
+
+      setFilteredEntities(filteredEntites);
+      setActiveEntities(
+        filteredEntites[Number(Object.keys(filteredEntites)[0])],
       );
+      setFilter(allFilters[0]);
     }
-
-    setFilteredEntities(filteredEntites);
-    setActiveEntities(filteredEntites[Number(Object.keys(filteredEntites)[0])]);
-    setFilter(allFilters[0]);
-  }, []);
+  }, [props.entities]);
 
   //сортировка и фильтрация
   useEffect(() => {
