@@ -1,23 +1,15 @@
 import { http, delay, HttpResponse } from "msw";
-import Ajv from "ajv";
-import addFormats from "ajv-formats";
 
-import successSchema from "./getBidsSuccess.schema.json";
-import { GetBidsSuccess } from "./getBidsSuccess.type";
+import { getBidsSuccessSchema, GetBidsSuccess } from "./getBidsSuccess.schema";
 
 import { UnxpectedError } from "~/shared/unexpectedError/unexpectedError";
-
-const ajv = new Ajv();
-addFormats(ajv);
-
-const validateSuccess = ajv.compile(successSchema);
 
 export const getBidsKeys = ["getBids"];
 
 export const getBids = async (
   accessToken: string,
   status?: string,
-  sort?: string
+  sort?: string,
 ): Promise<GetBidsSuccess> => {
   try {
     const url = new URL(import.meta.env.VITE_GET_BIDS);
@@ -47,12 +39,15 @@ export const getBids = async (
       });
     }
 
-    // if (validateSuccess(response)) {
-    //   data = response as unknown as GetBidsSuccess;
-    // } else {
-    //   console.log(validateSuccess.errors);
-    //   throw new Response(`Данные запроса getBids не валидны схеме`);
-    // }
+    const parsed = getBidsSuccessSchema.safeParse(response);
+
+    if (parsed.success) {
+      data = parsed.data;
+    } else {
+      console.log(parsed.error);
+      throw new Response(`Данные запроса getBids не валидны схеме`);
+    }
+
     data = response as unknown as GetBidsSuccess;
     return data;
   } catch (error) {
@@ -138,5 +133,5 @@ export const getBidsMockResponse = http.get(
   async () => {
     await delay(2000);
     return HttpResponse.json(mockResponseSuccess);
-  }
+  },
 );

@@ -12,7 +12,7 @@ import { UsersIcon } from "~/shared/ui/Menu/icons/UsersIcon";
 import { useStore } from "~/store/store";
 
 const linksMap = {
-  admin: [
+  manager: [
     {
       to: "/",
       notification: false,
@@ -52,47 +52,7 @@ const linksMap = {
       icon: <ProfileIcon sx={{ width: "30px", height: "30px" }} />,
     },
   ],
-  manager: [
-    {
-      to: "/",
-      notification: false,
-      disabled: false,
-      icon: <ListIcon sx={{ width: "30px", height: "30px" }} />,
-    },
-    {
-      to: "/users",
-      notification: false,
-      disabled: false,
-      icon: <UsersIcon sx={{ width: "30px", height: "30px" }} />,
-    },
-    {
-      to: "/profile",
-      notification: false,
-      disabled: false,
-      icon: <ProfileIcon sx={{ width: "30px", height: "30px" }} />,
-    },
-  ],
   client: [
-    {
-      to: "/",
-      notification: false,
-      disabled: false,
-      icon: <ListIcon sx={{ width: "30px", height: "30px" }} />,
-    },
-    {
-      to: "/wallet",
-      notification: false,
-      disabled: true,
-      icon: <WalletIcon sx={{ width: "30px", height: "30px" }} />,
-    },
-    {
-      to: "/profile",
-      notification: false,
-      disabled: false,
-      icon: <ProfileIcon sx={{ width: "30px", height: "30px" }} />,
-    },
-  ],
-  recruiter: [
     {
       to: "/",
       notification: false,

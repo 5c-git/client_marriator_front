@@ -6,25 +6,13 @@ type State = {
   userPhone: null | string;
   accessToken: null | string;
   refreshToken: null | string;
-  userRole:
-    | "admin"
-    | "manager"
-    | "supervisor"
-    | "client"
-    | "specialist"
-    | "recruiter";
+  userRole: "manager" | "supervisor" | "client" | "specialist";
   userId: null | number;
 
   setUserEmail: (newUserEmail: string) => void;
   setUserPhone: (newUserPhone: string) => void;
   setUserRole: (
-    userRole:
-      | "admin"
-      | "supervisor"
-      | "manager"
-      | "client"
-      | "specialist"
-      | "recruiter"
+    userRole: "supervisor" | "manager" | "client" | "specialist",
   ) => void;
   setUserId: (newUserId: number) => void;
   setAccessToken: (accessToken: string) => void;
@@ -76,6 +64,6 @@ export const useStore = create<State>()(
     }),
     {
       name: "store",
-    }
-  )
+    },
+  ),
 );

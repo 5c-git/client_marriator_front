@@ -3,9 +3,9 @@
   "headerListAction": "List",
   "headerMapAction": "Map",
   "tabs": {
-    "assignment": "Assignments",
+    "order": "Assignments",
     "task": "Tasks",
-    "request": "Requests",
+    "bid": "Requests",
     "mission": "Missions"
   }
 }

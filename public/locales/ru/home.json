@@ -3,9 +3,9 @@
   "headerListAction": "Списком",
   "headerMapAction": "Картой",
   "tabs": {
-    "assignment": "Поручения",
+    "order": "Поручения",
     "task": "Задачи",
-    "request": "Заявки",
+    "bid": "Заявки",
     "mission": "Задания"
   }
 }

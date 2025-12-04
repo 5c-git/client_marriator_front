@@ -335,7 +335,8 @@ export const AssignmentCard = (props: AssignmentCardProps) => (
           >
             {props.address.logo ? (
               <Avatar
-                src={`${import.meta.env.VITE_ASSET_PATH}${props.address.logo}`}
+                // src={`${import.meta.env.VITE_ASSET_PATH}${props.address.logo}`}
+                src={props.address.logo}
                 sx={{ width: "30px", height: "30px" }}
               />
             ) : null}

@@ -4,10 +4,10 @@ export default [
   layout("routes/rootErrorBoundry/rootErrorBoundry.tsx", [
     layout("routes/menuLayout/menuLayout.tsx", [
       layout("routes/home/layout/layout.tsx", [
-        route(":lang?/", "routes/home/index/home.tsx"),
+        route(":lang?/", "routes/home/home.tsx"),
         route(":lang?/orders", "routes/orders/orders.tsx"),
         route(":lang?/tasks", "routes/tasks/tasks.tsx"),
-        route(":lang?/requests", "routes/requests/requests.tsx"),
+        route(":lang?/bids", "routes/bids/bids.tsx"),
         route(":lang?/missions", "routes/missions/missions.tsx"),
       ]),
 

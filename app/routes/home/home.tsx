@@ -10,7 +10,6 @@ export async function clientLoader() {
     const userRole = useStore.getState().userRole;
 
     if (
-      userRole === "admin" ||
       userRole === "supervisor" ||
       userRole === "manager" ||
       userRole === "client"

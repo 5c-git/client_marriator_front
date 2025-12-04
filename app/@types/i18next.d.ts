@@ -57,10 +57,6 @@ import users_recruiter from "../../public/locales/ru/users_recruiter.json";
 import users_select_projects from "../../public/locales/ru/users_select_projects.json";
 import users_select_locations from "../../public/locales/ru/users_select_locations.json";
 
-import tasks from "../../public/locales/ru/tasks.json";
-import new_task from "../../public/locales/ru/new_task.json";
-import task from "../../public/locales/ru/task.json";
-import requests from "../../public/locales/ru/requests.json";
 import request_layout from "../../public/locales/ru/request_layout.json";
 import request_index from "../../public/locales/ru/request_index.json";
 import request_specialists from "../../public/locales/ru/request_specialists.json";
@@ -70,6 +66,9 @@ import request_specialists_specialistRequest_dayReview from "../../public/locale
 //internal
 
 //routes
+import bids from "../../public/locales/ru/bids.json";
+import tasks from "../../public/locales/ru/tasks.json";
+import task from "../../public/locales/ru/task.json";
 import order from "../../public/locales/ru/order.json";
 import orders from "../../public/locales/ru/orders.json";
 //routes
@@ -152,22 +151,24 @@ declare module "i18next" {
       users_recruiter: typeof users_recruiter;
       users_select_projects: typeof users_select_projects;
       users_select_locations: typeof users_select_locations;
-      request_layout: typeof request_layout;
 
-      orders: typeof orders;
-      order: typeof order;
-      new_service: typeof new_service;
-      task: typeof task;
-
-      tasks: typeof tasks;
-      new_task: typeof new_task;
-      requests: typeof requests;
-      request_index: typeof request_index;
-      request_specialists: typeof request_specialists;
       missions: typeof missions;
       mission: typeof mission;
+
+      request_layout: typeof request_layout;
+      request_index: typeof request_index;
+      request_specialists: typeof request_specialists;
       request_specialists_specialistRequest_dayReview: typeof request_specialists_specialistRequest_dayReview;
       //internal
+
+      bids: typeof bids;
+
+      task: typeof task;
+      tasks: typeof tasks;
+
+      order: typeof order;
+      orders: typeof orders;
+      //routes
 
       //views
       TaskMobileView: typeof TaskMobileView;

@@ -22,7 +22,7 @@ export async function clientLoader() {
     tabsMap: {
       manager: [
         <Tab
-          label={t("tabs.assignment", { ns: "home" })}
+          label={t("tabs.order", { ns: "home" })}
           to={withLocale("/orders")}
           value={withLocale("/orders")}
           component={Link}
@@ -36,73 +36,12 @@ export async function clientLoader() {
           key={"tasks"}
         />,
         <Tab
-          label={t("tabs.request", { ns: "home" })}
-          to={withLocale("/requests")}
-          value={withLocale("/requests")}
+          label={t("tabs.bid", { ns: "home" })}
+          to={withLocale("/bids")}
+          value={withLocale("/bids")}
           component={Link}
-          key={"requests"}
+          key={"bids"}
         />,
-        <Tab
-          label={t("tabs.mission", { ns: "home" })}
-          to={withLocale("/missions")}
-          value={withLocale("/missions")}
-          component={Link}
-          key={"missions"}
-          disabled
-        />,
-      ],
-      supervisor: [
-        <Tab
-          label={t("tabs.assignment", { ns: "home" })}
-          to={withLocale("/orders")}
-          value={withLocale("/orders")}
-          component={Link}
-          key={"orders"}
-        />,
-        <Tab
-          label={t("tabs.task", { ns: "home" })}
-          to={withLocale("/tasks")}
-          value={withLocale("/tasks")}
-          component={Link}
-          key={"tasks"}
-        />,
-        <Tab
-          label={t("tabs.request", { ns: "home" })}
-          to={withLocale("/requests")}
-          value={withLocale("/requests")}
-          component={Link}
-          key={"requests"}
-        />,
-        <Tab
-          label={t("tabs.mission", { ns: "home" })}
-          to={withLocale("/missions")}
-          value={withLocale("/missions")}
-          component={Link}
-          key={"missions"}
-          disabled
-        />,
-      ],
-      client: [
-        <Tab
-          label={t("tabs.assignment", { ns: "home" })}
-          to={withLocale("/orders")}
-          value={withLocale("/orders")}
-          component={Link}
-          key={"orders"}
-          sx={{
-            maxWidth: "unset",
-          }}
-        />,
-      ],
-      specialist: [
-        // <Tab
-        //   label={t("tabs.request", { ns: "home" })}
-        //   to={withLocale("/requests")}
-        //   value={withLocale("/requests")}
-        //   component={Link}
-        //   key={"requests"}
-        //   disabled
-        // />,
         // <Tab
         //   label={t("tabs.mission", { ns: "home" })}
         //   to={withLocale("/missions")}
@@ -112,7 +51,50 @@ export async function clientLoader() {
         //   disabled
         // />,
       ],
-      recruiter: [],
+      supervisor: [
+        <Tab
+          label={t("tabs.order", { ns: "home" })}
+          to={withLocale("/orders")}
+          value={withLocale("/orders")}
+          component={Link}
+          key={"orders"}
+        />,
+        <Tab
+          label={t("tabs.task", { ns: "home" })}
+          to={withLocale("/tasks")}
+          value={withLocale("/tasks")}
+          component={Link}
+          key={"tasks"}
+        />,
+        <Tab
+          label={t("tabs.bid", { ns: "home" })}
+          to={withLocale("/bids")}
+          value={withLocale("/bids")}
+          component={Link}
+          key={"bids"}
+        />,
+        // <Tab
+        //   label={t("tabs.mission", { ns: "home" })}
+        //   to={withLocale("/missions")}
+        //   value={withLocale("/missions")}
+        //   component={Link}
+        //   key={"missions"}
+        //   disabled
+        // />,
+      ],
+      client: [
+        <Tab
+          label={t("tabs.order", { ns: "home" })}
+          to={withLocale("/orders")}
+          value={withLocale("/orders")}
+          component={Link}
+          key={"orders"}
+          sx={{
+            maxWidth: "unset",
+          }}
+        />,
+      ],
+      specialist: [],
     },
   };
 }
