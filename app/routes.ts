@@ -15,21 +15,6 @@ export default [
         ":lang?/missions/:missionId/:specialistId",
         "routes/missions/mission/mission.tsx",
       ),
-
-      layout("routes/requests/request/layout/layout.tsx", [
-        route(
-          ":lang?/requests/:requestId",
-          "routes/requests/request/index/index.tsx",
-        ),
-        route(
-          ":lang?/requests/:requestId/specialists",
-          "routes/requests/request/specialists/specialists.tsx",
-        ),
-        route(
-          ":lang?/requests/:requestId/recruitment",
-          "routes/requests/request/recruitment/recruitment.tsx",
-        ),
-      ]),
       route(
         ":lang?/requests/:requestId/specialists/:specialistId",
         "routes/requests/request/specialists/specialist-request/specialist-request.tsx",
@@ -190,6 +175,15 @@ export default [
       ":lang?/users/:user/select-locations",
       "routes/users/selectLocations/selectLocations.tsx",
     ),
+
+    //bid
+    layout("routes/bids/bid/layout/layout.tsx", [
+      route(":lang?/bids/:bidId", "routes/bids/bid/bid.tsx"),
+      route(
+        ":lang?/bids/:bidId/specialists",
+        "routes/bids/specialists/specialists.tsx",
+      ),
+    ]),
 
     //order
     route(":lang?/orders/:orderId", "routes/orders/order/order.tsx"),
