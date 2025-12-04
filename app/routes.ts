@@ -2,8 +2,8 @@ import { type RouteConfig, route, layout } from "@react-router/dev/routes";
 
 export default [
   layout("routes/rootErrorBoundry/rootErrorBoundry.tsx", [
-    layout("routes/menuLayout/menuLayout.tsx", [
-      layout("routes/home/layout/layout.tsx", [
+    layout("routes/MenuLayout/MenuLayout.tsx", [
+      layout("routes/home/HomeLayout/HomeLayout.tsx", [
         route(":lang?/", "routes/home/home.tsx"),
         route(":lang?/orders", "routes/orders/orders.tsx"),
         route(":lang?/tasks", "routes/tasks/tasks.tsx"),
@@ -177,7 +177,7 @@ export default [
     ),
 
     //bid
-    layout("routes/bids/bid/layout/layout.tsx", [
+    layout("routes/bids/bid/BidLayout/BidLayout.tsx", [
       route(":lang?/bids/:bidId", "routes/bids/bid/bid.tsx"),
       route(
         ":lang?/bids/:bidId/specialists",

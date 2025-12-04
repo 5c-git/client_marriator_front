@@ -1,5 +1,5 @@
 import { Link, Outlet, useNavigate } from "react-router";
-import type { Route } from "./+types/layout";
+import type { Route } from "./+types/BidLayout";
 import { useState } from "react";
 
 import { useTranslation } from "react-i18next";
@@ -13,7 +13,7 @@ import { TopNavigation } from "~/shared/ui/TopNavigation/TopNavigation";
 import { EditIcon } from "~/shared/icons/EditIcon";
 
 import { getBid } from "~/requests/_personal/getBid/getBid";
-import type { GetBidSuccess } from "~/requests/_personal/getBid/getBidSuccess.type";
+import type { GetBidSuccess } from "~/requests/_personal/getBid/getBidSuccess.schema";
 
 type MobileModeData = {
   mode: "mobile";
@@ -43,9 +43,9 @@ export async function clientLoader({ params }: Route.ClientLoaderArgs) {
   }
 }
 
-export default function Layout({ loaderData }: Route.ComponentProps) {
+export default function BidLayout({ loaderData }: Route.ComponentProps) {
   const navigate = useNavigate();
-  const { t } = useTranslation("request_layout");
+  const { t } = useTranslation("BidLayout");
   const [editMode, setEditMode] = useState<boolean>(false);
 
   return loaderData.mode === "mobile" ? (

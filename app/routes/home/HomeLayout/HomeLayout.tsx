@@ -1,5 +1,5 @@
 import { Link, Outlet } from "react-router";
-import type { Route } from "./+types/layout";
+import type { Route } from "./+types/HomeLayout";
 
 import { useState } from "react";
 
@@ -16,34 +16,34 @@ import { MapIcon } from "~/shared/icons/MapIcon";
 import { ListIcon } from "~/shared/ui/Menu/icons/ListIcon";
 
 export async function clientLoader() {
-  await loadNamespaces("home");
+  await loadNamespaces("HomeLayout");
 
   return {
     tabsMap: {
       manager: [
         <Tab
-          label={t("tabs.order", { ns: "home" })}
+          label={t("tabs.order", { ns: "HomeLayout" })}
           to={withLocale("/orders")}
           value={withLocale("/orders")}
           component={Link}
           key={"orders"}
         />,
         <Tab
-          label={t("tabs.task", { ns: "home" })}
+          label={t("tabs.task", { ns: "HomeLayout" })}
           to={withLocale("/tasks")}
           value={withLocale("/tasks")}
           component={Link}
           key={"tasks"}
         />,
         <Tab
-          label={t("tabs.bid", { ns: "home" })}
+          label={t("tabs.bid", { ns: "HomeLayout" })}
           to={withLocale("/bids")}
           value={withLocale("/bids")}
           component={Link}
           key={"bids"}
         />,
         // <Tab
-        //   label={t("tabs.mission", { ns: "home" })}
+        //   label={t("tabs.mission", { ns: "HomeLayout" })}
         //   to={withLocale("/missions")}
         //   value={withLocale("/missions")}
         //   component={Link}
@@ -53,28 +53,28 @@ export async function clientLoader() {
       ],
       supervisor: [
         <Tab
-          label={t("tabs.order", { ns: "home" })}
+          label={t("tabs.order", { ns: "HomeLayout" })}
           to={withLocale("/orders")}
           value={withLocale("/orders")}
           component={Link}
           key={"orders"}
         />,
         <Tab
-          label={t("tabs.task", { ns: "home" })}
+          label={t("tabs.task", { ns: "HomeLayout" })}
           to={withLocale("/tasks")}
           value={withLocale("/tasks")}
           component={Link}
           key={"tasks"}
         />,
         <Tab
-          label={t("tabs.bid", { ns: "home" })}
+          label={t("tabs.bid", { ns: "HomeLayout" })}
           to={withLocale("/bids")}
           value={withLocale("/bids")}
           component={Link}
           key={"bids"}
         />,
         // <Tab
-        //   label={t("tabs.mission", { ns: "home" })}
+        //   label={t("tabs.mission", { ns: "HomeLayout" })}
         //   to={withLocale("/missions")}
         //   value={withLocale("/missions")}
         //   component={Link}
@@ -84,7 +84,7 @@ export async function clientLoader() {
       ],
       client: [
         <Tab
-          label={t("tabs.order", { ns: "home" })}
+          label={t("tabs.order", { ns: "HomeLayout" })}
           to={withLocale("/orders")}
           value={withLocale("/orders")}
           component={Link}
@@ -100,7 +100,7 @@ export async function clientLoader() {
 }
 
 export default function HomeLayout({ loaderData }: Route.ComponentProps) {
-  const { t } = useTranslation("home");
+  const { t } = useTranslation("HomeLayout");
   const userRole = useStore.getState().userRole;
 
   const [showMap, setShowMap] = useState<boolean>(true);

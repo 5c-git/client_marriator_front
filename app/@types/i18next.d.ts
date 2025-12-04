@@ -31,7 +31,7 @@ import registrationComplete from "../../public/locales/ru/registrationComplete.j
 //registration
 
 //internal
-import home from "../../public/locales/ru/home.json";
+import HomeLayout from "../../public/locales/ru/HomeLayout.json";
 import profile from "../../public/locales/ru/profile.json";
 import myProfile from "../../public/locales/ru/myProfile.json";
 import profileEdit from "../../public/locales/ru/profileEdit.json";
@@ -57,7 +57,6 @@ import users_recruiter from "../../public/locales/ru/users_recruiter.json";
 import users_select_projects from "../../public/locales/ru/users_select_projects.json";
 import users_select_locations from "../../public/locales/ru/users_select_locations.json";
 
-import request_layout from "../../public/locales/ru/request_layout.json";
 import request_index from "../../public/locales/ru/request_index.json";
 import request_specialists from "../../public/locales/ru/request_specialists.json";
 import missions from "../../public/locales/ru/missions.json";
@@ -66,9 +65,12 @@ import request_specialists_specialistRequest_dayReview from "../../public/locale
 //internal
 
 //routes
+import BidLayout from "../../public/locales/ru/BidLayout.json";
 import bids from "../../public/locales/ru/bids.json";
-import tasks from "../../public/locales/ru/tasks.json";
+
 import task from "../../public/locales/ru/task.json";
+import tasks from "../../public/locales/ru/tasks.json";
+
 import order from "../../public/locales/ru/order.json";
 import orders from "../../public/locales/ru/orders.json";
 //routes
@@ -126,7 +128,7 @@ declare module "i18next" {
       //registration
 
       //internal
-      home: typeof home;
+
       profile: typeof profile;
       myProfile: typeof myProfile;
       profileEdit: typeof profileEdit;
@@ -155,12 +157,12 @@ declare module "i18next" {
       missions: typeof missions;
       mission: typeof mission;
 
-      request_layout: typeof request_layout;
       request_index: typeof request_index;
       request_specialists: typeof request_specialists;
       request_specialists_specialistRequest_dayReview: typeof request_specialists_specialistRequest_dayReview;
       //internal
 
+      BidLayout: typeof BidLayout;
       bids: typeof bids;
 
       task: typeof task;
@@ -168,6 +170,8 @@ declare module "i18next" {
 
       order: typeof order;
       orders: typeof orders;
+
+      HomeLayout: typeof HomeLayout;
       //routes
 
       //views
