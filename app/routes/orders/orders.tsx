@@ -23,7 +23,7 @@ import {
 import { EntitiesListView } from "~/shared/ui/EntitiesListView/EntitiesListView";
 import { EntitiesListViewInterface } from "~/shared/ui/EntitiesListView/EntitesListViewInterface";
 
-import { AssignmentCard } from "~/shared/ui/AssignmentCard/AssignmentCard";
+import { AssignmentCard } from "~/shared/ui/EntityCard/AssignmentCard";
 import { Loader } from "~/shared/ui/Loader/Loader";
 
 import { Button, Dialog, DialogActions, DialogTitle, Fab } from "@mui/material";
@@ -149,7 +149,7 @@ export default function Orders({ loaderData }: Route.ComponentProps) {
             mapView={showMap}
             entities={loaderData.assignments}
             entityListView={(entity) => (
-              <AssignmentCard
+              <EntityCard
                 key={entity.id}
                 to={withLocale(`/orders/${entity.id}`)}
                 statusColor={entity.statusColor}
@@ -233,7 +233,7 @@ export default function Orders({ loaderData }: Route.ComponentProps) {
               />
             )}
             entityMapView={(entity) => (
-              <AssignmentCard
+              <EntityCard
                 to={withLocale(`/orders/${entity.id}`)}
                 header={`${t("cardHeader")} ${entity.header}`}
                 subHeader={{

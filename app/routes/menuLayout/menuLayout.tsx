@@ -1,5 +1,5 @@
 import { Outlet } from "react-router";
-import type { Route } from "./+types/menuLayout";
+import type { Route } from "./+types/MenuLayout";
 
 import Stack from "@mui/material/Stack";
 import { Menu } from "~/shared/ui/Menu/Menu";

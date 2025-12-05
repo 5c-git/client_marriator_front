@@ -11,7 +11,7 @@ import { statusCodeMap } from "~/shared/status";
 import { EntitiesListView } from "~/shared/ui/EntitiesListView/EntitiesListView";
 import { EntitiesListViewInterface } from "~/shared/ui/EntitiesListView/EntitesListViewInterface";
 
-import { AssignmentCard } from "~/shared/ui/AssignmentCard/AssignmentCard";
+import { AssignmentCard } from "~/shared/ui/EntityCard/AssignmentCard";
 import { Loader } from "~/shared/ui/Loader/Loader";
 
 import { getBids } from "~/requests/_personal/getBids/getBids";
@@ -99,7 +99,7 @@ export default function Bids({ loaderData }: Route.ComponentProps) {
             mapView={showMap}
             entities={loaderData.bids}
             entityListView={(entity) => (
-              <AssignmentCard
+              <EntityCard
                 key={entity.id}
                 to={withLocale(`/bids/${entity.id}`)}
                 statusColor={entity.statusColor}
@@ -115,7 +115,7 @@ export default function Bids({ loaderData }: Route.ComponentProps) {
               />
             )}
             entityMapView={(entity) => (
-              <AssignmentCard
+              <EntityCard
                 to={withLocale(`/bids/${entity.id}`)}
                 header={`${t("cardHeader")} ${entity.header}`}
                 subHeader={{

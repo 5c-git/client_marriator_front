@@ -12,7 +12,7 @@ import { SwipeableDrawer, Typography } from "@mui/material";
 
 import { StatusSelect } from "~/shared/ui/StatusSelect/StatusSelect";
 import { SortingSelect } from "~/shared/ui/SortingSelect/SortingSelect";
-import { AssignmentCard } from "~/shared/ui/AssignmentCard/AssignmentCard";
+import { AssignmentCard } from "~/shared/ui/EntityCard/AssignmentCard";
 
 import AddIcon from "@mui/icons-material/Add";
 import LoopIcon from "@mui/icons-material/Loop";
@@ -107,22 +107,22 @@ export async function clientLoader() {
     });
 
     filteredMissions.notAccepted = missions.filter(
-      (item) => item.status === statusValueMap.notAccepted
+      (item) => item.status === statusValueMap.notAccepted,
     );
     filteredMissions.accepted = missions.filter(
-      (item) => item.status === statusValueMap.accepted
+      (item) => item.status === statusValueMap.accepted,
     );
     filteredMissions.declined = missions.filter(
-      (item) => item.status === statusValueMap.declined
+      (item) => item.status === statusValueMap.declined,
     );
     filteredMissions.consideration = missions.filter(
-      (item) => item.status === statusValueMap.consideration
+      (item) => item.status === statusValueMap.consideration,
     );
     filteredMissions.work = missions.filter(
-      (item) => item.status === statusValueMap.work
+      (item) => item.status === statusValueMap.work,
     );
     filteredMissions.canceled = missions.filter(
-      (item) => item.status === statusValueMap.canceled
+      (item) => item.status === statusValueMap.canceled,
     );
 
     let activeStatus: keyof typeof statusValueMap | "empty" = "empty";
@@ -184,13 +184,13 @@ export default function Missions({ loaderData }: Route.ComponentProps) {
   const [mapInstance, setMapInstance] = useState<YMap | null>(null);
   const [selectedMission, setSelectedMission] = useState<Option | null>(null);
   const [filter, setFilter] = useState<keyof typeof statusValueMap | "empty">(
-    loaderData.activeStatus
+    loaderData.activeStatus,
   );
   const [sorting, setSorting] = useState<"ascending" | "descending">(
-    "ascending"
+    "ascending",
   );
   const [activeMissions, setActiveMissions] = useState<Option[]>(
-    loaderData.filteredMissions[filter]
+    loaderData.filteredMissions[filter],
   );
 
   // рисуем пустую карту
@@ -264,7 +264,7 @@ export default function Missions({ loaderData }: Route.ComponentProps) {
               icon: location.address.logo,
             },
           },
-          markerElement
+          markerElement,
         );
 
         mapInstance?.addChild(marker);
@@ -284,7 +284,7 @@ export default function Missions({ loaderData }: Route.ComponentProps) {
             const clickedLocation = object.entity.properties.id as number;
 
             const match = activeMissions.find(
-              (item) => item.id === clickedLocation
+              (item) => item.id === clickedLocation,
             );
 
             if (match) {
@@ -306,17 +306,17 @@ export default function Missions({ loaderData }: Route.ComponentProps) {
 
     if (newActiveMissions.length > 0 && sorting === "ascending") {
       const emptyDurationMissions = newActiveMissions.filter(
-        (item) => item.duration.start === null && item.duration.end === null
+        (item) => item.duration.start === null && item.duration.end === null,
       );
 
       const notEmptyDurationMissions = newActiveMissions.filter(
-        (item) => item.duration.start !== null && item.duration.end !== null
+        (item) => item.duration.start !== null && item.duration.end !== null,
       );
 
       notEmptyDurationMissions.sort(
         (a, b) =>
           new Date(a.duration.start as string).valueOf() -
-          new Date(b.duration.start as string).valueOf()
+          new Date(b.duration.start as string).valueOf(),
       );
 
       setActiveMissions([
@@ -325,17 +325,17 @@ export default function Missions({ loaderData }: Route.ComponentProps) {
       ]);
     } else if (newActiveMissions.length > 0 && sorting === "descending") {
       const emptyDurationMissions = newActiveMissions.filter(
-        (item) => item.duration.start === null && item.duration.end === null
+        (item) => item.duration.start === null && item.duration.end === null,
       );
 
       const notEmptyDurationMissions = newActiveMissions.filter(
-        (item) => item.duration.start !== null && item.duration.end !== null
+        (item) => item.duration.start !== null && item.duration.end !== null,
       );
 
       notEmptyDurationMissions.sort(
         (a, b) =>
           new Date(b.duration.start as string).valueOf() -
-          new Date(a.duration.start as string).valueOf()
+          new Date(a.duration.start as string).valueOf(),
       );
 
       setActiveMissions([
@@ -499,7 +499,7 @@ export default function Missions({ loaderData }: Route.ComponentProps) {
               }}
             >
               {activeMissions.map((item) => (
-                <AssignmentCard
+                <EntityCard
                   key={item.id}
                   to={withLocale(`/missions/${item.id}/${item.specialistId}`)}
                   status={
@@ -615,9 +615,9 @@ export default function Missions({ loaderData }: Route.ComponentProps) {
               }}
             >
               {selectedMission !== null ? (
-                <AssignmentCard
+                <EntityCard
                   to={withLocale(
-                    `/missions/${selectedMission.id}/${selectedMission.specialistId}`
+                    `/missions/${selectedMission.id}/${selectedMission.specialistId}`,
                   )}
                   status={
                     selectedMission.status === 1 || selectedMission.status === 4

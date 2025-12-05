@@ -15,7 +15,7 @@ import { SwipeableDrawer, Typography } from "@mui/material";
 
 import { StatusSelect } from "~/shared/ui/StatusSelect/StatusSelect";
 import { SortingSelect } from "~/shared/ui/SortingSelect/SortingSelect";
-import { AssignmentCard } from "~/shared/ui/AssignmentCard/AssignmentCard";
+import { AssignmentCard } from "~/shared/ui/EntityCard/AssignmentCard";
 
 //map
 import { YMap, LngLat, YMapMarker } from "ymaps3";
@@ -448,7 +448,7 @@ export default function Requesets({ loaderData }: Route.ComponentProps) {
               }}
             >
               {activeRequests.map((item) => (
-                <AssignmentCard
+                <EntityCard
                   key={item.id}
                   to={withLocale(`/requests/${item.id}`)}
                   statusColor={item.statusColor}
@@ -487,7 +487,7 @@ export default function Requesets({ loaderData }: Route.ComponentProps) {
               }}
             >
               {selectedRequest !== null ? (
-                <AssignmentCard
+                <EntityCard
                   to={withLocale(`/requests/${selectedRequest.id}`)}
                   header={`${t("cardHeader")} ${selectedRequest.header}`}
                   subHeader={{
