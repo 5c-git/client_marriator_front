@@ -24,7 +24,7 @@ import {
 import { EntitiesListView } from "~/shared/ui/EntitiesListView/EntitiesListView";
 import { EntitiesListViewInterface } from "~/shared/ui/EntitiesListView/EntitesListViewInterface";
 
-import { AssignmentCard } from "~/shared/ui/EntityCard/AssignmentCard";
+import { EntityCard } from "~/shared/ui/EntityCard/EntityCard";
 import { Loader } from "~/shared/ui/Loader/Loader";
 
 import { Button, Dialog, DialogActions, DialogTitle, Fab } from "@mui/material";

@@ -6,7 +6,7 @@ import { CalendarIcon } from "~/shared/icons/CalendarIcon";
 
 import { format } from "date-fns";
 
-type AssignmentCardProps = {
+type EntityCardProps = {
   id: string;
   status?: string;
   statusColor?: string;
@@ -65,7 +65,7 @@ type AssignmentCardProps = {
   };
 };
 
-export const AssignmentCard = (props: AssignmentCardProps) => (
+export const EntityCard = (props: EntityCardProps) => (
   <Box
     style={{
       ...(props.statusColor && {
