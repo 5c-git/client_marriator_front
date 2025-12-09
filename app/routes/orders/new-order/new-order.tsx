@@ -4,8 +4,8 @@ import type { Route } from "./+types/new-order";
 import { withLocale } from "~/shared/withLocale";
 
 import { Loader } from "~/shared/ui/Loader/Loader";
-import OrderMobileView from "./_views/OrderMobileView";
-import type { OrderMobileViewInterface } from "./_views/OrderMobileViewInterface";
+import NewOrderMobileView from "./_views/NewOrderMobileView";
+import type { NewOrderMobileViewInterface } from "./_views/NewOrderMobileViewInterface";
 
 import { useStore } from "~/store/store";
 
@@ -19,8 +19,8 @@ import { postSendOrder } from "~/requests/_personal/postSendOrder/postSendOrder"
 
 type MobileModeData = {
   mode: "mobile";
-  order: OrderMobileViewInterface["order"];
-  options: OrderMobileViewInterface["options"];
+  order: NewOrderMobileViewInterface["order"];
+  options: NewOrderMobileViewInterface["options"];
 };
 
 export async function clientLoader({ request }: Route.ClientLoaderArgs) {
@@ -144,8 +144,7 @@ export default function NewOrder({ loaderData }: Route.ComponentProps) {
     <>
       {navigation.state !== "idle" ? <Loader /> : null}
 
-      <OrderMobileView
-        translation="new-order"
+      <NewOrderMobileView
         order={loaderData.order}
         options={loaderData.options}
         headerBackAction={() => {

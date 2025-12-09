@@ -31,7 +31,7 @@ import {
 
 import { Loader } from "~/shared/ui/Loader/Loader";
 import { StyledRadioButton } from "~/shared/ui/StyledRadioButton/StyledRadioButton";
-import { RadioSearchableDrawer } from "./_components/RadioSearchableDrawer";
+import { RadioSearchableDrawer } from "../../../shared/ui/RadioSearchableDrawer/RadioSearchableDrawer";
 
 import { EntityStaticMobileView } from "../../../shared/ui/EntityMobileView/EntityStaticMobileView";
 import { EntityEditMobileView } from "../../../shared/ui/EntityMobileView/EntityEditMobileView";

@@ -17,6 +17,7 @@ import { determineRole } from "~/shared/determineRole";
 import { EntityStaticMobileView } from "../../../shared/ui/EntityMobileView/EntityStaticMobileView";
 import { EntityEditMobileView } from "../../../shared/ui/EntityMobileView/EntityEditMobileView";
 import { CheckboxSearchableDrawer } from "~/shared/ui/CheckboxSearchableDrawer/CheckboxSearchableDrawer";
+import { RadioSearchableDrawer } from "~/shared/ui/RadioSearchableDrawer/RadioSearchableDrawer";
 
 import { Loader } from "~/shared/ui/Loader/Loader";
 import { StyledCheckboxMultiple } from "~/shared/ui/StyledCheckboxMultiple/StyledCheckboxMultiple";
@@ -192,7 +193,7 @@ export async function clientAction({
       throw redirect(withLocale(`/requests/${transformedRequestData.data.id}`));
     } else if (_action === "_inviteSupervisors") {
       await postInvoiceTask(accessToken, params.taskId, fields.supervisors);
-    } else if (_action === "_save") {
+    } else if (_action === "_makeResponsible") {
       await postInstructTask(accessToken, fields.taskId, fields.supervisorId);
       throw redirect(currentURL.toString());
     }
@@ -211,6 +212,8 @@ export default function Task({ loaderData }: Route.ComponentProps) {
 
   const [editMode, setEditMode] = useState<boolean>(false);
   const [searchSupervisors, setSearchSupervisors] = useState<boolean>(false);
+  const [searchResponsibleSupervisors, setSearchResponsibleSupervisors] =
+    useState<boolean>(false);
   const [serviceToDelete, setServiceToDelete] = useState<{
     id: number;
     count: number;
@@ -304,15 +307,30 @@ export default function Task({ loaderData }: Route.ComponentProps) {
                     {t("serviceButton")}
                   </Button>
 
-                  <Button
-                    variant="outlined"
-                    startIcon={<AddIcon />}
-                    onClick={() => {
-                      setSearchSupervisors(true);
-                    }}
-                  >
-                    {t("inviteSupervisorsButton")}
-                  </Button>
+                  {loaderData.entity.status === 1 &&
+                  loaderData.entity.invitedPersons.length < 1 ? (
+                    <Button
+                      variant="outlined"
+                      startIcon={<AddIcon />}
+                      onClick={() => {
+                        setSearchSupervisors(true);
+                      }}
+                    >
+                      {t("inviteSupervisorsButton")}
+                    </Button>
+                  ) : null}
+                  {loaderData.entity.status === 2 &&
+                  loaderData.entity.acceptingPerson === null ? (
+                    <Button
+                      variant="outlined"
+                      startIcon={<AddIcon />}
+                      onClick={() => {
+                        setSearchResponsibleSupervisors(true);
+                      }}
+                    >
+                      {t("makeSupervisorResponsibleButton")}
+                    </Button>
+                  ) : null}
                   <Box
                     sx={(theme) => ({
                       display: "flex",
@@ -334,31 +352,6 @@ export default function Task({ loaderData }: Route.ComponentProps) {
                       }}
                     >
                       {t("cancelButton")}
-                    </Button>
-                    <Button
-                      variant="contained"
-                      disabled={
-                        loaderData.entity.status === 2 &&
-                        loaderData.entity.invitedPersons.length >= 1
-                          ? false
-                          : true
-                      }
-                      onClick={() => {
-                        fetcher.submit(
-                          JSON.stringify({
-                            _action: "_save",
-                            taskId: loaderData.entity.id,
-                            supervisorId:
-                              loaderData.entity.invitedPersons[0].id,
-                          }),
-                          {
-                            method: "POST",
-                            encType: "application/json",
-                          },
-                        );
-                      }}
-                    >
-                      {t("saveButton")}
                     </Button>
                   </Box>
                 </>
@@ -493,40 +486,7 @@ export default function Task({ loaderData }: Route.ComponentProps) {
                   ) : null}
                 </Box>
               )}
-              actionSlot={() => (
-                <>
-                  {loaderData.entity.status === 2 &&
-                  userRole === "manager" &&
-                  loaderData.entity.invitedPersons.length >= 1 ? (
-                    <Button
-                      variant="contained"
-                      onClick={() => {
-                        fetcher.submit(
-                          JSON.stringify({
-                            _action: "_save",
-                            taskId: loaderData.entity.id,
-                            supervisorId:
-                              loaderData.entity.invitedPersons[0].id,
-                          }),
-                          {
-                            method: "POST",
-                            encType: "application/json",
-                          },
-                        );
-                      }}
-                      startIcon={
-                        <LogoutIcon
-                          sx={{
-                            transform: "rotate(-90deg)",
-                          }}
-                        />
-                      }
-                    >
-                      {t("sendButton")}
-                    </Button>
-                  ) : null}
-                </>
-              )}
+              actionSlot={() => <></>}
             />
           )}
           <CheckboxSearchableDrawer
@@ -540,6 +500,27 @@ export default function Task({ loaderData }: Route.ComponentProps) {
                 JSON.stringify({
                   _action: "_inviteSupervisors",
                   supervisors: values,
+                }),
+                {
+                  method: "POST",
+                  encType: "application/json",
+                },
+              );
+            }}
+            items={loaderData.supervisorsToSelect}
+          />
+          <RadioSearchableDrawer
+            translation="responsible-task"
+            onClose={() => {
+              setSearchResponsibleSupervisors(false);
+            }}
+            open={searchResponsibleSupervisors}
+            onSubmit={(value) => {
+              fetcher.submit(
+                JSON.stringify({
+                  _action: "_makeResponsible",
+                  orderId: loaderData.entity.id,
+                  supervisorId: value,
                 }),
                 {
                   method: "POST",

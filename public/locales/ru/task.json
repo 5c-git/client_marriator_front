@@ -4,6 +4,7 @@
   "serviceButton": "Добавить услугу",
   "cancelButton": "Отмена",
   "inviteSupervisorsButton": "Пригласить супервайзеров",
+  "makeSupervisorResponsibleButton": "Назначить ответственного супервайзера",
   "sendButton": "Отправить",
   "saveButton": "Сохранить",
 

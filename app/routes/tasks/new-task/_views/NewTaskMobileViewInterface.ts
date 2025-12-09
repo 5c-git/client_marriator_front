@@ -1,5 +1,4 @@
-export type TaskMobileViewInterface = {
-  translation: "new-task";
+export type NewTaskMobileViewInterface = {
   task: {
     id: string;
     projectId: null | string;
@@ -33,7 +32,6 @@ export type TaskMobileViewInterface = {
     selfEmployed: boolean,
   ) => void;
   cancelAction: () => void;
-  saveAction: () => void;
   deleteAction: (serviceId: number) => void;
   drawerAction: () => void;
 };

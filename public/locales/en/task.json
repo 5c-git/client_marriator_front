@@ -4,6 +4,7 @@
   "serviceButton": "Add activity",
   "cancelButton": "Cancel",
   "inviteSupervisorsButton": "Invite supervisors",
+  "makeSupervisorResponsibleButton": "Assign responsible supervisor",
   "sendButton": "Send",
   "saveButton": "Save",
   "convertToBid": "Create request",

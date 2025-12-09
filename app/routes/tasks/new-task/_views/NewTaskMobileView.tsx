@@ -1,7 +1,7 @@
 import { Link } from "react-router";
 import { useState } from "react";
 
-import type { TaskMobileViewInterface } from "./TaskMobileViewInterface";
+import type { NewTaskMobileViewInterface } from "./NewTaskMobileViewInterface";
 
 import { useTranslation } from "react-i18next";
 import { withLocale } from "~/shared/withLocale";
@@ -26,10 +26,9 @@ import { StyledSelect } from "~/shared/ui/StyledSelect/StyledSelect";
 import { StyledCheckbox } from "~/shared/ui/StyledCheckbox/StyledCheckbox";
 
 import AddIcon from "@mui/icons-material/Add";
-import LogoutIcon from "@mui/icons-material/Logout";
 import ClearIcon from "@mui/icons-material/Clear";
 
-export function TaskMobileView(props: TaskMobileViewInterface) {
+export function NewTaskMobileView(props: NewTaskMobileViewInterface) {
   const { t } = useTranslation("TaskMobileView");
 
   const [serviceToDelete, setServiceToDelete] = useState<{
@@ -41,7 +40,6 @@ export function TaskMobileView(props: TaskMobileViewInterface) {
   const {
     control,
     handleSubmit,
-    reset,
     getValues,
     formState: { errors },
   } = useForm({
@@ -64,7 +62,7 @@ export function TaskMobileView(props: TaskMobileViewInterface) {
     <>
       <TopNavigation
         header={{
-          text: t(`${props.translation}.header`),
+          text: t(`header`),
           bold: false,
         }}
         backAction={props.headerBackAction}
@@ -91,9 +89,7 @@ export function TaskMobileView(props: TaskMobileViewInterface) {
             render={({ field }) => (
               <StyledSelect
                 inputType="select"
-                placeholder={t(
-                  `${props.translation}.fields.locationPlaceholder`,
-                )}
+                placeholder={t(`fields.locationPlaceholder`)}
                 onImmediateChange={() => {
                   props.submitAction(
                     getValues("location"),
@@ -116,9 +112,7 @@ export function TaskMobileView(props: TaskMobileViewInterface) {
               props.projectsOptions.length > 0 ? (
                 <StyledSelect
                   inputType="select"
-                  placeholder={t(
-                    `${props.translation}.fields.projectPlaceholder`,
-                  )}
+                  placeholder={t(`fields.projectPlaceholder`)}
                   onImmediateChange={() => {
                     props.submitAction(
                       getValues("location"),
@@ -144,9 +138,7 @@ export function TaskMobileView(props: TaskMobileViewInterface) {
               render={({ field }) => (
                 <StyledCheckbox
                   inputType="checkbox"
-                  label={t(
-                    `${props.translation}.fields.selfEmployedPlaceholder`,
-                  )}
+                  label={t(`fields.selfEmployedPlaceholder`)}
                   onImmediateChange={() => {
                     props.submitAction(
                       getValues("location"),
@@ -177,7 +169,7 @@ export function TaskMobileView(props: TaskMobileViewInterface) {
                 color: theme.vars.palette["Black"],
               })}
             >
-              {t(`${props.translation}.services`)}
+              {t(`services`)}
             </Typography>
             {props.task.taskServices.map((item) => (
               <Box
@@ -220,7 +212,7 @@ export function TaskMobileView(props: TaskMobileViewInterface) {
                       color: theme.vars.palette["Grey_1"],
                     })}
                   >
-                    {t(`${props.translation}.serviceAmount`)} {item.count}
+                    {t(`serviceAmount`)} {item.count}
                   </Typography>
                 </Box>
 
@@ -246,7 +238,7 @@ export function TaskMobileView(props: TaskMobileViewInterface) {
           disabled={props.task.isNewTask}
           startIcon={<AddIcon />}
         >
-          {t(`${props.translation}.serviceButton`)}
+          {t(`serviceButton`)}
         </Button>
 
         {props.task.invitedSupervisors.length > 0 ? (
@@ -263,7 +255,7 @@ export function TaskMobileView(props: TaskMobileViewInterface) {
                 color: theme.vars.palette["Black"],
               })}
             >
-              {t(`${props.translation}.invitedSupervisors`)}
+              {t(`invitedSupervisors`)}
             </Typography>
             {props.task.invitedSupervisors.map((supervisor) => (
               <Box
@@ -303,11 +295,11 @@ export function TaskMobileView(props: TaskMobileViewInterface) {
 
         <Button
           variant="outlined"
-          disabled={props.task.isNewTask}
           startIcon={<AddIcon />}
           onClick={props.drawerAction}
+          disabled={props.task.isNewTask || props.task.taskServices.length < 1}
         >
-          {t(`${props.translation}.supervisorButton`)}
+          {t(`supervisorButton`)}
         </Button>
 
         <Box
@@ -326,24 +318,7 @@ export function TaskMobileView(props: TaskMobileViewInterface) {
             disabled={props.task.isNewTask}
             onClick={props.cancelAction}
           >
-            {t(`${props.translation}.cancelButton`)}
-          </Button>
-          <Button
-            variant="contained"
-            disabled={
-              props.task.taskServices.length === 0 ||
-              props.task.invitedSupervisors.length === 0
-            }
-            onClick={props.saveAction}
-            startIcon={
-              <LogoutIcon
-                sx={{
-                  transform: "rotate(-90deg)",
-                }}
-              />
-            }
-          >
-            {t(`${props.translation}.sendButton`)}
+            {t(`cancelButton`)}
           </Button>
         </Box>
       </Box>
@@ -365,7 +340,7 @@ export function TaskMobileView(props: TaskMobileViewInterface) {
             fontSize: "1.125rem",
           }}
         >
-          {t(`${props.translation}.dialog.title`)}&nbsp;"
+          {t(`dialog.title`)}&nbsp;"
           {serviceToDelete?.name}"&nbsp;?
         </DialogTitle>
         <DialogActions>
@@ -375,7 +350,7 @@ export function TaskMobileView(props: TaskMobileViewInterface) {
               setServiceToDelete(null);
             }}
           >
-            {t(`${props.translation}.dialog.no`)}
+            {t(`dialog.no`)}
           </Button>
           <Button
             variant="contained"
@@ -384,7 +359,7 @@ export function TaskMobileView(props: TaskMobileViewInterface) {
               setServiceToDelete(null);
             }}
           >
-            {t(`${props.translation}.dialog.yes`)}
+            {t(`dialog.yes`)}
           </Button>
         </DialogActions>
       </Dialog>

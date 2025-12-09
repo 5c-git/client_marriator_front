@@ -3,15 +3,15 @@ import { useNavigation, useNavigate, redirect, useSubmit } from "react-router";
 import type { Route } from "./+types/service";
 import { withLocale } from "~/shared/withLocale";
 
-import { ServiceFormMobileView } from "~/shared/views/service/ServiceFormMobileView/ServiceFormMobileView";
-import { ServiceStaticMobileView } from "~/shared/views/service/ServiceStaticMobileView/ServiceStaticMobileView";
+import { ServiceFormMobileView } from "~/shared/views/ServiceMobileView/ServiceFormMobileView/ServiceFormMobileView";
+import { ServiceStaticMobileView } from "~/shared/views/ServiceMobileView/ServiceStaticMobileView/ServiceStaticMobileView";
 
 import { useStore } from "~/store/store";
 
 import type { postCreateTaskActivityPayload } from "~/requests/_personal/postCreateTaskActivity/postCreateTaskActivity";
 import type { postUpdateTaskActivityPayload } from "~/requests/_personal/postUpdateTaskActivity/postUpdateTaskActivity";
 
-import type { ServiceMobileViewInterface } from "~/shared/views/service/ServiceMobileViewInterface";
+import type { ServiceMobileViewInterface } from "~/shared/views/ServiceMobileView/ServiceMobileViewInterface";
 
 import { Loader } from "~/shared/ui/Loader/Loader";
 

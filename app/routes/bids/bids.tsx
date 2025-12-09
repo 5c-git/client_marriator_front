@@ -8,8 +8,8 @@ import { useStore } from "~/store/store";
 
 import { statusCodeMap } from "~/shared/status";
 
-import { EntitiesListView } from "~/shared/ui/EntitiesListView/EntitiesListView";
-import { EntitiesListViewInterface } from "~/shared/ui/EntitiesListView/EntitesListViewInterface";
+import { EntitiesListView } from "~/shared/views/EntitiesListView/EntitiesListView";
+import type { EntitiesListViewInterface } from "~/shared/views/EntitiesListView/EntitesListViewInterface";
 
 import { EntityCard } from "~/shared/ui/EntityCard/EntityCard";
 import { Loader } from "~/shared/ui/Loader/Loader";

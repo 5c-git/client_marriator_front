@@ -4,5 +4,11 @@
     "searchbar": "Search...",
     "submit": "Convert to task",
     "error": "Please select a responsible person"
+  },
+  "responsible-task": {
+    "header": "Assign responsibility",
+    "searchbar": "Search...",
+    "submit": "Assign",
+    "error": "Please select a responsible person"
   }
 }

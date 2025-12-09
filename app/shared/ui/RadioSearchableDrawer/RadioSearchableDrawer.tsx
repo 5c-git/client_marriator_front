@@ -13,7 +13,7 @@ import { StyledSearchBar } from "~/shared/ui/StyledSearchBar/StyledSearchBar";
 import { StyledRadioButton } from "~/shared/ui/StyledRadioButton/StyledRadioButton";
 
 type RadioDrawerProps = {
-  translation: "responsible";
+  translation: "responsible" | "responsible-task";
   open: boolean;
   onClose: () => void;
   onSubmit: (value: string) => void;

@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Link } from "react-router";
 
-import type { OrderMobileViewInterface } from "./OrderMobileViewInterface";
+import type { NewOrderMobileViewInterface } from "./NewOrderMobileViewInterface";
 
 import { useTranslation } from "react-i18next";
 import { withLocale } from "~/shared/withLocale";
@@ -28,7 +28,7 @@ import AddIcon from "@mui/icons-material/Add";
 import LogoutIcon from "@mui/icons-material/Logout";
 import ClearIcon from "@mui/icons-material/Clear";
 
-export default function OrderMobileView(props: OrderMobileViewInterface) {
+export default function NewOrderMobileView(props: NewOrderMobileViewInterface) {
   const { t } = useTranslation("OrderMobileView");
 
   const [serviceToDelete, setServiceToDelete] = useState<{
@@ -61,7 +61,7 @@ export default function OrderMobileView(props: OrderMobileViewInterface) {
     <>
       <TopNavigation
         header={{
-          text: t(`${props.translation}.header`),
+          text: t(`header`),
           bold: false,
         }}
         backAction={props.headerBackAction}
@@ -88,9 +88,7 @@ export default function OrderMobileView(props: OrderMobileViewInterface) {
             render={({ field }) => (
               <StyledSelect
                 inputType="select"
-                placeholder={t(
-                  `${props.translation}.fields.locationPlaceholder`,
-                )}
+                placeholder={t(`fields.locationPlaceholder`)}
                 onImmediateChange={() => {
                   props.submitAction(
                     getValues("location"),
@@ -112,9 +110,7 @@ export default function OrderMobileView(props: OrderMobileViewInterface) {
               render={({ field }) => (
                 <StyledCheckbox
                   inputType="checkbox"
-                  label={t(
-                    `${props.translation}.fields.selfEmployedPlaceholder`,
-                  )}
+                  label={t(`fields.selfEmployedPlaceholder`)}
                   onImmediateChange={() => {
                     props.submitAction(
                       getValues("location"),
@@ -144,7 +140,7 @@ export default function OrderMobileView(props: OrderMobileViewInterface) {
                 color: theme.vars.palette["Black"],
               })}
             >
-              {t(`${props.translation}.services`)}
+              {t(`services`)}
             </Typography>
             {props.order.orderServices.map((item) => (
               <Box
@@ -187,7 +183,7 @@ export default function OrderMobileView(props: OrderMobileViewInterface) {
                       color: theme.vars.palette["Grey_1"],
                     })}
                   >
-                    {t(`${props.translation}.serviceAmount`)} {item.count}
+                    {t(`serviceAmount`)} {item.count}
                   </Typography>
                 </Box>
 
@@ -213,7 +209,7 @@ export default function OrderMobileView(props: OrderMobileViewInterface) {
           disabled={props.order.isNewOrder}
           startIcon={<AddIcon />}
         >
-          {t(`${props.translation}.serviceButton`)}
+          {t(`serviceButton`)}
         </Button>
 
         <Box
@@ -232,7 +228,7 @@ export default function OrderMobileView(props: OrderMobileViewInterface) {
             disabled={props.order.isNewOrder}
             onClick={props.cancelAction}
           >
-            {t(`${props.translation}.cancelButton`)}
+            {t(`cancelButton`)}
           </Button>
           <Button
             variant="contained"
@@ -246,7 +242,7 @@ export default function OrderMobileView(props: OrderMobileViewInterface) {
               />
             }
           >
-            {t(`${props.translation}.sendButton`)}
+            {t(`sendButton`)}
           </Button>
         </Box>
       </Box>
@@ -268,7 +264,7 @@ export default function OrderMobileView(props: OrderMobileViewInterface) {
             fontSize: "1.125rem",
           }}
         >
-          {t(`${props.translation}.dialog.title`)}&nbsp;"
+          {t(`dialog.title`)}&nbsp;"
           {serviceToDelete?.name}"&nbsp;?
         </DialogTitle>
         <DialogActions>
@@ -278,7 +274,7 @@ export default function OrderMobileView(props: OrderMobileViewInterface) {
               setServiceToDelete(null);
             }}
           >
-            {t(`${props.translation}.dialog.no`)}
+            {t(`dialog.no`)}
           </Button>
           <Button
             variant="contained"
@@ -287,7 +283,7 @@ export default function OrderMobileView(props: OrderMobileViewInterface) {
               setServiceToDelete(null);
             }}
           >
-            {t(`${props.translation}.dialog.yes`)}
+            {t(`dialog.yes`)}
           </Button>
         </DialogActions>
       </Dialog>

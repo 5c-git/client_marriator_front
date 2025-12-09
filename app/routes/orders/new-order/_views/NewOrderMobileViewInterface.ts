@@ -1,5 +1,4 @@
-export type OrderMobileViewInterface = {
-  translation: "new-order";
+export type NewOrderMobileViewInterface = {
   order: {
     id: string;
     place: {

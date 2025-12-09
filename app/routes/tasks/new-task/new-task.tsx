@@ -8,11 +8,10 @@ import {
 } from "react-router";
 import type { Route } from "./+types/new-task";
 
-import { useTranslation } from "react-i18next";
 import { withLocale } from "~/shared/withLocale";
 
-import { TaskMobileView } from "./_views/TaskMobileView";
-import type { TaskMobileViewInterface } from "./_views/TaskMobileViewInterface";
+import { NewTaskMobileView } from "./_views/NewTaskMobileView";
+import type { NewTaskMobileViewInterface } from "./_views/NewTaskMobileViewInterface";
 
 import { Loader } from "~/shared/ui/Loader/Loader";
 import { StyledCheckboxMultiple } from "~/shared/ui/StyledCheckboxMultiple/StyledCheckboxMultiple";
@@ -33,9 +32,9 @@ import { postInstructTask } from "~/requests/_personal/postInstructTask/postInst
 
 type MobileModeData = {
   mode: "mobile";
-  task: TaskMobileViewInterface["task"];
-  placesOptions: TaskMobileViewInterface["placesOptions"];
-  projectOptions: TaskMobileViewInterface["projectsOptions"];
+  task: NewTaskMobileViewInterface["task"];
+  placesOptions: NewTaskMobileViewInterface["placesOptions"];
+  projectOptions: NewTaskMobileViewInterface["projectsOptions"];
   supervisorsToSelect: ComponentPropsWithoutRef<
     typeof StyledCheckboxMultiple
   >["options"];
@@ -191,8 +190,6 @@ export async function clientAction({ request }: Route.ClientActionArgs) {
       throw redirect(withLocale("/tasks"));
     } else if (_action === "_inviteSupervisors" && taskId) {
       await postInvoiceTask(accessToken, taskId, fields.supervisors);
-    } else if (_action === "_save" && taskId) {
-      await postInstructTask(accessToken, taskId, fields.supervisorId);
       throw redirect(withLocale(`/tasks/${taskId}`));
     }
   } else {
@@ -204,25 +201,21 @@ export default function NewTask({ loaderData }: Route.ComponentProps) {
   const navigate = useNavigate();
   const navigation = useNavigation();
   const [searchParams, setSearchParams] = useSearchParams();
-  const { t } = useTranslation("new_task");
 
   const fetcher = useFetcher();
 
   const [searchSupervisors, setSearchSupervisors] = useState<boolean>(false);
-  const [activityToDelete, setActivityToDelete] = useState<{
+  const [_, setActivityToDelete] = useState<{
     id: number;
     count: number;
     name: string;
   } | null>(null);
 
-  console.log(loaderData);
-
   return loaderData.mode === "mobile" ? (
     <>
       {navigation.state !== "idle" ? <Loader /> : null}
 
-      <TaskMobileView
-        translation="new-task"
+      <NewTaskMobileView
         task={loaderData.task}
         placesOptions={loaderData.placesOptions}
         projectsOptions={loaderData.projectOptions}
@@ -274,19 +267,6 @@ export default function NewTask({ loaderData }: Route.ComponentProps) {
             JSON.stringify({
               _action: "_cancel",
               orderId: loaderData.task.id,
-            }),
-            {
-              method: "POST",
-              encType: "application/json",
-            },
-          );
-        }}
-        saveAction={() => {
-          fetcher.submit(
-            JSON.stringify({
-              _action: "_save",
-              orderId: loaderData.task.id,
-              supervisorId: loaderData.task.invitedSupervisors[0].id,
             }),
             {
               method: "POST",
