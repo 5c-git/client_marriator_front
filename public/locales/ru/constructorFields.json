@@ -31,5 +31,7 @@
   "selectMultiple": "Обязательное полe",
   "inFututreDate": "Выбранная дата должна быть в будущем",
   "lessThanStartDate": "Выбранная дата раньше даты старта",
-  "locationsNeeded": "Укажите точки маршрута"
+  "locationsNeeded": "Укажите точки маршрута",
+  "newDateBeforeStart": "Выбранная дата не может быть раньше изначальной",
+  "newDateAfterFinish": "Выбранная дата не может быть позже изначальной"
 }

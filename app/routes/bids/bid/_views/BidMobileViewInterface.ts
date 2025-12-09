@@ -1,27 +1,52 @@
 export type BidMobileViewInterface = {
-  translation: "bid";
-  bid: {
-    id: string;
-    projectId: null | string;
+  entity: {
+    logo: string;
+    status: 1 | 2 | 3 | 4 | 5;
     place: {
-      id: string;
-      name: string;
-      region: string;
-    };
-    selfEmployed: boolean;
-    isNewTask: boolean;
-    taskServices: {
       id: number;
-      count: number;
       name: string;
-    }[];
-    invitedSupervisors: {
+      logo: string;
+    };
+    activity: { id: number; name: string; travelling: boolean };
+    unitPrice: number;
+    finalPrice: number;
+    radius: number;
+    dateStart: Date;
+    dateEnd: Date;
+    responsiblePerson: {
       id: number;
       phone: number;
       email: string;
-      name: string;
       logo: string;
+      roles: {
+        id: number;
+        name: "manager" | "supervisor" | "client" | "specialist";
+      }[];
+    };
+    taskId: number | null;
+    orderId: number | null;
+    selfEmployed: boolean;
+    progress: number;
+    counters: { label: string; count: number; color: string }[];
+    amount: number;
+    needDays: boolean;
+    needFoto: boolean;
+    days: {
+      timeStart: Date;
+      timeEnd: Date;
+      needRoute: boolean;
+      locations: { id: string; name: string; logo: string }[];
     }[];
-    responsibleSupervisorId: null | number;
   };
+  locations: {
+    value: string;
+    label: string;
+    logo: string | null;
+    disabled: boolean;
+  }[];
+  radiuses: {
+    value: string;
+    label: string;
+    disabled: boolean;
+  }[];
 };

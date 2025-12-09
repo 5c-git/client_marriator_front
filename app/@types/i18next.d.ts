@@ -57,7 +57,6 @@ import users_recruiter from "../../public/locales/ru/users_recruiter.json";
 import users_select_projects from "../../public/locales/ru/users_select_projects.json";
 import users_select_locations from "../../public/locales/ru/users_select_locations.json";
 
-import request_index from "../../public/locales/ru/request_index.json";
 import request_specialists from "../../public/locales/ru/request_specialists.json";
 import missions from "../../public/locales/ru/missions.json";
 import mission from "../../public/locales/ru/mission.json";
@@ -77,8 +76,9 @@ import orders from "../../public/locales/ru/orders.json";
 
 //views
 import ServiceMobileView from "../../public/locales/ru/ServiceFormMobileView.json";
-import TaskMobileView from "../../public/locales/TaskMobileView/TaskMobileView.json";
-import OrderMobileView from "../../public/locales/OrderMobileView/OrderMobileView.json";
+import BidMobileView from "../../public/locales/ru/BidMobileView.json";
+import TaskMobileView from "../../public/locales/ru/TaskMobileView.json";
+import OrderMobileView from "../../public/locales/ru/OrderMobileView.json";
 import EntityMobileView from "../../public/locales/ru/EntityMobileView.json";
 import EntitiesListView from "../../public/locales/ru/EntitiesListView.json";
 
@@ -157,7 +157,6 @@ declare module "i18next" {
       missions: typeof missions;
       mission: typeof mission;
 
-      request_index: typeof request_index;
       request_specialists: typeof request_specialists;
       request_specialists_specialistRequest_dayReview: typeof request_specialists_specialistRequest_dayReview;
       //internal
@@ -175,6 +174,7 @@ declare module "i18next" {
       //routes
 
       //views
+      BidMobileView: typeof BidMobileView;
       TaskMobileView: typeof TaskMobileView;
       OrderMobileView: typeof OrderMobileView;
       EntityMobileView: typeof EntityMobileView;

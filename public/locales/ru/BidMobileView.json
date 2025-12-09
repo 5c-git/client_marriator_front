@@ -7,11 +7,9 @@
     "archive": "Архив"
   },
   "role": {
-    "admin": "Администратор",
-    "supervisor": "Супервайзер",
     "manager": "Менеджер",
+    "supervisor": "Супервайзер",
     "client": "Клиент",
-    "recruiter": "Рекрутёр",
     "specialist": "Специалист"
   },
   "dayMap": {
@@ -23,6 +21,7 @@
     "5": "ПТ",
     "6": "СБ"
   },
+  "needDaysPlaceholder": "Раскрыть по дням",
   "statusPlaceholder": "Статус",
   "locationPlaceholder": "Место оказания услуг",
   "serviceTypePlaceholder": "Вид услуги",
@@ -43,11 +42,12 @@
   "parentTask": "Родительская задача",
   "parentOrder": "Родительское поручение",
   "responsible": "Ответственный",
-  "saveRequestButton": "Сохранить заявку",
-  "cancelRequestButton": "Отменить заявку",
+  "saveBidButton": "Сохранить заявку",
+  "cancelBidButton": "Отменить заявку",
   "drawerHeader": "Места проведения",
   "searchPlaceholder": "Поиск",
   "addLocationsButton": "Добавить адреса",
   "selfEmployed": "Самозанятый",
-  "notSelfEmployed": "Наемный"
+  "notSelfEmployed": "Наемный",
+  "addDayButton": "Добавить день"
 }

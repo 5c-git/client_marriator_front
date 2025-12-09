@@ -1,15 +1,217 @@
-import { useOutletContext } from "react-router";
+import { useState, useEffect } from "react";
+import { useOutletContext, redirect, useSubmit } from "react-router";
+import type { Route } from "./+types/bid";
 import type { GetBidSuccess } from "~/requests/_personal/getBid/getBidSuccess.schema";
+import type { BidMobileViewInterface } from "./_views/BidMobileViewInterface";
+import type { postUpdateBidPayload } from "~/requests/_personal/postUpdateBid/postUpdateBid";
 
-export default function Bid() {
-  const { bidData, editMode } = useOutletContext<{
-    bidData: GetBidSuccess["data"];
+import { useStore } from "~/store/store";
+
+import { BidFormMobileView } from "./_views/BidFormMobileView/BidFormMobileView";
+
+import { getPlaceForBid } from "~/requests/_personal/getPlaceForBid/getPlaceForBid";
+import { getRadiusSelect } from "~/requests/_personal/getRadiusSelect/getRadiusSelect";
+import { postUpdateBid } from "~/requests/_personal/postUpdateBid/postUpdateBid";
+
+type MobileModeData = {
+  mode: "mobile";
+  locations: BidMobileViewInterface["locations"];
+  radiuses: BidMobileViewInterface["radiuses"];
+};
+
+export async function clientLoader() {
+  const mode = "mobile";
+
+  let data;
+
+  const accessToken = useStore.getState().accessToken;
+
+  const locations: MobileModeData["locations"] = [];
+
+  const radiuses: MobileModeData["radiuses"] = [];
+
+  if (accessToken) {
+    const locationsData = await getPlaceForBid(accessToken);
+
+    locationsData.data.forEach((item) => {
+      locations.push({
+        value: item.id.toString(),
+        label: `${item.name} ${item.region.name}`,
+        logo: item.logo,
+        disabled: false,
+      });
+    });
+
+    const radiusData = await getRadiusSelect(accessToken);
+
+    radiusData.data.forEach((item) => {
+      radiuses.push({
+        value: item.value.toString(),
+        label: item.id.toString(),
+        disabled: false,
+      });
+    });
+
+    radiusData.data;
+
+    data = {
+      mode,
+      locations,
+      radiuses,
+    } as MobileModeData;
+    return data as MobileModeData | { mode: "desktop" };
+  } else {
+    throw new Response("Токен авторизации не обнаружен!", { status: 401 });
+  }
+}
+
+export async function clientAction({ request }: Route.ClientActionArgs) {
+  const fields = await request.json();
+  const accessToken = useStore.getState().accessToken;
+  const currentURL = new URL(request.url);
+
+  if (accessToken) {
+    await postUpdateBid(accessToken, fields);
+    throw redirect(currentURL.toString());
+  } else {
+    throw new Response("Токен авторизации не обнаружен!", { status: 401 });
+  }
+}
+
+export default function Bid({ loaderData }: Route.ComponentProps) {
+  const submit = useSubmit();
+  const { bidMobileData, editMode } = useOutletContext<{
+    bidMobileData: GetBidSuccess["data"];
     editMode: boolean;
   }>();
 
-  return (
+  const [mobileEntity, setMobileEntity] = useState<
+    BidMobileViewInterface["entity"] | null
+  >();
+
+  useEffect(() => {
+    if (loaderData.mode === "mobile") {
+      const entity: BidMobileViewInterface["entity"] = {
+        logo: bidMobileData.viewActivity.logo,
+        status: bidMobileData.status,
+        place: {
+          id: bidMobileData.place.id,
+          name: bidMobileData.place.name,
+          logo: bidMobileData.place.logo,
+        },
+        activity: {
+          id: bidMobileData.viewActivity.id,
+          name: bidMobileData.viewActivity.name,
+          travelling: bidMobileData.viewActivity.traveling,
+        },
+        unitPrice: bidMobileData.price ? bidMobileData.price : 0,
+        finalPrice: bidMobileData.priceResult,
+        radius: bidMobileData.radius ? bidMobileData.radius : 0,
+        dateStart: new Date(bidMobileData.dateStart),
+        dateEnd: new Date(bidMobileData.dateEnd),
+        responsiblePerson: {
+          id: bidMobileData.user.id,
+          phone: bidMobileData.user.phone,
+          email: bidMobileData.user.email,
+          logo: bidMobileData.user.logo,
+          roles: bidMobileData.user.roles,
+        },
+        taskId: bidMobileData.task ? bidMobileData.task.id : null,
+        orderId: bidMobileData.order ? bidMobileData.order.id : null,
+        selfEmployed: bidMobileData.selfEmployed,
+        progress: 0,
+        counters: [],
+        amount: bidMobileData.count,
+        // taxStatus: bidData.selfEmployed ? t("selfEmployed") : t("notSelfEmployed"),
+        needDays: bidMobileData.dateActivity.length > 0,
+        needFoto: bidMobileData.needFoto,
+        days: (() => {
+          const days: BidMobileViewInterface["entity"]["days"] = [];
+
+          bidMobileData.dateActivity.forEach((date) => {
+            const locations: BidMobileViewInterface["entity"]["days"][0]["locations"] =
+              [];
+
+            date.places.forEach((location) => {
+              locations.push({
+                id: location.id.toString(),
+                name: location.name,
+                logo: location.logo ? location.logo : "",
+              });
+            });
+
+            days.push({
+              timeStart: new Date(date.timeStart),
+              timeEnd: new Date(date.timeEnd),
+              needRoute: locations.length > 0 ? true : false,
+              locations: locations,
+            });
+          });
+
+          return days;
+        })(),
+      };
+
+      setMobileEntity(entity);
+    }
+  }, [bidMobileData]);
+
+  return loaderData.mode === "mobile" ? (
     <>
-      <p>bid</p>
+      {mobileEntity ? (
+        <>
+          {editMode ? (
+            <BidFormMobileView
+              entity={mobileEntity}
+              locations={loaderData.locations}
+              radiuses={loaderData.radiuses}
+              submitAction={(values) => {
+                const payload: postUpdateBidPayload = {
+                  bidId: bidMobileData.id,
+                  radius: values.radius,
+                  price: values.unitPrice,
+                  viewActivityId: values.activity,
+                  count: values.amount,
+                  dateStart: values.dateStart.toISOString(),
+                  dateEnd: values.dateEnd.toISOString(),
+                  needFoto: values.needFoto,
+                  ...(values.days &&
+                    values.days.length > 0 && {
+                      dateActivity: (() => {
+                        const days: {
+                          timeStart: string;
+                          timeEnd: string;
+                          placeIds?: number[];
+                        }[] = [];
+
+                        values.days?.forEach((day) => {
+                          const places: number[] = [];
+
+                          day.locations?.forEach((location) => {
+                            places.push(Number(location.id));
+                          });
+
+                          days.push({
+                            timeStart: new Date(day.timeStart).toISOString(),
+                            timeEnd: new Date(day.timeEnd).toISOString(),
+                            ...(places.length > 0 && { placeIds: places }),
+                          });
+                        });
+
+                        return days;
+                      })(),
+                    }),
+                };
+
+                submit(JSON.stringify(payload), {
+                  method: "POST",
+                  encType: "application/json",
+                });
+              }}
+            />
+          ) : null}
+        </>
+      ) : null}
     </>
-  );
+  ) : null;
 }

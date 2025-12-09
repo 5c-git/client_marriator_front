@@ -135,7 +135,7 @@ export default function Index({ loaderData }: Route.ComponentProps) {
   const [dayIndex, setDayIndex] = useState<number>(-1);
 
   const [selectedLocations, setSelectedLocations] = useState(
-    loaderData.locations
+    loaderData.locations,
   );
 
   const mockRequest = {
@@ -231,7 +231,7 @@ export default function Index({ loaderData }: Route.ComponentProps) {
         activity: Yup.number().required(t("text", { ns: "constructorFields" })),
         amount: Yup.string().required(t("text", { ns: "constructorFields" })),
         unitPrice: Yup.string().required(
-          t("text", { ns: "constructorFields" })
+          t("text", { ns: "constructorFields" }),
         ),
         radius: Yup.string().required(t("text", { ns: "constructorFields" })),
         dateStart: Yup.date()
@@ -247,7 +247,7 @@ export default function Index({ loaderData }: Route.ComponentProps) {
             (value) => {
               const result = compareAsc(
                 (value as Date) || null,
-                getValues("dateStart")
+                getValues("dateStart"),
               );
 
               if (result > 0) {
@@ -255,7 +255,7 @@ export default function Index({ loaderData }: Route.ComponentProps) {
               }
 
               return false;
-            }
+            },
           )
           .required(t("text", { ns: "constructorFields" })),
         needDays: Yup.boolean().required(),
@@ -272,17 +272,17 @@ export default function Index({ loaderData }: Route.ComponentProps) {
             locations: Yup.array().of(
               Yup.object().shape({
                 id: Yup.string().required(
-                  t("text", { ns: "constructorFields" })
+                  t("text", { ns: "constructorFields" }),
                 ),
                 name: Yup.string().required(
-                  t("text", { ns: "constructorFields" })
+                  t("text", { ns: "constructorFields" }),
                 ),
                 logo: Yup.string().notRequired(),
-              })
+              }),
             ),
-          })
+          }),
         ),
-      })
+      }),
     ),
   });
 
@@ -309,7 +309,7 @@ export default function Index({ loaderData }: Route.ComponentProps) {
       Yup.object({
         searchbar: Yup.string().notRequired(),
         locations: Yup.array().of(Yup.string()).min(1),
-      })
+      }),
     ),
   });
 
@@ -381,7 +381,7 @@ export default function Index({ loaderData }: Route.ComponentProps) {
                   statusCodeMap[
                     mockRequest.status as keyof typeof statusCodeMap
                   ].value
-                }`
+                }`,
               )}
             </Typography>
           </Box>
@@ -552,7 +552,7 @@ export default function Index({ loaderData }: Route.ComponentProps) {
             },
             (errors) => {
               console.log(errors);
-            }
+            },
           )}
           style={{
             display: "grid",
@@ -791,7 +791,7 @@ export default function Index({ loaderData }: Route.ComponentProps) {
                   >
                     {format(
                       new Date(getValues("dateStart")),
-                      "HH:mm dd.LL.yyyy"
+                      "HH:mm dd.LL.yyyy",
                     )}
                   </Typography>
                 </Box>
@@ -949,12 +949,12 @@ export default function Index({ loaderData }: Route.ComponentProps) {
                     >
                       {format(
                         new Date(getValues(`days.${index}.timeStart`)),
-                        "kk:mm"
+                        "kk:mm",
                       )}
                       -
                       {format(
                         new Date(getValues(`days.${index}.timeEnd`)),
-                        "kk:mm"
+                        "kk:mm",
                       )}
                     </Typography>
 
@@ -1069,7 +1069,7 @@ export default function Index({ loaderData }: Route.ComponentProps) {
                             >
                               {format(
                                 new Date(getValues(`days.${index}.timeStart`)),
-                                "kk:mm"
+                                "kk:mm",
                               )}
                             </Typography>
                           </Box>
@@ -1097,7 +1097,7 @@ export default function Index({ loaderData }: Route.ComponentProps) {
                             >
                               {format(
                                 new Date(getValues(`days.${index}.timeEnd`)),
-                                "kk:mm"
+                                "kk:mm",
                               )}
                             </Typography>
                           </Box>
@@ -1165,20 +1165,20 @@ export default function Index({ loaderData }: Route.ComponentProps) {
                                           <IconButton
                                             onClick={() => {
                                               const currentList = getValues(
-                                                `days.${index}.locations`
+                                                `days.${index}.locations`,
                                               );
 
                                               const updatedList =
                                                 currentList?.filter(
                                                   (item) =>
-                                                    item.id !== location.id
+                                                    item.id !== location.id,
                                                 );
                                               setValue(
                                                 `days.${index}.locations`,
-                                                updatedList
+                                                updatedList,
                                               );
                                               trigger(
-                                                `days.${index}.locations`
+                                                `days.${index}.locations`,
                                               );
                                             }}
                                             sx={{
@@ -1195,7 +1195,7 @@ export default function Index({ loaderData }: Route.ComponentProps) {
                                           </IconButton>
                                         ) : null}
                                       </Box>
-                                    )
+                                    ),
                                   )
                                 : null}
 
@@ -1392,7 +1392,7 @@ export default function Index({ loaderData }: Route.ComponentProps) {
                 })}
               >
                 {t(
-                  `role.${determineRole(mockRequest.responsiblePerson.roles)}`
+                  `role.${determineRole(mockRequest.responsiblePerson.roles)}`,
                 )}
               </Typography>
             </Box>
@@ -1458,17 +1458,17 @@ export default function Index({ loaderData }: Route.ComponentProps) {
         <form
           onSubmit={handleAddressSubmit(() => {
             const selectedDayLocations = getValues(
-              `days.${dayIndex}.locations`
+              `days.${dayIndex}.locations`,
             );
             const selectedLoactions = getValuesAddress("locations");
 
             selectedLoactions.forEach((item) => {
               const match = loaderData.locations.find(
-                (location) => location.value === item
+                (location) => location.value === item,
               );
 
               const isAlreadySelected = selectedDayLocations?.find(
-                (location) => location.id === item
+                (location) => location.id === item,
               );
 
               if (match && isAlreadySelected === undefined) {
@@ -1506,7 +1506,7 @@ export default function Index({ loaderData }: Route.ComponentProps) {
                   onChange={(evt) => {
                     const currentFieldValue = new RegExp(
                       `^${evt.target.value}`,
-                      "i"
+                      "i",
                     );
 
                     let matchingLocations: typeof loaderData.locations = [];
@@ -1514,7 +1514,7 @@ export default function Index({ loaderData }: Route.ComponentProps) {
                     if (evt.target.value !== "") {
                       matchingLocations = [
                         ...selectedLocations.filter((item) =>
-                          currentFieldValue.test(item.label)
+                          currentFieldValue.test(item.label),
                         ),
                       ];
                     } else {

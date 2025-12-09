@@ -1,20 +1,16 @@
 import { http, delay, HttpResponse } from "msw";
-import Ajv from "ajv";
-import addFormats from "ajv-formats";
 
-import getRadiusSelectSuccess from "./getRadiusSelectSuccess.schema.json";
-import { GetRadiusSelectSuccess } from "./getRadiusSelectSuccess.type";
+import {
+  getRadiusSelectSuccessSchema,
+  GetRadiusSelectSuccess,
+} from "./getRadiusSelectSuccess.schema";
+
 import { UnxpectedError } from "~/shared/unexpectedError/unexpectedError";
-
-const ajv = new Ajv();
-addFormats(ajv);
-
-const validateSuccess = ajv.compile(getRadiusSelectSuccess);
 
 export const getRadiusSelectKeys = ["getRadiusSelect"];
 
 export const getRadiusSelect = async (
-  accessToken: string
+  accessToken: string,
 ): Promise<GetRadiusSelectSuccess> => {
   try {
     const url = new URL(import.meta.env.VITE_GET_RADIUS_SELECT);
@@ -36,10 +32,12 @@ export const getRadiusSelect = async (
       });
     }
 
-    if (validateSuccess(response)) {
-      data = response as unknown as GetRadiusSelectSuccess;
+    const parsed = getRadiusSelectSuccessSchema.safeParse(response);
+
+    if (parsed.success) {
+      data = parsed.data;
     } else {
-      console.log(validateSuccess.errors);
+      console.log(parsed.error);
       throw new Response(`Данные запроса getRadiusSelect не валидны схеме`);
     }
 
@@ -80,5 +78,5 @@ export const getRadiusSelectMockResponse = http.get(
   async () => {
     await delay(2000);
     return HttpResponse.json(mockResponseSuccess);
-  }
+  },
 );

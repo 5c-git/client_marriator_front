@@ -1,20 +1,16 @@
 import { http, delay, HttpResponse } from "msw";
-import Ajv from "ajv";
-import addFormats from "ajv-formats";
 
-import getPlaceForBidSuccess from "./getPlaceForBidSuccess.schema.json";
-import { GetPlaceForBidSuccess } from "./getPlaceForBidSuccess.type";
+import {
+  getPlaceForBidSuccessSchema,
+  GetPlaceForBidSuccess,
+} from "./getPlaceForBidSuccess.schema";
+
 import { UnxpectedError } from "~/shared/unexpectedError/unexpectedError";
-
-const ajv = new Ajv();
-addFormats(ajv);
-
-const validateSuccess = ajv.compile(getPlaceForBidSuccess);
 
 export const getPlaceForBidKeys = ["getPlaceForBid"];
 
 export const getPlaceForBid = async (
-  accessToken: string
+  accessToken: string,
 ): Promise<GetPlaceForBidSuccess> => {
   try {
     const url = new URL(import.meta.env.VITE_GET_PLACE_FOR_BID);
@@ -36,10 +32,12 @@ export const getPlaceForBid = async (
       });
     }
 
-    if (validateSuccess(response)) {
-      data = response as unknown as GetPlaceForBidSuccess;
+    const parsed = getPlaceForBidSuccessSchema.safeParse(response);
+
+    if (parsed.success) {
+      data = parsed.data;
     } else {
-      console.log(validateSuccess.errors);
+      console.log(parsed.error);
       throw new Response(`Данные запроса getPlaceForBid не валидны схеме`);
     }
 
@@ -108,5 +106,5 @@ export const getPlaceForBidMockResponse = http.get(
   async () => {
     await delay(2000);
     return HttpResponse.json(mockResponseSuccess);
-  }
+  },
 );

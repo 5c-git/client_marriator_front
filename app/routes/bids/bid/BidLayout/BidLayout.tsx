@@ -60,7 +60,10 @@ export default function BidLayout({ loaderData }: Route.ComponentProps) {
             viewTransition: true,
           });
         }}
-        {...(!editMode && !location.pathname.includes("specialists")
+        {...((!editMode &&
+          !location.pathname.includes("specialists") &&
+          loaderData.bidData.status === 1) ||
+        loaderData.bidData.status === 2
           ? {
               buttonAction: {
                 text: "",
@@ -101,7 +104,7 @@ export default function BidLayout({ loaderData }: Route.ComponentProps) {
           component={Link}
         />
       </Tabs>
-      <Outlet context={{ bidData: loaderData.bidData, editMode }} />
+      <Outlet context={{ bidMobileData: loaderData.bidData, editMode }} />
     </>
   ) : null;
 }

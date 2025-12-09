@@ -7,11 +7,9 @@
     "archive": "Archive"
   },
   "role": {
-    "admin": "Administrator",
-    "supervisor": "Supervisor",
     "manager": "Manager",
+    "supervisor": "Supervisor",
     "client": "Client",
-    "recruiter": "Recruiter",
     "specialist": "Specialist"
   },
   "dayMap": {
@@ -23,6 +21,7 @@
     "5": "FRI",
     "6": "SAT"
   },
+  "needDaysPlaceholder": "By day",
   "statusPlaceholder": "Status",
   "locationPlaceholder": "Location",
   "serviceTypePlaceholder": "Service type",
@@ -43,11 +42,12 @@
   "parentTask": "Parent task",
   "parentOrder": "Parent assignment",
   "responsible": "Responsible",
-  "saveRequestButton": "Save request",
-  "cancelRequestButton": "Cancel request",
+  "saveBidButton": "Save request",
+  "cancelBidButton": "Cancel request",
   "drawerHeader": "Locations",
   "searchPlaceholder": "Search",
   "addLocationsButton": "Add locations",
   "selfEmployed": "Self-employment",
-  "notSelfEmployed": "Hired worker"
+  "notSelfEmployed": "Hired worker",
+  "addDayButton": "Add day"
 }

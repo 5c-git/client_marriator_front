@@ -501,7 +501,6 @@ export function ServiceFormMobileView(props: ServiceFormMobileViewInterface) {
                         {format(day.timeStart, "dd.MM")}
                         &nbsp;
                         {t(
-                          //@ts-expect-error https://www.i18next.com/overview/typescript#type-error-template-literal
                           `${props.translation}.dayMap.${getDay(day.timeStart)}`,
                         )}
                       </Typography>
@@ -596,7 +595,6 @@ export function ServiceFormMobileView(props: ServiceFormMobileViewInterface) {
                         <Controller
                           name={`days.${index}.timeEnd` as const}
                           control={control}
-                          key={day.key}
                           render={({ field }) => (
                             <TimeField
                               minTime={set(field.value, {
