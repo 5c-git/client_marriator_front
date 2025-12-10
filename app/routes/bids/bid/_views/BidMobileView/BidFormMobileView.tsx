@@ -1,8 +1,8 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 
 import { Link } from "react-router";
 
-import type { BidMobileViewInterface } from "../BidMobileViewInterface";
+import type { BidMobileViewInterface } from "./BidMobileViewInterface";
 
 import { useForm, Controller, useFieldArray } from "react-hook-form";
 import { z } from "zod";
@@ -54,7 +54,7 @@ import {
   S_Accordion,
   S_AccordionSummary,
   S_AccordionDetails,
-} from "./BidFormMobileView.styled";
+} from "./BidMobileView.styled";
 
 import { ExpandIcon } from "~/shared/icons/ExpandIcon";
 import { LocationIcon } from "~/shared/icons/LocationIcon";

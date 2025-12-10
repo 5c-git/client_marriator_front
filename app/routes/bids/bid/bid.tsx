@@ -2,12 +2,13 @@ import { useState, useEffect } from "react";
 import { useOutletContext, redirect, useSubmit } from "react-router";
 import type { Route } from "./+types/bid";
 import type { GetBidSuccess } from "~/requests/_personal/getBid/getBidSuccess.schema";
-import type { BidMobileViewInterface } from "./_views/BidMobileViewInterface";
+import type { BidMobileViewInterface } from "./_views/BidMobileView/BidMobileViewInterface";
 import type { postUpdateBidPayload } from "~/requests/_personal/postUpdateBid/postUpdateBid";
 
 import { useStore } from "~/store/store";
 
-import { BidFormMobileView } from "./_views/BidFormMobileView/BidFormMobileView";
+import { BidFormMobileView } from "./_views/BidMobileView/BidFormMobileView";
+import { BidStaticMobileView } from "./_views/BidMobileView/BidStaticMobileView";
 
 import { getPlaceForBid } from "~/requests/_personal/getPlaceForBid/getPlaceForBid";
 import { getRadiusSelect } from "~/requests/_personal/getRadiusSelect/getRadiusSelect";
@@ -209,7 +210,13 @@ export default function Bid({ loaderData }: Route.ComponentProps) {
                 });
               }}
             />
-          ) : null}
+          ) : (
+            <BidStaticMobileView
+              entity={mobileEntity}
+              locations={loaderData.locations}
+              radiuses={loaderData.radiuses}
+            />
+          )}
         </>
       ) : null}
     </>
