@@ -118,6 +118,7 @@ interface ImportMetaEnv {
   readonly VITE_GET_REASONS: string;
   readonly VITE_POST_UPDATE_REPORT: string;
   readonly VITE_POST_CREATE_BID_FROM_ORDER: string;
+  readonly VITE_POST_ACCEPT_TASK: string;
   // more env variables...
 }
 

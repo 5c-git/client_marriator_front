@@ -7,8 +7,8 @@
   "makeSupervisorResponsibleButton": "Назначить ответственного супервайзера",
   "sendButton": "Отправить",
   "saveButton": "Сохранить",
-
   "convertToBid": "Создать заявку",
+  "acceptButton": "Принять задачу",
   "dialog": {
     "title": "Удалить",
     "no": "Нет",

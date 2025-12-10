@@ -38,7 +38,6 @@ import AddIcon from "@mui/icons-material/Add";
 import ClearIcon from "@mui/icons-material/Clear";
 import CheckIcon from "@mui/icons-material/Check";
 import { RouteIcon } from "~/shared/icons/RouteIcon";
-import LogoutIcon from "@mui/icons-material/Logout";
 
 import { getTask } from "~/requests/_personal/getTask/getTask";
 import { getSupervisorsForTask } from "~/requests/_personal/getSupervisorsForTask/getSupervisorsForTask";
@@ -46,6 +45,7 @@ import { postDeleteTaskActivity } from "~/requests/_personal/postDeleteTaskActiv
 import { postCreateBidFromTask } from "~/requests/_personal/postCreateBidFromTask/postCreateBidFromTask";
 import { postInstructTask } from "~/requests/_personal/postInstructTask/postInstructTask";
 import { postInvoiceTask } from "~/requests/_personal/postInvoiceTask/postInvoiceTask";
+import { postAcceptTask } from "~/requests/_personal/postAcceptTask/postAcceptTask";
 
 type MobileModeData = {
   mode: "mobile";
@@ -196,6 +196,9 @@ export async function clientAction({
     } else if (_action === "_makeResponsible") {
       await postInstructTask(accessToken, fields.taskId, fields.supervisorId);
       throw redirect(currentURL.toString());
+    } else if (_action === "_acceptTask") {
+      await postAcceptTask(accessToken, fields.taskId);
+      throw redirect(currentURL.toString());
     }
   } else {
     throw new Response("Токен авторизации не обнаружен!", { status: 401 });
@@ -207,6 +210,7 @@ export default function Task({ loaderData }: Route.ComponentProps) {
   const navigation = useNavigation();
   const { t } = useTranslation("task");
   const userRole = useStore.getState().userRole;
+  const userId = useStore.getState().userId;
 
   const fetcher = useFetcher();
 
@@ -312,6 +316,9 @@ export default function Task({ loaderData }: Route.ComponentProps) {
                     <Button
                       variant="outlined"
                       startIcon={<AddIcon />}
+                      disabled={
+                        loaderData.entity.services.length < 1 ? true : false
+                      }
                       onClick={() => {
                         setSearchSupervisors(true);
                       }}
@@ -366,8 +373,10 @@ export default function Task({ loaderData }: Route.ComponentProps) {
                   viewTransition: true,
                 });
               }}
-              {...(userRole === "manager" &&
-              (loaderData.entity.status === 1 || loaderData.entity.status === 2)
+              {...(userRole === "manager" ||
+              (userRole === "supervisor" &&
+                (loaderData.entity.status === 1 ||
+                  loaderData.entity.status === 2))
                 ? {
                     headerButtonAction: () => {
                       setEditMode(true);
@@ -486,7 +495,35 @@ export default function Task({ loaderData }: Route.ComponentProps) {
                   ) : null}
                 </Box>
               )}
-              actionSlot={() => <></>}
+              actionSlot={() => {
+                const match = loaderData.entity.invitedPersons.find(
+                  (supervisor) => supervisor.id === userId,
+                );
+
+                if (match && userRole === "supervisor") {
+                  return (
+                    <Button
+                      variant="contained"
+                      onClick={() => {
+                        fetcher.submit(
+                          JSON.stringify({
+                            _action: "_acceptTask",
+                            taskId: loaderData.entity.id,
+                          }),
+                          {
+                            method: "POST",
+                            encType: "application/json",
+                          },
+                        );
+                      }}
+                    >
+                      {t("acceptButton")}
+                    </Button>
+                  );
+                } else {
+                  return <></>;
+                }
+              }}
             />
           )}
           <CheckboxSearchableDrawer
@@ -519,7 +556,7 @@ export default function Task({ loaderData }: Route.ComponentProps) {
               fetcher.submit(
                 JSON.stringify({
                   _action: "_makeResponsible",
-                  orderId: loaderData.entity.id,
+                  taskId: loaderData.entity.id,
                   supervisorId: value,
                 }),
                 {

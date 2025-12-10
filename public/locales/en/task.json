@@ -8,6 +8,7 @@
   "sendButton": "Send",
   "saveButton": "Save",
   "convertToBid": "Create request",
+  "acceptButton": "Accept task",
   "dialog": {
     "title": "Delete",
     "no": "No",
