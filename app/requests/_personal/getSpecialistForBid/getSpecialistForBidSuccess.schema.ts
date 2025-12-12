@@ -6,7 +6,7 @@ export const getSpecialistForBidSuccessSchema = z.object({
       id: z.number(),
       phone: z.number(),
       email: z.string(),
-      logo: z.union([z.string(), z.null()]).optional(),
+      logo: z.union([z.string(), z.null()]),
       roles: z.array(
         z.object({
           id: z.number().gte(1).lte(6),

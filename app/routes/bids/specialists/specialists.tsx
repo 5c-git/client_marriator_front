@@ -13,6 +13,7 @@ import SpecialistStaticMobileView from "./SpecialitstMobileView/SpecialistStatic
 import { getSpecialistForBid } from "~/requests/_personal/getSpecialistForBid/getSpecialistForBid";
 import { getRadiusSelect } from "~/requests/_personal/getRadiusSelect/getRadiusSelect";
 import { postInvoiceBid } from "~/requests/_personal/postInvoiceBid/postInvoiceBid";
+import { determineRole } from "~/shared/determineRole";
 
 type MobileModeData = SpecialistMobileViewInterface & { mode: "mobile" };
 
@@ -54,6 +55,7 @@ export async function clientLoader({ params }: Route.ClientLoaderArgs) {
           age: item.age,
           country: item.country,
           viewActivities: item.viewActivities,
+          status: 1,
         });
       });
       let startingRadius = 1;
