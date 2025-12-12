@@ -74,7 +74,7 @@ import orders from "../../public/locales/ru/orders.json";
 //routes
 
 //views
-import SpecialistMobileView from "../../public/locales/ru/SpecialistMobileView.json";
+import SpecialistsMobileView from "../../public/locales/ru/SpecialistsMobileView.json";
 import ServiceMobileView from "../../public/locales/ru/ServiceFormMobileView.json";
 import BidMobileView from "../../public/locales/ru/BidMobileView.json";
 import TaskMobileView from "../../public/locales/ru/TaskMobileView.json";
@@ -173,7 +173,7 @@ declare module "i18next" {
       //routes
 
       //views
-      SpecialistMobileView: typeof SpecialistMobileView;
+      SpecialistsMobileView: typeof SpecialistsMobileView;
       BidMobileView: typeof BidMobileView;
       TaskMobileView: typeof TaskMobileView;
       OrderMobileView: typeof OrderMobileView;

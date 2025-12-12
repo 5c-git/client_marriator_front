@@ -1,21 +1,21 @@
 import { useSubmit, redirect, useOutletContext } from "react-router";
 import type { Route } from "./+types/specialists";
-import type { SpecialistMobileViewInterface } from "./SpecialitstMobileView/SpecialistMobileViewInterface";
+import type { SpecialistsMobileViewInterface } from "./SpecialitstsMobileView/SpecialistsMobileViewInterface";
 import type { GetBidSuccess } from "~/requests/_personal/getBid/getBidSuccess.schema";
 
 import { useStore } from "~/store/store";
 
 import { withLocale } from "~/shared/withLocale";
 
-import { SpecialistInviteFormMobileView } from "./SpecialitstMobileView/SpecialistInviteFormMobileView";
-import SpecialistStaticMobileView from "./SpecialitstMobileView/SpecialistStaticMobileView";
+import { SpecialistsInviteFormMobileView } from "./SpecialitstsMobileView/SpecialistsInviteFormMobileView";
+import { SpecialistsStaticMobileView } from "./SpecialitstsMobileView/SpecialistsStaticMobileView";
 
 import { getSpecialistForBid } from "~/requests/_personal/getSpecialistForBid/getSpecialistForBid";
 import { getRadiusSelect } from "~/requests/_personal/getRadiusSelect/getRadiusSelect";
 import { postInvoiceBid } from "~/requests/_personal/postInvoiceBid/postInvoiceBid";
 import { determineRole } from "~/shared/determineRole";
 
-type MobileModeData = SpecialistMobileViewInterface & { mode: "mobile" };
+type MobileModeData = SpecialistsMobileViewInterface & { mode: "mobile" };
 
 export async function clientLoader({ params }: Route.ClientLoaderArgs) {
   const mode = "mobile";
@@ -108,7 +108,7 @@ export default function Specialists({ loaderData }: Route.ComponentProps) {
   return loaderData.mode === "mobile" ? (
     <>
       {bidMobileData.acceptingUsers.length === 0 ? (
-        <SpecialistInviteFormMobileView
+        <SpecialistsInviteFormMobileView
           specialists={loaderData.specialists}
           radiuses={loaderData.radiuses}
           startingRadius={loaderData.startingRadius}
@@ -121,7 +121,7 @@ export default function Specialists({ loaderData }: Route.ComponentProps) {
           }}
         />
       ) : (
-        <SpecialistStaticMobileView
+        <SpecialistsStaticMobileView
           specialists={bidMobileData.acceptingUsers}
           activeService={bidMobileData.viewActivity.name}
           bid={{

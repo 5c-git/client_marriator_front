@@ -1,4 +1,4 @@
-export type SpecialistMobileViewInterface = {
+export type SpecialistsMobileViewInterface = {
   bid: {
     id: number;
     dateStart: Date;

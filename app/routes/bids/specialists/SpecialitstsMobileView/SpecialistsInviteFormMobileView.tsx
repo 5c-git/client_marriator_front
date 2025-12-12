@@ -1,6 +1,6 @@
 import { ComponentPropsWithoutRef, useState } from "react";
 
-import type { SpecialistMobileViewInterface } from "./SpecialistMobileViewInterface";
+import type { SpecialistsMobileViewInterface } from "./SpecialistsMobileViewInterface";
 
 import { useTranslation } from "react-i18next";
 
@@ -18,17 +18,17 @@ import { StyledCheckboxMultiple } from "~/shared/ui/StyledCheckboxMultiple/Style
 
 import { UploadIcon } from "~/shared/icons/UploadIcon";
 
-type SpecialistInviteFormMobileViewInterface = Pick<
-  SpecialistMobileViewInterface,
+type SpecialistsInviteFormMobileViewInterface = Pick<
+  SpecialistsMobileViewInterface,
   "activeService" | "startingRadius" | "specialists" | "radiuses"
 > & {
   submitAction: (values: string[]) => void;
 };
 
-export function SpecialistInviteFormMobileView(
-  props: SpecialistInviteFormMobileViewInterface,
+export function SpecialistsInviteFormMobileView(
+  props: SpecialistsInviteFormMobileViewInterface,
 ) {
-  const { t } = useTranslation("SpecialistMobileView");
+  const { t } = useTranslation("SpecialistsMobileView");
 
   const {
     control,
@@ -100,7 +100,7 @@ export function SpecialistInviteFormMobileView(
                 const currentRadius = getValues("radius");
                 const isSelectedAll = getValues("selectAll");
 
-                let matchingSpecialists: SpecialistInviteFormMobileViewInterface["specialists"] =
+                let matchingSpecialists: SpecialistsInviteFormMobileViewInterface["specialists"] =
                   [];
 
                 // обрататываем поиск

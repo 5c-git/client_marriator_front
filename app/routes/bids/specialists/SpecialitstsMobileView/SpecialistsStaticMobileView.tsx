@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 
-import type { SpecialistMobileViewInterface } from "./SpecialistMobileViewInterface";
+import type { SpecialistsMobileViewInterface } from "./SpecialistsMobileViewInterface";
 import type { GetBidSuccess } from "~/requests/_personal/getBid/getBidSuccess.schema";
 
 import { useTranslation } from "react-i18next";
@@ -18,15 +18,15 @@ import { EntityCard } from "~/shared/ui/EntityCard/EntityCard";
 
 import { PhoneIcon } from "~/shared/icons/PhoneIcon";
 
-type SpecialistStaticMobileViewInterface = Pick<
-  SpecialistMobileViewInterface,
+type SpecialistsStaticMobileViewInterface = Pick<
+  SpecialistsMobileViewInterface,
   "bid" | "specialists" | "activeService"
 >;
 
-export default function SpecialistStaticMobileView(
-  props: SpecialistStaticMobileViewInterface,
+export function SpecialistsStaticMobileView(
+  props: SpecialistsStaticMobileViewInterface,
 ) {
-  const { t } = useTranslation("SpecialistMobileView");
+  const { t } = useTranslation("SpecialistsMobileView");
 
   const daysRange = eachDayOfInterval({
     start: props.bid.dateStart,
@@ -34,11 +34,11 @@ export default function SpecialistStaticMobileView(
   });
 
   const [filteredSpecialists, setFilteredSpecialists] = useState<{
-    [key: number]: SpecialistStaticMobileViewInterface["specialists"];
+    [key: number]: SpecialistsStaticMobileViewInterface["specialists"];
   }>({});
   const [filter, setFilter] = useState<number>(0);
   const [activeSpecialists, setActiveSpecialists] = useState<
-    SpecialistStaticMobileViewInterface["specialists"]
+    SpecialistsStaticMobileViewInterface["specialists"]
   >([]);
   const [selectedDate, setSelectedDate] = useState<Date>(daysRange[0]);
 
@@ -49,7 +49,7 @@ export default function SpecialistStaticMobileView(
       ].sort((a, b) => a - b);
 
       const filteredSpecialists: {
-        [key: number]: SpecialistStaticMobileViewInterface["specialists"];
+        [key: number]: SpecialistsStaticMobileViewInterface["specialists"];
       } = {};
 
       allFilters.forEach((filter) => {
