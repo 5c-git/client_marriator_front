@@ -1,22 +1,17 @@
 import { http, delay, HttpResponse } from "msw";
-import Ajv from "ajv";
-import addFormats from "ajv-formats";
 
-import successSchema from "./getSpecialistForBidSuccess.schema.json";
-import { GetSpecialistForBidSuccess } from "./getSpecialistForBidSuccess.type";
+import {
+  getSpecialistForBidSuccessSchema,
+  GetSpecialistForBidSuccess,
+} from "./getSpecialistForBidSuccess.schema";
 
 import { UnxpectedError } from "~/shared/unexpectedError/unexpectedError";
-
-const ajv = new Ajv();
-addFormats(ajv);
-
-const validateSuccess = ajv.compile(successSchema);
 
 export const getSpecialistForBidKeys = ["getSpecialistForBid"];
 
 export const getSpecialistForBid = async (
   accessToken: string,
-  bidId: string
+  bidId: string,
 ): Promise<GetSpecialistForBidSuccess> => {
   try {
     const url = new URL(import.meta.env.VITE_GET_SPECIALIST_FOR_BID);
@@ -40,10 +35,12 @@ export const getSpecialistForBid = async (
       });
     }
 
-    if (validateSuccess(response)) {
-      data = response as unknown as GetSpecialistForBidSuccess;
+    const parsed = getSpecialistForBidSuccessSchema.safeParse(response);
+
+    if (parsed.success) {
+      data = parsed.data;
     } else {
-      console.log(validateSuccess.errors);
+      console.log(parsed.error);
       throw new Response(`Данные запроса getSpecialistForBid не валидны схеме`);
     }
 
@@ -92,5 +89,5 @@ export const getSpecialistForBidMockResponse = http.get(
   async () => {
     await delay(2000);
     return HttpResponse.json(mockResponseSuccess);
-  }
+  },
 );

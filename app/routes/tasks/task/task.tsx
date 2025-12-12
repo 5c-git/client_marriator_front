@@ -190,7 +190,7 @@ export async function clientAction({
         fields.taskId,
         fields.taskActivityId,
       );
-      throw redirect(withLocale(`/requests/${transformedRequestData.data.id}`));
+      throw redirect(withLocale(`/bids/${transformedRequestData.data.id}`));
     } else if (_action === "_inviteSupervisors") {
       await postInvoiceTask(accessToken, params.taskId, fields.supervisors);
     } else if (_action === "_makeResponsible") {

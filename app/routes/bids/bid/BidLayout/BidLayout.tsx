@@ -60,10 +60,9 @@ export default function BidLayout({ loaderData }: Route.ComponentProps) {
             viewTransition: true,
           });
         }}
-        {...((!editMode &&
-          !location.pathname.includes("specialists") &&
-          loaderData.bidData.status === 1) ||
-        loaderData.bidData.status === 2
+        {...(!editMode &&
+        !location.pathname.includes("specialists") &&
+        loaderData.bidData.status <= 2
           ? {
               buttonAction: {
                 text: "",

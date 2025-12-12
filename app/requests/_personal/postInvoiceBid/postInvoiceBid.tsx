@@ -1,20 +1,18 @@
 import { http, delay, HttpResponse } from "msw";
-import Ajv from "ajv";
 
-import successSchema from "./postInvoiceBidSuccess.schema.json";
-import { PostInvoiceBidSuccess } from "./postInvoiceBidSuccess.type";
+import {
+  postInvoiceBidSuccessSchema,
+  PostInvoiceBidSuccess,
+} from "./postInvoiceBidSuccess.schema";
+
 import { UnxpectedError } from "~/shared/unexpectedError/unexpectedError";
-
-const ajv = new Ajv();
-
-const validateSuccess = ajv.compile(successSchema);
 
 export const postInvoiceBidKeys = ["postInvoiceBid"];
 
 export const postInvoiceBid = async (
   accessToken: string,
   bidId: string,
-  specialistIds: string[]
+  specialistIds: string[],
 ) => {
   try {
     const url = new URL(import.meta.env.VITE_POST_INVOICE_BID);
@@ -45,9 +43,12 @@ export const postInvoiceBid = async (
       });
     }
 
-    if (validateSuccess(response)) {
-      data = response as unknown as PostInvoiceBidSuccess;
+    const parsed = postInvoiceBidSuccessSchema.safeParse(response);
+
+    if (parsed.success) {
+      data = parsed.data;
     } else {
+      console.log(parsed.error);
       throw new Response(`Данные запроса postInvoiceBid не валидны схеме`);
     }
 
@@ -78,5 +79,5 @@ export const postInvoiceBidMockResponse = http.post(
   async () => {
     await delay(2000);
     return HttpResponse.json(mockResponseSuccess);
-  }
+  },
 );
