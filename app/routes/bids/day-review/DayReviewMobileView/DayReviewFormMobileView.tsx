@@ -1,10 +1,10 @@
-import { useNavigation, useNavigate, useSubmit, redirect } from "react-router";
-import { Fragment, useState } from "react";
-import type { Route } from "./+types/day-review";
+import type { DayReviewMobileViewInterface } from "./DayReviewMobileViewInterface";
 
-import type { PageInterface } from "./PageInterface";
+import { useNavigation, useNavigate } from "react-router";
+import { Fragment, useState } from "react";
+
+import { t } from "i18next";
 import { useTranslation } from "react-i18next";
-import { useStore } from "~/store/store";
 import { withLocale } from "~/shared/withLocale";
 
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -22,7 +22,6 @@ import {
   IconButton,
 } from "@mui/material";
 
-import { Loader } from "~/shared/ui/Loader/Loader";
 import { TopNavigation } from "~/shared/ui/TopNavigation/TopNavigation";
 import { StyledSelect } from "~/shared/ui/StyledSelect/StyledSelect";
 import { MaskedField } from "~/shared/ui/MaskedField/MaskedField";
@@ -31,17 +30,36 @@ import {
   S_Accordion,
   S_AccordionDetails,
   S_AccordionSummary,
-} from "./day-review.styled";
+} from "./DayReviewMobileView.styled";
 
 import CloseIcon from "@mui/icons-material/Close";
 import { ExpandIcon } from "~/shared/icons/ExpandIcon";
 import { CheckIcon } from "~/shared/icons/CheckIcon";
 
-import { getJob } from "~/requests/_personal/getJob/getJob";
-import { getReasons } from "~/requests/_personal/getReasons/getReasons";
-import { postAcceptReport } from "~/requests/_personal/postAcceptReport/postAcceptReport";
-import { postUpdateReport } from "~/requests/_personal/postUpdateReport/postUpdateReport";
-import { postAcceptAllReportJob } from "~/requests/_personal/postAcceptAllReportJob/postAcceptAllReportJob";
+const dayReviewFormSchema = z.object({
+  days: z.array(
+    z.object({
+      id: z.number({ error: t("text", { ns: "constructorFields" }) }),
+      date: z.string({ error: t("text", { ns: "constructorFields" }) }),
+      photos: z.array(z.string()).optional(),
+      unitPrice: z.string({
+        error: t("text", { ns: "constructorFields" }),
+      }),
+      unitAmount: z.string({
+        error: t("text", { ns: "constructorFields" }),
+      }),
+      criteria: z.array(
+        z.object({
+          count: z.number(),
+          value: z.string(),
+          amount: z.number({
+            error: t("text", { ns: "constructorFields" }),
+          }),
+        }),
+      ),
+    }),
+  ),
+});
 
 const calculatePrice = (day: {
   photos?: (string | undefined)[] | undefined;
@@ -61,7 +79,7 @@ const calculatePrice = (day: {
 
   if (day.criteria) {
     day.criteria.forEach(
-      (criterion) => (criteriaPrice += criterion.amount * criterion.count)
+      (criterion) => (criteriaPrice += criterion.amount * criterion.count),
     );
   }
 
@@ -70,252 +88,23 @@ const calculatePrice = (day: {
   return criteriaPrice;
 };
 
-export async function clientLoader({ params }: Route.ClientLoaderArgs) {
-  const accessToken = useStore.getState().accessToken;
+type submitValues = z.output<typeof dayReviewFormSchema>;
 
-  if (accessToken) {
-    const data: PageInterface = {
-      days: [],
-      criteria: [],
-    };
-
-    const missionData = await getJob(
-      accessToken,
-      params.specialistId,
-      params.requestId
-    );
-
-    const criteriaData = await getReasons(accessToken);
-
-    criteriaData.data.forEach((criterion) => {
-      data.criteria.push({
-        amount: criterion.amount,
-        label: criterion.value,
-        value: criterion.id.toString(),
-      });
-    });
-
-    if (params.reportId) {
-      const particularDay = missionData.data.reports.find(
-        (report) => report.id === Number(params.reportId)
-      );
-
-      if (
-        (particularDay && particularDay.status === 2) ||
-        (particularDay && particularDay.status === 3) ||
-        (particularDay && particularDay.status === 4) ||
-        (particularDay && particularDay.status === 7)
-      ) {
-        data.days.push({
-          id: Number(particularDay.id),
-          date: particularDay.dateStart ? particularDay.dateStart : "",
-          unitPrice: missionData.data.price.toString(),
-          unitAmount: particularDay.hours ? particularDay.hours : "",
-          ...(particularDay.report && { photos: particularDay.report }),
-          criteria: (() => {
-            const criteria: PageInterface["days"][0]["criteria"] = [];
-
-            particularDay.reasons.forEach((item) => {
-              criteria.push({
-                amount: item.amount,
-                count: item.count,
-                value: item.id.toString(),
-              });
-            });
-
-            return criteria;
-          })(),
-        });
-      }
-    } else {
-      missionData.data.reports.forEach((report) => {
-        if (report.status === 2 || report.status === 3 || report.status === 7) {
-          data.days.push({
-            id: Number(report.id),
-            date: report.dateStart ? report.dateStart : "",
-            unitPrice: "0",
-            unitAmount: report.hours ? report.hours : "",
-            ...(report.report && { photos: report.report }),
-            criteria: (() => {
-              const criteria: PageInterface["days"][0]["criteria"] = [];
-
-              report.reasons.forEach((item) => {
-                criteria.push({
-                  amount: item.amount,
-                  count: 3,
-                  value: item.id.toString(),
-                });
-              });
-
-              return criteria;
-            })(),
-          });
-        }
-      });
-    }
-
-    if (data.days.length === 0) {
-      throw redirect(
-        withLocale(
-          `/requests/${params.requestId}/specialists/${params.specialistId}`
-        )
-      );
-    }
-
-    return {
-      data: data,
-      requestId: params.requestId,
-      specialistId: params.specialistId,
-    };
-  } else {
-    throw new Response("Токен авторизации не обнаружен!", { status: 401 });
-  }
-}
-
-export async function clientAction({
-  request,
-  params,
-}: Route.ClientActionArgs) {
-  const currentURL = new URL(request.url);
-  const fields: {
-    days: {
-      photos?: string[];
-      criteria: {
-        value: string;
-        amount: number;
-        count: number;
-      }[];
-      id: number;
-      date: string;
-      unitPrice: string;
-      unitAmount: string;
-    }[];
-  } = await request.json();
-  const accessToken = useStore.getState().accessToken;
-
-  if (accessToken) {
-    if (fields.days.length > 1) {
-      (params.requestId, params.specialistId);
-      await postAcceptAllReportJob(accessToken, {
-        bidId: Number(params.requestId),
-        specialistId: Number(params.specialistId),
-        reports: (() => {
-          const reports: Parameters<
-            typeof postAcceptAllReportJob
-          >["1"]["reports"] = [];
-
-          fields.days.forEach((day) => {
-            reports.push({
-              reportId: day.id,
-              hours: Number(day.unitAmount),
-              reasons: (() => {
-                const criteria = day.criteria;
-
-                const reasons: Parameters<
-                  typeof postAcceptAllReportJob
-                >["1"]["reports"][0]["reasons"] = [];
-
-                criteria.forEach((criterion) => {
-                  reasons.push({
-                    reasonId: Number(criterion.value),
-                    count: criterion.count,
-                    amount: criterion.amount,
-                  });
-                });
-
-                return reasons;
-              })(),
-            });
-          });
-
-          return reports;
-        })(),
-      });
-      // throw redirect(currentURL.toString());
-      throw redirect(
-        withLocale(
-          `/requests/${params.requestId}/specialists/${params.specialistId}`
-        )
-      );
-    } else if (fields.days.length === 1) {
-      const payload = {
-        reportId: fields.days[0].id,
-        hours: Number(fields.days[0].unitAmount),
-        reasons: (() => {
-          const criteria = fields.days[0].criteria;
-
-          const reasons: Parameters<typeof postAcceptReport>[1]["reasons"] = [];
-
-          criteria.forEach((criterion) => {
-            reasons.push({
-              reasonId: Number(criterion.value),
-              count: criterion.count,
-              amount: criterion.amount,
-            });
-          });
-
-          return reasons;
-        })(),
-      };
-
-      if (currentURL.searchParams.has("edit", "true")) {
-        await postUpdateReport(accessToken, payload);
-      } else {
-        await postAcceptReport(accessToken, payload);
-      }
-
-      throw redirect(
-        withLocale(
-          `/requests/${params.requestId}/specialists/${params.specialistId}`
-        )
-      );
-    }
-  } else {
-    throw new Response("Токен авторизации не обнаружен!", { status: 401 });
-  }
-}
-
-export default function DayReview({ loaderData }: Route.ComponentProps) {
-  const navigation = useNavigation();
+export function DayReviewMobileView(
+  props: DayReviewMobileViewInterface & {
+    submitAction: (values: submitValues) => void;
+  },
+) {
   const navigate = useNavigate();
-  const submit = useSubmit();
-  const { t } = useTranslation(
-    "request_specialists_specialistRequest_dayReview"
-  );
+  const { t } = useTranslation("DayReviewMobileView");
 
   const [expanded, setExpanded] = useState<number>(0);
 
-  const {
-    control,
-    handleSubmit,
-    formState: { errors },
-    watch,
-    getValues,
-    setValue,
-  } = useForm({
+  const { control, handleSubmit, watch, getValues, setValue } = useForm({
     defaultValues: {
-      days: loaderData.data.days,
+      days: props.days,
     },
-    resolver: zodResolver(
-      z.object({
-        days: z.array(
-          z.object({
-            id: z.number(t("text", { ns: "constructorFields" })),
-            date: z.string(t("text", { ns: "constructorFields" })),
-            photos: z.array(z.string()).optional(),
-            unitPrice: z.string(t("text", { ns: "constructorFields" })),
-            unitAmount: z.string(t("text", { ns: "constructorFields" })),
-            criteria: z.array(
-              z.object({
-                count: z.number(),
-                value: z.string(),
-                amount: z.number(t("text", { ns: "constructorFields" })),
-              })
-            ),
-          })
-        ),
-      })
-    ),
+    resolver: zodResolver(dayReviewFormSchema),
   });
 
   const { fields, update } = useFieldArray({
@@ -327,8 +116,6 @@ export default function DayReview({ loaderData }: Route.ComponentProps) {
 
   return (
     <>
-      {navigation.state !== "idle" ? <Loader /> : null}
-
       <TopNavigation
         header={{
           text: t("header"),
@@ -337,11 +124,11 @@ export default function DayReview({ loaderData }: Route.ComponentProps) {
         backAction={() => {
           navigate(
             withLocale(
-              `/requests/${loaderData.requestId}/specialists/${loaderData.specialistId}`
+              `/bids/${props.bidId}/specialists/${props.specialistId}`,
             ),
             {
               viewTransition: true,
-            }
+            },
           );
         }}
       />
@@ -349,10 +136,7 @@ export default function DayReview({ loaderData }: Route.ComponentProps) {
       <form
         id="day-review-form"
         onSubmit={handleSubmit((values) => {
-          submit(JSON.stringify(values), {
-            method: "POST",
-            encType: "application/json",
-          });
+          props.submitAction(values);
         })}
         style={{
           display: "grid",
@@ -630,7 +414,7 @@ export default function DayReview({ loaderData }: Route.ComponentProps) {
                               disabled: boolean;
                             }[] = [];
 
-                            loaderData.data.criteria.forEach((item) => {
+                            props.criteria.forEach((item) => {
                               options.push({
                                 value: item.value,
                                 label: item.label,
@@ -642,14 +426,14 @@ export default function DayReview({ loaderData }: Route.ComponentProps) {
                           })()}
                           {...field}
                           onChange={(evt) => {
-                            const amountMatch = loaderData.data.criteria.find(
-                              (item) => item.value === evt.target.value
+                            const amountMatch = props.criteria.find(
+                              (item) => item.value === evt.target.value,
                             );
 
                             if (amountMatch) {
                               setValue(
                                 `days.${index}.criteria.${indx}.amount`,
-                                amountMatch.amount
+                                amountMatch.amount,
                               );
                             }
 
@@ -697,15 +481,15 @@ export default function DayReview({ loaderData }: Route.ComponentProps) {
 
                     if (updatedDay.criteria) {
                       updatedDay.criteria.push({
-                        amount: loaderData.data.criteria[0].amount,
-                        value: loaderData.data.criteria[0].value,
+                        amount: props.criteria[0].amount,
+                        value: props.criteria[0].value,
                         count: 1,
                       });
                     } else {
                       updatedDay.criteria = [
                         {
-                          amount: loaderData.data.criteria[0].amount,
-                          value: loaderData.data.criteria[0].value,
+                          amount: props.criteria[0].amount,
+                          value: props.criteria[0].value,
                           count: 1,
                         },
                       ];

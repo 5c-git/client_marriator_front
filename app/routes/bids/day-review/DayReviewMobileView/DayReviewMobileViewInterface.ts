@@ -1,4 +1,4 @@
-export type PageInterface = {
+export type DayReviewMobileViewInterface = {
   days: {
     id: number;
     date: string;
@@ -16,4 +16,6 @@ export type PageInterface = {
     label: string;
     value: string;
   }[];
+  bidId: string;
+  specialistId: string;
 };

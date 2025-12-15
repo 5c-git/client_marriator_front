@@ -16,12 +16,8 @@ export default [
         "routes/missions/mission/mission.tsx",
       ),
       route(
-        ":lang?/requests/:requestId/specialists/:specialistId",
-        "routes/requests/request/specialists/specialist-request/specialist-request.tsx",
-      ),
-      route(
-        ":lang?/requests/:requestId/specialists/:specialistId/day-review/:reportId?",
-        "routes/requests/request/specialists/specialist-request/day-review/day-review.tsx",
+        ":lang?/bids/:bidId/specialists/:specialistId/day-review/:reportId?",
+        "routes/bids/day-review/day-review.tsx",
       ),
 
       route(
