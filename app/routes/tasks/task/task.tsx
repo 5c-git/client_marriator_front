@@ -373,10 +373,10 @@ export default function Task({ loaderData }: Route.ComponentProps) {
                   viewTransition: true,
                 });
               }}
-              {...(userRole === "manager" ||
-              (userRole === "supervisor" &&
-                (loaderData.entity.status === 1 ||
-                  loaderData.entity.status === 2))
+              {...((userRole === "manager" && loaderData.entity.status === 1) ||
+              loaderData.entity.status === 2 ||
+              (userRole === "supervisor" && loaderData.entity.status === 1) ||
+              loaderData.entity.status === 2
                 ? {
                     headerButtonAction: () => {
                       setEditMode(true);
