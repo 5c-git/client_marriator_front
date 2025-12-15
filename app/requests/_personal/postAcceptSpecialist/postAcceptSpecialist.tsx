@@ -1,20 +1,18 @@
 import { http, delay, HttpResponse } from "msw";
-import Ajv from "ajv";
 
-import schemaSuccess from "./postAcceptSpecialistSuccess.schema.json";
-import { PostAcceptSpecialistSuccess } from "./postAcceptSpecialistSuccess.type";
+import {
+  postAcceptSpecialistSuccessSchema,
+  PostAcceptSpecialistSuccess,
+} from "./postAcceptSpecialistSuccess.schema";
+
 import { UnxpectedError } from "~/shared/unexpectedError/unexpectedError";
-
-const ajv = new Ajv();
-
-const validateSuccess = ajv.compile(schemaSuccess);
 
 export const postAcceptSpecialistKeys = ["postAcceptSpecialist"];
 
 export const postAcceptSpecialist = async (
   accessToken: string,
   bidId: string,
-  specialistId: string
+  specialistId: string,
 ): Promise<PostAcceptSpecialistSuccess> => {
   try {
     const url = new URL(import.meta.env.VITE_POST_ACCEPT_SPECIALIST);
@@ -42,12 +40,14 @@ export const postAcceptSpecialist = async (
       });
     }
 
-    if (validateSuccess(response)) {
-      data = response as unknown as PostAcceptSpecialistSuccess;
+    const parsed = postAcceptSpecialistSuccessSchema.safeParse(response);
+
+    if (parsed.success) {
+      data = parsed.data;
     } else {
-      console.log(validateSuccess.errors);
+      console.log(parsed.error);
       throw new Response(
-        `Данные запроса postAcceptSpecialist не валидны схеме`
+        `Данные запроса postAcceptSpecialist не валидны схеме`,
       );
     }
 
@@ -78,5 +78,5 @@ export const postAcceptSpecialistMockResponse = http.post(
   async () => {
     await delay(2000);
     return HttpResponse.json(mockResponseSuccess);
-  }
+  },
 );

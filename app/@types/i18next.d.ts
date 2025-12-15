@@ -58,11 +58,12 @@ import users_select_projects from "../../public/locales/ru/users_select_projects
 import users_select_locations from "../../public/locales/ru/users_select_locations.json";
 
 import missions from "../../public/locales/ru/missions.json";
-import mission from "../../public/locales/ru/mission.json";
 import request_specialists_specialistRequest_dayReview from "../../public/locales/ru/request_specialists_specialistRequest_dayReview.json";
 //internal
 
 //routes
+import mission from "../../public/locales/ru/mission.json";
+
 import BidLayout from "../../public/locales/ru/BidLayout.json";
 import bids from "../../public/locales/ru/bids.json";
 
@@ -74,6 +75,7 @@ import orders from "../../public/locales/ru/orders.json";
 //routes
 
 //views
+import SpecialistMobileView from "../../public/locales/ru/SpecialistMobileView.json";
 import SpecialistsMobileView from "../../public/locales/ru/SpecialistsMobileView.json";
 import ServiceMobileView from "../../public/locales/ru/ServiceFormMobileView.json";
 import BidMobileView from "../../public/locales/ru/BidMobileView.json";
@@ -173,6 +175,7 @@ declare module "i18next" {
       //routes
 
       //views
+      SpecialistMobileView: typeof SpecialistMobileView;
       SpecialistsMobileView: typeof SpecialistsMobileView;
       BidMobileView: typeof BidMobileView;
       TaskMobileView: typeof TaskMobileView;

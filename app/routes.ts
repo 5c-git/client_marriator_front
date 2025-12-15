@@ -184,6 +184,10 @@ export default [
         "routes/bids/specialists/specialists.tsx",
       ),
     ]),
+    route(
+      ":lang?/bids/:bidId/specialists/:specialistId",
+      "routes/bids/specialist/specialist.tsx",
+    ),
 
     //order
     route(":lang?/orders/:orderId", "routes/orders/order/order.tsx"),

@@ -36,15 +36,8 @@ export const getJobSuccessSchema = z.object({
       roles: z.array(
         z.object({
           id: z.number().gte(1).lte(6),
-          name: z.enum([
-            "admin",
-            "client",
-            "manager",
-            "recruiter",
-            "specialist",
-            "supervisor",
-          ]),
-        })
+          name: z.enum(["manager", "supervisor", "client", "specialist"]),
+        }),
       ),
     }),
     radius: z.number(),
@@ -83,9 +76,9 @@ export const getJobSuccessSchema = z.object({
               logo: z.string().optional(),
               description: z.string(),
             }),
-          })
+          }),
         ),
-      })
+      }),
     ),
     order: z.union([
       z.null(),
@@ -110,14 +103,14 @@ export const getJobSuccessSchema = z.object({
                 "specialist",
                 "supervisor",
               ]),
-            })
+            }),
           ),
         }),
         statistic: z.array(
           z.object({
             accepted: z.number(),
             count: z.number(),
-          })
+          }),
         ),
       }),
     ]),
@@ -144,14 +137,14 @@ export const getJobSuccessSchema = z.object({
                 "specialist",
                 "supervisor",
               ]),
-            })
+            }),
           ),
         }),
         statistic: z.array(
           z.object({
             accepted: z.number(),
             count: z.number(),
-          })
+          }),
         ),
       }),
     ]),
@@ -171,7 +164,7 @@ export const getJobSuccessSchema = z.object({
             "specialist",
             "supervisor",
           ]),
-        })
+        }),
       ),
       radius: z.string(),
       name: z.string(),
@@ -202,9 +195,9 @@ export const getJobSuccessSchema = z.object({
             value: z.string(),
             amount: z.number(),
             count: z.number(),
-          })
+          }),
         ),
-      })
+      }),
     ),
   }),
 });

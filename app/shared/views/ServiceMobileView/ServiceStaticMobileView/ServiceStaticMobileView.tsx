@@ -225,7 +225,6 @@ export function ServiceStaticMobileView(
                       {format(day.timeStart, "dd.MM")}
                       &nbsp;
                       {t(
-                        //@ts-expect-error https://www.i18next.com/overview/typescript#type-error-template-literal
                         `${props.translation}.dayMap.${getDay(day.timeStart)}`,
                       )}
                     </Typography>

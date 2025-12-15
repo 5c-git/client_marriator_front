@@ -1,19 +1,17 @@
 import { http, delay, HttpResponse } from "msw";
-import Ajv from "ajv";
 
-import schemaSuccess from "./postPayReportForManagerSuccess.schema.json";
-import { PostPayReportForManagerSuccess } from "./postPayReportForManagerSuccess.type";
+import {
+  postPayReportForManagerSuccessSchema,
+  PostPayReportForManagerSuccess,
+} from "./postPayReportForManagerSuccess.schema";
+
 import { UnxpectedError } from "~/shared/unexpectedError/unexpectedError";
-
-const ajv = new Ajv();
-
-const validateSuccess = ajv.compile(schemaSuccess);
 
 export const PostPayReportForManagerKeys = ["PostPayReportForManager"];
 
 export const postPayReportForManager = async (
   accessToken: string,
-  reportId: string
+  reportId: string,
 ): Promise<PostPayReportForManagerSuccess> => {
   try {
     const url = new URL(import.meta.env.VITE_POST_PAY_REPORT_FOR_MANAGER);
@@ -40,12 +38,14 @@ export const postPayReportForManager = async (
       });
     }
 
-    if (validateSuccess(response)) {
-      data = response as unknown as PostPayReportForManagerSuccess;
+    const parsed = postPayReportForManagerSuccessSchema.safeParse(response);
+
+    if (parsed.success) {
+      data = parsed.data;
     } else {
-      console.log(validateSuccess.errors);
+      console.log(parsed.error);
       throw new Response(
-        `Данные запроса postPayReportForManager не валидны схеме`
+        `Данные запроса postPayReportForManager не валидны схеме`,
       );
     }
 
@@ -76,5 +76,5 @@ export const postPayReportForManagerMockResponse = http.post(
   async () => {
     await delay(2000);
     return HttpResponse.json(mockResponseSuccess);
-  }
+  },
 );

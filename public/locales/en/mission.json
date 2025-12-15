@@ -1,19 +1,12 @@
 {
-  "components": {
-    "FilesPopup": {
-      "header": "Please attach at least 4 photographs for your report.",
-      "submitButton": "Send",
-      "cancelButton": "Cancel"
-    }
-  },
-  "status": {
-    "notAccepted": "Not accepted",
-    "accepted": "Accepted",
-    "declined": "Declined",
-    "consideration": "In consideration",
-    "work": "In work",
-    "canceled": "Cancelled",
-    "edit": "Edit"
+  "actions": {
+    "accept": "Accept",
+    "acceptAll": "Accept all",
+    "cancel": "Cancel",
+    "start": "Start",
+    "end": "End",
+    "forPay": "For payment",
+    "report": "Report"
   },
   "dayStatus": {
     "start": "Stared",
@@ -25,43 +18,5 @@
     "paid": "Paid",
     "notEnded": "Not ended",
     "check": "Check"
-  },
-  "actions": {
-    "accept": "Accept",
-    "acceptAll": "Accept all",
-    "cancel": "Cancel",
-    "start": "Start",
-    "end": "End",
-    "forPay": "For payment",
-    "report": "Report"
-  },
-  "role": {
-    "admin": "Administrator",
-    "supervisor": "Supervisor",
-    "manager": "Manager",
-    "client": "Client",
-    "recruiter": "Recruiter",
-    "specialist": "Specialist"
-  },
-  "dayMap": {
-    "0": "SUN",
-    "1": "MON",
-    "2": "TUE",
-    "3": "WED",
-    "4": "THU",
-    "5": "FRI",
-    "6": "SAT"
-  },
-  "request": "Request",
-  "mission": "Mission",
-  "statusText": "Status",
-  "locationText": "Location",
-  "serviceTypeText": "Service type",
-  "pricePerUnitText": "Price per unit",
-  "dateStartText": "Start date",
-  "dateEndText": "End date",
-  "timeStartText": "Start time",
-  "timeEndText": "End time",
-  "route": "Route",
-  "photoCheckbox": "Need photos"
+  }
 }

@@ -1,20 +1,18 @@
 import { http, delay, HttpResponse } from "msw";
-import Ajv from "ajv";
 
-import schemaSuccess from "./postEndSpecialistJobSuccess.schema.json";
-import { PostEndSpecialistJobSuccess } from "./postEndSpecialistJobSuccess.type";
+import {
+  postEndSpecialistJobSuccessSchema,
+  PostEndSpecialistJobSuccess,
+} from "./postEndSpecialistJobSuccess.schema";
+
 import { UnxpectedError } from "~/shared/unexpectedError/unexpectedError";
-
-const ajv = new Ajv();
-
-const validateSuccess = ajv.compile(schemaSuccess);
 
 export const postEndSpecialistJobKeys = ["postEndSpecialistJob"];
 
 export const postEndSpecialistJob = async (
   accessToken: string,
   bidId: string,
-  specialistId: string
+  specialistId: string,
 ): Promise<PostEndSpecialistJobSuccess> => {
   try {
     const url = new URL(import.meta.env.VITE_POST_END_SPECIALIST_JOB);
@@ -42,12 +40,14 @@ export const postEndSpecialistJob = async (
       });
     }
 
-    if (validateSuccess(response)) {
-      data = response as unknown as PostEndSpecialistJobSuccess;
+    const parsed = postEndSpecialistJobSuccessSchema.safeParse(response);
+
+    if (parsed.success) {
+      data = parsed.data;
     } else {
-      console.log(validateSuccess.errors);
+      console.log(parsed.error);
       throw new Response(
-        `Данные запроса PostEndSpecialistJob не валидны схеме`
+        `Данные запроса postEndSpecialistJob не валидны схеме`,
       );
     }
 
@@ -78,5 +78,5 @@ export const postEndSpecialistJobMockResponse = http.post(
   async () => {
     await delay(2000);
     return HttpResponse.json(mockResponseSuccess);
-  }
+  },
 );
