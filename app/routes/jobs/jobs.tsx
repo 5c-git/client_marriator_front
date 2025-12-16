@@ -1,12 +1,13 @@
 import { useOutletContext, useNavigation } from "react-router";
-import type { Route } from "./+types/bids";
+
+import type { Route } from "./+types/jobs";
 
 import { useTranslation } from "react-i18next";
 import { withLocale } from "~/shared/withLocale";
 
-import { useStore } from "~/store/store";
+import { statusCodeMap } from "~/shared/specialistStatus";
 
-import { statusCodeMap } from "~/shared/status";
+import { useStore } from "~/store/store";
 
 import { EntitiesListView } from "~/shared/views/EntitiesListView/EntitiesListView";
 import type { EntitiesListViewInterface } from "~/shared/views/EntitiesListView/EntitesListViewInterface";
@@ -14,11 +15,11 @@ import type { EntitiesListViewInterface } from "~/shared/views/EntitiesListView/
 import { EntityCard } from "~/shared/ui/EntityCard/EntityCard";
 import { Loader } from "~/shared/ui/Loader/Loader";
 
-import { getBids } from "~/requests/_personal/getBids/getBids";
+import { getJobs } from "~/requests/_personal/getJobs/getJobs";
 
 type MobileModeData = {
   mode: "mobile";
-  bids: EntitiesListViewInterface["entities"];
+  jobs: EntitiesListViewInterface["entities"];
 };
 
 export async function clientLoader() {
@@ -28,34 +29,25 @@ export async function clientLoader() {
 
   const accessToken = useStore.getState().accessToken;
 
-  const bids: EntitiesListViewInterface["entities"] = [];
+  const jobs: EntitiesListViewInterface["entities"] = [];
 
   if (accessToken) {
     if (mode === "mobile") {
-      const bidsData = await getBids(accessToken);
+      const jobsData = await getJobs(accessToken);
 
-      bidsData.data.forEach((item) => {
-        const earliestStartDate: string[] = [];
-        const latestEndDate: string[] = [];
+      jobsData.data.sort(
+        (a, b) =>
+          new Date(a.dateStart).valueOf() - new Date(b.dateEnd).valueOf(),
+      );
 
-        earliestStartDate.push(item.dateStart);
-        latestEndDate.push(item.dateEnd);
-
-        earliestStartDate.sort(
-          (a, b) => new Date(a).valueOf() - new Date(b).valueOf(),
-        );
-
-        latestEndDate.sort(
-          (a, b) => new Date(b).valueOf() - new Date(a).valueOf(),
-        );
-
-        bids.push({
+      jobsData.data.forEach((item) => {
+        jobs.push({
           id: item.id,
-          userId: item.user.id,
-          status: item.status,
-          statusColor: statusCodeMap[item.status].color,
+          userId: item.acceptingUser.id,
+          status: item.acceptingUser.status,
+          statusColor: statusCodeMap[item.acceptingUser.status].color,
           header: item.viewActivity.name,
-          subHeader: "1",
+          subHeader: item.priceResult.toString(),
           address: {
             logo: `${import.meta.env.VITE_ASSET_PATH}${item.place.logo}`,
             text: item.place.address_kladr,
@@ -73,7 +65,7 @@ export async function clientLoader() {
 
       data = {
         mode: "mobile",
-        bids: bids,
+        jobs: jobs,
       } as MobileModeData;
     }
 
@@ -83,8 +75,8 @@ export async function clientLoader() {
   }
 }
 
-export default function Bids({ loaderData }: Route.ComponentProps) {
-  const { t } = useTranslation("bids");
+export default function Jobs({ loaderData }: Route.ComponentProps) {
+  const { t } = useTranslation("jobs");
   const navigation = useNavigation();
 
   const showMap = useOutletContext<boolean>();
@@ -95,38 +87,55 @@ export default function Bids({ loaderData }: Route.ComponentProps) {
         <>
           {navigation.state !== "idle" ? <Loader /> : null}{" "}
           <EntitiesListView
-            translation="tasks"
+            translation="jobs"
             mapView={showMap}
-            entityType="bid"
-            entities={loaderData.bids}
+            entities={loaderData.jobs}
+            entityType="job"
             entityListView={(entity) => (
               <EntityCard
                 key={entity.id}
-                to={withLocale(`/bids/${entity.id}`)}
+                to={withLocale(`/jobs/${entity.id}/${entity.userId}`)}
+                status={
+                  entity.status === 1 || entity.status === 4
+                    ? t("bidStatus")
+                    : t("jobStatus")
+                }
                 statusColor={entity.statusColor}
-                header={`${t("cardHeader")} ${entity.header}`}
+                // header={`${t("cardHeader")} ${entity.header}`}
+                header={entity.header}
                 subHeader={{
-                  text: entity.subHeader,
-                  bold: false,
+                  text: t("amount", {
+                    price: entity.subHeader,
+                    curency: "₽",
+                    measure: "{ед. измерения}",
+                  }),
+                  bold: true,
                 }}
                 id={entity.id.toString()}
                 address={entity.address}
                 duration={entity.duration}
-                divider
               />
             )}
             entityMapView={(entity) => (
               <EntityCard
-                to={withLocale(`/bids/${entity.id}`)}
+                to={withLocale(`/jobs/${entity.id}/${entity.userId}`)}
+                status={
+                  entity.status === 1 || entity.status === 4
+                    ? t("bidStatus")
+                    : t("jobStatus")
+                }
                 header={`${t("cardHeader")} ${entity.header}`}
                 subHeader={{
-                  text: entity.subHeader,
-                  bold: false,
+                  text: t("amount", {
+                    price: entity.subHeader,
+                    curency: "₽",
+                    measure: "{ед. измерения}",
+                  }),
+                  bold: true,
                 }}
                 id={entity.id.toString()}
                 address={entity.address}
                 duration={entity.duration}
-                divider
               />
             )}
           />

@@ -8,6 +8,7 @@ import type {
 import { useTranslation } from "react-i18next";
 
 import { statusCodeMap } from "~/shared/status";
+import { statusCodeMap as jobsStatusCodeMap } from "~/shared/specialistStatus";
 
 import Box from "@mui/material/Box";
 import { SwipeableDrawer, Typography } from "@mui/material";
@@ -31,6 +32,13 @@ import {
   Feature,
 } from "@yandex/ymaps3-clusterer";
 import { renderIcon, renderClusterCounter } from "~/shared/ymap/ymap";
+
+const statusObject = {
+  order: statusCodeMap,
+  task: statusCodeMap,
+  bid: statusCodeMap,
+  job: jobsStatusCodeMap,
+};
 
 export function EntitiesListView(props: EntitiesListViewInterface) {
   const { t } = useTranslation("EntitiesListView");
@@ -328,15 +336,17 @@ export function EntitiesListView(props: EntitiesListViewInterface) {
                 }[] = [];
 
                 for (const key in filteredEntities) {
+                  const selectedStatusMap = statusObject[props.entityType];
                   options.push({
                     id: key,
                     label: t(
-                      `${props.translation}.status.${Number(key) as keyof typeof statusCodeMap}`,
+                      `${props.translation}.status.${Number(key) as keyof typeof selectedStatusMap}`,
                     ),
                     count: filteredEntities[Number(key)].length,
                     color:
-                      statusCodeMap[Number(key) as keyof typeof statusCodeMap]
-                        .color,
+                      statusObject[props.entityType][
+                        Number(key) as keyof typeof statusCodeMap
+                      ].color,
                   });
                 }
 
@@ -369,10 +379,10 @@ export function EntitiesListView(props: EntitiesListViewInterface) {
               id="map"
               sx={{
                 position: "absolute",
-                top: "108px",
+                top: "0",
                 left: "0",
                 width: "100%",
-                height: "calc(100vh - 162px)",
+                height: "100%",
               }}
             ></Box>
           ) : (

@@ -148,6 +148,7 @@ export default function Tasks({ loaderData }: Route.ComponentProps) {
           <EntitiesListView
             translation="tasks"
             mapView={showMap}
+            entityType="task"
             entities={loaderData.tasks}
             entityListView={(entity) => (
               <EntityCard

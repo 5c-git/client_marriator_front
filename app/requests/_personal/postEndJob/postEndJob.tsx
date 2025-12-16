@@ -1,19 +1,17 @@
 import { http, delay, HttpResponse } from "msw";
-import Ajv from "ajv";
 
-import schemaSuccess from "./postEndJobSuccess.schema.json";
-import { PostEndJobSuccess } from "./postEndJobSuccess.type";
+import {
+  postEndJobSuccessSchema,
+  PostEndJobSuccess,
+} from "./postEndJobSuccess.schema";
+
 import { UnxpectedError } from "~/shared/unexpectedError/unexpectedError";
-
-const ajv = new Ajv();
-
-const validateSuccess = ajv.compile(schemaSuccess);
 
 export const postEndJobKeys = ["postEndJob"];
 
 export const postEndJob = async (
   accessToken: string,
-  bidId: string
+  bidId: string,
 ): Promise<PostEndJobSuccess> => {
   try {
     const url = new URL(import.meta.env.VITE_POST_END_JOB);
@@ -40,10 +38,12 @@ export const postEndJob = async (
       });
     }
 
-    if (validateSuccess(response)) {
-      data = response as unknown as PostEndJobSuccess;
+    const parsed = postEndJobSuccessSchema.safeParse(response);
+
+    if (parsed.success) {
+      data = parsed.data;
     } else {
-      console.log(validateSuccess.errors);
+      console.log(parsed.error);
       throw new Response(`Данные запроса postEndJob не валидны схеме`);
     }
 
@@ -74,5 +74,5 @@ export const postEndJobMockResponse = http.post(
   async () => {
     await delay(2000);
     return HttpResponse.json(mockResponseSuccess);
-  }
+  },
 );

@@ -25,7 +25,7 @@ export const FilesPopup = ({
   onSubmit: (files: File[]) => void;
   // onSubmit: (files: string[]) => void;
 }) => {
-  const { t } = useTranslation("mission");
+  const { t } = useTranslation("job");
 
   const {
     control,
@@ -39,7 +39,7 @@ export const FilesPopup = ({
     resolver: yupResolver(
       Yup.object({
         files: Yup.array().min(4),
-      })
+      }),
     ),
   });
 
@@ -131,7 +131,7 @@ export const FilesPopup = ({
                 const uploadedFiles = Array.from(event.target.files).map(
                   (file) => ({
                     file,
-                  })
+                  }),
                 );
                 append(uploadedFiles);
                 event.target.value = "";

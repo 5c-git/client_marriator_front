@@ -14,7 +14,7 @@ type MenuProps = {
   }[];
 };
 
-const rootMatchExeptions = ["orders", "tasks", "bids", "missions"];
+const rootMatchExeptions = ["orders", "tasks", "bids", "jobs"];
 
 const checkIfRootMatchExeption = (location: string, to: string) => {
   let isRootMatchExeption = false;

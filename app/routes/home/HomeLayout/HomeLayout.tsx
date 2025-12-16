@@ -43,11 +43,11 @@ export async function clientLoader() {
           key={"bids"}
         />,
         // <Tab
-        //   label={t("tabs.mission", { ns: "HomeLayout" })}
-        //   to={withLocale("/missions")}
-        //   value={withLocale("/missions")}
+        //   label={t("tabs.job", { ns: "HomeLayout" })}
+        //   to={withLocale("/jobs")}
+        //   value={withLocale("/jobs")}
         //   component={Link}
-        //   key={"missions"}
+        //   key={"jobs"}
         //   disabled
         // />,
       ],
@@ -74,11 +74,11 @@ export async function clientLoader() {
           key={"bids"}
         />,
         // <Tab
-        //   label={t("tabs.mission", { ns: "HomeLayout" })}
-        //   to={withLocale("/missions")}
-        //   value={withLocale("/missions")}
+        //   label={t("tabs.job", { ns: "HomeLayout" })}
+        //   to={withLocale("/jobs")}
+        //   value={withLocale("/jobs")}
         //   component={Link}
-        //   key={"missions"}
+        //   key={"jobs"}
         //   disabled
         // />,
       ],
@@ -143,9 +143,11 @@ export default function HomeLayout({ loaderData }: Route.ComponentProps) {
       {loaderData.tabsMap[userRole].length > 0 ? (
         <Tabs
           value={location.pathname}
-          sx={{
+          sx={(theme) => ({
             width: "100%",
-          }}
+            zIndex: 1,
+            backgroundColor: theme.vars.palette["White"],
+          })}
         >
           {loaderData.tabsMap[userRole]}
         </Tabs>

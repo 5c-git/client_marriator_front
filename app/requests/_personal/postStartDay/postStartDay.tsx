@@ -1,19 +1,17 @@
 import { http, delay, HttpResponse } from "msw";
-import Ajv from "ajv";
 
-import schemaSuccess from "./postStartDaySuccess.schema.json";
-import { PostStartDaySuccess } from "./postStartDaySuccess.type";
+import {
+  postStartDaySuccessSchema,
+  PostStartDaySuccess,
+} from "./postStartDaySuccess.schema";
+
 import { UnxpectedError } from "~/shared/unexpectedError/unexpectedError";
-
-const ajv = new Ajv();
-
-const validateSuccess = ajv.compile(schemaSuccess);
 
 export const postStartDayKeys = ["postStartDay"];
 
 export const postStartDay = async (
   accessToken: string,
-  bidId: string
+  bidId: string,
 ): Promise<PostStartDaySuccess> => {
   try {
     const url = new URL(import.meta.env.VITE_POST_START_DAY);
@@ -40,10 +38,12 @@ export const postStartDay = async (
       });
     }
 
-    if (validateSuccess(response)) {
-      data = response as unknown as PostStartDaySuccess;
+    const parsed = postStartDaySuccessSchema.safeParse(response);
+
+    if (parsed.success) {
+      data = parsed.data;
     } else {
-      console.log(validateSuccess.errors);
+      console.log(parsed.error);
       throw new Response(`Данные запроса postStartDay не валидны схеме`);
     }
 
@@ -74,5 +74,5 @@ export const postStartDayMockResponse = http.post(
   async () => {
     await delay(2000);
     return HttpResponse.json(mockResponseSuccess);
-  }
+  },
 );

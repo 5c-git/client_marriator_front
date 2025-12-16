@@ -1,0 +1,41 @@
+{
+  "bid": "Request",
+  "job": "Job",
+  "statusText": "Status",
+  "locationText": "Location",
+  "serviceTypeText": "Service type",
+  "pricePerUnitText": "Price per unit",
+  "dateStartText": "Start date",
+  "dateEndText": "End date",
+  "needDaysPlaceholder": "Need days",
+  "timeStartPlaceholder": "Time start",
+  "timeEndPlaceholder": "Time end",
+  "routePlaceholder": "Route",
+  "photoCheckbox": "Photos",
+  "addressButton": "Add address",
+  "removeDayButton": "Remove day",
+  "addDayButton": "Add day",
+  "status": {
+    "notAccepted": "New",
+    "accepted": "Accepted",
+    "declined": "Declined",
+    "consideration": "In consideration",
+    "work": "Work",
+    "canceled": "Cancelled"
+  },
+  "dayMap": {
+    "0": "SUN",
+    "1": "MON",
+    "2": "TUE",
+    "3": "WED",
+    "4": "THU",
+    "5": "FRI",
+    "6": "SAT"
+  },
+  "role": {
+    "manager": "Manager",
+    "supervisor": "Supervisor",
+    "client": "Client",
+    "specialist": "Specialist"
+  }
+}

@@ -1,19 +1,17 @@
 import { http, delay, HttpResponse } from "msw";
-import Ajv from "ajv";
 
-import schemaSuccess from "./postAcceptBidSuccess.schema.json";
-import { PostAcceptBidSuccess } from "./postAcceptBidSuccess.type";
+import {
+  postAcceptBidSuccessSchema,
+  PostAcceptBidSuccess,
+} from "./postAcceptBidSuccess.schema";
+
 import { UnxpectedError } from "~/shared/unexpectedError/unexpectedError";
-
-const ajv = new Ajv();
-
-const validateSuccess = ajv.compile(schemaSuccess);
 
 export const postAcceptBidKeys = ["postAcceptBid"];
 
 export const postAcceptBid = async (
   accessToken: string,
-  bidId: string
+  bidId: string,
 ): Promise<PostAcceptBidSuccess> => {
   try {
     const url = new URL(import.meta.env.VITE_POST_ACCEPT_BID);
@@ -40,10 +38,12 @@ export const postAcceptBid = async (
       });
     }
 
-    if (validateSuccess(response)) {
-      data = response as unknown as PostAcceptBidSuccess;
+    const parsed = postAcceptBidSuccessSchema.safeParse(response);
+
+    if (parsed.success) {
+      data = parsed.data;
     } else {
-      console.log(validateSuccess.errors);
+      console.log(parsed.error);
       throw new Response(`Данные запроса postAcceptBid не валидны схеме`);
     }
 
@@ -74,5 +74,5 @@ export const postAcceptBidMockResponse = http.post(
   async () => {
     await delay(2000);
     return HttpResponse.json(mockResponseSuccess);
-  }
+  },
 );

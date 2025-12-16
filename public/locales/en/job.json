@@ -1,4 +1,6 @@
 {
+  "bid": "Request",
+  "job": "Job",
   "actions": {
     "accept": "Accept",
     "acceptAll": "Accept all",

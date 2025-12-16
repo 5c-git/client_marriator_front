@@ -147,6 +147,7 @@ export default function Orders({ loaderData }: Route.ComponentProps) {
           <EntitiesListView
             translation="orders"
             mapView={showMap}
+            entityType="order"
             entities={loaderData.assignments}
             entityListView={(entity) => (
               <EntityCard

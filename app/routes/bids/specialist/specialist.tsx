@@ -180,7 +180,7 @@ export default function SpecialistRequest({
 }: Route.ComponentProps) {
   const navigation = useNavigation();
   const submit = useSubmit();
-  const { t } = useTranslation("mission");
+  const { t } = useTranslation("job");
   return loaderData.mode === "mobile" ? (
     <>
       {navigation.state !== "idle" ? <Loader /> : null}

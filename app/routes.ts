@@ -8,13 +8,10 @@ export default [
         route(":lang?/orders", "routes/orders/orders.tsx"),
         route(":lang?/tasks", "routes/tasks/tasks.tsx"),
         route(":lang?/bids", "routes/bids/bids.tsx"),
-        route(":lang?/missions", "routes/missions/missions.tsx"),
+        route(":lang?/jobs", "routes/jobs/jobs.tsx"),
       ]),
 
-      route(
-        ":lang?/missions/:missionId/:specialistId",
-        "routes/missions/mission/mission.tsx",
-      ),
+      route(":lang?/jobs/:jobId/:specialistId", "routes/jobs/job/job.tsx"),
       route(
         ":lang?/bids/:bidId/specialists/:specialistId/day-review/:reportId?",
         "routes/bids/day-review/day-review.tsx",

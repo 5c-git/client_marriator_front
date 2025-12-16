@@ -1,16 +1,8 @@
 import { http, delay, HttpResponse } from "msw";
-import Ajv from "ajv";
-import addFormats from "ajv-formats";
 
-import schemaSuccess from "./getJobsSuccess.schema.json";
-import { GetJobsSuccess } from "./getJobsSuccess.type";
+import { getJobsSuccessSchema, GetJobsSuccess } from "./getJobsSuccess.schema";
 
 import { UnxpectedError } from "~/shared/unexpectedError/unexpectedError";
-
-const ajv = new Ajv();
-addFormats(ajv);
-
-const validateSuccess = ajv.compile(schemaSuccess);
 
 export const getJobsKeys = ["getJobs"];
 
@@ -35,10 +27,12 @@ export const getJobs = async (accessToken: string): Promise<GetJobsSuccess> => {
       });
     }
 
-    if (validateSuccess(response)) {
-      data = response as unknown as GetJobsSuccess;
+    const parsed = getJobsSuccessSchema.safeParse(response);
+
+    if (parsed.success) {
+      data = parsed.data;
     } else {
-      console.log(validateSuccess.errors);
+      console.log(parsed.error);
       throw new Response(`Данные запроса getJobs не валидны схеме`);
     }
 
@@ -1505,5 +1499,5 @@ export const getJobsMockResponse = http.get(
   async () => {
     await delay(2000);
     return HttpResponse.json(mockResponseSuccess);
-  }
+  },
 );

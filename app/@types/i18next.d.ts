@@ -56,12 +56,11 @@ import users_supervisor from "../../public/locales/ru/users_supervisor.json";
 import users_recruiter from "../../public/locales/ru/users_recruiter.json";
 import users_select_projects from "../../public/locales/ru/users_select_projects.json";
 import users_select_locations from "../../public/locales/ru/users_select_locations.json";
-
-import missions from "../../public/locales/ru/missions.json";
 //internal
 
 //routes
-import mission from "../../public/locales/ru/mission.json";
+import job from "../../public/locales/ru/job.json";
+import jobs from "../../public/locales/ru/jobs.json";
 
 import BidLayout from "../../public/locales/ru/BidLayout.json";
 import bids from "../../public/locales/ru/bids.json";
@@ -74,6 +73,7 @@ import orders from "../../public/locales/ru/orders.json";
 //routes
 
 //views
+import JobMobileView from "../../public/locales/ru/JobMobileView.json";
 import DayReviewMobileView from "../../public/locales/ru/DayReviewMobileView.json";
 import SpecialistMobileView from "../../public/locales/ru/SpecialistMobileView.json";
 import SpecialistsMobileView from "../../public/locales/ru/SpecialistsMobileView.json";
@@ -130,7 +130,6 @@ declare module "i18next" {
       //registration
 
       //internal
-
       profile: typeof profile;
       myProfile: typeof myProfile;
       profileEdit: typeof profileEdit;
@@ -155,10 +154,11 @@ declare module "i18next" {
       users_recruiter: typeof users_recruiter;
       users_select_projects: typeof users_select_projects;
       users_select_locations: typeof users_select_locations;
-
-      missions: typeof missions;
-      mission: typeof mission;
       //internal
+
+      //routes
+      job: typeof job;
+      jobs: typeof jobs;
 
       BidLayout: typeof BidLayout;
       bids: typeof bids;
@@ -170,9 +170,9 @@ declare module "i18next" {
       orders: typeof orders;
 
       HomeLayout: typeof HomeLayout;
-      //routes
 
       //views
+      JobMobileView: typeof JobMobileView;
       DayReviewMobileView: typeof DayReviewMobileView;
       SpecialistMobileView: typeof SpecialistMobileView;
       SpecialistsMobileView: typeof SpecialistsMobileView;
