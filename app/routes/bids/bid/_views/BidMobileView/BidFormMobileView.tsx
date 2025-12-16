@@ -516,9 +516,7 @@ export function BidFormMobileView(props: BidFormMobileViewInterface) {
                 variant="Reg_14"
                 sx={(theme) => ({ color: theme.vars.palette["Black"] })}
               >
-                {watch("unitPrice") && props.entity.selfEmployed
-                  ? Math.floor(Number(getValues("unitPrice")) * 0.94)
-                  : Math.floor(Number(getValues("unitPrice")) * 0.87)}
+                {watch("unitPrice")}
               </Typography>
             </Box>
             <Box
@@ -541,8 +539,9 @@ export function BidFormMobileView(props: BidFormMobileViewInterface) {
                 variant="Reg_14"
                 sx={(theme) => ({ color: theme.vars.palette["Black"] })}
               >
-                {/* {mockRequest.finalPrice} */}
-                {watch("unitPrice")}
+                {watch("unitPrice") && props.entity.selfEmployed
+                  ? Math.floor(Number(getValues("unitPrice")) * 0.94)
+                  : Math.floor(Number(getValues("unitPrice")) * 0.87)}
               </Typography>
             </Box>
           </Box>

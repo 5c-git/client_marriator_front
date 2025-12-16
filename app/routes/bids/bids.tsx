@@ -104,9 +104,9 @@ export default function Bids({ loaderData }: Route.ComponentProps) {
                 key={entity.id}
                 to={withLocale(`/bids/${entity.id}`)}
                 statusColor={entity.statusColor}
-                header={`${t("cardHeader")} ${entity.header}`}
+                header={`${t("cardHeader")} ${entity.subHeader}`}
                 subHeader={{
-                  text: entity.subHeader,
+                  text: entity.header,
                   bold: false,
                 }}
                 id={entity.id.toString()}

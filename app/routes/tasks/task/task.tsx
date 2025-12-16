@@ -469,7 +469,9 @@ export default function Task({ loaderData }: Route.ComponentProps) {
                     </>
                   ) : null}
 
-                  {userRole === "manager" ? (
+                  {(userRole === "manager" && loaderData.entity.status < 4) ||
+                  (userRole === "supervisor" &&
+                    loaderData.entity.status < 4) ? (
                     <Button
                       variant="contained"
                       sx={{
@@ -500,7 +502,11 @@ export default function Task({ loaderData }: Route.ComponentProps) {
                   (supervisor) => supervisor.id === userId,
                 );
 
-                if (match && userRole === "supervisor") {
+                if (
+                  match &&
+                  userRole === "supervisor" &&
+                  loaderData.entity.status < 3
+                ) {
                   return (
                     <Button
                       variant="contained"
