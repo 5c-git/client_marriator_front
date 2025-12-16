@@ -6,6 +6,8 @@ import { useTranslation } from "react-i18next";
 
 import { withLocale } from "~/shared/withLocale";
 
+import { useStore } from "~/store/store";
+
 import {
   Avatar,
   Typography,
@@ -69,6 +71,8 @@ export default function Profile({ loaderData }: Route.ComponentProps) {
 
   const fetcher = useFetcher();
 
+  const userRole = useStore.getState().userRole;
+
   const [openDialog, setOpenDialog] = useState<boolean>(false);
 
   return (
@@ -106,168 +110,173 @@ export default function Profile({ loaderData }: Route.ComponentProps) {
         </Stack>
 
         <List>
-          <ListItem
-            disableGutters
-            disablePadding
-            sx={{
-              display: "block",
-              paddingRight: "16px",
-              paddingLeft: "16px",
-            }}
-          >
-            <ListItemButton
-              component={Link}
-              viewTransition
-              to={withLocale("my-profile")}
-              sx={{
-                padding: "16px 0px",
-                columnGap: "12px",
-              }}
-            >
-              <ListItemIcon
-                // color={theme.vars.palette["Grey_2"]}
-                sx={(theme) => ({
-                  minWidth: "24px",
-                  color: theme.vars.palette["Grey_2"],
-                })}
+          {userRole === "specialist" ? (
+            <>
+              <ListItem
+                disableGutters
+                disablePadding
+                sx={{
+                  display: "block",
+                  paddingRight: "16px",
+                  paddingLeft: "16px",
+                }}
               >
-                <ProfileIcon />
-              </ListItemIcon>
-              <Typography
-                sx={(theme) => ({
-                  display: "flex",
-                  alignItems: "center",
-                  columnGap: "12px",
-                  color: theme.vars.palette["Black"],
-                })}
-                component="p"
-                variant="Reg_16"
-              >
-                {t("profile")}{" "}
-                {loaderData.result.userData.errorData ? (
-                  <BulletIcon
+                <ListItemButton
+                  component={Link}
+                  viewTransition
+                  to={withLocale("my-profile")}
+                  sx={{
+                    padding: "16px 0px",
+                    columnGap: "12px",
+                  }}
+                >
+                  <ListItemIcon
+                    // color={theme.vars.palette["Grey_2"]}
                     sx={(theme) => ({
-                      width: "6px",
-                      height: "6px",
-                      color: theme.vars.palette["Red"],
+                      minWidth: "24px",
+                      color: theme.vars.palette["Grey_2"],
                     })}
-                  />
-                ) : null}
-              </Typography>
-            </ListItemButton>
-            <Divider
-              sx={(theme) => ({
-                backgroundColor: theme.vars.palette["Grey_4"],
-              })}
-            />
-          </ListItem>
-          <ListItem
-            disableGutters
-            disablePadding
-            sx={{
-              display: "block",
-              paddingRight: "16px",
-              paddingLeft: "16px",
-            }}
-          >
-            <ListItemButton
-              disabled
-              component={Link}
-              viewTransition
-              to="/"
-              sx={{
-                padding: "16px 0px",
-                columnGap: "12px",
-              }}
-            >
-              <ListItemIcon
-                // color={theme.vars.palette["Grey_2"]}
-                sx={(theme) => ({
-                  minWidth: "24px",
-                  color: theme.vars.palette["Grey_2"],
-                })}
+                  >
+                    <ProfileIcon />
+                  </ListItemIcon>
+                  <Typography
+                    sx={(theme) => ({
+                      display: "flex",
+                      alignItems: "center",
+                      columnGap: "12px",
+                      color: theme.vars.palette["Black"],
+                    })}
+                    component="p"
+                    variant="Reg_16"
+                  >
+                    {t("profile")}{" "}
+                    {loaderData.result.userData.errorData ? (
+                      <BulletIcon
+                        sx={(theme) => ({
+                          width: "6px",
+                          height: "6px",
+                          color: theme.vars.palette["Red"],
+                        })}
+                      />
+                    ) : null}
+                  </Typography>
+                </ListItemButton>
+                <Divider
+                  sx={(theme) => ({
+                    backgroundColor: theme.vars.palette["Grey_4"],
+                  })}
+                />
+              </ListItem>
+              <ListItem
+                disableGutters
+                disablePadding
+                sx={{
+                  display: "block",
+                  paddingRight: "16px",
+                  paddingLeft: "16px",
+                }}
               >
-                <SettingsIcon />
-              </ListItemIcon>
-              <Typography
-                sx={(theme) => ({
-                  display: "flex",
-                  alignItems: "center",
-                  columnGap: "12px",
-                  color: theme.vars.palette["Black"],
-                })}
-                component="p"
-                variant="Reg_16"
-              >
-                {t("settings")}{" "}
-                {/* <BulletIcon
+                <ListItemButton
+                  disabled
+                  component={Link}
+                  viewTransition
+                  to="/"
+                  sx={{
+                    padding: "16px 0px",
+                    columnGap: "12px",
+                  }}
+                >
+                  <ListItemIcon
+                    // color={theme.vars.palette["Grey_2"]}
+                    sx={(theme) => ({
+                      minWidth: "24px",
+                      color: theme.vars.palette["Grey_2"],
+                    })}
+                  >
+                    <SettingsIcon />
+                  </ListItemIcon>
+                  <Typography
+                    sx={(theme) => ({
+                      display: "flex",
+                      alignItems: "center",
+                      columnGap: "12px",
+                      color: theme.vars.palette["Black"],
+                    })}
+                    component="p"
+                    variant="Reg_16"
+                  >
+                    {t("settings")}{" "}
+                    {/* <BulletIcon
                   sx={{
                     width: "6px",
                     height: "6px",
                     color: theme.vars.palette["Red"],
                   }}
                 /> */}
-              </Typography>
-            </ListItemButton>
-            <Divider
-              sx={(theme) => ({
-                backgroundColor: theme.vars.palette["Grey_4"],
-              })}
-            />
-          </ListItem>
-          <ListItem
-            disableGutters
-            disablePadding
-            sx={{
-              display: "block",
-              paddingRight: "16px",
-              paddingLeft: "16px",
-            }}
-          >
-            <ListItemButton
-              component={Link}
-              viewTransition
-              to={withLocale("documents")}
-              sx={{
-                padding: "16px 0px",
-                columnGap: "12px",
-              }}
-            >
-              <ListItemIcon
-                // color={theme.vars.palette["Grey_2"]}
-                sx={(theme) => ({
-                  minWidth: "24px",
-                  color: theme.vars.palette["Grey_2"],
-                })}
+                  </Typography>
+                </ListItemButton>
+                <Divider
+                  sx={(theme) => ({
+                    backgroundColor: theme.vars.palette["Grey_4"],
+                  })}
+                />
+              </ListItem>
+              <ListItem
+                disableGutters
+                disablePadding
+                sx={{
+                  display: "block",
+                  paddingRight: "16px",
+                  paddingLeft: "16px",
+                }}
               >
-                <DocumentsIcon />
-              </ListItemIcon>
-              <Typography
-                sx={(theme) => ({
-                  display: "flex",
-                  alignItems: "center",
-                  columnGap: "12px",
-                  color: theme.vars.palette["Black"],
-                })}
-                component="p"
-                variant="Reg_16"
-              >
-                {t("documents")}{" "}
-                {/* <BulletIcon
+                <ListItemButton
+                  component={Link}
+                  viewTransition
+                  to={withLocale("documents")}
+                  sx={{
+                    padding: "16px 0px",
+                    columnGap: "12px",
+                  }}
+                >
+                  <ListItemIcon
+                    // color={theme.vars.palette["Grey_2"]}
+                    sx={(theme) => ({
+                      minWidth: "24px",
+                      color: theme.vars.palette["Grey_2"],
+                    })}
+                  >
+                    <DocumentsIcon />
+                  </ListItemIcon>
+                  <Typography
+                    sx={(theme) => ({
+                      display: "flex",
+                      alignItems: "center",
+                      columnGap: "12px",
+                      color: theme.vars.palette["Black"],
+                    })}
+                    component="p"
+                    variant="Reg_16"
+                  >
+                    {t("documents")}{" "}
+                    {/* <BulletIcon
                   sx={{
                     width: "6px",
                     height: "6px",
                     color: theme.vars.palette["Red"],
                   }}
                 /> */}
-              </Typography>
-            </ListItemButton>
-            <Divider
-              sx={(theme) => ({
-                backgroundColor: theme.vars.palette["Grey_4"],
-              })}
-            />
-          </ListItem>
+                  </Typography>
+                </ListItemButton>
+                <Divider
+                  sx={(theme) => ({
+                    backgroundColor: theme.vars.palette["Grey_4"],
+                  })}
+                />
+              </ListItem>
+            </>
+          ) : null}
+
           <ListItem
             disableGutters
             disablePadding
