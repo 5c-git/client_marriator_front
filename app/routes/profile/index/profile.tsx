@@ -6,8 +6,6 @@ import { useTranslation } from "react-i18next";
 
 import { withLocale } from "~/shared/withLocale";
 
-import { useStore } from "~/store/store";
-
 import {
   Avatar,
   Typography,
