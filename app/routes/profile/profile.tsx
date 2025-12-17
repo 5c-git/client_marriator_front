@@ -24,10 +24,10 @@ import Stack from "@mui/material/Stack";
 import { TopNavigation } from "~/shared/ui/TopNavigation/TopNavigation";
 import { Loader } from "~/shared/ui/Loader/Loader";
 
-import { ProfileIcon } from "./icons/ProfileIcon";
-import { SettingsIcon } from "./icons/SettingsIcon";
-import { DocumentsIcon } from "./icons/DocumentsIcon";
-import { ExitIcon } from "./icons/ExitIcon";
+import { ProfileIcon } from "./_icons/ProfileIcon";
+import { SettingsIcon } from "./_icons/SettingsIcon";
+import { DocumentsIcon } from "./_icons/DocumentsIcon";
+import { ExitIcon } from "./_icons/ExitIcon";
 import { BulletIcon } from "~/shared/icons/BulletIcon";
 
 import { queryClient } from "~/shared/queryClient";

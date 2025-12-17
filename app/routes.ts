@@ -21,7 +21,7 @@ export default [
         ":lang?/registration/registration-complete",
         "routes/registration/registration-complete/registration-complete.tsx",
       ),
-      route(":lang?/profile", "routes/profile/index/profile.tsx"),
+      route(":lang?/profile", "routes/profile/profile.tsx"),
       route(
         ":lang?/profile/my-profile",
         "routes/profile/my-profile/index/my-profile.tsx",
@@ -64,7 +64,7 @@ export default [
       ),
       route(
         ":lang?/profile/documents",
-        "routes/profile/documents/index/documents.tsx",
+        "routes/profile/documents/documents.tsx",
       ),
       route(
         ":lang?/profile/documents/sign",

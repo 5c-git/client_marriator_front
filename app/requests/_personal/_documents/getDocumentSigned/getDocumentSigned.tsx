@@ -1,20 +1,16 @@
 import { http, delay, HttpResponse } from "msw";
-import Ajv from "ajv";
-import addFormats from "ajv-formats";
 
-import getDocumentSignedSuccess from "./getDocumentSignedSuccess.schema.json";
-import { GetDocumentSignedSuccess } from "./getDocumentSignedSuccess.type";
+import {
+  getDocumentSignedSuccessSchema,
+  GetDocumentSignedSuccess,
+} from "./getDocumentSignedSuccess.schema";
+
 import { UnxpectedError } from "~/shared/unexpectedError/unexpectedError";
-
-const ajv = new Ajv();
-addFormats(ajv);
-
-const validateSuccess = ajv.compile(getDocumentSignedSuccess);
 
 export const getDocumentSignedKeys = ["getDocumentSigned"];
 
 export const getDocumentSigned = async (
-  accessToken: string
+  accessToken: string,
 ): Promise<GetDocumentSignedSuccess> => {
   try {
     const url = new URL(import.meta.env.VITE_GET_DOCUMENT_SIGNED);
@@ -36,9 +32,12 @@ export const getDocumentSigned = async (
       });
     }
 
-    if (validateSuccess(response)) {
-      data = response as unknown as GetDocumentSignedSuccess;
+    const parsed = getDocumentSignedSuccessSchema.safeParse(response);
+
+    if (parsed.success) {
+      data = parsed.data;
     } else {
+      console.log(parsed.error);
       throw new Response(`Данные запроса getDocumentSigned не валидны схеме`);
     }
 
@@ -61,12 +60,34 @@ export const mockResponseSuccess = {
   status: "success",
   result: [
     {
-      uuid: "1",
-      name: "file name",
+      id: 140,
+      name: "docForPay_29.10.2025 17:08:07.pdf",
+      status_signature: "noSend",
     },
     {
-      uuid: "2",
-      name: "file name 2",
+      id: 143,
+      name: "docForPay_29.10.2025 21:27:51.pdf",
+      status_signature: "noSend",
+    },
+    {
+      id: 144,
+      name: "docForPay_29.10.2025 21:38:35.pdf",
+      status_signature: "noSend",
+    },
+    {
+      id: 145,
+      name: "docForPay_30.10.2025 08:17:03.pdf",
+      status_signature: "noSend",
+    },
+    {
+      id: 146,
+      name: "docForPay_30.10.2025 09:20:17.pdf",
+      status_signature: "noSend",
+    },
+    {
+      id: 150,
+      name: "docForPay_17.11.2025 07:53:43.pdf",
+      status_signature: "noSend",
     },
   ],
 };
@@ -78,5 +99,5 @@ export const getDocumentSignedMockResponse = http.get(
   async () => {
     await delay(2000);
     return HttpResponse.json(mockResponseSuccess);
-  }
+  },
 );

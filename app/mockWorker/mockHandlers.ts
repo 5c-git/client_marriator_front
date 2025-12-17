@@ -114,6 +114,10 @@ import { getReasonsMockResponse } from "~/requests/_personal/getReasons/getReaso
 import { postUpdateReportMockResponse } from "~/requests/_personal/postUpdateReport/postUpdateReport";
 import { postCreateBidFromOrderMockResponse } from "~/requests/_personal/postCreateBidFromOrder/postCreateBidFromOrder";
 import { postAcceptTaskMockResponse } from "~/requests/_personal/postAcceptTask/postAcceptTask";
+import { postSignedDocumentMockResponse } from "~/requests/_personal/_documents/postSignedDocument/postSignedDocument";
+import { postRetriesSmsMockResponse } from "~/requests/_personal/postRetriesSms/postRetriesSms";
+import { postSendCodeMockResponse } from "~/requests/_personal/postSendCode/postSendCode";
+import { getSignedDocumentMockResponse } from "~/requests/_personal/getSignedDocument/getSignedDocument";
 
 export const handlers = [
   getFormMockResponse,
@@ -228,4 +232,9 @@ export const handlers = [
   postUpdateReportMockResponse,
   postCreateBidFromOrderMockResponse,
   postAcceptTaskMockResponse,
+
+  postSignedDocumentMockResponse,
+  postRetriesSmsMockResponse,
+  postSendCodeMockResponse,
+  getSignedDocumentMockResponse,
 ];

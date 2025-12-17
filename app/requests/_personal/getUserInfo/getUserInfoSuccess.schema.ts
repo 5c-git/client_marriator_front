@@ -1,0 +1,57 @@
+import { z } from "zod";
+
+export const getUserInfoSuccessSchema = z.object({
+  result: z.object({
+    userData: z.object({
+      id: z.number(),
+      name: z.union([z.null(), z.string()]),
+      email: z.string(),
+      email_verified_at: z.union([z.string(), z.null()]),
+      created_at: z.string(),
+      updated_at: z.string(),
+      api_token: z.null(),
+      phone: z.number(),
+      data: z.union([z.string(), z.null()]),
+      img: z.string(),
+      confirmRegister: z.number(),
+      pin: z.number(),
+      finishRegister: z.number(),
+      expansionData: z.union([z.string(), z.null()]),
+      errorData: z.union([z.string(), z.null()]),
+      estateData: z.union([z.string(), z.null()]),
+      requisitesData: z.union([z.string(), z.null()]),
+      mapAddress: z.string(),
+      mapRadius: z.string(),
+      latitude: z.union([z.null(), z.string()]),
+      longitude: z.union([z.null(), z.string()]),
+      updateData: z.union([z.null(), z.string()]),
+      uuid: z.string(),
+      register_hash: z.union([z.null(), z.string()]),
+      change_order: z.union([z.null(), z.string()]),
+      cancel_order: z.union([z.null(), z.string()]),
+      live_order: z.union([z.null(), z.string()]),
+      change_task: z.union([z.null(), z.string()]),
+      cancel_task: z.union([z.null(), z.string()]),
+      live_task: z.union([z.null(), z.string()]),
+      repeat_bid: z.union([z.null(), z.string()]),
+      leave_bid: z.union([z.null(), z.string()]),
+      refusal_task: z.union([z.null(), z.string()]),
+      waiting_task: z.union([z.null(), z.number()]),
+      count_wait_bid: z.union([z.null(), z.number()]),
+      time_answer_bid: z.union([z.null(), z.number()]),
+      notification_start: z.union([z.null(), z.number()]),
+      verme_id: z.number().optional(),
+      nopaper_guid: z.union([z.null(), z.string()]),
+      nopaper_certificate_id: z.union([z.null(), z.string()]),
+      roles: z.array(
+        z.object({
+          id: z.number().gte(1).lte(6),
+          name: z.enum(["manager", "supervisor", "client", "specialist"]),
+        }),
+      ),
+    }),
+  }),
+  status: z.string(),
+});
+
+export type GetUserInfoSuccess = z.infer<typeof getUserInfoSuccessSchema>;

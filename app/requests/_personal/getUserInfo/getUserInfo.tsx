@@ -1,20 +1,16 @@
 import { http, delay, HttpResponse } from "msw";
-import Ajv from "ajv";
-import addFormats from "ajv-formats";
 
-import getUserInfoSuccess from "./getUserInfo.schema.json";
-import { GetUserInfoSuccess } from "./getUserInfo.type";
+import {
+  getUserInfoSuccessSchema,
+  GetUserInfoSuccess,
+} from "./getUserInfoSuccess.schema";
+
 import { UnxpectedError } from "~/shared/unexpectedError/unexpectedError";
-
-const ajv = new Ajv();
-addFormats(ajv);
-
-const validateSuccess = ajv.compile(getUserInfoSuccess);
 
 export const getUserInfoKeys = ["getUserInfo"];
 
 export const getUserInfo = async (
-  accessToken: string
+  accessToken: string,
 ): Promise<GetUserInfoSuccess> => {
   try {
     const url = new URL(import.meta.env.VITE_GET_USER_INFO);
@@ -36,10 +32,12 @@ export const getUserInfo = async (
       });
     }
 
-    if (validateSuccess(response)) {
-      data = response as unknown as GetUserInfoSuccess;
+    const parsed = getUserInfoSuccessSchema.safeParse(response);
+
+    if (parsed.success) {
+      data = parsed.data;
     } else {
-      console.log(validateSuccess.errors);
+      console.log(parsed.error);
       throw new Response(`Данные запроса getUserInfo не валидны схеме`);
     }
 
@@ -119,5 +117,5 @@ export const getUserInfoMockResponse = http.get(
   async () => {
     await delay(2000);
     return HttpResponse.json(mockResponseSuccessManager);
-  }
+  },
 );

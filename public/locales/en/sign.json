@@ -1,5 +1,11 @@
 {
   "header": "Documents to be signed",
   "sign_header": "No documents to be signed found!",
-  "button_action": "Sign documents"
+  "button_action": "Sign documents",
+  "smsPlaceholder": "Enter code",
+  "smsError": "4 number is required",
+  "timerText": "Resend available after",
+  "sendAgainAction": "Resend code",
+  "cancelAction": "Cancel",
+  "error": "Error! Try again later"
 }
