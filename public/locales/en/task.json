@@ -5,6 +5,7 @@
   "cancelButton": "Cancel",
   "inviteSupervisorsButton": "Invite supervisors",
   "makeSupervisorResponsibleButton": "Assign responsible supervisor",
+  "becomeResponsible": "Become responsible",
   "sendButton": "Send",
   "saveButton": "Save",
   "convertToBid": "Create request",

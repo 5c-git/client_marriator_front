@@ -10,6 +10,7 @@ import type { Route } from "./+types/task";
 import type { EntityMobileViewInterface } from "../../../shared/ui/EntityMobileView/EntityMobileViewInterface";
 
 import { useStore } from "~/store/store";
+import { t, loadNamespaces } from "i18next";
 import { useTranslation } from "react-i18next";
 import { withLocale } from "~/shared/withLocale";
 import { determineRole } from "~/shared/determineRole";
@@ -56,6 +57,8 @@ type MobileModeData = {
 };
 
 export async function clientLoader({ params }: Route.ClientLoaderArgs) {
+  loadNamespaces("task");
+
   const mode = "mobile";
 
   const accessToken = useStore.getState().accessToken;
@@ -148,6 +151,12 @@ export async function clientLoader({ params }: Route.ClientLoaderArgs) {
           accessToken,
           params.taskId,
         );
+
+        supervisorsToSelect.push({
+          value: taskData.data.user.id.toString(),
+          label: t("becomeResponsible", { ns: "task" }),
+          disabled: false,
+        });
 
         supervisorsToSelectData.data.forEach((sepervisorToSelect) => {
           supervisorsToSelect.push({

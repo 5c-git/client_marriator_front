@@ -5,6 +5,7 @@
   "cancelButton": "Отмена",
   "inviteSupervisorsButton": "Пригласить супервайзеров",
   "makeSupervisorResponsibleButton": "Назначить ответственного супервайзера",
+  "becomeResponsible": "Назначить себя",
   "sendButton": "Отправить",
   "saveButton": "Сохранить",
   "convertToBid": "Создать заявку",

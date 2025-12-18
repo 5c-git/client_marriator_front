@@ -2,8 +2,7 @@
   "header": "Пользователи",
   "tabs": {
     "client": "Клиенты",
-    "manager": "ПМы",
-    "supervisor": "Суп.",
-    "recrut": "Рекрут."
+    "manager": "Менеджеры",
+    "supervisor": "Супервайзеры"
   }
 }

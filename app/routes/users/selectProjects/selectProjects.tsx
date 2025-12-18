@@ -46,7 +46,9 @@ export async function clientLoader({ params }: Route.ClientLoaderArgs) {
       options.push({
         value: item.id.toString(),
         label: item.name,
-        image: item.brand[0].logo ? item.brand[0].logo : undefined,
+        image: item.brand[0].logo
+          ? `${import.meta.env.VITE_ASSET_PATH}${item.brand[0].logo}`
+          : undefined,
         disabled: false,
       });
     });
@@ -100,7 +102,7 @@ export default function SelectProjects({ loaderData }: Route.ComponentProps) {
       Yup.object({
         searchbar: Yup.string().notRequired(),
         projects: Yup.array().of(Yup.string()).min(1),
-      })
+      }),
     ),
     mode: "onChange",
   });
@@ -133,7 +135,7 @@ export default function SelectProjects({ loaderData }: Route.ComponentProps) {
               {
                 method: "POST",
                 encType: "application/json",
-              }
+              },
             );
           })}
         >
@@ -157,7 +159,7 @@ export default function SelectProjects({ loaderData }: Route.ComponentProps) {
                   onChange={(evt) => {
                     const currentFieldValue = new RegExp(
                       `^${evt.target.value}`,
-                      "i"
+                      "i",
                     );
 
                     let matchingProjects: typeof loaderData.projects = [];
@@ -165,7 +167,7 @@ export default function SelectProjects({ loaderData }: Route.ComponentProps) {
                     if (evt.target.value !== "") {
                       matchingProjects = [
                         ...selectedProjects.filter((item) =>
-                          currentFieldValue.test(item.label)
+                          currentFieldValue.test(item.label),
                         ),
                       ];
                     } else {
