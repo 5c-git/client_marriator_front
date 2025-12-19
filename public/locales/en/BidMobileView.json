@@ -49,5 +49,7 @@
   "addLocationsButton": "Add locations",
   "selfEmployed": "Self-employment",
   "notSelfEmployed": "Hired worker",
-  "addDayButton": "Add day"
+  "addDayButton": "Add day",
+  "earlierThanDefaultError": "Earlier than default",
+  "laterThanDefaultError": "Later that default"
 }

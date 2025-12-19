@@ -69,9 +69,9 @@ const createBidFormSchema = (startDate: Date, endEnd: Date) =>
       place: z.number({ error: t("text", { ns: "constructorFields" }) }),
       activity: z.number({ error: t("text", { ns: "constructorFields" }) }),
       amount: z.number({ error: t("text", { ns: "constructorFields" }) }),
-      unitPrice: z.number({ error: t("text", { ns: "constructorFields" }) }),
+      unitPrice: z.string({ error: t("text", { ns: "constructorFields" }) }),
       radius: z
-        .number({ error: t("text", { ns: "constructorFields" }) })
+        .string({ error: t("text", { ns: "constructorFields" }) })
         .min(1),
       dateStart: z
         .date({ error: t("text", { ns: "constructorFields" }) })
@@ -171,8 +171,8 @@ export function BidFormMobileView(props: BidFormMobileViewInterface) {
       place: props.entity.place.id,
       activity: props.entity.activity.id,
       amount: props.entity.amount,
-      unitPrice: props.entity.unitPrice,
-      radius: props.entity.radius,
+      unitPrice: props.entity.unitPrice.toString(),
+      radius: props.entity.radius.toString(),
       dateStart: props.entity.dateStart,
       dateEnd: props.entity.dateEnd,
       needDays: props.entity.needDays,
@@ -396,13 +396,13 @@ export function BidFormMobileView(props: BidFormMobileViewInterface) {
                   if (isBefore(day.timeStart, match.timeStart)) {
                     setError(`days.${index}.timeStart` as const, {
                       type: "manual",
-                      message: "время раньше изначального",
+                      message: t("earlierThanDefaultError"),
                     });
                   }
                   if (isAfter(day.timeEnd, match.timeEnd)) {
                     setError(`days.${index}.timeEnd` as const, {
                       type: "manual",
-                      message: "время позже изначального",
+                      message: t("laterThanDefaultError"),
                     });
                   }
                 }

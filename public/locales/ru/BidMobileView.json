@@ -49,5 +49,7 @@
   "addLocationsButton": "Добавить адреса",
   "selfEmployed": "Самозанятый",
   "notSelfEmployed": "Наемный",
-  "addDayButton": "Добавить день"
+  "addDayButton": "Добавить день",
+  "earlierThanDefaultError": "Время раньше изначального",
+  "laterThanDefaultError": "Время позже изначального"
 }
