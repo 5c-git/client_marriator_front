@@ -1,11 +1,10 @@
-import { useState, useEffect } from "react";
+import { useState, useRef } from "react";
 
 import type { SpecialistsMobileViewInterface } from "./SpecialistsMobileViewInterface";
-import type { GetBidSuccess } from "~/requests/_personal/getBid/getBidSuccess.schema";
 
 import { useTranslation } from "react-i18next";
 import { withLocale } from "~/shared/withLocale";
-import { eachDayOfInterval } from "date-fns";
+// import { eachDayOfInterval } from "date-fns";
 import { statusCodeMap } from "./statusMap";
 
 import Box from "@mui/material/Box";
@@ -26,12 +25,14 @@ type SpecialistsStaticMobileViewInterface = Pick<
 export function SpecialistsStaticMobileView(
   props: SpecialistsStaticMobileViewInterface,
 ) {
+  const setup = useRef<boolean>(null);
+
   const { t } = useTranslation("SpecialistsMobileView");
 
-  const daysRange = eachDayOfInterval({
-    start: props.bid.dateStart,
-    end: props.bid.dateEnd,
-  });
+  // const daysRange = eachDayOfInterval({
+  //   start: props.bid.dateStart,
+  //   end: props.bid.dateEnd,
+  // });
 
   const [filteredSpecialists, setFilteredSpecialists] = useState<{
     [key: number]: SpecialistsStaticMobileViewInterface["specialists"];
@@ -40,9 +41,9 @@ export function SpecialistsStaticMobileView(
   const [activeSpecialists, setActiveSpecialists] = useState<
     SpecialistsStaticMobileViewInterface["specialists"]
   >([]);
-  const [selectedDate, setSelectedDate] = useState<Date>(daysRange[0]);
+  // const [selectedDate, setSelectedDate] = useState<Date>(daysRange[0]);
 
-  useEffect(() => {
+  if (setup.current === null) {
     if (props.specialists.length > 0) {
       const allFilters = [
         ...new Set(props.specialists.map((specialist) => specialist["status"])),
@@ -68,7 +69,9 @@ export function SpecialistsStaticMobileView(
       );
       setFilter(allFilters[0]);
     }
-  }, [props.specialists]);
+
+    setup.current = true;
+  }
 
   return (
     <>

@@ -1,4 +1,4 @@
-import { ComponentPropsWithoutRef, useState, useEffect } from "react";
+import { ComponentPropsWithoutRef, useState, useRef } from "react";
 
 import { useTranslation } from "react-i18next";
 
@@ -21,13 +21,16 @@ type RadioDrawerProps = {
 };
 
 export function RadioSearchableDrawer(props: RadioDrawerProps) {
+  const setup = useRef<boolean>(null);
+
   const { t } = useTranslation("RadioSearchableDrawer");
 
   const [selectedItems, setSelectedItems] = useState<typeof props.items>([]);
 
-  useEffect(() => {
+  if (setup.current === null) {
     setSelectedItems(props.items);
-  }, [props.items]);
+    setup.current = true;
+  }
 
   const {
     control,

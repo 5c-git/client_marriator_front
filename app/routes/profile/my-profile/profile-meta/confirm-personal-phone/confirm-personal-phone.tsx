@@ -65,7 +65,7 @@ export async function clientAction({ request }: Route.ClientActionArgs) {
         const data = await postConfirmChangeUserPhone(
           accessToken,
           phone,
-          fields.code
+          fields.code,
         );
 
         if (data.status === "error") {
@@ -88,7 +88,7 @@ export async function clientAction({ request }: Route.ClientActionArgs) {
   }
 }
 
-export default function СonfirmPersonalPhone({
+export default function ConfirmPersonalPhone({
   loaderData,
 }: Route.ComponentProps) {
   const { t } = useTranslation("confirmPersonalPhone");
@@ -117,7 +117,7 @@ export default function СonfirmPersonalPhone({
           .default("")
           .length(4, t("inputValidation_lenght"))
           .required(t("inputValidation")),
-      })
+      }),
     ),
   });
 
@@ -131,9 +131,9 @@ export default function СonfirmPersonalPhone({
     return () => clearInterval(timer);
   }, [seconds, navigation.state]);
 
-  useEffect(() => {
-    setSeconds(Number(loaderData.ttl));
-  }, [loaderData.ttl, navigation.state]);
+  // useEffect(() => {
+  //   setSeconds(Number(loaderData.ttl));
+  // }, [loaderData.ttl, navigation.state]);
 
   return (
     <>
@@ -172,7 +172,7 @@ export default function СonfirmPersonalPhone({
                 {
                   method: "POST",
                   encType: "application/json",
-                }
+                },
               );
             })}
           >
@@ -194,7 +194,7 @@ export default function СonfirmPersonalPhone({
                       {
                         method: "POST",
                         encType: "application/json",
-                      }
+                      },
                     );
                   })}
                   {...field}
@@ -220,7 +220,7 @@ export default function СonfirmPersonalPhone({
                 {
                   method: "POST",
                   encType: "application/json",
-                }
+                },
               );
             }}
           >

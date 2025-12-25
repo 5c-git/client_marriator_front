@@ -10,7 +10,7 @@ import {
 
 // import { UAParser } from "ua-parser-js";
 
-import HawkCatcher from "@hawk.so/javascript";
+// import HawkCatcher from "@hawk.so/javascript";
 
 // MUI
 import { theme } from "./theme/theme";
@@ -28,7 +28,10 @@ export function HydrateFallback() {
   return <div></div>;
 }
 
-export async function clientLoader({ request, params }: LoaderFunctionArgs) {
+export async function clientLoader({
+  // request,
+  params,
+}: LoaderFunctionArgs) {
   const locale = params.lang ?? "ru";
 
   // const { device } = UAParser();

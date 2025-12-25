@@ -34,13 +34,15 @@ import { postRetriesSms } from "~/requests/_personal/postRetriesSms/postRetriesS
 import { postSendCode } from "~/requests/_personal/postSendCode/postSendCode";
 import { getSignedDocument } from "~/requests/_personal/getSignedDocument/getSignedDocument";
 
+import { postCreateTestDoc } from "./postCreateTestDoc/postCreateTestDoc";
+
 export async function clientLoader() {
   const accessToken = useStore.getState().accessToken;
 
   if (accessToken) {
     const data = await getDocumentSigned(accessToken);
 
-    return data.result;
+    return data.data;
   } else {
     throw new Response("Токен авторизации не обнаружен!", { status: 401 });
   }
@@ -75,6 +77,8 @@ export async function clientAction({ request }: Route.ClientActionArgs) {
         currentURL.searchParams.set("error", "error");
         throw redirect(currentURL.toString());
       }
+    } else if (_action === "test") {
+      await postCreateTestDoc(accessToken);
     }
   }
 }
@@ -117,11 +121,9 @@ export default function Sign({ loaderData }: Route.ComponentProps) {
     return () => clearInterval(timer);
   }, [seconds]);
 
-  useEffect(() => {
-    if (error) {
-      setSeconds(0);
-    }
-  }, [error]);
+  if (error && seconds > 0) {
+    setSeconds(0);
+  }
 
   return (
     <>
@@ -143,6 +145,21 @@ export default function Sign({ loaderData }: Route.ComponentProps) {
             });
           }}
         />
+
+        <Button
+          sx={{
+            marginTop: "auto",
+          }}
+          variant="contained"
+          onClick={() => {
+            fetcher.submit(JSON.stringify({ _action: "test" }), {
+              method: "POST",
+              encType: "application/json",
+            });
+          }}
+        >
+          _create test doc
+        </Button>
 
         <Box
           sx={{
@@ -168,7 +185,7 @@ export default function Sign({ loaderData }: Route.ComponentProps) {
           ) : (
             <S_OrderedList>
               {loaderData.map((item) => (
-                <S_OrderedItem key={item.id}>{item.name}</S_OrderedItem>
+                <S_OrderedItem key={item.id}>{item.file_name}</S_OrderedItem>
               ))}
             </S_OrderedList>
           )}

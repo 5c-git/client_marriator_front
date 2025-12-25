@@ -59,7 +59,7 @@ export async function clientLoader({ params }: Route.ClientLoaderArgs) {
 
     const locationsData = await getPlaceModeration(
       accessToken,
-      Number(params.user)
+      Number(params.user),
     );
 
     const locations: Option[] = [];
@@ -79,7 +79,7 @@ export async function clientLoader({ params }: Route.ClientLoaderArgs) {
       });
 
       const match = regions.findIndex(
-        (region) => region.value === item.region.id.toString()
+        (region) => region.value === item.region.id.toString(),
       );
 
       if (match === -1) {
@@ -127,7 +127,7 @@ export default function SelectLocations({ loaderData }: Route.ComponentProps) {
 
   const [showMap, setShowMap] = useState<boolean>(false);
   const [selectedLocations, setSelectedLocations] = useState(
-    loaderData.locations
+    loaderData.locations,
   );
   const [mapInstance, setMapInstance] = useState<YMap | null>(null);
 
@@ -147,7 +147,7 @@ export default function SelectLocations({ loaderData }: Route.ComponentProps) {
         searchbar: Yup.string().notRequired(),
         region: Yup.string().notRequired(),
         locations: Yup.array().of(Yup.string()).min(1),
-      })
+      }),
     ),
     mode: "onChange",
   });
@@ -169,7 +169,7 @@ export default function SelectLocations({ loaderData }: Route.ComponentProps) {
 
       setMapInstance(map);
     }
-  }, [showMap, loaderData.ymaps]);
+  }, [showMap, loaderData.ymaps, selectedLocations]);
 
   // рисуем на карте маркеры, опираясь на данные(далее по коду работаем только с selectedLocations и этот эффект будет нам перерисовывать маркеры)
   useEffect(() => {
@@ -197,7 +197,7 @@ export default function SelectLocations({ loaderData }: Route.ComponentProps) {
 
       const icon = renderIcon(
         location.icon,
-        isShopSelected ? "var(--mui-palette-Corp_1)" : "transparent"
+        isShopSelected ? "var(--mui-palette-Corp_1)" : "transparent",
       );
 
       markerElement.innerHTML = icon;
@@ -210,13 +210,13 @@ export default function SelectLocations({ loaderData }: Route.ComponentProps) {
             icon: location.icon,
           },
         },
-        markerElement
+        markerElement,
       );
 
       // markers.push(marker);
       mapInstance?.addChild(marker);
     });
-  }, [loaderData.ymaps, mapInstance, selectedLocations]);
+  }, [loaderData.ymaps, mapInstance, selectedLocations, getValues]);
 
   // обновляем слушатель событий
   useEffect(() => {
@@ -234,7 +234,7 @@ export default function SelectLocations({ loaderData }: Route.ComponentProps) {
             const currentSelectedLocations = getValues("locations");
 
             const isLocationSelected = currentSelectedLocations.findIndex(
-              (shop) => shop === clickedLocation
+              (shop) => shop === clickedLocation,
             );
 
             if (isLocationSelected > -1) {
@@ -250,7 +250,7 @@ export default function SelectLocations({ loaderData }: Route.ComponentProps) {
               clickedLocationIcon,
               isLocationSelected > -1
                 ? "transparent"
-                : "var(--mui-palette-Corp_1)"
+                : "var(--mui-palette-Corp_1)",
             );
             markerElement.innerHTML = icon;
 
@@ -262,7 +262,7 @@ export default function SelectLocations({ loaderData }: Route.ComponentProps) {
                   icon: clickedLocationIcon,
                 },
               },
-              markerElement
+              markerElement,
             );
 
             mapInstance?.addChild(marker);
@@ -275,7 +275,7 @@ export default function SelectLocations({ loaderData }: Route.ComponentProps) {
     if (mapInstance) {
       mapInstance.addChild(mapListener);
     }
-  }, [loaderData.ymaps, mapInstance]);
+  }, [loaderData.ymaps, mapInstance, getValues, setValue]);
 
   return (
     <>
@@ -319,7 +319,7 @@ export default function SelectLocations({ loaderData }: Route.ComponentProps) {
               {
                 method: "POST",
                 encType: "application/json",
-              }
+              },
             );
           })}
         >
@@ -343,7 +343,7 @@ export default function SelectLocations({ loaderData }: Route.ComponentProps) {
                   onChange={(evt) => {
                     const currentFieldValue = new RegExp(
                       `^${evt.target.value}`,
-                      "i"
+                      "i",
                     );
 
                     let matchingLocations: Option[] = [];
@@ -353,7 +353,7 @@ export default function SelectLocations({ loaderData }: Route.ComponentProps) {
                         ...selectedLocations.filter(
                           (item) =>
                             currentFieldValue.test(item.name) ||
-                            currentFieldValue.test(item.address)
+                            currentFieldValue.test(item.address),
                         ),
                       ];
                     } else {
@@ -362,7 +362,7 @@ export default function SelectLocations({ loaderData }: Route.ComponentProps) {
                         currentRegion !== ""
                           ? [
                               ...loaderData.locations.filter(
-                                (item) => item.regionId === currentRegion
+                                (item) => item.regionId === currentRegion,
                               ),
                             ]
                           : [...loaderData.locations];
@@ -387,21 +387,21 @@ export default function SelectLocations({ loaderData }: Route.ComponentProps) {
                   onChange={(evt) => {
                     const currentSearchbarValue = new RegExp(
                       `^${getValues("searchbar")}`,
-                      "i"
+                      "i",
                     );
 
                     const matchingRegionLocations =
                       evt.target.value !== ""
                         ? [
                             ...loaderData.locations.filter(
-                              (item) => item.regionId === evt.target.value
+                              (item) => item.regionId === evt.target.value,
                             ),
                           ]
                         : [...loaderData.locations];
 
                     const matchingLocations = [
                       ...matchingRegionLocations.filter((item) =>
-                        currentSearchbarValue.test(item.name)
+                        currentSearchbarValue.test(item.name),
                       ),
                     ];
 

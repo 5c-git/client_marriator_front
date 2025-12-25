@@ -86,7 +86,7 @@ export async function clientAction({ request }: Route.ClientActionArgs) {
   }
 }
 
-export default function СonfirmRestorePin({
+export default function ConfirmRestorePin({
   loaderData,
 }: Route.ComponentProps) {
   const { t } = useTranslation("confirmRestorePin");
@@ -115,7 +115,7 @@ export default function СonfirmRestorePin({
           .default("")
           .length(4, t("inputValidation_lenght"))
           .required(t("inputValidation")),
-      })
+      }),
     ),
   });
 
@@ -129,9 +129,9 @@ export default function СonfirmRestorePin({
     return () => clearInterval(timer);
   }, [seconds]);
 
-  useEffect(() => {
-    setSeconds(Number(loaderData.ttl));
-  }, [loaderData.ttl, navigation.state]);
+  // useEffect(() => {
+  //   setSeconds(Number(loaderData.ttl));
+  // }, [loaderData.ttl, navigation.state]);
 
   return (
     <>
@@ -170,7 +170,7 @@ export default function СonfirmRestorePin({
                 {
                   method: "POST",
                   encType: "application/json",
-                }
+                },
               );
             })}
           >
@@ -192,7 +192,7 @@ export default function СonfirmRestorePin({
                       {
                         method: "POST",
                         encType: "application/json",
-                      }
+                      },
                     );
                   })}
                   {...field}
@@ -217,7 +217,7 @@ export default function СonfirmRestorePin({
                 {
                   method: "POST",
                   encType: "application/json",
-                }
+                },
               );
             }}
           >

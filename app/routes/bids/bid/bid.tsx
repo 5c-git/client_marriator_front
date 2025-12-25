@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useRef } from "react";
 import { useOutletContext, redirect, useSubmit } from "react-router";
 import type { Route } from "./+types/bid";
 import type { GetBidSuccess } from "~/requests/_personal/getBid/getBidSuccess.schema";
@@ -80,6 +80,8 @@ export async function clientAction({ request }: Route.ClientActionArgs) {
 }
 
 export default function Bid({ loaderData }: Route.ComponentProps) {
+  const setup = useRef<boolean>(null);
+
   const submit = useSubmit();
   const { bidMobileData, editMode } = useOutletContext<{
     bidMobileData: GetBidSuccess["data"];
@@ -90,7 +92,8 @@ export default function Bid({ loaderData }: Route.ComponentProps) {
     BidMobileViewInterface["entity"] | null
   >();
 
-  useEffect(() => {
+  //стартовая фильтрация сущностей
+  if (setup.current === null) {
     if (loaderData.mode === "mobile") {
       const entity: BidMobileViewInterface["entity"] = {
         logo: bidMobileData.viewActivity.logo,
@@ -155,7 +158,9 @@ export default function Bid({ loaderData }: Route.ComponentProps) {
 
       setMobileEntity(entity);
     }
-  }, [bidMobileData]);
+
+    setup.current = true;
+  }
 
   return loaderData.mode === "mobile" ? (
     <>

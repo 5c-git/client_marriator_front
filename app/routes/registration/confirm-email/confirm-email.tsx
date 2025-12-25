@@ -80,7 +80,7 @@ export async function clientAction({ request }: Route.ClientActionArgs) {
   }
 }
 
-export default function СonfirmEmail({ loaderData }: Route.ComponentProps) {
+export default function ConfirmEmail({ loaderData }: Route.ComponentProps) {
   const { t } = useTranslation("confirmEmail");
   const submit = useSubmit();
   const navigation = useNavigation();
@@ -107,7 +107,7 @@ export default function СonfirmEmail({ loaderData }: Route.ComponentProps) {
           .default("")
           .length(4, t("inputValidation_lenght"))
           .required(t("inputValidation")),
-      })
+      }),
     ),
   });
 
@@ -121,9 +121,9 @@ export default function СonfirmEmail({ loaderData }: Route.ComponentProps) {
     return () => clearInterval(timer);
   }, [seconds, navigation.state]);
 
-  useEffect(() => {
-    setSeconds(Number(loaderData.ttl));
-  }, [loaderData.ttl, navigation.state]);
+  // useEffect(() => {
+  //   setSeconds(Number(loaderData.ttl));
+  // }, [loaderData.ttl, navigation.state]);
 
   return (
     <>
@@ -162,7 +162,7 @@ export default function СonfirmEmail({ loaderData }: Route.ComponentProps) {
                 {
                   method: "POST",
                   encType: "application/json",
-                }
+                },
               );
             })}
           >
@@ -184,7 +184,7 @@ export default function СonfirmEmail({ loaderData }: Route.ComponentProps) {
                       {
                         method: "POST",
                         encType: "application/json",
-                      }
+                      },
                     );
                   })}
                   {...field}
@@ -210,7 +210,7 @@ export default function СonfirmEmail({ loaderData }: Route.ComponentProps) {
                 {
                   method: "POST",
                   encType: "application/json",
-                }
+                },
               );
             }}
           >

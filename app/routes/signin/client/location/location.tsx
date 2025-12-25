@@ -70,7 +70,7 @@ export async function clientLoader() {
       });
 
       const match = regions.findIndex(
-        (region) => region.value === item.region.id.toString()
+        (region) => region.value === item.region.id.toString(),
       );
 
       if (match === -1) {
@@ -137,7 +137,7 @@ export default function Location({ loaderData }: Route.ComponentProps) {
         searchbar: Yup.string().notRequired(),
         region: Yup.string().notRequired(),
         shops: Yup.array().of(Yup.string()).min(1),
-      })
+      }),
     ),
     mode: "onChange",
   });
@@ -159,7 +159,7 @@ export default function Location({ loaderData }: Route.ComponentProps) {
 
       setMapInstance(map);
     }
-  }, [showMap, loaderData.ymaps]);
+  }, [showMap, selectedShops, loaderData.ymaps]);
 
   // рисуем на карте маркеры, опираясь на данные(далее по коду работаем толлько с selectedShops и этот эффект будет нам перерисовывать маркеры)
   useEffect(() => {
@@ -186,7 +186,7 @@ export default function Location({ loaderData }: Route.ComponentProps) {
 
       const icon = renderIcon(
         shop.icon,
-        isShopSelected ? "var(--mui-palette-Corp_1)" : "transparent"
+        isShopSelected ? "var(--mui-palette-Corp_1)" : "transparent",
       );
 
       markerElement.innerHTML = icon;
@@ -199,13 +199,13 @@ export default function Location({ loaderData }: Route.ComponentProps) {
             icon: shop.icon,
           },
         },
-        markerElement
+        markerElement,
       );
 
       // markers.push(marker);
       mapInstance?.addChild(marker);
     });
-  }, [loaderData.ymaps, mapInstance, selectedShops]);
+  }, [loaderData.ymaps, mapInstance, selectedShops, getValues]);
 
   // обновляем слушатель событий
   useEffect(() => {
@@ -223,7 +223,7 @@ export default function Location({ loaderData }: Route.ComponentProps) {
             const currentSelectedShops = getValues("shops");
 
             const isShopSelected = currentSelectedShops.findIndex(
-              (shop) => shop === clickedShop
+              (shop) => shop === clickedShop,
             );
 
             if (isShopSelected > -1) {
@@ -237,7 +237,7 @@ export default function Location({ loaderData }: Route.ComponentProps) {
             const markerElement = document.createElement("div");
             const icon = renderIcon(
               clickedShopIcon,
-              isShopSelected > -1 ? "transparent" : "var(--mui-palette-Corp_1)"
+              isShopSelected > -1 ? "transparent" : "var(--mui-palette-Corp_1)",
             );
             markerElement.innerHTML = icon;
 
@@ -249,7 +249,7 @@ export default function Location({ loaderData }: Route.ComponentProps) {
                   icon: clickedShopIcon,
                 },
               },
-              markerElement
+              markerElement,
             );
 
             mapInstance?.addChild(marker);
@@ -262,7 +262,7 @@ export default function Location({ loaderData }: Route.ComponentProps) {
     if (mapInstance) {
       mapInstance.addChild(mapListener);
     }
-  }, [loaderData.ymaps, mapInstance]);
+  }, [loaderData.ymaps, mapInstance, getValues, setValue]);
 
   return (
     <>
@@ -323,7 +323,7 @@ export default function Location({ loaderData }: Route.ComponentProps) {
                   onChange={(evt) => {
                     const currentFieldValue = new RegExp(
                       `^${evt.target.value}`,
-                      "i"
+                      "i",
                     );
 
                     let matchingShops: Option[] = [];
@@ -333,7 +333,7 @@ export default function Location({ loaderData }: Route.ComponentProps) {
                         ...selectedShops.filter(
                           (item) =>
                             currentFieldValue.test(item.name) ||
-                            currentFieldValue.test(item.address)
+                            currentFieldValue.test(item.address),
                         ),
                       ];
                     } else {
@@ -342,7 +342,7 @@ export default function Location({ loaderData }: Route.ComponentProps) {
                         currentRegion !== ""
                           ? [
                               ...loaderData.shops.filter(
-                                (item) => item.regionId === currentRegion
+                                (item) => item.regionId === currentRegion,
                               ),
                             ]
                           : [...loaderData.shops];
@@ -367,21 +367,21 @@ export default function Location({ loaderData }: Route.ComponentProps) {
                   onChange={(evt) => {
                     const currentSearchbarValue = new RegExp(
                       `^${getValues("searchbar")}`,
-                      "i"
+                      "i",
                     );
 
                     const matchingRegionShops =
                       evt.target.value !== ""
                         ? [
                             ...loaderData.shops.filter(
-                              (item) => item.regionId === evt.target.value
+                              (item) => item.regionId === evt.target.value,
                             ),
                           ]
                         : [...loaderData.shops];
 
                     const matchingShops = [
                       ...matchingRegionShops.filter((item) =>
-                        currentSearchbarValue.test(item.name)
+                        currentSearchbarValue.test(item.name),
                       ),
                     ];
 

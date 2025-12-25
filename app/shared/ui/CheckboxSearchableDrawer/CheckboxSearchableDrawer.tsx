@@ -1,4 +1,4 @@
-import { ComponentPropsWithoutRef, useState, useEffect } from "react";
+import { ComponentPropsWithoutRef, useState, useRef } from "react";
 
 import { useTranslation } from "react-i18next";
 
@@ -22,6 +22,8 @@ type CheckboxDrawerProps = {
 };
 
 export function CheckboxSearchableDrawer(props: CheckboxDrawerProps) {
+  const setup = useRef<boolean>(null);
+
   const { t } = useTranslation("CheckboxSearchableDrawer");
 
   const [selectedItems, setSelectedItems] = useState<typeof props.items>([]);
@@ -49,9 +51,10 @@ export function CheckboxSearchableDrawer(props: CheckboxDrawerProps) {
     shouldUnregister: true,
   });
 
-  useEffect(() => {
+  if (setup.current === null) {
     setSelectedItems(props.items);
-  }, [props.items]);
+    setup.current = true;
+  }
 
   return (
     <SwipeableDrawer

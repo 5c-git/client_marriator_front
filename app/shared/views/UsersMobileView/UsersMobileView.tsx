@@ -17,9 +17,9 @@ import { SortingSelect } from "~/shared/ui/SortingSelect/SortingSelect";
 import { StyledSearchBar } from "~/shared/ui/StyledSearchBar/StyledSearchBar";
 
 export function UsersMobileView(props: UsersMobileViewInterface) {
-  const { t } = useTranslation("UsersMobileView");
-
   const setup = useRef<boolean>(null);
+
+  const { t } = useTranslation("UsersMobileView");
 
   const [filteredUsers, setFilteredUsers] = useState<{
     [key: number]: UsersMobileViewInterface["users"];

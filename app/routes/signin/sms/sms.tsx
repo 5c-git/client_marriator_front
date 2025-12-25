@@ -112,7 +112,7 @@ export default function Sms({ loaderData }: Route.ComponentProps) {
           .default("")
           .length(4, t("inputValidation_lenght"))
           .required(t("inputValidation")),
-      })
+      }),
     ),
   });
 
@@ -126,9 +126,9 @@ export default function Sms({ loaderData }: Route.ComponentProps) {
     return () => clearInterval(timer);
   }, [seconds]);
 
-  useEffect(() => {
-    setSeconds(Number(loaderData.ttl));
-  }, [loaderData.ttl, navigation.state]);
+  // useEffect(() => {
+  //   setSeconds(Number(loaderData.ttl));
+  // }, [loaderData.ttl, navigation.state]);
 
   return (
     <>
@@ -165,7 +165,7 @@ export default function Sms({ loaderData }: Route.ComponentProps) {
                 {
                   method: "POST",
                   encType: "application/json",
-                }
+                },
               );
             })}
           >
@@ -187,7 +187,7 @@ export default function Sms({ loaderData }: Route.ComponentProps) {
                       {
                         method: "POST",
                         encType: "application/json",
-                      }
+                      },
                     );
                   })}
                   {...field}
@@ -213,7 +213,7 @@ export default function Sms({ loaderData }: Route.ComponentProps) {
                 {
                   method: "POST",
                   encType: "application/json",
-                }
+                },
               );
             }}
           >

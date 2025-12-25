@@ -77,7 +77,7 @@ export async function clientAction({ request }: Route.ClientActionArgs) {
   }
 }
 
-export default function СonfirmPersonalEmail({
+export default function ConfirmPersonalEmail({
   loaderData,
 }: Route.ComponentProps) {
   const { t } = useTranslation("confirmPersonalEmail");
@@ -106,7 +106,7 @@ export default function СonfirmPersonalEmail({
           .default("")
           .length(4, t("inputValidation_lenght"))
           .required(t("inputValidation")),
-      })
+      }),
     ),
   });
 
@@ -120,9 +120,9 @@ export default function СonfirmPersonalEmail({
     return () => clearInterval(timer);
   }, [seconds, navigation.state]);
 
-  useEffect(() => {
-    setSeconds(Number(loaderData.ttl));
-  }, [loaderData.ttl, navigation.state]);
+  // useEffect(() => {
+  //   setSeconds(Number(loaderData.ttl));
+  // }, [loaderData.ttl, navigation.state]);
 
   return (
     <>
@@ -161,7 +161,7 @@ export default function СonfirmPersonalEmail({
                 {
                   method: "POST",
                   encType: "application/json",
-                }
+                },
               );
             })}
           >
@@ -183,7 +183,7 @@ export default function СonfirmPersonalEmail({
                       {
                         method: "POST",
                         encType: "application/json",
-                      }
+                      },
                     );
                   })}
                   {...field}
@@ -209,7 +209,7 @@ export default function СonfirmPersonalEmail({
                 {
                   method: "POST",
                   encType: "application/json",
-                }
+                },
               );
             }}
           >
