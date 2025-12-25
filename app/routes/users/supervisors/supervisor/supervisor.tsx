@@ -2,7 +2,6 @@ import { useState } from "react";
 import {
   useNavigate,
   useNavigation,
-  useLocation,
   useSubmit,
   useFetcher,
   redirect,
@@ -17,6 +16,8 @@ import { useForm, Controller } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { withLocale } from "~/shared/withLocale";
 
+import { statusCodeMap } from "~/shared/usersStatusCodeMap";
+
 import {
   Button,
   IconButton,
@@ -30,7 +31,7 @@ import Stack from "@mui/material/Stack";
 
 import { TopNavigation } from "~/shared/ui/TopNavigation/TopNavigation";
 import { Loader } from "~/shared/ui/Loader/Loader";
-import { StyledSelect } from "~/shared/ui/StyledSelect/StyledSelect";
+// import { StyledSelect } from "~/shared/ui/StyledSelect/StyledSelect";
 import { StyledTextField } from "~/shared/ui/StyledTextField/StyledTextField";
 import { StyledPhoneField } from "~/shared/ui/StyledPhoneField/StyledPhoneField";
 import { StyledRadioButton } from "~/shared/ui/StyledRadioButton/StyledRadioButton";
@@ -52,7 +53,6 @@ import { useStore } from "~/store/store";
 
 import { getModerationSingleClient } from "~/requests/_personal/_moderation/getModerationSingleClient/getModerationSingleClient";
 import { getManager } from "~/requests/_personal/getManager/getManager";
-
 import { postSetUserImg } from "~/requests/_personal/_moderation/postSetUserImg/postSetUserImg";
 import { postDelProject } from "~/requests/_personal/_moderation/delProject/delProject";
 import { postDelPlaceModeration } from "~/requests/_personal/_moderation/postDelPlaceModeration/postDelPlaceModeration";
@@ -142,6 +142,28 @@ export async function clientLoader({ params }: Route.ClientLoaderArgs) {
       leave_bid: data.data.leave_bid,
       live_task: data.data.live_task,
       waiting_task: data.data.waiting_task,
+      status: (() => {
+        let status = 3;
+
+        if (
+          data.data.confirmRegister === false &&
+          data.data.finishRegister === true
+        ) {
+          status = 1;
+        } else if (
+          data.data.confirmRegister === true &&
+          data.data.finishRegister === true
+        ) {
+          status = 2;
+        } else if (
+          data.data.confirmRegister === false &&
+          data.data.finishRegister === false
+        ) {
+          status = 3;
+        }
+
+        return status;
+      })(),
     };
 
     managersData.data.forEach((item) => {
@@ -208,11 +230,6 @@ export default function Supervisor({ loaderData }: Route.ComponentProps) {
   const submit = useSubmit();
   const navigate = useNavigate();
   const navigation = useNavigation();
-  const location = useLocation();
-
-  const { state } = location as {
-    state: { status: string; statusColor: string };
-  };
 
   const [open, setOpen] = useState<boolean>(false);
   const [searchManagers, setSearchManagers] = useState<boolean>(false);
@@ -223,7 +240,6 @@ export default function Supervisor({ loaderData }: Route.ComponentProps) {
   const {
     control,
     handleSubmit,
-    reset,
     getValues,
     setValue,
     trigger,
@@ -305,7 +321,7 @@ export default function Supervisor({ loaderData }: Route.ComponentProps) {
       searchbar: "",
       managers: [],
     },
-    // @ts-expect-error
+    // @ts-expect-error error
     resolver: yupResolver(
       Yup.object({
         searchbar: Yup.string().notRequired(),
@@ -475,7 +491,10 @@ export default function Supervisor({ loaderData }: Route.ComponentProps) {
               >
                 <Box
                   style={{
-                    backgroundColor: state.statusColor,
+                    backgroundColor:
+                      statusCodeMap[
+                        loaderData.client.status as keyof typeof statusCodeMap
+                      ].color,
                   }}
                   sx={{
                     width: "14px",
@@ -484,7 +503,11 @@ export default function Supervisor({ loaderData }: Route.ComponentProps) {
                   }}
                 ></Box>
                 <Typography component="p" variant="Reg_14">
-                  {state.status}
+                  {
+                    statusCodeMap[
+                      loaderData.client.status as keyof typeof statusCodeMap
+                    ].value
+                  }
                 </Typography>
               </Box>
             </Box>
@@ -628,8 +651,8 @@ export default function Supervisor({ loaderData }: Route.ComponentProps) {
               to={withLocale(`/users/${loaderData.client.id}/select-projects`)}
               state={{
                 from: `/users/supervisor/${loaderData.client.id}`,
-                status: state.status,
-                statusColor: state.statusColor,
+                // status: state.status,
+                // statusColor: state.statusColor,
               }}
               variant="outlined"
               startIcon={<FileIcon />}
@@ -715,8 +738,8 @@ export default function Supervisor({ loaderData }: Route.ComponentProps) {
               to={withLocale(`/users/${loaderData.client.id}/select-locations`)}
               state={{
                 from: `/users/supervisor/${loaderData.client.id}`,
-                status: state.status,
-                statusColor: state.statusColor,
+                // status: state.status,
+                // statusColor: state.statusColor,
               }}
               variant="outlined"
               startIcon={<PointerIcon />}

@@ -49,7 +49,6 @@ import signADeal from "../../public/locales/ru/signADeal.json";
 import terminateADeal from "../../public/locales/ru/terminateADeal.json";
 import documentsArchive from "../../public/locales/ru/documentsArchive.json";
 import certificates from "../../public/locales/ru/certificates.json";
-import users_clients from "../../public/locales/ru/users_clients.json";
 import users_client from "../../public/locales/ru/users_client.json";
 import users_manager from "../../public/locales/ru/users_manager.json";
 import users_supervisor from "../../public/locales/ru/users_supervisor.json";
@@ -73,6 +72,7 @@ import orders from "../../public/locales/ru/orders.json";
 //routes
 
 //views
+import UsersMobileView from "../../public/locales/ru/UsersMobileView.json";
 import JobMobileView from "../../public/locales/ru/JobMobileView.json";
 import DayReviewMobileView from "../../public/locales/ru/DayReviewMobileView.json";
 import SpecialistMobileView from "../../public/locales/ru/SpecialistMobileView.json";
@@ -172,6 +172,7 @@ declare module "i18next" {
       HomeLayout: typeof HomeLayout;
 
       //views
+      UsersMobileView: typeof UsersMobileView;
       JobMobileView: typeof JobMobileView;
       DayReviewMobileView: typeof DayReviewMobileView;
       SpecialistMobileView: typeof SpecialistMobileView;
@@ -181,7 +182,7 @@ declare module "i18next" {
       OrderMobileView: typeof OrderMobileView;
       EntityMobileView: typeof EntityMobileView;
       EntitiesListView: typeof EntitiesListView;
-      ServiceMobileView: typeof ServiceFormMobileView;
+      ServiceMobileView: typeof ServiceMobileView;
 
       //components
       styledPhotoCheckbox: typeof styledPhotoCheckbox;

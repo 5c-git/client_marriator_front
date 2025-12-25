@@ -41,7 +41,7 @@ export async function clientLoader({ request }: Route.ClientLoaderArgs) {
     const data = await getUserFields(accessToken, section);
 
     const curentSection = data.result.section.find(
-      (item) => item.value === Number(section)
+      (item) => item.value === Number(section),
     );
 
     return {
@@ -88,7 +88,7 @@ export default function ProfileEdit({ loaderData }: Route.ComponentProps) {
   } = useForm({
     defaultValues: generateDefaultValues(loaderData.formFields),
     resolver: yupResolver(
-      Yup.object(generateValidationSchema(loaderData.formFields))
+      Yup.object(generateValidationSchema(loaderData.formFields)),
     ),
     mode: "onChange",
     shouldUnregister: true,
@@ -142,7 +142,7 @@ export default function ProfileEdit({ loaderData }: Route.ComponentProps) {
               setValue,
               trigger,
               () => {},
-              loaderData.accessToken
+              loaderData.accessToken,
             )}
 
             <Box

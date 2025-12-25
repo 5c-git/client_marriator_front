@@ -6,7 +6,8 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { useForm, Controller } from "react-hook-form";
 
-import { Box, Button, SwipeableDrawer } from "@mui/material";
+import Box from "@mui/material/Box";
+import { Button, SwipeableDrawer } from "@mui/material";
 
 import { TopNavigation } from "~/shared/ui/TopNavigation/TopNavigation";
 import { StyledSearchBar } from "~/shared/ui/StyledSearchBar/StyledSearchBar";

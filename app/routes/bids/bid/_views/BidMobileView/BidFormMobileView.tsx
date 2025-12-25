@@ -1065,6 +1065,8 @@ export function BidFormMobileView(props: BidFormMobileViewInterface) {
                               ),
                             );
 
+                            console.log(day);
+
                             if (match) {
                               insert(index + 1, {
                                 //   timeStart: addDays(day.timeStart, 1),

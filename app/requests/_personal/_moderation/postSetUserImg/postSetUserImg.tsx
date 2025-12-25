@@ -1,20 +1,18 @@
 import { http, delay, HttpResponse } from "msw";
-import Ajv from "ajv";
 
-import postSetUserImgSuccessSchema from "./postSetUserImgSuccess.schema.json";
-import { PostSetUserImgSuccess } from "./postSetUserImgSuccess.type";
+import {
+  postSetUserImgSuccessSchema,
+  PostSetUserImgSuccess,
+} from "./postSetUserImgSuccess.schema";
+
 import { UnxpectedError } from "~/shared/unexpectedError/unexpectedError";
-
-const ajv = new Ajv();
-
-const validateSuccess = ajv.compile(postSetUserImgSuccessSchema);
 
 export const postSetUserImgKeys = ["postSetUserImg"];
 
 export const postSetUserImg = async (
   accessToken: string,
   userId: string,
-  projectId: string
+  projectId: string,
 ) => {
   try {
     const url = new URL(import.meta.env.VITE_POST_SET_USER_IMG);
@@ -42,9 +40,12 @@ export const postSetUserImg = async (
       });
     }
 
-    if (validateSuccess(response)) {
-      data = response as unknown as PostSetUserImgSuccess;
+    const parsed = postSetUserImgSuccessSchema.safeParse(response);
+
+    if (parsed.success) {
+      data = parsed.data;
     } else {
+      console.log(parsed.error);
       throw new Response(`Данные запроса postSetUserImg не валидны схеме`);
     }
 
@@ -63,7 +64,7 @@ export const postSetUserImg = async (
 };
 
 // MOCKS
-export const mockResponseSuccess = {
+export const mockResponseSuccess: PostSetUserImgSuccess = {
   data: {
     success: true,
   },
@@ -75,5 +76,5 @@ export const postSetUserImgMockResponse = http.post(
   async () => {
     await delay(2000);
     return HttpResponse.json(mockResponseSuccess);
-  }
+  },
 );

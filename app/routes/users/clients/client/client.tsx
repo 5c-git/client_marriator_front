@@ -2,7 +2,6 @@ import { useState } from "react";
 import {
   useNavigate,
   useNavigation,
-  useLocation,
   useSubmit,
   useFetcher,
   redirect,
@@ -17,13 +16,15 @@ import { useForm, Controller } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { withLocale } from "~/shared/withLocale";
 
+import { statusCodeMap } from "~/shared/usersStatusCodeMap";
+
 import { Button, IconButton, Avatar, Typography } from "@mui/material";
 import Box from "@mui/material/Box";
 import Stack from "@mui/material/Stack";
 
 import { TopNavigation } from "~/shared/ui/TopNavigation/TopNavigation";
 import { Loader } from "~/shared/ui/Loader/Loader";
-import { StyledSelect } from "~/shared/ui/StyledSelect/StyledSelect";
+// import { StyledSelect } from "~/shared/ui/StyledSelect/StyledSelect";
 import { StyledTextField } from "~/shared/ui/StyledTextField/StyledTextField";
 import { StyledPhoneField } from "~/shared/ui/StyledPhoneField/StyledPhoneField";
 import { StyledRadioButton } from "~/shared/ui/StyledRadioButton/StyledRadioButton";
@@ -40,35 +41,13 @@ import { DeleteIcon } from "~/shared/icons/DeleteIcon";
 import { useStore } from "~/store/store";
 
 import { getModerationSingleClient } from "~/requests/_personal/_moderation/getModerationSingleClient/getModerationSingleClient";
-
 import { postSetUserImg } from "~/requests/_personal/_moderation/postSetUserImg/postSetUserImg";
 import { postDelProject } from "~/requests/_personal/_moderation/delProject/delProject";
 import { postDelPlaceModeration } from "~/requests/_personal/_moderation/postDelPlaceModeration/postDelPlaceModeration";
 import { postConfirmUserRegister } from "~/requests/_personal/_moderation/postConfirmUserRegister/postConfirmUserRegister";
 
-type client = {
-  id: number;
-  logo: string | null;
-  agent: string;
-  phone: string;
-  name: string;
-  status: string;
-  statusColor: string;
-  organizations: {
-    logo: string;
-    name: string;
-  }[];
-  locations: {
-    logo: string;
-    address: string;
-  }[];
-  change_order: string;
-  cancel_order: string;
-  live_order: string;
-};
-
 const getRadioButtons = (
-  list: { id: number; name: string; logo: string }[]
+  list: { id: number; name: string; logo: string }[],
 ) => {
   const options: {
     id: number;
@@ -109,7 +88,7 @@ export async function clientLoader({ params }: Route.ClientLoaderArgs) {
   if (accessToken) {
     const data = await getModerationSingleClient(
       accessToken,
-      Number(params.user)
+      Number(params.user),
     );
 
     data.data.project.forEach((org) => {
@@ -139,6 +118,28 @@ export async function clientLoader({ params }: Route.ClientLoaderArgs) {
       change_order: data.data.change_order,
       cancel_order: data.data.cancel_order,
       live_order: data.data.live_order,
+      status: (() => {
+        let status = 3;
+
+        if (
+          data.data.confirmRegister === false &&
+          data.data.finishRegister === true
+        ) {
+          status = 1;
+        } else if (
+          data.data.confirmRegister === true &&
+          data.data.finishRegister === true
+        ) {
+          status = 2;
+        } else if (
+          data.data.confirmRegister === false &&
+          data.data.finishRegister === false
+        ) {
+          status = 3;
+        }
+
+        return status;
+      })(),
     };
 
     return { client };
@@ -158,7 +159,7 @@ export async function clientAction({ request }: Route.ClientActionArgs) {
         accessToken,
         fields.userId,
         fields.confirm,
-        fields
+        fields,
       );
       throw redirect(withLocale("/users"));
     } else if (_action === "_saveLogo") {
@@ -171,7 +172,7 @@ export async function clientAction({ request }: Route.ClientActionArgs) {
       await postDelPlaceModeration(
         accessToken,
         fields.userId,
-        fields.projectId
+        fields.projectId,
       );
       return;
     } else if (_action === "_decline") {
@@ -189,17 +190,12 @@ export default function Client({ loaderData }: Route.ComponentProps) {
   const submit = useSubmit();
   const navigate = useNavigate();
   const navigation = useNavigation();
-  const location = useLocation();
 
-  const { state } = location as {
-    state: { status: string; statusColor: string };
-  };
   const [open, setOpen] = useState<boolean>(false);
 
   const {
     control,
     handleSubmit,
-    reset,
     getValues,
     setValue,
     trigger,
@@ -232,7 +228,7 @@ export default function Client({ loaderData }: Route.ComponentProps) {
               id: Yup.number().required(),
               logo: Yup.string().required(),
               name: Yup.string().required(),
-            })
+            }),
           )
           .required(t("text", { ns: "constructorFields" })),
         locations: Yup.array()
@@ -246,7 +242,7 @@ export default function Client({ loaderData }: Route.ComponentProps) {
               // name: Yup.string().required(),
               // coordinates: Yup.array().min(2).max(2).of(Yup.number()),
               // region: Yup.string().required(),
-            })
+            }),
           )
           .required(t("text", { ns: "constructorFields" })),
         change_order: Yup.string()
@@ -258,7 +254,7 @@ export default function Client({ loaderData }: Route.ComponentProps) {
         live_order: Yup.string()
           .nullable()
           .required(t("text", { ns: "constructorFields" })),
-      })
+      }),
     ),
   });
 
@@ -331,12 +327,12 @@ export default function Client({ loaderData }: Route.ComponentProps) {
                 {
                   method: "POST",
                   encType: "application/json",
-                }
+                },
               );
             },
             (errors) => {
               console.log(errors);
-            }
+            },
           )}
         >
           <Box
@@ -428,7 +424,8 @@ export default function Client({ loaderData }: Route.ComponentProps) {
               >
                 <Box
                   style={{
-                    backgroundColor: state.statusColor,
+                    backgroundColor:
+                      statusCodeMap[loaderData.client.status].color,
                   }}
                   sx={{
                     width: "14px",
@@ -437,7 +434,7 @@ export default function Client({ loaderData }: Route.ComponentProps) {
                   }}
                 ></Box>
                 <Typography component="p" variant="Reg_14">
-                  {state.status}
+                  {statusCodeMap[loaderData.client.status].value}
                 </Typography>
               </Box>
             </Box>
@@ -543,7 +540,7 @@ export default function Client({ loaderData }: Route.ComponentProps) {
                     onClick={() => {
                       const currentList = getValues("organizations");
                       const updatedList = currentList.filter(
-                        (item) => item.name !== organization.name
+                        (item) => item.name !== organization.name,
                       );
                       setValue("organizations", updatedList);
                       trigger("organizations");
@@ -557,7 +554,7 @@ export default function Client({ loaderData }: Route.ComponentProps) {
                         {
                           method: "POST",
                           encType: "application/json",
-                        }
+                        },
                       );
                     }}
                     sx={{
@@ -581,8 +578,8 @@ export default function Client({ loaderData }: Route.ComponentProps) {
               to={withLocale(`/users/${loaderData.client.id}/select-projects`)}
               state={{
                 from: `/users/client/${loaderData.client.id}`,
-                status: state.status,
-                statusColor: state.statusColor,
+                // status: state.status,
+                // statusColor: state.statusColor,
               }}
               variant="outlined"
               startIcon={<FileIcon />}
@@ -630,7 +627,7 @@ export default function Client({ loaderData }: Route.ComponentProps) {
                     onClick={() => {
                       const currentList = getValues("locations");
                       const updatedList = currentList.filter(
-                        (item) => item.address !== location.address
+                        (item) => item.address !== location.address,
                       );
                       setValue("locations", updatedList);
                       trigger("locations");
@@ -644,7 +641,7 @@ export default function Client({ loaderData }: Route.ComponentProps) {
                         {
                           method: "POST",
                           encType: "application/json",
-                        }
+                        },
                       );
                     }}
                     sx={{
@@ -668,8 +665,8 @@ export default function Client({ loaderData }: Route.ComponentProps) {
               to={withLocale(`/users/${loaderData.client.id}/select-locations`)}
               state={{
                 from: `/users/client/${loaderData.client.id}`,
-                status: state.status,
-                statusColor: state.statusColor,
+                // status: state.status,
+                // statusColor: state.statusColor,
               }}
               variant="outlined"
               startIcon={<PointerIcon />}
@@ -747,7 +744,7 @@ export default function Client({ loaderData }: Route.ComponentProps) {
                   {
                     method: "POST",
                     encType: "application/json",
-                  }
+                  },
                 );
               }}
             >
@@ -788,7 +785,7 @@ export default function Client({ loaderData }: Route.ComponentProps) {
 
                   const selectedOrganization =
                     loaderData.client.organizations.find(
-                      (item) => item.logo === evt.target.value
+                      (item) => item.logo === evt.target.value,
                     );
 
                   if (selectedOrganization) {
@@ -801,7 +798,7 @@ export default function Client({ loaderData }: Route.ComponentProps) {
                       {
                         method: "POST",
                         encType: "application/json",
-                      }
+                      },
                     );
                   }
                 }}

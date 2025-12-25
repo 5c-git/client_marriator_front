@@ -1,13 +1,10 @@
 import { http, delay, HttpResponse } from "msw";
-import Ajv from "ajv";
 
-import successSchema from "./getManagerSuccess.schema.json";
-import type { GetManagerSuccess } from "./getManagerSuccess.type";
+import {
+  getManagerSuccessSchema,
+  GetManagerSuccess,
+} from "./getManagerSuccess.schema";
 import { UnxpectedError } from "~/shared/unexpectedError/unexpectedError";
-
-const ajv = new Ajv();
-
-const validateSuccess = ajv.compile(successSchema);
 
 export const getManagerKeys = ["getManager"];
 
@@ -37,10 +34,12 @@ export const getManager = async (
       });
     }
 
-    if (validateSuccess(response)) {
-      data = response as unknown as GetManagerSuccess;
+    const parsed = getManagerSuccessSchema.safeParse(response);
+
+    if (parsed.success) {
+      data = parsed.data;
     } else {
-      console.log(validateSuccess.errors);
+      console.log(parsed.error);
       throw new Response(`Данные запроса getManager не валидны схеме`);
     }
 
@@ -116,10 +115,12 @@ export const mockResponseEmpty = {};
 
 export const getManagerMockResponse = http.get(
   `${import.meta.env.VITE_GET_MANAGER}`,
-  async ({ request }) => {
-    const url = new URL(request.url);
+  async () =>
+    // { request }
+    {
+      // const url = new URL(request.url);
 
-    await delay(2000);
-    return HttpResponse.json(mockResponseSuccess);
-  },
+      await delay(2000);
+      return HttpResponse.json(mockResponseSuccess);
+    },
 );

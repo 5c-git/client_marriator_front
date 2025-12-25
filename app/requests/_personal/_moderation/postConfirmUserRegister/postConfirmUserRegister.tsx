@@ -1,13 +1,10 @@
 import { http, delay, HttpResponse } from "msw";
-import Ajv from "ajv";
 
-import schemaSuccess from "./postConfirmUserRegisterSuccess.schema.json";
-import { PostConfirmUserRegisterSuccess } from "./postConfirmUserRegisterSuccess.type";
+import {
+  postConfirmUserRegisterSuccessSchema,
+  PostConfirmUserRegisterSuccess,
+} from "./postConfirmUserRegisterSuccess.schema";
 import { UnxpectedError } from "~/shared/unexpectedError/unexpectedError";
-
-const ajv = new Ajv();
-
-const validateSuccess = ajv.compile(schemaSuccess);
 
 export const postConfirmUserRegisterKeys = ["postConfirmUserRegister"];
 
@@ -15,7 +12,7 @@ export const postConfirmUserRegister = async (
   accessToken: string,
   userId: string,
   confirm: string,
-  fields?: { fields: { [key: string]: unknown } }
+  fields?: { fields: { [key: string]: unknown } },
 ) => {
   try {
     const url = new URL(import.meta.env.VITE_POST_CONFIRM_USER_REGISTER);
@@ -54,11 +51,14 @@ export const postConfirmUserRegister = async (
       });
     }
 
-    if (validateSuccess(response)) {
-      data = response as unknown as PostConfirmUserRegisterSuccess;
+    const parsed = postConfirmUserRegisterSuccessSchema.safeParse(response);
+
+    if (parsed.success) {
+      data = parsed.data;
     } else {
+      console.log(parsed.error);
       throw new Response(
-        `Данные запроса postConfirmUserRegister не валидны схеме`
+        `Данные запроса postConfirmUserRegister не валидны схеме`,
       );
     }
 
@@ -89,5 +89,5 @@ export const postConfirmUserRegisterMockResponse = http.post(
   async () => {
     await delay(2000);
     return HttpResponse.json(mockResponseSuccess);
-  }
+  },
 );

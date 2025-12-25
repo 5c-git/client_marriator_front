@@ -1,0 +1,41 @@
+{
+  "clients": {
+    "status": {
+      "new": "New",
+      "inProgress": "In progress",
+      "archive": "Archive"
+    },
+    "sorting": {
+      "new": "New",
+      "old": "Old"
+    },
+    "searchbar": "Search",
+    "emptyHeader": "No clients so far"
+  },
+  "managers": {
+    "status": {
+      "new": "New",
+      "inProgress": "In progress",
+      "archive": "Archive"
+    },
+    "sorting": {
+      "new": "New",
+      "old": "Old"
+    },
+    "searchbar": "Search",
+    "emptyHeader": "No managers so far"
+  },
+  "supervisors": {
+    "status": {
+      "new": "New",
+      "inProgress": "In progress",
+      "archive": "Archive"
+    },
+    "sorting": {
+      "new": "New",
+      "old": "Old"
+    },
+    "searchbar": "Search",
+    "emptyHeader": "No supervisors so far"
+  }
+}

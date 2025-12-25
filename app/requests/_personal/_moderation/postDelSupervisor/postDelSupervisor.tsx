@@ -1,20 +1,17 @@
 import { http, delay, HttpResponse } from "msw";
-import Ajv from "ajv";
 
-import schemaSuccess from "./postDelSupervisorSuccess.schema.json";
-import { PostDelSupervisorSuccess } from "./postDelSupervisorSuccess.type";
+import {
+  postDelSupervisorSuccessSchema,
+  postDelSupervisorSuccess,
+} from "./postDelSupervisorSuccess.schema";
 import { UnxpectedError } from "~/shared/unexpectedError/unexpectedError";
-
-const ajv = new Ajv();
-
-const validateSuccess = ajv.compile(schemaSuccess);
 
 export const postDelSupervisorKeys = ["postDelSupervisor"];
 
 export const postDelSupervisor = async (
   accessToken: string,
   userId: string,
-  supervisorId: string
+  supervisorId: string,
 ) => {
   try {
     const url = new URL(import.meta.env.VITE_POST_DEL_SUPERVISOR);
@@ -42,11 +39,14 @@ export const postDelSupervisor = async (
       });
     }
 
-    if (validateSuccess(response)) {
-      data = response as unknown as PostDelSupervisorSuccess;
+    const parsed = postDelSupervisorSuccessSchema.safeParse(response);
+
+    if (parsed.success) {
+      data = parsed.data;
     } else {
+      console.log(parsed.error);
       throw new Response(
-        `Данные запроса PostDelSupervisorSuccess не валидны схеме`
+        `Данные запроса postDelSupervisorSuccess не валидны схеме`,
       );
     }
 
@@ -77,5 +77,5 @@ export const postDelSupervisorMockResponse = http.post(
   async () => {
     await delay(2000);
     return HttpResponse.json(mockResponseSuccess);
-  }
+  },
 );

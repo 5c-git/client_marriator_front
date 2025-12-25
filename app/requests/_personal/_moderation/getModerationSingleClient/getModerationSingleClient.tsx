@@ -1,19 +1,17 @@
 import { http, delay, HttpResponse } from "msw";
-import Ajv from "ajv";
 
-import getModerationSingleClientSchema from "./getModerationSingleClientSuccess.schema.json";
-import { GetModerationSingleClientSuccess } from "./getModerationSingleClientSuccess.type";
+import {
+  getModerationSingleClientSuccessSchema,
+  GetModerationSingleClientSuccess,
+} from "./getModerationSingleClientSuccess.schema";
+
 import { UnxpectedError } from "~/shared/unexpectedError/unexpectedError";
-
-const ajv = new Ajv();
-
-const validateSuccess = ajv.compile(getModerationSingleClientSchema);
 
 export const getModerationSingleClientKeys = ["getModerationSingleClient"];
 
 export const getModerationSingleClient = async (
   accessToken: string,
-  userId: number
+  userId: number,
 ): Promise<GetModerationSingleClientSuccess> => {
   try {
     const url = new URL(import.meta.env.VITE_GET_MODERATION_SINGLE_CLIENT);
@@ -37,12 +35,14 @@ export const getModerationSingleClient = async (
       });
     }
 
-    if (validateSuccess(response)) {
-      data = response as unknown as GetModerationSingleClientSuccess;
+    const parsed = getModerationSingleClientSuccessSchema.safeParse(response);
+
+    if (parsed.success) {
+      data = parsed.data;
     } else {
-      console.log(validateSuccess.errors);
+      console.log(parsed.error);
       throw new Response(
-        `Данные запроса getModerationSingleClient не валидны схеме`
+        `Данные запроса getModerationSingleClient не валидны схеме`,
       );
     }
 
@@ -159,5 +159,5 @@ export const getModerationSingleClientMockResponse = http.get(
 
       await delay(2000);
       return HttpResponse.json(mockResponseSuccess);
-    }
+    },
 );

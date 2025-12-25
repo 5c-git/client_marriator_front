@@ -161,7 +161,7 @@ export default function ProfileMeta({ loaderData }: Route.ComponentProps) {
         }
       );
     });
-  }, [loaderData.photo, loaderData.phone, loaderData.email, reset, getValues]);
+  }, [loaderData.photo, loaderData.phone, loaderData.email, reset]);
 
   return (
     <>

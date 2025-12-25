@@ -1,0 +1,42 @@
+{
+  "clients": {
+    "status": {
+      "new": "Новые",
+      "inProgress": "В работе",
+      "archive": "Архив"
+    },
+
+    "sorting": {
+      "new": "Сначала новые",
+      "old": "Сначала старые"
+    },
+    "searchbar": "Поиск",
+    "emptyHeader": "Клиентов пока нет"
+  },
+  "managers": {
+    "status": {
+      "new": "Новые",
+      "inProgress": "В работе",
+      "archive": "Архив"
+    },
+    "sorting": {
+      "new": "Сначала новые",
+      "old": "Сначала старые"
+    },
+    "searchbar": "Поиск",
+    "emptyHeader": "Менеджеров пока нет"
+  },
+  "supervisors": {
+    "status": {
+      "new": "Новые",
+      "inProgress": "В работе",
+      "archive": "Архив"
+    },
+    "sorting": {
+      "new": "Сначала новые",
+      "old": "Сначала старые"
+    },
+    "searchbar": "Поиск",
+    "emptyHeader": "Супервайзеров пока нет"
+  }
+}

@@ -1,13 +1,11 @@
 import { http, delay, HttpResponse } from "msw";
-import Ajv from "ajv";
 
-import schemaSuccess from "./postDelManagerSuccess.schema.json";
-import { PostDelManagerSuccess } from "./postDelManagerSuccess.type";
+import {
+  postDelManagerSuccessSchema,
+  PostDelManagerSuccess,
+} from "./postDelManagerSuccess.schema";
+
 import { UnxpectedError } from "~/shared/unexpectedError/unexpectedError";
-
-const ajv = new Ajv();
-
-const validateSuccess = ajv.compile(schemaSuccess);
 
 export const postDelManagerKeys = ["postDelManager"];
 
@@ -42,9 +40,12 @@ export const postDelManager = async (
       });
     }
 
-    if (validateSuccess(response)) {
-      data = response as unknown as PostDelManagerSuccess;
+    const parsed = postDelManagerSuccessSchema.safeParse(response);
+
+    if (parsed.success) {
+      data = parsed.data;
     } else {
+      console.log(parsed.error);
       throw new Response(`Данные запроса postDelManager не валидны схеме`);
     }
 

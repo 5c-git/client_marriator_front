@@ -1,20 +1,18 @@
 import { http, delay, HttpResponse } from "msw";
-import Ajv from "ajv";
 
-import postDelPlaceModerationSuccess from "./postDelPlaceModerationSuccess.schema.json";
-import { PostDelPlaceSuccess } from "~/requests/postDelPlace/postDelPlaceSuccess.type";
+import {
+  postDelPlaceModerationSuccessSchema,
+  PostDelPlaceModerationSuccess,
+} from "./postDelPlaceModerationSuccess.schema";
+
 import { UnxpectedError } from "~/shared/unexpectedError/unexpectedError";
-
-const ajv = new Ajv();
-
-const validateSuccess = ajv.compile(postDelPlaceModerationSuccess);
 
 export const postDelPlaceModerationKeys = ["postDelPlaceModeration"];
 
 export const postDelPlaceModeration = async (
   accessToken: string,
   userId: string,
-  placeId: string
+  placeId: string,
 ) => {
   try {
     const url = new URL(import.meta.env.VITE_POST_DEL_PLACE_MODERATION);
@@ -42,10 +40,15 @@ export const postDelPlaceModeration = async (
       });
     }
 
-    if (validateSuccess(response)) {
-      data = response as unknown as PostDelPlaceSuccess;
+    const parsed = postDelPlaceModerationSuccessSchema.safeParse(response);
+
+    if (parsed.success) {
+      data = parsed.data;
     } else {
-      throw new Response(`Данные запроса PostDelPlaceSuccess не валидны схеме`);
+      console.log(parsed.error);
+      throw new Response(
+        `Данные запроса postDelPlaceModeration не валидны схеме`,
+      );
     }
 
     return data;
@@ -63,7 +66,7 @@ export const postDelPlaceModeration = async (
 };
 
 // MOCKS
-export const mockResponseSuccess = {
+export const mockResponseSuccess: PostDelPlaceModerationSuccess = {
   data: {
     success: true,
   },
@@ -75,5 +78,5 @@ export const postDelPlaceModerationMockResponse = http.post(
   async () => {
     await delay(2000);
     return HttpResponse.json(mockResponseSuccess);
-  }
+  },
 );

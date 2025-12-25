@@ -1,20 +1,17 @@
 import { http, delay, HttpResponse } from "msw";
-import Ajv from "ajv";
 
-import successSchema from "./postSetSupervisorsSuccess.schema.json";
-import { PostSetSupervisorsSuccess } from "./postSetSupervisorsSuccess.type";
+import {
+  postSetSupervisorsSuccessSchema,
+  PostSetSupervisorsSuccess,
+} from "./postSetSupervisorsSuccess.schema";
 import { UnxpectedError } from "~/shared/unexpectedError/unexpectedError";
-
-const ajv = new Ajv();
-
-const validateSuccess = ajv.compile(successSchema);
 
 export const postSetSupervisorsKeys = ["postSetSupervisors"];
 
 export const postSetSupervisors = async (
   accessToken: string,
   userId: string,
-  supervisors: string[]
+  supervisors: string[],
 ) => {
   try {
     const url = new URL(import.meta.env.VITE_POST_SET_SUPERVISORS);
@@ -45,9 +42,12 @@ export const postSetSupervisors = async (
       });
     }
 
-    if (validateSuccess(response)) {
-      data = response as unknown as PostSetSupervisorsSuccess;
+    const parsed = postSetSupervisorsSuccessSchema.safeParse(response);
+
+    if (parsed.success) {
+      data = parsed.data;
     } else {
+      console.log(parsed.error);
       throw new Response(`Данные запроса postSetSupervisors не валидны схеме`);
     }
 
@@ -66,7 +66,7 @@ export const postSetSupervisors = async (
 };
 
 // MOCKS
-export const mockResponseSuccess = {
+export const mockResponseSuccess: PostSetSupervisorsSuccess = {
   data: {
     success: true,
   },
@@ -78,5 +78,5 @@ export const postSetSupervisorsMockResponse = http.post(
   async () => {
     await delay(2000);
     return HttpResponse.json(mockResponseSuccess);
-  }
+  },
 );

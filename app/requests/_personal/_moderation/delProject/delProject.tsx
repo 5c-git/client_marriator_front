@@ -1,20 +1,18 @@
 import { http, delay, HttpResponse } from "msw";
-import Ajv from "ajv";
 
-import delProjectSuccess from "./delProjectSuccess.schema.json";
-import { PostDelPlaceSuccess } from "~/requests/postDelPlace/postDelPlaceSuccess.type";
+import {
+  delProjectSuccessSchema,
+  DelProjectSuccessSchema,
+} from "./delProjectSuccess.schema";
+
 import { UnxpectedError } from "~/shared/unexpectedError/unexpectedError";
-
-const ajv = new Ajv();
-
-const validateSuccess = ajv.compile(delProjectSuccess);
 
 export const delProjectKeys = ["delProject"];
 
 export const postDelProject = async (
   accessToken: string,
   userId: string,
-  projectId: string
+  projectId: string,
 ) => {
   try {
     const url = new URL(import.meta.env.VITE_POST_DEL_PROJECT);
@@ -42,9 +40,12 @@ export const postDelProject = async (
       });
     }
 
-    if (validateSuccess(response)) {
-      data = response as unknown as PostDelPlaceSuccess;
+    const parsed = delProjectSuccessSchema.safeParse(response);
+
+    if (parsed.success) {
+      data = parsed.data;
     } else {
+      console.log(parsed.error);
       throw new Response(`Данные запроса postDelProject не валидны схеме`);
     }
 
@@ -63,7 +64,7 @@ export const postDelProject = async (
 };
 
 // MOCKS
-export const mockResponseSuccess = {
+export const mockResponseSuccess: DelProjectSuccessSchema = {
   data: {
     id: 235,
     name: null,
@@ -124,5 +125,5 @@ export const postDelProjectMockResponse = http.post(
   async () => {
     await delay(2000);
     return HttpResponse.json(mockResponseSuccess);
-  }
+  },
 );

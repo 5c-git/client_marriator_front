@@ -1,19 +1,16 @@
 import { http, delay, HttpResponse } from "msw";
-import Ajv from "ajv";
 
-import successSchema from "./getSupervisorsSuccess.schema.json";
-import type { GetSupervisorsSuccess } from "./getSupervisorsSuccess.type";
+import {
+  getSupervisorsSuccessSchema,
+  GetSupervisorsSuccess,
+} from "./getSupervisorsSuccess.schema";
 import { UnxpectedError } from "~/shared/unexpectedError/unexpectedError";
-
-const ajv = new Ajv();
-
-const validateSuccess = ajv.compile(successSchema);
 
 export const getSupervisorsKeys = ["getSupervisors"];
 
 export const getSupervisors = async (
   accessToken: string,
-  userId: number
+  userId: number,
 ): Promise<GetSupervisorsSuccess> => {
   try {
     const url = new URL(import.meta.env.VITE_GET_SUPERVISORS);
@@ -37,10 +34,12 @@ export const getSupervisors = async (
       });
     }
 
-    if (validateSuccess(response)) {
-      data = response as unknown as GetSupervisorsSuccess;
+    const parsed = getSupervisorsSuccessSchema.safeParse(response);
+
+    if (parsed.success) {
+      data = parsed.data;
     } else {
-      console.log(validateSuccess.errors);
+      console.log(parsed.error);
       throw new Response(`Данные запроса getSupervisors не валидны схеме`);
     }
 
@@ -152,10 +151,12 @@ export const mockResponseEmpty = {};
 
 export const getSupervisorsMockResponse = http.get(
   `${import.meta.env.VITE_GET_SUPERVISORS}`,
-  async ({ request }) => {
-    const url = new URL(request.url);
+  async () =>
+    // { request }
+    {
+      // const url = new URL(request.url);
 
-    await delay(2000);
-    return HttpResponse.json(mockResponseSuccess);
-  }
+      await delay(2000);
+      return HttpResponse.json(mockResponseSuccess);
+    },
 );

@@ -300,6 +300,7 @@ export const theme = createTheme(baseTheme, {
         },
         shrink: {
           transform: "translate(14px, 8px) scale(1)",
+          width: "calc(100% - 32px)",
 
           "&.Mui-error": {
             color: baseTheme.vars.palette["Grey_2"],
