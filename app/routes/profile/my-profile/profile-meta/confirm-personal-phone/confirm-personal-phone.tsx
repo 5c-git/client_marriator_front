@@ -131,10 +131,6 @@ export default function ConfirmPersonalPhone({
     return () => clearInterval(timer);
   }, [seconds, navigation.state]);
 
-  // useEffect(() => {
-  //   setSeconds(Number(loaderData.ttl));
-  // }, [loaderData.ttl, navigation.state]);
-
   return (
     <>
       {navigation.state !== "idle" ? <Loader /> : null}
@@ -222,6 +218,7 @@ export default function ConfirmPersonalPhone({
                   encType: "application/json",
                 },
               );
+              setSeconds(Number(loaderData.ttl));
             }}
           >
             {t("sendAgain")}

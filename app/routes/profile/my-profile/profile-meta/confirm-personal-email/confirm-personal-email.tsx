@@ -120,10 +120,6 @@ export default function ConfirmPersonalEmail({
     return () => clearInterval(timer);
   }, [seconds, navigation.state]);
 
-  // useEffect(() => {
-  //   setSeconds(Number(loaderData.ttl));
-  // }, [loaderData.ttl, navigation.state]);
-
   return (
     <>
       {navigation.state !== "idle" ? <Loader /> : null}
@@ -211,6 +207,7 @@ export default function ConfirmPersonalEmail({
                   encType: "application/json",
                 },
               );
+              setSeconds(Number(loaderData.ttl));
             }}
           >
             {t("sendAgain")}

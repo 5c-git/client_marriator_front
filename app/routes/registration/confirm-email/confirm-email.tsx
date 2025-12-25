@@ -121,10 +121,6 @@ export default function ConfirmEmail({ loaderData }: Route.ComponentProps) {
     return () => clearInterval(timer);
   }, [seconds, navigation.state]);
 
-  // useEffect(() => {
-  //   setSeconds(Number(loaderData.ttl));
-  // }, [loaderData.ttl, navigation.state]);
-
   return (
     <>
       {navigation.state !== "idle" ? <Loader /> : null}
@@ -212,6 +208,7 @@ export default function ConfirmEmail({ loaderData }: Route.ComponentProps) {
                   encType: "application/json",
                 },
               );
+              setSeconds(Number(loaderData.ttl));
             }}
           >
             {t("sendAgain")}

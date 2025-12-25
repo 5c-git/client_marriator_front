@@ -126,10 +126,6 @@ export default function Sms({ loaderData }: Route.ComponentProps) {
     return () => clearInterval(timer);
   }, [seconds]);
 
-  // useEffect(() => {
-  //   setSeconds(Number(loaderData.ttl));
-  // }, [loaderData.ttl, navigation.state]);
-
   return (
     <>
       {navigation.state !== "idle" ? <Loader /> : null}
@@ -215,6 +211,7 @@ export default function Sms({ loaderData }: Route.ComponentProps) {
                   encType: "application/json",
                 },
               );
+              setSeconds(Number(loaderData.ttl));
             }}
           >
             {t("sendAgain")}
