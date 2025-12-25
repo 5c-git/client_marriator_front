@@ -91,10 +91,6 @@ export default [
         route(":lang?/users", "routes/users/clients/clients.tsx"),
         route(":lang?/users/managers", "routes/users/managers/managers.tsx"),
         route(
-          ":lang?/users/recruiters",
-          "routes/users/recruiters/recruiters.tsx",
-        ),
-        route(
           ":lang?/users/supervisors",
           "routes/users/supervisors/supervisors.tsx",
         ),
@@ -111,10 +107,6 @@ export default [
       route(
         ":lang?/users/supervisor/:user",
         "routes/users/supervisors/supervisor/supervisor.tsx",
-      ),
-      route(
-        ":lang?/users/recruiter/:user",
-        "routes/users/recruiters/recruiter/recruiter.tsx",
       ),
     ]),
 
