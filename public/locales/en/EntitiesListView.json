@@ -10,7 +10,10 @@
       "2": "Not accepted",
       "3": "Accepted",
       "4": "Cancelled",
-      "5": "Archived"
+      "5": "Archived",
+      "6": "In review",
+      "7": "Approved",
+      "8": "In work"
     },
     "emptyHeader": "There are no orders."
   },
@@ -25,8 +28,29 @@
       "2": "Not accepted",
       "3": "Accepted",
       "4": "Cancelled",
-      "5": "Archived"
+      "5": "Archived",
+      "6": "In review",
+      "7": "Approved",
+      "8": "In work"
     },
     "emptyHeader": "There are no tasks."
+  },
+  "jobs": {
+    "sorting": {
+      "placeholder": "Sorting",
+      "ascending": "In ascending order of the start of services",
+      "descending": "In descending order of the start of services"
+    },
+    "status": {
+      "1": "New",
+      "2": "Not accepted",
+      "3": "Accepted",
+      "4": "Cancelled",
+      "5": "Archived",
+      "6": "In review",
+      "7": "Approved",
+      "8": "In work"
+    },
+    "emptyHeader": "There are no jobs."
   }
 }

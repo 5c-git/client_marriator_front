@@ -1,4 +1,4 @@
-import { useState, useRef } from "react";
+import { useState, useEffectEvent, useEffect } from "react";
 
 import type { UsersMobileViewInterface } from "./UsersMobileViewInterface";
 
@@ -17,8 +17,6 @@ import { SortingSelect } from "~/shared/ui/SortingSelect/SortingSelect";
 import { StyledSearchBar } from "~/shared/ui/StyledSearchBar/StyledSearchBar";
 
 export function UsersMobileView(props: UsersMobileViewInterface) {
-  const setup = useRef<boolean>(null);
-
   const { t } = useTranslation("UsersMobileView");
 
   const [filteredUsers, setFilteredUsers] = useState<{
@@ -68,11 +66,10 @@ export function UsersMobileView(props: UsersMobileViewInterface) {
     setActiveUsers(matchingItems);
   }, 1000);
 
-  //стартовая фильтрация сущностей
-  if (setup.current === null) {
-    const allFilters = [
-      ...new Set(props.users.map((user) => user["status"])),
-    ].sort((a, b) => a - b);
+  const onInit = useEffectEvent((users: UsersMobileViewInterface["users"]) => {
+    const allFilters = [...new Set(users.map((user) => user["status"]))].sort(
+      (a, b) => a - b,
+    );
 
     const filteredUsers: {
       [key: number]: UsersMobileViewInterface["users"];
@@ -91,9 +88,10 @@ export function UsersMobileView(props: UsersMobileViewInterface) {
     setFilteredUsers(filteredUsers);
     setActiveUsers(filteredUsers[Number(Object.keys(filteredUsers)[0])]);
     setFilter(allFilters[0]);
-
-    setup.current = true;
-  }
+  });
+  useEffect(() => {
+    onInit(props.users);
+  }, [props.users]);
 
   return (
     <>

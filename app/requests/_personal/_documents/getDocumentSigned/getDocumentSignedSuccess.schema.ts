@@ -6,7 +6,7 @@ export const getDocumentSignedSuccessSchema = z.object({
       id: z.number(),
       file_path: z.string(),
       file_name: z.string(),
-      status_signature: z.union([z.literal("noSend")]),
+      status_signature: z.union([z.literal("noSend"), z.literal("process")]),
       file_path_signed: z.union([z.null(), z.string()]),
     }),
   ),

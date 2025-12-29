@@ -21,6 +21,9 @@ export const getBidSuccessSchema = z.object({
       z.literal(3),
       z.literal(4),
       z.literal(5),
+      z.literal(6),
+      z.literal(7),
+      z.literal(8),
     ]),
     selfEmployed: z.boolean(),
     place: z.object({

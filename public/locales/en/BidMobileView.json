@@ -4,7 +4,10 @@
     "accepted": "Accepted",
     "notAccepted": "Not accepted",
     "canceled": "Canceled",
-    "archive": "Archive"
+    "archive": "Archive",
+    "review": "In review",
+    "approved": "Approved",
+    "work": "In work"
   },
   "role": {
     "manager": "Manager",

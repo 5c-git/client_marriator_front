@@ -1,20 +1,28 @@
-import { useNavigation, useNavigate } from "react-router";
+import { useNavigation, useNavigate, useFetcher } from "react-router";
 import type { Route } from "./+types/archive";
 
 import { useTranslation } from "react-i18next";
 
 import { withLocale } from "~/shared/withLocale";
 
-import { Typography, List, ListItem, IconButton } from "@mui/material";
+import { useStore } from "~/store/store";
+
+import {
+  Typography,
+  List,
+  ListItem,
+  IconButton,
+  Snackbar,
+  Alert,
+} from "@mui/material";
 import Box from "@mui/material/Box";
 import { TopNavigation } from "~/shared/ui/TopNavigation/TopNavigation";
-
 import { Loader } from "~/shared/ui/Loader/Loader";
 
-import { useStore } from "~/store/store";
-import { getDocumentArchive } from "~/requests/_personal/_documents/getDocumentArchive/getDocumentArchive";
-
 import FileDownloadOutlinedIcon from "@mui/icons-material/FileDownloadOutlined";
+
+import { getDocumentArchive } from "~/requests/_personal/_documents/getDocumentArchive/getDocumentArchive";
+import { getSignedDocument } from "~/requests/_personal/getSignedDocument/getSignedDocument";
 
 export async function clientLoader() {
   const accessToken = useStore.getState().accessToken;
@@ -22,9 +30,29 @@ export async function clientLoader() {
   if (accessToken) {
     const data = await getDocumentArchive(accessToken);
 
-    return data.result;
+    return data.data;
   } else {
     throw new Response("Токен авторизации не обнаружен!", { status: 401 });
+  }
+}
+
+export async function clientAction({ request }: Route.ClientActionArgs) {
+  const accessToken = useStore.getState().accessToken;
+  const documentId = await request.json();
+
+  if (accessToken) {
+    const signedDocData = await getSignedDocument(accessToken, documentId);
+
+    if ("data" in signedDocData) {
+      if (signedDocData.data.file_path_signed) {
+        window.open(
+          `${import.meta.env.VITE_ASSET_PATH}${signedDocData.data.file_path_signed}`,
+          "_blank",
+        );
+      } else {
+        return { data: null, isError: true, error: "error" };
+      }
+    }
   }
 }
 
@@ -32,6 +60,7 @@ export default function Archive({ loaderData }: Route.ComponentProps) {
   const { t } = useTranslation("documentsArchive");
   const navigation = useNavigation();
   const navigate = useNavigate();
+  const fetcher = useFetcher<typeof clientAction>();
 
   return (
     <>
@@ -55,7 +84,7 @@ export default function Archive({ loaderData }: Route.ComponentProps) {
           paddingBottom: "20px",
           paddingRight: "16px",
           paddingLeft: "16px",
-          height: "calc(100% - 56px)",
+          // height: "calc(100% - 56px)",
         }}
       >
         <Typography
@@ -90,22 +119,40 @@ export default function Archive({ loaderData }: Route.ComponentProps) {
           {loaderData.length !== 0 ? (
             loaderData.map((item) => (
               <ListItem
-                key={item.uuid}
+                key={item.id}
                 secondaryAction={
-                  <IconButton
-                    LinkComponent="a"
-                    href={item.path}
-                    target="_blank"
-                    rel="noreferrer"
-                    edge="end"
-                    aria-label="download file"
-                  >
-                    <FileDownloadOutlinedIcon
-                      sx={(theme) => ({
-                        color: theme.vars.palette["Black"],
-                      })}
-                    />
-                  </IconButton>
+                  item.file_path_signed ? (
+                    <IconButton
+                      LinkComponent="a"
+                      href={`${import.meta.env.VITE_ASSET_PATH}${item.file_path_signed}`}
+                      target="_blank"
+                      rel="noreferrer"
+                      edge="end"
+                      aria-label="download file"
+                    >
+                      <FileDownloadOutlinedIcon
+                        sx={(theme) => ({
+                          color: theme.vars.palette["Black"],
+                        })}
+                      />
+                    </IconButton>
+                  ) : (
+                    <IconButton
+                      edge="end"
+                      onClick={() => {
+                        fetcher.submit(item.id, {
+                          method: "POST",
+                          encType: "application/json",
+                        });
+                      }}
+                    >
+                      <FileDownloadOutlinedIcon
+                        sx={(theme) => ({
+                          color: theme.vars.palette["Black"],
+                        })}
+                      />
+                    </IconButton>
+                  )
                 }
                 disablePadding
                 sx={{
@@ -114,7 +161,7 @@ export default function Archive({ loaderData }: Route.ComponentProps) {
                   },
                 }}
               >
-                {item.name}
+                {item.file_name}
               </ListItem>
             ))
           ) : (
@@ -128,6 +175,25 @@ export default function Archive({ loaderData }: Route.ComponentProps) {
           )}
         </List>
       </Box>
+
+      <Snackbar
+        open={fetcher.data && fetcher.data.isError === true ? true : false}
+        autoHideDuration={3000}
+        onClose={() => {
+          fetcher.reset();
+        }}
+      >
+        <Alert
+          severity="info"
+          variant="small"
+          color="Banner_Error"
+          sx={{
+            width: "100%",
+          }}
+        >
+          {t("error")}
+        </Alert>
+      </Snackbar>
     </>
   );
 }

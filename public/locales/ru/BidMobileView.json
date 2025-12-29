@@ -4,7 +4,10 @@
     "accepted": "Принято",
     "notAccepted": "Не Принято",
     "canceled": "Отменено",
-    "archive": "Архив"
+    "archive": "Архив",
+    "review": "На рассмотрении",
+    "approved": "Одобрена",
+    "work": "В работе"
   },
   "role": {
     "manager": "Менеджер",

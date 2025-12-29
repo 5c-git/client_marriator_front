@@ -7,7 +7,7 @@ export const getSignedDocumentSuccessSchema = z.object({
     file_name: z.string(),
     status_signature: z.enum(["signed", "rejected", "process", "noSend"]),
     date_signature: z.string(),
-    file_path_signed: z.string(),
+    file_path_signed: z.union([z.null(), z.string()]),
   }),
 });
 

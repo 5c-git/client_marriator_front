@@ -185,7 +185,7 @@ export const StyledPhotoInput = ({
                         onChange(name, "");
                         setError(error);
                         setLoading(false);
-                      }
+                      },
                     ).catch(() => {
                       setValue("");
                       onChange(name, "");

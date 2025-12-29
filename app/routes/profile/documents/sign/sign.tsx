@@ -1,11 +1,5 @@
-import {
-  useNavigation,
-  useNavigate,
-  useFetcher,
-  redirect,
-  useSearchParams,
-} from "react-router";
-import { useState, useEffect } from "react";
+import { useNavigation, useNavigate, useFetcher, redirect } from "react-router";
+import { useState, useEffect, useEffectEvent } from "react";
 import type { Route } from "./+types/sign";
 
 import { useTranslation } from "react-i18next";
@@ -18,12 +12,20 @@ import { useForm, Controller } from "react-hook-form";
 
 import { useStore } from "~/store/store";
 
-import { Button, Typography, Dialog, Snackbar, Alert } from "@mui/material";
+import {
+  Button,
+  Typography,
+  Dialog,
+  Snackbar,
+  Alert,
+  TextField,
+} from "@mui/material";
 import Box from "@mui/material/Box";
+
+import { MaskedField } from "~/shared/ui/MaskedField/MaskedField";
 
 import { TopNavigation } from "~/shared/ui/TopNavigation/TopNavigation";
 import { Loader } from "~/shared/ui/Loader/Loader";
-import { StyledSmsField } from "~/shared/ui/StyledSmsField/StyledSmsField";
 
 import { S_OrderedList, S_OrderedItem } from "./sign.styled";
 
@@ -32,7 +34,6 @@ import { getDocumentSigned } from "~/requests/_personal/_documents/getDocumentSi
 import { postSignedDocument } from "~/requests/_personal/_documents/postSignedDocument/postSignedDocument";
 import { postRetriesSms } from "~/requests/_personal/postRetriesSms/postRetriesSms";
 import { postSendCode } from "~/requests/_personal/postSendCode/postSendCode";
-import { getSignedDocument } from "~/requests/_personal/getSignedDocument/getSignedDocument";
 
 import { postCreateTestDoc } from "./postCreateTestDoc/postCreateTestDoc";
 
@@ -57,16 +58,18 @@ export async function clientAction({ request }: Route.ClientActionArgs) {
     if (_action === "sign") {
       const data = await postSignedDocument(accessToken);
 
-      if ("error" in data.data) {
-        currentURL.searchParams.set("error", "error");
-        throw redirect(currentURL.toString());
+      if ("success" in data.data) {
+        return { data: null, isError: false, error: "" };
+      } else if ("error" in data.data) {
+        return { data: null, isError: true, error: "error" };
       }
     } else if (_action === "sendAgain") {
       const data = await postRetriesSms(accessToken);
 
-      if ("error" in data.data) {
-        currentURL.searchParams.set("error", "error");
-        throw redirect(currentURL.toString());
+      if ("success" in data.data) {
+        return { data: null, isError: false, error: "" };
+      } else if ("error" in data.data) {
+        return { data: null, isError: true, error: "error" };
       }
     } else if (_action === "sendCode") {
       const data = await postSendCode(accessToken, fields.code);
@@ -87,20 +90,12 @@ export default function Sign({ loaderData }: Route.ComponentProps) {
   const { t } = useTranslation("sign");
   const navigation = useNavigation();
   const navigate = useNavigate();
-  const fetcher = useFetcher();
+  const fetcher = useFetcher<typeof clientAction>();
 
-  const [openDialog, setOpenDialog] = useState<boolean>(false);
   const [seconds, setSeconds] = useState<number>(0);
+  const [popup, setPopup] = useState<boolean>(false);
 
-  const [searchParams, setSearchParams] = useSearchParams();
-
-  const error = searchParams.get("error");
-
-  const {
-    control,
-    handleSubmit,
-    formState: { errors },
-  } = useForm({
+  const { control, handleSubmit } = useForm({
     defaultValues: {
       sms: "",
     },
@@ -121,17 +116,35 @@ export default function Sign({ loaderData }: Route.ComponentProps) {
     return () => clearInterval(timer);
   }, [seconds]);
 
-  if (error && seconds > 0) {
-    setSeconds(0);
-  }
+  const showDialog = useEffectEvent((data: typeof fetcher.data) => {
+    if (data) {
+      setPopup(true);
+    }
+  });
+  useEffect(() => {
+    showDialog(fetcher.data);
+  }, [fetcher.data]);
+
+  const startSeconds = useEffectEvent((data: typeof fetcher.data) => {
+    if (data && data.isError === false) {
+      setSeconds(60);
+    }
+  });
+  useEffect(() => {
+    startSeconds(fetcher.data);
+  }, [fetcher.data]);
 
   return (
     <>
-      {navigation.state !== "idle" ? <Loader /> : null}
+      {navigation.state !== "idle" || fetcher.state !== "idle" ? (
+        <Loader />
+      ) : null}
 
       <Box
         sx={{
-          height: "100%",
+          display: "flex",
+          flexDirection: "column",
+          flexGrow: 1,
         }}
       >
         <TopNavigation
@@ -168,7 +181,7 @@ export default function Sign({ loaderData }: Route.ComponentProps) {
             paddingBottom: "20px",
             paddingRight: "16px",
             paddingLeft: "16px",
-            height: "calc(100% - 56px)",
+            flexGrow: 1,
           }}
         >
           {loaderData.length === 0 ? (
@@ -197,8 +210,6 @@ export default function Sign({ loaderData }: Route.ComponentProps) {
               }}
               variant="contained"
               onClick={() => {
-                setOpenDialog(true);
-                setSeconds(60);
                 fetcher.submit(JSON.stringify({ _action: "sign" }), {
                   method: "POST",
                   encType: "application/json",
@@ -212,10 +223,8 @@ export default function Sign({ loaderData }: Route.ComponentProps) {
       </Box>
 
       <Dialog
-        open={openDialog}
-        onClose={() => {
-          // setOpenDialog(false);
-        }}
+        open={popup}
+        onClose={() => {}}
         sx={{
           "& .MuiDialog-paper": {
             borderRadius: "8px",
@@ -247,24 +256,38 @@ export default function Sign({ loaderData }: Route.ComponentProps) {
             name="sms"
             control={control}
             render={({ field }) => (
-              <StyledSmsField
-                inputType="sms"
-                error={errors.sms?.message}
-                placeholder={t("smsPlaceholder")}
-                onImmediateChange={handleSubmit((values) => {
-                  fetcher.submit(
-                    JSON.stringify({
-                      _action: "sendCode",
-                      code: values.sms,
-                    }),
-                    {
-                      method: "POST",
-                      encType: "application/json",
+              <>
+                <TextField
+                  {...field}
+                  onChange={(evt) => {
+                    field.onChange(evt);
+
+                    if (evt.target.value.length === 6) {
+                      fetcher.submit(
+                        JSON.stringify({
+                          _action: "sendCode",
+                          code: evt.target.value,
+                        }),
+                        {
+                          method: "POST",
+                          encType: "application/json",
+                        },
+                      );
+                    }
+                  }}
+                  label={t("smsPlaceholder")}
+                  slotProps={{
+                    input: {
+                      inputComponent: MaskedField as never,
+                      inputProps: {
+                        mask: "000000",
+                      },
+                      inputMode: "numeric",
+                      type: "tel",
                     },
-                  );
-                })}
-                {...field}
-              />
+                  }}
+                />
+              </>
             )}
           />
         </form>
@@ -320,7 +343,8 @@ export default function Sign({ loaderData }: Route.ComponentProps) {
           <Button
             variant="outlined"
             onClick={() => {
-              setOpenDialog(false);
+              fetcher.reset();
+              setPopup(false);
             }}
           >
             {t("cancelAction")}
@@ -329,13 +353,10 @@ export default function Sign({ loaderData }: Route.ComponentProps) {
       </Dialog>
 
       <Snackbar
-        open={error ? true : false}
+        open={fetcher.data && fetcher.data.isError === true ? true : false}
         autoHideDuration={3000}
         onClose={() => {
-          setSearchParams((prev) => {
-            prev.delete("error");
-            return prev;
-          });
+          fetcher.reset();
         }}
       >
         <Alert
