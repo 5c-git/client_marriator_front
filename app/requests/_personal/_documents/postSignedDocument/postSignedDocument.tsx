@@ -10,6 +10,8 @@ import {
   PostSignedDocumentError,
 } from "./postSignedDocumentError.schema";
 
+import { postSignedDocumentNoPaperErrorSchema } from "./postSignedDocumentNoPaperError.schema";
+
 import { UnxpectedError } from "~/shared/unexpectedError/unexpectedError";
 
 export const postSignedDocumentKeys = ["postSignedDocument"];
@@ -42,11 +44,19 @@ export const postSignedDocument = async (accessToken: string) => {
 
     const parsed = postSignedDocumentSuccessSchema.safeParse(response);
     const parsedError = postSignedDocumentErrorSchema.safeParse(response);
+    const parsedNoPaperError =
+      postSignedDocumentNoPaperErrorSchema.safeParse(response);
 
     if (parsed.success) {
       data = parsed.data;
     } else if (parsedError.success) {
       data = parsedError.data;
+    } else if (parsedNoPaperError.success) {
+      data = {
+        data: {
+          error: parsedNoPaperError.data.data.description,
+        },
+      };
     } else {
       console.log(parsed.error);
       throw new Response(`Данные запроса postSignedDocument не валидны схеме`);
@@ -83,5 +93,5 @@ export const postSignedDocumentMockResponse = http.post(
   async () => {
     await delay(2000);
     return HttpResponse.json(mockResponseSuccess);
-  },
+  }
 );

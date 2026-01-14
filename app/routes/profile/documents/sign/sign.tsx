@@ -51,7 +51,6 @@ export async function clientLoader() {
 
 export async function clientAction({ request }: Route.ClientActionArgs) {
   const accessToken = useStore.getState().accessToken;
-  const currentURL = new URL(request.url);
   const { _action, ...fields } = await request.json();
 
   if (accessToken) {
@@ -61,7 +60,11 @@ export async function clientAction({ request }: Route.ClientActionArgs) {
       if ("success" in data.data) {
         return { data: null, isError: false, error: "" };
       } else if ("error" in data.data) {
-        return { data: null, isError: true, error: "error" };
+        return {
+          data: null,
+          isError: true,
+          error: "Возникла ошибка! Попробуйще повторно позже.",
+        };
       }
     } else if (_action === "sendAgain") {
       const data = await postRetriesSms(accessToken);
@@ -69,7 +72,7 @@ export async function clientAction({ request }: Route.ClientActionArgs) {
       if ("success" in data.data) {
         return { data: null, isError: false, error: "" };
       } else if ("error" in data.data) {
-        return { data: null, isError: true, error: "error" };
+        return { data: null, isError: true, error: data.data.error };
       }
     } else if (_action === "sendCode") {
       const data = await postSendCode(accessToken, fields.code);
@@ -77,8 +80,7 @@ export async function clientAction({ request }: Route.ClientActionArgs) {
       if ("success" in data.data) {
         throw redirect(withLocale("/profile/documents/archive"));
       } else if ("error" in data.data) {
-        currentURL.searchParams.set("error", "error");
-        throw redirect(currentURL.toString());
+        return { data: null, isError: true, error: data.data.error };
       }
     } else if (_action === "test") {
       await postCreateTestDoc(accessToken);
@@ -95,14 +97,14 @@ export default function Sign({ loaderData }: Route.ComponentProps) {
   const [seconds, setSeconds] = useState<number>(0);
   const [popup, setPopup] = useState<boolean>(false);
 
-  const { control, handleSubmit } = useForm({
+  const { control, handleSubmit, reset } = useForm({
     defaultValues: {
       sms: "",
     },
     resolver: zodResolver(
       z.object({
         sms: z.string().length(4, { error: t("smsError") }),
-      }),
+      })
     ),
   });
 
@@ -248,7 +250,7 @@ export default function Sign({ loaderData }: Route.ComponentProps) {
               {
                 method: "POST",
                 encType: "application/json",
-              },
+              }
             );
           })}
         >
@@ -271,7 +273,7 @@ export default function Sign({ loaderData }: Route.ComponentProps) {
                         {
                           method: "POST",
                           encType: "application/json",
-                        },
+                        }
                       );
                     }
                   }}
@@ -332,7 +334,7 @@ export default function Sign({ loaderData }: Route.ComponentProps) {
               {
                 method: "POST",
                 encType: "application/json",
-              },
+              }
             );
           }}
         >
@@ -343,6 +345,7 @@ export default function Sign({ loaderData }: Route.ComponentProps) {
           <Button
             variant="outlined"
             onClick={() => {
+              reset();
               fetcher.reset();
               setPopup(false);
             }}
@@ -367,7 +370,7 @@ export default function Sign({ loaderData }: Route.ComponentProps) {
             width: "100%",
           }}
         >
-          {t("error")}
+          {fetcher.data?.error}
         </Alert>
       </Snackbar>
     </>

@@ -9,6 +9,8 @@ import {
   PostSendCodeError,
 } from "./postSendCodeError.schema";
 
+import { postSendCodeNoPaperErrorSchema } from "./postSendCodeNoPaperError.schema";
+
 import { UnxpectedError } from "~/shared/unexpectedError/unexpectedError";
 
 export const postSendCodeKeys = ["postSendCode"];
@@ -41,11 +43,19 @@ export const postSendCode = async (accessToken: string, code: number) => {
 
     const parsed = postSendCodeSuccessSchema.safeParse(response);
     const parsedError = postSendCodeErrorSchema.safeParse(response);
+    const parsedNoPaperError =
+      postSendCodeNoPaperErrorSchema.safeParse(response);
 
     if (parsed.success) {
       data = parsed.data;
     } else if (parsedError.success) {
       data = parsedError.data;
+    } else if (parsedNoPaperError.success) {
+      data = {
+        data: {
+          error: parsedNoPaperError.data.data.description,
+        },
+      };
     } else {
       console.log(parsed.error);
       throw new Response(`Данные запроса postSendCode не валидны схеме`);
@@ -82,5 +92,5 @@ export const postSendCodeMockResponse = http.post(
   async () => {
     await delay(2000);
     return HttpResponse.json(mockResponseSuccess);
-  },
+  }
 );

@@ -10,6 +10,8 @@ import {
   PostRetriesSmsError,
 } from "./postRetriesSmsError.schema";
 
+import { postRetriesSmsNoPaperErrorSchema } from "./postRetriesSmsNoPaperError.schema";
+
 import { UnxpectedError } from "~/shared/unexpectedError/unexpectedError";
 
 export const postRetriesSmsKeys = ["postRetriesSms"];
@@ -42,11 +44,19 @@ export const postRetriesSms = async (accessToken: string) => {
 
     const parsed = postRetriesSmsSuccessSchema.safeParse(response);
     const parsedError = postRetriesSmsErrorSchema.safeParse(response);
+    const parsedNoPaperError =
+      postRetriesSmsNoPaperErrorSchema.safeParse(response);
 
     if (parsed.success) {
       data = parsed.data;
     } else if (parsedError.success) {
       data = parsedError.data;
+    } else if (parsedNoPaperError.success) {
+      data = {
+        data: {
+          error: parsedNoPaperError.data.data.description,
+        },
+      };
     } else {
       console.log(parsed.error);
       throw new Response(`Данные запроса postRetriesSms не валидны схеме`);
@@ -83,5 +93,5 @@ export const postRetriesSmsMockResponse = http.post(
   async () => {
     await delay(2000);
     return HttpResponse.json(mockResponseSuccess);
-  },
+  }
 );
