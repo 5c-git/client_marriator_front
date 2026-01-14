@@ -28,6 +28,7 @@
   "statusPlaceholder": "Status",
   "locationPlaceholder": "Location",
   "serviceTypePlaceholder": "Service type",
+  "projectTypePlaceholder": "Project",
   "amountPlaceholder": "Amount",
   "unitPricePlaceholder": "Price (per unit) *",
   "paxPricePlaceholder": "Taxed price",

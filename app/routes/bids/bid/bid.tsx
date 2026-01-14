@@ -1,4 +1,4 @@
-import { useState, useRef } from "react";
+import { useState, useEffect, useEffectEvent } from "react";
 import { useOutletContext, redirect, useSubmit } from "react-router";
 import type { Route } from "./+types/bid";
 import type { GetBidSuccess } from "~/requests/_personal/getBid/getBidSuccess.schema";
@@ -13,6 +13,7 @@ import { BidStaticMobileView } from "./_views/BidMobileView/BidStaticMobileView"
 import { getPlaceForBid } from "~/requests/_personal/getPlaceForBid/getPlaceForBid";
 import { getRadiusSelect } from "~/requests/_personal/getRadiusSelect/getRadiusSelect";
 import { postUpdateBid } from "~/requests/_personal/postUpdateBid/postUpdateBid";
+import { postCancelBid } from "~/requests/_personal/postCancelBid/postCancelBid";
 
 type MobileModeData = {
   mode: "mobile";
@@ -48,12 +49,11 @@ export async function clientLoader() {
     radiusData.data.forEach((item) => {
       radiuses.push({
         value: item.value.toString(),
-        label: item.id.toString(),
+        label: item.value.toString(),
+        // label: item.id.toString(),
         disabled: false,
       });
     });
-
-    radiusData.data;
 
     data = {
       mode,
@@ -66,22 +66,29 @@ export async function clientLoader() {
   }
 }
 
-export async function clientAction({ request }: Route.ClientActionArgs) {
-  const fields = await request.json();
+export async function clientAction({
+  request,
+  params,
+}: Route.ClientActionArgs) {
+  const { _action, ...fields } = await request.json();
+
   const accessToken = useStore.getState().accessToken;
   const currentURL = new URL(request.url);
 
   if (accessToken) {
-    await postUpdateBid(accessToken, fields);
-    throw redirect(currentURL.toString());
+    if (_action === "update") {
+      await postUpdateBid(accessToken, fields.payload);
+      throw redirect(currentURL.toString());
+    } else if (_action === "cancel") {
+      await postCancelBid(accessToken, params.bidId);
+      throw redirect(currentURL.toString());
+    }
   } else {
     throw new Response("Токен авторизации не обнаружен!", { status: 401 });
   }
 }
 
 export default function Bid({ loaderData }: Route.ComponentProps) {
-  const setup = useRef<boolean>(null);
-
   const submit = useSubmit();
   const { bidMobileData, editMode } = useOutletContext<{
     bidMobileData: GetBidSuccess["data"];
@@ -92,9 +99,8 @@ export default function Bid({ loaderData }: Route.ComponentProps) {
     BidMobileViewInterface["entity"] | null
   >();
 
-  //стартовая фильтрация сущностей
-  if (setup.current === null) {
-    if (loaderData.mode === "mobile") {
+  const onInit = useEffectEvent((data: typeof loaderData) => {
+    if (data.mode === "mobile") {
       const entity: BidMobileViewInterface["entity"] = {
         logo: bidMobileData.viewActivity.logo,
         status: bidMobileData.status,
@@ -102,6 +108,10 @@ export default function Bid({ loaderData }: Route.ComponentProps) {
           id: bidMobileData.place.id,
           name: bidMobileData.place.name,
           logo: bidMobileData.place.logo,
+        },
+        project: {
+          id: bidMobileData.project.id,
+          name: bidMobileData.project.name,
         },
         activity: {
           id: bidMobileData.viewActivity.id,
@@ -158,9 +168,10 @@ export default function Bid({ loaderData }: Route.ComponentProps) {
 
       setMobileEntity(entity);
     }
-
-    setup.current = true;
-  }
+  });
+  useEffect(() => {
+    onInit(loaderData);
+  }, [loaderData]);
 
   return loaderData.mode === "mobile" ? (
     <>
@@ -174,8 +185,8 @@ export default function Bid({ loaderData }: Route.ComponentProps) {
               submitAction={(values) => {
                 const payload: postUpdateBidPayload = {
                   bidId: bidMobileData.id,
-                  radius: values.radius,
-                  price: values.unitPrice,
+                  radius: Number(values.radius),
+                  price: Number(values.unitPrice),
                   viewActivityId: values.activity,
                   count: values.amount,
                   dateStart: values.dateStart.toISOString(),
@@ -209,10 +220,27 @@ export default function Bid({ loaderData }: Route.ComponentProps) {
                     }),
                 };
 
-                submit(JSON.stringify(payload), {
-                  method: "POST",
-                  encType: "application/json",
-                });
+                submit(
+                  JSON.stringify({
+                    _action: "update",
+                    payload,
+                  }),
+                  {
+                    method: "POST",
+                    encType: "application/json",
+                  }
+                );
+              }}
+              cancelAction={() => {
+                submit(
+                  JSON.stringify({
+                    _action: "cancel",
+                  }),
+                  {
+                    method: "POST",
+                    encType: "application/json",
+                  }
+                );
               }}
             />
           ) : (

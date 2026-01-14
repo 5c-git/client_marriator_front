@@ -1,4 +1,10 @@
-import { useNavigation, useNavigate, useSubmit, redirect } from "react-router";
+import {
+  useNavigation,
+  useNavigate,
+  useSubmit,
+  redirect,
+  useFetcher,
+} from "react-router";
 import { useState, Fragment } from "react";
 import type { Route } from "./+types/job";
 
@@ -17,7 +23,7 @@ import { FilesPopup } from "./components/FilesPopup";
 import { CountDownTimer } from "./components/CountDownTimer";
 
 import Box from "@mui/material/Box";
-import { Button, Typography } from "@mui/material";
+import { Button, Typography, Snackbar, Alert } from "@mui/material";
 import { Loader } from "~/shared/ui/Loader/Loader";
 import { TopNavigation } from "~/shared/ui/TopNavigation/TopNavigation";
 
@@ -30,8 +36,8 @@ import { postStartDay } from "~/requests/_personal/postStartDay/postStartDay";
 import { postRejectBid } from "~/requests/_personal/postRejectBid/postRejectBid";
 import { postEndDay } from "~/requests/_personal/postEndDay/postEndDay";
 import { postPayReport } from "~/requests/_personal/postPayReport/postPayReport";
-import { postEndJob } from "~/requests/_personal/postEndJob/postEndJob";
-import { postEndSpecialistJob } from "~/requests/_personal/postEndSpecialistJob/postEndSpecialistJob";
+// import { postEndJob } from "~/requests/_personal/postEndJob/postEndJob";
+// import { postEndSpecialistJob } from "~/requests/_personal/postEndSpecialistJob/postEndSpecialistJob";
 
 type MobileModeData = {
   mode: "mobile";
@@ -51,10 +57,10 @@ export async function clientLoader({ params }: Route.ClientLoaderArgs) {
       const missionData = await getJob(
         accessToken,
         params.specialistId,
-        params.jobId,
+        params.jobId
       );
 
-      const entity = {
+      const entity: JobMobileViewInterface["entity"] = {
         id: missionData.data.id,
         logo: `${import.meta.env.VITE_ASSET_PATH}${missionData.data.viewActivity.logo}`,
         status: missionData.data.acceptingUser.status,
@@ -67,6 +73,8 @@ export async function clientLoader({ params }: Route.ClientLoaderArgs) {
         unitPrice: missionData.data.price,
         dateStart: new Date(missionData.data.dateStart),
         dateEnd: new Date(missionData.data.dateEnd),
+        income: missionData.data.income,
+        forPay: missionData.data.forPay,
         days: (() => {
           const days: JobMobileViewInterface["entity"]["days"] = [];
 
@@ -75,7 +83,7 @@ export async function clientLoader({ params }: Route.ClientLoaderArgs) {
               [];
 
             const actedDay = missionData.data.reports.find(
-              (item) => item.dayActivityId === day.id,
+              (item) => item.dayActivityId === day.id
             );
 
             day.places.forEach((place) => {
@@ -164,7 +172,7 @@ export async function clientLoader({ params }: Route.ClientLoaderArgs) {
 
 export async function clientAction({
   request,
-  params,
+  // params,
 }: Route.ClientActionArgs) {
   const currentURL = new URL(request.url);
   const requestType = request.headers.get("content-type");
@@ -175,7 +183,9 @@ export async function clientAction({
       const { _action, ...fields } = await request.json();
       if (_action === "accept") {
         await postAcceptBid(accessToken, fields.bidId);
-        throw redirect(currentURL.toString());
+        return {
+          success: true,
+        };
       } else if (_action === "deny") {
         await postRejectBid(accessToken, fields.bidId);
         throw redirect(currentURL.toString());
@@ -204,6 +214,7 @@ export default function Job({ loaderData }: Route.ComponentProps) {
   const navigation = useNavigation();
   const navigate = useNavigate();
   const submit = useSubmit();
+  const fetcher = useFetcher<typeof clientAction>();
   const { t } = useTranslation("job");
 
   // const formRef = useRef<HTMLFormElement>(null);
@@ -237,7 +248,7 @@ export default function Job({ loaderData }: Route.ComponentProps) {
             : [
                 (
                   day: JobMobileViewInterface["entity"]["days"][0],
-                  action: JobMobileViewInterface["entity"]["days"][0]["action"],
+                  action: JobMobileViewInterface["entity"]["days"][0]["action"]
                 ) =>
                   action === "start" ? (
                     <Button
@@ -253,7 +264,7 @@ export default function Job({ loaderData }: Route.ComponentProps) {
                           {
                             method: "POST",
                             encType: "application/json",
-                          },
+                          }
                         );
                       }}
                     >
@@ -262,7 +273,7 @@ export default function Job({ loaderData }: Route.ComponentProps) {
                   ) : null,
                 (
                   day: JobMobileViewInterface["entity"]["days"][0],
-                  action: JobMobileViewInterface["entity"]["days"][0]["action"],
+                  action: JobMobileViewInterface["entity"]["days"][0]["action"]
                 ) =>
                   action === "inProgress" ? (
                     <Button
@@ -283,7 +294,7 @@ export default function Job({ loaderData }: Route.ComponentProps) {
 
                           formData.append(
                             "bidId",
-                            loaderData.entity.id.toString(),
+                            loaderData.entity.id.toString()
                           );
 
                           submit(formData, {
@@ -299,7 +310,7 @@ export default function Job({ loaderData }: Route.ComponentProps) {
                   ) : null,
                 (
                   day: JobMobileViewInterface["entity"]["days"][0],
-                  action: JobMobileViewInterface["entity"]["days"][0]["action"],
+                  action: JobMobileViewInterface["entity"]["days"][0]["action"]
                 ) =>
                   action === "end" ? (
                     <Fragment key="end">
@@ -316,7 +327,7 @@ export default function Job({ loaderData }: Route.ComponentProps) {
                   ) : null,
                 (
                   day: JobMobileViewInterface["entity"]["days"][0],
-                  action: JobMobileViewInterface["entity"]["days"][0]["action"],
+                  action: JobMobileViewInterface["entity"]["days"][0]["action"]
                 ) =>
                   action === "reported" ? (
                     <Fragment key="reported">
@@ -333,7 +344,7 @@ export default function Job({ loaderData }: Route.ComponentProps) {
                   ) : null,
                 (
                   day: JobMobileViewInterface["entity"]["days"][0],
-                  action: JobMobileViewInterface["entity"]["days"][0]["action"],
+                  action: JobMobileViewInterface["entity"]["days"][0]["action"]
                 ) =>
                   action === "accept" ? (
                     <Fragment key="accept">
@@ -350,7 +361,7 @@ export default function Job({ loaderData }: Route.ComponentProps) {
                   ) : null,
                 (
                   day: JobMobileViewInterface["entity"]["days"][0],
-                  action: JobMobileViewInterface["entity"]["days"][0]["action"],
+                  action: JobMobileViewInterface["entity"]["days"][0]["action"]
                 ) =>
                   action === "forPay" ? (
                     <Button
@@ -366,7 +377,7 @@ export default function Job({ loaderData }: Route.ComponentProps) {
                           {
                             method: "POST",
                             encType: "application/json",
-                          },
+                          }
                         );
                       }}
                     >
@@ -375,7 +386,7 @@ export default function Job({ loaderData }: Route.ComponentProps) {
                   ) : null,
                 (
                   day: JobMobileViewInterface["entity"]["days"][0],
-                  action: JobMobileViewInterface["entity"]["days"][0]["action"],
+                  action: JobMobileViewInterface["entity"]["days"][0]["action"]
                 ) =>
                   action === "paid" ? (
                     <Fragment key="paid">
@@ -438,7 +449,7 @@ export default function Job({ loaderData }: Route.ComponentProps) {
                   {
                     method: "POST",
                     encType: "application/json",
-                  },
+                  }
                 );
               }}
             >
@@ -455,7 +466,7 @@ export default function Job({ loaderData }: Route.ComponentProps) {
                   {
                     method: "POST",
                     encType: "application/json",
-                  },
+                  }
                 );
               }}
             >
@@ -478,7 +489,7 @@ export default function Job({ loaderData }: Route.ComponentProps) {
                 {
                   method: "POST",
                   encType: "application/json",
-                },
+                }
               );
             }}
           >
@@ -499,7 +510,7 @@ export default function Job({ loaderData }: Route.ComponentProps) {
                 {
                   method: "POST",
                   encType: "application/json",
-                },
+                }
               );
             }}
           >
@@ -529,6 +540,25 @@ export default function Job({ loaderData }: Route.ComponentProps) {
           setOpenFilesPopup(false);
         }}
       />
+
+      <Snackbar
+        open={fetcher.data && fetcher.data.success === true ? true : false}
+        autoHideDuration={3000}
+        onClose={() => {
+          fetcher.reset();
+        }}
+      >
+        <Alert
+          severity="info"
+          variant="small"
+          color="Corp_2"
+          sx={{
+            width: "100%",
+          }}
+        >
+          {t("acceptAlertText")}
+        </Alert>
+      </Snackbar>
     </>
   ) : null;
 }

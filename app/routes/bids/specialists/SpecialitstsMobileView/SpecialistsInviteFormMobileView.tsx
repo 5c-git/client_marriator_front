@@ -9,7 +9,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm, Controller } from "react-hook-form";
 
 import Box from "@mui/material/Box";
-import { Button } from "@mui/material";
+import { Button, Typography } from "@mui/material";
 
 import { StyledSearchBar } from "~/shared/ui/StyledSearchBar/StyledSearchBar";
 import { StyledCheckbox } from "~/shared/ui/StyledCheckbox/StyledCheckbox";
@@ -26,17 +26,11 @@ type SpecialistsInviteFormMobileViewInterface = Pick<
 };
 
 export function SpecialistsInviteFormMobileView(
-  props: SpecialistsInviteFormMobileViewInterface,
+  props: SpecialistsInviteFormMobileViewInterface
 ) {
   const { t } = useTranslation("SpecialistsMobileView");
 
-  const {
-    control,
-    getValues,
-    setValue,
-    handleSubmit,
-    formState: { errors },
-  } = useForm<{
+  const { control, getValues, setValue, handleSubmit } = useForm<{
     searchbar: string;
     selectAll: boolean;
     radius: number;
@@ -54,12 +48,12 @@ export function SpecialistsInviteFormMobileView(
         selectAll: z.boolean(),
         radius: z.number(),
         specialists: z.array(z.string()).min(1),
-      }),
+      })
     ),
   });
 
   const startingSpecialists = props.specialists.filter(
-    (item) => Number(item.radius) <= props.startingRadius,
+    (item) => Number(item.radius) <= props.startingRadius
   );
 
   const [selectedSpecialists, setSelectedSpecialists] =
@@ -95,7 +89,7 @@ export function SpecialistsInviteFormMobileView(
               onChange={(evt) => {
                 const currentFieldValue = new RegExp(
                   `^${evt.target.value}`,
-                  "i",
+                  "i"
                 );
                 const currentRadius = getValues("radius");
                 const isSelectedAll = getValues("selectAll");
@@ -107,7 +101,10 @@ export function SpecialistsInviteFormMobileView(
                 if (evt.target.value !== "") {
                   matchingSpecialists = [
                     ...props.specialists.filter((item) =>
-                      currentFieldValue.test(item.name),
+                      currentFieldValue.test(item.name)
+                    ),
+                    ...props.specialists.filter((item) =>
+                      currentFieldValue.test(item.phone.toString())
                     ),
                   ];
                 } else {
@@ -116,7 +113,7 @@ export function SpecialistsInviteFormMobileView(
 
                 //обрабатываем радиус
                 const sortedSpecialists = matchingSpecialists.filter(
-                  (item) => Number(item.radius) <= currentRadius,
+                  (item) => Number(item.radius) <= currentRadius
                 );
 
                 //обрабатываем "выбрать всё"
@@ -188,7 +185,7 @@ export function SpecialistsInviteFormMobileView(
                   const selectedValue: number = Number(evt.target.value);
 
                   const sortedSpecialists = props.specialists.filter(
-                    (item) => Number(item.radius) <= selectedValue,
+                    (item) => Number(item.radius) <= selectedValue
                   );
 
                   setSelectedSpecialists(sortedSpecialists);
@@ -230,6 +227,20 @@ export function SpecialistsInviteFormMobileView(
             />
           )}
         />
+
+        {selectedSpecialists.length === 0 ? (
+          <Typography
+            component="p"
+            variant="Reg_14"
+            sx={(theme) => ({
+              color: theme.vars.palette["Grey_1"],
+              textAlign: "center",
+            })}
+          >
+            В радиусе {getValues("radius")} км нет специалистов, соответствующих
+            вашим критериям
+          </Typography>
+        ) : null}
       </Box>
 
       <Button

@@ -47,7 +47,7 @@ import { postDelPlaceModeration } from "~/requests/_personal/_moderation/postDel
 import { postConfirmUserRegister } from "~/requests/_personal/_moderation/postConfirmUserRegister/postConfirmUserRegister";
 
 const getRadioButtons = (
-  list: { id: number; name: string; logo: string }[],
+  list: { id: number; name: string; logo: string }[]
 ) => {
   const options: {
     id: number;
@@ -88,7 +88,7 @@ export async function clientLoader({ params }: Route.ClientLoaderArgs) {
   if (accessToken) {
     const data = await getModerationSingleClient(
       accessToken,
-      Number(params.user),
+      Number(params.user)
     );
 
     data.data.project.forEach((org) => {
@@ -159,7 +159,7 @@ export async function clientAction({ request }: Route.ClientActionArgs) {
         accessToken,
         fields.userId,
         fields.confirm,
-        fields,
+        fields
       );
       throw redirect(withLocale("/users"));
     } else if (_action === "_saveLogo") {
@@ -172,7 +172,7 @@ export async function clientAction({ request }: Route.ClientActionArgs) {
       await postDelPlaceModeration(
         accessToken,
         fields.userId,
-        fields.projectId,
+        fields.projectId
       );
       return;
     } else if (_action === "_decline") {
@@ -228,7 +228,7 @@ export default function Client({ loaderData }: Route.ComponentProps) {
               id: Yup.number().required(),
               logo: Yup.string().required(),
               name: Yup.string().required(),
-            }),
+            })
           )
           .required(t("text", { ns: "constructorFields" })),
         locations: Yup.array()
@@ -242,7 +242,7 @@ export default function Client({ loaderData }: Route.ComponentProps) {
               // name: Yup.string().required(),
               // coordinates: Yup.array().min(2).max(2).of(Yup.number()),
               // region: Yup.string().required(),
-            }),
+            })
           )
           .required(t("text", { ns: "constructorFields" })),
         change_order: Yup.string()
@@ -254,7 +254,7 @@ export default function Client({ loaderData }: Route.ComponentProps) {
         live_order: Yup.string()
           .nullable()
           .required(t("text", { ns: "constructorFields" })),
-      }),
+      })
     ),
   });
 
@@ -283,33 +283,33 @@ export default function Client({ loaderData }: Route.ComponentProps) {
           onSubmit={handleSubmit(
             (values) => {
               const change_order_formated = `${
-                new Date(getValues("change_order")).getUTCHours() > 10
-                  ? new Date(getValues("change_order")).getUTCHours()
-                  : `0${new Date(getValues("change_order")).getUTCHours()}`
+                new Date(getValues("change_order")).getHours() > 10
+                  ? new Date(getValues("change_order")).getHours()
+                  : `0${new Date(getValues("change_order")).getHours()}`
               }:${
-                new Date(getValues("change_order")).getUTCMinutes() > 10
-                  ? new Date(getValues("change_order")).getUTCMinutes()
-                  : `0${new Date(getValues("change_order")).getUTCMinutes()}`
+                new Date(getValues("change_order")).getMinutes() > 10
+                  ? new Date(getValues("change_order")).getMinutes()
+                  : `0${new Date(getValues("change_order")).getMinutes()}`
               }`;
 
               const cancel_order_formated = `${
-                new Date(getValues("cancel_order")).getUTCHours() > 10
-                  ? new Date(getValues("cancel_order")).getUTCHours()
-                  : `0${new Date(getValues("cancel_order")).getUTCHours()}`
+                new Date(getValues("cancel_order")).getHours() > 10
+                  ? new Date(getValues("cancel_order")).getHours()
+                  : `0${new Date(getValues("cancel_order")).getHours()}`
               }:${
-                new Date(getValues("cancel_order")).getUTCMinutes() > 10
-                  ? new Date(getValues("cancel_order")).getUTCMinutes()
-                  : `0${new Date(getValues("cancel_order")).getUTCMinutes()}`
+                new Date(getValues("cancel_order")).getMinutes() > 10
+                  ? new Date(getValues("cancel_order")).getMinutes()
+                  : `0${new Date(getValues("cancel_order")).getMinutes()}`
               }`;
 
               const live_order_formated = `${
-                new Date(getValues("live_order")).getUTCHours() > 10
-                  ? new Date(getValues("live_order")).getUTCHours()
-                  : `0${new Date(getValues("live_order")).getUTCHours()}`
+                new Date(getValues("live_order")).getHours() > 10
+                  ? new Date(getValues("live_order")).getHours()
+                  : `0${new Date(getValues("live_order")).getHours()}`
               }:${
-                new Date(getValues("live_order")).getUTCMinutes() > 10
-                  ? new Date(getValues("live_order")).getUTCMinutes()
-                  : `0${new Date(getValues("live_order")).getUTCMinutes()}`
+                new Date(getValues("live_order")).getMinutes() > 10
+                  ? new Date(getValues("live_order")).getMinutes()
+                  : `0${new Date(getValues("live_order")).getMinutes()}`
               }`;
 
               submit(
@@ -327,12 +327,12 @@ export default function Client({ loaderData }: Route.ComponentProps) {
                 {
                   method: "POST",
                   encType: "application/json",
-                },
+                }
               );
             },
             (errors) => {
               console.log(errors);
-            },
+            }
           )}
         >
           <Box
@@ -540,7 +540,7 @@ export default function Client({ loaderData }: Route.ComponentProps) {
                     onClick={() => {
                       const currentList = getValues("organizations");
                       const updatedList = currentList.filter(
-                        (item) => item.name !== organization.name,
+                        (item) => item.name !== organization.name
                       );
                       setValue("organizations", updatedList);
                       trigger("organizations");
@@ -554,7 +554,7 @@ export default function Client({ loaderData }: Route.ComponentProps) {
                         {
                           method: "POST",
                           encType: "application/json",
-                        },
+                        }
                       );
                     }}
                     sx={{
@@ -627,7 +627,7 @@ export default function Client({ loaderData }: Route.ComponentProps) {
                     onClick={() => {
                       const currentList = getValues("locations");
                       const updatedList = currentList.filter(
-                        (item) => item.address !== location.address,
+                        (item) => item.address !== location.address
                       );
                       setValue("locations", updatedList);
                       trigger("locations");
@@ -641,7 +641,7 @@ export default function Client({ loaderData }: Route.ComponentProps) {
                         {
                           method: "POST",
                           encType: "application/json",
-                        },
+                        }
                       );
                     }}
                     sx={{
@@ -744,7 +744,7 @@ export default function Client({ loaderData }: Route.ComponentProps) {
                   {
                     method: "POST",
                     encType: "application/json",
-                  },
+                  }
                 );
               }}
             >
@@ -785,7 +785,7 @@ export default function Client({ loaderData }: Route.ComponentProps) {
 
                   const selectedOrganization =
                     loaderData.client.organizations.find(
-                      (item) => item.logo === evt.target.value,
+                      (item) => item.logo === evt.target.value
                     );
 
                   if (selectedOrganization) {
@@ -798,7 +798,7 @@ export default function Client({ loaderData }: Route.ComponentProps) {
                       {
                         method: "POST",
                         encType: "application/json",
-                      },
+                      }
                     );
                   }
                 }}

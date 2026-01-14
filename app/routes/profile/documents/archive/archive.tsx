@@ -5,6 +5,8 @@ import { useTranslation } from "react-i18next";
 
 import { withLocale } from "~/shared/withLocale";
 
+import { format } from "date-fns";
+
 import { useStore } from "~/store/store";
 
 import {
@@ -47,7 +49,7 @@ export async function clientAction({ request }: Route.ClientActionArgs) {
       if (signedDocData.data.file_path_signed) {
         window.open(
           `${import.meta.env.VITE_ASSET_PATH}${signedDocData.data.file_path_signed}`,
-          "_blank",
+          "_blank"
         );
       } else {
         return { data: null, isError: true, error: "error" };
@@ -84,7 +86,6 @@ export default function Archive({ loaderData }: Route.ComponentProps) {
           paddingBottom: "20px",
           paddingRight: "16px",
           paddingLeft: "16px",
-          // height: "calc(100% - 56px)",
         }}
       >
         <Typography
@@ -156,12 +157,23 @@ export default function Archive({ loaderData }: Route.ComponentProps) {
                 }
                 disablePadding
                 sx={{
+                  display: "grid",
                   "& .MuiListItemSecondaryAction-root": {
                     right: 0,
                   },
                 }}
               >
-                {item.file_name}
+                <Typography>{item.file_name}</Typography>
+                <Typography
+                  component="p"
+                  variant="Reg_12"
+                  sx={(theme) => ({
+                    color: theme.vars.palette["Grey_1"],
+                  })}
+                >
+                  {t("signed")}{" "}
+                  {format(item.date_signature, "dd.LL.yyyy HH:mm")}
+                </Typography>
               </ListItem>
             ))
           ) : (

@@ -26,7 +26,7 @@ export function JobMobileStaticView({
   entity: JobMobileViewInterface["entity"];
   actions: ((
     day: JobMobileViewInterface["entity"]["days"][0],
-    action: JobMobileViewInterface["entity"]["days"][0]["action"],
+    action: JobMobileViewInterface["entity"]["days"][0]["action"]
   ) => React.ReactNode)[];
 }) {
   const { t } = useTranslation("JobMobileView");
@@ -92,7 +92,7 @@ export function JobMobileStaticView({
             {t(
               `status.${
                 statusCodeMap[entity.status as keyof typeof statusCodeMap].value
-              }`,
+              }`
             )}
           </Typography>
         </Box>
@@ -157,6 +157,58 @@ export function JobMobileStaticView({
           })}
         >
           {entity.activity}
+        </Typography>
+      </Box>
+
+      <Box
+        sx={{
+          display: "grid",
+          rowGap: "4px",
+        }}
+      >
+        <Typography
+          component="p"
+          variant="Reg_12"
+          sx={(theme) => ({
+            color: theme.vars.palette["Grey_2"],
+          })}
+        >
+          {t("forPayText")}
+        </Typography>
+        <Typography
+          component="p"
+          variant="Reg_14"
+          sx={(theme) => ({
+            color: theme.vars.palette["Black"],
+          })}
+        >
+          {entity.forPay}
+        </Typography>
+      </Box>
+
+      <Box
+        sx={{
+          display: "grid",
+          rowGap: "4px",
+        }}
+      >
+        <Typography
+          component="p"
+          variant="Reg_12"
+          sx={(theme) => ({
+            color: theme.vars.palette["Grey_2"],
+          })}
+        >
+          {t("incomeText")}
+        </Typography>
+        <Typography
+          component="p"
+          variant="Reg_14"
+          sx={(theme) => ({
+            color: theme.vars.palette["Black"],
+          })}
+        >
+          {entity.income}
         </Typography>
       </Box>
 
@@ -498,7 +550,7 @@ export function JobMobileStaticView({
                   color: theme.vars.palette["Grey_2"],
                 })}
               >
-                {/* @ts-ignore */}
+                {/* @ts-expect-error types narrowing */}
                 {t(`role.${entity.user.role}`)}
               </Typography>
             </Box>

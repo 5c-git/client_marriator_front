@@ -34,6 +34,8 @@ export type JobMobileViewInterface = {
         | "notEnded"
         | "none";
     }[];
+    forPay: number;
+    income: number;
     needDays: boolean;
     needPhoto: boolean;
     travelling: boolean;

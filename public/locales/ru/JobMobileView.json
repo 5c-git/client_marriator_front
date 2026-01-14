@@ -4,6 +4,8 @@
   "statusText": "Статус",
   "locationText": "Место оказания услуг",
   "serviceTypeText": "Вид услуги",
+  "forPayText": "К оплате",
+  "incomeText": "Доход",
   "pricePerUnitText": "Цена за ед. измерения",
   "dateStartText": "Дата начала",
   "dateEndText": "Дата окончания",

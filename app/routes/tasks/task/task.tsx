@@ -24,7 +24,6 @@ import { StyledCheckboxMultiple } from "~/shared/ui/StyledCheckboxMultiple/Style
 
 import Box from "@mui/material/Box";
 import {
-  Avatar,
   Button,
   Dialog,
   DialogActions,
@@ -146,7 +145,7 @@ export async function clientLoader({ params }: Route.ClientLoaderArgs) {
       if (userRole === "manager") {
         const supervisorsToSelectData = await getSupervisorsForTask(
           accessToken,
-          params.taskId,
+          params.taskId
         );
 
         supervisorsToSelectData.data.forEach((sepervisorToSelect) => {
@@ -182,13 +181,13 @@ export async function clientAction({
       await postDeleteTaskActivity(
         accessToken,
         fields.taskId,
-        fields.taskActivityId,
+        fields.taskActivityId
       );
     } else if (_action === "transformActivity") {
       const transformedRequestData = await postCreateBidFromTask(
         accessToken,
         fields.taskId,
-        fields.taskActivityId,
+        fields.taskActivityId
       );
       throw redirect(withLocale(`/bids/${transformedRequestData.data.id}`));
     } else if (_action === "_inviteSupervisors") {
@@ -259,7 +258,7 @@ export default function Task({ loaderData }: Route.ComponentProps) {
                     <Box
                       component={Link}
                       to={withLocale(
-                        `/tasks/${loaderData.entity.id}/service/${service.id}`,
+                        `/tasks/${loaderData.entity.id}/service/${service.id}`
                       )}
                       sx={{
                         display: "grid",
@@ -404,7 +403,7 @@ export default function Task({ loaderData }: Route.ComponentProps) {
                     <Box
                       component={Link}
                       to={withLocale(
-                        `/tasks/${loaderData.entity.id}/service/${service.id}`,
+                        `/tasks/${loaderData.entity.id}/service/${service.id}`
                       )}
                       sx={{
                         display: "grid",
@@ -469,9 +468,9 @@ export default function Task({ loaderData }: Route.ComponentProps) {
                     </>
                   ) : null}
 
-                  {(userRole === "manager" && loaderData.entity.status < 4) ||
+                  {(userRole === "manager" && loaderData.entity.status === 3) ||
                   (userRole === "supervisor" &&
-                    loaderData.entity.status < 4) ? (
+                    loaderData.entity.status === 3) ? (
                     <Button
                       variant="contained"
                       sx={{
@@ -488,7 +487,7 @@ export default function Task({ loaderData }: Route.ComponentProps) {
                           {
                             method: "POST",
                             encType: "application/json",
-                          },
+                          }
                         );
                       }}
                     >
@@ -499,7 +498,7 @@ export default function Task({ loaderData }: Route.ComponentProps) {
               )}
               actionSlot={() => {
                 const match = loaderData.entity.invitedPersons.find(
-                  (supervisor) => supervisor.id === userId,
+                  (supervisor) => supervisor.id === userId
                 );
 
                 if (
@@ -519,7 +518,7 @@ export default function Task({ loaderData }: Route.ComponentProps) {
                           {
                             method: "POST",
                             encType: "application/json",
-                          },
+                          }
                         );
                       }}
                     >
@@ -547,7 +546,7 @@ export default function Task({ loaderData }: Route.ComponentProps) {
                 {
                   method: "POST",
                   encType: "application/json",
-                },
+                }
               );
             }}
             items={loaderData.supervisorsToSelect}
@@ -568,7 +567,7 @@ export default function Task({ loaderData }: Route.ComponentProps) {
                 {
                   method: "POST",
                   encType: "application/json",
-                },
+                }
               );
             }}
             items={[
@@ -625,7 +624,7 @@ export default function Task({ loaderData }: Route.ComponentProps) {
                     {
                       method: "POST",
                       encType: "application/json",
-                    },
+                    }
                   );
                   setServiceToDelete(null);
                 }}

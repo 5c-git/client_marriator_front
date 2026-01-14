@@ -1,6 +1,8 @@
 import { type RouteConfig, route, layout } from "@react-router/dev/routes";
 
 export default [
+  route("/test", "routes/_resourses/test.ts", { id: "lala" }),
+
   layout("routes/rootErrorBoundry/rootErrorBoundry.tsx", [
     layout("routes/MenuLayout/MenuLayout.tsx", [
       layout("routes/home/HomeLayout/HomeLayout.tsx", [

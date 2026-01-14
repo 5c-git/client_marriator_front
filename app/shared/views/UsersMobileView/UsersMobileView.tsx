@@ -39,7 +39,7 @@ export function UsersMobileView(props: UsersMobileViewInterface) {
   const debouncedSearch = debounce((value: string) => {
     console.log("t");
 
-    const currentFieldValue = new RegExp(`^${value}`, "i");
+    const currentFieldValue = new RegExp(`${value}`, "i");
 
     let matchingItems: UsersMobileViewInterface["users"] = [];
 
@@ -68,7 +68,7 @@ export function UsersMobileView(props: UsersMobileViewInterface) {
 
   const onInit = useEffectEvent((users: UsersMobileViewInterface["users"]) => {
     const allFilters = [...new Set(users.map((user) => user["status"]))].sort(
-      (a, b) => a - b,
+      (a, b) => a - b
     );
 
     const filteredUsers: {
@@ -81,7 +81,7 @@ export function UsersMobileView(props: UsersMobileViewInterface) {
 
     for (const key in filteredUsers) {
       filteredUsers[key] = props.users.filter(
-        (item) => item.status === Number(key),
+        (item) => item.status === Number(key)
       );
     }
 
@@ -137,7 +137,7 @@ export function UsersMobileView(props: UsersMobileViewInterface) {
                   options.push({
                     id: key,
                     label: t(
-                      `${props.translation}.status.${statusCodeMap[Number(key) as keyof typeof statusCodeMap].value}`,
+                      `${props.translation}.status.${statusCodeMap[Number(key) as keyof typeof statusCodeMap].value}`
                     ),
                     count: filteredUsers[Number(key)].length,
                     color:

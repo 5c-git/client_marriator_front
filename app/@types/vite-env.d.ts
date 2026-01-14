@@ -123,6 +123,7 @@ interface ImportMetaEnv {
   readonly VITE_POST_RETRIES_SMS: string;
   readonly VITE_POST_SEND_CODE: string;
   readonly VITE_SIGNED_DOCUMENT: string;
+  readonly VITE_POST_CANCEL_BID: string;
   // more env variables...
 }
 

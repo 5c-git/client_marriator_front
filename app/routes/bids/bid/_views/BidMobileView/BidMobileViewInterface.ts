@@ -1,11 +1,15 @@
 export type BidMobileViewInterface = {
   entity: {
     logo: string;
-    status: 1 | 2 | 3 | 4 | 5;
+    status: 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8;
     place: {
       id: number;
       name: string;
       logo: string;
+    };
+    project: {
+      id: number;
+      name: string;
     };
     activity: { id: number; name: string; travelling: boolean };
     unitPrice: number;

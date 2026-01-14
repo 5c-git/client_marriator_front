@@ -93,10 +93,36 @@ export function BidStaticMobileView(props: BidMobileViewInterface) {
                   statusCodeMap[
                     props.entity.status as keyof typeof statusCodeMap
                   ].value
-                }`,
+                }`
               )}
             </Typography>
           </Box>
+        </Box>
+
+        <Box
+          sx={{
+            display: "grid",
+            rowGap: "4px",
+          }}
+        >
+          <Typography
+            component="p"
+            variant="Reg_12"
+            sx={(theme) => ({
+              color: theme.vars.palette["Grey_2"],
+            })}
+          >
+            {t("projectTypePlaceholder")}
+          </Typography>
+          <Typography
+            component="p"
+            variant="Reg_14"
+            sx={(theme) => ({
+              color: theme.vars.palette["Black"],
+            })}
+          >
+            {props.entity.project.name}
+          </Typography>
         </Box>
 
         {/*// progress*/}
@@ -704,7 +730,7 @@ export function BidStaticMobileView(props: BidMobileViewInterface) {
                 })}
               >
                 {t(
-                  `role.${determineRole(props.entity.responsiblePerson.roles)}`,
+                  `role.${determineRole(props.entity.responsiblePerson.roles)}`
                 )}
               </Typography>
             </Box>

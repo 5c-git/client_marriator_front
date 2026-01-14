@@ -35,7 +35,7 @@ export async function clientLoader() {
         null,
         null,
         null,
-        null,
+        null
       );
 
       const users: UsersMobileViewInterface["users"] = [];
@@ -46,24 +46,24 @@ export async function clientLoader() {
           users.push({
             id: item.id,
             status: (() => {
-              let status = 3;
+              const status = 1;
 
-              if (
-                item.confirmRegister === false &&
-                item.finishRegister === true
-              ) {
-                status = 1;
-              } else if (
-                item.confirmRegister === true &&
-                item.finishRegister === true
-              ) {
-                status = 2;
-              } else if (
-                item.confirmRegister === false &&
-                item.finishRegister === false
-              ) {
-                status = 3;
-              }
+              // if (
+              //   item.confirmRegister === false &&
+              //   item.finishRegister === true
+              // ) {
+              //   status = 1;
+              // } else if (
+              //   item.confirmRegister === true &&
+              //   item.finishRegister === true
+              // ) {
+              //   status = 2;
+              // } else if (
+              //   item.confirmRegister === false &&
+              //   item.finishRegister === false
+              // ) {
+              //   status = 3;
+              // }
 
               return status;
             })(),

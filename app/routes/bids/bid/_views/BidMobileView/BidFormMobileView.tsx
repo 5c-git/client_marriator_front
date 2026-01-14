@@ -111,10 +111,10 @@ const createBidFormSchema = (startDate: Date, endEnd: Date) =>
                       error: t("text", { ns: "constructorFields" }),
                     }),
                   logo: z.string().optional(),
-                }),
+                })
               )
               .optional(),
-          }),
+          })
         )
         .superRefine((days, ctx) => {
           days.forEach((day, index) => {
@@ -150,6 +150,7 @@ type submitValues = z.output<ReturnType<typeof createBidFormSchema>>;
 
 type BidFormMobileViewInterface = BidMobileViewInterface & {
   submitAction: (values: submitValues) => void;
+  cancelAction: () => void;
 };
 
 export function BidFormMobileView(props: BidFormMobileViewInterface) {
@@ -159,7 +160,6 @@ export function BidFormMobileView(props: BidFormMobileViewInterface) {
   const {
     control,
     handleSubmit,
-    reset,
     formState: { errors },
     setError,
     watch,
@@ -180,7 +180,7 @@ export function BidFormMobileView(props: BidFormMobileViewInterface) {
       days: props.entity.days,
     },
     resolver: zodResolver(
-      createBidFormSchema(props.entity.dateStart, props.entity.dateEnd),
+      createBidFormSchema(props.entity.dateStart, props.entity.dateEnd)
     ),
   });
 
@@ -255,7 +255,7 @@ export function BidFormMobileView(props: BidFormMobileViewInterface) {
                   statusCodeMap[
                     props.entity.status as keyof typeof statusCodeMap
                   ].value
-                }`,
+                }`
               )}
             </Typography>
           </Box>
@@ -389,7 +389,7 @@ export function BidFormMobileView(props: BidFormMobileViewInterface) {
             if (submittedDays.length > 0 && incomingDays.length > 0) {
               submittedDays.forEach((day, index) => {
                 const match = incomingDays.find((incomingDay) =>
-                  isSameDay(incomingDay.timeStart, day.timeStart),
+                  isSameDay(incomingDay.timeStart, day.timeStart)
                 );
 
                 if (match) {
@@ -398,13 +398,16 @@ export function BidFormMobileView(props: BidFormMobileViewInterface) {
                       type: "manual",
                       message: t("earlierThanDefaultError"),
                     });
+                    return;
                   }
                   if (isAfter(day.timeEnd, match.timeEnd)) {
                     setError(`days.${index}.timeEnd` as const, {
                       type: "manual",
                       message: t("laterThanDefaultError"),
                     });
+                    return;
                   }
+                  props.submitAction(values);
                 }
               });
             } else {
@@ -704,6 +707,7 @@ export function BidFormMobileView(props: BidFormMobileViewInterface) {
 
               if (!sameDay) {
                 //если день не один и тотже, значит есть промежуток, вставляем кнопку
+
                 return (
                   <Button
                     variant="outlined"
@@ -711,10 +715,14 @@ export function BidFormMobileView(props: BidFormMobileViewInterface) {
                     startIcon={<CalendarIcon />}
                     onClick={() => {
                       prepend({
-                        // timeStart: startDate,
-                        // timeEnd: subDays(fields[0].timeEnd, 2),
-                        timeStart: props.entity.days[0].timeStart,
-                        timeEnd: props.entity.days[0].timeEnd,
+                        timeStart:
+                          props.entity.days.length > 0
+                            ? props.entity.days[0].timeStart
+                            : props.entity.dateStart,
+                        timeEnd:
+                          props.entity.days.length > 0
+                            ? props.entity.days[0].timeEnd
+                            : set(props.entity.dateStart, { hours: 21 }),
                         ...(props.entity.activity.travelling === true && {
                           needRoute: false,
                           locations: [],
@@ -852,7 +860,7 @@ export function BidFormMobileView(props: BidFormMobileViewInterface) {
                                 onChange={(value) => {
                                   setValue(
                                     `days.${index}.timeStart` as const,
-                                    new Date(value),
+                                    new Date(value)
                                   );
                                 }}
                               />
@@ -883,7 +891,7 @@ export function BidFormMobileView(props: BidFormMobileViewInterface) {
                                 onChange={(value) => {
                                   setValue(
                                     `days.${index}.timeEnd` as const,
-                                    new Date(value),
+                                    new Date(value)
                                   );
                                 }}
                               />
@@ -965,20 +973,20 @@ export function BidFormMobileView(props: BidFormMobileViewInterface) {
                                           <IconButton
                                             onClick={() => {
                                               const currentList = getValues(
-                                                `days.${index}.locations`,
+                                                `days.${index}.locations`
                                               );
 
                                               const updatedList =
                                                 currentList?.filter(
                                                   (item) =>
-                                                    item.id !== location.id,
+                                                    item.id !== location.id
                                                 );
                                               setValue(
                                                 `days.${index}.locations`,
-                                                updatedList,
+                                                updatedList
                                               );
                                               trigger(
-                                                `days.${index}.locations`,
+                                                `days.${index}.locations`
                                               );
                                             }}
                                             sx={{
@@ -994,7 +1002,7 @@ export function BidFormMobileView(props: BidFormMobileViewInterface) {
                                             />
                                           </IconButton>
                                         </Box>
-                                      ),
+                                      )
                                     )
                                   : null}
 
@@ -1046,7 +1054,7 @@ export function BidFormMobileView(props: BidFormMobileViewInterface) {
                     //дни есть, нужно проверить есть ли промежуток между днями или они идут друг за другом, для этого берем текущий день, прибавляем к нему 24 часа и берем следующий день в массиве и сравниваем, если день один и тотже, то дни идут друг за другом
                     const sameDay = isSameDay(
                       addDays(day.timeStart, 1),
-                      nextDayinArray.timeStart,
+                      nextDayinArray.timeStart
                     );
 
                     //если день не один и тотже, значит есть промежуток, вставляем кнопку
@@ -1058,21 +1066,37 @@ export function BidFormMobileView(props: BidFormMobileViewInterface) {
                           startIcon={<CalendarIcon />}
                           onClick={() => {
                             //ищем нужный нам день в пропсах, чтобы из него взять время старта и окончания
-                            const match = props.entity.days.find((propsDay) =>
-                              isSameDay(
-                                addDays(day.timeStart, 1),
-                                propsDay.timeStart,
-                              ),
-                            );
 
-                            console.log(day);
+                            const days = eachDayOfInterval({
+                              start: props.entity.dateStart,
+                              end: props.entity.dateEnd,
+                            });
+
+                            let match;
+
+                            if (props.entity.days.length > 0) {
+                              match = props.entity.days.find((propsDay) =>
+                                isSameDay(
+                                  addDays(day.timeStart, 1),
+                                  propsDay.timeStart
+                                )
+                              );
+                            } else {
+                              match = days.find((propsDay) =>
+                                isSameDay(addDays(day.timeStart, 1), propsDay)
+                              );
+                            }
 
                             if (match) {
                               insert(index + 1, {
-                                //   timeStart: addDays(day.timeStart, 1),
-                                //   timeEnd: addDays(day.timeEnd, 2),
-                                timeStart: match.timeStart,
-                                timeEnd: match.timeEnd,
+                                timeStart:
+                                  "timeStart" in match
+                                    ? match.timeStart
+                                    : set(match, { hours: 9 }),
+                                timeEnd:
+                                  "timeEnd" in match
+                                    ? match.timeEnd
+                                    : getValues("dateEnd"),
                                 ...(props.entity.activity.travelling ===
                                   true && {
                                   needRoute: false,
@@ -1102,19 +1126,36 @@ export function BidFormMobileView(props: BidFormMobileViewInterface) {
                           startIcon={<CalendarIcon />}
                           onClick={() => {
                             //ищем нужный нам день в пропсах, чтобы из него взять время старта и окончания
-                            const match = props.entity.days.find((propsDay) =>
-                              isSameDay(
-                                addDays(day.timeStart, 1),
-                                propsDay.timeStart,
-                              ),
-                            );
+                            const days = eachDayOfInterval({
+                              start: props.entity.dateStart,
+                              end: props.entity.dateEnd,
+                            });
+
+                            let match;
+
+                            if (props.entity.days.length > 0) {
+                              match = props.entity.days.find((propsDay) =>
+                                isSameDay(
+                                  addDays(day.timeStart, 1),
+                                  propsDay.timeStart
+                                )
+                              );
+                            } else {
+                              match = days.find((propsDay) =>
+                                isSameDay(addDays(day.timeStart, 1), propsDay)
+                              );
+                            }
 
                             if (match) {
                               append({
-                                // timeStart: addDays(day.timeStart, 1),
-                                // timeEnd: addDays(day.timeEnd, 2),
-                                timeStart: match.timeStart,
-                                timeEnd: match.timeEnd,
+                                timeStart:
+                                  "timeStart" in match
+                                    ? match.timeStart
+                                    : set(match, { hours: 9 }),
+                                timeEnd:
+                                  "timeEnd" in match
+                                    ? match.timeEnd
+                                    : getValues("dateEnd"),
                                 ...(props.entity.activity.travelling ===
                                   true && {
                                   needRoute: false,
@@ -1290,7 +1331,7 @@ export function BidFormMobileView(props: BidFormMobileViewInterface) {
                 })}
               >
                 {t(
-                  `role.${determineRole(props.entity.responsiblePerson.roles)}`,
+                  `role.${determineRole(props.entity.responsiblePerson.roles)}`
                 )}
               </Typography>
             </Box>
@@ -1322,7 +1363,7 @@ export function BidFormMobileView(props: BidFormMobileViewInterface) {
           variant="outlined"
           startIcon={<CloseIcon />}
           onClick={() => {
-            reset();
+            props.cancelAction();
           }}
         >
           {t("cancelBidButton")}
@@ -1341,11 +1382,11 @@ export function BidFormMobileView(props: BidFormMobileViewInterface) {
 
           selectedLoactions.forEach((item) => {
             const match = props.locations.find(
-              (location) => location.value === item,
+              (location) => location.value === item
             );
 
             const isAlreadySelected = selectedDayLocations?.find(
-              (location) => location.id === item,
+              (location) => location.id === item
             );
 
             if (match && isAlreadySelected === undefined) {

@@ -20,5 +20,6 @@
     "paid": "Paid",
     "notEnded": "Not ended",
     "check": "Check"
-  }
+  },
+  "acceptAlertText": "Ваша кандидатура на рассмотрении у супервайзера. Ожидайте подтверждения"
 }

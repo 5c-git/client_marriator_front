@@ -118,6 +118,7 @@ import { postSignedDocumentMockResponse } from "~/requests/_personal/_documents/
 import { postRetriesSmsMockResponse } from "~/requests/_personal/postRetriesSms/postRetriesSms";
 import { postSendCodeMockResponse } from "~/requests/_personal/postSendCode/postSendCode";
 import { getSignedDocumentMockResponse } from "~/requests/_personal/getSignedDocument/getSignedDocument";
+import { postCancelBidMockResponse } from "~/requests/_personal/postCancelBid/postCancelBid";
 
 export const handlers = [
   getFormMockResponse,
@@ -237,4 +238,5 @@ export const handlers = [
   postRetriesSmsMockResponse,
   postSendCodeMockResponse,
   getSignedDocumentMockResponse,
+  postCancelBidMockResponse,
 ];

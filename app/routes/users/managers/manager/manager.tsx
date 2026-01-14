@@ -24,6 +24,7 @@ import {
   Avatar,
   Typography,
   SwipeableDrawer,
+  TextField,
 } from "@mui/material";
 import Box from "@mui/material/Box";
 import Stack from "@mui/material/Stack";
@@ -36,6 +37,7 @@ import { StyledPhoneField } from "~/shared/ui/StyledPhoneField/StyledPhoneField"
 import { StyledRadioButton } from "~/shared/ui/StyledRadioButton/StyledRadioButton";
 import { StyledSearchBar } from "~/shared/ui/StyledSearchBar/StyledSearchBar";
 import { StyledCheckboxMultiple } from "~/shared/ui/StyledCheckboxMultiple/StyledCheckboxMultiple";
+import { MaskedField } from "~/shared/ui/MaskedField/MaskedField";
 import { TimeField } from "~/shared/ui/TimeField/TimeField";
 
 import { S_SwipeableDrawer } from "./manager.styled";
@@ -59,7 +61,7 @@ import { postSetSupervisors } from "~/requests/_personal/_moderation/postSetSupe
 import { postDelSupervisor } from "~/requests/_personal/_moderation/postDelSupervisor/postDelSupervisor";
 
 const getRadioButtons = (
-  list: { id: number; name: string; logo: string }[],
+  list: { id: number; name: string; logo: string }[]
 ) => {
   const options: {
     id: number;
@@ -106,12 +108,12 @@ export async function clientLoader({ params }: Route.ClientLoaderArgs) {
   if (accessToken) {
     const data = await getModerationSingleClient(
       accessToken,
-      Number(params.user),
+      Number(params.user)
     );
 
     const supervisersData = await getSupervisors(
       accessToken,
-      Number(params.user),
+      Number(params.user)
     );
 
     data.data.project.forEach((org) => {
@@ -143,6 +145,7 @@ export async function clientLoader({ params }: Route.ClientLoaderArgs) {
       live_task: data.data.live_task,
       repeat_bid: data.data.repeat_bid,
       leave_bid: data.data.leave_bid,
+      notification_start: data.data.notification_start.toString(),
       status: (() => {
         let status = 3;
 
@@ -196,7 +199,7 @@ export async function clientAction({ request }: Route.ClientActionArgs) {
         accessToken,
         fields.userId,
         fields.confirm,
-        fields,
+        fields
       );
       throw redirect(withLocale("/users"));
     } else if (_action === "_saveLogo") {
@@ -209,7 +212,7 @@ export async function clientAction({ request }: Route.ClientActionArgs) {
       await postDelPlaceModeration(
         accessToken,
         fields.userId,
-        fields.projectId,
+        fields.projectId
       );
       return;
     } else if (_action === "_decline") {
@@ -235,7 +238,7 @@ export default function Manager({ loaderData }: Route.ComponentProps) {
   const [open, setOpen] = useState<boolean>(false);
   const [searchSupervisors, setSearchSupervisors] = useState<boolean>(false);
   const [selectedSupervisors, setSelectedSupervisors] = useState(
-    loaderData.supervisorsToSelect,
+    loaderData.supervisorsToSelect
   );
 
   const {
@@ -264,6 +267,7 @@ export default function Manager({ loaderData }: Route.ComponentProps) {
         `2000-01-01T${loaderData.client.repeat_bid}` as unknown as string,
       leave_bid:
         `2000-01-01T${loaderData.client.leave_bid}` as unknown as string,
+      notification_start: loaderData.client.notification_start,
     },
     resolver: yupResolver(
       Yup.object({
@@ -278,7 +282,7 @@ export default function Manager({ loaderData }: Route.ComponentProps) {
               id: Yup.number().required(),
               logo: Yup.string().required(),
               name: Yup.string().required(),
-            }),
+            })
           )
           .required(t("text", { ns: "constructorFields" })),
         locations: Yup.array()
@@ -292,7 +296,7 @@ export default function Manager({ loaderData }: Route.ComponentProps) {
               // name: Yup.string().required(),
               // coordinates: Yup.array().min(2).max(2).of(Yup.number()),
               // region: Yup.string().required(),
-            }),
+            })
           )
           .required(t("text", { ns: "constructorFields" })),
         change_task: Yup.string()
@@ -310,7 +314,10 @@ export default function Manager({ loaderData }: Route.ComponentProps) {
         leave_bid: Yup.string()
           .nullable()
           .required(t("text", { ns: "constructorFields" })),
-      }),
+        notification_start: Yup.string().required(
+          t("text", { ns: "constructorFields" })
+        ),
+      })
     ),
   });
 
@@ -332,9 +339,11 @@ export default function Manager({ loaderData }: Route.ComponentProps) {
       Yup.object({
         searchbar: Yup.string().notRequired(),
         supervisors: Yup.array().of(Yup.string()).min(1),
-      }),
+      })
     ),
   });
+
+  console.log(errors);
 
   return (
     <>
@@ -426,7 +435,7 @@ export default function Manager({ loaderData }: Route.ComponentProps) {
               {
                 method: "POST",
                 encType: "application/json",
-              },
+              }
             );
           })}
         >
@@ -641,7 +650,7 @@ export default function Manager({ loaderData }: Route.ComponentProps) {
                     onClick={() => {
                       const currentList = getValues("organizations");
                       const updatedList = currentList.filter(
-                        (item) => item.name !== organization.name,
+                        (item) => item.name !== organization.name
                       );
                       setValue("organizations", updatedList);
                       trigger("organizations");
@@ -655,7 +664,7 @@ export default function Manager({ loaderData }: Route.ComponentProps) {
                         {
                           method: "POST",
                           encType: "application/json",
-                        },
+                        }
                       );
                     }}
                     sx={{
@@ -728,7 +737,7 @@ export default function Manager({ loaderData }: Route.ComponentProps) {
                     onClick={() => {
                       const currentList = getValues("locations");
                       const updatedList = currentList.filter(
-                        (item) => item.address !== location.address,
+                        (item) => item.address !== location.address
                       );
                       setValue("locations", updatedList);
                       trigger("locations");
@@ -742,7 +751,7 @@ export default function Manager({ loaderData }: Route.ComponentProps) {
                         {
                           method: "POST",
                           encType: "application/json",
-                        },
+                        }
                       );
                     }}
                     sx={{
@@ -822,7 +831,7 @@ export default function Manager({ loaderData }: Route.ComponentProps) {
                             {
                               method: "POST",
                               encType: "application/json",
-                            },
+                            }
                           );
                         }}
                         sx={{
@@ -912,6 +921,30 @@ export default function Manager({ loaderData }: Route.ComponentProps) {
               )}
             />
 
+            <Controller
+              name="notification_start"
+              control={control}
+              render={({ field }) => (
+                <TextField
+                  {...field}
+                  // label={t(`${props.translation}.fields.amountPlaceholder`)}
+                  label="Срок уведомления проект-менеджера о неоказании услуг специалистом"
+                  error={errors.notification_start?.message ? true : false}
+                  helperText={errors.notification_start?.message}
+                  slotProps={{
+                    input: {
+                      inputComponent: MaskedField as never,
+                      inputProps: {
+                        mask: "00",
+                      },
+                      inputMode: "numeric",
+                      type: "tel",
+                    },
+                  }}
+                />
+              )}
+            />
+
             <Box>
               <Typography
                 component="p"
@@ -948,7 +981,7 @@ export default function Manager({ loaderData }: Route.ComponentProps) {
                   {
                     method: "POST",
                     encType: "application/json",
-                  },
+                  }
                 );
               }}
             >
@@ -989,7 +1022,7 @@ export default function Manager({ loaderData }: Route.ComponentProps) {
 
                   const selectedOrganization =
                     loaderData.client.organizations.find(
-                      (item) => item.logo === evt.target.value,
+                      (item) => item.logo === evt.target.value
                     );
 
                   if (selectedOrganization) {
@@ -1002,7 +1035,7 @@ export default function Manager({ loaderData }: Route.ComponentProps) {
                       {
                         method: "POST",
                         encType: "application/json",
-                      },
+                      }
                     );
                   }
                 }}
@@ -1047,7 +1080,7 @@ export default function Manager({ loaderData }: Route.ComponentProps) {
               {
                 method: "POST",
                 encType: "application/json",
-              },
+              }
             );
 
             resetSupervisor();
@@ -1076,7 +1109,7 @@ export default function Manager({ loaderData }: Route.ComponentProps) {
                   onChange={(evt) => {
                     const currentFieldValue = new RegExp(
                       `^${evt.target.value}`,
-                      "i",
+                      "i"
                     );
 
                     let matchingSupervisors: typeof loaderData.supervisorsToSelect =
@@ -1085,7 +1118,7 @@ export default function Manager({ loaderData }: Route.ComponentProps) {
                     if (evt.target.value !== "") {
                       matchingSupervisors = [
                         ...selectedSupervisors.filter((item) =>
-                          currentFieldValue.test(item.label),
+                          currentFieldValue.test(item.label)
                         ),
                       ];
                     } else {

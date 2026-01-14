@@ -115,10 +115,10 @@ const serviceFormSchema = z
                     error: t("text", { ns: "constructorFields" }),
                   }),
                 logo: z.string().optional(),
-              }),
+              })
             )
             .optional(),
-        }),
+        })
       )
       .superRefine((days, ctx) => {
         days.forEach((day, index) => {
@@ -166,7 +166,6 @@ export function ServiceFormMobileView(props: ServiceFormMobileViewInterface) {
     getValues,
     setValue,
     trigger,
-    register,
   } = useForm({
     defaultValues: {
       activity: props.entity.id,
@@ -223,7 +222,7 @@ export function ServiceFormMobileView(props: ServiceFormMobileViewInterface) {
               <StyledSelect
                 inputType="select"
                 placeholder={t(
-                  `${props.translation}.fields.servicePlaceholder`,
+                  `${props.translation}.fields.servicePlaceholder`
                 )}
                 onImmediateChange={() => {}}
                 validation="none"
@@ -361,7 +360,7 @@ export function ServiceFormMobileView(props: ServiceFormMobileViewInterface) {
                             ...((() => {
                               let result = false;
                               const match = props.activities.find(
-                                (item) => item.value === getValues("activity"),
+                                (item) => item.value === getValues("activity")
                               );
 
                               if (match) {
@@ -378,7 +377,7 @@ export function ServiceFormMobileView(props: ServiceFormMobileViewInterface) {
                             ...((() => {
                               let result = false;
                               const match = props.activities.find(
-                                (item) => item.value === getValues("activity"),
+                                (item) => item.value === getValues("activity")
                               );
 
                               if (match) {
@@ -395,7 +394,7 @@ export function ServiceFormMobileView(props: ServiceFormMobileViewInterface) {
                             ...((() => {
                               let result = false;
                               const match = props.activities.find(
-                                (item) => item.value === getValues("activity"),
+                                (item) => item.value === getValues("activity")
                               );
 
                               if (match) {
@@ -444,7 +443,7 @@ export function ServiceFormMobileView(props: ServiceFormMobileViewInterface) {
                         ...((() => {
                           let result = false;
                           const match = props.activities.find(
-                            (item) => item.value === getValues("activity"),
+                            (item) => item.value === getValues("activity")
                           );
 
                           if (match) {
@@ -501,7 +500,7 @@ export function ServiceFormMobileView(props: ServiceFormMobileViewInterface) {
                         {format(day.timeStart, "dd.MM")}
                         &nbsp;
                         {t(
-                          `${props.translation}.dayMap.${getDay(day.timeStart)}`,
+                          `${props.translation}.dayMap.${getDay(day.timeStart)}`
                         )}
                       </Typography>
 
@@ -514,12 +513,12 @@ export function ServiceFormMobileView(props: ServiceFormMobileViewInterface) {
                       >
                         {format(
                           new Date(watch(`days.${index}.timeStart`)),
-                          "kk:mm",
+                          "kk:mm"
                         )}
                         -
                         {format(
                           new Date(watch(`days.${index}.timeEnd`)),
-                          "kk:mm",
+                          "kk:mm"
                         )}
                       </Typography>
 
@@ -578,7 +577,7 @@ export function ServiceFormMobileView(props: ServiceFormMobileViewInterface) {
                                 hours: 21,
                               })}
                               placeholder={t(
-                                `${props.translation}.fields.startClockPlaceholder`,
+                                `${props.translation}.fields.startClockPlaceholder`
                               )}
                               // error={errors.days[index]?.message}
                               {...field}
@@ -586,7 +585,7 @@ export function ServiceFormMobileView(props: ServiceFormMobileViewInterface) {
                               onChange={(evt) => {
                                 setValue(
                                   `days.${index}.timeStart`,
-                                  new Date(evt),
+                                  new Date(evt)
                                 );
                               }}
                             />
@@ -602,7 +601,7 @@ export function ServiceFormMobileView(props: ServiceFormMobileViewInterface) {
                               })}
                               maxTime={field.value}
                               placeholder={t(
-                                `${props.translation}.fields.endClockPlaceholder`,
+                                `${props.translation}.fields.endClockPlaceholder`
                               )}
                               // error={errors.days[index]?.message}
                               {...field}
@@ -610,7 +609,7 @@ export function ServiceFormMobileView(props: ServiceFormMobileViewInterface) {
                               onChange={(evt) => {
                                 setValue(
                                   `days.${index}.timeEnd`,
-                                  new Date(evt),
+                                  new Date(evt)
                                 );
                               }}
                             />
@@ -628,7 +627,7 @@ export function ServiceFormMobileView(props: ServiceFormMobileViewInterface) {
                                 {...field}
                                 inputType="checkbox"
                                 label={t(
-                                  `${props.translation}.fields.needRoutePlaceholder`,
+                                  `${props.translation}.fields.needRoutePlaceholder`
                                 )}
                                 onImmediateChange={() => {}}
                                 validation="none"
@@ -700,20 +699,20 @@ export function ServiceFormMobileView(props: ServiceFormMobileViewInterface) {
                                           <IconButton
                                             onClick={() => {
                                               const currentList = getValues(
-                                                `days.${index}.locations`,
+                                                `days.${index}.locations`
                                               );
 
                                               const updatedList =
                                                 currentList?.filter(
                                                   (item) =>
-                                                    item.id !== location.id,
+                                                    item.id !== location.id
                                                 );
                                               setValue(
                                                 `days.${index}.locations`,
-                                                updatedList,
+                                                updatedList
                                               );
                                               trigger(
-                                                `days.${index}.locations`,
+                                                `days.${index}.locations`
                                               );
                                             }}
                                             sx={{
@@ -729,7 +728,7 @@ export function ServiceFormMobileView(props: ServiceFormMobileViewInterface) {
                                             />
                                           </IconButton>
                                         </Box>
-                                      ),
+                                      )
                                     )
                                   : null}
 
@@ -782,7 +781,7 @@ export function ServiceFormMobileView(props: ServiceFormMobileViewInterface) {
                     //дни есть, нужно проверить есть ли промежуток между днями или они идут друг за другом, для этого берем текущий день, прибавляем к нему 24 часа и берем следующий день в массиве и сравниваем, если день один и тотже, то дни идут друг за другом
                     const sameDay = isSameDay(
                       addDays(day.timeStart, 1),
-                      nextDayinArray.timeStart,
+                      nextDayinArray.timeStart
                     );
 
                     //если день не один и тотже, значит есть промежуток, вставляем кнопку
@@ -799,8 +798,7 @@ export function ServiceFormMobileView(props: ServiceFormMobileViewInterface) {
                               ...((() => {
                                 let result = false;
                                 const match = props.activities.find(
-                                  (item) =>
-                                    item.value === getValues("activity"),
+                                  (item) => item.value === getValues("activity")
                                 );
 
                                 if (match) {
@@ -837,8 +835,7 @@ export function ServiceFormMobileView(props: ServiceFormMobileViewInterface) {
                               ...((() => {
                                 let result = false;
                                 const match = props.activities.find(
-                                  (item) =>
-                                    item.value === getValues("activity"),
+                                  (item) => item.value === getValues("activity")
                                 );
 
                                 if (match) {
@@ -968,11 +965,11 @@ export function ServiceFormMobileView(props: ServiceFormMobileViewInterface) {
 
           selectedLoactions.forEach((item) => {
             const match = props.locations.find(
-              (location) => location.value === item,
+              (location) => location.value === item
             );
 
             const isAlreadySelected = selectedDayLocations?.find(
-              (location) => location.id === item,
+              (location) => location.id === item
             );
 
             if (match && isAlreadySelected === undefined) {

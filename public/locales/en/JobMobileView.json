@@ -4,6 +4,8 @@
   "statusText": "Status",
   "locationText": "Location",
   "serviceTypeText": "Service type",
+  "forPayText": "For pay",
+  "incomeText": "Income",
   "pricePerUnitText": "Price per unit",
   "dateStartText": "Start date",
   "dateEndText": "End date",

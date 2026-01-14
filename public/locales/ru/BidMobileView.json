@@ -28,6 +28,7 @@
   "statusPlaceholder": "Статус",
   "locationPlaceholder": "Место оказания услуг",
   "serviceTypePlaceholder": "Вид услуги",
+  "projectTypePlaceholder": "Проект",
   "amountPlaceholder": "Количество",
   "unitPricePlaceholder": "Цена за (Ед.измерения) *",
   "paxPricePlaceholder": "Стоимость (с налогом)",

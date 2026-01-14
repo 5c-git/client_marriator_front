@@ -12,7 +12,7 @@ export const getBidSuccessSchema = z.object({
         z.object({
           id: z.number().gte(1).lte(6),
           name: z.enum(["manager", "supervisor", "client", "specialist"]),
-        }),
+        })
       ),
     }),
     status: z.union([
@@ -74,9 +74,9 @@ export const getBidSuccessSchema = z.object({
               logo: z.string(),
               description: z.string(),
             }),
-          }),
+          })
         ),
-      }),
+      })
     ),
     order: z.union([
       z.null(),
@@ -100,7 +100,7 @@ export const getBidSuccessSchema = z.object({
                 "specialist",
                 "supervisor",
               ]),
-            }),
+            })
           ),
         }),
       }),
@@ -127,7 +127,7 @@ export const getBidSuccessSchema = z.object({
                 "specialist",
                 "supervisor",
               ]),
-            }),
+            })
           ),
         }),
       }),
@@ -142,7 +142,7 @@ export const getBidSuccessSchema = z.object({
           z.object({
             id: z.number().gte(1).lte(6),
             name: z.enum(["manager", "supervisor", "client", "specialist"]),
-          }),
+          })
         ),
         radius: z.string(),
         name: z.string(),
@@ -155,11 +155,28 @@ export const getBidSuccessSchema = z.object({
           z.literal(3),
           z.literal(4),
           z.literal(5),
+          z.literal(6),
+          z.literal(7),
+          z.literal(8),
         ]),
-      }),
+      })
     ),
     count: z.number(),
     statistic: z.array(z.object({ accepted: z.number(), count: z.number() })),
+    project: z.object({
+      id: z.number(),
+      name: z.string(),
+      dateStart: z.string(),
+      dateEnd: z.string(),
+      brand: z.array(
+        z.object({
+          id: z.number(),
+          name: z.string(),
+          logo: z.string(),
+          description: z.string(),
+        })
+      ),
+    }),
   }),
 });
 

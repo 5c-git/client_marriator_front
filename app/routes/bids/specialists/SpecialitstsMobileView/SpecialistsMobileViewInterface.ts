@@ -20,7 +20,7 @@ export type SpecialistsMobileViewInterface = {
     age: string;
     country: string;
     viewActivities: string[];
-    status: 4 | 1 | 2 | 3 | 5;
+    status: 4 | 1 | 2 | 3 | 5 | 6 | 7 | 8;
   }[];
   radiuses: {
     value: string;
