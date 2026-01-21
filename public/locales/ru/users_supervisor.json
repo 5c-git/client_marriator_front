@@ -1,6 +1,11 @@
 {
   "header": "Супервайзер",
   "avatar": "Логотип",
+  "status": {
+    "new": "Новая",
+    "inProgress": "В работе",
+    "archive": "Архив"
+  },
   "fields": {
     "avatarPlaceholder": "Аватар *",
     "avatarValue": "Выберите",
@@ -19,6 +24,7 @@
   "locationSelector": "Выбрать места проведения",
   "user_id": "Идентификатор пользователя",
   "confirmButton": "Подтвердить",
+  "saveButton": "Сохранить",
   "excludeButton": "Заблокировать",
   "manager": "Менеджеры",
   "managerInviteButton": "Привязать менеджеров",

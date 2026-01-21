@@ -8,6 +8,8 @@ import { determineRole } from "~/shared/determineRole";
 
 import { useTranslation } from "react-i18next";
 
+import { isWithinInterval, subHours } from "date-fns";
+
 import { SpecialistMobileView } from "./SpecialistMobileView/SpecialistMobileView";
 
 import { Loader } from "~/shared/ui/Loader/Loader";
@@ -36,7 +38,7 @@ export async function clientLoader({ params }: Route.ClientLoaderArgs) {
       const missionData = await getJob(
         accessToken,
         params.specialistId,
-        params.bidId,
+        params.bidId
       );
 
       data = {
@@ -61,7 +63,7 @@ export async function clientLoader({ params }: Route.ClientLoaderArgs) {
               const places: { id: number; logo: string; text: string }[] = [];
 
               const actedDay = missionData.data.reports.find(
-                (item) => item.dayActivityId === day.id,
+                (item) => item.dayActivityId === day.id
               );
 
               day.places.forEach((place) => {
@@ -133,6 +135,58 @@ export async function clientLoader({ params }: Route.ClientLoaderArgs) {
 
             return validReports.length > 1 ? true : false;
           })(),
+          oneDayJob: missionData.data.dateActivity.length === 0 ? true : false,
+          oneDayJobAction: (() => {
+            let action: SpecialistMobileViewInterface["entity"]["oneDayJobAction"] =
+              "none";
+
+            const oneDayJob =
+              missionData.data.dateActivity.length === 0 ? true : false;
+
+            if (oneDayJob) {
+              const actedDay =
+                missionData.data.reports.length > 0 ? true : false;
+
+              const now = new Date();
+
+              const canStart = isWithinInterval(now, {
+                start: subHours(new Date(missionData.data.dateStart), 1),
+                end: subHours(new Date(missionData.data.dateEnd), 1),
+              });
+
+              if (
+                canStart &&
+                !actedDay &&
+                missionData.data.acceptingUser.status === 5
+              ) {
+                action = "start";
+              }
+
+              if (actedDay) {
+                if (missionData.data.reports[0].status === 1) {
+                  action = "inProgress";
+                } else if (missionData.data.reports[0].status === 2) {
+                  action = "end";
+                } else if (missionData.data.reports[0].status === 3) {
+                  action = "reported";
+                } else if (missionData.data.reports[0].status === 4) {
+                  action = "accept";
+                } else if (missionData.data.reports[0].status === 5) {
+                  action = "forPay";
+                } else if (missionData.data.reports[0].status === 6) {
+                  action = "paid";
+                } else if (missionData.data.reports[0].status === 7) {
+                  action = "notEnded";
+                }
+              }
+            }
+
+            return action;
+          })(),
+          oneDayReportId:
+            missionData.data.reports.length > 0
+              ? missionData.data.reports[0].id
+              : null,
         },
       } as SpecialistMobileViewInterface;
     }
@@ -156,14 +210,14 @@ export async function clientAction({
       await postAcceptSpecialist(
         accessToken,
         fields.bidId,
-        params.specialistId,
+        params.specialistId
       );
       throw redirect(currentURL.toString());
     } else if (_action === "end") {
       await postEndSpecialistJob(
         accessToken,
         fields.bidId,
-        params.specialistId,
+        params.specialistId
       );
       throw redirect(currentURL.toString());
     } else if (_action === "forPay") {
@@ -219,7 +273,7 @@ export default function SpecialistRequest({
                       {
                         method: "POST",
                         encType: "application/json",
-                      },
+                      }
                     );
                   }}
                 >
@@ -274,7 +328,7 @@ export default function SpecialistRequest({
                     {
                       method: "POST",
                       encType: "application/json",
-                    },
+                    }
                   );
                 }}
               >
@@ -290,6 +344,76 @@ export default function SpecialistRequest({
               >
                 {t("actions.acceptAll")}
               </Button>
+            ) : null}
+
+            {loaderData.entity.oneDayJob ? (
+              <>
+                {loaderData.entity.oneDayJobAction === "end" ||
+                loaderData.entity.oneDayJobAction === "reported" ||
+                loaderData.entity.oneDayJobAction === "notEnded" ? (
+                  <Button
+                    component={Link}
+                    to={`/bids/${loaderData.entity.id}/specialists/${loaderData.entity.specialist.id}/day-review/${loaderData.entity.oneDayReportId}`}
+                    variant="outlined"
+                  >
+                    {t("actions.check")}
+                  </Button>
+                ) : null}
+                {loaderData.entity.oneDayJobAction === "accept" ? (
+                  <>
+                    <Button
+                      component={Link}
+                      to={`/bids/${loaderData.entity.id}/specialists/${loaderData.entity.specialist.id}/day-review/${loaderData.entity.oneDayReportId}?edit=true`}
+                      variant="outlined"
+                    >
+                      {t("actions.edit")}
+                    </Button>
+                    <Button
+                      variant="contained"
+                      onClick={() => {
+                        submit(
+                          JSON.stringify({
+                            _action: "forPay",
+                            reportId: loaderData.entity.oneDayReportId,
+                          }),
+                          {
+                            method: "POST",
+                            encType: "application/json",
+                          }
+                        );
+                      }}
+                    >
+                      {t("actions.forPay")}
+                    </Button>
+                  </>
+                ) : null}
+                {loaderData.entity.oneDayJobAction === "forPay" ? (
+                  <>
+                    <Typography
+                      component={"p"}
+                      variant="Bold_18"
+                      sx={(theme) => ({
+                        color: theme.vars.palette["Corp_1"],
+                        textAlign: "center",
+                      })}
+                    >
+                      {t("dayStatus.forPayManager")}
+                    </Typography>
+                  </>
+                ) : null}
+                {loaderData.entity.oneDayJobAction === "paid" ? (
+                  <Typography
+                    component={"p"}
+                    variant="Bold_18"
+                    sx={(theme) => ({
+                      color: theme.vars.palette["Corp_1"],
+                      textAlign: "center",
+                    })}
+                  >
+                    {t("dayStatus.paid")}
+                  </Typography>
+                ) : null}
+              </>
             ) : null}
 
             {entity.status === 1 ||
@@ -308,7 +432,7 @@ export default function SpecialistRequest({
                     {
                       method: "POST",
                       encType: "application/json",
-                    },
+                    }
                   );
                 }}
               >

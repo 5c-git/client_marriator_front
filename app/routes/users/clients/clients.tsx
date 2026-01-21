@@ -46,19 +46,20 @@ export async function clientLoader() {
           users.push({
             id: item.id,
             status: (() => {
-              const status = 1;
+              let status = 3;
 
-              // if (
-              //   item.confirmRegister === false &&
-              //   item.finishRegister === true
-              // ) {
-              //   status = 1;
-              // } else if (
-              //   item.confirmRegister === true &&
-              //   item.finishRegister === true
-              // ) {
-              //   status = 2;
-              // } else if (
+              if (
+                item.confirmRegister === false &&
+                item.finishRegister === true
+              ) {
+                status = 1;
+              } else if (
+                item.confirmRegister === true &&
+                item.finishRegister === true
+              ) {
+                status = 2;
+              }
+              // else if (
               //   item.confirmRegister === false &&
               //   item.finishRegister === false
               // ) {

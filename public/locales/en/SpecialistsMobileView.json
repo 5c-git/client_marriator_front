@@ -4,7 +4,10 @@
     "2": "Accepted",
     "3": "Declined",
     "4": "In consideration",
-    "5": "In work"
+    "5": "In work",
+    "6": "On executors review",
+    "7": "Executors waiting response",
+    "8": "Executors have response"
   },
   "searchbarPlaceholder": "Search",
   "selectAllPlaceholder": "Select all",

@@ -13,7 +13,6 @@ import { SpecialistsStaticMobileView } from "./SpecialitstsMobileView/Specialist
 import { getSpecialistForBid } from "~/requests/_personal/getSpecialistForBid/getSpecialistForBid";
 import { getRadiusSelect } from "~/requests/_personal/getRadiusSelect/getRadiusSelect";
 import { postInvoiceBid } from "~/requests/_personal/postInvoiceBid/postInvoiceBid";
-import { determineRole } from "~/shared/determineRole";
 
 type MobileModeData = SpecialistsMobileViewInterface & { mode: "mobile" };
 
@@ -32,7 +31,7 @@ export async function clientLoader({ params }: Route.ClientLoaderArgs) {
       const radiusData = await getRadiusSelect(accessToken);
       const specialistsData = await getSpecialistForBid(
         accessToken,
-        params.bidId,
+        params.bidId
       );
 
       radiusData.data.forEach((item) => {
@@ -61,7 +60,7 @@ export async function clientLoader({ params }: Route.ClientLoaderArgs) {
       let startingRadius = 1;
 
       const defaultRadius = radiusData.data.find(
-        (item) => item.default === true,
+        (item) => item.default === true
       );
 
       if (defaultRadius) {

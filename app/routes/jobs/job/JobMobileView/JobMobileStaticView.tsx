@@ -493,10 +493,10 @@ export function JobMobileStaticView({
                                   {location.name}
                                 </Typography>
                               </Box>
-                              {actions.map((action) => action(day, day.action))}
                             </Box>
                           ))
                         : null}
+                      {actions.map((action) => action(day, day.action))}
                     </Box>
 
                     <Divider sx={{ marginTop: "8px" }} />

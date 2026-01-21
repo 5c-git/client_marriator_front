@@ -61,7 +61,7 @@ import { postDelManager } from "~/requests/_personal/postDelManager/postDelManag
 import { postSetManagers } from "~/requests/_personal/postSetManagers/postSetManagers";
 
 const getRadioButtons = (
-  list: { id: number; name: string; logo: string }[],
+  list: { id: number; name: string; logo: string }[]
 ) => {
   const options: {
     id: number;
@@ -108,7 +108,7 @@ export async function clientLoader({ params }: Route.ClientLoaderArgs) {
   if (accessToken) {
     const data = await getModerationSingleClient(
       accessToken,
-      Number(params.user),
+      Number(params.user)
     );
 
     const managersData = await getManager(accessToken, Number(params.user));
@@ -142,6 +142,7 @@ export async function clientLoader({ params }: Route.ClientLoaderArgs) {
       leave_bid: data.data.leave_bid,
       live_task: data.data.live_task,
       waiting_task: data.data.waiting_task,
+      confirmRegister: data.data.confirmRegister,
       status: (() => {
         let status = 3;
 
@@ -195,7 +196,7 @@ export async function clientAction({ request }: Route.ClientActionArgs) {
         accessToken,
         fields.userId,
         fields.confirm,
-        fields,
+        fields
       );
       throw redirect(withLocale("/users"));
     } else if (_action === "_saveLogo") {
@@ -208,7 +209,7 @@ export async function clientAction({ request }: Route.ClientActionArgs) {
       await postDelPlaceModeration(
         accessToken,
         fields.userId,
-        fields.projectId,
+        fields.projectId
       );
       return;
     } else if (_action === "_decline") {
@@ -234,7 +235,7 @@ export default function Supervisor({ loaderData }: Route.ComponentProps) {
   const [open, setOpen] = useState<boolean>(false);
   const [searchManagers, setSearchManagers] = useState<boolean>(false);
   const [selectedManagers, setSelectedManagers] = useState(
-    loaderData.managersToSelect,
+    loaderData.managersToSelect
   );
 
   const {
@@ -243,6 +244,7 @@ export default function Supervisor({ loaderData }: Route.ComponentProps) {
     getValues,
     setValue,
     trigger,
+    watch,
     formState: { errors },
   } = useForm({
     defaultValues: {
@@ -275,7 +277,7 @@ export default function Supervisor({ loaderData }: Route.ComponentProps) {
               id: Yup.number().required(),
               logo: Yup.string().required(),
               name: Yup.string().required(),
-            }),
+            })
           )
           .required(t("text", { ns: "constructorFields" })),
         locations: Yup.array()
@@ -289,7 +291,7 @@ export default function Supervisor({ loaderData }: Route.ComponentProps) {
               // name: Yup.string().required(),
               // coordinates: Yup.array().min(2).max(2).of(Yup.number()),
               // region: Yup.string().required(),
-            }),
+            })
           )
           .required(t("text", { ns: "constructorFields" })),
         repeat_bid: Yup.string()
@@ -302,9 +304,9 @@ export default function Supervisor({ loaderData }: Route.ComponentProps) {
           .nullable()
           .required(t("text", { ns: "constructorFields" })),
         waiting_task: Yup.string().required(
-          t("text", { ns: "constructorFields" }),
+          t("text", { ns: "constructorFields" })
         ),
-      }),
+      })
     ),
   });
 
@@ -326,7 +328,7 @@ export default function Supervisor({ loaderData }: Route.ComponentProps) {
       Yup.object({
         searchbar: Yup.string().notRequired(),
         supervisors: Yup.array().of(Yup.string()).min(1),
-      }),
+      })
     ),
   });
 
@@ -398,7 +400,7 @@ export default function Supervisor({ loaderData }: Route.ComponentProps) {
               {
                 method: "POST",
                 encType: "application/json",
-              },
+              }
             );
           })}
         >
@@ -503,11 +505,7 @@ export default function Supervisor({ loaderData }: Route.ComponentProps) {
                   }}
                 ></Box>
                 <Typography component="p" variant="Reg_14">
-                  {
-                    statusCodeMap[
-                      loaderData.client.status as keyof typeof statusCodeMap
-                    ].value
-                  }
+                  {t(`status.${statusCodeMap[loaderData.client.status].value}`)}
                 </Typography>
               </Box>
             </Box>
@@ -609,39 +607,41 @@ export default function Supervisor({ loaderData }: Route.ComponentProps) {
                     {organization.name}
                   </Typography>
 
-                  <IconButton
-                    onClick={() => {
-                      const currentList = getValues("organizations");
-                      const updatedList = currentList.filter(
-                        (item) => item.name !== organization.name,
-                      );
-                      setValue("organizations", updatedList);
-                      trigger("organizations");
+                  {watch("organizations").length > 1 ? (
+                    <IconButton
+                      onClick={() => {
+                        const currentList = getValues("organizations");
+                        const updatedList = currentList.filter(
+                          (item) => item.name !== organization.name
+                        );
+                        setValue("organizations", updatedList);
+                        trigger("organizations");
 
-                      fetcher.submit(
-                        JSON.stringify({
-                          _action: "_deleteProject",
-                          userId: loaderData.client.id,
-                          projectId: organization.id,
-                        }),
-                        {
-                          method: "POST",
-                          encType: "application/json",
-                        },
-                      );
-                    }}
-                    sx={{
-                      width: "24px",
-                      height: "24px",
-                    }}
-                  >
-                    <DeleteIcon
-                      sx={{
-                        width: "12px",
-                        height: "12px",
+                        fetcher.submit(
+                          JSON.stringify({
+                            _action: "_deleteProject",
+                            userId: loaderData.client.id,
+                            projectId: organization.id,
+                          }),
+                          {
+                            method: "POST",
+                            encType: "application/json",
+                          }
+                        );
                       }}
-                    />
-                  </IconButton>
+                      sx={{
+                        width: "24px",
+                        height: "24px",
+                      }}
+                    >
+                      <DeleteIcon
+                        sx={{
+                          width: "12px",
+                          height: "12px",
+                        }}
+                      />
+                    </IconButton>
+                  ) : null}
                 </Box>
               ))}
             </Stack>
@@ -700,7 +700,7 @@ export default function Supervisor({ loaderData }: Route.ComponentProps) {
                     onClick={() => {
                       const currentList = getValues("locations");
                       const updatedList = currentList.filter(
-                        (item) => item.address !== location.address,
+                        (item) => item.address !== location.address
                       );
                       setValue("locations", updatedList);
                       trigger("locations");
@@ -714,7 +714,7 @@ export default function Supervisor({ loaderData }: Route.ComponentProps) {
                         {
                           method: "POST",
                           encType: "application/json",
-                        },
+                        }
                       );
                     }}
                     sx={{
@@ -747,7 +747,6 @@ export default function Supervisor({ loaderData }: Route.ComponentProps) {
               {t("locationSelector")}
             </Button>
 
-            {/* туть */}
             {loaderData.currentManagers.length > 0 ? (
               <>
                 {" "}
@@ -794,7 +793,7 @@ export default function Supervisor({ loaderData }: Route.ComponentProps) {
                             {
                               method: "POST",
                               encType: "application/json",
-                            },
+                            }
                           );
                         }}
                         sx={{
@@ -824,7 +823,6 @@ export default function Supervisor({ loaderData }: Route.ComponentProps) {
             >
               {t("managerInviteButton")}
             </Button>
-            {/* туть */}
 
             <Controller
               name="repeat_bid"
@@ -903,9 +901,11 @@ export default function Supervisor({ loaderData }: Route.ComponentProps) {
             </Box>
 
             <Button variant="contained" type="submit" startIcon={<CheckIcon />}>
-              {t("confirmButton")}
+              {loaderData.client.confirmRegister
+                ? t("saveButton")
+                : t("confirmButton")}
             </Button>
-            <Button
+            {/* <Button
               variant="text"
               onClick={() => {
                 submit(
@@ -917,12 +917,12 @@ export default function Supervisor({ loaderData }: Route.ComponentProps) {
                   {
                     method: "POST",
                     encType: "application/json",
-                  },
+                  }
                 );
               }}
             >
               {t("excludeButton")}
-            </Button>
+            </Button> */}
           </Box>
         </form>
       </Box>
@@ -958,7 +958,7 @@ export default function Supervisor({ loaderData }: Route.ComponentProps) {
 
                   const selectedOrganization =
                     loaderData.client.organizations.find(
-                      (item) => item.logo === evt.target.value,
+                      (item) => item.logo === evt.target.value
                     );
 
                   if (selectedOrganization) {
@@ -971,7 +971,7 @@ export default function Supervisor({ loaderData }: Route.ComponentProps) {
                       {
                         method: "POST",
                         encType: "application/json",
-                      },
+                      }
                     );
                   }
                 }}
@@ -1016,7 +1016,7 @@ export default function Supervisor({ loaderData }: Route.ComponentProps) {
               {
                 method: "POST",
                 encType: "application/json",
-              },
+              }
             );
 
             resetManager();
@@ -1045,7 +1045,7 @@ export default function Supervisor({ loaderData }: Route.ComponentProps) {
                   onChange={(evt) => {
                     const currentFieldValue = new RegExp(
                       `^${evt.target.value}`,
-                      "i",
+                      "i"
                     );
 
                     let matchingManagers: typeof loaderData.managersToSelect =
@@ -1054,7 +1054,7 @@ export default function Supervisor({ loaderData }: Route.ComponentProps) {
                     if (evt.target.value !== "") {
                       matchingManagers = [
                         ...selectedManagers.filter((item) =>
-                          currentFieldValue.test(item.label),
+                          currentFieldValue.test(item.label)
                         ),
                       ];
                     } else {

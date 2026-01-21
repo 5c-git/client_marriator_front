@@ -1,6 +1,11 @@
 {
   "header": "Client",
   "avatar": "Avatar",
+  "status": {
+    "new": "New",
+    "inProgress": "In progress",
+    "archive": "Archive"
+  },
   "fields": {
     "avatarPlaceholder": "Avatar *",
     "avatarValue": "Choose",
@@ -17,5 +22,6 @@
   "locationSelector": "Choose locations",
   "user_id": "User ID",
   "confirmButton": "Confirm",
+  "saveButton": "Save",
   "excludeButton": "Block"
 }

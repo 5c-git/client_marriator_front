@@ -1,6 +1,11 @@
 {
   "header": "Project-manager",
   "avatar": "Avatar",
+  "status": {
+    "new": "New",
+    "inProgress": "In progress",
+    "archive": "Archive"
+  },
   "fields": {
     "avatarPlaceholder": "Avatar *",
     "avatarValue": "Choose",
@@ -21,6 +26,7 @@
   "supervisor": "Supervisors",
   "user_id": "User ID",
   "confirmButton": "Confirm",
+  "saveButton": "Save",
   "excludeButton": "Block",
   "supervisorInviteButton": "Add supervisors",
   "supervisorHeader": "Select supervisers"

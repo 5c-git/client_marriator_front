@@ -102,7 +102,7 @@ export default function SelectProjects({ loaderData }: Route.ComponentProps) {
       Yup.object({
         searchbar: Yup.string().notRequired(),
         projects: Yup.array().of(Yup.string()).min(1),
-      }),
+      })
     ),
     mode: "onChange",
   });
@@ -135,7 +135,7 @@ export default function SelectProjects({ loaderData }: Route.ComponentProps) {
               {
                 method: "POST",
                 encType: "application/json",
-              },
+              }
             );
           })}
         >
@@ -159,15 +159,15 @@ export default function SelectProjects({ loaderData }: Route.ComponentProps) {
                   onChange={(evt) => {
                     const currentFieldValue = new RegExp(
                       `^${evt.target.value}`,
-                      "i",
+                      "i"
                     );
 
                     let matchingProjects: typeof loaderData.projects = [];
 
                     if (evt.target.value !== "") {
                       matchingProjects = [
-                        ...selectedProjects.filter((item) =>
-                          currentFieldValue.test(item.label),
+                        ...loaderData.projects.filter((item) =>
+                          currentFieldValue.test(item.label)
                         ),
                       ];
                     } else {

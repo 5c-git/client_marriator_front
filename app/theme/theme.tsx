@@ -650,6 +650,7 @@ export const theme = createTheme(baseTheme, {
           flexGrow: 1,
           // цвет не выбранного таба
           textTransform: "none",
+          maxWidth: "unset",
           color: baseTheme.vars.palette["Grey_1"],
           "&.Mui-selected": {
             // цвет выбранного таба

@@ -55,6 +55,7 @@ import users_supervisor from "../../public/locales/ru/users_supervisor.json";
 import users_recruiter from "../../public/locales/ru/users_recruiter.json";
 import users_select_projects from "../../public/locales/ru/users_select_projects.json";
 import users_select_locations from "../../public/locales/ru/users_select_locations.json";
+import moderationLayout from "../../public/locales/ru/moderationLayout.json";
 //internal
 
 //routes
@@ -154,6 +155,7 @@ declare module "i18next" {
       users_recruiter: typeof users_recruiter;
       users_select_projects: typeof users_select_projects;
       users_select_locations: typeof users_select_locations;
+      moderationLayout: typeof moderationLayout;
       //internal
 
       //routes

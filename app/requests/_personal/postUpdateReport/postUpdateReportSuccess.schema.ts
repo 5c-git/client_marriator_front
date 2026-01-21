@@ -6,7 +6,7 @@ export const postUpdateReportSuccess = z.object({
     dateStart: z.string(),
     dateEnd: z.string(),
     report: z.null(),
-    dayActivityId: z.number(),
+    dayActivityId: z.union([z.null(), z.number()]),
     status: z.number(),
     hours: z.number(),
     reasons: z.array(

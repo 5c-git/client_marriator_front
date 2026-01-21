@@ -32,7 +32,7 @@
     "6": "СБ"
   },
   "bid": "Заявка",
-  "mission": "Задание",
+  "job": "Задание",
   "statusText": "Статус",
   "locationText": "Место оказания услуг",
   "serviceTypeText": "Вид услуги",

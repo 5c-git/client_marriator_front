@@ -1,8 +1,6 @@
 import { type RouteConfig, route, layout } from "@react-router/dev/routes";
 
 export default [
-  route("/test", "routes/_resourses/test.ts", { id: "lala" }),
-
   layout("routes/rootErrorBoundry/rootErrorBoundry.tsx", [
     layout("routes/MenuLayout/MenuLayout.tsx", [
       layout("routes/home/HomeLayout/HomeLayout.tsx", [
@@ -16,77 +14,77 @@ export default [
       route(":lang?/jobs/:jobId/:specialistId", "routes/jobs/job/job.tsx"),
       route(
         ":lang?/bids/:bidId/specialists/:specialistId/day-review/:reportId?",
-        "routes/bids/day-review/day-review.tsx",
+        "routes/bids/day-review/day-review.tsx"
       ),
 
       route(
         ":lang?/registration/registration-complete",
-        "routes/registration/registration-complete/registration-complete.tsx",
+        "routes/registration/registration-complete/registration-complete.tsx"
       ),
       route(":lang?/profile", "routes/profile/profile.tsx"),
       route(
         ":lang?/profile/my-profile",
-        "routes/profile/my-profile/index/my-profile.tsx",
+        "routes/profile/my-profile/index/my-profile.tsx"
       ),
       route(
         ":lang?/profile/my-profile/profile-edit",
-        "routes/profile/my-profile/profile-edit/profile-edit.tsx",
+        "routes/profile/my-profile/profile-edit/profile-edit.tsx"
       ),
       route(
         ":lang?/profile/my-profile/profile-meta",
-        "routes/profile/my-profile/profile-meta/index/profile-meta.tsx",
+        "routes/profile/my-profile/profile-meta/index/profile-meta.tsx"
       ),
       route(
         ":lang?/profile/my-profile/profile-meta/confirm-personal-email",
-        "routes/profile/my-profile/profile-meta/confirm-personal-email/confirm-personal-email.tsx",
+        "routes/profile/my-profile/profile-meta/confirm-personal-email/confirm-personal-email.tsx"
       ),
       route(
         ":lang?/profile/my-profile/profile-meta/confirm-personal-phone",
-        "routes/profile/my-profile/profile-meta/confirm-personal-phone/confirm-personal-phone.tsx",
+        "routes/profile/my-profile/profile-meta/confirm-personal-phone/confirm-personal-phone.tsx"
       ),
       route(
         ":lang?/profile/my-profile/user-activities",
-        "routes/profile/my-profile/user-activities/user-activities.tsx",
+        "routes/profile/my-profile/user-activities/user-activities.tsx"
       ),
       route(
         ":lang?/profile/my-profile/billing",
-        "routes/profile/my-profile/billing/index/billing.tsx",
+        "routes/profile/my-profile/billing/index/billing.tsx"
       ),
       route(
         ":lang?/profile/my-profile/billing/billing-add",
-        "routes/profile/my-profile/billing/billing-add/billing-add.tsx",
+        "routes/profile/my-profile/billing/billing-add/billing-add.tsx"
       ),
       route(
         ":lang?/profile/my-profile/billing/billing-edit",
-        "routes/profile/my-profile/billing/billing-edit/billing-edit.tsx",
+        "routes/profile/my-profile/billing/billing-edit/billing-edit.tsx"
       ),
       route(
         ":lang?/profile/my-profile/work-radius",
-        "routes/profile/my-profile/work-radius/work-radius.tsx",
+        "routes/profile/my-profile/work-radius/work-radius.tsx"
       ),
       route(
         ":lang?/profile/documents",
-        "routes/profile/documents/documents.tsx",
+        "routes/profile/documents/documents.tsx"
       ),
       route(
         ":lang?/profile/documents/sign",
-        "routes/profile/documents/sign/sign.tsx",
+        "routes/profile/documents/sign/sign.tsx"
       ),
       route(
         ":lang?/profile/documents/sign-a-deal",
-        "routes/profile/documents/sign-a-deal/sign-a-deal.tsx",
+        "routes/profile/documents/sign-a-deal/sign-a-deal.tsx"
       ),
       route(
         ":lang?/profile/documents/terminate-a-deal",
-        "routes/profile/documents/terminate-a-deal/terminate-a-deal.tsx",
+        "routes/profile/documents/terminate-a-deal/terminate-a-deal.tsx"
       ),
       route(
         ":lang?/profile/documents/archive",
-        "routes/profile/documents/archive/archive.tsx",
+        "routes/profile/documents/archive/archive.tsx"
       ),
       route(
         ":lang?/profile/documents/certificates",
-        "routes/profile/documents/certificates/certificates.tsx",
+        "routes/profile/documents/certificates/certificates.tsx"
       ),
 
       layout("routes/users/layout/layout.tsx", [
@@ -94,21 +92,21 @@ export default [
         route(":lang?/users/managers", "routes/users/managers/managers.tsx"),
         route(
           ":lang?/users/supervisors",
-          "routes/users/supervisors/supervisors.tsx",
+          "routes/users/supervisors/supervisors.tsx"
         ),
       ]),
 
       route(
         ":lang?/users/client/:user",
-        "routes/users/clients/client/client.tsx",
+        "routes/users/clients/client/client.tsx"
       ),
       route(
         ":lang?/users/manager/:user",
-        "routes/users/managers/manager/manager.tsx",
+        "routes/users/managers/manager/manager.tsx"
       ),
       route(
         ":lang?/users/supervisor/:user",
-        "routes/users/supervisors/supervisor/supervisor.tsx",
+        "routes/users/supervisors/supervisor/supervisor.tsx"
       ),
     ]),
 
@@ -119,22 +117,22 @@ export default [
     route(":lang?/signin/pin", "routes/signin/pin/pin.tsx"),
     route(
       ":lang?/signin/confirm-restore-pin",
-      "routes/signin/confirm-restore-pin/confirm-restore-pin.tsx",
+      "routes/signin/confirm-restore-pin/confirm-restore-pin.tsx"
     ),
 
     route(":lang?/signin/client/phone", "routes/signin/client/phone/phone.tsx"),
     route(":lang?/signin/client/meta", "routes/signin/client/meta/meta.tsx"),
     route(
       ":lang?/signin/client/recruiter",
-      "routes/signin/client/recruiter/recruiter.tsx",
+      "routes/signin/client/recruiter/recruiter.tsx"
     ),
     route(
       ":lang?/signin/client/location",
-      "routes/signin/client/location/location.tsx",
+      "routes/signin/client/location/location.tsx"
     ),
     route(
       ":lang?/signin/client/registration-complete",
-      "routes/signin/client/registration-complete/registration-complete.tsx",
+      "routes/signin/client/registration-complete/registration-complete.tsx"
     ),
 
     // signin
@@ -149,18 +147,18 @@ export default [
     route(":lang?/registration/step7", "routes/registration/step7/step7.tsx"),
     route(
       ":lang?/registration/confirm-email",
-      "routes/registration/confirm-email/confirm-email.tsx",
+      "routes/registration/confirm-email/confirm-email.tsx"
     ),
     // registration
 
     // internal pages without navigation menu
     route(
       ":lang?/users/:user/select-projects",
-      "routes/users/selectProjects/selectProjects.tsx",
+      "routes/users/selectProjects/selectProjects.tsx"
     ),
     route(
       ":lang?/users/:user/select-locations",
-      "routes/users/selectLocations/selectLocations.tsx",
+      "routes/users/selectLocations/selectLocations.tsx"
     ),
 
     //bid
@@ -168,12 +166,12 @@ export default [
       route(":lang?/bids/:bidId", "routes/bids/bid/bid.tsx"),
       route(
         ":lang?/bids/:bidId/specialists",
-        "routes/bids/specialists/specialists.tsx",
+        "routes/bids/specialists/specialists.tsx"
       ),
     ]),
     route(
       ":lang?/bids/:bidId/specialists/:specialistId",
-      "routes/bids/specialist/specialist.tsx",
+      "routes/bids/specialist/specialist.tsx"
     ),
 
     //order
@@ -181,7 +179,7 @@ export default [
     route(":lang?/orders/new-order", "routes/orders/new-order/new-order.tsx"),
     route(
       ":lang?/orders/:orderId/service/:serviceId?",
-      "routes/orders/service/service.tsx",
+      "routes/orders/service/service.tsx"
     ),
     //order
 
@@ -190,7 +188,7 @@ export default [
     route(":lang?/tasks/new-task", "routes/tasks/new-task/new-task.tsx"),
     route(
       ":lang?/tasks/:taskId/service/:serviceId?",
-      "routes/tasks/service/service.tsx",
+      "routes/tasks/service/service.tsx"
     ),
 
     route(":lang?/offline", "routes/offline/offline.tsx"),

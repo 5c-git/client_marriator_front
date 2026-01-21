@@ -37,8 +37,6 @@ export function UsersMobileView(props: UsersMobileViewInterface) {
   });
 
   const debouncedSearch = debounce((value: string) => {
-    console.log("t");
-
     const currentFieldValue = new RegExp(`${value}`, "i");
 
     let matchingItems: UsersMobileViewInterface["users"] = [];

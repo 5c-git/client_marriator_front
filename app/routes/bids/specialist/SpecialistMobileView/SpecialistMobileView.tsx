@@ -1,4 +1,4 @@
-import { useNavigate, useSubmit } from "react-router";
+import { useNavigate } from "react-router";
 import { Fragment } from "react";
 
 import { SpecialistMobileViewInterface } from "./SpecialistMobileViewInterface";
@@ -19,12 +19,12 @@ import { StyledCheckbox } from "~/shared/ui/StyledCheckbox/StyledCheckbox";
 export function SpecialistMobileView(
   props: SpecialistMobileViewInterface & {
     dayActionSlot: (
-      day: SpecialistMobileViewInterface["entity"]["days"][0],
+      day: SpecialistMobileViewInterface["entity"]["days"][0]
     ) => React.ReactNode;
     actionsSlot: (
-      entity: SpecialistMobileViewInterface["entity"],
+      entity: SpecialistMobileViewInterface["entity"]
     ) => React.ReactNode;
-  },
+  }
 ) {
   const navigate = useNavigate();
   const { t } = useTranslation("SpecialistMobileView");
@@ -32,7 +32,7 @@ export function SpecialistMobileView(
     <>
       <TopNavigation
         header={{
-          text: `${t("bid")} ${props.entity.id}`,
+          text: `${t("job")} ${props.entity.id}`,
           bold: false,
         }}
         backAction={() => {
@@ -105,7 +105,7 @@ export function SpecialistMobileView(
                   statusCodeMap[
                     props.entity.status as keyof typeof statusCodeMap
                   ].value
-                }`,
+                }`
               )}
             </Typography>
           </Box>
@@ -277,7 +277,7 @@ export function SpecialistMobileView(
                     color: theme.vars.palette["Black"],
                   })}
                 >
-                  {/* @ts-ignore */}
+                  {/* @ts-expect-error translation narrowing */}
                   {`${format(new Date(day.timeStart), "dd.MM")} ${t(`dayMap.${getDay(new Date(day.timeStart))}`)}`}
                 </Typography>
 
@@ -350,6 +350,7 @@ export function SpecialistMobileView(
 
                     {day.places.map((place) => (
                       <Box
+                        key={place.id}
                         sx={{
                           display: "flex",
                           columnGap: "8px",

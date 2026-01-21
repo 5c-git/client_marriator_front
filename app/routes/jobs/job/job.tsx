@@ -155,6 +155,57 @@ export async function clientLoader({ params }: Route.ClientLoaderArgs) {
           role: determineRole(missionData.data.user.roles),
           phone: missionData.data.user.phone.toString(),
         },
+        oneDayJob: missionData.data.dateActivity.length === 0 ? true : false,
+        oneDayJobAction: (() => {
+          let action: JobMobileViewInterface["entity"]["oneDayJobAction"] =
+            "none";
+
+          const oneDayJob =
+            missionData.data.dateActivity.length === 0 ? true : false;
+
+          if (oneDayJob) {
+            const actedDay = missionData.data.reports.length > 0 ? true : false;
+
+            const now = new Date();
+
+            const canStart = isWithinInterval(now, {
+              start: subHours(new Date(missionData.data.dateStart), 1),
+              end: subHours(new Date(missionData.data.dateEnd), 1),
+            });
+
+            if (
+              canStart &&
+              !actedDay &&
+              missionData.data.acceptingUser.status === 5
+            ) {
+              action = "start";
+            }
+
+            if (actedDay) {
+              if (missionData.data.reports[0].status === 1) {
+                action = "inProgress";
+              } else if (missionData.data.reports[0].status === 2) {
+                action = "end";
+              } else if (missionData.data.reports[0].status === 3) {
+                action = "reported";
+              } else if (missionData.data.reports[0].status === 4) {
+                action = "accept";
+              } else if (missionData.data.reports[0].status === 5) {
+                action = "forPay";
+              } else if (missionData.data.reports[0].status === 6) {
+                action = "paid";
+              } else if (missionData.data.reports[0].status === 7) {
+                action = "notEnded";
+              }
+            }
+          }
+
+          return action;
+        })(),
+        oneDayReportId:
+          missionData.data.reports.length > 0
+            ? missionData.data.reports[0].id
+            : null,
       };
 
       data = {
@@ -251,25 +302,27 @@ export default function Job({ loaderData }: Route.ComponentProps) {
                   action: JobMobileViewInterface["entity"]["days"][0]["action"]
                 ) =>
                   action === "start" ? (
-                    <Button
-                      key="start"
-                      startIcon={<PlayArrowOutlinedIcon />}
-                      variant="contained"
-                      onClick={() => {
-                        submit(
-                          JSON.stringify({
-                            _action: "start",
-                            bidId: loaderData.entity.id,
-                          }),
-                          {
-                            method: "POST",
-                            encType: "application/json",
-                          }
-                        );
-                      }}
-                    >
-                      {t("actions.start")}
-                    </Button>
+                    <>
+                      <Button
+                        key="start"
+                        startIcon={<PlayArrowOutlinedIcon />}
+                        variant="contained"
+                        onClick={() => {
+                          submit(
+                            JSON.stringify({
+                              _action: "start",
+                              bidId: loaderData.entity.id,
+                            }),
+                            {
+                              method: "POST",
+                              encType: "application/json",
+                            }
+                          );
+                        }}
+                      >
+                        {t("actions.start")}
+                      </Button>
+                    </>
                   ) : null,
                 (
                   day: JobMobileViewInterface["entity"]["days"][0],
@@ -441,7 +494,7 @@ export default function Job({ loaderData }: Route.ComponentProps) {
               startIcon={<CheckIcon />}
               variant="contained"
               onClick={() => {
-                submit(
+                fetcher.submit(
                   JSON.stringify({
                     _action: "accept",
                     bidId: loaderData.entity.id,
@@ -475,26 +528,139 @@ export default function Job({ loaderData }: Route.ComponentProps) {
           </>
         ) : null}
 
-        {loaderData.entity.status === 2 &&
-        loaderData.entity.days.length === 0 ? (
-          <Button
-            startIcon={<PlayArrowOutlinedIcon />}
-            variant="contained"
-            onClick={() => {
-              submit(
-                JSON.stringify({
-                  _action: "start",
-                  bidId: loaderData.entity.id,
-                }),
-                {
-                  method: "POST",
-                  encType: "application/json",
+        {loaderData.entity.oneDayJob ? (
+          <>
+            {loaderData.entity.oneDayJobAction === "start" ? (
+              <Button
+                key="start"
+                startIcon={<PlayArrowOutlinedIcon />}
+                variant="contained"
+                onClick={() => {
+                  submit(
+                    JSON.stringify({
+                      _action: "start",
+                      bidId: loaderData.entity.id,
+                    }),
+                    {
+                      method: "POST",
+                      encType: "application/json",
+                    }
+                  );
+                }}
+              >
+                {t("actions.start")}
+              </Button>
+            ) : null}
+            {loaderData.entity.oneDayJobAction === "inProgress" ? (
+              <Button
+                key="inProgress"
+                startIcon={<CheckIcon />}
+                variant="contained"
+                disabled={
+                  !isWithinInterval(new Date(), {
+                    start: subHours(new Date(loaderData.entity.dateEnd), 1),
+                    end: new Date(loaderData.entity.dateEnd),
+                  })
                 }
-              );
-            }}
-          >
-            {t("actions.start")}
-          </Button>
+                onClick={() => {
+                  if (loaderData.entity.needPhoto) {
+                    setOpenFilesPopup(true);
+                  } else {
+                    const formData = new FormData();
+
+                    formData.append("bidId", loaderData.entity.id.toString());
+
+                    submit(formData, {
+                      method: "POST",
+                      encType: "multipart/form-data",
+                    });
+                  }
+                }}
+              >
+                {t("actions.end")}&nbsp;
+                <CountDownTimer
+                  countDownDate={new Date(loaderData.entity.dateEnd)}
+                />
+              </Button>
+            ) : null}
+            {loaderData.entity.oneDayJobAction === "end" ? (
+              <Fragment key="end">
+                <Typography
+                  component={"p"}
+                  variant="Bold_18"
+                  sx={(theme) => ({
+                    color: theme.vars.palette["Corp_1"],
+                    textAlign: "center",
+                  })}
+                >
+                  {t("dayStatus.end")}
+                </Typography>
+              </Fragment>
+            ) : null}
+            {loaderData.entity.oneDayJobAction === "reported" ? (
+              <Fragment key="reported">
+                <Typography
+                  component={"p"}
+                  variant="Bold_18"
+                  sx={(theme) => ({
+                    color: theme.vars.palette["Corp_1"],
+                    textAlign: "center",
+                  })}
+                >
+                  {t("dayStatus.reported")}
+                </Typography>
+              </Fragment>
+            ) : null}
+            {loaderData.entity.oneDayJobAction === "accept" ? (
+              <Fragment key="accept">
+                <Typography
+                  component={"p"}
+                  variant="Bold_18"
+                  sx={(theme) => ({
+                    color: theme.vars.palette["Corp_1"],
+                    textAlign: "center",
+                  })}
+                >
+                  {t("dayStatus.accept")}
+                </Typography>
+              </Fragment>
+            ) : null}
+            {loaderData.entity.oneDayJobAction === "forPay" ? (
+              <Button
+                key="forPay"
+                // startIcon={<CheckIcon />}
+                variant="contained"
+                onClick={() => {
+                  submit(
+                    JSON.stringify({
+                      _action: "forPay",
+                      reportId: loaderData.entity.oneDayReportId,
+                    }),
+                    {
+                      method: "POST",
+                      encType: "application/json",
+                    }
+                  );
+                }}
+              >
+                {t("actions.forPay")}
+              </Button>
+            ) : null}
+            {loaderData.entity.oneDayJobAction === "paid" ? (
+              <Fragment key="paid">
+                <Typography
+                  component={"p"}
+                  variant="Bold_18"
+                  sx={(theme) => ({
+                    color: theme.vars.palette["Corp_1"],
+                    textAlign: "center",
+                  })}
+                >
+                  {t("dayStatus.paid")}
+                </Typography>
+              </Fragment>
+            ) : null}
+          </>
         ) : null}
 
         {loaderData.entity.status === 2 || loaderData.entity.status === 5 ? (

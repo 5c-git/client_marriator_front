@@ -1,4 +1,4 @@
-import { useNavigation, useNavigate, useSubmit, redirect } from "react-router";
+import { useNavigation, useSubmit, redirect } from "react-router";
 import type { Route } from "./+types/day-review";
 
 import { useStore } from "~/store/store";
@@ -34,7 +34,7 @@ export async function clientLoader({ params }: Route.ClientLoaderArgs) {
       const missionData = await getJob(
         accessToken,
         params.specialistId,
-        params.bidId,
+        params.bidId
       );
 
       const criteriaData = await getReasons(accessToken);
@@ -49,7 +49,7 @@ export async function clientLoader({ params }: Route.ClientLoaderArgs) {
 
       if (params.reportId) {
         const particularDay = missionData.data.reports.find(
-          (report) => report.id === Number(params.reportId),
+          (report) => report.id === Number(params.reportId)
         );
 
         if (
@@ -114,9 +114,7 @@ export async function clientLoader({ params }: Route.ClientLoaderArgs) {
 
       if (days.length === 0) {
         throw redirect(
-          withLocale(
-            `/bids/${params.bidId}/specialists/${params.specialistId}`,
-          ),
+          withLocale(`/bids/${params.bidId}/specialists/${params.specialistId}`)
         );
       }
 
@@ -158,7 +156,6 @@ export async function clientAction({
 
   if (accessToken) {
     if (fields.days.length > 1) {
-      (params.bidId, params.specialistId);
       await postAcceptAllReportJob(accessToken, {
         bidId: Number(params.bidId),
         specialistId: Number(params.specialistId),
@@ -196,7 +193,7 @@ export async function clientAction({
       });
       // throw redirect(currentURL.toString());
       throw redirect(
-        withLocale(`/bids/${params.bidId}/specialists/${params.bidId}`),
+        withLocale(`/bids/${params.bidId}/specialists/${params.specialistId}`)
       );
     } else if (fields.days.length === 1) {
       const payload = {
@@ -226,7 +223,7 @@ export async function clientAction({
       }
 
       throw redirect(
-        withLocale(`/bids/${params.bidId}/specialists/${params.bidId}`),
+        withLocale(`/bids/${params.bidId}/specialists/${params.specialistId}`)
       );
     }
   } else {
@@ -236,7 +233,7 @@ export async function clientAction({
 
 export default function DayReview({ loaderData }: Route.ComponentProps) {
   const navigation = useNavigation();
-  const navigate = useNavigate();
+
   const submit = useSubmit();
 
   return loaderData.mode === "mobile" ? (

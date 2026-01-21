@@ -1,15 +1,16 @@
 import { z } from "zod";
 
-export const getBidSuccessSchema = z.object({
-  data: z.object({
+export const getBidSuccessSchema = z.strictObject({
+  data: z.strictObject({
     id: z.number(),
-    user: z.object({
+    user: z.strictObject({
       id: z.number(),
       phone: z.number(),
+      name: z.string(),
       email: z.string(),
       logo: z.string(),
       roles: z.array(
-        z.object({
+        z.strictObject({
           id: z.number().gte(1).lte(6),
           name: z.enum(["manager", "supervisor", "client", "specialist"]),
         })
@@ -26,15 +27,15 @@ export const getBidSuccessSchema = z.object({
       z.literal(8),
     ]),
     selfEmployed: z.boolean(),
-    place: z.object({
+    place: z.strictObject({
       id: z.number(),
       name: z.string(),
       latitude: z.string(),
       longitude: z.string(),
       address_kladr: z.string(),
       logo: z.string(),
-      region: z.object({ id: z.number(), name: z.string() }),
-      brand: z.object({
+      region: z.strictObject({ id: z.number(), name: z.string() }),
+      brand: z.strictObject({
         id: z.number(),
         name: z.string(),
         logo: z.string(),
@@ -44,7 +45,7 @@ export const getBidSuccessSchema = z.object({
     radius: z.union([z.null(), z.number()]),
     price: z.union([z.null(), z.number()]),
     priceResult: z.number(),
-    viewActivity: z.object({
+    viewActivity: z.strictObject({
       id: z.number(),
       name: z.string(),
       detailName: z.string(),
@@ -56,19 +57,20 @@ export const getBidSuccessSchema = z.object({
     dateEnd: z.string(),
     needFoto: z.boolean(),
     dateActivity: z.array(
-      z.object({
+      z.strictObject({
+        id: z.number(),
         timeStart: z.string(),
         timeEnd: z.string(),
         places: z.array(
-          z.object({
+          z.strictObject({
             id: z.number(),
             name: z.string(),
             latitude: z.string(),
             longitude: z.string(),
             address_kladr: z.string(),
             logo: z.string(),
-            region: z.object({ id: z.number(), name: z.string() }),
-            brand: z.object({
+            region: z.strictObject({ id: z.number(), name: z.string() }),
+            brand: z.strictObject({
               id: z.number(),
               name: z.string(),
               logo: z.string(),
@@ -80,17 +82,18 @@ export const getBidSuccessSchema = z.object({
     ),
     order: z.union([
       z.null(),
-      z.object({
+      z.strictObject({
         id: z.number(),
         selfEmployed: z.boolean(),
         status: z.number(),
-        user: z.object({
+        user: z.strictObject({
           id: z.number(),
           phone: z.number(),
           email: z.string(),
           logo: z.string(),
+          name: z.string(),
           roles: z.array(
-            z.object({
+            z.strictObject({
               id: z.number().gte(1).lte(6),
               name: z.enum([
                 "admin",
@@ -103,21 +106,25 @@ export const getBidSuccessSchema = z.object({
             })
           ),
         }),
+        statistic: z.array(
+          z.strictObject({ accepted: z.number(), count: z.number() })
+        ),
       }),
     ]),
     task: z.union([
       z.null(),
-      z.object({
+      z.strictObject({
         id: z.number(),
         selfEmployed: z.boolean(),
         status: z.number(),
-        user: z.object({
+        user: z.strictObject({
           id: z.number(),
           phone: z.number(),
           email: z.string(),
           logo: z.string(),
+          name: z.string(),
           roles: z.array(
-            z.object({
+            z.strictObject({
               id: z.number().gte(1).lte(6),
               name: z.enum([
                 "admin",
@@ -130,16 +137,19 @@ export const getBidSuccessSchema = z.object({
             })
           ),
         }),
+        statistic: z.array(
+          z.strictObject({ accepted: z.number(), count: z.number() })
+        ),
       }),
     ]),
     acceptingUsers: z.array(
-      z.object({
+      z.strictObject({
         id: z.number(),
         phone: z.number(),
         email: z.string(),
         logo: z.string(),
         roles: z.array(
-          z.object({
+          z.strictObject({
             id: z.number().gte(1).lte(6),
             name: z.enum(["manager", "supervisor", "client", "specialist"]),
           })
@@ -162,14 +172,16 @@ export const getBidSuccessSchema = z.object({
       })
     ),
     count: z.number(),
-    statistic: z.array(z.object({ accepted: z.number(), count: z.number() })),
-    project: z.object({
+    statistic: z.array(
+      z.strictObject({ accepted: z.number(), count: z.number() })
+    ),
+    project: z.strictObject({
       id: z.number(),
       name: z.string(),
       dateStart: z.string(),
       dateEnd: z.string(),
       brand: z.array(
-        z.object({
+        z.strictObject({
           id: z.number(),
           name: z.string(),
           logo: z.string(),

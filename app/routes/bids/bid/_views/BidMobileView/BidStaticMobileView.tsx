@@ -125,8 +125,7 @@ export function BidStaticMobileView(props: BidMobileViewInterface) {
           </Typography>
         </Box>
 
-        {/*// progress*/}
-        {/*<Box
+        <Box
           sx={(theme) => ({
             display: "grid",
             padding: "12px",
@@ -179,8 +178,7 @@ export function BidStaticMobileView(props: BidMobileViewInterface) {
               </Typography>
             </Box>
           ))}
-        </Box>*/}
-        {/*// progress*/}
+        </Box>
 
         <Box
           sx={{

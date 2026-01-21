@@ -5,7 +5,11 @@ import type { GetBidSuccess } from "~/requests/_personal/getBid/getBidSuccess.sc
 import type { BidMobileViewInterface } from "./_views/BidMobileView/BidMobileViewInterface";
 import type { postUpdateBidPayload } from "~/requests/_personal/postUpdateBid/postUpdateBid";
 
+import { useTranslation } from "react-i18next";
+
 import { useStore } from "~/store/store";
+
+import { statusCodeMap } from "~/shared/specialistStatus";
 
 import { BidFormMobileView } from "./_views/BidMobileView/BidFormMobileView";
 import { BidStaticMobileView } from "./_views/BidMobileView/BidStaticMobileView";
@@ -90,6 +94,7 @@ export async function clientAction({
 
 export default function Bid({ loaderData }: Route.ComponentProps) {
   const submit = useSubmit();
+  const { t } = useTranslation("SpecialistMobileView");
   const { bidMobileData, editMode } = useOutletContext<{
     bidMobileData: GetBidSuccess["data"];
     editMode: boolean;
@@ -133,8 +138,29 @@ export default function Bid({ loaderData }: Route.ComponentProps) {
         taskId: bidMobileData.task ? bidMobileData.task.id : null,
         orderId: bidMobileData.order ? bidMobileData.order.id : null,
         selfEmployed: bidMobileData.selfEmployed,
-        progress: 0,
-        counters: [],
+        progress: (() => {
+          const acceptedSpecialists = bidMobileData.acceptingUsers.filter(
+            (specialist) => specialist.status === 2
+          );
+          return (acceptedSpecialists.length / bidMobileData.count) * 100;
+        })(),
+        counters: (() => {
+          const counters: BidMobileViewInterface["entity"]["counters"] = [];
+
+          bidMobileData.statistic.forEach((item) => {
+            counters.push({
+              label: t(
+                `status.${statusCodeMap[item.accepted as keyof typeof statusCodeMap].value}`
+              ),
+              count: item.count,
+              color:
+                statusCodeMap[item.accepted as keyof typeof statusCodeMap]
+                  .color,
+            });
+          });
+
+          return counters;
+        })(),
         amount: bidMobileData.count,
         // taxStatus: bidData.selfEmployed ? t("selfEmployed") : t("notSelfEmployed"),
         needDays: bidMobileData.dateActivity.length > 0,

@@ -1,6 +1,11 @@
 {
   "header": "Проект-менеджер",
   "avatar": "Логотип",
+  "status": {
+    "new": "Новая",
+    "inProgress": "В работе",
+    "archive": "Архив"
+  },
   "fields": {
     "avatarPlaceholder": "Аватар *",
     "avatarValue": "Выберите",
@@ -21,6 +26,7 @@
   "supervisor": "Супервайзеры",
   "user_id": "Идентификатор пользователя",
   "confirmButton": "Подтвердить",
+  "saveButton": "Сохранить",
   "excludeButton": "Заблокировать",
   "supervisorInviteButton": "Привязать супервайзеров",
   "supervisorHeader": "Выбор супервайзеров"

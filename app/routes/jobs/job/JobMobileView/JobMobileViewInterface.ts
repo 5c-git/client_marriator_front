@@ -46,6 +46,18 @@ export type JobMobileViewInterface = {
       role: string;
       phone: string;
     };
+    oneDayJob: boolean;
+    oneDayJobAction:
+      | "start"
+      | "inProgress"
+      | "end"
+      | "reported"
+      | "accept"
+      | "forPay"
+      | "paid"
+      | "notEnded"
+      | "none";
+    oneDayReportId: number | null;
   };
   locations: {
     value: string;

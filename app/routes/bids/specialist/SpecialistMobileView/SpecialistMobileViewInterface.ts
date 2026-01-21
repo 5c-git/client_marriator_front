@@ -45,5 +45,17 @@ export type SpecialistMobileViewInterface = {
       id: number;
     };
     canCheckAll: boolean;
+    oneDayJob: boolean;
+    oneDayJobAction:
+      | "start"
+      | "inProgress"
+      | "end"
+      | "reported"
+      | "accept"
+      | "forPay"
+      | "paid"
+      | "notEnded"
+      | "none";
+    oneDayReportId: number | null;
   };
 };

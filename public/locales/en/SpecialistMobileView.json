@@ -32,8 +32,8 @@
     "5": "FRI",
     "6": "SAT"
   },
-  "request": "Request",
-  "mission": "Mission",
+  "bid": "Request",
+  "job": "Job",
   "statusText": "Status",
   "locationText": "Location",
   "serviceTypeText": "Service type",

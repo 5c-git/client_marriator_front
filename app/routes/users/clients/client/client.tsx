@@ -118,6 +118,7 @@ export async function clientLoader({ params }: Route.ClientLoaderArgs) {
       change_order: data.data.change_order,
       cancel_order: data.data.cancel_order,
       live_order: data.data.live_order,
+      confirmRegister: data.data.confirmRegister,
       status: (() => {
         let status = 3;
 
@@ -199,6 +200,7 @@ export default function Client({ loaderData }: Route.ComponentProps) {
     getValues,
     setValue,
     trigger,
+    watch,
     formState: { errors },
   } = useForm({
     defaultValues: {
@@ -434,7 +436,7 @@ export default function Client({ loaderData }: Route.ComponentProps) {
                   }}
                 ></Box>
                 <Typography component="p" variant="Reg_14">
-                  {statusCodeMap[loaderData.client.status].value}
+                  {t(`status.${statusCodeMap[loaderData.client.status].value}`)}
                 </Typography>
               </Box>
             </Box>
@@ -536,39 +538,41 @@ export default function Client({ loaderData }: Route.ComponentProps) {
                     {organization.name}
                   </Typography>
 
-                  <IconButton
-                    onClick={() => {
-                      const currentList = getValues("organizations");
-                      const updatedList = currentList.filter(
-                        (item) => item.name !== organization.name
-                      );
-                      setValue("organizations", updatedList);
-                      trigger("organizations");
+                  {watch("organizations").length > 1 ? (
+                    <IconButton
+                      onClick={() => {
+                        const currentList = getValues("organizations");
+                        const updatedList = currentList.filter(
+                          (item) => item.name !== organization.name
+                        );
+                        setValue("organizations", updatedList);
+                        trigger("organizations");
 
-                      fetcher.submit(
-                        JSON.stringify({
-                          _action: "_deleteProject",
-                          userId: loaderData.client.id,
-                          projectId: organization.id,
-                        }),
-                        {
-                          method: "POST",
-                          encType: "application/json",
-                        }
-                      );
-                    }}
-                    sx={{
-                      width: "24px",
-                      height: "24px",
-                    }}
-                  >
-                    <DeleteIcon
-                      sx={{
-                        width: "12px",
-                        height: "12px",
+                        fetcher.submit(
+                          JSON.stringify({
+                            _action: "_deleteProject",
+                            userId: loaderData.client.id,
+                            projectId: organization.id,
+                          }),
+                          {
+                            method: "POST",
+                            encType: "application/json",
+                          }
+                        );
                       }}
-                    />
-                  </IconButton>
+                      sx={{
+                        width: "24px",
+                        height: "24px",
+                      }}
+                    >
+                      <DeleteIcon
+                        sx={{
+                          width: "12px",
+                          height: "12px",
+                        }}
+                      />
+                    </IconButton>
+                  ) : null}
                 </Box>
               ))}
             </Stack>
@@ -730,9 +734,11 @@ export default function Client({ loaderData }: Route.ComponentProps) {
             </Box>
 
             <Button variant="contained" type="submit" startIcon={<CheckIcon />}>
-              {t("confirmButton")}
+              {loaderData.client.confirmRegister
+                ? t("saveButton")
+                : t("confirmButton")}
             </Button>
-            <Button
+            {/* <Button
               variant="text"
               onClick={() => {
                 submit(
@@ -749,7 +755,7 @@ export default function Client({ loaderData }: Route.ComponentProps) {
               }}
             >
               {t("excludeButton")}
-            </Button>
+            </Button> */}
           </Box>
         </form>
       </Box>
