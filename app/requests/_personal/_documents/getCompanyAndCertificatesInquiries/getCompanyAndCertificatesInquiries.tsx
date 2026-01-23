@@ -1,15 +1,10 @@
 import { http, delay, HttpResponse } from "msw";
-import Ajv from "ajv";
-import addFormats from "ajv-formats";
 
-import getCompanyAndCertificatesInquiriesSuccess from "./getCompanyAndCertificatesInquiriesSuccess.schema.json";
-import { GetCompanyAndCertificatesInquiriesSuccess } from "./getCompanyAndCertificatesInquiriesSuccess.type";
+import {
+  getCompanyAndCertificatesInquiriesSuccessSchema,
+  GetCompanyAndCertificatesInquiriesSuccess,
+} from "./getCompanyAndCertificatesInquiriesSuccess.schema";
 import { UnxpectedError } from "~/shared/unexpectedError/unexpectedError";
-
-const ajv = new Ajv();
-addFormats(ajv);
-
-const validateSuccess = ajv.compile(getCompanyAndCertificatesInquiriesSuccess);
 
 export const getCompanyAndCertificatesInquiriesKeys = [
   "getCompanyAndCertificatesInquiries",
@@ -40,9 +35,13 @@ export const getCompanyAndCertificatesInquiries = async (
       });
     }
 
-    if (validateSuccess(response)) {
-      data = response as unknown as GetCompanyAndCertificatesInquiriesSuccess;
+    const parsed =
+      getCompanyAndCertificatesInquiriesSuccessSchema.safeParse(response);
+
+    if (parsed.success) {
+      data = parsed.data;
     } else {
+      console.log(parsed.error);
       throw new Response(
         `Данные запроса getCompanyAndCertificatesInquiries не валидны схеме`
       );

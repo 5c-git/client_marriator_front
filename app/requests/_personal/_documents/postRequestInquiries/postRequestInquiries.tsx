@@ -1,14 +1,11 @@
 import { http, delay, HttpResponse } from "msw";
-import Ajv from "ajv";
 
-import postRequestInquiriesSuccess from "./postRequestInquiriesSuccess.schema.json";
-import { PostRequestInquiriesSuccess } from "./postRequestInquiriesSuccess.type";
+import {
+  postRequestInquiriesSuccessSchema,
+  PostRequestInquiriesSuccess,
+} from "./postRequestInquiriesSuccess.schema";
+
 import { UnxpectedError } from "~/shared/unexpectedError/unexpectedError";
-
-const ajv = new Ajv();
-
-const validateSuccess = ajv.compile(postRequestInquiriesSuccess);
-
 export const postRequestInquiriesKeys = ["postRequestInquiries"];
 
 export const postRequestInquiries = async (
@@ -40,9 +37,12 @@ export const postRequestInquiries = async (
       });
     }
 
-    if (validateSuccess(response)) {
-      data = response as unknown as PostRequestInquiriesSuccess;
+    const parsed = postRequestInquiriesSuccessSchema.safeParse(response);
+
+    if (parsed.success) {
+      data = parsed.data;
     } else {
+      console.log(parsed.error);
       throw new Response(
         `Данные запроса postRequestInquiries не валидны схеме`
       );

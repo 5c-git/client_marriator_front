@@ -356,33 +356,33 @@ export default function Supervisor({ loaderData }: Route.ComponentProps) {
         <form
           onSubmit={handleSubmit((values) => {
             const repeat_bid_formated = `${
-              new Date(getValues("repeat_bid")).getUTCHours() > 10
-                ? new Date(getValues("repeat_bid")).getUTCHours()
-                : `0${new Date(getValues("repeat_bid")).getUTCHours()}`
+              new Date(getValues("repeat_bid")).getHours() > 10
+                ? new Date(getValues("repeat_bid")).getHours()
+                : `0${new Date(getValues("repeat_bid")).getHours()}`
             }:${
-              new Date(getValues("repeat_bid")).getUTCMinutes() > 10
-                ? new Date(getValues("repeat_bid")).getUTCMinutes()
-                : `0${new Date(getValues("repeat_bid")).getUTCMinutes()}`
+              new Date(getValues("repeat_bid")).getMinutes() > 10
+                ? new Date(getValues("repeat_bid")).getMinutes()
+                : `0${new Date(getValues("repeat_bid")).getMinutes()}`
             }`;
 
             const leave_bid_formated = `${
-              new Date(getValues("leave_bid")).getUTCHours() > 10
-                ? new Date(getValues("leave_bid")).getUTCHours()
-                : `0${new Date(getValues("leave_bid")).getUTCHours()}`
+              new Date(getValues("leave_bid")).getHours() > 10
+                ? new Date(getValues("leave_bid")).getHours()
+                : `0${new Date(getValues("leave_bid")).getHours()}`
             }:${
-              new Date(getValues("leave_bid")).getUTCMinutes() > 10
-                ? new Date(getValues("leave_bid")).getUTCMinutes()
-                : `0${new Date(getValues("leave_bid")).getUTCMinutes()}`
+              new Date(getValues("leave_bid")).getMinutes() > 10
+                ? new Date(getValues("leave_bid")).getMinutes()
+                : `0${new Date(getValues("leave_bid")).getMinutes()}`
             }`;
 
             const live_task_formated = `${
-              new Date(getValues("live_task")).getUTCHours() > 10
-                ? new Date(getValues("live_task")).getUTCHours()
-                : `0${new Date(getValues("live_task")).getUTCHours()}`
+              new Date(getValues("live_task")).getHours() > 10
+                ? new Date(getValues("live_task")).getHours()
+                : `0${new Date(getValues("live_task")).getHours()}`
             }:${
-              new Date(getValues("live_task")).getUTCMinutes() > 10
-                ? new Date(getValues("live_task")).getUTCMinutes()
-                : `0${new Date(getValues("live_task")).getUTCMinutes()}`
+              new Date(getValues("live_task")).getMinutes() > 10
+                ? new Date(getValues("live_task")).getMinutes()
+                : `0${new Date(getValues("live_task")).getMinutes()}`
             }`;
 
             submit(
@@ -505,7 +505,9 @@ export default function Supervisor({ loaderData }: Route.ComponentProps) {
                   }}
                 ></Box>
                 <Typography component="p" variant="Reg_14">
-                  {t(`status.${statusCodeMap[loaderData.client.status].value}`)}
+                  {t(
+                    `status.${statusCodeMap[loaderData.client.status as keyof typeof statusCodeMap].value}`
+                  )}
                 </Typography>
               </Box>
             </Box>
@@ -1044,7 +1046,7 @@ export default function Supervisor({ loaderData }: Route.ComponentProps) {
                   {...field}
                   onChange={(evt) => {
                     const currentFieldValue = new RegExp(
-                      `^${evt.target.value}`,
+                      `${evt.target.value}`,
                       "i"
                     );
 

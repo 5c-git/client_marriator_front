@@ -1,15 +1,11 @@
 import { http, delay, HttpResponse } from "msw";
-import Ajv from "ajv";
-import addFormats from "ajv-formats";
 
-import getDocumentInquiriesSuccess from "./getDocumentInquiriesSuccess.schema.json";
-import { GetDocumentInquiriesSuccess } from "./getDocumentInquiriesSuccess.type";
+import {
+  getDocumentInquiriesSuccessSchema,
+  GetDocumentInquiriesSuccess,
+} from "./getDocumentInquiriesSuccess.schema";
+
 import { UnxpectedError } from "~/shared/unexpectedError/unexpectedError";
-
-const ajv = new Ajv();
-addFormats(ajv);
-
-const validateSuccess = ajv.compile(getDocumentInquiriesSuccess);
 
 export const getDocumentInquiriesKeys = ["getDocumentInquiries"];
 
@@ -36,9 +32,12 @@ export const getDocumentInquiries = async (
       });
     }
 
-    if (validateSuccess(response)) {
-      data = response as unknown as GetDocumentInquiriesSuccess;
+    const parsed = getDocumentInquiriesSuccessSchema.safeParse(response);
+
+    if (parsed.success) {
+      data = parsed.data;
     } else {
+      console.log(parsed.error);
       throw new Response(
         `Данные запроса getDocumentInquiries не валидны схеме`
       );

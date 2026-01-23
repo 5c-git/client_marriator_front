@@ -312,7 +312,7 @@ export default function Location({ loaderData }: Route.ComponentProps) {
                   {...field}
                   onChange={(evt) => {
                     const currentFieldValue = new RegExp(
-                      `^${evt.target.value}`,
+                      `${evt.target.value}`,
                       "i"
                     );
 

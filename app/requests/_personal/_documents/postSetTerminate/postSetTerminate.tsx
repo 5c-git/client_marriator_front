@@ -1,13 +1,11 @@
 import { http, delay, HttpResponse } from "msw";
-import Ajv from "ajv";
 
-import postSetTerminateSuccess from "./postSetTerminateSuccess.schema.json";
-import { PostSetTerminateSuccess } from "./postSetTerminateSuccess.type";
+import {
+  postSetTerminateSuccessSchema,
+  PostSetTerminateSuccess,
+} from "./postSetTerminateSuccess.schema";
+
 import { UnxpectedError } from "~/shared/unexpectedError/unexpectedError";
-
-const ajv = new Ajv();
-
-const validateSuccess = ajv.compile(postSetTerminateSuccess);
 
 export const postSetTerminateKeys = ["postSetTerminate"];
 
@@ -38,9 +36,12 @@ export const postSetTerminate = async (
       });
     }
 
-    if (validateSuccess(response)) {
-      data = response as unknown as PostSetTerminateSuccess;
+    const parsed = postSetTerminateSuccessSchema.safeParse(response);
+
+    if (parsed.success) {
+      data = parsed.data;
     } else {
+      console.log(parsed.error);
       throw new Response(`Данные запроса postSetTerminate не валидны схеме`);
     }
 

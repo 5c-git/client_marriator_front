@@ -1,15 +1,11 @@
 import { http, delay, HttpResponse } from "msw";
-import Ajv from "ajv";
-import addFormats from "ajv-formats";
 
-import getDocumentTerminateSuccess from "./getDocumentTerminateSuccess.schema.json";
-import { GetDocumentTerminateSuccess } from "./getDocumentTerminateSuccess.type";
+import {
+  getDocumentTerminateSuccessSchema,
+  GetDocumentTerminateSuccess,
+} from "./getDocumentTerminateSuccess.schema";
+
 import { UnxpectedError } from "~/shared/unexpectedError/unexpectedError";
-
-const ajv = new Ajv();
-addFormats(ajv);
-
-const validateSuccess = ajv.compile(getDocumentTerminateSuccess);
 
 export const getDocumentTerminateKeys = ["getDocumentTerminate"];
 
@@ -36,9 +32,12 @@ export const getDocumentTerminate = async (
       });
     }
 
-    if (validateSuccess(response)) {
-      data = response as unknown as GetDocumentTerminateSuccess;
+    const parsed = getDocumentTerminateSuccessSchema.safeParse(response);
+
+    if (parsed.success) {
+      data = parsed.data;
     } else {
+      console.log(parsed.error);
       throw new Response(
         `Данные запроса getDocumentTerminate не валидны схеме`
       );

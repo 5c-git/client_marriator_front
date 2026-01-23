@@ -1,13 +1,8 @@
 import { http, delay, HttpResponse } from "msw";
-import Ajv from "ajv";
 
-import postSetPlaceModerationSuccess from "./postSetPlaceModerationSuccess.schema.json";
-import { PostSetPlaceModerationSuccess } from "./postSetPlaceModerationSuccess.type";
+import { postSetPlaceModerationSuccessSchema } from "./postSetPlaceModerationSuccess.schema";
+
 import { UnxpectedError } from "~/shared/unexpectedError/unexpectedError";
-
-const ajv = new Ajv();
-
-const validateSuccess = ajv.compile(postSetPlaceModerationSuccess);
 
 export const postSetPlaceModerationKeys = ["postSetPlaceModeration"];
 
@@ -45,9 +40,12 @@ export const postSetPlaceModeration = async (
       });
     }
 
-    if (validateSuccess(response)) {
-      data = response as unknown as PostSetPlaceModerationSuccess;
+    const parsed = postSetPlaceModerationSuccessSchema.safeParse(response);
+
+    if (parsed.success) {
+      data = parsed.data;
     } else {
+      console.log(parsed.error);
       throw new Response(
         `Данные запроса PostSetPlaceModeration не валидны схеме`
       );

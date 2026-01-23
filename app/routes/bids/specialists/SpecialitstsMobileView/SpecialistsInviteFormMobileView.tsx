@@ -88,7 +88,7 @@ export function SpecialistsInviteFormMobileView(
               {...field}
               onChange={(evt) => {
                 const currentFieldValue = new RegExp(
-                  `^${evt.target.value}`,
+                  `${evt.target.value}`,
                   "i"
                 );
                 const currentRadius = getValues("radius");

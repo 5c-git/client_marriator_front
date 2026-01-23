@@ -542,7 +542,9 @@ export default function Manager({ loaderData }: Route.ComponentProps) {
                   }}
                 ></Box>
                 <Typography component="p" variant="Reg_14">
-                  {t(`status.${statusCodeMap[loaderData.client.status].value}`)}
+                  {t(
+                    `status.${statusCodeMap[loaderData.client.status as keyof typeof statusCodeMap].value}`
+                  )}
                 </Typography>
               </Box>
             </Box>
@@ -1108,7 +1110,7 @@ export default function Manager({ loaderData }: Route.ComponentProps) {
                   {...field}
                   onChange={(evt) => {
                     const currentFieldValue = new RegExp(
-                      `^${evt.target.value}`,
+                      `${evt.target.value}`,
                       "i"
                     );
 

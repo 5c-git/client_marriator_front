@@ -1,15 +1,11 @@
 import { http, delay, HttpResponse } from "msw";
-import Ajv from "ajv";
-import addFormats from "ajv-formats";
 
-import getDocumentConcludeSuccess from "./getDocumentConcludeSuccess.schema.json";
-import { GetDocumentConcludeSuccess } from "./getDocumentConcludeSuccess.type";
+import {
+  getDocumentConcludeSuccessSchema,
+  GetDocumentConcludeSuccess,
+} from "./getDocumentConcludeSuccess.schema";
+
 import { UnxpectedError } from "~/shared/unexpectedError/unexpectedError";
-
-const ajv = new Ajv();
-addFormats(ajv);
-
-const validateSuccess = ajv.compile(getDocumentConcludeSuccess);
 
 export const getDocumentConcludeKeys = ["getDocumentConclude"];
 
@@ -36,9 +32,12 @@ export const getDocumentConclude = async (
       });
     }
 
-    if (validateSuccess(response)) {
-      data = response as unknown as GetDocumentConcludeSuccess;
+    const parsed = getDocumentConcludeSuccessSchema.safeParse(response);
+
+    if (parsed.success) {
+      data = parsed.data;
     } else {
+      console.log(parsed.error);
       throw new Response(`Данные запроса getDocumentConclude не валидны схеме`);
     }
 

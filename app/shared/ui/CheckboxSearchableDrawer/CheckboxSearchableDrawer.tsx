@@ -46,7 +46,7 @@ export function CheckboxSearchableDrawer(props: CheckboxDrawerProps) {
       z.object({
         searchbar: z.string(),
         selectedItems: z.array(z.string()).min(1),
-      }),
+      })
     ),
     shouldUnregister: true,
   });
@@ -109,8 +109,8 @@ export function CheckboxSearchableDrawer(props: CheckboxDrawerProps) {
                 {...field}
                 onChange={(evt) => {
                   const currentFieldValue = new RegExp(
-                    `^${evt.target.value}`,
-                    "i",
+                    `${evt.target.value}`,
+                    "i"
                   );
 
                   let matchingItems: typeof props.items = [];
@@ -118,7 +118,7 @@ export function CheckboxSearchableDrawer(props: CheckboxDrawerProps) {
                   if (evt.target.value !== "") {
                     matchingItems = [
                       ...props.items.filter((item) =>
-                        currentFieldValue.test(item.label),
+                        currentFieldValue.test(item.label)
                       ),
                     ];
                   } else {

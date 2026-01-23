@@ -1,13 +1,11 @@
 import { http, delay, HttpResponse } from "msw";
-import Ajv from "ajv";
 
-import getPlaceModerationSuccess from "./getPlaceModerationSuccess.schema.json";
-import { GetPlaceModerationSuccess } from "./getPlaceModerationSuccess.type";
+import {
+  getPlaceModerationSuccessSchema,
+  GetPlaceModerationSuccess,
+} from "./getPlaceModerationSuccess.schema";
+
 import { UnxpectedError } from "~/shared/unexpectedError/unexpectedError";
-
-const ajv = new Ajv();
-
-const validateSuccess = ajv.compile(getPlaceModerationSuccess);
 
 export const getPlaceModerationKeys = ["getPlaceModeration"];
 
@@ -37,10 +35,12 @@ export const getPlaceModeration = async (
       });
     }
 
-    if (validateSuccess(response)) {
-      data = response as unknown as GetPlaceModerationSuccess;
+    const parsed = getPlaceModerationSuccessSchema.safeParse(response);
+
+    if (parsed.success) {
+      data = parsed.data;
     } else {
-      console.log(validateSuccess.errors);
+      console.log(parsed.error);
       throw new Response(`Данные запроса getPlaceModeration не валидны схеме`);
     }
 

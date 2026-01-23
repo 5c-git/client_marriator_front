@@ -1,13 +1,11 @@
 import { http, delay, HttpResponse } from "msw";
-import Ajv from "ajv";
 
-import postSetConcludeSuccess from "./postSetConcludeSuccess.schema.json";
-import { PostSetConcludeSuccess } from "./postSetConcludeSuccess.type";
+import {
+  postSetConcludeSuccessSchema,
+  PostSetConcludeSuccess,
+} from "./postSetConcludeSuccess.schema";
+
 import { UnxpectedError } from "~/shared/unexpectedError/unexpectedError";
-
-const ajv = new Ajv();
-
-const validateSuccess = ajv.compile(postSetConcludeSuccess);
 
 export const postSetConcludeKeys = ["postSetConclude"];
 
@@ -38,9 +36,12 @@ export const postSetConclude = async (
       });
     }
 
-    if (validateSuccess(response)) {
-      data = response as unknown as PostSetConcludeSuccess;
+    const parsed = postSetConcludeSuccessSchema.safeParse(response);
+
+    if (parsed.success) {
+      data = parsed.data;
     } else {
+      console.log(parsed.error);
       throw new Response(`Данные запроса postSetConclude не валидны схеме`);
     }
 

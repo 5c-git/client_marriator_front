@@ -427,7 +427,9 @@ export default function Client({ loaderData }: Route.ComponentProps) {
                 <Box
                   style={{
                     backgroundColor:
-                      statusCodeMap[loaderData.client.status].color,
+                      statusCodeMap[
+                        loaderData.client.status as keyof typeof statusCodeMap
+                      ].color,
                   }}
                   sx={{
                     width: "14px",
@@ -436,7 +438,9 @@ export default function Client({ loaderData }: Route.ComponentProps) {
                   }}
                 ></Box>
                 <Typography component="p" variant="Reg_14">
-                  {t(`status.${statusCodeMap[loaderData.client.status].value}`)}
+                  {t(
+                    `status.${statusCodeMap[loaderData.client.status as keyof typeof statusCodeMap].value}`
+                  )}
                 </Typography>
               </Box>
             </Box>

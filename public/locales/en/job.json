@@ -21,5 +21,12 @@
     "notEnded": "Not ended",
     "check": "Check"
   },
+  "components": {
+    "FilesPopup": {
+      "header": "Please attach at least 4 photographs for your report",
+      "submitButton": "Submit",
+      "cancelButton": "Cancel"
+    }
+  },
   "acceptAlertText": "Ваша кандидатура на рассмотрении у супервайзера. Ожидайте подтверждения"
 }

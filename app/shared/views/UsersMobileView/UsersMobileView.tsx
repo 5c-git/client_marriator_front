@@ -74,7 +74,10 @@ export function UsersMobileView(props: UsersMobileViewInterface) {
     } = {};
 
     allFilters.forEach((filter) => {
-      filteredUsers[filter] = [];
+      // временно убираем статус "архив" доступный только админу
+      if (filter !== 3) {
+        filteredUsers[filter] = [];
+      }
     });
 
     for (const key in filteredUsers) {
@@ -90,6 +93,8 @@ export function UsersMobileView(props: UsersMobileViewInterface) {
   useEffect(() => {
     onInit(props.users);
   }, [props.users]);
+
+  console.log(props.users);
 
   return (
     <>

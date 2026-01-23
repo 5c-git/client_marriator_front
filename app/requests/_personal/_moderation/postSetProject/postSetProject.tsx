@@ -1,13 +1,8 @@
 import { http, delay, HttpResponse } from "msw";
-import Ajv from "ajv";
 
-import postSetProjectSuccess from "./postSetProjectSuccess.schema.json";
-import { PostSetProjectSuccess } from "./postSetProjectSuccess.type";
+import { postSetProjectSuccessSchema } from "./postSetProjectSuccess.schema";
+
 import { UnxpectedError } from "~/shared/unexpectedError/unexpectedError";
-
-const ajv = new Ajv();
-
-const validateSuccess = ajv.compile(postSetProjectSuccess);
 
 export const postSetProjectKeys = ["postSetProject"];
 
@@ -45,9 +40,12 @@ export const postSetProject = async (
       });
     }
 
-    if (validateSuccess(response)) {
-      data = response as unknown as PostSetProjectSuccess;
+    const parsed = postSetProjectSuccessSchema.safeParse(response);
+
+    if (parsed.success) {
+      data = parsed.data;
     } else {
+      console.log(parsed.error);
       throw new Response(`Данные запроса postSetProject не валидны схеме`);
     }
 

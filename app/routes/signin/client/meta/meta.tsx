@@ -58,7 +58,7 @@ export async function clientLoader() {
         label: item.name,
         disabled: false,
         image: `${import.meta.env.VITE_ASSET_PATH}${item.logo}`,
-      }),
+      })
     );
 
     locationsData.data.forEach((item) =>
@@ -69,7 +69,7 @@ export async function clientLoader() {
         coordinates: [item.latitude, item.longitude],
         address: item.address_kladr,
         // region: "Центральный федеральный округ",
-      }),
+      })
     );
 
     return {
@@ -92,7 +92,7 @@ export async function clientAction({ request }: Route.ClientActionArgs) {
       await postSetBrandImg(accessToken, fields.logo);
     } else if (_action === "finishRegister") {
       await postSetUserData(accessToken, { name: fields.name });
-      const data = await postFinishRegister(accessToken);
+      await postFinishRegister(accessToken);
 
       // useStore.getState().setAccessToken(data.result.token.access_token);
       // useStore.getState().setRefreshToken(data.result.token.refresh_token);
@@ -140,10 +140,10 @@ export default function Meta({ loaderData }: Route.ComponentProps) {
               coordinates: Yup.array().min(2).max(2).of(Yup.string()),
               address: Yup.string().required(),
               // region: Yup.string().required(),
-            }),
+            })
           )
           .required(t("form.locations")),
-      }),
+      })
     ),
     mode: "onChange",
   });
@@ -159,14 +159,18 @@ export default function Meta({ loaderData }: Route.ComponentProps) {
   }, [loaderData, reset, getValues]);
 
   const isLogoPresent = loaderData.brands.find(
-    (item) => item.value === getValues().logo,
+    (item) => item.value === getValues().logo
   )?.image;
 
   return (
     <>
       {navigation.state !== "idle" ? <Loader /> : null}
 
-      <Box>
+      <Box
+        sx={{
+          paddingBottom: "105px",
+        }}
+      >
         <TopNavigation
           header={{
             text: t("header"),
@@ -184,7 +188,7 @@ export default function Meta({ loaderData }: Route.ComponentProps) {
               {
                 method: "POST",
                 encType: "application/json",
-              },
+              }
             );
           })}
           style={{
@@ -330,7 +334,7 @@ export default function Meta({ loaderData }: Route.ComponentProps) {
                   onClick={() => {
                     const currentList = getValues("locations");
                     const updatedList = currentList.filter(
-                      (item) => item.id !== location.id,
+                      (item) => item.id !== location.id
                     );
                     setValue("locations", updatedList);
                     trigger("locations");
@@ -343,7 +347,7 @@ export default function Meta({ loaderData }: Route.ComponentProps) {
                       {
                         method: "POST",
                         encType: "application/json",
-                      },
+                      }
                     );
                   }}
                   sx={{
@@ -415,7 +419,7 @@ export default function Meta({ loaderData }: Route.ComponentProps) {
                   {
                     method: "POST",
                     encType: "application/json",
-                  },
+                  }
                 );
               })}
               variant="contained"
@@ -457,7 +461,7 @@ export default function Meta({ loaderData }: Route.ComponentProps) {
                     {
                       method: "POST",
                       encType: "application/json",
-                    },
+                    }
                   );
                 }}
                 inputType="radio"

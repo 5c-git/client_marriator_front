@@ -13,7 +13,7 @@ import ClearIcon from "@mui/icons-material/Clear";
 import CheckIcon from "@mui/icons-material/Check";
 import { AddFileIcon } from "./AddFileIcon";
 
-const imageTypeRegex = /image\/(png|jpg|jpeg)/gm;
+// const imageTypeRegex = /image\/(png|jpg|jpeg)/gm;
 
 export const FilesPopup = ({
   open,
@@ -30,7 +30,7 @@ export const FilesPopup = ({
   const {
     control,
     handleSubmit,
-    formState: { errors, isValid },
+    formState: { isValid },
     reset,
   } = useForm({
     defaultValues: {
@@ -39,7 +39,7 @@ export const FilesPopup = ({
     resolver: yupResolver(
       Yup.object({
         files: Yup.array().min(4),
-      }),
+      })
     ),
   });
 
@@ -131,7 +131,7 @@ export const FilesPopup = ({
                 const uploadedFiles = Array.from(event.target.files).map(
                   (file) => ({
                     file,
-                  }),
+                  })
                 );
                 append(uploadedFiles);
                 event.target.value = "";

@@ -361,13 +361,13 @@ export default function SpecialistRequest({
                 ) : null}
                 {loaderData.entity.oneDayJobAction === "accept" ? (
                   <>
-                    <Button
+                    {/* <Button
                       component={Link}
                       to={`/bids/${loaderData.entity.id}/specialists/${loaderData.entity.specialist.id}/day-review/${loaderData.entity.oneDayReportId}?edit=true`}
                       variant="outlined"
                     >
                       {t("actions.edit")}
-                    </Button>
+                    </Button> */}
                     <Button
                       variant="contained"
                       onClick={() => {

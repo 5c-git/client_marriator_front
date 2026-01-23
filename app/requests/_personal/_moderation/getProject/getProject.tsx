@@ -1,13 +1,10 @@
 import { http, delay, HttpResponse } from "msw";
-import Ajv from "ajv";
 
-import GetProjectSuccessSchema from "./GetProjectSuccess.schema.json";
-import { GetProjectSuccess } from "./getProjectSuccess.type";
+import {
+  GetProjectSuccess,
+  getProjectSuccessSchema,
+} from "./getProjectSuccess.schema";
 import { UnxpectedError } from "~/shared/unexpectedError/unexpectedError";
-
-const ajv = new Ajv();
-
-const validateSuccess = ajv.compile(GetProjectSuccessSchema);
 
 export const getProjectKeys = ["getProject"];
 
@@ -37,10 +34,12 @@ export const getProject = async (
       });
     }
 
-    if (validateSuccess(response)) {
-      data = response as unknown as GetProjectSuccess;
+    const parsed = getProjectSuccessSchema.safeParse(response);
+
+    if (parsed.success) {
+      data = parsed.data;
     } else {
-      console.log(validateSuccess.errors);
+      console.log(parsed.error);
       throw new Response(`Данные запроса getProject не валидны схеме`);
     }
 
@@ -133,10 +132,12 @@ export const mockResponseError = {
 
 export const getProjectMockResponse = http.get(
   `${import.meta.env.VITE_GET_PROJECT}`,
-  async ({ request }) => {
-    const url = new URL(request.url);
+  async () =>
+    // { request }
+    {
+      // const url = new URL(request.url);
 
-    await delay(2000);
-    return HttpResponse.json(mockResponseSuccess);
-  }
+      await delay(2000);
+      return HttpResponse.json(mockResponseSuccess);
+    }
 );

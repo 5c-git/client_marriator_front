@@ -41,40 +41,37 @@ export async function clientLoader() {
       const users: UsersMobileViewInterface["users"] = [];
 
       usersData.data.forEach((item) => {
-        // временно убираем архивный статус, архив доступен только админу
-        if (item.confirmRegister !== false && item.finishRegister !== false) {
-          users.push({
-            id: item.id,
-            status: (() => {
-              let status = 3;
+        users.push({
+          id: item.id,
+          status: (() => {
+            let status = 3;
 
-              if (
-                item.confirmRegister === false &&
-                item.finishRegister === true
-              ) {
-                status = 1;
-              } else if (
-                item.confirmRegister === true &&
-                item.finishRegister === true
-              ) {
-                status = 2;
-              }
-              // else if (
-              //   item.confirmRegister === false &&
-              //   item.finishRegister === false
-              // ) {
-              //   status = 3;
-              // }
+            if (
+              item.confirmRegister === false &&
+              item.finishRegister === true
+            ) {
+              status = 1;
+            } else if (
+              item.confirmRegister === true &&
+              item.finishRegister === true
+            ) {
+              status = 2;
+            }
+            // else if (
+            //   item.confirmRegister === false &&
+            //   item.finishRegister === false
+            // ) {
+            //   status = 3;
+            // }
 
-              return status;
-            })(),
-            name: item.name,
-            email: item.email,
-            phone: item.phone.toString(),
-            address: item.place.length > 0 ? item.place[0].name : null,
-            logo: `${import.meta.env.VITE_ASSET_PATH}${item.logo}`,
-          });
-        }
+            return status;
+          })(),
+          name: item.name,
+          email: item.email,
+          phone: item.phone.toString(),
+          address: item.place.length > 0 ? item.place[0].name : null,
+          logo: `${import.meta.env.VITE_ASSET_PATH}${item.logo}`,
+        });
       });
 
       data = {
