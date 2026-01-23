@@ -17,8 +17,11 @@
     "durationIntervalPlaceholder": "Validity period of the task *",
     "applicationFrequencyPlaceholder": "Frequency of application repetition *",
     "applicationCountdownPlaceholder": "Minimum time until request exit *",
-    "supervisorSearchPlaceholder": "Поиск"
+    "supervisorSearchPlaceholder": "Search",
+    "specialistTimerPlaceholder": "The period for notifying the manager about the failure of a specialist to provide services"
   },
+  "counterparty": "Counterparty",
+  "counterpartySelector": "Choose counterparty",
   "project": "Project",
   "projectSelector": "Choose project",
   "location": "Locations",

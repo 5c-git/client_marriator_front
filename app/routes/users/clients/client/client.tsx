@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, ComponentPropsWithoutRef } from "react";
 import {
   useNavigate,
   useNavigation,
@@ -9,8 +9,8 @@ import {
 } from "react-router";
 import type { Route } from "./+types/client";
 
-import * as Yup from "yup";
-import { yupResolver } from "@hookform/resolvers/yup";
+import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm, Controller } from "react-hook-form";
 
 import { useTranslation } from "react-i18next";
@@ -29,6 +29,7 @@ import { StyledTextField } from "~/shared/ui/StyledTextField/StyledTextField";
 import { StyledPhoneField } from "~/shared/ui/StyledPhoneField/StyledPhoneField";
 import { StyledRadioButton } from "~/shared/ui/StyledRadioButton/StyledRadioButton";
 import { TimeField } from "~/shared/ui/TimeField/TimeField";
+import { CheckboxSearchableDrawer } from "~/shared/ui/CheckboxSearchableDrawer/CheckboxSearchableDrawer";
 
 import { S_SwipeableDrawer } from "./client.styled";
 
@@ -40,11 +41,14 @@ import { DeleteIcon } from "~/shared/icons/DeleteIcon";
 
 import { useStore } from "~/store/store";
 
+import { getCounterparty } from "~/requests/_personal/_moderation/getCounterparty/getCounterparty";
 import { getModerationSingleClient } from "~/requests/_personal/_moderation/getModerationSingleClient/getModerationSingleClient";
 import { postSetUserImg } from "~/requests/_personal/_moderation/postSetUserImg/postSetUserImg";
 import { postDelProject } from "~/requests/_personal/_moderation/delProject/delProject";
 import { postDelPlaceModeration } from "~/requests/_personal/_moderation/postDelPlaceModeration/postDelPlaceModeration";
 import { postConfirmUserRegister } from "~/requests/_personal/_moderation/postConfirmUserRegister/postConfirmUserRegister";
+import { postSetCounterparty } from "~/requests/_personal/_moderation/postSetCounterparty/postSetCounterparty";
+import { postDeleteCounterparty } from "~/requests/_personal/_moderation/postDeleteCounterparty/postDeleteCounterparty";
 
 const getRadioButtons = (
   list: { id: number; name: string; logo: string }[]
@@ -73,6 +77,15 @@ const getRadioButtons = (
 export async function clientLoader({ params }: Route.ClientLoaderArgs) {
   const accessToken = useStore.getState().accessToken;
 
+  const counterparty: ComponentPropsWithoutRef<
+    typeof CheckboxSearchableDrawer
+  >["items"] = [];
+
+  const currentCounterparty: {
+    id: number;
+    name: string;
+  }[] = [];
+
   const organizations: {
     id: number;
     logo: string;
@@ -90,6 +103,23 @@ export async function clientLoader({ params }: Route.ClientLoaderArgs) {
       accessToken,
       Number(params.user)
     );
+
+    const counterpartyData = await getCounterparty(accessToken);
+
+    counterpartyData.data.forEach((agent) => {
+      counterparty.push({
+        value: agent.id.toString(),
+        label: agent.name,
+        disabled: false,
+      });
+    });
+
+    data.data.counterparty.forEach((party) => {
+      currentCounterparty.push({
+        id: party.id,
+        name: party.name,
+      });
+    });
 
     data.data.project.forEach((org) => {
       organizations.push({
@@ -110,9 +140,9 @@ export async function clientLoader({ params }: Route.ClientLoaderArgs) {
     const client = {
       id: data.data.id,
       logo: data.data.logo,
-      agent: "AGENT PLACEHOLDER",
       phone: data.data.phone.toString(),
       name: data.data.name,
+      counterparty: currentCounterparty,
       organizations: organizations,
       locations: locations,
       change_order: data.data.change_order,
@@ -143,7 +173,7 @@ export async function clientLoader({ params }: Route.ClientLoaderArgs) {
       })(),
     };
 
-    return { client };
+    return { client, counterparty };
   } else {
     throw new Response("Токен авторизации не обнаружен!", { status: 401 });
   }
@@ -179,6 +209,18 @@ export async function clientAction({ request }: Route.ClientActionArgs) {
     } else if (_action === "_decline") {
       await postConfirmUserRegister(accessToken, fields.userId, fields.confirm);
       throw redirect(withLocale("/users"));
+    } else if (_action === "_setCounterparty") {
+      await postSetCounterparty(
+        accessToken,
+        fields.userId,
+        fields.counterparties
+      );
+    } else if (_action === "_deleteCounterparty") {
+      await postDeleteCounterparty(
+        accessToken,
+        fields.userId,
+        fields.counterpartyId
+      );
     }
   } else {
     throw new Response("Токен авторизации не обнаружен!", { status: 401 });
@@ -193,6 +235,7 @@ export default function Client({ loaderData }: Route.ComponentProps) {
   const navigation = useNavigation();
 
   const [open, setOpen] = useState<boolean>(false);
+  const [openCounterparty, setOpenCounterparty] = useState<boolean>(false);
 
   const {
     control,
@@ -200,62 +243,60 @@ export default function Client({ loaderData }: Route.ComponentProps) {
     getValues,
     setValue,
     trigger,
-    watch,
     formState: { errors },
   } = useForm({
     defaultValues: {
       logo: loaderData.client.logo ? loaderData.client.logo : "",
-      // agent: state.agent,
+
       phone: loaderData.client.phone,
       name: loaderData.client.name,
+      counterparty: loaderData.client.counterparty,
       organizations: loaderData.client.organizations,
       locations: loaderData.client.locations,
-      change_order:
-        `2000-01-01T${loaderData.client.change_order}` as unknown as string,
-      cancel_order:
-        `2000-01-01T${loaderData.client.cancel_order}` as unknown as string,
-      live_order:
-        `2000-01-01T${loaderData.client.live_order}` as unknown as string,
+      change_order: new Date(`2000-01-01T${loaderData.client.change_order}`),
+      cancel_order: new Date(`2000-01-01T${loaderData.client.cancel_order}`),
+      live_order: new Date(`2000-01-01T${loaderData.client.live_order}`),
     },
-    resolver: yupResolver(
-      Yup.object({
-        logo: Yup.string().required(t("text", { ns: "constructorFields" })),
-        // agent: Yup.string().required(t("text", { ns: "constructorFields" })),
-        phone: Yup.string().required(t("text", { ns: "constructorFields" })),
-        name: Yup.string().required(t("text", { ns: "constructorFields" })),
-        organizations: Yup.array()
-          .min(1)
-          .of(
-            Yup.object().shape({
-              id: Yup.number().required(),
-              logo: Yup.string().required(),
-              name: Yup.string().required(),
+    resolver: zodResolver(
+      z.object({
+        logo: z.string({ error: t("text", { ns: "constructorFields" }) }),
+        phone: z.string({ error: t("text", { ns: "constructorFields" }) }),
+        name: z.string(t("text", { ns: "constructorFields" })),
+        counterparty: z
+          .array(
+            z.object({
+              id: z.number(),
+              name: z.string(),
             })
           )
-          .required(t("text", { ns: "constructorFields" })),
-        locations: Yup.array()
-          .min(1)
-          .of(
-            Yup.object().shape({
-              id: Yup.number().required(),
-              logo: Yup.string().required(),
-              address: Yup.string().required(),
-
-              // name: Yup.string().required(),
-              // coordinates: Yup.array().min(2).max(2).of(Yup.number()),
-              // region: Yup.string().required(),
+          .min(1),
+        organizations: z
+          .array(
+            z.object({
+              id: z.number(),
+              logo: z.string(),
+              name: z.string(),
             })
           )
-          .required(t("text", { ns: "constructorFields" })),
-        change_order: Yup.string()
-          .nullable()
-          .required(t("text", { ns: "constructorFields" })),
-        cancel_order: Yup.string()
-          .nullable()
-          .required(t("text", { ns: "constructorFields" })),
-        live_order: Yup.string()
-          .nullable()
-          .required(t("text", { ns: "constructorFields" })),
+          .min(1),
+        locations: z
+          .array(
+            z.object({
+              id: z.number(),
+              logo: z.string(),
+              address: z.string(),
+            })
+          )
+          .min(1),
+        change_order: z.date({
+          error: t("text", { ns: "constructorFields" }),
+        }),
+        cancel_order: z.date({
+          error: t("text", { ns: "constructorFields" }),
+        }),
+        live_order: z.date({
+          error: t("text", { ns: "constructorFields" }),
+        }),
       })
     ),
   });
@@ -445,37 +486,6 @@ export default function Client({ loaderData }: Route.ComponentProps) {
               </Box>
             </Box>
 
-            {/* <Controller
-              name="agent"
-              control={control}
-              render={({ field }) => (
-                <StyledSelect
-                  inputType="select"
-                  placeholder={t("fields.agentPlaceholder")}
-                  onImmediateChange={() => {}}
-                  validation="none"
-                  error={errors.agent?.message}
-                  options={[
-                    {
-                      value: "romashka",
-                      label: "ООО Ромашка",
-                      disabled: false,
-                    },
-                    {
-                      value: "vasilek",
-                      label: "ООО Василёк",
-                      disabled: false,
-                    },
-                    {
-                      value: "sunflower",
-                      label: "ООО Подсолнух",
-                      disabled: false,
-                    },
-                  ]}
-                  {...field}
-                />
-              )}
-            /> */}
             <Controller
               name="phone"
               control={control}
@@ -504,6 +514,84 @@ export default function Client({ loaderData }: Route.ComponentProps) {
                 />
               )}
             />
+
+            {getValues("counterparty").length > 0 ? (
+              <Typography component="p" variant="Bold_14">
+                {t("counterparty")}
+              </Typography>
+            ) : null}
+
+            <Stack
+              sx={{
+                rowGap: "14px",
+              }}
+            >
+              {getValues("counterparty").map((counterparty) => (
+                <Box
+                  key={counterparty.id}
+                  sx={{
+                    display: "flex",
+                    columnGap: "12px",
+                    alignItems: "center",
+                  }}
+                >
+                  <Typography
+                    component="p"
+                    variant="Reg_14"
+                    sx={{
+                      flexGrow: "1",
+                    }}
+                  >
+                    {counterparty.name}
+                  </Typography>
+
+                  {getValues("counterparty").length > 1 ? (
+                    <IconButton
+                      onClick={() => {
+                        const currentList = getValues("counterparty");
+                        const updatedList = currentList.filter(
+                          (item) => item.name !== counterparty.name
+                        );
+                        setValue("counterparty", updatedList);
+                        trigger("counterparty");
+
+                        fetcher.submit(
+                          JSON.stringify({
+                            _action: "_deleteCounterparty",
+                            userId: loaderData.client.id,
+                            counterpartyId: counterparty.id,
+                          }),
+                          {
+                            method: "POST",
+                            encType: "application/json",
+                          }
+                        );
+                      }}
+                      sx={{
+                        width: "24px",
+                        height: "24px",
+                      }}
+                    >
+                      <DeleteIcon
+                        sx={{
+                          width: "12px",
+                          height: "12px",
+                        }}
+                      />
+                    </IconButton>
+                  ) : null}
+                </Box>
+              ))}
+            </Stack>
+
+            <Button
+              onClick={() => {
+                setOpenCounterparty(true);
+              }}
+              variant="outlined"
+            >
+              {t("counterpartySelector")}
+            </Button>
 
             {getValues("organizations").length > 0 ? (
               <Typography component="p" variant="Bold_14">
@@ -542,7 +630,7 @@ export default function Client({ loaderData }: Route.ComponentProps) {
                     {organization.name}
                   </Typography>
 
-                  {watch("organizations").length > 1 ? (
+                  {getValues("organizations").length > 1 ? (
                     <IconButton
                       onClick={() => {
                         const currentList = getValues("organizations");
@@ -690,6 +778,10 @@ export default function Client({ loaderData }: Route.ComponentProps) {
                   placeholder={t("fields.editIntervalPlaceholder")}
                   error={errors.change_order?.message}
                   {...field}
+                  value={field.value.toISOString()}
+                  onChange={(value) => {
+                    setValue("change_order", new Date(value));
+                  }}
                 />
               )}
             />
@@ -701,6 +793,10 @@ export default function Client({ loaderData }: Route.ComponentProps) {
                   placeholder={t("fields.cancelIntervalPlaceholder")}
                   error={errors.cancel_order?.message}
                   {...field}
+                  value={field.value.toISOString()}
+                  onChange={(value) => {
+                    setValue("cancel_order", new Date(value));
+                  }}
                 />
               )}
             />
@@ -712,6 +808,10 @@ export default function Client({ loaderData }: Route.ComponentProps) {
                   placeholder={t("fields.durationIntervalPlaceholder")}
                   error={errors.live_order?.message}
                   {...field}
+                  value={field.value.toISOString()}
+                  onChange={(value) => {
+                    setValue("live_order", new Date(value));
+                  }}
                 />
               )}
             />
@@ -817,6 +917,28 @@ export default function Client({ loaderData }: Route.ComponentProps) {
           />
         </Box>
       </S_SwipeableDrawer>
+
+      <CheckboxSearchableDrawer
+        translation="counterparty"
+        open={openCounterparty}
+        onClose={() => {
+          setOpenCounterparty(false);
+        }}
+        onSubmit={(counterparties) => {
+          fetcher.submit(
+            JSON.stringify({
+              _action: "_setCounterparty",
+              userId: loaderData.client.id,
+              counterparties,
+            }),
+            {
+              method: "POST",
+              encType: "application/json",
+            }
+          );
+        }}
+        items={loaderData.counterparty}
+      />
     </>
   );
 }

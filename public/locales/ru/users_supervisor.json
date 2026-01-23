@@ -18,7 +18,10 @@
     "taskCountdownCancelDurationPlaceholder": "Максимально время ожидания Заданий специалистом (дней)",
     "managerSearchPlaceholder": "Поиск"
   },
+  "counterparty": "Контрагенты",
+  "counterpartySelector": "Выбрать контрагента",
   "project": "Проект",
+  "statusText": "Статус",
   "projectSelector": "Выбрать проект",
   "location": "Места проведения",
   "locationSelector": "Выбрать места проведения",

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, ComponentPropsWithoutRef } from "react";
 import {
   useNavigate,
   useNavigation,
@@ -9,8 +9,8 @@ import {
 } from "react-router";
 import type { Route } from "./+types/manager";
 
-import * as Yup from "yup";
-import { yupResolver } from "@hookform/resolvers/yup";
+import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm, Controller } from "react-hook-form";
 
 import { useTranslation } from "react-i18next";
@@ -40,6 +40,8 @@ import { StyledCheckboxMultiple } from "~/shared/ui/StyledCheckboxMultiple/Style
 import { MaskedField } from "~/shared/ui/MaskedField/MaskedField";
 import { TimeField } from "~/shared/ui/TimeField/TimeField";
 
+import { CheckboxSearchableDrawer } from "~/shared/ui/CheckboxSearchableDrawer/CheckboxSearchableDrawer";
+
 import { S_SwipeableDrawer } from "./manager.styled";
 
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
@@ -51,6 +53,7 @@ import { DeleteIcon } from "~/shared/icons/DeleteIcon";
 
 import { useStore } from "~/store/store";
 
+import { getCounterparty } from "~/requests/_personal/_moderation/getCounterparty/getCounterparty";
 import { getModerationSingleClient } from "~/requests/_personal/_moderation/getModerationSingleClient/getModerationSingleClient";
 import { getSupervisors } from "~/requests/_personal/_moderation/getSupervisors/getSupervisors";
 import { postSetUserImg } from "~/requests/_personal/_moderation/postSetUserImg/postSetUserImg";
@@ -59,6 +62,8 @@ import { postDelPlaceModeration } from "~/requests/_personal/_moderation/postDel
 import { postConfirmUserRegister } from "~/requests/_personal/_moderation/postConfirmUserRegister/postConfirmUserRegister";
 import { postSetSupervisors } from "~/requests/_personal/_moderation/postSetSupervisors/postSetSupervisors";
 import { postDelSupervisor } from "~/requests/_personal/_moderation/postDelSupervisor/postDelSupervisor";
+import { postSetCounterparty } from "~/requests/_personal/_moderation/postSetCounterparty/postSetCounterparty";
+import { postDeleteCounterparty } from "~/requests/_personal/_moderation/postDeleteCounterparty/postDeleteCounterparty";
 
 const getRadioButtons = (
   list: { id: number; name: string; logo: string }[]
@@ -86,6 +91,15 @@ const getRadioButtons = (
 
 export async function clientLoader({ params }: Route.ClientLoaderArgs) {
   const accessToken = useStore.getState().accessToken;
+
+  const counterparty: ComponentPropsWithoutRef<
+    typeof CheckboxSearchableDrawer
+  >["items"] = [];
+
+  const currentCounterparty: {
+    id: number;
+    name: string;
+  }[] = [];
 
   const organizations: {
     id: number;
@@ -116,6 +130,23 @@ export async function clientLoader({ params }: Route.ClientLoaderArgs) {
       Number(params.user)
     );
 
+    const counterpartyData = await getCounterparty(accessToken);
+
+    counterpartyData.data.forEach((agent) => {
+      counterparty.push({
+        value: agent.id.toString(),
+        label: agent.name,
+        disabled: false,
+      });
+    });
+
+    data.data.counterparty.forEach((party) => {
+      currentCounterparty.push({
+        id: party.id,
+        name: party.name,
+      });
+    });
+
     data.data.project.forEach((org) => {
       organizations.push({
         id: org.id,
@@ -135,9 +166,9 @@ export async function clientLoader({ params }: Route.ClientLoaderArgs) {
     const client = {
       id: data.data.id,
       logo: data.data.logo,
-      agent: "AGENT PLACEHOLDER",
       phone: data.data.phone.toString(),
       name: data.data.name,
+      counterparty: currentCounterparty,
       organizations: organizations,
       locations: locations,
       change_task: data.data.change_task,
@@ -181,6 +212,7 @@ export async function clientLoader({ params }: Route.ClientLoaderArgs) {
 
     return {
       client,
+      counterparty,
       supervisorsToSelect,
       currentSupervisors: data.data.supervisors,
     };
@@ -223,6 +255,18 @@ export async function clientAction({ request }: Route.ClientActionArgs) {
       await postSetSupervisors(accessToken, fields.userId, fields.supervisors);
     } else if (_action === "_deleteSupervisor") {
       await postDelSupervisor(accessToken, fields.userId, fields.supervisorId);
+    } else if (_action === "_setCounterparty") {
+      await postSetCounterparty(
+        accessToken,
+        fields.userId,
+        fields.counterparties
+      );
+    } else if (_action === "_deleteCounterparty") {
+      await postDeleteCounterparty(
+        accessToken,
+        fields.userId,
+        fields.counterpartyId
+      );
     }
   } else {
     throw new Response("Токен авторизации не обнаружен!", { status: 401 });
@@ -237,6 +281,8 @@ export default function Manager({ loaderData }: Route.ComponentProps) {
   const navigation = useNavigation();
 
   const [open, setOpen] = useState<boolean>(false);
+  const [openCounterparty, setOpenCounterparty] = useState<boolean>(false);
+
   const [searchSupervisors, setSearchSupervisors] = useState<boolean>(false);
   const [selectedSupervisors, setSelectedSupervisors] = useState(
     loaderData.supervisorsToSelect
@@ -248,77 +294,71 @@ export default function Manager({ loaderData }: Route.ComponentProps) {
     getValues,
     setValue,
     trigger,
-    watch,
     formState: { errors },
   } = useForm({
     defaultValues: {
       logo: loaderData.client.logo ? loaderData.client.logo : "",
-      // agent: state.agent,
       phone: loaderData.client.phone,
       name: loaderData.client.name,
+      counterparty: loaderData.client.counterparty,
       organizations: loaderData.client.organizations,
       locations: loaderData.client.locations,
-
-      change_task:
-        `2000-01-01T${loaderData.client.change_task}` as unknown as string,
-      cancel_task:
-        `2000-01-01T${loaderData.client.cancel_task}` as unknown as string,
-      live_task:
-        `2000-01-01T${loaderData.client.live_task}` as unknown as string,
-      repeat_bid:
-        `2000-01-01T${loaderData.client.repeat_bid}` as unknown as string,
-      leave_bid:
-        `2000-01-01T${loaderData.client.leave_bid}` as unknown as string,
+      change_task: new Date(`2000-01-01T${loaderData.client.change_task}`),
+      cancel_task: new Date(`2000-01-01T${loaderData.client.cancel_task}`),
+      live_task: new Date(`2000-01-01T${loaderData.client.live_task}`),
+      repeat_bid: new Date(`2000-01-01T${loaderData.client.repeat_bid}`),
+      leave_bid: new Date(`2000-01-01T${loaderData.client.leave_bid}`),
       notification_start: loaderData.client.notification_start,
     },
-    resolver: yupResolver(
-      Yup.object({
-        logo: Yup.string().required(t("text", { ns: "constructorFields" })),
-        // agent: Yup.string().required(t("text", { ns: "constructorFields" })),
-        phone: Yup.string().required(t("text", { ns: "constructorFields" })),
-        name: Yup.string().required(t("text", { ns: "constructorFields" })),
-        organizations: Yup.array()
-          .min(1)
-          .of(
-            Yup.object().shape({
-              id: Yup.number().required(),
-              logo: Yup.string().required(),
-              name: Yup.string().required(),
+    resolver: zodResolver(
+      z.object({
+        logo: z.string({ error: t("text", { ns: "constructorFields" }) }),
+        phone: z.string({ error: t("text", { ns: "constructorFields" }) }),
+        name: z.string({ error: t("text", { ns: "constructorFields" }) }),
+        counterparty: z
+          .array(
+            z.object({
+              id: z.number(),
+              name: z.string(),
             })
           )
-          .required(t("text", { ns: "constructorFields" })),
-        locations: Yup.array()
-          .min(1)
-          .of(
-            Yup.object().shape({
-              id: Yup.number().required(),
-              logo: Yup.string().required(),
-              address: Yup.string().required(),
-
-              // name: Yup.string().required(),
-              // coordinates: Yup.array().min(2).max(2).of(Yup.number()),
-              // region: Yup.string().required(),
+          .min(1),
+        organizations: z
+          .array(
+            z.object({
+              id: z.number(),
+              logo: z.string(),
+              name: z.string(),
             })
           )
-          .required(t("text", { ns: "constructorFields" })),
-        change_task: Yup.string()
-          .nullable()
-          .required(t("text", { ns: "constructorFields" })),
-        cancel_task: Yup.string()
-          .nullable()
-          .required(t("text", { ns: "constructorFields" })),
-        live_task: Yup.string()
-          .nullable()
-          .required(t("text", { ns: "constructorFields" })),
-        repeat_bid: Yup.string()
-          .nullable()
-          .required(t("text", { ns: "constructorFields" })),
-        leave_bid: Yup.string()
-          .nullable()
-          .required(t("text", { ns: "constructorFields" })),
-        notification_start: Yup.string().required(
-          t("text", { ns: "constructorFields" })
-        ),
+          .min(1),
+        locations: z
+          .array(
+            z.object({
+              id: z.number(),
+              logo: z.string(),
+              address: z.string(),
+            })
+          )
+          .min(1),
+        change_task: z.date({
+          error: t("text", { ns: "constructorFields" }),
+        }),
+        cancel_task: z.date({
+          error: t("text", { ns: "constructorFields" }),
+        }),
+        live_task: z.date({
+          error: t("text", { ns: "constructorFields" }),
+        }),
+        repeat_bid: z.date({
+          error: t("text", { ns: "constructorFields" }),
+        }),
+        leave_bid: z.date({
+          error: t("text", { ns: "constructorFields" }),
+        }),
+        notification_start: z.string({
+          error: t("text", { ns: "constructorFields" }),
+        }),
       })
     ),
   });
@@ -336,16 +376,13 @@ export default function Manager({ loaderData }: Route.ComponentProps) {
       searchbar: "",
       supervisors: [],
     },
-    // @ts-expect-error error
-    resolver: yupResolver(
-      Yup.object({
-        searchbar: Yup.string().notRequired(),
-        supervisors: Yup.array().of(Yup.string()).min(1),
+    resolver: zodResolver(
+      z.object({
+        searchbar: z.string(),
+        supervisors: z.array(z.string()).min(1),
       })
     ),
   });
-
-  console.log(errors);
 
   return (
     <>
@@ -371,53 +408,53 @@ export default function Manager({ loaderData }: Route.ComponentProps) {
         <form
           onSubmit={handleSubmit((values) => {
             const change_task_formated = `${
-              new Date(getValues("change_task")).getUTCHours() > 10
-                ? new Date(getValues("change_task")).getUTCHours()
-                : `0${new Date(getValues("change_task")).getUTCHours()}`
+              new Date(getValues("change_task")).getHours() > 10
+                ? new Date(getValues("change_task")).getHours()
+                : `0${new Date(getValues("change_task")).getHours()}`
             }:${
-              new Date(getValues("change_task")).getUTCMinutes() > 10
-                ? new Date(getValues("change_task")).getUTCMinutes()
-                : `0${new Date(getValues("change_task")).getUTCMinutes()}`
+              new Date(getValues("change_task")).getMinutes() > 10
+                ? new Date(getValues("change_task")).getMinutes()
+                : `0${new Date(getValues("change_task")).getMinutes()}`
             }`;
 
             const cancel_task_formated = `${
-              new Date(getValues("cancel_task")).getUTCHours() > 10
-                ? new Date(getValues("cancel_task")).getUTCHours()
-                : `0${new Date(getValues("cancel_task")).getUTCHours()}`
+              new Date(getValues("cancel_task")).getHours() > 10
+                ? new Date(getValues("cancel_task")).getHours()
+                : `0${new Date(getValues("cancel_task")).getHours()}`
             }:${
-              new Date(getValues("cancel_task")).getUTCMinutes() > 10
-                ? new Date(getValues("cancel_task")).getUTCMinutes()
-                : `0${new Date(getValues("cancel_task")).getUTCMinutes()}`
+              new Date(getValues("cancel_task")).getMinutes() > 10
+                ? new Date(getValues("cancel_task")).getMinutes()
+                : `0${new Date(getValues("cancel_task")).getMinutes()}`
             }`;
 
             const live_task_formated = `${
-              new Date(getValues("live_task")).getUTCHours() > 10
-                ? new Date(getValues("live_task")).getUTCHours()
-                : `0${new Date(getValues("live_task")).getUTCHours()}`
+              new Date(getValues("live_task")).getHours() > 10
+                ? new Date(getValues("live_task")).getHours()
+                : `0${new Date(getValues("live_task")).getHours()}`
             }:${
-              new Date(getValues("live_task")).getUTCMinutes() > 10
-                ? new Date(getValues("live_task")).getUTCMinutes()
-                : `0${new Date(getValues("live_task")).getUTCMinutes()}`
+              new Date(getValues("live_task")).getMinutes() > 10
+                ? new Date(getValues("live_task")).getMinutes()
+                : `0${new Date(getValues("live_task")).getMinutes()}`
             }`;
 
             const repeat_bid_formated = `${
-              new Date(getValues("repeat_bid")).getUTCHours() > 10
-                ? new Date(getValues("repeat_bid")).getUTCHours()
-                : `0${new Date(getValues("repeat_bid")).getUTCHours()}`
+              new Date(getValues("repeat_bid")).getHours() > 10
+                ? new Date(getValues("repeat_bid")).getHours()
+                : `0${new Date(getValues("repeat_bid")).getHours()}`
             }:${
-              new Date(getValues("repeat_bid")).getUTCMinutes() > 10
-                ? new Date(getValues("repeat_bid")).getUTCMinutes()
-                : `0${new Date(getValues("repeat_bid")).getUTCMinutes()}`
+              new Date(getValues("repeat_bid")).getMinutes() > 10
+                ? new Date(getValues("repeat_bid")).getMinutes()
+                : `0${new Date(getValues("repeat_bid")).getMinutes()}`
             }`;
 
             const leave_bid_formated = `${
-              new Date(getValues("leave_bid")).getUTCHours() > 10
-                ? new Date(getValues("leave_bid")).getUTCHours()
-                : `0${new Date(getValues("leave_bid")).getUTCHours()}`
+              new Date(getValues("leave_bid")).getHours() > 10
+                ? new Date(getValues("leave_bid")).getHours()
+                : `0${new Date(getValues("leave_bid")).getHours()}`
             }:${
-              new Date(getValues("leave_bid")).getUTCMinutes() > 10
-                ? new Date(getValues("leave_bid")).getUTCMinutes()
-                : `0${new Date(getValues("leave_bid")).getUTCMinutes()}`
+              new Date(getValues("leave_bid")).getMinutes() > 10
+                ? new Date(getValues("leave_bid")).getMinutes()
+                : `0${new Date(getValues("leave_bid")).getMinutes()}`
             }`;
 
             submit(
@@ -549,37 +586,6 @@ export default function Manager({ loaderData }: Route.ComponentProps) {
               </Box>
             </Box>
 
-            {/* <Controller
-              name="agent"
-              control={control}
-              render={({ field }) => (
-                <StyledSelect
-                  inputType="select"
-                  placeholder={t("fields.agentPlaceholder")}
-                  onImmediateChange={() => {}}
-                  validation="none"
-                  error={errors.agent?.message}
-                  options={[
-                    {
-                      value: "romashka",
-                      label: "ООО Ромашка",
-                      disabled: false,
-                    },
-                    {
-                      value: "vasilek",
-                      label: "ООО Василёк",
-                      disabled: false,
-                    },
-                    {
-                      value: "sunflower",
-                      label: "ООО Подсолнух",
-                      disabled: false,
-                    },
-                  ]}
-                  {...field}
-                />
-              )}
-            /> */}
             <Controller
               name="phone"
               control={control}
@@ -608,6 +614,84 @@ export default function Manager({ loaderData }: Route.ComponentProps) {
                 />
               )}
             />
+
+            {getValues("counterparty").length > 0 ? (
+              <Typography component="p" variant="Bold_14">
+                {t("counterparty")}
+              </Typography>
+            ) : null}
+
+            <Stack
+              sx={{
+                rowGap: "14px",
+              }}
+            >
+              {getValues("counterparty").map((counterparty) => (
+                <Box
+                  key={counterparty.id}
+                  sx={{
+                    display: "flex",
+                    columnGap: "12px",
+                    alignItems: "center",
+                  }}
+                >
+                  <Typography
+                    component="p"
+                    variant="Reg_14"
+                    sx={{
+                      flexGrow: "1",
+                    }}
+                  >
+                    {counterparty.name}
+                  </Typography>
+
+                  {getValues("counterparty").length > 1 ? (
+                    <IconButton
+                      onClick={() => {
+                        const currentList = getValues("counterparty");
+                        const updatedList = currentList.filter(
+                          (item) => item.name !== counterparty.name
+                        );
+                        setValue("counterparty", updatedList);
+                        trigger("counterparty");
+
+                        fetcher.submit(
+                          JSON.stringify({
+                            _action: "_deleteCounterparty",
+                            userId: loaderData.client.id,
+                            counterpartyId: counterparty.id,
+                          }),
+                          {
+                            method: "POST",
+                            encType: "application/json",
+                          }
+                        );
+                      }}
+                      sx={{
+                        width: "24px",
+                        height: "24px",
+                      }}
+                    >
+                      <DeleteIcon
+                        sx={{
+                          width: "12px",
+                          height: "12px",
+                        }}
+                      />
+                    </IconButton>
+                  ) : null}
+                </Box>
+              ))}
+            </Stack>
+
+            <Button
+              onClick={() => {
+                setOpenCounterparty(true);
+              }}
+              variant="outlined"
+            >
+              {t("counterpartySelector")}
+            </Button>
 
             {getValues("organizations").length > 0 ? (
               <Typography component="p" variant="Bold_14">
@@ -646,7 +730,7 @@ export default function Manager({ loaderData }: Route.ComponentProps) {
                     {organization.name}
                   </Typography>
 
-                  {watch("organizations").length > 1 ? (
+                  {getValues("organizations").length > 1 ? (
                     <IconButton
                       onClick={() => {
                         const currentList = getValues("organizations");
@@ -871,6 +955,10 @@ export default function Manager({ loaderData }: Route.ComponentProps) {
                   placeholder={t("fields.editIntervalPlaceholder")}
                   error={errors.change_task?.message}
                   {...field}
+                  value={field.value.toISOString()}
+                  onChange={(value) => {
+                    setValue("change_task", new Date(value));
+                  }}
                 />
               )}
             />
@@ -882,6 +970,10 @@ export default function Manager({ loaderData }: Route.ComponentProps) {
                   placeholder={t("fields.cancelIntervalPlaceholder")}
                   error={errors.cancel_task?.message}
                   {...field}
+                  value={field.value.toISOString()}
+                  onChange={(value) => {
+                    setValue("cancel_task", new Date(value));
+                  }}
                 />
               )}
             />
@@ -893,6 +985,10 @@ export default function Manager({ loaderData }: Route.ComponentProps) {
                   placeholder={t("fields.durationIntervalPlaceholder")}
                   error={errors.live_task?.message}
                   {...field}
+                  value={field.value.toISOString()}
+                  onChange={(value) => {
+                    setValue("live_task", new Date(value));
+                  }}
                 />
               )}
             />
@@ -905,6 +1001,10 @@ export default function Manager({ loaderData }: Route.ComponentProps) {
                   placeholder={t("fields.applicationFrequencyPlaceholder")}
                   error={errors.repeat_bid?.message}
                   {...field}
+                  value={field.value.toISOString()}
+                  onChange={(value) => {
+                    setValue("repeat_bid", new Date(value));
+                  }}
                 />
               )}
             />
@@ -917,6 +1017,10 @@ export default function Manager({ loaderData }: Route.ComponentProps) {
                   placeholder={t("fields.applicationCountdownPlaceholder")}
                   error={errors.leave_bid?.message}
                   {...field}
+                  value={field.value.toISOString()}
+                  onChange={(value) => {
+                    setValue("leave_bid", new Date(value));
+                  }}
                 />
               )}
             />
@@ -927,8 +1031,7 @@ export default function Manager({ loaderData }: Route.ComponentProps) {
               render={({ field }) => (
                 <TextField
                   {...field}
-                  // label={t(`${props.translation}.fields.amountPlaceholder`)}
-                  label="Срок уведомления проект-менеджера о неоказании услуг специалистом"
+                  label={t("fields.specialistTimerPlaceholder")}
                   error={errors.notification_start?.message ? true : false}
                   helperText={errors.notification_start?.message}
                   slotProps={{
@@ -1168,6 +1271,28 @@ export default function Manager({ loaderData }: Route.ComponentProps) {
           </Box>
         </form>
       </SwipeableDrawer>
+
+      <CheckboxSearchableDrawer
+        translation="counterparty"
+        open={openCounterparty}
+        onClose={() => {
+          setOpenCounterparty(false);
+        }}
+        onSubmit={(counterparties) => {
+          fetcher.submit(
+            JSON.stringify({
+              _action: "_setCounterparty",
+              userId: loaderData.client.id,
+              counterparties,
+            }),
+            {
+              method: "POST",
+              encType: "application/json",
+            }
+          );
+        }}
+        items={loaderData.counterparty}
+      />
     </>
   );
 }

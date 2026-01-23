@@ -16,6 +16,8 @@
     "cancelIntervalPlaceholder": "Order cancellation interval *",
     "durationIntervalPlaceholder": "Validity period of the order *"
   },
+  "counterparty": "Counterparty",
+  "counterpartySelector": "Choose counterparty",
   "project": "Project",
   "projectSelector": "Choose project",
   "location": "Locations",

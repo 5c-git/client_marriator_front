@@ -17,9 +17,9 @@ export const getModerationSingleClientSuccessSchema = z.object({
             id: z.number(),
             logo: z.string(),
             name: z.string(),
-          }),
+          })
         ),
-      }),
+      })
     ),
     place: z.array(
       z.object({
@@ -36,7 +36,7 @@ export const getModerationSingleClientSuccessSchema = z.object({
           logo: z.string(),
           name: z.string(),
         }),
-      }),
+      })
     ),
     roles: z.array(
       z.object({
@@ -49,7 +49,7 @@ export const getModerationSingleClientSuccessSchema = z.object({
           "specialist",
           "supervisor",
         ]),
-      }),
+      })
     ),
     change_order: z.union([z.null(), z.string()]),
     cancel_order: z.union([z.null(), z.string()]),
@@ -78,9 +78,9 @@ export const getModerationSingleClientSuccessSchema = z.object({
               "specialist",
               "supervisor",
             ]),
-          }),
+          })
         ),
-      }),
+      })
     ),
     manager: z.array(
       z.object({
@@ -99,12 +99,20 @@ export const getModerationSingleClientSuccessSchema = z.object({
               "specialist",
               "supervisor",
             ]),
-          }),
+          })
         ),
-      }),
+      })
     ),
     count_wait_bid: z.number(),
-    counterparty: z.array(z.any()),
+    counterparty: z.array(
+      z.object({
+        id: z.number(),
+        legal_address: z.string(),
+        legal_email: z.string(),
+        name: z.string(),
+        ogrn: z.string(),
+      })
+    ),
     time_answer_bid: z.number(),
     notification_start: z.number(),
     confirmRegister: z.boolean(),

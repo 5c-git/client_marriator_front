@@ -14,7 +14,7 @@ import { StyledSearchBar } from "~/shared/ui/StyledSearchBar/StyledSearchBar";
 import { StyledCheckboxMultiple } from "~/shared/ui/StyledCheckboxMultiple/StyledCheckboxMultiple";
 
 type CheckboxDrawerProps = {
-  translation: "address" | "supervisor";
+  translation: "address" | "supervisor" | "counterparty";
   open: boolean;
   onClose: () => void;
   onSubmit: (value: string[]) => void;
@@ -28,13 +28,7 @@ export function CheckboxSearchableDrawer(props: CheckboxDrawerProps) {
 
   const [selectedItems, setSelectedItems] = useState<typeof props.items>([]);
 
-  const {
-    control,
-    getValues,
-    reset,
-    handleSubmit,
-    formState: { errors },
-  } = useForm<{
+  const { control, getValues, reset, handleSubmit } = useForm<{
     searchbar: string;
     selectedItems: string[];
   }>({

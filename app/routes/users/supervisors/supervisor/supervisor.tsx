@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, ComponentPropsWithoutRef } from "react";
 import {
   useNavigate,
   useNavigation,
@@ -9,8 +9,8 @@ import {
 } from "react-router";
 import type { Route } from "./+types/supervisor";
 
-import * as Yup from "yup";
-import { yupResolver } from "@hookform/resolvers/yup";
+import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm, Controller } from "react-hook-form";
 
 import { useTranslation } from "react-i18next";
@@ -40,6 +40,8 @@ import { StyledSearchBar } from "~/shared/ui/StyledSearchBar/StyledSearchBar";
 import { TimeField } from "~/shared/ui/TimeField/TimeField";
 import { MaskedField } from "~/shared/ui/MaskedField/MaskedField";
 
+import { CheckboxSearchableDrawer } from "~/shared/ui/CheckboxSearchableDrawer/CheckboxSearchableDrawer";
+
 import { S_SwipeableDrawer } from "./supervisor.styled";
 
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
@@ -51,6 +53,7 @@ import { DeleteIcon } from "~/shared/icons/DeleteIcon";
 
 import { useStore } from "~/store/store";
 
+import { getCounterparty } from "~/requests/_personal/_moderation/getCounterparty/getCounterparty";
 import { getModerationSingleClient } from "~/requests/_personal/_moderation/getModerationSingleClient/getModerationSingleClient";
 import { getManager } from "~/requests/_personal/getManager/getManager";
 import { postSetUserImg } from "~/requests/_personal/_moderation/postSetUserImg/postSetUserImg";
@@ -59,6 +62,8 @@ import { postDelPlaceModeration } from "~/requests/_personal/_moderation/postDel
 import { postConfirmUserRegister } from "~/requests/_personal/_moderation/postConfirmUserRegister/postConfirmUserRegister";
 import { postDelManager } from "~/requests/_personal/postDelManager/postDelManager";
 import { postSetManagers } from "~/requests/_personal/postSetManagers/postSetManagers";
+import { postSetCounterparty } from "~/requests/_personal/_moderation/postSetCounterparty/postSetCounterparty";
+import { postDeleteCounterparty } from "~/requests/_personal/_moderation/postDeleteCounterparty/postDeleteCounterparty";
 
 const getRadioButtons = (
   list: { id: number; name: string; logo: string }[]
@@ -87,6 +92,15 @@ const getRadioButtons = (
 export async function clientLoader({ params }: Route.ClientLoaderArgs) {
   const accessToken = useStore.getState().accessToken;
 
+  const counterparty: ComponentPropsWithoutRef<
+    typeof CheckboxSearchableDrawer
+  >["items"] = [];
+
+  const currentCounterparty: {
+    id: number;
+    name: string;
+  }[] = [];
+
   const organizations: {
     id: number;
     logo: string;
@@ -111,7 +125,24 @@ export async function clientLoader({ params }: Route.ClientLoaderArgs) {
       Number(params.user)
     );
 
+    const counterpartyData = await getCounterparty(accessToken);
+
     const managersData = await getManager(accessToken, Number(params.user));
+
+    counterpartyData.data.forEach((agent) => {
+      counterparty.push({
+        value: agent.id.toString(),
+        label: agent.name,
+        disabled: false,
+      });
+    });
+
+    data.data.counterparty.forEach((party) => {
+      currentCounterparty.push({
+        id: party.id,
+        name: party.name,
+      });
+    });
 
     data.data.project.forEach((org) => {
       organizations.push({
@@ -132,9 +163,9 @@ export async function clientLoader({ params }: Route.ClientLoaderArgs) {
     const client = {
       id: data.data.id,
       logo: data.data.logo,
-      agent: "AGENT PLACEHOLDER",
       phone: data.data.phone.toString(),
       name: data.data.name,
+      counterparty: currentCounterparty,
       organizations: organizations,
       locations: locations,
 
@@ -177,6 +208,7 @@ export async function clientLoader({ params }: Route.ClientLoaderArgs) {
 
     return {
       client,
+      counterparty,
       managersToSelect,
       currentManagers: data.data.manager,
     };
@@ -219,6 +251,18 @@ export async function clientAction({ request }: Route.ClientActionArgs) {
       await postDelManager(accessToken, fields.userId, fields.managerId);
     } else if (_action === "_inviteManagers") {
       await postSetManagers(accessToken, fields.userId, fields.managers);
+    } else if (_action === "_setCounterparty") {
+      await postSetCounterparty(
+        accessToken,
+        fields.userId,
+        fields.counterparties
+      );
+    } else if (_action === "_deleteCounterparty") {
+      await postDeleteCounterparty(
+        accessToken,
+        fields.userId,
+        fields.counterpartyId
+      );
     }
   } else {
     throw new Response("Токен авторизации не обнаружен!", { status: 401 });
@@ -233,6 +277,8 @@ export default function Supervisor({ loaderData }: Route.ComponentProps) {
   const navigation = useNavigation();
 
   const [open, setOpen] = useState<boolean>(false);
+  const [openCounterparty, setOpenCounterparty] = useState<boolean>(false);
+
   const [searchManagers, setSearchManagers] = useState<boolean>(false);
   const [selectedManagers, setSelectedManagers] = useState(
     loaderData.managersToSelect
@@ -244,68 +290,65 @@ export default function Supervisor({ loaderData }: Route.ComponentProps) {
     getValues,
     setValue,
     trigger,
-    watch,
     formState: { errors },
   } = useForm({
     defaultValues: {
       logo: loaderData.client.logo ? loaderData.client.logo : "",
-      // agent: state.agent,
       phone: loaderData.client.phone,
       name: loaderData.client.name,
+      counterparty: loaderData.client.counterparty,
       organizations: loaderData.client.organizations,
       locations: loaderData.client.locations,
-      repeat_bid:
-        `2000-01-01T${loaderData.client.repeat_bid}` as unknown as string,
-      leave_bid:
-        `2000-01-01T${loaderData.client.leave_bid}` as unknown as string,
-      live_task:
-        `2000-01-01T${loaderData.client.live_task}` as unknown as string,
+      repeat_bid: new Date(`2000-01-01T${loaderData.client.repeat_bid}`),
+      leave_bid: new Date(`2000-01-01T${loaderData.client.leave_bid}`),
+      live_task: new Date(`2000-01-01T${loaderData.client.live_task}`),
       waiting_task: loaderData.client.waiting_task
         ? `2000-01-01T${loaderData.client.waiting_task}`
         : "",
     },
-    resolver: yupResolver(
-      Yup.object({
-        logo: Yup.string().required(t("text", { ns: "constructorFields" })),
-        // agent: Yup.string().required(t("text", { ns: "constructorFields" })),
-        phone: Yup.string().required(t("text", { ns: "constructorFields" })),
-        name: Yup.string().required(t("text", { ns: "constructorFields" })),
-        organizations: Yup.array()
-          .min(1)
-          .of(
-            Yup.object().shape({
-              id: Yup.number().required(),
-              logo: Yup.string().required(),
-              name: Yup.string().required(),
+    resolver: zodResolver(
+      z.object({
+        logo: z.string({ error: t("text", { ns: "constructorFields" }) }),
+        phone: z.string({ error: t("text", { ns: "constructorFields" }) }),
+        name: z.string({ error: t("text", { ns: "constructorFields" }) }),
+        counterparty: z
+          .array(
+            z.object({
+              id: z.number(),
+              name: z.string(),
             })
           )
-          .required(t("text", { ns: "constructorFields" })),
-        locations: Yup.array()
-          .min(1)
-          .of(
-            Yup.object().shape({
-              id: Yup.number().required(),
-              logo: Yup.string().required(),
-              address: Yup.string().required(),
-
-              // name: Yup.string().required(),
-              // coordinates: Yup.array().min(2).max(2).of(Yup.number()),
-              // region: Yup.string().required(),
+          .min(1),
+        organizations: z
+          .array(
+            z.object({
+              id: z.number(),
+              logo: z.string(),
+              name: z.string(),
             })
           )
-          .required(t("text", { ns: "constructorFields" })),
-        repeat_bid: Yup.string()
-          .nullable()
-          .required(t("text", { ns: "constructorFields" })),
-        leave_bid: Yup.string()
-          .nullable()
-          .required(t("text", { ns: "constructorFields" })),
-        live_task: Yup.string()
-          .nullable()
-          .required(t("text", { ns: "constructorFields" })),
-        waiting_task: Yup.string().required(
-          t("text", { ns: "constructorFields" })
-        ),
+          .min(1),
+        locations: z
+          .array(
+            z.object({
+              id: z.number(),
+              logo: z.string(),
+              address: z.string(),
+            })
+          )
+          .min(1),
+        repeat_bid: z.date({
+          error: t("text", { ns: "constructorFields" }),
+        }),
+        leave_bid: z.date({
+          error: t("text", { ns: "constructorFields" }),
+        }),
+        live_task: z.date({
+          error: t("text", { ns: "constructorFields" }),
+        }),
+        waiting_task: z.string({
+          error: t("text", { ns: "constructorFields" }),
+        }),
       })
     ),
   });
@@ -323,11 +366,10 @@ export default function Supervisor({ loaderData }: Route.ComponentProps) {
       searchbar: "",
       managers: [],
     },
-    // @ts-expect-error error
-    resolver: yupResolver(
-      Yup.object({
-        searchbar: Yup.string().notRequired(),
-        supervisors: Yup.array().of(Yup.string()).min(1),
+    resolver: zodResolver(
+      z.object({
+        searchbar: z.string(),
+        managers: z.array(z.string()).min(1),
       })
     ),
   });
@@ -482,7 +524,7 @@ export default function Supervisor({ loaderData }: Route.ComponentProps) {
                   color: theme.vars.palette.Grey_2,
                 })}
               >
-                Статус
+                {t("statusText")}
               </Typography>
               <Box
                 sx={{
@@ -512,37 +554,6 @@ export default function Supervisor({ loaderData }: Route.ComponentProps) {
               </Box>
             </Box>
 
-            {/* <Controller
-              name="agent"
-              control={control}
-              render={({ field }) => (
-                <StyledSelect
-                  inputType="select"
-                  placeholder={t("fields.agentPlaceholder")}
-                  onImmediateChange={() => {}}
-                  validation="none"
-                  error={errors.agent?.message}
-                  options={[
-                    {
-                      value: "romashka",
-                      label: "ООО Ромашка",
-                      disabled: false,
-                    },
-                    {
-                      value: "vasilek",
-                      label: "ООО Василёк",
-                      disabled: false,
-                    },
-                    {
-                      value: "sunflower",
-                      label: "ООО Подсолнух",
-                      disabled: false,
-                    },
-                  ]}
-                  {...field}
-                />
-              )}
-            /> */}
             <Controller
               name="phone"
               control={control}
@@ -571,6 +582,84 @@ export default function Supervisor({ loaderData }: Route.ComponentProps) {
                 />
               )}
             />
+
+            {getValues("counterparty").length > 0 ? (
+              <Typography component="p" variant="Bold_14">
+                {t("counterparty")}
+              </Typography>
+            ) : null}
+
+            <Stack
+              sx={{
+                rowGap: "14px",
+              }}
+            >
+              {getValues("counterparty").map((counterparty) => (
+                <Box
+                  key={counterparty.id}
+                  sx={{
+                    display: "flex",
+                    columnGap: "12px",
+                    alignItems: "center",
+                  }}
+                >
+                  <Typography
+                    component="p"
+                    variant="Reg_14"
+                    sx={{
+                      flexGrow: "1",
+                    }}
+                  >
+                    {counterparty.name}
+                  </Typography>
+
+                  {getValues("counterparty").length > 1 ? (
+                    <IconButton
+                      onClick={() => {
+                        const currentList = getValues("counterparty");
+                        const updatedList = currentList.filter(
+                          (item) => item.name !== counterparty.name
+                        );
+                        setValue("counterparty", updatedList);
+                        trigger("counterparty");
+
+                        fetcher.submit(
+                          JSON.stringify({
+                            _action: "_deleteCounterparty",
+                            userId: loaderData.client.id,
+                            counterpartyId: counterparty.id,
+                          }),
+                          {
+                            method: "POST",
+                            encType: "application/json",
+                          }
+                        );
+                      }}
+                      sx={{
+                        width: "24px",
+                        height: "24px",
+                      }}
+                    >
+                      <DeleteIcon
+                        sx={{
+                          width: "12px",
+                          height: "12px",
+                        }}
+                      />
+                    </IconButton>
+                  ) : null}
+                </Box>
+              ))}
+            </Stack>
+
+            <Button
+              onClick={() => {
+                setOpenCounterparty(true);
+              }}
+              variant="outlined"
+            >
+              {t("counterpartySelector")}
+            </Button>
 
             {getValues("organizations").length > 0 ? (
               <Typography component="p" variant="Bold_14">
@@ -609,7 +698,7 @@ export default function Supervisor({ loaderData }: Route.ComponentProps) {
                     {organization.name}
                   </Typography>
 
-                  {watch("organizations").length > 1 ? (
+                  {getValues("organizations").length > 1 ? (
                     <IconButton
                       onClick={() => {
                         const currentList = getValues("organizations");
@@ -834,6 +923,10 @@ export default function Supervisor({ loaderData }: Route.ComponentProps) {
                   placeholder={t("fields.applicationFrequencyPlaceholder")}
                   error={errors.repeat_bid?.message}
                   {...field}
+                  value={field.value.toISOString()}
+                  onChange={(value) => {
+                    setValue("repeat_bid", new Date(value));
+                  }}
                 />
               )}
             />
@@ -845,6 +938,10 @@ export default function Supervisor({ loaderData }: Route.ComponentProps) {
                   placeholder={t("fields.applicationCountdownPlaceholder")}
                   error={errors.leave_bid?.message}
                   {...field}
+                  value={field.value.toISOString()}
+                  onChange={(value) => {
+                    setValue("leave_bid", new Date(value));
+                  }}
                 />
               )}
             />
@@ -856,6 +953,10 @@ export default function Supervisor({ loaderData }: Route.ComponentProps) {
                   placeholder={t("fields.taskCountdownCancelPlaceholder")}
                   error={errors.live_task?.message}
                   {...field}
+                  value={field.value.toISOString()}
+                  onChange={(value) => {
+                    setValue("live_task", new Date(value));
+                  }}
                 />
               )}
             />
@@ -1104,6 +1205,28 @@ export default function Supervisor({ loaderData }: Route.ComponentProps) {
           </Box>
         </form>
       </SwipeableDrawer>
+
+      <CheckboxSearchableDrawer
+        translation="counterparty"
+        open={openCounterparty}
+        onClose={() => {
+          setOpenCounterparty(false);
+        }}
+        onSubmit={(counterparties) => {
+          fetcher.submit(
+            JSON.stringify({
+              _action: "_setCounterparty",
+              userId: loaderData.client.id,
+              counterparties,
+            }),
+            {
+              method: "POST",
+              encType: "application/json",
+            }
+          );
+        }}
+        items={loaderData.counterparty}
+      />
     </>
   );
 }

@@ -119,6 +119,9 @@ import { postRetriesSmsMockResponse } from "~/requests/_personal/postRetriesSms/
 import { postSendCodeMockResponse } from "~/requests/_personal/postSendCode/postSendCode";
 import { getSignedDocumentMockResponse } from "~/requests/_personal/getSignedDocument/getSignedDocument";
 import { postCancelBidMockResponse } from "~/requests/_personal/postCancelBid/postCancelBid";
+import { getCounterpartyMockResponse } from "~/requests/_personal/_moderation/getCounterparty/getCounterparty";
+import { postSetCounterpartyMockResponse } from "~/requests/_personal/_moderation/postSetCounterparty/postSetCounterparty";
+import { postDeleteCounterpartyMockResponse } from "~/requests/_personal/_moderation/postDeleteCounterparty/postDeleteCounterparty";
 
 export const handlers = [
   getFormMockResponse,
@@ -233,10 +236,12 @@ export const handlers = [
   postUpdateReportMockResponse,
   postCreateBidFromOrderMockResponse,
   postAcceptTaskMockResponse,
-
   postSignedDocumentMockResponse,
   postRetriesSmsMockResponse,
   postSendCodeMockResponse,
   getSignedDocumentMockResponse,
   postCancelBidMockResponse,
+  getCounterpartyMockResponse,
+  postSetCounterpartyMockResponse,
+  postDeleteCounterpartyMockResponse,
 ];

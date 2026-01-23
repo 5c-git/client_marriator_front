@@ -124,6 +124,9 @@ interface ImportMetaEnv {
   readonly VITE_POST_SEND_CODE: string;
   readonly VITE_SIGNED_DOCUMENT: string;
   readonly VITE_POST_CANCEL_BID: string;
+  readonly VITE_GET_COUNTERPARTY: string;
+  readonly VITE_POST_SET_COUNTERPARTY: string;
+  readonly VITE_POST_DELETE_COUNTERPARTY: string;
   // more env variables...
 }
 

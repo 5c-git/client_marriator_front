@@ -16,6 +16,8 @@
     "cancelIntervalPlaceholder": "Интервал отмены поручения *",
     "durationIntervalPlaceholder": "Срок действия поручения *"
   },
+  "counterparty": "Контрагенты",
+  "counterpartySelector": "Выбрать контрагента",
   "project": "Проект",
   "projectSelector": "Выбрать проект",
   "location": "Места проведения",

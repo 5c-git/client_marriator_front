@@ -17,7 +17,10 @@
     "taskCountdownCancelPlaceholder": "Минимальное время отказа от задания *",
     "taskCountdownCancelDurationPlaceholder": "Minimum task abandonment time *"
   },
+  "counterparty": "Counterparty",
+  "counterpartySelector": "Choose counterparty",
   "project": "Project",
+  "statusText": "Status",
   "projectSelector": "Choose project",
   "location": "Locations",
   "locationSelector": "Choose locations",

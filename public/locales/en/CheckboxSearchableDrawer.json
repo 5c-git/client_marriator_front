@@ -8,5 +8,10 @@
     "header": "Invite supervisors",
     "searchbar": "Search supervisors",
     "submit": "Add selected"
+  },
+  "counterparty": {
+    "header": "Choose counterparty",
+    "searchbar": "Search",
+    "submit": "Select"
   }
 }

@@ -94,8 +94,6 @@ export function UsersMobileView(props: UsersMobileViewInterface) {
     onInit(props.users);
   }, [props.users]);
 
-  console.log(props.users);
-
   return (
     <>
       {props.users.length > 0 ? (
