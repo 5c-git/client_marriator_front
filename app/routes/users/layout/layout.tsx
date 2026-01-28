@@ -17,6 +17,29 @@ export async function clientLoader() {
 
   return {
     tabsMap: {
+      admin: [
+        <Tab
+          label={t("tabs.client", { ns: "moderationLayout" })}
+          to={withLocale("/users")}
+          value={withLocale("/users")}
+          component={Link}
+          key="clients"
+        />,
+        <Tab
+          label={t("tabs.manager", { ns: "moderationLayout" })}
+          to={withLocale("/users/managers")}
+          value={withLocale("/users/managers")}
+          component={Link}
+          key="managers"
+        />,
+        <Tab
+          label={t("tabs.supervisor", { ns: "moderationLayout" })}
+          to={withLocale("/users/supervisors")}
+          value={withLocale("/users/supervisors")}
+          component={Link}
+          key="supervisors"
+        />,
+      ],
       manager: [
         <Tab
           label={t("tabs.client", { ns: "moderationLayout" })}

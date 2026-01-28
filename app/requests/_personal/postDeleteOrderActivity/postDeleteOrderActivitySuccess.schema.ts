@@ -31,7 +31,18 @@ export const postDeleteOrderActivitySuccessSchema = z.object({
       phone: z.number(),
       email: z.string(),
       logo: z.string(),
-      roles: z.array(z.object({ id: z.number(), name: z.string() })),
+      roles: z.array(
+        z.object({
+          id: z.number(),
+          name: z.enum([
+            "admin",
+            "manager",
+            "supervisor",
+            "client",
+            "specialist",
+          ]),
+        }),
+      ),
     }),
     orderActivities: z.array(
       z.object({

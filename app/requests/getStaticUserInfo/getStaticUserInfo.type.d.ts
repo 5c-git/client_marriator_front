@@ -13,13 +13,7 @@ export interface GetStaticUserInfoSuccess {
       img: string;
       roles: {
         id: number;
-        name:
-          | "admin"
-          | "client"
-          | "manager"
-          | "recruiter"
-          | "specialist"
-          | "supervisor";
+        name: "admin" | "manager" | "supervisor" | "client" | "specialist";
       }[];
     };
   };

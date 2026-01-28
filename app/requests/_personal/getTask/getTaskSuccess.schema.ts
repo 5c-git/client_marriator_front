@@ -47,7 +47,13 @@ export const getTaskSuccessSchema = z.object({
       roles: z.array(
         z.object({
           id: z.number().gte(1).lte(6),
-          name: z.enum(["client", "manager", "specialist", "supervisor"]),
+          name: z.enum([
+            "admin",
+            "manager",
+            "supervisor",
+            "client",
+            "specialist",
+          ]),
         }),
       ),
     }),
@@ -62,7 +68,13 @@ export const getTaskSuccessSchema = z.object({
         roles: z.array(
           z.object({
             id: z.number().gte(1).lte(6),
-            name: z.enum(["client", "manager", "specialist", "supervisor"]),
+            name: z.enum([
+              "admin",
+              "manager",
+              "supervisor",
+              "client",
+              "specialist",
+            ]),
           }),
         ),
       }),
@@ -117,7 +129,13 @@ export const getTaskSuccessSchema = z.object({
         roles: z.array(
           z.object({
             id: z.number().gte(1).lte(6),
-            name: z.enum(["client", "manager", "specialist", "supervisor"]),
+            name: z.enum([
+              "admin",
+              "manager",
+              "supervisor",
+              "client",
+              "specialist",
+            ]),
           }),
         ),
       }),

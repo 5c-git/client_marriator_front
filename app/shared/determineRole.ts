@@ -1,13 +1,14 @@
 export const determineRole = (
   roles: {
     id: number;
-    name: "manager" | "supervisor" | "client" | "specialist";
+    name: "admin" | "manager" | "supervisor" | "client" | "specialist";
   }[],
 ) => {
-  let role: "manager" | "supervisor" | "client" | "specialist" = "specialist";
+  let role: "admin" | "manager" | "supervisor" | "client" | "specialist" =
+    "specialist";
 
   const rolePoints = {
-    // admin: 12,
+    admin: 12,
     manager: 10,
     supervisor: 8,
     client: 6,

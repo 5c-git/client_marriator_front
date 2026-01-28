@@ -43,7 +43,18 @@ export const postConvertTaskSuccessSchema = z.object({
       phone: z.number(),
       email: z.string(),
       logo: z.string(),
-      roles: z.array(z.object({ id: z.number(), name: z.string() })),
+      roles: z.array(
+        z.object({
+          id: z.number(),
+          name: z.enum([
+            "admin",
+            "manager",
+            "supervisor",
+            "client",
+            "specialist",
+          ]),
+        }),
+      ),
     }),
     acceptUser: z.union([
       z.null(),
@@ -105,11 +116,10 @@ export const postConvertTaskSuccessSchema = z.object({
             id: z.number().gte(1).lte(6),
             name: z.enum([
               "admin",
-              "client",
               "manager",
-              "recruiter",
-              "specialist",
               "supervisor",
+              "client",
+              "specialist",
             ]),
           }),
         ),

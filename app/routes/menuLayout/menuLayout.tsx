@@ -12,6 +12,20 @@ import { UsersIcon } from "~/shared/ui/Menu/icons/UsersIcon";
 import { useStore } from "~/store/store";
 
 const linksMap = {
+  admin: [
+    {
+      to: "/users",
+      notification: false,
+      disabled: false,
+      icon: <UsersIcon sx={{ width: "30px", height: "30px" }} />,
+    },
+    {
+      to: "/profile",
+      notification: false,
+      disabled: false,
+      icon: <ProfileIcon sx={{ width: "30px", height: "30px" }} />,
+    },
+  ],
   manager: [
     {
       to: "/",

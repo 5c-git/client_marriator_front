@@ -43,7 +43,18 @@ export const postRepeatTaskSuccessSchema = z.object({
       phone: z.number(),
       email: z.string(),
       logo: z.string(),
-      roles: z.array(z.object({ id: z.number(), name: z.string() })),
+      roles: z.array(
+        z.object({
+          id: z.number(),
+          name: z.enum([
+            "admin",
+            "manager",
+            "supervisor",
+            "client",
+            "specialist",
+          ]),
+        }),
+      ),
     }),
     acceptUser: z.union([
       z.null(),
@@ -52,7 +63,18 @@ export const postRepeatTaskSuccessSchema = z.object({
         phone: z.number(),
         email: z.string(),
         logo: z.string(),
-        roles: z.array(z.object({ id: z.number(), name: z.string() })),
+        roles: z.array(
+          z.object({
+            id: z.number(),
+            name: z.enum([
+              "admin",
+              "manager",
+              "supervisor",
+              "client",
+              "specialist",
+            ]),
+          }),
+        ),
       }),
     ]),
     orderActivities: z.array(
@@ -101,7 +123,18 @@ export const postRepeatTaskSuccessSchema = z.object({
         phone: z.number(),
         email: z.string(),
         logo: z.string(),
-        roles: z.array(z.object({ id: z.number(), name: z.string() })),
+        roles: z.array(
+          z.object({
+            id: z.number(),
+            name: z.enum([
+              "admin",
+              "manager",
+              "supervisor",
+              "client",
+              "specialist",
+            ]),
+          }),
+        ),
       }),
     ),
   }),

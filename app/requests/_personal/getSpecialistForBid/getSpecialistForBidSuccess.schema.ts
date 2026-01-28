@@ -10,7 +10,13 @@ export const getSpecialistForBidSuccessSchema = z.object({
       roles: z.array(
         z.object({
           id: z.number().gte(1).lte(6),
-          name: z.enum(["manager", "supervisor", "client", "specialist"]),
+          name: z.enum([
+            "admin",
+            "manager",
+            "supervisor",
+            "client",
+            "specialist",
+          ]),
         }),
       ),
       radius: z.string(),

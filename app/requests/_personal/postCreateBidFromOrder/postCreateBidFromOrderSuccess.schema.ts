@@ -13,13 +13,12 @@ export const postCreateBidFromOrderSuccessSchema = z.object({
           id: z.number().gte(1).lte(6),
           name: z.enum([
             "admin",
-            "client",
             "manager",
-            "recruiter",
-            "specialist",
             "supervisor",
+            "client",
+            "specialist",
           ]),
-        })
+        }),
       ),
     }),
     status: z.union([
@@ -78,9 +77,9 @@ export const postCreateBidFromOrderSuccessSchema = z.object({
               logo: z.string(),
               description: z.string(),
             }),
-          })
+          }),
         ),
-      })
+      }),
     ),
     order: z.union([
       z.null(),
@@ -98,13 +97,12 @@ export const postCreateBidFromOrderSuccessSchema = z.object({
               id: z.number().gte(1).lte(6),
               name: z.enum([
                 "admin",
-                "client",
                 "manager",
-                "recruiter",
-                "specialist",
                 "supervisor",
+                "client",
+                "specialist",
               ]),
-            })
+            }),
           ),
         }),
       }),
@@ -125,13 +123,12 @@ export const postCreateBidFromOrderSuccessSchema = z.object({
               id: z.number().gte(1).lte(6),
               name: z.enum([
                 "admin",
-                "client",
                 "manager",
-                "recruiter",
-                "specialist",
                 "supervisor",
+                "client",
+                "specialist",
               ]),
-            })
+            }),
           ),
         }),
       }),
@@ -147,13 +144,12 @@ export const postCreateBidFromOrderSuccessSchema = z.object({
             id: z.number().gte(1).lte(6),
             name: z.enum([
               "admin",
-              "client",
               "manager",
-              "recruiter",
-              "specialist",
               "supervisor",
+              "client",
+              "specialist",
             ]),
-          })
+          }),
         ),
         radius: z.string(),
         name: z.string(),
@@ -167,7 +163,7 @@ export const postCreateBidFromOrderSuccessSchema = z.object({
           z.literal(4),
           z.literal(5),
         ]),
-      })
+      }),
     ),
     count: z.number(),
     statistic: z.array(z.object({ accepted: z.number(), count: z.number() })),

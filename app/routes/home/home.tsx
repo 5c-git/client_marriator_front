@@ -9,7 +9,9 @@ export async function clientLoader() {
   if (accessToken) {
     const userRole = useStore.getState().userRole;
 
-    if (
+    if (userRole === "admin") {
+      throw redirect(withLocale("/users"));
+    } else if (
       userRole === "supervisor" ||
       userRole === "manager" ||
       userRole === "client"

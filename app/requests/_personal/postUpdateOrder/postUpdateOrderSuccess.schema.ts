@@ -40,11 +40,10 @@ export const postUpdateOrderSuccessSchema = z.object({
           id: z.number().gte(1).lte(6),
           name: z.enum([
             "admin",
-            "client",
             "manager",
-            "recruiter",
-            "specialist",
             "supervisor",
+            "client",
+            "specialist",
           ]),
         }),
       ),

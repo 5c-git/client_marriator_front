@@ -134,9 +134,9 @@ export const getJobsSuccessSchema = z.object({
             name: z.enum([
               "admin",
               "manager",
-              "specialist",
-              "client",
               "supervisor",
+              "client",
+              "specialist",
             ]),
           }),
         ),

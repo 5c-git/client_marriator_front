@@ -12,8 +12,14 @@ export const getBidSuccessSchema = z.strictObject({
       roles: z.array(
         z.strictObject({
           id: z.number().gte(1).lte(6),
-          name: z.enum(["manager", "supervisor", "client", "specialist"]),
-        })
+          name: z.enum([
+            "admin",
+            "manager",
+            "supervisor",
+            "client",
+            "specialist",
+          ]),
+        }),
       ),
     }),
     status: z.union([
@@ -76,9 +82,9 @@ export const getBidSuccessSchema = z.strictObject({
               logo: z.string(),
               description: z.string(),
             }),
-          })
+          }),
         ),
-      })
+      }),
     ),
     order: z.union([
       z.null(),
@@ -97,17 +103,16 @@ export const getBidSuccessSchema = z.strictObject({
               id: z.number().gte(1).lte(6),
               name: z.enum([
                 "admin",
-                "client",
                 "manager",
-                "recruiter",
-                "specialist",
                 "supervisor",
+                "client",
+                "specialist",
               ]),
-            })
+            }),
           ),
         }),
         statistic: z.array(
-          z.strictObject({ accepted: z.number(), count: z.number() })
+          z.strictObject({ accepted: z.number(), count: z.number() }),
         ),
       }),
     ]),
@@ -128,17 +133,16 @@ export const getBidSuccessSchema = z.strictObject({
               id: z.number().gte(1).lte(6),
               name: z.enum([
                 "admin",
-                "client",
                 "manager",
-                "recruiter",
-                "specialist",
                 "supervisor",
+                "client",
+                "specialist",
               ]),
-            })
+            }),
           ),
         }),
         statistic: z.array(
-          z.strictObject({ accepted: z.number(), count: z.number() })
+          z.strictObject({ accepted: z.number(), count: z.number() }),
         ),
       }),
     ]),
@@ -151,8 +155,14 @@ export const getBidSuccessSchema = z.strictObject({
         roles: z.array(
           z.strictObject({
             id: z.number().gte(1).lte(6),
-            name: z.enum(["manager", "supervisor", "client", "specialist"]),
-          })
+            name: z.enum([
+              "admin",
+              "manager",
+              "supervisor",
+              "client",
+              "specialist",
+            ]),
+          }),
         ),
         radius: z.string(),
         name: z.string(),
@@ -169,11 +179,11 @@ export const getBidSuccessSchema = z.strictObject({
           z.literal(7),
           z.literal(8),
         ]),
-      })
+      }),
     ),
     count: z.number(),
     statistic: z.array(
-      z.strictObject({ accepted: z.number(), count: z.number() })
+      z.strictObject({ accepted: z.number(), count: z.number() }),
     ),
     project: z.strictObject({
       id: z.number(),
@@ -186,7 +196,7 @@ export const getBidSuccessSchema = z.strictObject({
           name: z.string(),
           logo: z.string(),
           description: z.string(),
-        })
+        }),
       ),
     }),
   }),

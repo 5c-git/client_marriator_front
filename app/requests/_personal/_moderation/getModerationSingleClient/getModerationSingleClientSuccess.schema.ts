@@ -17,9 +17,9 @@ export const getModerationSingleClientSuccessSchema = z.object({
             id: z.number(),
             logo: z.string(),
             name: z.string(),
-          })
+          }),
         ),
-      })
+      }),
     ),
     place: z.array(
       z.object({
@@ -36,20 +36,19 @@ export const getModerationSingleClientSuccessSchema = z.object({
           logo: z.string(),
           name: z.string(),
         }),
-      })
+      }),
     ),
     roles: z.array(
       z.object({
         id: z.number().gte(1).lte(6),
         name: z.enum([
           "admin",
-          "client",
           "manager",
-          "recruiter",
-          "specialist",
           "supervisor",
+          "client",
+          "specialist",
         ]),
-      })
+      }),
     ),
     change_order: z.union([z.null(), z.string()]),
     cancel_order: z.union([z.null(), z.string()]),
@@ -72,15 +71,14 @@ export const getModerationSingleClientSuccessSchema = z.object({
             id: z.number().gte(1).lte(6),
             name: z.enum([
               "admin",
-              "client",
               "manager",
-              "recruiter",
-              "specialist",
               "supervisor",
+              "client",
+              "specialist",
             ]),
-          })
+          }),
         ),
-      })
+      }),
     ),
     manager: z.array(
       z.object({
@@ -93,15 +91,14 @@ export const getModerationSingleClientSuccessSchema = z.object({
             id: z.number().gte(1).lte(6),
             name: z.enum([
               "admin",
-              "client",
               "manager",
-              "recruiter",
-              "specialist",
               "supervisor",
+              "client",
+              "specialist",
             ]),
-          })
+          }),
         ),
-      })
+      }),
     ),
     count_wait_bid: z.number(),
     counterparty: z.array(
@@ -111,7 +108,7 @@ export const getModerationSingleClientSuccessSchema = z.object({
         legal_email: z.string(),
         name: z.string(),
         ogrn: z.string(),
-      })
+      }),
     ),
     time_answer_bid: z.number(),
     notification_start: z.number(),

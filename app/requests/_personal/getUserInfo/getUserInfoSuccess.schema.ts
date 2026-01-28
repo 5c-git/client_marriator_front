@@ -25,7 +25,7 @@ export const getUserInfoSuccessSchema = z.object({
       latitude: z.union([z.null(), z.string()]),
       longitude: z.union([z.null(), z.string()]),
       updateData: z.union([z.null(), z.string()]),
-      uuid: z.string(),
+      uuid: z.union([z.null(), z.string()]),
       register_hash: z.union([z.null(), z.string()]),
       change_order: z.union([z.null(), z.string()]),
       cancel_order: z.union([z.null(), z.string()]),
@@ -46,7 +46,13 @@ export const getUserInfoSuccessSchema = z.object({
       roles: z.array(
         z.object({
           id: z.number().gte(1).lte(6),
-          name: z.enum(["manager", "supervisor", "client", "specialist"]),
+          name: z.enum([
+            "admin",
+            "manager",
+            "supervisor",
+            "client",
+            "specialist",
+          ]),
         }),
       ),
     }),

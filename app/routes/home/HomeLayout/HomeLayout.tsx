@@ -20,6 +20,7 @@ export async function clientLoader() {
 
   return {
     tabsMap: {
+      admin: [],
       manager: [
         <Tab
           label={t("tabs.order", { ns: "HomeLayout" })}
@@ -42,14 +43,13 @@ export async function clientLoader() {
           component={Link}
           key={"bids"}
         />,
-        // <Tab
-        //   label={t("tabs.job", { ns: "HomeLayout" })}
-        //   to={withLocale("/jobs")}
-        //   value={withLocale("/jobs")}
-        //   component={Link}
-        //   key={"jobs"}
-        //   disabled
-        // />,
+        <Tab
+          label={t("tabs.job", { ns: "HomeLayout" })}
+          to={withLocale("/jobs")}
+          value={withLocale("/jobs")}
+          component={Link}
+          key={"jobs"}
+        />,
       ],
       supervisor: [
         <Tab
@@ -73,14 +73,13 @@ export async function clientLoader() {
           component={Link}
           key={"bids"}
         />,
-        // <Tab
-        //   label={t("tabs.job", { ns: "HomeLayout" })}
-        //   to={withLocale("/jobs")}
-        //   value={withLocale("/jobs")}
-        //   component={Link}
-        //   key={"jobs"}
-        //   disabled
-        // />,
+        <Tab
+          label={t("tabs.job", { ns: "HomeLayout" })}
+          to={withLocale("/jobs")}
+          value={withLocale("/jobs")}
+          component={Link}
+          key={"jobs"}
+        />,
       ],
       client: [
         <Tab

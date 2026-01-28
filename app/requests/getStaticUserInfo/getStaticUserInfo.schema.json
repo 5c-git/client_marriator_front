@@ -37,11 +37,10 @@
                   "name": {
                     "enum": [
                       "admin",
-                      "client",
                       "manager",
-                      "recruiter",
-                      "specialist",
-                      "supervisor"
+                      "supervisor",
+                      "client",
+                      "specialist"
                     ]
                   }
                 },
