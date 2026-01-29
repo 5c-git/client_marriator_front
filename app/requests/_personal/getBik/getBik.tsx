@@ -1,13 +1,8 @@
 import { http, delay, HttpResponse } from "msw";
-import Ajv from "ajv";
 
-import getBikSuccess from "./getBikSuccess.schema.json";
-import { GetBikSuccess } from "./gitBikSuccess.type";
+import { getBikSuccessSchema, GetBikSuccess } from "./getBikSuccess.schema";
+
 import { UnxpectedError } from "~/shared/unexpectedError/unexpectedError";
-
-const ajv = new Ajv();
-
-const validateSuccess = ajv.compile(getBikSuccess);
 
 export const getBikKeys = ["getBik"];
 
@@ -32,9 +27,12 @@ export const getBik = async (accessToken: string): Promise<GetBikSuccess> => {
       });
     }
 
-    if (validateSuccess(response)) {
-      data = response as unknown as GetBikSuccess;
+    const parsed = getBikSuccessSchema.safeParse(response);
+
+    if (parsed.success) {
+      data = parsed.data;
     } else {
+      console.log(parsed.error);
       throw new Response(`Данные запроса getBik не валидны схеме`);
     }
 
@@ -89,5 +87,5 @@ export const getBikMockResponse = http.get(
   async () => {
     await delay(2000);
     return HttpResponse.json(mockResponseSuccess);
-  }
+  },
 );

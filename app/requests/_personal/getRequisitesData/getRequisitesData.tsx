@@ -1,20 +1,16 @@
 import { http, delay, HttpResponse } from "msw";
-import Ajv from "ajv";
-import addFormats from "ajv-formats";
 
-import getRequisitesDataSuccess from "./getRequisitesDataSuccess.schema.json";
-import { GetRequisitesDataSuccess } from "./getRequisitesDataSuccess.type";
+import {
+  getRequisitesDataSuccessSchema,
+  GetRequisitesDataSuccess,
+} from "./getRequisitesDataSuccess.schema";
+
 import { UnxpectedError } from "~/shared/unexpectedError/unexpectedError";
-
-const ajv = new Ajv();
-addFormats(ajv);
-
-const validateSuccess = ajv.compile(getRequisitesDataSuccess);
 
 export const getRequisitesDataKeys = ["getRequisitesData"];
 
 export const getRequisitesData = async (
-  accessToken: string
+  accessToken: string,
 ): Promise<GetRequisitesDataSuccess> => {
   try {
     const url = new URL(import.meta.env.VITE_GET_REQUISITES_DATA);
@@ -36,9 +32,12 @@ export const getRequisitesData = async (
       });
     }
 
-    if (validateSuccess(response)) {
-      data = response as unknown as GetRequisitesDataSuccess;
+    const parsed = getRequisitesDataSuccessSchema.safeParse(response);
+
+    if (parsed.success) {
+      data = parsed.data;
     } else {
+      console.log(parsed.error);
       throw new Response(`Данные запроса getRequisitesData не валидны схеме`);
     }
 
@@ -79,5 +78,5 @@ export const getRequisitesDataMockResponse = http.get(
   async () => {
     await delay(2000);
     return HttpResponse.json(mockResponseSuccess);
-  }
+  },
 );

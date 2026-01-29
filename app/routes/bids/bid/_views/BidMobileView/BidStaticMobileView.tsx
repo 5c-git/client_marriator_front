@@ -93,7 +93,7 @@ export function BidStaticMobileView(props: BidMobileViewInterface) {
                   statusCodeMap[
                     props.entity.status as keyof typeof statusCodeMap
                   ].value
-                }`
+                }`,
               )}
             </Typography>
           </Box>
@@ -144,7 +144,7 @@ export function BidStaticMobileView(props: BidMobileViewInterface) {
               borderRadius: "3px",
             }}
             style={{
-              ...(props.entity.progress === 100 && {
+              ...(props.entity.progress >= 100 && {
                 background: "var(--mui-palette-WhatsApp)",
                 color: "var(--mui-palette-White)",
               }),
@@ -728,7 +728,7 @@ export function BidStaticMobileView(props: BidMobileViewInterface) {
                 })}
               >
                 {t(
-                  `role.${determineRole(props.entity.responsiblePerson.roles)}`
+                  `role.${determineRole(props.entity.responsiblePerson.roles)}`,
                 )}
               </Typography>
             </Box>

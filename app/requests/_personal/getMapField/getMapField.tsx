@@ -1,18 +1,15 @@
 import { http, delay, HttpResponse } from "msw";
-import Ajv from "ajv";
 
-import getMapFieldSuccess from "./getMapFieldSuccess.schema.json";
-import { GetMapFieldSuccess } from "./getMapFieldSuccess.type";
+import {
+  GetMapFieldSuccess,
+  getMapFieldSuccessSchema,
+} from "./getMapFieldSuccess.schema";
 import { UnxpectedError } from "~/shared/unexpectedError/unexpectedError";
-
-const ajv = new Ajv();
-
-const validateSuccess = ajv.compile(getMapFieldSuccess);
 
 export const getMapFieldKeys = ["getMapField"];
 
 export const getMapField = async (
-  accessToken: string
+  accessToken: string,
 ): Promise<GetMapFieldSuccess> => {
   try {
     const url = new URL(import.meta.env.VITE_GET_MAP_FIELD);
@@ -34,9 +31,12 @@ export const getMapField = async (
       });
     }
 
-    if (validateSuccess(response)) {
-      data = response as unknown as GetMapFieldSuccess;
+    const parsed = getMapFieldSuccessSchema.safeParse(response);
+
+    if (parsed.success) {
+      data = parsed.data;
     } else {
+      console.log(parsed.error);
       throw new Response(`Данные запроса getMapField не валидны схеме`);
     }
 
@@ -72,5 +72,5 @@ export const getMapFieldMockResponse = http.get(
   async () => {
     await delay(2000);
     return HttpResponse.json(mockResponseSuccess);
-  }
+  },
 );
