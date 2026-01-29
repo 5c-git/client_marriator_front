@@ -38,7 +38,7 @@ export async function clientLoader({ params }: Route.ClientLoaderArgs) {
       const missionData = await getJob(
         accessToken,
         params.specialistId,
-        params.bidId
+        params.bidId,
       );
 
       data = {
@@ -63,7 +63,7 @@ export async function clientLoader({ params }: Route.ClientLoaderArgs) {
               const places: { id: number; logo: string; text: string }[] = [];
 
               const actedDay = missionData.data.reports.find(
-                (item) => item.dayActivityId === day.id
+                (item) => item.dayActivityId === day.id,
               );
 
               day.places.forEach((place) => {
@@ -119,6 +119,10 @@ export async function clientLoader({ params }: Route.ClientLoaderArgs) {
           },
           specialist: {
             id: missionData.data.acceptingUser.id,
+            logo: missionData.data.acceptingUser.logo,
+            name: missionData.data.acceptingUser.name,
+            role: determineRole(missionData.data.acceptingUser.roles),
+            phone: missionData.data.acceptingUser.phone.toString(),
           },
           canCheckAll: (() => {
             const validReports: number[] = [];
@@ -210,14 +214,14 @@ export async function clientAction({
       await postAcceptSpecialist(
         accessToken,
         fields.bidId,
-        params.specialistId
+        params.specialistId,
       );
       throw redirect(currentURL.toString());
     } else if (_action === "end") {
       await postEndSpecialistJob(
         accessToken,
         fields.bidId,
-        params.specialistId
+        params.specialistId,
       );
       throw redirect(currentURL.toString());
     } else if (_action === "forPay") {
@@ -273,7 +277,7 @@ export default function SpecialistRequest({
                       {
                         method: "POST",
                         encType: "application/json",
-                      }
+                      },
                     );
                   }}
                 >
@@ -328,7 +332,7 @@ export default function SpecialistRequest({
                     {
                       method: "POST",
                       encType: "application/json",
-                    }
+                    },
                   );
                 }}
               >
@@ -379,7 +383,7 @@ export default function SpecialistRequest({
                           {
                             method: "POST",
                             encType: "application/json",
-                          }
+                          },
                         );
                       }}
                     >
@@ -432,7 +436,7 @@ export default function SpecialistRequest({
                     {
                       method: "POST",
                       encType: "application/json",
-                    }
+                    },
                   );
                 }}
               >

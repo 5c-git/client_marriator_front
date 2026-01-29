@@ -38,11 +38,15 @@ export type SpecialistMobileViewInterface = {
       id: number;
       logo: string;
       name: string;
-      role: string;
+      role: "admin" | "manager" | "supervisor" | "client" | "specialist";
       phone: string;
     };
     specialist: {
       id: number;
+      logo: string;
+      name: string;
+      role: "admin" | "manager" | "supervisor" | "client" | "specialist";
+      phone: string;
     };
     canCheckAll: boolean;
     oneDayJob: boolean;

@@ -4,7 +4,7 @@ import { Fragment } from "react";
 import { SpecialistMobileViewInterface } from "./SpecialistMobileViewInterface";
 
 import { useTranslation } from "react-i18next";
-import { withLocale } from "~/shared/withLocale";
+// import { withLocale } from "~/shared/withLocale";
 
 import { format, getDay } from "date-fns";
 
@@ -13,18 +13,20 @@ import { statusCodeMap } from "~/shared/specialistStatus";
 import { TopNavigation } from "~/shared/ui/TopNavigation/TopNavigation";
 
 import Box from "@mui/material/Box";
-import { Avatar, Divider, Typography } from "@mui/material";
+import { Avatar, Divider, Typography, IconButton } from "@mui/material";
 import { StyledCheckbox } from "~/shared/ui/StyledCheckbox/StyledCheckbox";
+
+import { PhoneIcon } from "~/shared/icons/PhoneIcon";
 
 export function SpecialistMobileView(
   props: SpecialistMobileViewInterface & {
     dayActionSlot: (
-      day: SpecialistMobileViewInterface["entity"]["days"][0]
+      day: SpecialistMobileViewInterface["entity"]["days"][0],
     ) => React.ReactNode;
     actionsSlot: (
-      entity: SpecialistMobileViewInterface["entity"]
+      entity: SpecialistMobileViewInterface["entity"],
     ) => React.ReactNode;
-  }
+  },
 ) {
   const navigate = useNavigate();
   const { t } = useTranslation("SpecialistMobileView");
@@ -36,7 +38,9 @@ export function SpecialistMobileView(
           bold: false,
         }}
         backAction={() => {
-          navigate(withLocale(`/bids/${props.entity.id}/specialists`), {
+          // withLocale(`/bids/${props.entity.id}/specialists`)
+          // @ts-expect-error incomplete types in react router
+          navigate(-1, {
             viewTransition: true,
           });
         }}
@@ -105,7 +109,7 @@ export function SpecialistMobileView(
                   statusCodeMap[
                     props.entity.status as keyof typeof statusCodeMap
                   ].value
-                }`
+                }`,
               )}
             </Typography>
           </Box>
@@ -392,6 +396,104 @@ export function SpecialistMobileView(
             validation="none"
             disabled
           />
+        </Box>
+
+        <Box
+          sx={{
+            display: "grid",
+            rowGap: "4px",
+          }}
+        >
+          <Typography
+            component="p"
+            variant="Reg_12"
+            sx={(theme) => ({
+              color: theme.vars.palette["Grey_2"],
+            })}
+          >
+            {t("executor")}
+          </Typography>
+          <Box
+            sx={{
+              display: "flex",
+              columnGap: "8px",
+              alignItems: "center",
+            }}
+          >
+            <Avatar
+              src={`${import.meta.env.VITE_ASSET_PATH}${props.entity.specialist.logo}`}
+              sx={{ width: "30px", height: "30px" }}
+            />
+            <Box>
+              {" "}
+              <Typography
+                component="p"
+                variant="Reg_14"
+                sx={(theme) => ({
+                  color: theme.vars.palette["Black"],
+                })}
+              >
+                {props.entity.specialist.name}
+              </Typography>
+              <Typography
+                component="p"
+                variant="Reg_12"
+                sx={(theme) => ({
+                  color: theme.vars.palette["Grey_2"],
+                })}
+              >
+                {t(`role.${props.entity.specialist.role}`)}
+              </Typography>
+            </Box>
+          </Box>
+        </Box>
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+          }}
+        >
+          <Box>
+            <Typography
+              component="p"
+              variant="Reg_12"
+              sx={(theme) => ({
+                color: theme.vars.palette["Grey_2"],
+              })}
+            >
+              {t("executorPhone")}
+            </Typography>
+            <Typography
+              component="a"
+              variant="Reg_14"
+              href={`tel:${props.entity.specialist.phone}`}
+              sx={(theme) => ({
+                color: theme.vars.palette["Black"],
+                textDecoration: "none",
+              })}
+            >
+              {props.entity.specialist.phone}
+            </Typography>
+          </Box>
+          <IconButton
+            component="a"
+            href={`tel:+${props.entity.specialist.phone}`}
+            sx={(theme) => ({
+              display: "flex",
+              padding: "7px",
+              color: theme.vars.palette["Corp_1"],
+              backgroundColor: theme.vars.palette["Grey_4"],
+              borderRadius: "5px",
+            })}
+          >
+            <PhoneIcon
+              sx={{
+                width: "16px",
+                height: "16px",
+              }}
+            />
+          </IconButton>
         </Box>
       </Box>
 

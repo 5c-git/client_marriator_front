@@ -17,10 +17,9 @@
   },
   "role": {
     "admin": "Администратор",
-    "supervisor": "Супервайзер",
     "manager": "Менеджер",
+    "supervisor": "Супервайзер",
     "client": "Клиент",
-    "recruiter": "Рекрутёр",
     "specialist": "Специалист"
   },
   "dayMap": {
@@ -43,5 +42,7 @@
   "timeStartText": "Время начала",
   "timeEndText": "Время окончания",
   "route": "Маршрут дня",
-  "photoCheckbox": "Фотоотчёт"
+  "photoCheckbox": "Фотоотчёт",
+  "executor": "Исполнитель",
+  "executorPhone": "Телефон исполнителя"
 }

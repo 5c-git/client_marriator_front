@@ -80,6 +80,7 @@ export default function Jobs({ loaderData }: Route.ComponentProps) {
   const navigation = useNavigation();
 
   const showMap = useOutletContext<boolean>();
+  const userRole = useStore().userRole;
 
   return (
     <>
@@ -94,7 +95,13 @@ export default function Jobs({ loaderData }: Route.ComponentProps) {
             entityListView={(entity) => (
               <EntityCard
                 key={entity.id}
-                to={withLocale(`/jobs/${entity.id}/${entity.userId}`)}
+                to={
+                  userRole === "specialist"
+                    ? withLocale(`/jobs/${entity.id}/${entity.userId}`)
+                    : withLocale(
+                        `/bids/${entity.id}/specialists/${entity.userId}`,
+                      )
+                }
                 status={
                   entity.status === 1 || entity.status === 4
                     ? t("bidStatus")

@@ -43,5 +43,7 @@
   "timeStartText": "Start time",
   "timeEndText": "End time",
   "route": "Route",
-  "photoCheckbox": "Need photos"
+  "photoCheckbox": "Need photos",
+  "executor": "Executor",
+  "executorPhone": "Executor's phone"
 }

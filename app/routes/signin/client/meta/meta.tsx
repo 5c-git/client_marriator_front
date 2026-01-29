@@ -419,17 +419,16 @@ export default function Meta({ loaderData }: Route.ComponentProps) {
             <Button
               type="button"
               onClick={handleSubmit(() => {
-                console.log("here");
-                // fetcher.submit(
-                //   JSON.stringify({
-                //     _action: "finishRegister",
-                //     name: getValues("fio"),
-                //   }),
-                //   {
-                //     method: "POST",
-                //     encType: "application/json",
-                //   },
-                // );
+                fetcher.submit(
+                  JSON.stringify({
+                    _action: "finishRegister",
+                    name: getValues("fio"),
+                  }),
+                  {
+                    method: "POST",
+                    encType: "application/json",
+                  },
+                );
               })}
               variant="contained"
               disabled={!isValid}
