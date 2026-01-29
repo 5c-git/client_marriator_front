@@ -122,6 +122,7 @@ import { postCancelBidMockResponse } from "~/requests/_personal/postCancelBid/po
 import { getCounterpartyMockResponse } from "~/requests/_personal/_moderation/getCounterparty/getCounterparty";
 import { postSetCounterpartyMockResponse } from "~/requests/_personal/_moderation/postSetCounterparty/postSetCounterparty";
 import { postDeleteCounterpartyMockResponse } from "~/requests/_personal/_moderation/postDeleteCounterparty/postDeleteCounterparty";
+import { getDataMockResponse } from "~/requests/_personal/getData/getData";
 
 export const handlers = [
   getFormMockResponse,
@@ -244,4 +245,5 @@ export const handlers = [
   getCounterpartyMockResponse,
   postSetCounterpartyMockResponse,
   postDeleteCounterpartyMockResponse,
+  getDataMockResponse,
 ];

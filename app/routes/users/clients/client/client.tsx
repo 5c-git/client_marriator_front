@@ -1,4 +1,4 @@
-import { useState, ComponentPropsWithoutRef } from "react";
+import { useState, ComponentPropsWithoutRef, useEffect } from "react";
 import {
   useNavigate,
   useNavigation,
@@ -51,7 +51,7 @@ import { postSetCounterparty } from "~/requests/_personal/_moderation/postSetCou
 import { postDeleteCounterparty } from "~/requests/_personal/_moderation/postDeleteCounterparty/postDeleteCounterparty";
 
 const getRadioButtons = (
-  list: { id: number; name: string; logo: string }[]
+  list: { id: number; name: string; logo: string }[],
 ) => {
   const options: {
     id: number;
@@ -101,7 +101,7 @@ export async function clientLoader({ params }: Route.ClientLoaderArgs) {
   if (accessToken) {
     const data = await getModerationSingleClient(
       accessToken,
-      Number(params.user)
+      Number(params.user),
     );
 
     const counterpartyData = await getCounterparty(accessToken);
@@ -190,7 +190,7 @@ export async function clientAction({ request }: Route.ClientActionArgs) {
         accessToken,
         fields.userId,
         fields.confirm,
-        fields
+        fields,
       );
       throw redirect(withLocale("/users"));
     } else if (_action === "_saveLogo") {
@@ -203,7 +203,7 @@ export async function clientAction({ request }: Route.ClientActionArgs) {
       await postDelPlaceModeration(
         accessToken,
         fields.userId,
-        fields.projectId
+        fields.projectId,
       );
       return;
     } else if (_action === "_decline") {
@@ -213,13 +213,13 @@ export async function clientAction({ request }: Route.ClientActionArgs) {
       await postSetCounterparty(
         accessToken,
         fields.userId,
-        fields.counterparties
+        fields.counterparties,
       );
     } else if (_action === "_deleteCounterparty") {
       await postDeleteCounterparty(
         accessToken,
         fields.userId,
-        fields.counterpartyId
+        fields.counterpartyId,
       );
     }
   } else {
@@ -243,11 +243,12 @@ export default function Client({ loaderData }: Route.ComponentProps) {
     getValues,
     setValue,
     trigger,
+
     formState: { errors },
+    reset,
   } = useForm({
     defaultValues: {
       logo: loaderData.client.logo ? loaderData.client.logo : "",
-
       phone: loaderData.client.phone,
       name: loaderData.client.name,
       counterparty: loaderData.client.counterparty,
@@ -267,7 +268,7 @@ export default function Client({ loaderData }: Route.ComponentProps) {
             z.object({
               id: z.number(),
               name: z.string(),
-            })
+            }),
           )
           .min(1),
         organizations: z
@@ -276,7 +277,7 @@ export default function Client({ loaderData }: Route.ComponentProps) {
               id: z.number(),
               logo: z.string(),
               name: z.string(),
-            })
+            }),
           )
           .min(1),
         locations: z
@@ -285,7 +286,7 @@ export default function Client({ loaderData }: Route.ComponentProps) {
               id: z.number(),
               logo: z.string(),
               address: z.string(),
-            })
+            }),
           )
           .min(1),
         change_order: z.date({
@@ -297,9 +298,23 @@ export default function Client({ loaderData }: Route.ComponentProps) {
         live_order: z.date({
           error: t("text", { ns: "constructorFields" }),
         }),
-      })
+      }),
     ),
   });
+
+  useEffect(() => {
+    reset({
+      logo: loaderData.client.logo ? loaderData.client.logo : "",
+      phone: loaderData.client.phone,
+      name: loaderData.client.name,
+      counterparty: loaderData.client.counterparty,
+      organizations: loaderData.client.organizations,
+      locations: loaderData.client.locations,
+      change_order: new Date(`2000-01-01T${loaderData.client.change_order}`),
+      cancel_order: new Date(`2000-01-01T${loaderData.client.cancel_order}`),
+      live_order: new Date(`2000-01-01T${loaderData.client.live_order}`),
+    });
+  }, [loaderData, reset]);
 
   return (
     <>
@@ -370,12 +385,12 @@ export default function Client({ loaderData }: Route.ComponentProps) {
                 {
                   method: "POST",
                   encType: "application/json",
-                }
+                },
               );
             },
             (errors) => {
               console.log(errors);
-            }
+            },
           )}
         >
           <Box
@@ -480,7 +495,7 @@ export default function Client({ loaderData }: Route.ComponentProps) {
                 ></Box>
                 <Typography component="p" variant="Reg_14">
                   {t(
-                    `status.${statusCodeMap[loaderData.client.status as keyof typeof statusCodeMap].value}`
+                    `status.${statusCodeMap[loaderData.client.status as keyof typeof statusCodeMap].value}`,
                   )}
                 </Typography>
               </Box>
@@ -550,7 +565,7 @@ export default function Client({ loaderData }: Route.ComponentProps) {
                       onClick={() => {
                         const currentList = getValues("counterparty");
                         const updatedList = currentList.filter(
-                          (item) => item.name !== counterparty.name
+                          (item) => item.name !== counterparty.name,
                         );
                         setValue("counterparty", updatedList);
                         trigger("counterparty");
@@ -564,7 +579,7 @@ export default function Client({ loaderData }: Route.ComponentProps) {
                           {
                             method: "POST",
                             encType: "application/json",
-                          }
+                          },
                         );
                       }}
                       sx={{
@@ -635,7 +650,7 @@ export default function Client({ loaderData }: Route.ComponentProps) {
                       onClick={() => {
                         const currentList = getValues("organizations");
                         const updatedList = currentList.filter(
-                          (item) => item.name !== organization.name
+                          (item) => item.name !== organization.name,
                         );
                         setValue("organizations", updatedList);
                         trigger("organizations");
@@ -649,7 +664,7 @@ export default function Client({ loaderData }: Route.ComponentProps) {
                           {
                             method: "POST",
                             encType: "application/json",
-                          }
+                          },
                         );
                       }}
                       sx={{
@@ -723,7 +738,7 @@ export default function Client({ loaderData }: Route.ComponentProps) {
                     onClick={() => {
                       const currentList = getValues("locations");
                       const updatedList = currentList.filter(
-                        (item) => item.address !== location.address
+                        (item) => item.address !== location.address,
                       );
                       setValue("locations", updatedList);
                       trigger("locations");
@@ -737,7 +752,7 @@ export default function Client({ loaderData }: Route.ComponentProps) {
                         {
                           method: "POST",
                           encType: "application/json",
-                        }
+                        },
                       );
                     }}
                     sx={{
@@ -895,7 +910,7 @@ export default function Client({ loaderData }: Route.ComponentProps) {
 
                   const selectedOrganization =
                     loaderData.client.organizations.find(
-                      (item) => item.logo === evt.target.value
+                      (item) => item.logo === evt.target.value,
                     );
 
                   if (selectedOrganization) {
@@ -908,7 +923,7 @@ export default function Client({ loaderData }: Route.ComponentProps) {
                       {
                         method: "POST",
                         encType: "application/json",
-                      }
+                      },
                     );
                   }
                 }}
@@ -934,7 +949,7 @@ export default function Client({ loaderData }: Route.ComponentProps) {
             {
               method: "POST",
               encType: "application/json",
-            }
+            },
           );
         }}
         items={loaderData.counterparty}

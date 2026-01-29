@@ -140,7 +140,7 @@ export default function Bid({ loaderData }: Route.ComponentProps) {
         selfEmployed: bidMobileData.selfEmployed,
         progress: (() => {
           const acceptedSpecialists = bidMobileData.acceptingUsers.filter(
-            (specialist) => specialist.status === 2
+            (specialist) => specialist.status === 5,
           );
           return (acceptedSpecialists.length / bidMobileData.count) * 100;
         })(),
@@ -150,7 +150,7 @@ export default function Bid({ loaderData }: Route.ComponentProps) {
           bidMobileData.statistic.forEach((item) => {
             counters.push({
               label: t(
-                `status.${statusCodeMap[item.accepted as keyof typeof statusCodeMap].value}`
+                `status.${statusCodeMap[item.accepted as keyof typeof statusCodeMap].value}`,
               ),
               count: item.count,
               color:
@@ -254,7 +254,7 @@ export default function Bid({ loaderData }: Route.ComponentProps) {
                   {
                     method: "POST",
                     encType: "application/json",
-                  }
+                  },
                 );
               }}
               cancelAction={() => {
@@ -265,7 +265,7 @@ export default function Bid({ loaderData }: Route.ComponentProps) {
                   {
                     method: "POST",
                     encType: "application/json",
-                  }
+                  },
                 );
               }}
             />

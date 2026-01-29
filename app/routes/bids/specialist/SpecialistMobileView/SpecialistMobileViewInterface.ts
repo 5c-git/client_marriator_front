@@ -2,7 +2,7 @@ export type SpecialistMobileViewInterface = {
   entity: {
     id: number;
     logo: string;
-    status: 1 | 2 | 3 | 4 | 5 | 6;
+    status: 1 | 2 | 3 | 4 | 5 | 6 | 7;
     place: {
       id: number;
       name: string;

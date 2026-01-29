@@ -24,7 +24,7 @@ export type BidMobileViewInterface = {
       logo: string;
       roles: {
         id: number;
-        name: "manager" | "supervisor" | "client" | "specialist";
+        name: "admin" | "manager" | "supervisor" | "client" | "specialist";
       }[];
     };
     taskId: number | null;

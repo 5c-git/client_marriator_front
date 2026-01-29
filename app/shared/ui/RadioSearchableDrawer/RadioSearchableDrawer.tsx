@@ -1,4 +1,9 @@
-import { ComponentPropsWithoutRef, useState, useRef } from "react";
+import {
+  ComponentPropsWithoutRef,
+  useState,
+  useEffect,
+  useEffectEvent,
+} from "react";
 
 import { useTranslation } from "react-i18next";
 
@@ -21,16 +26,9 @@ type RadioDrawerProps = {
 };
 
 export function RadioSearchableDrawer(props: RadioDrawerProps) {
-  const setup = useRef<boolean>(null);
-
   const { t } = useTranslation("RadioSearchableDrawer");
 
   const [selectedItems, setSelectedItems] = useState<typeof props.items>([]);
-
-  if (setup.current === null) {
-    setSelectedItems(props.items);
-    setup.current = true;
-  }
 
   const {
     control,
@@ -50,9 +48,16 @@ export function RadioSearchableDrawer(props: RadioDrawerProps) {
       z.object({
         searchbar: z.string(),
         selectedItem: z.string({ error: t(`${props.translation}.error`) }),
-      })
+      }),
     ),
   });
+
+  const onInit = useEffectEvent((items: typeof props.items) => {
+    setSelectedItems(items);
+  });
+  useEffect(() => {
+    onInit(props.items);
+  }, [props.items]);
 
   return (
     <SwipeableDrawer
@@ -108,7 +113,7 @@ export function RadioSearchableDrawer(props: RadioDrawerProps) {
                 onChange={(evt) => {
                   const currentFieldValue = new RegExp(
                     `${evt.target.value}`,
-                    "i"
+                    "i",
                   );
 
                   let matchingItems: typeof props.items = [];
@@ -116,7 +121,7 @@ export function RadioSearchableDrawer(props: RadioDrawerProps) {
                   if (evt.target.value !== "") {
                     matchingItems = [
                       ...props.items.filter((item) =>
-                        currentFieldValue.test(item.label)
+                        currentFieldValue.test(item.label),
                       ),
                     ];
                   } else {

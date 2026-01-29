@@ -4,8 +4,7 @@ import type { SpecialistsMobileViewInterface } from "./SpecialistsMobileViewInte
 
 import { useTranslation } from "react-i18next";
 import { withLocale } from "~/shared/withLocale";
-// import { eachDayOfInterval } from "date-fns";
-import { statusCodeMap } from "./statusMap";
+import { statusCodeMap } from "~/shared/specialistStatus";
 
 import Box from "@mui/material/Box";
 import { IconButton } from "@mui/material";

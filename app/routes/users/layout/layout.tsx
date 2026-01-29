@@ -48,13 +48,13 @@ export async function clientLoader() {
           component={Link}
           key="clients"
         />,
-        <Tab
-          label={t("tabs.manager", { ns: "moderationLayout" })}
-          to={withLocale("/users/managers")}
-          value={withLocale("/users/managers")}
-          component={Link}
-          key="managers"
-        />,
+        // <Tab
+        //   label={t("tabs.manager", { ns: "moderationLayout" })}
+        //   to={withLocale("/users/managers")}
+        //   value={withLocale("/users/managers")}
+        //   component={Link}
+        //   key="managers"
+        // />,
         <Tab
           label={t("tabs.supervisor", { ns: "moderationLayout" })}
           to={withLocale("/users/supervisors")}

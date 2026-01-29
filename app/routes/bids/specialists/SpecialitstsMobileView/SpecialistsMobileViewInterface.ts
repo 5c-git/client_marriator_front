@@ -13,14 +13,14 @@ export type SpecialistsMobileViewInterface = {
     logo: string;
     roles: {
       id: number;
-      name: "manager" | "supervisor" | "client" | "specialist";
+      name: "admin" | "manager" | "supervisor" | "client" | "specialist";
     }[];
     radius: string;
     name: string;
     age: string;
     country: string;
     viewActivities: string[];
-    status: 4 | 1 | 2 | 3 | 5 | 6 | 7 | 8;
+    status: 4 | 1 | 2 | 3 | 5 | 6 | 7;
   }[];
   radiuses: {
     value: string;

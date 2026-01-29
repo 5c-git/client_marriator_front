@@ -12,7 +12,8 @@
     "declined": "Отклонена",
     "consideration": "На рассмотрении",
     "work": "В работе",
-    "canceled": "Отменена"
+    "canceled": "Отменена",
+    "archive": "Архив"
   },
   "role": {
     "admin": "Администратор",

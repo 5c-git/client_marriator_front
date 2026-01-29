@@ -2,8 +2,8 @@ import { useState, useEffect } from "react";
 import { useFetcher, useNavigation, Link, redirect } from "react-router";
 import type { Route } from "./+types/meta";
 
-import * as Yup from "yup";
-import { yupResolver } from "@hookform/resolvers/yup";
+import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm, Controller } from "react-hook-form";
 
 import { useTranslation } from "react-i18next";
@@ -24,8 +24,9 @@ import { DeleteIcon } from "../../../../shared/icons/DeleteIcon";
 
 import { useStore } from "~/store/store";
 
+import { getData } from "~/requests/_personal/getData/getData";
 import { getBrand } from "~/requests/getBrand/getBrand";
-import { getPlace } from "~/requests/getPlace/getPlace";
+// import { getPlace } from "~/requests/getPlace/getPlace";
 import { postDelPlace } from "~/requests/postDelPlace/postDelPlace";
 import { postSetBrandImg } from "~/requests/postSetBrandImg/postSetBrandImg";
 import { postSetUserData } from "~/requests/postSetUserData/postSetUserData";
@@ -35,8 +36,9 @@ export async function clientLoader() {
   const accessToken = useStore.getState().accessToken;
 
   if (accessToken) {
+    const userData = await getData(accessToken);
     const brandsData = await getBrand(accessToken);
-    const locationsData = await getPlace(accessToken);
+    // const locationsData = await getPlace(accessToken);
 
     const brands: {
       value: string;
@@ -58,21 +60,23 @@ export async function clientLoader() {
         label: item.name,
         disabled: false,
         image: `${import.meta.env.VITE_ASSET_PATH}${item.logo}`,
-      })
+      }),
     );
 
-    locationsData.data.forEach((item) =>
+    userData.data.place.forEach((place) =>
       locations.push({
-        id: item.id,
-        name: item.name,
-        icon: item.logo,
-        coordinates: [item.latitude, item.longitude],
-        address: item.address_kladr,
+        id: place.id,
+        name: place.name,
+        icon: place.logo,
+        coordinates: [place.latitude, place.longitude],
+        address: place.address_kladr,
         // region: "Центральный федеральный округ",
-      })
+      }),
     );
 
     return {
+      userName: userData.data.name ? userData.data.name : "",
+      userLogo: userData.data.logo ? userData.data.logo : "",
       brands,
       locations,
     };
@@ -122,28 +126,31 @@ export default function Meta({ loaderData }: Route.ComponentProps) {
     reset,
   } = useForm({
     defaultValues: {
-      logo: "",
-      fio: "",
+      logo: loaderData.userLogo,
+      fio: loaderData.userName,
       locations: loaderData.locations,
     },
-    resolver: yupResolver(
-      Yup.object({
-        logo: Yup.string().required(t("form.logo")),
-        fio: Yup.string().required(t("form.fio")),
-        locations: Yup.array()
-          .min(1)
-          .of(
-            Yup.object().shape({
-              id: Yup.number().required(),
-              name: Yup.string().required(),
-              icon: Yup.string().required(),
-              coordinates: Yup.array().min(2).max(2).of(Yup.string()),
-              address: Yup.string().required(),
-              // region: Yup.string().required(),
-            })
+    resolver: zodResolver(
+      z.object({
+        logo: z.string({ error: t("form.logo") }),
+        fio: z
+          .string()
+          .trim()
+          .min(1, {
+            error: t("form.fio"),
+          }),
+        locations: z
+          .array(
+            z.object({
+              id: z.number(),
+              name: z.string(),
+              icon: z.string(),
+              coordinates: z.array(z.string()).min(2).max(2),
+              address: z.string(),
+            }),
           )
-          .required(t("form.locations")),
-      })
+          .min(1, { error: t("form.locations") }),
+      }),
     ),
     mode: "onChange",
   });
@@ -151,16 +158,16 @@ export default function Meta({ loaderData }: Route.ComponentProps) {
   useEffect(() => {
     setTimeout(() => {
       reset({
-        logo: getValues("logo"),
+        logo: loaderData.userLogo,
         fio: getValues("fio"),
         locations: loaderData.locations,
       });
     });
   }, [loaderData, reset, getValues]);
 
-  const isLogoPresent = loaderData.brands.find(
-    (item) => item.value === getValues().logo
-  )?.image;
+  // const isLogoPresent = loaderData.brands.find(
+  //   (item) => item.value === getValues().logo,
+  // )?.image;
 
   return (
     <>
@@ -188,7 +195,7 @@ export default function Meta({ loaderData }: Route.ComponentProps) {
               {
                 method: "POST",
                 encType: "application/json",
-              }
+              },
             );
           })}
           style={{
@@ -200,7 +207,8 @@ export default function Meta({ loaderData }: Route.ComponentProps) {
           }}
         >
           <Avatar
-            src={isLogoPresent ? isLogoPresent : undefined}
+            // src={isLogoPresent ? isLogoPresent : undefined}
+            src={`${import.meta.env.VITE_ASSET_PATH}${getValues("logo")}`}
             sx={(theme) => ({
               width: "88px",
               height: "88px",
@@ -334,7 +342,7 @@ export default function Meta({ loaderData }: Route.ComponentProps) {
                   onClick={() => {
                     const currentList = getValues("locations");
                     const updatedList = currentList.filter(
-                      (item) => item.id !== location.id
+                      (item) => item.id !== location.id,
                     );
                     setValue("locations", updatedList);
                     trigger("locations");
@@ -347,7 +355,7 @@ export default function Meta({ loaderData }: Route.ComponentProps) {
                       {
                         method: "POST",
                         encType: "application/json",
-                      }
+                      },
                     );
                   }}
                   sx={{
@@ -411,16 +419,17 @@ export default function Meta({ loaderData }: Route.ComponentProps) {
             <Button
               type="button"
               onClick={handleSubmit(() => {
-                fetcher.submit(
-                  JSON.stringify({
-                    _action: "finishRegister",
-                    name: getValues("fio"),
-                  }),
-                  {
-                    method: "POST",
-                    encType: "application/json",
-                  }
-                );
+                console.log("here");
+                // fetcher.submit(
+                //   JSON.stringify({
+                //     _action: "finishRegister",
+                //     name: getValues("fio"),
+                //   }),
+                //   {
+                //     method: "POST",
+                //     encType: "application/json",
+                //   },
+                // );
               })}
               variant="contained"
               disabled={!isValid}
@@ -461,7 +470,7 @@ export default function Meta({ loaderData }: Route.ComponentProps) {
                     {
                       method: "POST",
                       encType: "application/json",
-                    }
+                    },
                   );
                 }}
                 inputType="radio"

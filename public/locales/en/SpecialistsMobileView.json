@@ -3,11 +3,10 @@
     "1": "Not accepted",
     "2": "Accepted",
     "3": "Declined",
-    "4": "In consideration",
+    "4": "Consideration",
     "5": "In work",
-    "6": "On executors review",
-    "7": "Executors waiting response",
-    "8": "Executors have response"
+    "6": "Cancelled",
+    "7": "Archive"
   },
   "searchbarPlaceholder": "Search",
   "selectAllPlaceholder": "Select all",
