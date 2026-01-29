@@ -6,6 +6,7 @@ export const statusCodeMap = {
   5: { value: "work", color: "var(--mui-palette-Green)" },
   6: { value: "canceled", color: "var(--mui-palette-Red)" },
   7: { value: "archive", color: "var(--mui-palette-Grey_2)" },
+  8: { value: "placeholder", color: "black" },
 } as const;
 
 export const statusValueMap = {

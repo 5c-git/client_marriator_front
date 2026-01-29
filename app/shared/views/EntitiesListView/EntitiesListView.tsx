@@ -48,7 +48,7 @@ export function EntitiesListView(props: EntitiesListViewInterface) {
   }>({});
   const [filter, setFilter] = useState<number>(0);
   const [sorting, setSorting] = useState<"ascending" | "descending">(
-    "ascending"
+    "ascending",
   );
 
   const [activeEntities, setActiveEntities] = useState<Entity[]>([]);
@@ -75,13 +75,13 @@ export function EntitiesListView(props: EntitiesListViewInterface) {
 
       for (const key in filteredEntites) {
         filteredEntites[key] = props.entities.filter(
-          (item) => item.status === Number(key)
+          (item) => item.status === Number(key),
         );
       }
 
       setFilteredEntities(filteredEntites);
       setActiveEntities(
-        filteredEntites[Number(Object.keys(filteredEntites)[0])]
+        filteredEntites[Number(Object.keys(filteredEntites)[0])],
       );
       setFilter(allFilters[0]);
     }
@@ -91,17 +91,17 @@ export function EntitiesListView(props: EntitiesListViewInterface) {
   useEffect(() => {
     if (activeEntities.length > 0 && sorting === "ascending") {
       const emptyDurationEntities = activeEntities.filter(
-        (item) => item.duration.start === null && item.duration.end === null
+        (item) => item.duration.start === null && item.duration.end === null,
       );
 
       const notEmptyDurationEntities = activeEntities.filter(
-        (item) => item.duration.start !== null && item.duration.end !== null
+        (item) => item.duration.start !== null && item.duration.end !== null,
       );
 
       notEmptyDurationEntities.sort(
         (a, b) =>
           new Date(a.duration.start as string).valueOf() -
-          new Date(b.duration.start as string).valueOf()
+          new Date(b.duration.start as string).valueOf(),
       );
 
       setActiveEntities([
@@ -110,17 +110,17 @@ export function EntitiesListView(props: EntitiesListViewInterface) {
       ]);
     } else if (activeEntities.length > 0 && sorting === "descending") {
       const emptyDurationEntities = activeEntities.filter(
-        (item) => item.duration.start === null && item.duration.end === null
+        (item) => item.duration.start === null && item.duration.end === null,
       );
 
       const notEmptyDurationEntities = activeEntities.filter(
-        (item) => item.duration.start !== null && item.duration.end !== null
+        (item) => item.duration.start !== null && item.duration.end !== null,
       );
 
       notEmptyDurationEntities.sort(
         (a, b) =>
           new Date(b.duration.start as string).valueOf() -
-          new Date(a.duration.start as string).valueOf()
+          new Date(a.duration.start as string).valueOf(),
       );
 
       setActiveEntities([
@@ -149,7 +149,7 @@ export function EntitiesListView(props: EntitiesListViewInterface) {
         map.addChild(new YMapDefaultFeaturesLayer({}));
         map.addChild(new YMapFeatureDataSource({ id: "my-source" }));
         map.addChild(
-          new YMapLayer({ source: "my-source", type: "markers", zIndex: 1800 })
+          new YMapLayer({ source: "my-source", type: "markers", zIndex: 1800 }),
         );
 
         setMapInstance(map);
@@ -241,7 +241,7 @@ export function EntitiesListView(props: EntitiesListViewInterface) {
           const markerElement = document.createElement("div");
           const icon = renderIcon(
             point.properties?.image as string,
-            point.properties?.borderColor as string
+            point.properties?.borderColor as string,
           );
           markerElement.innerHTML = icon;
 
@@ -255,14 +255,14 @@ export function EntitiesListView(props: EntitiesListViewInterface) {
               },
               source: "my-source",
             },
-            markerElement
+            markerElement,
           );
         },
         cluster: (coordinates, features) => {
           const clusterElement = document.createElement("div");
           const clusterCounter = renderClusterCounter(
             features.length,
-            activeEntities[0].statusColor
+            activeEntities[0].statusColor,
           );
           clusterElement.innerHTML = clusterCounter;
 
@@ -271,7 +271,7 @@ export function EntitiesListView(props: EntitiesListViewInterface) {
               coordinates,
               source: "my-source",
             },
-            clusterElement
+            clusterElement,
           );
         },
       });
@@ -293,7 +293,7 @@ export function EntitiesListView(props: EntitiesListViewInterface) {
                 .locationId as number;
 
               const match = activeEntities.find(
-                (item) => item.id === clickedLocation
+                (item) => item.id === clickedLocation,
               );
 
               if (match) {
@@ -307,6 +307,8 @@ export function EntitiesListView(props: EntitiesListViewInterface) {
       mapInstance.addChild(mapListener);
     }
   }, [activeEntities, mapInstance]);
+
+  console.log(filter);
 
   return (
     <>
@@ -340,7 +342,7 @@ export function EntitiesListView(props: EntitiesListViewInterface) {
                   options.push({
                     id: key,
                     label: t(
-                      `${props.translation}.status.${Number(key) as keyof typeof selectedStatusMap}`
+                      `${props.translation}.status.${Number(key) as keyof typeof selectedStatusMap}`,
                     ),
                     count: filteredEntities[Number(key)].length,
                     color:
