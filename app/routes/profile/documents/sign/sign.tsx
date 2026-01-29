@@ -104,7 +104,7 @@ export default function Sign({ loaderData }: Route.ComponentProps) {
     resolver: zodResolver(
       z.object({
         sms: z.string().length(4, { error: t("smsError") }),
-      })
+      }),
     ),
   });
 
@@ -161,7 +161,7 @@ export default function Sign({ loaderData }: Route.ComponentProps) {
           }}
         />
 
-        <Button
+        {/* <Button
           sx={{
             marginTop: "auto",
           }}
@@ -174,7 +174,7 @@ export default function Sign({ loaderData }: Route.ComponentProps) {
           }}
         >
           _create test doc
-        </Button>
+        </Button> */}
 
         <Box
           sx={{
@@ -250,7 +250,7 @@ export default function Sign({ loaderData }: Route.ComponentProps) {
               {
                 method: "POST",
                 encType: "application/json",
-              }
+              },
             );
           })}
         >
@@ -273,7 +273,7 @@ export default function Sign({ loaderData }: Route.ComponentProps) {
                         {
                           method: "POST",
                           encType: "application/json",
-                        }
+                        },
                       );
                     }
                   }}
@@ -334,7 +334,7 @@ export default function Sign({ loaderData }: Route.ComponentProps) {
               {
                 method: "POST",
                 encType: "application/json",
-              }
+              },
             );
           }}
         >
