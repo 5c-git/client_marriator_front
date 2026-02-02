@@ -234,6 +234,8 @@ export default function Client({ loaderData }: Route.ComponentProps) {
   const navigate = useNavigate();
   const navigation = useNavigation();
 
+  const userRole = useStore.getState().userRole;
+
   const [open, setOpen] = useState<boolean>(false);
   const [openCounterparty, setOpenCounterparty] = useState<boolean>(false);
 
@@ -857,24 +859,27 @@ export default function Client({ loaderData }: Route.ComponentProps) {
                 ? t("saveButton")
                 : t("confirmButton")}
             </Button>
-            {/* <Button
-              variant="text"
-              onClick={() => {
-                submit(
-                  JSON.stringify({
-                    _action: "_decline",
-                    userId: loaderData.client.id,
-                    confirm: "0",
-                  }),
-                  {
-                    method: "POST",
-                    encType: "application/json",
-                  }
-                );
-              }}
-            >
-              {t("excludeButton")}
-            </Button> */}
+
+            {userRole === "admin" ? (
+              <Button
+                variant="text"
+                onClick={() => {
+                  submit(
+                    JSON.stringify({
+                      _action: "_decline",
+                      userId: loaderData.client.id,
+                      confirm: "0",
+                    }),
+                    {
+                      method: "POST",
+                      encType: "application/json",
+                    },
+                  );
+                }}
+              >
+                {t("excludeButton")}
+              </Button>
+            ) : null}
           </Box>
         </form>
       </Box>

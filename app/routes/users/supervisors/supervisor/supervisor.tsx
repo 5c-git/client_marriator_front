@@ -66,7 +66,7 @@ import { postSetCounterparty } from "~/requests/_personal/_moderation/postSetCou
 import { postDeleteCounterparty } from "~/requests/_personal/_moderation/postDeleteCounterparty/postDeleteCounterparty";
 
 const getRadioButtons = (
-  list: { id: number; name: string; logo: string }[]
+  list: { id: number; name: string; logo: string }[],
 ) => {
   const options: {
     id: number;
@@ -122,7 +122,7 @@ export async function clientLoader({ params }: Route.ClientLoaderArgs) {
   if (accessToken) {
     const data = await getModerationSingleClient(
       accessToken,
-      Number(params.user)
+      Number(params.user),
     );
 
     const counterpartyData = await getCounterparty(accessToken);
@@ -228,7 +228,7 @@ export async function clientAction({ request }: Route.ClientActionArgs) {
         accessToken,
         fields.userId,
         fields.confirm,
-        fields
+        fields,
       );
       throw redirect(withLocale("/users"));
     } else if (_action === "_saveLogo") {
@@ -241,7 +241,7 @@ export async function clientAction({ request }: Route.ClientActionArgs) {
       await postDelPlaceModeration(
         accessToken,
         fields.userId,
-        fields.projectId
+        fields.projectId,
       );
       return;
     } else if (_action === "_decline") {
@@ -255,13 +255,13 @@ export async function clientAction({ request }: Route.ClientActionArgs) {
       await postSetCounterparty(
         accessToken,
         fields.userId,
-        fields.counterparties
+        fields.counterparties,
       );
     } else if (_action === "_deleteCounterparty") {
       await postDeleteCounterparty(
         accessToken,
         fields.userId,
-        fields.counterpartyId
+        fields.counterpartyId,
       );
     }
   } else {
@@ -276,12 +276,14 @@ export default function Supervisor({ loaderData }: Route.ComponentProps) {
   const navigate = useNavigate();
   const navigation = useNavigation();
 
+  const userRole = useStore.getState().userRole;
+
   const [open, setOpen] = useState<boolean>(false);
   const [openCounterparty, setOpenCounterparty] = useState<boolean>(false);
 
   const [searchManagers, setSearchManagers] = useState<boolean>(false);
   const [selectedManagers, setSelectedManagers] = useState(
-    loaderData.managersToSelect
+    loaderData.managersToSelect,
   );
 
   const {
@@ -316,7 +318,7 @@ export default function Supervisor({ loaderData }: Route.ComponentProps) {
             z.object({
               id: z.number(),
               name: z.string(),
-            })
+            }),
           )
           .min(1),
         organizations: z
@@ -325,7 +327,7 @@ export default function Supervisor({ loaderData }: Route.ComponentProps) {
               id: z.number(),
               logo: z.string(),
               name: z.string(),
-            })
+            }),
           )
           .min(1),
         locations: z
@@ -334,7 +336,7 @@ export default function Supervisor({ loaderData }: Route.ComponentProps) {
               id: z.number(),
               logo: z.string(),
               address: z.string(),
-            })
+            }),
           )
           .min(1),
         repeat_bid: z.date({
@@ -349,7 +351,7 @@ export default function Supervisor({ loaderData }: Route.ComponentProps) {
         waiting_task: z.string({
           error: t("text", { ns: "constructorFields" }),
         }),
-      })
+      }),
     ),
   });
 
@@ -370,7 +372,7 @@ export default function Supervisor({ loaderData }: Route.ComponentProps) {
       z.object({
         searchbar: z.string(),
         managers: z.array(z.string()).min(1),
-      })
+      }),
     ),
   });
 
@@ -442,7 +444,7 @@ export default function Supervisor({ loaderData }: Route.ComponentProps) {
               {
                 method: "POST",
                 encType: "application/json",
-              }
+              },
             );
           })}
         >
@@ -548,7 +550,7 @@ export default function Supervisor({ loaderData }: Route.ComponentProps) {
                 ></Box>
                 <Typography component="p" variant="Reg_14">
                   {t(
-                    `status.${statusCodeMap[loaderData.client.status as keyof typeof statusCodeMap].value}`
+                    `status.${statusCodeMap[loaderData.client.status as keyof typeof statusCodeMap].value}`,
                   )}
                 </Typography>
               </Box>
@@ -618,7 +620,7 @@ export default function Supervisor({ loaderData }: Route.ComponentProps) {
                       onClick={() => {
                         const currentList = getValues("counterparty");
                         const updatedList = currentList.filter(
-                          (item) => item.name !== counterparty.name
+                          (item) => item.name !== counterparty.name,
                         );
                         setValue("counterparty", updatedList);
                         trigger("counterparty");
@@ -632,7 +634,7 @@ export default function Supervisor({ loaderData }: Route.ComponentProps) {
                           {
                             method: "POST",
                             encType: "application/json",
-                          }
+                          },
                         );
                       }}
                       sx={{
@@ -703,7 +705,7 @@ export default function Supervisor({ loaderData }: Route.ComponentProps) {
                       onClick={() => {
                         const currentList = getValues("organizations");
                         const updatedList = currentList.filter(
-                          (item) => item.name !== organization.name
+                          (item) => item.name !== organization.name,
                         );
                         setValue("organizations", updatedList);
                         trigger("organizations");
@@ -717,7 +719,7 @@ export default function Supervisor({ loaderData }: Route.ComponentProps) {
                           {
                             method: "POST",
                             encType: "application/json",
-                          }
+                          },
                         );
                       }}
                       sx={{
@@ -791,7 +793,7 @@ export default function Supervisor({ loaderData }: Route.ComponentProps) {
                     onClick={() => {
                       const currentList = getValues("locations");
                       const updatedList = currentList.filter(
-                        (item) => item.address !== location.address
+                        (item) => item.address !== location.address,
                       );
                       setValue("locations", updatedList);
                       trigger("locations");
@@ -805,7 +807,7 @@ export default function Supervisor({ loaderData }: Route.ComponentProps) {
                         {
                           method: "POST",
                           encType: "application/json",
-                        }
+                        },
                       );
                     }}
                     sx={{
@@ -884,7 +886,7 @@ export default function Supervisor({ loaderData }: Route.ComponentProps) {
                             {
                               method: "POST",
                               encType: "application/json",
-                            }
+                            },
                           );
                         }}
                         sx={{
@@ -1003,29 +1005,38 @@ export default function Supervisor({ loaderData }: Route.ComponentProps) {
               </Typography>
             </Box>
 
-            <Button variant="contained" type="submit" startIcon={<CheckIcon />}>
-              {loaderData.client.confirmRegister
-                ? t("saveButton")
-                : t("confirmButton")}
-            </Button>
-            {/* <Button
-              variant="text"
-              onClick={() => {
-                submit(
-                  JSON.stringify({
-                    _action: "_decline",
-                    userId: loaderData.client.id,
-                    confirm: "0",
-                  }),
-                  {
-                    method: "POST",
-                    encType: "application/json",
-                  }
-                );
-              }}
-            >
-              {t("excludeButton")}
-            </Button> */}
+            {userRole === "admin" || userRole === "manager" ? (
+              <>
+                {" "}
+                <Button
+                  variant="contained"
+                  type="submit"
+                  startIcon={<CheckIcon />}
+                >
+                  {loaderData.client.confirmRegister
+                    ? t("saveButton")
+                    : t("confirmButton")}
+                </Button>
+                <Button
+                  variant="text"
+                  onClick={() => {
+                    submit(
+                      JSON.stringify({
+                        _action: "_decline",
+                        userId: loaderData.client.id,
+                        confirm: "0",
+                      }),
+                      {
+                        method: "POST",
+                        encType: "application/json",
+                      },
+                    );
+                  }}
+                >
+                  {t("excludeButton")}
+                </Button>
+              </>
+            ) : null}
           </Box>
         </form>
       </Box>
@@ -1061,7 +1072,7 @@ export default function Supervisor({ loaderData }: Route.ComponentProps) {
 
                   const selectedOrganization =
                     loaderData.client.organizations.find(
-                      (item) => item.logo === evt.target.value
+                      (item) => item.logo === evt.target.value,
                     );
 
                   if (selectedOrganization) {
@@ -1074,7 +1085,7 @@ export default function Supervisor({ loaderData }: Route.ComponentProps) {
                       {
                         method: "POST",
                         encType: "application/json",
-                      }
+                      },
                     );
                   }
                 }}
@@ -1119,7 +1130,7 @@ export default function Supervisor({ loaderData }: Route.ComponentProps) {
               {
                 method: "POST",
                 encType: "application/json",
-              }
+              },
             );
 
             resetManager();
@@ -1148,7 +1159,7 @@ export default function Supervisor({ loaderData }: Route.ComponentProps) {
                   onChange={(evt) => {
                     const currentFieldValue = new RegExp(
                       `${evt.target.value}`,
-                      "i"
+                      "i",
                     );
 
                     let matchingManagers: typeof loaderData.managersToSelect =
@@ -1157,7 +1168,7 @@ export default function Supervisor({ loaderData }: Route.ComponentProps) {
                     if (evt.target.value !== "") {
                       matchingManagers = [
                         ...selectedManagers.filter((item) =>
-                          currentFieldValue.test(item.label)
+                          currentFieldValue.test(item.label),
                         ),
                       ];
                     } else {
@@ -1222,7 +1233,7 @@ export default function Supervisor({ loaderData }: Route.ComponentProps) {
             {
               method: "POST",
               encType: "application/json",
-            }
+            },
           );
         }}
         items={loaderData.counterparty}
