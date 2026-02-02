@@ -34,7 +34,7 @@ export async function clientLoader({ params }: Route.ClientLoaderArgs) {
       const missionData = await getJob(
         accessToken,
         params.specialistId,
-        params.bidId
+        params.bidId,
       );
 
       const criteriaData = await getReasons(accessToken);
@@ -49,7 +49,7 @@ export async function clientLoader({ params }: Route.ClientLoaderArgs) {
 
       if (params.reportId) {
         const particularDay = missionData.data.reports.find(
-          (report) => report.id === Number(params.reportId)
+          (report) => report.id === Number(params.reportId),
         );
 
         if (
@@ -90,7 +90,7 @@ export async function clientLoader({ params }: Route.ClientLoaderArgs) {
             days.push({
               id: Number(report.id),
               date: report.dateStart ? report.dateStart : "",
-              unitPrice: "0",
+              unitPrice: missionData.data.price.toString(),
               unitAmount: report.hours ? report.hours : "",
               ...(report.report && { photos: report.report }),
               criteria: (() => {
@@ -114,7 +114,9 @@ export async function clientLoader({ params }: Route.ClientLoaderArgs) {
 
       if (days.length === 0) {
         throw redirect(
-          withLocale(`/bids/${params.bidId}/specialists/${params.specialistId}`)
+          withLocale(
+            `/bids/${params.bidId}/specialists/${params.specialistId}`,
+          ),
         );
       }
 
@@ -193,7 +195,7 @@ export async function clientAction({
       });
       // throw redirect(currentURL.toString());
       throw redirect(
-        withLocale(`/bids/${params.bidId}/specialists/${params.specialistId}`)
+        withLocale(`/bids/${params.bidId}/specialists/${params.specialistId}`),
       );
     } else if (fields.days.length === 1) {
       const payload = {
@@ -223,7 +225,7 @@ export async function clientAction({
       }
 
       throw redirect(
-        withLocale(`/bids/${params.bidId}/specialists/${params.specialistId}`)
+        withLocale(`/bids/${params.bidId}/specialists/${params.specialistId}`),
       );
     }
   } else {
