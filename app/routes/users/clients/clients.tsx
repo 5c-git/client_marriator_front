@@ -25,6 +25,7 @@ export async function clientLoader() {
   let data;
 
   const accessToken = useStore.getState().accessToken;
+  const userRole = useStore.getState().userRole;
 
   if (accessToken) {
     if (mode === "mobile") {
@@ -35,14 +36,13 @@ export async function clientLoader() {
         null,
         null,
         null,
-        null
+        null,
       );
 
       const users: UsersMobileViewInterface["users"] = [];
 
       usersData.data.forEach((item) => {
-        // временно убираем архивный статус, архив доступен только админу
-        users.push({
+        const user = {
           id: item.id,
           status: (() => {
             let status = 3;
@@ -71,7 +71,13 @@ export async function clientLoader() {
           phone: item.phone.toString(),
           address: item.place.length > 0 ? item.place[0].name : null,
           logo: `${import.meta.env.VITE_ASSET_PATH}${item.logo}`,
-        });
+        };
+
+        if (user.status === 3 && userRole === "admin") {
+          users.push(user);
+        } else if (user.status !== 3) {
+          users.push(user);
+        }
       });
 
       data = {

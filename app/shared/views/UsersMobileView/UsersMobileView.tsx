@@ -66,7 +66,7 @@ export function UsersMobileView(props: UsersMobileViewInterface) {
 
   const onInit = useEffectEvent((users: UsersMobileViewInterface["users"]) => {
     const allFilters = [...new Set(users.map((user) => user["status"]))].sort(
-      (a, b) => a - b
+      (a, b) => a - b,
     );
 
     const filteredUsers: {
@@ -74,15 +74,12 @@ export function UsersMobileView(props: UsersMobileViewInterface) {
     } = {};
 
     allFilters.forEach((filter) => {
-      // временно убираем статус "архив" доступный только админу
-      if (filter !== 3) {
-        filteredUsers[filter] = [];
-      }
+      filteredUsers[filter] = [];
     });
 
     for (const key in filteredUsers) {
       filteredUsers[key] = props.users.filter(
-        (item) => item.status === Number(key)
+        (item) => item.status === Number(key),
       );
     }
 
@@ -138,7 +135,7 @@ export function UsersMobileView(props: UsersMobileViewInterface) {
                   options.push({
                     id: key,
                     label: t(
-                      `${props.translation}.status.${statusCodeMap[Number(key) as keyof typeof statusCodeMap].value}`
+                      `${props.translation}.status.${statusCodeMap[Number(key) as keyof typeof statusCodeMap].value}`,
                     ),
                     count: filteredUsers[Number(key)].length,
                     color:
