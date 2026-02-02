@@ -33,6 +33,7 @@ export default function RegistrationComplete() {
         sx={{
           alignItems: "center",
           justifyContent: "center",
+          paddingTop: "30px",
           paddingRight: "16px",
           paddingLeft: "16px",
           height: "100%",

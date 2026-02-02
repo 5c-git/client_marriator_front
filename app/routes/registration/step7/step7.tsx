@@ -52,10 +52,12 @@ export async function clientAction({ request }: Route.ClientActionArgs) {
 
   if (accessToken) {
     if (_action === "finishRegister") {
-      const data = await postFinishRegister(accessToken);
+      await postFinishRegister(accessToken);
 
-      useStore.getState().setAccessToken(data.result.token.access_token);
-      useStore.getState().setRefreshToken(data.result.token.refresh_token);
+      // useStore.getState().setAccessToken(data.result.token.access_token);
+      // useStore.getState().setRefreshToken(data.result.token.refresh_token);
+
+      useStore.getState().clearStore();
 
       throw redirect(withLocale("/registration/registration-complete"));
     } else {
@@ -86,7 +88,7 @@ export default function Step7({ loaderData }: Route.ComponentProps) {
   } = useForm({
     defaultValues: generateDefaultValues(loaderData.formFields),
     resolver: yupResolver(
-      Yup.object(generateValidationSchema(loaderData.formFields))
+      Yup.object(generateValidationSchema(loaderData.formFields)),
     ),
     mode: "onChange",
     shouldUnregister: true,
@@ -158,7 +160,7 @@ export default function Step7({ loaderData }: Route.ComponentProps) {
                 encType: "application/json",
               });
             },
-            loaderData.accessToken
+            loaderData.accessToken,
           )}
 
           <Box
@@ -181,7 +183,7 @@ export default function Step7({ loaderData }: Route.ComponentProps) {
                     {
                       method: "POST",
                       encType: "application/json",
-                    }
+                    },
                   );
                 })();
               }}
