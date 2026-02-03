@@ -91,6 +91,7 @@ const getRadioButtons = (
 
 export async function clientLoader({ params }: Route.ClientLoaderArgs) {
   const accessToken = useStore.getState().accessToken;
+  const userRole = useStore.getState().userRole;
 
   const counterparty: ComponentPropsWithoutRef<
     typeof CheckboxSearchableDrawer
@@ -127,7 +128,17 @@ export async function clientLoader({ params }: Route.ClientLoaderArgs) {
 
     const counterpartyData = await getCounterparty(accessToken);
 
-    const managersData = await getManager(accessToken, Number(params.user));
+    if (userRole === "admin") {
+      const managersData = await getManager(accessToken, Number(params.user));
+
+      managersData.data.forEach((item) => {
+        managersToSelect.push({
+          value: item.id.toString(),
+          label: item.email,
+          disabled: false,
+        });
+      });
+    }
 
     counterpartyData.data.forEach((agent) => {
       counterparty.push({
@@ -197,14 +208,6 @@ export async function clientLoader({ params }: Route.ClientLoaderArgs) {
         return status;
       })(),
     };
-
-    managersData.data.forEach((item) => {
-      managersToSelect.push({
-        value: item.id.toString(),
-        label: item.email,
-        disabled: false,
-      });
-    });
 
     return {
       client,
@@ -875,47 +878,51 @@ export default function Supervisor({ loaderData }: Route.ComponentProps) {
                         {manager.email}
                       </Typography>
 
-                      <IconButton
-                        onClick={() => {
-                          fetcher.submit(
-                            JSON.stringify({
-                              _action: "_deleteManager",
-                              userId: loaderData.client.id,
-                              managerId: manager.id,
-                            }),
-                            {
-                              method: "POST",
-                              encType: "application/json",
-                            },
-                          );
-                        }}
-                        sx={{
-                          width: "24px",
-                          height: "24px",
-                        }}
-                      >
-                        <DeleteIcon
-                          sx={{
-                            width: "12px",
-                            height: "12px",
+                      {userRole === "admin" ? (
+                        <IconButton
+                          onClick={() => {
+                            fetcher.submit(
+                              JSON.stringify({
+                                _action: "_deleteManager",
+                                userId: loaderData.client.id,
+                                managerId: manager.id,
+                              }),
+                              {
+                                method: "POST",
+                                encType: "application/json",
+                              },
+                            );
                           }}
-                        />
-                      </IconButton>
+                          sx={{
+                            width: "24px",
+                            height: "24px",
+                          }}
+                        >
+                          <DeleteIcon
+                            sx={{
+                              width: "12px",
+                              height: "12px",
+                            }}
+                          />
+                        </IconButton>
+                      ) : null}
                     </Box>
                   ))}
                 </Stack>
               </>
             ) : null}
 
-            <Button
-              variant="outlined"
-              onClick={() => {
-                setSearchManagers(true);
-              }}
-              // startIcon={<PointerIcon />}
-            >
-              {t("managerInviteButton")}
-            </Button>
+            {userRole === "admin" ? (
+              <Button
+                variant="outlined"
+                onClick={() => {
+                  setSearchManagers(true);
+                }}
+                // startIcon={<PointerIcon />}
+              >
+                {t("managerInviteButton")}
+              </Button>
+            ) : null}
 
             <Controller
               name="repeat_bid"
