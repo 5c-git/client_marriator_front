@@ -207,6 +207,10 @@ export async function clientLoader({ params }: Route.ClientLoaderArgs) {
 
         return status;
       })(),
+      refusal_task: data.data.refusal_task,
+      count_wait_bid: data.data.count_wait_bid,
+      time_answer_bid: data.data.time_answer_bid,
+      notification_start: data.data.notification_start,
     };
 
     return {
@@ -308,8 +312,12 @@ export default function Supervisor({ loaderData }: Route.ComponentProps) {
       leave_bid: new Date(`2000-01-01T${loaderData.client.leave_bid}`),
       live_task: new Date(`2000-01-01T${loaderData.client.live_task}`),
       waiting_task: loaderData.client.waiting_task
-        ? `2000-01-01T${loaderData.client.waiting_task}`
+        ? loaderData.client.waiting_task.toString()
         : "",
+      refusal_task: new Date(`2000-01-01T${loaderData.client.refusal_task}`),
+      count_wait_bid: loaderData.client.count_wait_bid.toString(),
+      time_answer_bid: loaderData.client.time_answer_bid.toString(),
+      notification_start: loaderData.client.notification_start.toString(),
     },
     resolver: zodResolver(
       z.object({
@@ -352,6 +360,18 @@ export default function Supervisor({ loaderData }: Route.ComponentProps) {
           error: t("text", { ns: "constructorFields" }),
         }),
         waiting_task: z.string({
+          error: t("text", { ns: "constructorFields" }),
+        }),
+        refusal_task: z.date({
+          error: t("text", { ns: "constructorFields" }),
+        }),
+        count_wait_bid: z.string({
+          error: t("text", { ns: "constructorFields" }),
+        }),
+        time_answer_bid: z.string({
+          error: t("text", { ns: "constructorFields" }),
+        }),
+        notification_start: z.string({
           error: t("text", { ns: "constructorFields" }),
         }),
       }),
@@ -432,6 +452,16 @@ export default function Supervisor({ loaderData }: Route.ComponentProps) {
                 : `0${new Date(getValues("live_task")).getMinutes()}`
             }`;
 
+            const refusal_task_formated = `${
+              new Date(getValues("refusal_task")).getHours() > 10
+                ? new Date(getValues("refusal_task")).getHours()
+                : `0${new Date(getValues("refusal_task")).getHours()}`
+            }:${
+              new Date(getValues("refusal_task")).getMinutes() > 10
+                ? new Date(getValues("refusal_task")).getMinutes()
+                : `0${new Date(getValues("refusal_task")).getMinutes()}`
+            }`;
+
             submit(
               JSON.stringify({
                 _action: "_confirm",
@@ -442,6 +472,7 @@ export default function Supervisor({ loaderData }: Route.ComponentProps) {
                   repeat_bid: repeat_bid_formated,
                   leave_bid: leave_bid_formated,
                   live_task: live_task_formated,
+                  refusal_task: refusal_task_formated,
                 },
               }),
               {
@@ -976,6 +1007,89 @@ export default function Supervisor({ loaderData }: Route.ComponentProps) {
               render={({ field }) => (
                 <TextField
                   label={t("fields.taskCountdownCancelDurationPlaceholder")}
+                  slotProps={{
+                    input: {
+                      inputComponent: MaskedField as never,
+                      inputProps: {
+                        mask: "00",
+                      },
+                      inputMode: "numeric",
+                      type: "tel",
+                    },
+                  }}
+                  {...field}
+                />
+              )}
+            />
+
+            <Controller
+              name="refusal_task"
+              control={control}
+              render={({ field }) => (
+                <TimeField
+                  // placeholder={t("fields.taskCountdownCancelPlaceholder")}
+                  placeholder={"refusalTask"}
+                  error={errors.refusal_task?.message}
+                  {...field}
+                  value={field.value.toISOString()}
+                  onChange={(value) => {
+                    setValue("refusal_task", new Date(value));
+                  }}
+                />
+              )}
+            />
+
+            <Controller
+              name="count_wait_bid"
+              control={control}
+              render={({ field }) => (
+                <TextField
+                  // label={t("fields.taskCountdownCancelDurationPlaceholder")}
+                  label={"count_wait_bid"}
+                  slotProps={{
+                    input: {
+                      inputComponent: MaskedField as never,
+                      inputProps: {
+                        mask: "00",
+                      },
+                      inputMode: "numeric",
+                      type: "tel",
+                    },
+                  }}
+                  {...field}
+                />
+              )}
+            />
+
+            <Controller
+              name="time_answer_bid"
+              control={control}
+              render={({ field }) => (
+                <TextField
+                  // label={t("fields.taskCountdownCancelDurationPlaceholder")}
+                  label={"time_answer_bid"}
+                  slotProps={{
+                    input: {
+                      inputComponent: MaskedField as never,
+                      inputProps: {
+                        mask: "00",
+                      },
+                      inputMode: "numeric",
+                      type: "tel",
+                    },
+                  }}
+                  {...field}
+                />
+              )}
+            />
+
+            <Controller
+              name="notification_start"
+              control={control}
+              render={({ field }) => (
+                <TextField
+                  // label={t("fields.taskCountdownCancelDurationPlaceholder")}
+                  label={"notification_start"}
                   slotProps={{
                     input: {
                       inputComponent: MaskedField as never,
