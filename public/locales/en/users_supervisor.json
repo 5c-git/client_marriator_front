@@ -14,8 +14,9 @@
     "name": "Full name",
     "applicationFrequencyPlaceholder": "Frequency of application repetition *",
     "applicationCountdownPlaceholder": "Minimum time until request exit *",
-    "taskCountdownCancelPlaceholder": "Минимальное время отказа от задания *",
-    "taskCountdownCancelDurationPlaceholder": "Minimum task abandonment time *"
+    "taskCountdownCancelPlaceholder": "Minimum task abandonment time",
+    "taskCountdownCancelDurationPlaceholder": "Minimum task abandonment time *",
+    "refusalTaskPlaceholder": "Minimum task abandonment time"
   },
   "counterparty": "Counterparty",
   "counterpartySelector": "Choose counterparty",

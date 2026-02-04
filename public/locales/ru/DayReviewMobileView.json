@@ -2,7 +2,7 @@
   "header": "Проверка выполненных работ",
   "income": "Доход",
   "unitPrice": "Цена за единицу ₽",
-  "amountPrice": "Цена за Количество ₽",
+  "amountPrice": "Количество",
   "finesAndIncentives": "Оценка качества",
   "criterionName": "Наименование критерия оценки",
   "criterionAmount": "Количество",

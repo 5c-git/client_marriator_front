@@ -1,6 +1,6 @@
 import type { DayReviewMobileViewInterface } from "./DayReviewMobileViewInterface";
 
-import { useNavigation, useNavigate } from "react-router";
+import { useNavigate } from "react-router";
 import { Fragment, useState } from "react";
 
 import { t } from "i18next";
@@ -113,6 +113,8 @@ export function DayReviewMobileView(
   });
 
   const formValues = watch();
+
+  console.log(formValues.days);
 
   return (
     <>

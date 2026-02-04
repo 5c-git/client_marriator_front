@@ -1027,8 +1027,7 @@ export default function Supervisor({ loaderData }: Route.ComponentProps) {
               control={control}
               render={({ field }) => (
                 <TimeField
-                  // placeholder={t("fields.taskCountdownCancelPlaceholder")}
-                  placeholder={"refusalTask"}
+                  placeholder={t("fields.refusalTaskPlaceholder")}
                   error={errors.refusal_task?.message}
                   {...field}
                   value={field.value.toISOString()}

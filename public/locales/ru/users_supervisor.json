@@ -16,7 +16,8 @@
     "applicationCountdownPlaceholder": "Минимальное время до выхода по заявке *",
     "taskCountdownCancelPlaceholder": "Минимальное время отказа от задания *",
     "taskCountdownCancelDurationPlaceholder": "Максимально время ожидания Заданий специалистом (дней)",
-    "managerSearchPlaceholder": "Поиск"
+    "managerSearchPlaceholder": "Поиск",
+    "refusalTaskPlaceholder": "Минимальное время отказа от задания"
   },
   "counterparty": "Контрагенты",
   "counterpartySelector": "Выбрать контрагента",

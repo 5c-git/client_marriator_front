@@ -62,7 +62,9 @@ export async function clientLoader({ params }: Route.ClientLoaderArgs) {
             id: Number(particularDay.id),
             date: particularDay.dateStart ? particularDay.dateStart : "",
             unitPrice: missionData.data.price.toString(),
-            unitAmount: particularDay.hours ? particularDay.hours : "",
+            unitAmount: particularDay.hours
+              ? Number(particularDay.hours).toString()
+              : "",
             ...(particularDay.report && { photos: particularDay.report }),
             criteria: (() => {
               const criteria: DayReviewMobileViewInterface["days"][0]["criteria"] =
@@ -91,7 +93,7 @@ export async function clientLoader({ params }: Route.ClientLoaderArgs) {
               id: Number(report.id),
               date: report.dateStart ? report.dateStart : "",
               unitPrice: missionData.data.price.toString(),
-              unitAmount: report.hours ? report.hours : "",
+              unitAmount: report.hours ? Number(report.hours).toString() : "",
               ...(report.report && { photos: report.report }),
               criteria: (() => {
                 const criteria: DayReviewMobileViewInterface["days"][0]["criteria"] =
