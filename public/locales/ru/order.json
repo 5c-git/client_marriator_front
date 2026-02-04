@@ -5,8 +5,8 @@
   "cancelButton": "Отмена",
   "sendButton": "Сохранить",
   "saveButton": "Отправить поручение",
-  "convertToTask": "Конвертировать в задачу",
-  "convertToBid": "Конвертировать в заявку",
+  "convertToTask": "Создать в задачу",
+  "convertToBid": "Создать  заявку",
   "acceptButton": "Принять",
   "yourselfOption": "Назначить себя",
   "dialog": {
