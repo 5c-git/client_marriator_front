@@ -38,7 +38,7 @@ export function SpecialistMobileView(
           bold: false,
         }}
         backAction={() => {
-          // withLocale(`/bids/${props.entity.id}/specialists`)
+          // navigate(withLocale(`/bids/${props.entity.id}/specialists`));
           // @ts-expect-error incomplete types in react router
           navigate(-1, {
             viewTransition: true,

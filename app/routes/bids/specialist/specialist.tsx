@@ -252,6 +252,7 @@ export default function SpecialistRequest({
               <Button
                 component={Link}
                 to={`/bids/${loaderData.entity.id}/specialists/${loaderData.entity.specialist.id}/day-review/${day.reportId}`}
+                replace
                 variant="outlined"
               >
                 {t("actions.check")}

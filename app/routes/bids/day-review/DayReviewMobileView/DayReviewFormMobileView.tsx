@@ -114,8 +114,6 @@ export function DayReviewMobileView(
 
   const formValues = watch();
 
-  console.log(formValues.days);
-
   return (
     <>
       <TopNavigation
@@ -130,6 +128,7 @@ export function DayReviewMobileView(
             ),
             {
               viewTransition: true,
+              replace: true,
             },
           );
         }}
