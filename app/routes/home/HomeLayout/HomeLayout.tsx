@@ -103,8 +103,6 @@ export default function HomeLayout({ loaderData }: Route.ComponentProps) {
   const mapView = useStore((state) => state.mapView);
   const setMapView = useStore((state) => state.setMapView);
 
-  console.log(mapView);
-
   return (
     <>
       <TopNavigation
