@@ -8,6 +8,7 @@ type State = {
   refreshToken: null | string;
   userRole: "admin" | "manager" | "supervisor" | "client" | "specialist";
   userId: null | number;
+  mapView: boolean;
 
   setUserEmail: (newUserEmail: string) => void;
   setUserPhone: (newUserPhone: string) => void;
@@ -17,7 +18,7 @@ type State = {
   setUserId: (newUserId: number) => void;
   setAccessToken: (accessToken: string) => void;
   setRefreshToken: (refreshToken: string) => void;
-
+  setMapView: (mapView: boolean) => void;
   removeUserEmail: () => void;
   removeUserPhone: () => void;
   removeUserId: () => void;
@@ -36,6 +37,7 @@ export const useStore = create<State>()(
       refreshToken: null,
       userRole: "specialist",
       userId: null,
+      mapView: true,
 
       setUserEmail: (newUserEmail) => set({ userEmail: newUserEmail }),
       setUserPhone: (newUserPhone) => set({ userPhone: newUserPhone }),
@@ -44,6 +46,7 @@ export const useStore = create<State>()(
       setAccessToken: (newAccessToken) => set({ accessToken: newAccessToken }),
       setRefreshToken: (newRefreshToken) =>
         set({ refreshToken: newRefreshToken }),
+      setMapView: (newMapView) => set({ mapView: newMapView }),
 
       removeUserEmail: () => set({ userEmail: null }),
       removeUserPhone: () => set({ userPhone: null }),
@@ -60,6 +63,7 @@ export const useStore = create<State>()(
           userId: null,
           accessToken: null,
           refreshToken: null,
+          mapView: true,
         }),
     }),
     {

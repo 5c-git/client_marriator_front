@@ -1,8 +1,6 @@
 import { Link, Outlet } from "react-router";
 import type { Route } from "./+types/HomeLayout";
 
-import { useState } from "react";
-
 import { useTranslation } from "react-i18next";
 import { t, loadNamespaces } from "i18next";
 
@@ -102,7 +100,10 @@ export default function HomeLayout({ loaderData }: Route.ComponentProps) {
   const { t } = useTranslation("HomeLayout");
   const userRole = useStore.getState().userRole;
 
-  const [showMap, setShowMap] = useState<boolean>(true);
+  const mapView = useStore((state) => state.mapView);
+  const setMapView = useStore((state) => state.setMapView);
+
+  console.log(mapView);
 
   return (
     <>
@@ -112,8 +113,8 @@ export default function HomeLayout({ loaderData }: Route.ComponentProps) {
           bold: false,
         }}
         buttonAction={{
-          text: showMap ? t("headerListAction") : t("headerMapAction"),
-          icon: showMap ? (
+          text: mapView ? t("headerListAction") : t("headerMapAction"),
+          icon: mapView ? (
             <ListIcon
               sx={{
                 width: "15px",
@@ -129,7 +130,7 @@ export default function HomeLayout({ loaderData }: Route.ComponentProps) {
             />
           ),
           action: () => {
-            setShowMap(!showMap);
+            setMapView(!mapView);
           },
         }}
         style={{
@@ -152,7 +153,7 @@ export default function HomeLayout({ loaderData }: Route.ComponentProps) {
         </Tabs>
       ) : null}
 
-      <Outlet context={showMap} />
+      <Outlet context={mapView} />
     </>
   );
 }
