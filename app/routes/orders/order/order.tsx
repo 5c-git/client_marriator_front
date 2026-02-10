@@ -133,6 +133,10 @@ export async function clientLoader({ params }: Route.ClientLoaderArgs) {
           count: item.count,
           name: item.viewActivity.name,
           route: routeCount,
+          dateStart: item.dateStart,
+          dateEnd: item.dateEnd,
+          countSearch: item.countSearch,
+          existBid: item.existBid,
         });
       });
 

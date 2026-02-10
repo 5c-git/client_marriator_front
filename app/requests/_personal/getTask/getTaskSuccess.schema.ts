@@ -29,6 +29,8 @@ export const getTaskSuccessSchema = z.object({
     project: z.object({
       id: z.number(),
       name: z.string(),
+      dateStart: z.string(),
+      dateEnd: z.string(),
       brand: z.array(
         z.object({
           id: z.number(),
@@ -91,11 +93,14 @@ export const getTaskSuccessSchema = z.object({
           traveling: z.boolean(),
         }),
         count: z.number(),
+        countSearch: z.number(),
+        existBid: z.boolean(),
         dateStart: z.string(),
         dateEnd: z.string(),
         needFoto: z.boolean(),
         dateActivity: z.array(
           z.object({
+            id: z.number(),
             timeStart: z.string(),
             timeEnd: z.string(),
             places: z.array(
@@ -140,6 +145,7 @@ export const getTaskSuccessSchema = z.object({
         ),
       }),
     ),
+    statistic: z.array(z.object({ accepted: z.number(), count: z.number() })),
   }),
 });
 

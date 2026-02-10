@@ -128,6 +128,8 @@ interface ImportMetaEnv {
   readonly VITE_POST_SET_COUNTERPARTY: string;
   readonly VITE_POST_DELETE_COUNTERPARTY: string;
   readonly VITE_GET_DATA: string;
+  readonly VITE_POST_CREATE_SEARCH_FROM_TASK: string;
+  readonly VITE_POST_CREATE_SEARCH_FROM_ORDER: string;
   // more env variables...
 }
 

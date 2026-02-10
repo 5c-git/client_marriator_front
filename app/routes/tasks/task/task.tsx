@@ -5,6 +5,7 @@ import {
   useFetcher,
   Link,
   redirect,
+  useSubmit,
 } from "react-router";
 import type { Route } from "./+types/task";
 import type { EntityMobileViewInterface } from "../../../shared/ui/EntityMobileView/EntityMobileViewInterface";
@@ -45,6 +46,7 @@ import { postCreateBidFromTask } from "~/requests/_personal/postCreateBidFromTas
 import { postInstructTask } from "~/requests/_personal/postInstructTask/postInstructTask";
 import { postInvoiceTask } from "~/requests/_personal/postInvoiceTask/postInvoiceTask";
 import { postAcceptTask } from "~/requests/_personal/postAcceptTask/postAcceptTask";
+import { postCreateSearchFromTask } from "~/requests/_personal/postCreateSearchFromTask/postCreateSearchFromTask";
 
 type MobileModeData = {
   mode: "mobile";
@@ -129,6 +131,11 @@ export async function clientLoader({ params }: Route.ClientLoaderArgs) {
           count: item.count,
           name: item.viewActivity.name,
           route: routeCount,
+
+          dateStart: item.dateStart,
+          dateEnd: item.dateEnd,
+          countSearch: item.countSearch,
+          existBid: item.existBid,
         });
       });
       taskData.data.acceptedUser.forEach((item) => {
@@ -145,7 +152,7 @@ export async function clientLoader({ params }: Route.ClientLoaderArgs) {
       if (userRole === "manager") {
         const supervisorsToSelectData = await getSupervisorsForTask(
           accessToken,
-          params.taskId
+          params.taskId,
         );
 
         supervisorsToSelectData.data.forEach((sepervisorToSelect) => {
@@ -173,7 +180,6 @@ export async function clientAction({
   request,
   params,
 }: Route.ClientActionArgs) {
-  const currentURL = new URL(request.url);
   const { _action, ...fields } = await request.json();
   const accessToken = useStore.getState().accessToken;
   if (accessToken) {
@@ -181,32 +187,39 @@ export async function clientAction({
       await postDeleteTaskActivity(
         accessToken,
         fields.taskId,
-        fields.taskActivityId
+        fields.taskActivityId,
       );
     } else if (_action === "transformActivity") {
       const transformedRequestData = await postCreateBidFromTask(
         accessToken,
         fields.taskId,
-        fields.taskActivityId
+        fields.taskActivityId,
       );
       throw redirect(withLocale(`/bids/${transformedRequestData.data.id}`));
+    } else if (_action === "requestSearch") {
+      const searchRequestData = await postCreateSearchFromTask(
+        accessToken,
+        fields.taskId,
+        fields.taskActivityId,
+      );
+
+      return searchRequestData;
     } else if (_action === "_inviteSupervisors") {
       await postInvoiceTask(accessToken, params.taskId, fields.supervisors);
     } else if (_action === "_makeResponsible") {
       await postInstructTask(accessToken, fields.taskId, fields.supervisorId);
-      throw redirect(currentURL.toString());
     } else if (_action === "_acceptTask") {
       await postAcceptTask(accessToken, fields.taskId);
-      throw redirect(currentURL.toString());
     }
   } else {
     throw new Response("Токен авторизации не обнаружен!", { status: 401 });
   }
 }
 
-export default function Task({ loaderData }: Route.ComponentProps) {
+export default function Task({ loaderData, actionData }: Route.ComponentProps) {
   const navigate = useNavigate();
   const navigation = useNavigation();
+  const submit = useSubmit();
   const { t } = useTranslation("task");
   const userRole = useStore.getState().userRole;
   const userId = useStore.getState().userId;
@@ -258,7 +271,7 @@ export default function Task({ loaderData }: Route.ComponentProps) {
                     <Box
                       component={Link}
                       to={withLocale(
-                        `/tasks/${loaderData.entity.id}/service/${service.id}`
+                        `/tasks/${loaderData.entity.id}/service/${service.id}`,
                       )}
                       sx={{
                         display: "grid",
@@ -403,7 +416,7 @@ export default function Task({ loaderData }: Route.ComponentProps) {
                     <Box
                       component={Link}
                       to={withLocale(
-                        `/tasks/${loaderData.entity.id}/service/${service.id}`
+                        `/tasks/${loaderData.entity.id}/service/${service.id}`,
                       )}
                       sx={{
                         display: "grid",
@@ -478,7 +491,7 @@ export default function Task({ loaderData }: Route.ComponentProps) {
                       }}
                       startIcon={<CheckIcon />}
                       onClick={() => {
-                        fetcher.submit(
+                        submit(
                           JSON.stringify({
                             _action: "transformActivity",
                             taskId: loaderData.entity.id,
@@ -487,18 +500,47 @@ export default function Task({ loaderData }: Route.ComponentProps) {
                           {
                             method: "POST",
                             encType: "application/json",
-                          }
+                          },
                         );
                       }}
                     >
                       {t("convertToBid")}
                     </Button>
                   ) : null}
+
+                  {(userRole === "manager" || userRole === "supervisor") &&
+                  service.existBid === true &&
+                  service.countSearch < service.count ? (
+                    <Button
+                      variant="contained"
+                      sx={{
+                        flexDirection: "column",
+                        marginTop: "8px",
+                      }}
+                      onClick={() => {
+                        fetcher.submit(
+                          JSON.stringify({
+                            _action: "requestSearch",
+                            taskId: loaderData.entity.id,
+                            taskActivityId: service.id,
+                          }),
+                          {
+                            method: "POST",
+                            encType: "application/json",
+                          },
+                        );
+                      }}
+                    >
+                      {/* {t("acceptButton")} */}
+                      Заказ на поиск{" "}
+                      <span>Осталось попыток: {service.count}</span>
+                    </Button>
+                  ) : null}
                 </Box>
               )}
               actionSlot={() => {
                 const match = loaderData.entity.invitedPersons.find(
-                  (supervisor) => supervisor.id === userId
+                  (supervisor) => supervisor.id === userId,
                 );
 
                 if (
@@ -518,7 +560,7 @@ export default function Task({ loaderData }: Route.ComponentProps) {
                           {
                             method: "POST",
                             encType: "application/json",
-                          }
+                          },
                         );
                       }}
                     >
@@ -546,7 +588,7 @@ export default function Task({ loaderData }: Route.ComponentProps) {
                 {
                   method: "POST",
                   encType: "application/json",
-                }
+                },
               );
             }}
             items={loaderData.supervisorsToSelect}
@@ -567,7 +609,7 @@ export default function Task({ loaderData }: Route.ComponentProps) {
                 {
                   method: "POST",
                   encType: "application/json",
-                }
+                },
               );
             }}
             items={[
@@ -624,7 +666,7 @@ export default function Task({ loaderData }: Route.ComponentProps) {
                     {
                       method: "POST",
                       encType: "application/json",
-                    }
+                    },
                   );
                   setServiceToDelete(null);
                 }}

@@ -123,6 +123,8 @@ import { getCounterpartyMockResponse } from "~/requests/_personal/_moderation/ge
 import { postSetCounterpartyMockResponse } from "~/requests/_personal/_moderation/postSetCounterparty/postSetCounterparty";
 import { postDeleteCounterpartyMockResponse } from "~/requests/_personal/_moderation/postDeleteCounterparty/postDeleteCounterparty";
 import { getDataMockResponse } from "~/requests/_personal/getData/getData";
+import { postCreateSearchFromTaskMockResponse } from "~/requests/_personal/postCreateSearchFromTask/postCreateSearchFromTask";
+import { postCreateSearchFromOrderMockResponse } from "~/requests/_personal/postCreateSearchFromOrder/postCreateSearchFromOrder";
 
 export const handlers = [
   getFormMockResponse,
@@ -246,4 +248,6 @@ export const handlers = [
   postSetCounterpartyMockResponse,
   postDeleteCounterpartyMockResponse,
   getDataMockResponse,
+  postCreateSearchFromTaskMockResponse,
+  postCreateSearchFromOrderMockResponse,
 ];

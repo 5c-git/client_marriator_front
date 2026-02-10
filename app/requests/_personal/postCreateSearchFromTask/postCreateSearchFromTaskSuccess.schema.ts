@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-export const getBidSuccessSchema = z.object({
+export const postCreateSearchFromTaskSuccessSchema = z.object({
   data: z.object({
     id: z.number(),
     user: z.object({
@@ -199,4 +199,6 @@ export const getBidSuccessSchema = z.object({
   }),
 });
 
-export type GetBidSuccess = z.infer<typeof getBidSuccessSchema>;
+export type PostCreateSearchFromTaskSuccess = z.infer<
+  typeof postCreateSearchFromTaskSuccessSchema
+>;

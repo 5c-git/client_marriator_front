@@ -57,6 +57,9 @@ export const getOrderSuccessSchema = z.object({
         }),
         id: z.number(),
         count: z.number(),
+        countSearch: z.number(),
+        existBid: z.boolean(),
+
         dateStart: z.string(),
         dateEnd: z.string(),
         needFoto: z.boolean(),
@@ -107,6 +110,7 @@ export const getOrderSuccessSchema = z.object({
       }),
       z.null(),
     ]),
+    statistic: z.array(z.object({ accepted: z.number(), count: z.number() })),
   }),
 });
 
