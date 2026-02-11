@@ -617,14 +617,11 @@ export function RequestSearchDrawer(props: RequestSearchDrawerProps) {
                       startIcon={<CalendarIcon />}
                       onClick={() => {
                         prepend({
-                          timeStart:
-                            props.entity.days.length > 0
-                              ? props.entity.days[0].timeStart
-                              : props.entity.dateStart,
-                          timeEnd:
-                            props.entity.days.length > 0
-                              ? props.entity.days[0].timeEnd
-                              : set(props.entity.dateStart, { hours: 21 }),
+                          timeStart: props.entity.dateStart,
+                          timeEnd: set(props.entity.dateStart, {
+                            hours: 21,
+                            minutes: 0,
+                          }),
                           ...(props.entity.activity.travelling === true && {
                             needRoute: false,
                             locations: [],
@@ -989,6 +986,15 @@ export function RequestSearchDrawer(props: RequestSearchDrawerProps) {
                                     propsDay.timeStart,
                                   ),
                                 );
+
+                                if (!match) {
+                                  match = days.find((propsDay) =>
+                                    isSameDay(
+                                      addDays(day.timeStart, 1),
+                                      propsDay,
+                                    ),
+                                  );
+                                }
                               } else {
                                 match = days.find((propsDay) =>
                                   isSameDay(
@@ -1051,6 +1057,15 @@ export function RequestSearchDrawer(props: RequestSearchDrawerProps) {
                                     propsDay.timeStart,
                                   ),
                                 );
+
+                                if (!match) {
+                                  match = days.find((propsDay) =>
+                                    isSameDay(
+                                      addDays(day.timeStart, 1),
+                                      propsDay,
+                                    ),
+                                  );
+                                }
                               } else {
                                 match = days.find((propsDay) =>
                                   isSameDay(
