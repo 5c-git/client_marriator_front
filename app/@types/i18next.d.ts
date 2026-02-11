@@ -84,6 +84,7 @@ import TaskMobileView from "../../public/locales/ru/TaskMobileView.json";
 import OrderMobileView from "../../public/locales/ru/OrderMobileView.json";
 import EntityMobileView from "../../public/locales/ru/EntityMobileView.json";
 import EntitiesListView from "../../public/locales/ru/EntitiesListView.json";
+import RequestSearchDrawer from "../../public/locales/ru/RequestSearchDrawer.json";
 
 //components
 import styledPhotoCheckbox from "../../public/locales/ru/styledPhotoCheckbox.json";
@@ -185,6 +186,7 @@ declare module "i18next" {
       EntityMobileView: typeof EntityMobileView;
       EntitiesListView: typeof EntitiesListView;
       ServiceMobileView: typeof ServiceMobileView;
+      RequestSearchDrawer: typeof RequestSearchDrawer;
 
       //components
       styledPhotoCheckbox: typeof styledPhotoCheckbox;

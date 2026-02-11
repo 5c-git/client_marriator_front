@@ -9,6 +9,8 @@ import {
 
 import type { Route } from "./+types/order";
 import type { EntityMobileViewInterface } from "../../../shared/ui/EntityMobileView/EntityMobileViewInterface";
+import type { RequestSearchDrawerInterface } from "~/shared/views/RequestSearchDrawer/RequestSearchDrawerInterface";
+import type { PostUpdateSearchPayload } from "~/requests/_personal/postUpdateSearch/postUpdateSearch";
 
 import { determineRole } from "~/shared/determineRole";
 
@@ -32,6 +34,7 @@ import {
 import { Loader } from "~/shared/ui/Loader/Loader";
 import { StyledRadioButton } from "~/shared/ui/StyledRadioButton/StyledRadioButton";
 import { RadioSearchableDrawer } from "../../../shared/ui/RadioSearchableDrawer/RadioSearchableDrawer";
+import { RequestSearchDrawer } from "~/shared/views/RequestSearchDrawer/RequestSearchDrawer";
 
 import { EntityStaticMobileView } from "../../../shared/ui/EntityMobileView/EntityStaticMobileView";
 import { EntityEditMobileView } from "../../../shared/ui/EntityMobileView/EntityEditMobileView";
@@ -49,10 +52,19 @@ import { postAcceptOrder } from "~/requests/_personal/postAcceptOrder/postAccept
 import { postSendOrder } from "~/requests/_personal/postSendOrder/postSendOrder";
 import { getSupervisorsForTask } from "~/requests/_personal/getSupervisorsForTask/getSupervisorsForTask";
 import { postCreateBidFromOrder } from "~/requests/_personal/postCreateBidFromOrder/postCreateBidFromOrder";
+import { postCreateSearchFromOrder } from "~/requests/_personal/postCreateSearchFromOrder/postCreateSearchFromOrder";
+import { postUpdateSearch } from "~/requests/_personal/postUpdateSearch/postUpdateSearch";
+import { getPlaceForBid } from "~/requests/_personal/getPlaceForBid/getPlaceForBid";
 
 type MobileModeData = {
   mode: "mobile";
   entity: EntityMobileViewInterface["entity"];
+  locations: {
+    value: string;
+    label: string;
+    logo: string | null;
+    disabled: boolean;
+  }[];
   supervisorsToSelect: ComponentPropsWithoutRef<
     typeof StyledRadioButton
   >["options"];
@@ -87,6 +99,8 @@ export async function clientLoader({ params }: Route.ClientLoaderArgs) {
         acceptingPerson: null,
         invitedPersons: [],
       };
+
+      const locations: MobileModeData["locations"] = [];
 
       const supervisorsToSelect: ComponentPropsWithoutRef<
         typeof StyledRadioButton
@@ -136,7 +150,8 @@ export async function clientLoader({ params }: Route.ClientLoaderArgs) {
           dateStart: item.dateStart,
           dateEnd: item.dateEnd,
           countSearch: item.countSearch,
-          existBid: item.existBid,
+          buttonBidNeed: item.buttonBidNeed,
+          buttonSearchNeed: item.buttonSearchNeed,
         });
       });
 
@@ -145,6 +160,19 @@ export async function clientLoader({ params }: Route.ClientLoaderArgs) {
           value: orderData.data.acceptUser.id.toString(),
           label: t("yourselfOption", { ns: "order" }),
           disabled: false,
+        });
+      }
+
+      if (userRole === "manager" || userRole === "supervisor") {
+        const locationsData = await getPlaceForBid(accessToken);
+
+        locationsData.data.forEach((item) => {
+          locations.push({
+            value: item.id.toString(),
+            label: `${item.name} ${item.region.name}`,
+            logo: item.logo,
+            disabled: false,
+          });
         });
       }
 
@@ -167,6 +195,7 @@ export async function clientLoader({ params }: Route.ClientLoaderArgs) {
       data = {
         mode: "mobile",
         entity: order,
+        locations,
         orderActivities: orderData.data.orderActivities,
         supervisorsToSelect,
       } as MobileModeData;
@@ -195,6 +224,85 @@ export async function clientAction({ request }: Route.ClientActionArgs) {
         fields.responsibleId,
       );
       throw redirect(withLocale(`/tasks/${transformedTaskData.data.id}`));
+    } else if (_action === "requestSearch") {
+      const searchRequestData = await postCreateSearchFromOrder(
+        accessToken,
+        fields.orderId,
+        fields.orderActivityId,
+      );
+
+      const entity: RequestSearchDrawerInterface["entity"] = {
+        logo: searchRequestData.data.viewActivity.logo,
+        place: {
+          id: searchRequestData.data.place.id,
+          name: searchRequestData.data.place.name,
+          logo: searchRequestData.data.place.logo,
+        },
+        project: {
+          id: searchRequestData.data.project.id,
+          name: searchRequestData.data.project.name,
+        },
+        activity: {
+          id: searchRequestData.data.viewActivity.id,
+          name: searchRequestData.data.viewActivity.name,
+          travelling: searchRequestData.data.viewActivity.traveling,
+        },
+        unitPrice: searchRequestData.data.price
+          ? searchRequestData.data.price
+          : 0,
+        finalPrice: searchRequestData.data.priceResult,
+        radius: searchRequestData.data.radius
+          ? searchRequestData.data.radius
+          : 0,
+        dateStart: new Date(searchRequestData.data.dateStart),
+        dateEnd: new Date(searchRequestData.data.dateEnd),
+        responsiblePerson: {
+          id: searchRequestData.data.user.id,
+          phone: searchRequestData.data.user.phone,
+          email: searchRequestData.data.user.email,
+          logo: searchRequestData.data.user.logo,
+          roles: searchRequestData.data.user.roles,
+        },
+        taskId: searchRequestData.data.task
+          ? searchRequestData.data.task.id
+          : null,
+        orderId: searchRequestData.data.order
+          ? searchRequestData.data.order.id
+          : null,
+        selfEmployed: searchRequestData.data.selfEmployed,
+        amount: searchRequestData.data.count,
+        needDays: searchRequestData.data.dateActivity.length > 0,
+        needFoto: searchRequestData.data.needFoto,
+        days: (() => {
+          const days: RequestSearchDrawerInterface["entity"]["days"] = [];
+
+          searchRequestData.data.dateActivity.forEach((date) => {
+            const locations: RequestSearchDrawerInterface["entity"]["days"][0]["locations"] =
+              [];
+
+            date.places.forEach((location) => {
+              locations.push({
+                id: location.id.toString(),
+                name: location.name,
+                logo: location.logo ? location.logo : "",
+              });
+            });
+
+            days.push({
+              timeStart: new Date(date.timeStart),
+              timeEnd: new Date(date.timeEnd),
+              needRoute: locations.length > 0 ? true : false,
+              locations: locations,
+            });
+          });
+
+          return days;
+        })(),
+      };
+
+      return entity;
+    } else if (_action === "_updateSearchRequest") {
+      await postUpdateSearch(accessToken, fields.payload);
     } else if (_action === "transformAssignmentToRequest") {
       const transformedRequestData = await postCreateBidFromOrder(
         accessToken,
@@ -220,7 +328,7 @@ export default function Order({ loaderData }: Route.ComponentProps) {
   const { t } = useTranslation("order");
   const userRole = useStore.getState().userRole;
 
-  const fetcher = useFetcher();
+  const fetcher = useFetcher<RequestSearchDrawerInterface["entity"]>();
 
   const [editMode, setEditMode] = useState<boolean>(false);
   const [serviceToDelete, setServiceToDelete] = useState<{
@@ -454,7 +562,8 @@ export default function Order({ loaderData }: Route.ComponentProps) {
                   ) : null}
 
                   {userRole === "supervisor" &&
-                  loaderData.entity.status === 3 ? (
+                  loaderData.entity.status === 3 &&
+                  service.buttonBidNeed ? (
                     <Button
                       variant="contained"
                       sx={{
@@ -476,6 +585,36 @@ export default function Order({ loaderData }: Route.ComponentProps) {
                       }}
                     >
                       {t("convertToBid")}
+                    </Button>
+                  ) : null}
+
+                  {(userRole === "manager" || userRole === "supervisor") &&
+                  service.buttonSearchNeed ? (
+                    <Button
+                      variant="contained"
+                      sx={{
+                        flexDirection: "column",
+                        marginTop: "8px",
+                      }}
+                      onClick={() => {
+                        fetcher.submit(
+                          JSON.stringify({
+                            _action: "requestSearch",
+                            orderId: loaderData.entity.id,
+                            orderActivityId: service.id,
+                          }),
+                          {
+                            method: "POST",
+                            encType: "application/json",
+                          },
+                        );
+                      }}
+                    >
+                      {t("searchRequest")}{" "}
+                      <span>
+                        {t("searchRequest")}
+                        {service.count}
+                      </span>
                     </Button>
                   ) : null}
                 </Box>
@@ -553,6 +692,66 @@ export default function Order({ loaderData }: Route.ComponentProps) {
               )}
             />
           )}
+          {fetcher.data ? (
+            <RequestSearchDrawer
+              open={fetcher.data ? true : false}
+              entity={fetcher.data}
+              locations={loaderData.locations}
+              submitAction={(values) => {
+                const payload: PostUpdateSearchPayload = {
+                  place: values.place,
+                  activity: values.activity,
+                  amount: values.amount,
+                  unitPrice: Number(values.unitPrice),
+                  radius: Number(values.radius),
+                  dateStart: values.dateStart.toISOString(),
+                  dateEnd: values.dateEnd.toISOString(),
+                  needDays: values.needDays,
+                  needFoto: values.needFoto,
+                  ...(values.days &&
+                    values.days.length > 0 && {
+                      dateActivity: (() => {
+                        const days: {
+                          timeStart: string;
+                          timeEnd: string;
+                          placeIds?: number[];
+                        }[] = [];
+
+                        values.days?.forEach((day) => {
+                          const places: number[] = [];
+
+                          day.locations?.forEach((location) => {
+                            places.push(Number(location.id));
+                          });
+
+                          days.push({
+                            timeStart: new Date(day.timeStart).toISOString(),
+                            timeEnd: new Date(day.timeEnd).toISOString(),
+                            ...(places.length > 0 && { placeIds: places }),
+                          });
+                        });
+
+                        return days;
+                      })(),
+                    }),
+                };
+
+                fetcher.submit(
+                  JSON.stringify({
+                    _action: "_updateSearchRequest",
+                    payload,
+                  }),
+                  {
+                    method: "POST",
+                    encType: "application/json",
+                  },
+                );
+              }}
+              closeAction={() => {
+                fetcher.reset();
+              }}
+            />
+          ) : null}
           <RadioSearchableDrawer
             translation={"responsible"}
             open={searchSupervisors}

@@ -9,6 +9,8 @@
   "convertToBid": "Создать  заявку",
   "acceptButton": "Принять",
   "yourselfOption": "Назначить себя",
+  "searchRequest": "Заказ на поиск",
+  "searchRequestCount": "Осталось попыток: ",
   "dialog": {
     "title": "Удалить",
     "no": "Нет",

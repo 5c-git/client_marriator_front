@@ -8,7 +8,9 @@ import {
   useSubmit,
 } from "react-router";
 import type { Route } from "./+types/task";
-import type { EntityMobileViewInterface } from "../../../shared/ui/EntityMobileView/EntityMobileViewInterface";
+import type { EntityMobileViewInterface } from "~/shared/ui/EntityMobileView/EntityMobileViewInterface";
+import type { RequestSearchDrawerInterface } from "~/shared/views/RequestSearchDrawer/RequestSearchDrawerInterface";
+import type { PostUpdateSearchPayload } from "~/requests/_personal/postUpdateSearch/postUpdateSearch";
 
 import { useStore } from "~/store/store";
 import { useTranslation } from "react-i18next";
@@ -19,6 +21,7 @@ import { EntityStaticMobileView } from "../../../shared/ui/EntityMobileView/Enti
 import { EntityEditMobileView } from "../../../shared/ui/EntityMobileView/EntityEditMobileView";
 import { CheckboxSearchableDrawer } from "~/shared/ui/CheckboxSearchableDrawer/CheckboxSearchableDrawer";
 import { RadioSearchableDrawer } from "~/shared/ui/RadioSearchableDrawer/RadioSearchableDrawer";
+import { RequestSearchDrawer } from "~/shared/views/RequestSearchDrawer/RequestSearchDrawer";
 
 import { Loader } from "~/shared/ui/Loader/Loader";
 import { StyledCheckboxMultiple } from "~/shared/ui/StyledCheckboxMultiple/StyledCheckboxMultiple";
@@ -46,11 +49,20 @@ import { postCreateBidFromTask } from "~/requests/_personal/postCreateBidFromTas
 import { postInstructTask } from "~/requests/_personal/postInstructTask/postInstructTask";
 import { postInvoiceTask } from "~/requests/_personal/postInvoiceTask/postInvoiceTask";
 import { postAcceptTask } from "~/requests/_personal/postAcceptTask/postAcceptTask";
+
+import { getPlaceForBid } from "~/requests/_personal/getPlaceForBid/getPlaceForBid";
 import { postCreateSearchFromTask } from "~/requests/_personal/postCreateSearchFromTask/postCreateSearchFromTask";
+import { postUpdateSearch } from "~/requests/_personal/postUpdateSearch/postUpdateSearch";
 
 type MobileModeData = {
   mode: "mobile";
   entity: EntityMobileViewInterface["entity"];
+  locations: {
+    value: string;
+    label: string;
+    logo: string | null;
+    disabled: boolean;
+  }[];
   supervisorsToSelect: ComponentPropsWithoutRef<
     typeof StyledCheckboxMultiple
   >["options"];
@@ -83,6 +95,8 @@ export async function clientLoader({ params }: Route.ClientLoaderArgs) {
         acceptingPerson: null,
         invitedPersons: [],
       };
+
+      const locations: MobileModeData["locations"] = [];
 
       const supervisorsToSelect: MobileModeData["supervisorsToSelect"] = [];
 
@@ -135,7 +149,8 @@ export async function clientLoader({ params }: Route.ClientLoaderArgs) {
           dateStart: item.dateStart,
           dateEnd: item.dateEnd,
           countSearch: item.countSearch,
-          existBid: item.existBid,
+          buttonBidNeed: item.buttonBidNeed,
+          buttonSearchNeed: item.buttonSearchNeed,
         });
       });
       taskData.data.acceptedUser.forEach((item) => {
@@ -148,6 +163,19 @@ export async function clientLoader({ params }: Route.ClientLoaderArgs) {
           logo: item.logo,
         });
       });
+
+      if (userRole === "manager" || userRole === "supervisor") {
+        const locationsData = await getPlaceForBid(accessToken);
+
+        locationsData.data.forEach((item) => {
+          locations.push({
+            value: item.id.toString(),
+            label: `${item.name} ${item.region.name}`,
+            logo: item.logo,
+            disabled: false,
+          });
+        });
+      }
 
       if (userRole === "manager") {
         const supervisorsToSelectData = await getSupervisorsForTask(
@@ -167,6 +195,7 @@ export async function clientLoader({ params }: Route.ClientLoaderArgs) {
       data = {
         mode: "mobile",
         entity: task,
+        locations,
         supervisorsToSelect,
       } as MobileModeData;
     }
@@ -203,7 +232,78 @@ export async function clientAction({
         fields.taskActivityId,
       );
 
-      return searchRequestData;
+      const entity: RequestSearchDrawerInterface["entity"] = {
+        logo: searchRequestData.data.viewActivity.logo,
+        place: {
+          id: searchRequestData.data.place.id,
+          name: searchRequestData.data.place.name,
+          logo: searchRequestData.data.place.logo,
+        },
+        project: {
+          id: searchRequestData.data.project.id,
+          name: searchRequestData.data.project.name,
+        },
+        activity: {
+          id: searchRequestData.data.viewActivity.id,
+          name: searchRequestData.data.viewActivity.name,
+          travelling: searchRequestData.data.viewActivity.traveling,
+        },
+        unitPrice: searchRequestData.data.price
+          ? searchRequestData.data.price
+          : 0,
+        finalPrice: searchRequestData.data.priceResult,
+        radius: searchRequestData.data.radius
+          ? searchRequestData.data.radius
+          : 0,
+        dateStart: new Date(searchRequestData.data.dateStart),
+        dateEnd: new Date(searchRequestData.data.dateEnd),
+        responsiblePerson: {
+          id: searchRequestData.data.user.id,
+          phone: searchRequestData.data.user.phone,
+          email: searchRequestData.data.user.email,
+          logo: searchRequestData.data.user.logo,
+          roles: searchRequestData.data.user.roles,
+        },
+        taskId: searchRequestData.data.task
+          ? searchRequestData.data.task.id
+          : null,
+        orderId: searchRequestData.data.order
+          ? searchRequestData.data.order.id
+          : null,
+        selfEmployed: searchRequestData.data.selfEmployed,
+        amount: searchRequestData.data.count,
+        needDays: searchRequestData.data.dateActivity.length > 0,
+        needFoto: searchRequestData.data.needFoto,
+        days: (() => {
+          const days: RequestSearchDrawerInterface["entity"]["days"] = [];
+
+          searchRequestData.data.dateActivity.forEach((date) => {
+            const locations: RequestSearchDrawerInterface["entity"]["days"][0]["locations"] =
+              [];
+
+            date.places.forEach((location) => {
+              locations.push({
+                id: location.id.toString(),
+                name: location.name,
+                logo: location.logo ? location.logo : "",
+              });
+            });
+
+            days.push({
+              timeStart: new Date(date.timeStart),
+              timeEnd: new Date(date.timeEnd),
+              needRoute: locations.length > 0 ? true : false,
+              locations: locations,
+            });
+          });
+
+          return days;
+        })(),
+      };
+
+      return entity;
+    } else if (_action === "_updateSearchRequest") {
+      await postUpdateSearch(accessToken, fields.payload);
     } else if (_action === "_inviteSupervisors") {
       await postInvoiceTask(accessToken, params.taskId, fields.supervisors);
     } else if (_action === "_makeResponsible") {
@@ -216,7 +316,7 @@ export async function clientAction({
   }
 }
 
-export default function Task({ loaderData, actionData }: Route.ComponentProps) {
+export default function Task({ loaderData }: Route.ComponentProps) {
   const navigate = useNavigate();
   const navigation = useNavigation();
   const submit = useSubmit();
@@ -224,7 +324,7 @@ export default function Task({ loaderData, actionData }: Route.ComponentProps) {
   const userRole = useStore.getState().userRole;
   const userId = useStore.getState().userId;
 
-  const fetcher = useFetcher();
+  const fetcher = useFetcher<RequestSearchDrawerInterface["entity"]>();
 
   const [editMode, setEditMode] = useState<boolean>(false);
   const [searchSupervisors, setSearchSupervisors] = useState<boolean>(false);
@@ -481,9 +581,12 @@ export default function Task({ loaderData, actionData }: Route.ComponentProps) {
                     </>
                   ) : null}
 
-                  {(userRole === "manager" && loaderData.entity.status === 3) ||
+                  {(userRole === "manager" &&
+                    loaderData.entity.status === 3 &&
+                    service.buttonBidNeed) ||
                   (userRole === "supervisor" &&
-                    loaderData.entity.status === 3) ? (
+                    loaderData.entity.status === 3 &&
+                    service.buttonBidNeed) ? (
                     <Button
                       variant="contained"
                       sx={{
@@ -509,8 +612,7 @@ export default function Task({ loaderData, actionData }: Route.ComponentProps) {
                   ) : null}
 
                   {(userRole === "manager" || userRole === "supervisor") &&
-                  service.existBid === true &&
-                  service.countSearch < service.count ? (
+                  service.buttonSearchNeed ? (
                     <Button
                       variant="contained"
                       sx={{
@@ -531,9 +633,11 @@ export default function Task({ loaderData, actionData }: Route.ComponentProps) {
                         );
                       }}
                     >
-                      {/* {t("acceptButton")} */}
-                      Заказ на поиск{" "}
-                      <span>Осталось попыток: {service.count}</span>
+                      {t("searchRequest")}{" "}
+                      <span>
+                        {t("searchRequest")}
+                        {service.count}
+                      </span>
                     </Button>
                   ) : null}
                 </Box>
@@ -573,6 +677,66 @@ export default function Task({ loaderData, actionData }: Route.ComponentProps) {
               }}
             />
           )}
+          {fetcher.data ? (
+            <RequestSearchDrawer
+              open={fetcher.data ? true : false}
+              entity={fetcher.data}
+              locations={loaderData.locations}
+              submitAction={(values) => {
+                const payload: PostUpdateSearchPayload = {
+                  place: values.place,
+                  activity: values.activity,
+                  amount: values.amount,
+                  unitPrice: Number(values.unitPrice),
+                  radius: Number(values.radius),
+                  dateStart: values.dateStart.toISOString(),
+                  dateEnd: values.dateEnd.toISOString(),
+                  needDays: values.needDays,
+                  needFoto: values.needFoto,
+                  ...(values.days &&
+                    values.days.length > 0 && {
+                      dateActivity: (() => {
+                        const days: {
+                          timeStart: string;
+                          timeEnd: string;
+                          placeIds?: number[];
+                        }[] = [];
+
+                        values.days?.forEach((day) => {
+                          const places: number[] = [];
+
+                          day.locations?.forEach((location) => {
+                            places.push(Number(location.id));
+                          });
+
+                          days.push({
+                            timeStart: new Date(day.timeStart).toISOString(),
+                            timeEnd: new Date(day.timeEnd).toISOString(),
+                            ...(places.length > 0 && { placeIds: places }),
+                          });
+                        });
+
+                        return days;
+                      })(),
+                    }),
+                };
+
+                submit(
+                  JSON.stringify({
+                    _action: "_updateSearchRequest",
+                    payload,
+                  }),
+                  {
+                    method: "POST",
+                    encType: "application/json",
+                  },
+                );
+              }}
+              closeAction={() => {
+                fetcher.reset();
+              }}
+            />
+          ) : null}
           <CheckboxSearchableDrawer
             translation="supervisor"
             open={searchSupervisors}

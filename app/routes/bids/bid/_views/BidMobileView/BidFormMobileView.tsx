@@ -111,10 +111,10 @@ const createBidFormSchema = (startDate: Date, endEnd: Date) =>
                       error: t("text", { ns: "constructorFields" }),
                     }),
                   logo: z.string().optional(),
-                })
+                }),
               )
               .optional(),
-          })
+          }),
         )
         .superRefine((days, ctx) => {
           days.forEach((day, index) => {
@@ -180,7 +180,7 @@ export function BidFormMobileView(props: BidFormMobileViewInterface) {
       days: props.entity.days,
     },
     resolver: zodResolver(
-      createBidFormSchema(props.entity.dateStart, props.entity.dateEnd)
+      createBidFormSchema(props.entity.dateStart, props.entity.dateEnd),
     ),
   });
 
@@ -255,7 +255,7 @@ export function BidFormMobileView(props: BidFormMobileViewInterface) {
                   statusCodeMap[
                     props.entity.status as keyof typeof statusCodeMap
                   ].value
-                }`
+                }`,
               )}
             </Typography>
           </Box>
@@ -387,29 +387,35 @@ export function BidFormMobileView(props: BidFormMobileViewInterface) {
             const incomingDays = props.entity.days;
 
             if (submittedDays.length > 0 && incomingDays.length > 0) {
-              submittedDays.forEach((day, index) => {
+              let error = false;
+              for (let i = 0; i < submittedDays.length; ++i) {
                 const match = incomingDays.find((incomingDay) =>
-                  isSameDay(incomingDay.timeStart, day.timeStart)
+                  isSameDay(incomingDay.timeStart, submittedDays[i].timeStart),
                 );
 
                 if (match) {
-                  if (isBefore(day.timeStart, match.timeStart)) {
-                    setError(`days.${index}.timeStart` as const, {
+                  if (isBefore(submittedDays[i].timeStart, match.timeStart)) {
+                    setError(`days.${i}.timeStart` as const, {
                       type: "manual",
                       message: t("earlierThanDefaultError"),
                     });
-                    return;
+                    error = true;
+                    break;
                   }
-                  if (isAfter(day.timeEnd, match.timeEnd)) {
-                    setError(`days.${index}.timeEnd` as const, {
+                  if (isAfter(submittedDays[i].timeEnd, match.timeEnd)) {
+                    setError(`days.${i}.timeEnd` as const, {
                       type: "manual",
                       message: t("laterThanDefaultError"),
                     });
-                    return;
+                    error = true;
+                    break;
                   }
-                  props.submitAction(values);
                 }
-              });
+              }
+
+              if (!error) {
+                props.submitAction(values);
+              }
             } else {
               props.submitAction(values);
             }
@@ -860,7 +866,7 @@ export function BidFormMobileView(props: BidFormMobileViewInterface) {
                                 onChange={(value) => {
                                   setValue(
                                     `days.${index}.timeStart` as const,
-                                    new Date(value)
+                                    new Date(value),
                                   );
                                 }}
                               />
@@ -891,7 +897,7 @@ export function BidFormMobileView(props: BidFormMobileViewInterface) {
                                 onChange={(value) => {
                                   setValue(
                                     `days.${index}.timeEnd` as const,
-                                    new Date(value)
+                                    new Date(value),
                                   );
                                 }}
                               />
@@ -973,20 +979,20 @@ export function BidFormMobileView(props: BidFormMobileViewInterface) {
                                           <IconButton
                                             onClick={() => {
                                               const currentList = getValues(
-                                                `days.${index}.locations`
+                                                `days.${index}.locations`,
                                               );
 
                                               const updatedList =
                                                 currentList?.filter(
                                                   (item) =>
-                                                    item.id !== location.id
+                                                    item.id !== location.id,
                                                 );
                                               setValue(
                                                 `days.${index}.locations`,
-                                                updatedList
+                                                updatedList,
                                               );
                                               trigger(
-                                                `days.${index}.locations`
+                                                `days.${index}.locations`,
                                               );
                                             }}
                                             sx={{
@@ -1002,7 +1008,7 @@ export function BidFormMobileView(props: BidFormMobileViewInterface) {
                                             />
                                           </IconButton>
                                         </Box>
-                                      )
+                                      ),
                                     )
                                   : null}
 
@@ -1054,7 +1060,7 @@ export function BidFormMobileView(props: BidFormMobileViewInterface) {
                     //дни есть, нужно проверить есть ли промежуток между днями или они идут друг за другом, для этого берем текущий день, прибавляем к нему 24 часа и берем следующий день в массиве и сравниваем, если день один и тотже, то дни идут друг за другом
                     const sameDay = isSameDay(
                       addDays(day.timeStart, 1),
-                      nextDayinArray.timeStart
+                      nextDayinArray.timeStart,
                     );
 
                     //если день не один и тотже, значит есть промежуток, вставляем кнопку
@@ -1078,12 +1084,12 @@ export function BidFormMobileView(props: BidFormMobileViewInterface) {
                               match = props.entity.days.find((propsDay) =>
                                 isSameDay(
                                   addDays(day.timeStart, 1),
-                                  propsDay.timeStart
-                                )
+                                  propsDay.timeStart,
+                                ),
                               );
                             } else {
                               match = days.find((propsDay) =>
-                                isSameDay(addDays(day.timeStart, 1), propsDay)
+                                isSameDay(addDays(day.timeStart, 1), propsDay),
                               );
                             }
 
@@ -1137,12 +1143,12 @@ export function BidFormMobileView(props: BidFormMobileViewInterface) {
                               match = props.entity.days.find((propsDay) =>
                                 isSameDay(
                                   addDays(day.timeStart, 1),
-                                  propsDay.timeStart
-                                )
+                                  propsDay.timeStart,
+                                ),
                               );
                             } else {
                               match = days.find((propsDay) =>
-                                isSameDay(addDays(day.timeStart, 1), propsDay)
+                                isSameDay(addDays(day.timeStart, 1), propsDay),
                               );
                             }
 
@@ -1331,7 +1337,7 @@ export function BidFormMobileView(props: BidFormMobileViewInterface) {
                 })}
               >
                 {t(
-                  `role.${determineRole(props.entity.responsiblePerson.roles)}`
+                  `role.${determineRole(props.entity.responsiblePerson.roles)}`,
                 )}
               </Typography>
             </Box>
@@ -1382,11 +1388,11 @@ export function BidFormMobileView(props: BidFormMobileViewInterface) {
 
           selectedLoactions.forEach((item) => {
             const match = props.locations.find(
-              (location) => location.value === item
+              (location) => location.value === item,
             );
 
             const isAlreadySelected = selectedDayLocations?.find(
-              (location) => location.id === item
+              (location) => location.id === item,
             );
 
             if (match && isAlreadySelected === undefined) {

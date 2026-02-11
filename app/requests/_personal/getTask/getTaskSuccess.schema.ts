@@ -84,6 +84,10 @@ export const getTaskSuccessSchema = z.object({
     orderActivities: z.array(
       z.object({
         id: z.number(),
+        buttonBidNeed: z.boolean(),
+        buttonSearchNeed: z.boolean(),
+        count: z.number(),
+        countSearch: z.number(),
         viewActivity: z.object({
           id: z.number(),
           name: z.string(),
@@ -92,9 +96,6 @@ export const getTaskSuccessSchema = z.object({
           logo: z.string(),
           traveling: z.boolean(),
         }),
-        count: z.number(),
-        countSearch: z.number(),
-        existBid: z.boolean(),
         dateStart: z.string(),
         dateEnd: z.string(),
         needFoto: z.boolean(),

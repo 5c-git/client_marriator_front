@@ -47,6 +47,11 @@ export const getOrderSuccessSchema = z.object({
     }),
     orderActivities: z.array(
       z.object({
+        id: z.number(),
+        buttonBidNeed: z.boolean(),
+        buttonSearchNeed: z.boolean(),
+        count: z.number(),
+        countSearch: z.number(),
         viewActivity: z.object({
           id: z.number(),
           name: z.string(),
@@ -55,16 +60,12 @@ export const getOrderSuccessSchema = z.object({
           logo: z.string(),
           traveling: z.boolean(),
         }),
-        id: z.number(),
-        count: z.number(),
-        countSearch: z.number(),
-        existBid: z.boolean(),
-
         dateStart: z.string(),
         dateEnd: z.string(),
         needFoto: z.boolean(),
         dateActivity: z.array(
           z.object({
+            id: z.number(),
             timeStart: z.string(),
             timeEnd: z.string(),
             places: z.array(
@@ -79,7 +80,7 @@ export const getOrderSuccessSchema = z.object({
                 brand: z.object({
                   id: z.number(),
                   name: z.string(),
-                  logo: z.union([z.null(), z.string()]).optional(),
+                  logo: z.union([z.null(), z.string()]),
                   description: z.string(),
                 }),
               }),

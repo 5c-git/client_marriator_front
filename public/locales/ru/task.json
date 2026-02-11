@@ -10,6 +10,8 @@
   "saveButton": "Сохранить",
   "convertToBid": "Создать заявку",
   "acceptButton": "Принять задачу",
+  "searchRequest": "Заказ на поиск",
+  "searchRequestCount": "Осталось попыток: ",
   "dialog": {
     "title": "Удалить",
     "no": "Нет",

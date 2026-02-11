@@ -15,12 +15,12 @@ type Entity = {
     id: number;
     name: string;
     count: number;
+    countSearch: number;
     route: number;
-
     dateStart: string;
     dateEnd: string;
-    countSearch: number;
-    existBid: boolean;
+    buttonBidNeed: boolean;
+    buttonSearchNeed: boolean;
   }[];
   project: null | {
     id: number;

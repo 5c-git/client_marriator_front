@@ -9,6 +9,8 @@
   "convertToBid": "Сonvert to request",
   "acceptButton": "Accept",
   "yourselfOption": "Become responsible yourself",
+  "searchRequest": "Request search",
+  "searchRequestCount": "Tries: ",
   "dialog": {
     "title": "Delete",
     "no": "No",
