@@ -1,17 +1,9 @@
 import { http, delay, HttpResponse } from "msw";
-import Ajv from "ajv";
 
-import responseSuccess from "./postCheckEmailCodeSuccess.schema.json";
-import responseError from "./postCheckEmailCodeError.schema.json";
+import { postCheckEmailCodeSuccessSchema } from "./postCheckEmailCodeSuccess.schema";
+import { postCheckEmailCodeErrorSchema } from "./postCheckEmailCodeError.schema";
 
-import { PostCheckEmailCodeSuccess } from "./postCheckEmailCodeSuccess.type";
-import { PostCheckEmailCodeError } from "./postCheckEmailCodeError.type";
 import { UnxpectedError } from "~/shared/unexpectedError/unexpectedError";
-
-const ajv = new Ajv();
-
-const validateResponseSuccess = ajv.compile(responseSuccess);
-const validateResponseError = ajv.compile(responseError);
 
 export const postCheckEmailCodeKeys = ["postCheckEmailCode"];
 
@@ -39,14 +31,15 @@ export const postCheckEmailCode = async (accessToken: string, code: string) => {
       });
     }
 
-    if (validateResponseSuccess(response)) {
-      data = response as unknown as PostCheckEmailCodeSuccess;
-    } else if (validateResponseError(response)) {
-      data = response as unknown as PostCheckEmailCodeError;
+    const parsedSuccess = postCheckEmailCodeSuccessSchema.safeParse(response);
+    const parsedError = postCheckEmailCodeErrorSchema.safeParse(response);
+
+    if (parsedSuccess.success) {
+      data = parsedSuccess.data;
+    } else if (parsedError.success) {
+      data = parsedError.data;
     } else {
-      throw new Response(
-        "Данные запроса postCheckEmailCode не соответствуют схеме"
-      );
+      throw new Response(`Данные запроса postCheckEmailCode не валидны схеме`);
     }
 
     return data;
@@ -99,5 +92,5 @@ export const postCheckEmailCodeMockResponse = http.post(
     //   await delay(2000);
     //   return HttpResponse.json(mockResponseError);
     // }
-  }
+  },
 );

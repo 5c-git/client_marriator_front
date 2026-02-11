@@ -1,17 +1,9 @@
 import { http, delay, HttpResponse } from "msw";
-import Ajv from "ajv";
 
-import schemaSuccess from "./postSetBrandImgSuccess.schema.json";
-import schemaError from "./postSetBrandImgError.schema.json";
-import { PostSetBrandImgSuccess } from "./postSetBrandImgSuccess.type";
-import { PostSetBrandImgError } from "./postSetBrandImgError.type";
+import { postSetBrandImgSuccessSchema } from "./postSetBrandImgSuccess.schema";
+import { postSetBrandImgErrorSchema } from "./postSetBrandImgError.schema";
 
 import { UnxpectedError } from "~/shared/unexpectedError/unexpectedError";
-
-const ajv = new Ajv();
-
-const validateSuccess = ajv.compile(schemaSuccess);
-const validateError = ajv.compile(schemaError);
 
 export const postSetBrandImgKeys = ["postSetBrandImg"];
 
@@ -41,11 +33,13 @@ export const postSetBrandImg = async (accessToken: string, brandId: string) => {
       });
     }
 
-    if (validateSuccess(response)) {
-      data = response as unknown as PostSetBrandImgSuccess;
-    } else if (validateError(response)) {
-      data = response as unknown as PostSetBrandImgError;
-      throw new Response(data.message);
+    const parsedSuccess = postSetBrandImgSuccessSchema.safeParse(response);
+    const parsedError = postSetBrandImgErrorSchema.safeParse(response);
+
+    if (parsedSuccess.success) {
+      data = parsedSuccess.data;
+    } else if (parsedError.success) {
+      data = parsedError.data;
     } else {
       throw new Response(`Данные запроса postSetBrandImg не валидны схеме`);
     }
@@ -82,5 +76,5 @@ export const postSetBrandImgMockResponse = http.post(
   async () => {
     await delay(2000);
     return HttpResponse.json(mockResponseSuccess);
-  }
+  },
 );

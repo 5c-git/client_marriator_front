@@ -1,18 +1,16 @@
 import { http, delay, HttpResponse } from "msw";
-import Ajv from "ajv";
 
-import getBrandSuccess from "./getBrandSuccess.schema.json";
-import { GetBrandSuccess } from "./getBrandSuccess.type";
+import {
+  getBrandSuccessSchema,
+  GetBrandSuccess,
+} from "./getBrandSuccess.schema";
+
 import { UnxpectedError } from "~/shared/unexpectedError/unexpectedError";
-
-const ajv = new Ajv();
-
-const validateSuccess = ajv.compile(getBrandSuccess);
 
 export const getBrandKeys = ["getBrand"];
 
 export const getBrand = async (
-  accessToken: string
+  accessToken: string,
   // userId: string,
   // confirm: string
 ): Promise<GetBrandSuccess> => {
@@ -39,9 +37,12 @@ export const getBrand = async (
       });
     }
 
-    if (validateSuccess(response)) {
-      data = response as unknown as GetBrandSuccess;
+    const parsed = getBrandSuccessSchema.safeParse(response);
+
+    if (parsed.success) {
+      data = parsed.data;
     } else {
+      console.log(parsed.error);
       throw new Response(`Данные запроса getBrand не валидны схеме`);
     }
 
@@ -90,5 +91,5 @@ export const getBrandMockResponse = http.get(
   async () => {
     await delay(2000);
     return HttpResponse.json(mockResponseSuccess);
-  }
+  },
 );

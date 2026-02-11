@@ -1,23 +1,15 @@
 import { http, delay, HttpResponse } from "msw";
-import Ajv from "ajv";
 
-import responseSuccess from "./postPersonalSetUserEmail.schema.json";
-import responseError from "./postPersonalSetUserEmailError.schema.json";
+import { postPersonalSetUserEmailSuccessSchema } from "./postPersonalSetUserEmailSuccess.schema";
+import { postPersonalSetUserEmailErrorSchema } from "./postPersonalSetUserEmailError.schema";
 
-import { PostPersonalSetUserEmailSuccessSchema } from "./postPersonalSetUserEmail.type";
-import { PostPersonalSetUserEmailErrorSchema } from "./postPersonalSetUserEmailError.type";
 import { UnxpectedError } from "~/shared/unexpectedError/unexpectedError";
-
-const ajv = new Ajv();
-
-const validateResponseSuccess = ajv.compile(responseSuccess);
-const validateResponseError = ajv.compile(responseError);
 
 export const postPersonalSetUserEmailKeys = ["postPersonalSetUserEmail"];
 
 export const postPersonalSetUserEmail = async (
   accessToken: string,
-  email: string
+  email: string,
 ) => {
   try {
     const url = new URL(import.meta.env.VITE_SET_PERSONAL_USER_EMAIL);
@@ -42,13 +34,17 @@ export const postPersonalSetUserEmail = async (
       });
     }
 
-    if (validateResponseSuccess(response)) {
-      data = response as unknown as PostPersonalSetUserEmailSuccessSchema;
-    } else if (validateResponseError(response)) {
-      data = response as unknown as PostPersonalSetUserEmailErrorSchema;
+    const parsedSuccess =
+      postPersonalSetUserEmailSuccessSchema.safeParse(response);
+    const parsedError = postPersonalSetUserEmailErrorSchema.safeParse(response);
+
+    if (parsedSuccess.success) {
+      data = parsedSuccess.data;
+    } else if (parsedError.success) {
+      data = parsedError.data;
     } else {
       throw new Response(
-        "Данные запроса postPersonalSetUserEmail не соответствуют схеме"
+        `Данные запроса postPersonalSetUserEmail не валидны схеме`,
       );
     }
 
@@ -104,5 +100,5 @@ export const postPersonalSetUserEmailMockResponse = http.post(
     //   await delay(2000);
     //   return HttpResponse.json(mockResponseError);
     // }
-  }
+  },
 );

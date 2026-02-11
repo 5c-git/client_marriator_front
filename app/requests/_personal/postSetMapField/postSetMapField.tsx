@@ -1,13 +1,11 @@
 import { http, delay, HttpResponse } from "msw";
-import Ajv from "ajv";
 
-import postSetMapFieldSuccess from "./postSetMapFieldSuccess.schema.json";
-import { PostSetMapFieldSuccess } from "./postSetMapFieldSuccess.type";
+import {
+  postSetMapFieldSuccessSchema,
+  PostSetMapFieldSuccess,
+} from "./postSetMapFieldSuccess.schema";
+
 import { UnxpectedError } from "~/shared/unexpectedError/unexpectedError";
-
-const ajv = new Ajv();
-
-const validateSuccess = ajv.compile(postSetMapFieldSuccess);
 
 export const postSetMapFieldKeys = ["postSetMapField"];
 
@@ -16,7 +14,7 @@ export const postSetMapField = async (
   mapAddress: string,
   mapRadius: string | null,
   latitude: string,
-  longitude: string
+  longitude: string,
 ): Promise<PostSetMapFieldSuccess> => {
   try {
     const url = new URL(import.meta.env.VITE_POST_MAP_FIELD);
@@ -44,10 +42,12 @@ export const postSetMapField = async (
       });
     }
 
-    if (validateSuccess(response)) {
-      data = response as unknown as PostSetMapFieldSuccess;
+    const parsed = postSetMapFieldSuccessSchema.safeParse(response);
+
+    if (parsed.success) {
+      data = parsed.data;
     } else {
-      console.log(validateSuccess.errors);
+      console.log(parsed.error);
       throw new Response(`Данные запроса postSetMapField не валидны схеме`);
     }
 
@@ -83,5 +83,5 @@ export const postSetMapFieldMockResponse = http.get(
   async () => {
     await delay(2000);
     return HttpResponse.json(mockResponseSuccess);
-  }
+  },
 );

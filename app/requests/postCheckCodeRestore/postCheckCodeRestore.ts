@@ -1,23 +1,15 @@
 import { http, delay, HttpResponse } from "msw";
-import Ajv from "ajv";
 
-import responseSuccess from "./postCheckCodeRestoreSuccess.schema.json";
-import responseError from "./postCheckCodeRestoreError.schema.json";
+import { postCheckCodeRestoreSuccessSchema } from "./postCheckCodeRestoreSuccess.schema";
+import { postCheckCodeRestoreErrorSchema } from "./postCheckCodeRestoreError.schema";
 
-import { PostCheckCodeRestoreSuccess } from "./postCheckCodeRestoreSuccess.type";
-import { PostCheckCodeRestoreError } from "./postCheckCodeRestoreError.type";
 import { UnxpectedError } from "~/shared/unexpectedError/unexpectedError";
-
-const ajv = new Ajv();
-
-const validateResponseSuccess = ajv.compile(responseSuccess);
-const validateResponseError = ajv.compile(responseError);
 
 export const postCheckCodeRestoreKeys = ["postCheckCodeRestore"];
 
 export const postCheckCodeRestore = async (
   accessToken: string,
-  code: string
+  code: string,
 ) => {
   try {
     const url = new URL(import.meta.env.VITE_CHECK_CODE_RESTORE);
@@ -42,13 +34,16 @@ export const postCheckCodeRestore = async (
       });
     }
 
-    if (validateResponseSuccess(response)) {
-      data = response as unknown as PostCheckCodeRestoreSuccess;
-    } else if (validateResponseError(response)) {
-      data = response as unknown as PostCheckCodeRestoreError;
+    const parsedSuccess = postCheckCodeRestoreSuccessSchema.safeParse(response);
+    const parsedError = postCheckCodeRestoreErrorSchema.safeParse(response);
+
+    if (parsedSuccess.success) {
+      data = parsedSuccess.data;
+    } else if (parsedError.success) {
+      data = parsedError.data;
     } else {
       throw new Response(
-        "Данные запроса postCheckCodeRestore не соответствуют схеме"
+        `Данные запроса postCheckCodeRestore не валидны схеме`,
       );
     }
 
@@ -110,5 +105,5 @@ export const postCheckCodeRestoreMockResponse = http.post(
     //   await delay(2000);
     //   return HttpResponse.json(mockResponseError);
     // }
-  }
+  },
 );

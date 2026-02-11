@@ -1,14 +1,12 @@
 import { http, delay, HttpResponse } from "msw";
-import Ajv from "ajv";
 
-import schemaSuccess from "./postSaveUserFieldsActivitiesSuccess.schema.json";
+import {
+  postSaveUserFieldsActivitiesSuccessSchema,
+  PostSaveUserFieldsActivitiesSuccess,
+} from "./postSaveUserFieldsActivitiesSuccess.schema";
+// import { postSaveUserFieldsActivitiesErrorSchema } from "./postSaveUserFieldsActivitiesError.schema";
 
-import { PostSaveUserFieldsActivitiesSuccess } from "./postSaveUserFieldsActivitiesSuccess.type";
 import { UnxpectedError } from "~/shared/unexpectedError/unexpectedError";
-
-const ajv = new Ajv();
-
-const validateSuccess = ajv.compile(schemaSuccess);
 
 export const postSaveUserFieldsActivitiesKeys = [
   "postSaveUserFieldsActivities",
@@ -17,7 +15,7 @@ export const postSaveUserFieldsActivitiesKeys = [
 export const postSaveUserFieldsActivities = async (
   accessToken: string,
   step: number,
-  formData: unknown
+  formData: unknown,
 ): Promise<PostSaveUserFieldsActivitiesSuccess> => {
   try {
     const url = new URL(import.meta.env.VITE_SAVE_USER_FIELDS_ACTIVITIES);
@@ -35,7 +33,7 @@ export const postSaveUserFieldsActivities = async (
     });
     const response = await request.json();
 
-    let data: PostSaveUserFieldsActivitiesSuccess;
+    let data;
 
     if (request.status === 401) {
       throw new Response("Unauthorized", {
@@ -43,11 +41,15 @@ export const postSaveUserFieldsActivities = async (
       });
     }
 
-    if (validateSuccess(response)) {
-      data = response as unknown as PostSaveUserFieldsActivitiesSuccess;
+    const parsed =
+      postSaveUserFieldsActivitiesSuccessSchema.safeParse(response);
+
+    if (parsed.success) {
+      data = parsed.data;
     } else {
+      console.log(parsed.error);
       throw new Response(
-        `Данные запроса postSaveUserFieldsActivities, шаг - ${step} не валидны схеме`
+        `Данные запроса postSaveUserFieldsActivities, шаг - ${step} не валидны схеме`,
       );
     }
 
@@ -97,5 +99,5 @@ export const postSaveUserFieldsActivitiesMockResponse = http.post(
 
     await delay(2000);
     return HttpResponse.json(mockResponseAllowedNewStep);
-  }
+  },
 );

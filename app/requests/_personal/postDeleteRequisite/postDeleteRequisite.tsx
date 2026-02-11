@@ -1,19 +1,14 @@
 import { http, delay, HttpResponse } from "msw";
-import Ajv from "ajv";
 
-import schemaSuccess from "./postDeleteRequisiteSuccess.schema.json";
-import { PostDeleteRequisiteSuccess } from "./postDeleteRequisiteSuccess.type";
+import { postDeleteRequisiteSuccessSchema } from "./postDeleteRequisiteSuccess.schema";
+
 import { UnxpectedError } from "~/shared/unexpectedError/unexpectedError";
-
-const ajv = new Ajv();
-
-const validateSuccess = ajv.compile(schemaSuccess);
 
 export const postDeleteRequisiteKeys = ["postDeleteRequisite"];
 
 export const postDeleteRequisite = async (
   accessToken: string,
-  dataId: number
+  dataId: number,
 ) => {
   try {
     const url = new URL(import.meta.env.VITE_DELETE_REQUISITE);
@@ -38,9 +33,12 @@ export const postDeleteRequisite = async (
       });
     }
 
-    if (validateSuccess(response)) {
-      data = response as unknown as PostDeleteRequisiteSuccess;
+    const parsed = postDeleteRequisiteSuccessSchema.safeParse(response);
+
+    if (parsed.success) {
+      data = parsed.data;
     } else {
+      console.log(parsed.error);
       throw new Response(`Данные запроса postDeleteRequisite не валидны схеме`);
     }
 
@@ -72,5 +70,5 @@ export const postDeleteRequisiteMockResponse = http.post(
   async () => {
     await delay(2000);
     return HttpResponse.json(mockResponseSuccess);
-  }
+  },
 );

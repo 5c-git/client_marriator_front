@@ -1,18 +1,9 @@
 import { http, delay, HttpResponse } from "msw";
-import Ajv from "ajv";
 
-import responseSuccess from "./postDelPlaceSuccess.schema.json";
-import { PostDelPlaceSuccess } from "./postDelPlaceSuccess.type";
-
-import responseError from "./postDelPlaceError.schema.json";
-import { PostDelPlaceError } from "./postDelPlaceError.type";
+import { postDelPlaceSuccessSchema } from "./postDelPlaceSuccess.schema";
+import { postDelPlaceErrorSchema } from "./postDelPlaceError.schema";
 
 import { UnxpectedError } from "~/shared/unexpectedError/unexpectedError";
-
-const ajv = new Ajv();
-
-const validateResponseSuccess = ajv.compile(responseSuccess);
-const validateResponseError = ajv.compile(responseError);
 
 export const postDelPlaceKeys = ["postDelPlace"];
 
@@ -41,12 +32,15 @@ export const postDelPlace = async (accessToken: string, placeId: string) => {
       });
     }
 
-    if (validateResponseSuccess(response)) {
-      data = response as unknown as PostDelPlaceSuccess;
-    } else if (validateResponseError(response)) {
-      data = response as unknown as PostDelPlaceError;
+    const parsedSuccess = postDelPlaceSuccessSchema.safeParse(response);
+    const parsedError = postDelPlaceErrorSchema.safeParse(response);
+
+    if (parsedSuccess.success) {
+      data = parsedSuccess.data;
+    } else if (parsedError.success) {
+      data = parsedError.data;
     } else {
-      throw new Response("Данные запроса postDelPlace не соответствуют схеме");
+      throw new Response(`Данные запроса postDelPlace не валидны схеме`);
     }
 
     return data;
@@ -87,5 +81,5 @@ export const postDelPlaceMockResponse = http.post(
 
       await delay(2000);
       return HttpResponse.json(mockResponseSuccess);
-    }
+    },
 );

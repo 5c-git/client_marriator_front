@@ -1,23 +1,15 @@
 import { http, delay, HttpResponse } from "msw";
-import Ajv from "ajv";
 
-import responseSuccess from "./postChangeUserPhoneSuccess.schema.json";
-import responseError from "./postChangeUserPhoneError.schema.json";
+import { postChangeUserPhoneSuccessSchema } from "./postChangeUserPhoneSuccess.schema";
+import { postChangeUserPhoneErrorSchema } from "./postChangeUserPhoneError.schema";
 
-import { PostChangeUserPhoneSuccess } from "./postChangeUserPhoneSuccess.type";
-import { PostChangeUserPhoneError } from "./postChangeUserPhoneError.type";
 import { UnxpectedError } from "~/shared/unexpectedError/unexpectedError";
-
-const ajv = new Ajv();
-
-const validateResponseSuccess = ajv.compile(responseSuccess);
-const validateResponseError = ajv.compile(responseError);
 
 export const postChangeUserPhoneKeys = ["postChangeUserPhone"];
 
 export const postChangeUserPhone = async (
   accessToken: string,
-  phone: string
+  phone: string,
 ) => {
   try {
     const url = new URL(import.meta.env.VITE_CHANGE_USER_PHONE);
@@ -42,14 +34,15 @@ export const postChangeUserPhone = async (
       });
     }
 
-    if (validateResponseSuccess(response)) {
-      data = response as unknown as PostChangeUserPhoneSuccess;
-    } else if (validateResponseError(response)) {
-      data = response as unknown as PostChangeUserPhoneError;
+    const parsedSuccess = postChangeUserPhoneSuccessSchema.safeParse(response);
+    const parsedError = postChangeUserPhoneErrorSchema.safeParse(response);
+
+    if (parsedSuccess.success) {
+      data = parsedSuccess.data;
+    } else if (parsedError.success) {
+      data = parsedError.data;
     } else {
-      throw new Response(
-        "Данные запроса postChangeUserPhone не соответствуют схеме"
-      );
+      throw new Response(`Данные запроса postChangeUserPhone не валидны схеме`);
     }
 
     return data;
@@ -104,5 +97,5 @@ export const postChangeUserPhoneMockResponse = http.post(
     //   await delay(2000);
     //   return HttpResponse.json(mockResponseError);
     // }
-  }
+  },
 );

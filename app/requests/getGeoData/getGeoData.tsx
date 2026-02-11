@@ -1,24 +1,22 @@
 import { http, delay, HttpResponse } from "msw";
-import Ajv from "ajv";
 
-import getGeoDataSuccess from "./getGeoDataSuccess.schema.json";
-import { GetGeoDataSuccess } from "./getGeoDataSuccess.type";
+import {
+  getGeoDataSuccessSchema,
+  GetGeoDataSuccess,
+} from "./getGeoDataSuccess.schema";
+
 import { UnxpectedError } from "~/shared/unexpectedError/unexpectedError";
-
-const ajv = new Ajv();
-
-const validateSuccess = ajv.compile(getGeoDataSuccess);
 
 export const getGeoDataKeys = ["getGeoData"];
 
 export const getGeoData = async (
-  geoData: string
+  geoData: string,
 ): Promise<GetGeoDataSuccess> => {
   try {
     const url = new URL(
       `https://geocode-maps.yandex.ru/1.x/?apikey=${
         import.meta.env.VITE_YANDEX_GEO_KEY
-      }&geocode=${geoData}&results=1&format=json`
+      }&geocode=${geoData}&results=1&format=json`,
     );
 
     const request = await fetch(url, {
@@ -35,10 +33,12 @@ export const getGeoData = async (
       throw new Response(`Указан неверный адрес или координаты`);
     }
 
-    if (validateSuccess(response)) {
-      data = response as unknown as GetGeoDataSuccess;
+    const parsed = getGeoDataSuccessSchema.safeParse(response);
+
+    if (parsed.success) {
+      data = parsed.data;
     } else {
-      console.log(validateSuccess.errors);
+      console.log(parsed.error);
       throw new Response(`Данные запроса getGeoData не валидны схеме`);
     }
 
@@ -180,5 +180,5 @@ export const getGeoDataMockResponse = http.get(
   async () => {
     await delay(2000);
     return HttpResponse.json(mockResponseSuccess);
-  }
+  },
 );

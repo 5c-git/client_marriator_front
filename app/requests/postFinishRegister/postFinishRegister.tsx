@@ -1,19 +1,15 @@
 import { http, delay, HttpResponse } from "msw";
-import Ajv from "ajv";
 
-import schemaSuccess from "./postFinishRegisterSuccess.schema.json";
-
-import { PostFinishRegisterSuccess } from "./postFinishRegisterSuccess.type";
+import {
+  PostFinishRegisterSuccess,
+  postFinishRegisterSuccessSchema,
+} from "./postFinishRegisterSuccess.schema";
 import { UnxpectedError } from "~/shared/unexpectedError/unexpectedError";
-
-const ajv = new Ajv();
-
-const validateSuccess = ajv.compile(schemaSuccess);
 
 export const postFinishRegisterKeys = ["postFinishRegister"];
 
 export const postFinishRegister = async (
-  accessToken: string
+  accessToken: string,
 ): Promise<PostFinishRegisterSuccess> => {
   try {
     const url = new URL(import.meta.env.VITE_FINISH_REGISTER);
@@ -35,9 +31,12 @@ export const postFinishRegister = async (
       });
     }
 
-    if (validateSuccess(response)) {
-      data = response as unknown as PostFinishRegisterSuccess;
+    const parsed = postFinishRegisterSuccessSchema.safeParse(response);
+
+    if (parsed.success) {
+      data = parsed.data;
     } else {
+      console.log(parsed.error);
       throw new Response(`Данные запроса postFinishRegister не валидны схеме`);
     }
 
@@ -84,5 +83,5 @@ export const postFinishRegisterResponse = http.post(
 
     await delay(2000);
     return HttpResponse.json(mockResponseSuccess);
-  }
+  },
 );

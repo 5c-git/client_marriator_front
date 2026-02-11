@@ -1,18 +1,16 @@
 import { http, delay, HttpResponse } from "msw";
-import Ajv from "ajv";
 
-import getPlaceSuccess from "./getPlaceSuccess.schema.json";
-import { GetPlaceSuccess } from "./getPlaceSuccess.type";
+import {
+  getPlaceSuccessSchema,
+  GetPlaceSuccess,
+} from "./getPlaceSuccess.schema";
+
 import { UnxpectedError } from "~/shared/unexpectedError/unexpectedError";
-
-const ajv = new Ajv();
-
-const validateSuccess = ajv.compile(getPlaceSuccess);
 
 export const getPlaceKeys = ["getPlace"];
 
 export const getPlace = async (
-  accessToken: string
+  accessToken: string,
 ): Promise<GetPlaceSuccess> => {
   try {
     const url = new URL(import.meta.env.VITE_GET_PLACE);
@@ -34,9 +32,12 @@ export const getPlace = async (
       });
     }
 
-    if (validateSuccess(response)) {
-      data = response as unknown as GetPlaceSuccess;
+    const parsed = getPlaceSuccessSchema.safeParse(response);
+
+    if (parsed.success) {
+      data = parsed.data;
     } else {
+      console.log(parsed.error);
       throw new Response(`Данные запроса getPlace не валидны схеме`);
     }
 
@@ -86,5 +87,5 @@ export const getPlaceMockResponse = http.get(
   async () => {
     await delay(2000);
     return HttpResponse.json(mockResponseSuccess);
-  }
+  },
 );

@@ -1,21 +1,15 @@
 import { http, delay, HttpResponse } from "msw";
-import Ajv from "ajv";
 
-import schemaSuccess from "./postSaveRequisitesDataSuccess.schema.json";
+import { postSaveRequisitesDataSuccessSchema } from "./postSaveRequisitesDataSuccess.schema";
 
-import { PostSaveRequisitesDataSuccess } from "./postSaveRequisitesDataSuccess.type";
 import { UnxpectedError } from "~/shared/unexpectedError/unexpectedError";
-
-const ajv = new Ajv();
-
-const validateSuccess = ajv.compile(schemaSuccess);
 
 export const postSaveRequisitesDataKeys = ["postSaveRequisitesData"];
 
 export const postSaveRequisitesData = async (
   accessToken: string,
   formData: unknown,
-  dataId: number
+  dataId: number,
 ) => {
   try {
     const url = new URL(import.meta.env.VITE_SAVE_REQUISITES_DATA);
@@ -41,11 +35,14 @@ export const postSaveRequisitesData = async (
       });
     }
 
-    if (validateSuccess(response)) {
-      data = response as unknown as PostSaveRequisitesDataSuccess;
+    const parsed = postSaveRequisitesDataSuccessSchema.safeParse(response);
+
+    if (parsed.success) {
+      data = parsed.data;
     } else {
+      console.log(parsed.error);
       throw new Response(
-        `Данные запроса postSaveRequisitesData не валидны схеме`
+        `Данные запроса postSaveRequisitesData не валидны схеме`,
       );
     }
 
@@ -77,5 +74,5 @@ export const postSaveRequisitesDataMockResponse = http.post(
   async () => {
     await delay(2000);
     return HttpResponse.json(mockResponseSuccess);
-  }
+  },
 );

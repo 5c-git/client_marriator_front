@@ -1,23 +1,15 @@
 import { http, delay, HttpResponse } from "msw";
-import Ajv from "ajv";
 
-import responseSuccess from "./postPersonalCheckEmailCodeSuccess.schema.json";
-import responseError from "./postPersonalCheckEmailCodeError.schema.json";
+import { postPersonalCheckEmailCodeSuccessSchema } from "./postPersonalCheckEmailCodeSuccess.schema";
+import { postPersonalCheckEmailCodeErrorSchema } from "./postPersonalCheckEmailCodeError.schema";
 
-import { PostPersonalCheckEmailCodeSuccess } from "./postPersonalCheckEmailCodeSuccess.type";
-import { PostPersonalCheckEmailCodeError } from "./postPersonalCheckEmailCodeError.type";
 import { UnxpectedError } from "~/shared/unexpectedError/unexpectedError";
-
-const ajv = new Ajv();
-
-const validateResponseSuccess = ajv.compile(responseSuccess);
-const validateResponseError = ajv.compile(responseError);
 
 export const postPersonalCheckEmailCodeKeys = ["postPersonalCheckEmailCode"];
 
 export const postPersonalCheckEmailCode = async (
   accessToken: string,
-  code: string
+  code: string,
 ) => {
   try {
     const url = new URL(import.meta.env.VITE_PERSONAL_CHECK_EMAIL_CODE);
@@ -42,13 +34,18 @@ export const postPersonalCheckEmailCode = async (
       });
     }
 
-    if (validateResponseSuccess(response)) {
-      data = response as unknown as PostPersonalCheckEmailCodeSuccess;
-    } else if (validateResponseError(response)) {
-      data = response as unknown as PostPersonalCheckEmailCodeError;
+    const parsedSuccess =
+      postPersonalCheckEmailCodeSuccessSchema.safeParse(response);
+    const parsedError =
+      postPersonalCheckEmailCodeErrorSchema.safeParse(response);
+
+    if (parsedSuccess.success) {
+      data = parsedSuccess.data;
+    } else if (parsedError.success) {
+      data = parsedError.data;
     } else {
       throw new Response(
-        "Данные запроса postPersonalCheckEmailCode не соответствуют схеме"
+        `Данные запроса postPersonalCheckEmailCode не валидны схеме`,
       );
     }
 
@@ -102,5 +99,5 @@ export const postPersonalCheckEmailCodeMockResponse = http.post(
     //   await delay(2000);
     //   return HttpResponse.json(mockResponseError);
     // }
-  }
+  },
 );

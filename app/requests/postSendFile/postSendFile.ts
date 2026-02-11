@@ -1,17 +1,12 @@
 // import { http, delay, HttpResponse } from "msw";
-import Ajv from "ajv";
 
-import responseSuccess from "./postSendFileResponseSuccess.schema.json";
-import responseError from "./postSendFileResponseError.schema.json";
+import {
+  postSendFileSuccessSchema,
+  PostSendFileSuccess,
+} from "./postSendFileSuccess.schema";
+import { postSendFileErrorSchema } from "./postSendFileError.schema";
 
-import { SendFileResponseSuccess } from "./postSendFileResponseSuccess.type";
-import { SendFileResponseError } from "./postSendFileResponseError.type";
 import { UnxpectedError } from "~/shared/unexpectedError/unexpectedError";
-
-const ajv = new Ajv();
-
-const validateResponseSuccess = ajv.compile(responseSuccess);
-const validateResponseError = ajv.compile(responseError);
 
 export const postSendFileKeys = ["postSendFile"];
 
@@ -19,8 +14,8 @@ export const postSendFile = async (
   accessToken: string,
   urlString: string,
   body: FormData,
-  onSuccess: (data: SendFileResponseSuccess) => void,
-  onError: (error: string) => void
+  onSuccess: (data: PostSendFileSuccess) => void,
+  onError: (error: string) => void,
 ) => {
   try {
     const url = new URL(urlString);
@@ -41,16 +36,19 @@ export const postSendFile = async (
 
     const response = await request.json();
 
-    if (validateResponseSuccess(response)) {
-      const data = response as unknown as SendFileResponseSuccess;
+    let data;
 
+    const parsedSuccess = postSendFileSuccessSchema.safeParse(response);
+    const parsedError = postSendFileErrorSchema.safeParse(response);
+
+    if (parsedSuccess.success) {
+      data = parsedSuccess.data;
       onSuccess(data);
-    } else if (validateResponseError(response)) {
-      const error = response as unknown as SendFileResponseError;
-
-      onError(error.error);
+    } else if (parsedError.success) {
+      data = parsedError.data;
+      onError(data.error);
     } else {
-      throw new Response("Данные запроса postSendFile не соответствуют схеме");
+      throw new Response(`Данные запроса postSendFile не валидны схеме`);
     }
   } catch (error) {
     if (error instanceof Response) {

@@ -1,17 +1,9 @@
 import { http, delay, HttpResponse } from "msw";
-import Ajv from "ajv";
 
-import schemaSuccess from "./postSetPlaceSuccess.schema.json";
-import schemaError from "./postSetPlaceError.schema.json";
-import { PostSetPlaceSuccess } from "./postSetPlaceSuccess.type";
-import { PostSetPlaceError } from "./postSetPlaceError.type";
+import { postSetPlaceSuccessSchema } from "./postSetPlaceSuccess.schema";
+import { postSetPlaceErrorSchema } from "./postSetPlaceError.schema";
 
 import { UnxpectedError } from "~/shared/unexpectedError/unexpectedError";
-
-const ajv = new Ajv();
-
-const validateSuccess = ajv.compile(schemaSuccess);
-const validateError = ajv.compile(schemaError);
 
 export const postSetPlaceKeys = ["postSetPlace"];
 
@@ -42,10 +34,13 @@ export const postSetPlace = async (accessToken: string, placeIds: string[]) => {
       });
     }
 
-    if (validateSuccess(response)) {
-      data = response as unknown as PostSetPlaceSuccess;
-    } else if (validateError(response)) {
-      data = response as unknown as PostSetPlaceError;
+    const parsedSuccess = postSetPlaceSuccessSchema.safeParse(response);
+    const parsedError = postSetPlaceErrorSchema.safeParse(response);
+
+    if (parsedSuccess.success) {
+      data = parsedSuccess.data;
+    } else if (parsedError.success) {
+      data = parsedError.data;
       throw new Response(data.message);
     } else {
       throw new Response(`Данные запроса postSetPlace не валидны схеме`);
@@ -91,5 +86,5 @@ export const postSetPlaceMockResponse = http.post(
       await delay(2000);
       return HttpResponse.json(mockResponseError);
     }
-  }
+  },
 );

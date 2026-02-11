@@ -1,23 +1,15 @@
 import { http, delay, HttpResponse } from "msw";
-import Ajv from "ajv";
 
-import schemaSuccess from "./postSaveUserFieldsSuccess.schema.json";
-import schemaError from "./postSaveUserFieldsError.schema.json";
+import { postSaveUserFieldsErrorSchema } from "./postSaveUserFieldsError.schema";
+import { postSaveUserFieldsSuccessSchema } from "./postSaveUserFieldsSuccess.schema";
 
-import { PostSaveUserFieldsSuccess } from "./postSaveUserFieldsSuccess.type";
-import { PostSaveUserFieldsError } from "./postSaveUserFieldsError.type";
 import { UnxpectedError } from "~/shared/unexpectedError/unexpectedError";
-
-const ajv = new Ajv();
-
-const validateSuccess = ajv.compile(schemaSuccess);
-const validateError = ajv.compile(schemaError);
 
 export const postSaveUserFieldsKeys = ["postSaveUserFields"];
 
 export const postSaveUserFields = async (
   accessToken: string,
-  formData: unknown
+  formData: unknown,
 ) => {
   try {
     const url = new URL(import.meta.env.VITE_SAVE_USER_FIELDS);
@@ -42,10 +34,13 @@ export const postSaveUserFields = async (
       });
     }
 
-    if (validateSuccess(response)) {
-      data = response as unknown as PostSaveUserFieldsSuccess;
-    } else if (validateError(response)) {
-      data = response as unknown as PostSaveUserFieldsError;
+    const parsedSuccess = postSaveUserFieldsSuccessSchema.safeParse(response);
+    const parsedError = postSaveUserFieldsErrorSchema.safeParse(response);
+
+    if (parsedSuccess.success) {
+      data = parsedSuccess.data;
+    } else if (parsedError.success) {
+      data = parsedError.data;
     } else {
       throw new Response(`Данные запроса postSaveUserFields не валидны схеме`);
     }
@@ -78,5 +73,5 @@ export const postSaveFormMockResponse = http.post(
   async () => {
     await delay(2000);
     return HttpResponse.json(mockResponseSuccess);
-  }
+  },
 );

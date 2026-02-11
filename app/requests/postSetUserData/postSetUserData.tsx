@@ -1,17 +1,9 @@
 import { http, delay, HttpResponse } from "msw";
-import Ajv from "ajv";
 
-import schemaSuccess from "./postSetUserDataSuccess.schema.json";
-import schemaError from "./postSetUserDataError.schema.json";
-import { PostSetUserDataSuccess } from "./postSetUserDataSuccess.type";
-import { PostSetUserDataError } from "./postSetUserDataError.type";
+import { postSetUserDataSuccessSchema } from "./postSetUserDataSuccess.schema";
+import { postSetUserDataErrorSchema } from "./postSetUserDataError.schema";
 
 import { UnxpectedError } from "~/shared/unexpectedError/unexpectedError";
-
-const ajv = new Ajv();
-
-const validateSuccess = ajv.compile(schemaSuccess);
-const validateError = ajv.compile(schemaError);
 
 export const postSetUserDataKeys = ["postSetUserData"];
 
@@ -46,10 +38,13 @@ export const postSetUserData = async (accessToken: string, fields: Fields) => {
       });
     }
 
-    if (validateSuccess(response)) {
-      data = response as unknown as PostSetUserDataSuccess;
-    } else if (validateError(response)) {
-      data = response as unknown as PostSetUserDataError;
+    const parsedSuccess = postSetUserDataSuccessSchema.safeParse(response);
+    const parsedError = postSetUserDataErrorSchema.safeParse(response);
+
+    if (parsedSuccess.success) {
+      data = parsedSuccess.data;
+    } else if (parsedError.success) {
+      data = parsedError.data;
       throw new Response(data.message);
     } else {
       throw new Response(`Данные запроса postSetUserData не валидны схеме`);
@@ -95,5 +90,5 @@ export const postSetUserDataMockResponse = http.post(
       await delay(2000);
       return HttpResponse.json(mockResponseError);
     }
-  }
+  },
 );

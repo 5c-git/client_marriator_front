@@ -1,24 +1,16 @@
 import { http, delay, HttpResponse } from "msw";
-import Ajv from "ajv";
 
-import responseSuccess from "./postConfirmChangeUserPhoneSuccess.schema.json";
-import responseError from "./postConfirmChangeUserPhoneError.schema.json";
+import { postConfirmChangeUserPhoneSuccessSchema } from "./postConfirmChangeUserPhoneSuccess.schema";
+import { postConfirmChangeUserPhoneErrorSchema } from "./postConfirmChangeUserPhoneError.schema";
 
-import { PostConfirmChangeUserPhoneSuccess } from "./postConfirmChangeUserPhoneSuccess.type";
-import { PostConfirmChangeUserPhoneError } from "./postConfirmChangeUserPhoneError.type";
 import { UnxpectedError } from "~/shared/unexpectedError/unexpectedError";
-
-const ajv = new Ajv();
-
-const validateResponseSuccess = ajv.compile(responseSuccess);
-const validateResponseError = ajv.compile(responseError);
 
 export const postConfirmChangeUserPhoneKeys = ["postConfirmChangeUserPhone"];
 
 export const postConfirmChangeUserPhone = async (
   accessToken: string,
   phone: string,
-  code: string
+  code: string,
 ) => {
   try {
     const url = new URL(import.meta.env.VITE_CONFIRM_CHANGE_USER_PHONE);
@@ -44,13 +36,18 @@ export const postConfirmChangeUserPhone = async (
       });
     }
 
-    if (validateResponseSuccess(response)) {
-      data = response as unknown as PostConfirmChangeUserPhoneSuccess;
-    } else if (validateResponseError(response)) {
-      data = response as unknown as PostConfirmChangeUserPhoneError;
+    const parsedSuccess =
+      postConfirmChangeUserPhoneSuccessSchema.safeParse(response);
+    const parsedError =
+      postConfirmChangeUserPhoneErrorSchema.safeParse(response);
+
+    if (parsedSuccess.success) {
+      data = parsedSuccess.data;
+    } else if (parsedError.success) {
+      data = parsedError.data;
     } else {
       throw new Response(
-        "Данные запроса postConfirmChangeUserPhone не соответствуют схеме"
+        `Данные запроса postConfirmChangeUserPhone не валидны схеме`,
       );
     }
 
@@ -104,5 +101,5 @@ export const postConfirmChangeUserPhoneMockResponse = http.post(
     //   await delay(2000);
     //   return HttpResponse.json(mockResponseError);
     // }
-  }
+  },
 );

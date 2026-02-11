@@ -1,17 +1,9 @@
 import { http, delay, HttpResponse } from "msw";
-import Ajv from "ajv";
 
-import responseSuccess from "./postCheckCodeSuccess.schema.json";
-import responseError from "./postCheckCodeError.schema.json";
+import { postCheckCodeSuccessSchema } from "./postCheckCodeSuccess.schema";
+import { postCheckCodeErrorSchema } from "./postCheckCodeError.schema";
 
-import { PostCheckCodeSuccessSchema } from "./postCheckCodeSuccess.type";
-import { PostCheckCodeErrorSchema } from "./postCheckCodeError.type";
 import { UnxpectedError } from "~/shared/unexpectedError/unexpectedError";
-
-const ajv = new Ajv();
-
-const validateResponseSuccess = ajv.compile(responseSuccess);
-const validateResponseError = ajv.compile(responseError);
 
 export const postCheckCodeKeys = ["postCheckCode"];
 
@@ -39,12 +31,15 @@ export const postCheckCode = async (phone: string, code: string) => {
       });
     }
 
-    if (validateResponseSuccess(response)) {
-      data = response as unknown as PostCheckCodeSuccessSchema;
-    } else if (validateResponseError(response)) {
-      data = response as unknown as PostCheckCodeErrorSchema;
+    const parsedSuccess = postCheckCodeSuccessSchema.safeParse(response);
+    const parsedError = postCheckCodeErrorSchema.safeParse(response);
+
+    if (parsedSuccess.success) {
+      data = parsedSuccess.data;
+    } else if (parsedError.success) {
+      data = parsedError.data;
     } else {
-      throw new Response("Данные запроса postCheckCode не соответствуют схеме");
+      throw new Response(`Данные запроса postCheckCode не валидны схеме`);
     }
 
     return data;
@@ -107,5 +102,5 @@ export const mockPostCheckCodeMockResponse = http.post(
     //   await delay(2000);
     //   return HttpResponse.json(mockResponseError);
     // }
-  }
+  },
 );

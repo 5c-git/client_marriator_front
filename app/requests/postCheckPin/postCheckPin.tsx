@@ -1,17 +1,9 @@
 import { http, delay, HttpResponse } from "msw";
-import Ajv from "ajv";
 
-import schemaSuccess from "./postCheckPinSuccess.schema.json";
-import schemaError from "./postCheckPinError.schema.json";
+import { postCheckPinSuccessSchema } from "./postCheckPinSuccess.schema";
+import { postCheckPinErrorSchema } from "./postCheckPinError.schema";
 
-import { PostCheckPinSuccess } from "./postCheckPinSuccess.type";
-import { PostCheckPinError } from "./postCheckPinError.type";
 import { UnxpectedError } from "~/shared/unexpectedError/unexpectedError";
-
-const ajv = new Ajv();
-
-const validateSuccess = ajv.compile(schemaSuccess);
-const validateError = ajv.compile(schemaError);
 
 export const postCheckPinKeys = ["postCheckPin"];
 
@@ -39,10 +31,13 @@ export const postCheckPin = async (accessToken: string, pin: string) => {
       });
     }
 
-    if (validateSuccess(response)) {
-      data = response as unknown as PostCheckPinSuccess;
-    } else if (validateError(response)) {
-      data = response as unknown as PostCheckPinError;
+    const parsedSuccess = postCheckPinSuccessSchema.safeParse(response);
+    const parsedError = postCheckPinErrorSchema.safeParse(response);
+
+    if (parsedSuccess.success) {
+      data = parsedSuccess.data;
+    } else if (parsedError.success) {
+      data = parsedError.data;
     } else {
       throw new Response(`Данные запроса postCheckPin не валидны схеме`);
     }
@@ -94,5 +89,5 @@ export const postCheckPinResponse = http.post(
 
     await delay(2000);
     return HttpResponse.json(mockResponseSuccess);
-  }
+  },
 );

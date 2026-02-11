@@ -1,17 +1,9 @@
 import { http, delay, HttpResponse } from "msw";
-import Ajv from "ajv";
 
-import responseSuccess from "./postSetUserEmail.schema.json";
-import responseError from "./postSetUserEmailError.schema.json";
+import { postSetUserEmailSuccessSchema } from "./postSetUserEmailSuccess.schema";
+import { postSetUserEmailErrorSchema } from "./postSetUserEmailError.schema";
 
-import { PostSetUserEmailSuccessSchema } from "./postSetUserEmail.type";
-import { PostSetUserEmailErrorSchema } from "./postSetUserEmailError.type";
 import { UnxpectedError } from "~/shared/unexpectedError/unexpectedError";
-
-const ajv = new Ajv();
-
-const validateResponseSuccess = ajv.compile(responseSuccess);
-const validateResponseError = ajv.compile(responseError);
 
 export const postSetUserEmailKeys = ["postSetUserEmail"];
 
@@ -39,14 +31,15 @@ export const postSetUserEmail = async (accessToken: string, email: string) => {
       });
     }
 
-    if (validateResponseSuccess(response)) {
-      data = response as unknown as PostSetUserEmailSuccessSchema;
-    } else if (validateResponseError(response)) {
-      data = response as unknown as PostSetUserEmailErrorSchema;
+    const parsedSuccess = postSetUserEmailSuccessSchema.safeParse(response);
+    const parsedError = postSetUserEmailErrorSchema.safeParse(response);
+
+    if (parsedSuccess.success) {
+      data = parsedSuccess.data;
+    } else if (parsedError.success) {
+      data = parsedError.data;
     } else {
-      throw new Response(
-        "Данные запроса postSetUserEmail не соответствуют схеме"
-      );
+      throw new Response(`Данные запроса postSetUserEmail не валидны схеме`);
     }
 
     return data;
@@ -101,5 +94,5 @@ export const mockPostSetUserEmailMockResponse = http.post(
     //   await delay(2000);
     //   return HttpResponse.json(mockResponseError);
     // }
-  }
+  },
 );

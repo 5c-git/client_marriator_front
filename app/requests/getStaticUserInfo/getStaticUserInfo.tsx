@@ -1,20 +1,16 @@
 import { http, delay, HttpResponse } from "msw";
-import Ajv from "ajv";
-// import addFormats from "ajv-formats";
 
-import getStaticUserInfoSuccess from "./getStaticUserInfo.schema.json";
-import { GetStaticUserInfoSuccess } from "./getStaticUserInfo.type";
+import {
+  getStaticUserInfoSuccessSchema,
+  GetStaticUserInfoSuccess,
+} from "./getStaticUserInfo.schema";
+
 import { UnxpectedError } from "~/shared/unexpectedError/unexpectedError";
-
-const ajv = new Ajv();
-// addFormats(ajv);
-
-const validateSuccess = ajv.compile(getStaticUserInfoSuccess);
 
 export const getStaticUserInfoKeys = ["getStaticUserInfo"];
 
 export const getStaticUserInfo = async (
-  accessToken: string
+  accessToken: string,
 ): Promise<GetStaticUserInfoSuccess> => {
   try {
     const url = new URL(import.meta.env.VITE_GET_STATIC_USER_INFO);
@@ -36,10 +32,12 @@ export const getStaticUserInfo = async (
       });
     }
 
-    if (validateSuccess(response)) {
-      data = response as unknown as GetStaticUserInfoSuccess;
+    const parsed = getStaticUserInfoSuccessSchema.safeParse(response);
+
+    if (parsed.success) {
+      data = parsed.data;
     } else {
-      console.log(console.log(validateSuccess.errors));
+      console.log(parsed.error);
       throw new Response(`Данные запроса getStaticUserInfo не валидны схеме`);
     }
 
@@ -75,5 +73,5 @@ export const getStaticUserInfoMockResponse = http.get(
   async () => {
     await delay(2000);
     return HttpResponse.json(mockResponseSuccess);
-  }
+  },
 );

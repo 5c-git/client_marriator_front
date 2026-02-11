@@ -1,17 +1,9 @@
 import { http, delay, HttpResponse } from "msw";
-import Ajv from "ajv";
 
-import responseSuccess from "./postSetUserPinSuccess.schema.json";
-import responseUnauth from "./postSetUserPinUnauth.schema.json";
+import { postSetUserPinSuccessSchema } from "./postSetUserPinSuccess.schema";
+import { postSetUserPinUnauthSchema } from "./postSetUserPinUnauth.schema";
 
-import { PostSetUserPinSuccessSchema } from "./postSetUserPinSuccess.type";
-import { PostSetUserPinUnauthSchema } from "./postSetUserPinUnauth.type";
 import { UnxpectedError } from "~/shared/unexpectedError/unexpectedError";
-
-const ajv = new Ajv();
-
-const validateResponseSuccess = ajv.compile(responseSuccess);
-const validateResponseUnauth = ajv.compile(responseUnauth);
 
 export const postSetUserPinKeys = ["postSetUserPin"];
 
@@ -39,14 +31,15 @@ export const postSetUserPin = async (accessToken: string, pin: string) => {
       });
     }
 
-    if (validateResponseSuccess(response)) {
-      data = response as unknown as PostSetUserPinSuccessSchema;
-    } else if (validateResponseUnauth(response)) {
-      data = response as unknown as PostSetUserPinUnauthSchema;
+    const parsedSuccess = postSetUserPinSuccessSchema.safeParse(response);
+    const parsedError = postSetUserPinUnauthSchema.safeParse(response);
+
+    if (parsedSuccess.success) {
+      data = parsedSuccess.data;
+    } else if (parsedError.success) {
+      data = parsedError.data;
     } else {
-      throw new Response(
-        "Данные запроса postSetUserPin не соответствуют схеме"
-      );
+      throw new Response(`Данные запроса postSetUserPin не валидны схеме`);
     }
 
     return data;
@@ -93,5 +86,5 @@ export const mockPostSetUserPinMockResponse = http.post(
     //   await delay(2000);
     //   return HttpResponse.json(mockResponseError);
     // }
-  }
+  },
 );

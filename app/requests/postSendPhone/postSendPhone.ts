@@ -1,19 +1,10 @@
 import { http, delay, HttpResponse } from "msw";
-import Ajv from "ajv";
 
-import responseSuccess from "./postSendPhoneSuccess.schema.json";
-import responseError from "./postSendPhoneError.schema.json";
-import responseErrorTime from "./postSendPhoneErrorTimer.schema.json";
+import { postSendPhoneSuccessSchema } from "./postSendPhoneSuccess.schema";
+import { postSendPhoneErrorSchema } from "./postSendPhoneError.schema";
+import { postSendPhoneErrorTimerSchema } from "./postSendPhoneErrorTimer.schema";
 
-import { PostSendPhoneSuccessSchema } from "./postSendPhoneSuccess.type";
-import { PostSendPhoneErrorTimer } from "./postSendPhoneErrorTimer.type";
 import { UnxpectedError } from "~/shared/unexpectedError/unexpectedError";
-
-const ajv = new Ajv();
-
-const validateResponseSuccess = ajv.compile(responseSuccess);
-const validateResponseError = ajv.compile(responseError);
-const validateResponseErrorTimer = ajv.compile(responseErrorTime);
 
 export const postSendPhoneKeys = ["postSendPhone"];
 
@@ -40,14 +31,18 @@ export const postSendPhone = async (phone: string) => {
       });
     }
 
-    if (validateResponseSuccess(response)) {
-      data = response as unknown as PostSendPhoneSuccessSchema;
-    } else if (validateResponseErrorTimer(response)) {
-      data = response as unknown as PostSendPhoneErrorTimer;
-    } else if (validateResponseError(response)) {
+    const parsedSuccess = postSendPhoneSuccessSchema.safeParse(response);
+    const parsedError = postSendPhoneErrorSchema.safeParse(response);
+    const parsedErrorTimer = postSendPhoneErrorTimerSchema.safeParse(response);
+
+    if (parsedSuccess.success) {
+      data = parsedSuccess.data;
+    } else if (parsedError.success) {
       throw new Response("Поле телефон обязательно для заполнения");
+    } else if (parsedErrorTimer.success) {
+      data = parsedErrorTimer.data;
     } else {
-      throw new Response("Данные запроса postSendPhone не соответствуют схеме");
+      throw new Response(`Данные запроса postSendPhone не валидны схеме`);
     }
 
     return data;
@@ -145,5 +140,5 @@ export const postSendPhoneMockResponse = http.post(
       await delay(2000);
       return HttpResponse.json(mockResponseError);
     }
-  }
+  },
 );

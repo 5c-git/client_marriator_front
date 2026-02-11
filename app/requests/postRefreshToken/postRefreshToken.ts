@@ -1,18 +1,9 @@
 import { http, delay, HttpResponse } from "msw";
-import Ajv from "ajv";
 
-import responseSuccess from "./postRefreshTokenSuccess.schema.json";
+import { postRefreshTokenSuccessSchema } from "./postRefreshTokenSuccess.schema";
+import { postRefreshTokenErrorSchema } from "./postRefreshTokenError.schema";
 
-import responseError from "./postRefreshTokenError.schema.json";
-
-import { PostRefreshTokenSuccessSchema } from "./postRefreshTokenSuccess.type";
-import { PostRefreshTokenErrorSchema } from "./postRefreshTokenError.type";
 import { UnxpectedError } from "~/shared/unexpectedError/unexpectedError";
-
-const ajv = new Ajv();
-
-const validateResponseSuccess = ajv.compile(responseSuccess);
-const validateResponseError = ajv.compile(responseError);
 
 export const postRefreshTokenKeys = ["postRefreshToken"];
 
@@ -33,14 +24,15 @@ export const postRefreshToken = async (refreshToken: string) => {
 
     let data;
 
-    if (validateResponseSuccess(response)) {
-      data = response as unknown as PostRefreshTokenSuccessSchema;
-    } else if (validateResponseError(response)) {
-      data = response as unknown as PostRefreshTokenErrorSchema;
+    const parsedSuccess = postRefreshTokenSuccessSchema.safeParse(response);
+    const parsedError = postRefreshTokenErrorSchema.safeParse(response);
+
+    if (parsedSuccess.success) {
+      data = parsedSuccess.data;
+    } else if (parsedError.success) {
+      data = parsedError.data;
     } else {
-      throw new Response(
-        "Данные запроса postRefreshToken не соответствуют схеме"
-      );
+      throw new Response(`Данные запроса postRefreshToken не валидны схеме`);
     }
 
     return data;
@@ -105,5 +97,5 @@ export const mockPostCheckCodeMockResponse = http.post(
     //   await delay(2000);
     //   return HttpResponse.json(mockResponseError);
     // }
-  }
+  },
 );

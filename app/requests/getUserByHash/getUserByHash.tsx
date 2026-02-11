@@ -1,23 +1,13 @@
 import { http, delay, HttpResponse } from "msw";
-import Ajv from "ajv";
 
-import getUserByHashSuccessSchema from "./getUserByHashSuccess.schema.json";
-import getUserByHashSuccessError from "./getUserByHashError.schema.json";
-import { GetUserByHashSuccess } from "./getUserByHashSuccess.type";
-import { GetUserByHashError } from "./getUserByHashError.type";
+import { getUserByHashSuccessSchema } from "./getUserByHashSuccess.schema";
+import { getUserByHashErrorSchema } from "./getUserByHashError.schema";
+
 import { UnxpectedError } from "~/shared/unexpectedError/unexpectedError";
-
-const ajv = new Ajv();
-
-const validateSuccess = ajv.compile(getUserByHashSuccessSchema);
-const validateError = ajv.compile(getUserByHashSuccessError);
 
 export const getUserByHashKeys = ["getUserByHash"];
 
-export const getUserByHash = async (
-  accessToken: string,
-  hash: string
-): Promise<GetUserByHashSuccess> => {
+export const getUserByHash = async (accessToken: string, hash: string) => {
   try {
     const url = new URL(import.meta.env.VITE_GET_USER_BY_HASH);
 
@@ -40,13 +30,14 @@ export const getUserByHash = async (
       });
     }
 
-    if (validateSuccess(response)) {
-      data = response as unknown as GetUserByHashSuccess;
-    } else if (validateError(response)) {
-      data = response as unknown as GetUserByHashError;
-      throw new Response(data.error);
+    const parsedSuccess = getUserByHashSuccessSchema.safeParse(response);
+    const parsedError = getUserByHashErrorSchema.safeParse(response);
+
+    if (parsedSuccess.success) {
+      data = parsedSuccess.data;
+    } else if (parsedError.success) {
+      data = parsedError.data;
     } else {
-      console.log(validateSuccess.errors);
       throw new Response(`Данные запроса getUserByHash не валидны схеме`);
     }
 
@@ -92,21 +83,23 @@ export const mockResponseError = {
 
 export const getUserByHashMockResponse = http.get(
   `${import.meta.env.VITE_GET_USER_BY_HASH}`,
-  async ({ request }) => {
-    // const url = new URL(request.url);
+  async () =>
+    // { request }
+    {
+      // const url = new URL(request.url);
 
-    await delay(2000);
-    return HttpResponse.json(mockResponseRecruiter);
+      await delay(2000);
+      return HttpResponse.json(mockResponseRecruiter);
 
-    // const scenario = "step1";
-    // const scenario = "error";
+      // const scenario = "step1";
+      // const scenario = "error";
 
-    // if (scenario === "success") {
-    //   await delay(2000);
-    //   return HttpResponse.json(mockStep1ResponseSuccess);
-    // } else if (scenario === "error") {
-    //   await delay(2000);
-    //   return HttpResponse.json(mockResponseError);
-    // }
-  }
+      // if (scenario === "success") {
+      //   await delay(2000);
+      //   return HttpResponse.json(mockStep1ResponseSuccess);
+      // } else if (scenario === "error") {
+      //   await delay(2000);
+      //   return HttpResponse.json(mockResponseError);
+      // }
+    },
 );

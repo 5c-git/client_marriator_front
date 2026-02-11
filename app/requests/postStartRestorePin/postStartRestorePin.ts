@@ -1,17 +1,9 @@
 import { http, delay, HttpResponse } from "msw";
-import Ajv from "ajv";
 
-import responseSuccess from "./postStartRestorePinSuccess.schema.json";
-import responseError from "./postStartRestorePinError.schema.json";
+import { postStartRestorePinSuccessSchema } from "./postStartRestorePinSuccess.schema";
+import { postStartRestorePinErrorSchema } from "./postStartRestorePinError.schema";
 
-import { PostStartRestorePinSuccess } from "./postStartRestorePinSuccess.type";
-import { PostStartRestorePinError } from "./postStartRestorePinError.type";
 import { UnxpectedError } from "~/shared/unexpectedError/unexpectedError";
-
-const ajv = new Ajv();
-
-const validateResponseSuccess = ajv.compile(responseSuccess);
-const validateResponseError = ajv.compile(responseError);
 
 export const postStartRestorePinKeys = ["postStartRestorePin"];
 
@@ -40,14 +32,15 @@ export const postStartRestorePin = async (accessToken: string) => {
       });
     }
 
-    if (validateResponseSuccess(response)) {
-      data = response as unknown as PostStartRestorePinSuccess;
-    } else if (validateResponseError(response)) {
-      data = response as unknown as PostStartRestorePinError;
+    const parsedSuccess = postStartRestorePinSuccessSchema.safeParse(response);
+    const parsedError = postStartRestorePinErrorSchema.safeParse(response);
+
+    if (parsedSuccess.success) {
+      data = parsedSuccess.data;
+    } else if (parsedError.success) {
+      data = parsedError.data;
     } else {
-      throw new Response(
-        "Данные запроса postStartRestorePin не соответствуют схеме"
-      );
+      throw new Response(`Данные запроса postStartRestorePin не валидны схеме`);
     }
 
     return data;
@@ -122,5 +115,5 @@ export const postStartRestorePinMockResponse = http.post(
     //   await delay(2000);
     //   return HttpResponse.json(mockResponseError);
     // }
-  }
+  },
 );
