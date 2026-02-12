@@ -1357,7 +1357,7 @@ export default function Supervisor({ loaderData }: Route.ComponentProps) {
           );
         }}
         items={loaderData.counterparty}
-        value={[]}
+        value={loaderData.client.counterparty.map((item) => item.id.toString())}
       />
     </>
   );

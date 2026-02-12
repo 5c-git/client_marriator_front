@@ -1302,7 +1302,7 @@ export default function Manager({ loaderData }: Route.ComponentProps) {
           );
         }}
         items={loaderData.counterparty}
-        value={[]}
+        value={loaderData.client.counterparty.map((item) => item.id.toString())}
       />
     </>
   );
