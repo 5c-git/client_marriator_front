@@ -1,4 +1,4 @@
-import { renderToStaticMarkup } from "react-dom/server";
+// import { renderToStaticMarkup } from "react-dom/server";
 import { useState, useEffect } from "react";
 import {
   useSubmit,
@@ -9,9 +9,9 @@ import {
 } from "react-router";
 import type { Route } from "./+types/selectLocations";
 
-import * as Yup from "yup";
-import { yupResolver } from "@hookform/resolvers/yup";
-import { useForm, Controller, get } from "react-hook-form";
+import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm, Controller } from "react-hook-form";
 
 import i18next from "i18next";
 import { useTranslation } from "react-i18next";
@@ -159,12 +159,11 @@ export default function SelectLocations({ loaderData }: Route.ComponentProps) {
       region: "",
       locations: loaderData.selectedLocations,
     },
-    // @ts-expect-error
-    resolver: yupResolver(
-      Yup.object({
-        searchbar: Yup.string().notRequired(),
-        region: Yup.string().notRequired(),
-        locations: Yup.array().of(Yup.string()).min(1),
+    resolver: zodResolver(
+      z.object({
+        searchbar: z.string(),
+        region: z.string(),
+        locations: z.array(z.string()).min(1),
       }),
     ),
     mode: "onChange",

@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import {
   useSubmit,
   useNavigate,
@@ -8,11 +8,11 @@ import {
 } from "react-router";
 import type { Route } from "./+types/selectProjects";
 
-import * as Yup from "yup";
-import { yupResolver } from "@hookform/resolvers/yup";
+import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm, Controller } from "react-hook-form";
 
-import i18next from "i18next";
+// import i18next from "i18next";
 import { useTranslation } from "react-i18next";
 import { withLocale } from "~/shared/withLocale";
 
@@ -109,11 +109,10 @@ export default function SelectProjects({ loaderData }: Route.ComponentProps) {
       searchbar: "",
       projects: loaderData.selectedProjects,
     },
-    // @ts-expect-error
-    resolver: yupResolver(
-      Yup.object({
-        searchbar: Yup.string().notRequired(),
-        projects: Yup.array().of(Yup.string()).min(1),
+    resolver: zodResolver(
+      z.object({
+        searchbar: z.string(),
+        projects: z.array(z.string()).min(1),
       }),
     ),
     mode: "onChange",
