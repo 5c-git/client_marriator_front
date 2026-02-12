@@ -1,5 +1,11 @@
 import { useState, useEffect } from "react";
-import { useFetcher, useNavigate, useNavigation, redirect } from "react-router";
+import {
+  useFetcher,
+  useNavigate,
+  useNavigation,
+  redirect,
+  useSubmit,
+} from "react-router";
 import type { Route } from "./+types/step4";
 import * as Yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -38,6 +44,7 @@ import { transformBikOptions } from "~/requests/getForm/getFormHooks";
 import { getStaticUserInfo } from "~/requests/getStaticUserInfo/getStaticUserInfo";
 import { postSaveForm } from "~/requests/postSaveForm/postSaveForm";
 import { postSetUserEmail } from "~/requests/_personal/postSetUserEmail/postSetUserEmail";
+import { postFinishRegister } from "~/requests/postFinishRegister/postFinishRegister";
 
 export async function clientLoader() {
   const accessToken = useStore.getState().accessToken;
@@ -82,6 +89,15 @@ export async function clientAction({ request }: Route.ClientActionArgs) {
 
         throw redirect(withLocale(`/registration/confirm-email?${params}`));
       }
+    } else if (_action === "finishRegister") {
+      await postFinishRegister(accessToken);
+
+      // useStore.getState().setAccessToken(data.result.token.access_token);
+      // useStore.getState().setRefreshToken(data.result.token.refresh_token);
+
+      useStore.getState().clearStore();
+
+      throw redirect(withLocale("/registration/registration-complete"));
     } else {
       const data = await postSaveForm(accessToken, 4, fields);
 
@@ -97,6 +113,7 @@ export default function Step4({ loaderData }: Route.ComponentProps) {
   const fetcher = useFetcher<typeof clientAction>();
   const navigate = useNavigate();
   const navigation = useNavigation();
+  const submit = useSubmit();
 
   const [openDialog, setOpenDialog] = useState<boolean>(false);
 
@@ -117,17 +134,17 @@ export default function Step4({ loaderData }: Route.ComponentProps) {
     resolver: yupResolver(
       Yup.object({
         staticPhoto: Yup.string().required(
-          t("photo", { ns: "constructorFields" })
+          t("photo", { ns: "constructorFields" }),
         ),
         staticEmail: Yup.string()
           .default("")
           .matches(
             emailRegExp,
-            t("email_wrongValue", { ns: "constructorFields" })
+            t("email_wrongValue", { ns: "constructorFields" }),
           )
           .required(t("email", { ns: "constructorFields" })),
         ...generateValidationSchema(loaderData.formFields),
-      })
+      }),
     ),
     mode: "onChange",
     shouldUnregister: true,
@@ -143,7 +160,7 @@ export default function Step4({ loaderData }: Route.ComponentProps) {
         },
         {
           keepErrors: false,
-        }
+        },
       );
     });
   }, [loaderData.staticFields, loaderData.formFields, reset, getValues]);
@@ -154,7 +171,7 @@ export default function Step4({ loaderData }: Route.ComponentProps) {
 
       <Box
         sx={{
-          paddingBottom: "80px",
+          paddingBottom: "140px",
         }}
       >
         <TopNavigation
@@ -274,12 +291,14 @@ export default function Step4({ loaderData }: Route.ComponentProps) {
                 encType: "application/json",
               });
             },
-            loaderData.accessToken
+            loaderData.accessToken,
           )}
 
           <Box
             sx={(theme) => ({
               position: "fixed",
+              display: "grid",
+              rowGap: "14px",
               zIndex: 1,
               width: "100%",
               bottom: "0",
@@ -290,6 +309,18 @@ export default function Step4({ loaderData }: Route.ComponentProps) {
           >
             <Button
               variant="contained"
+              onClick={() => {
+                submit(JSON.stringify({ _action: "finishRegister" }), {
+                  method: "POST",
+                  encType: "application/json",
+                });
+              }}
+            >
+              {t("endButton")}
+            </Button>
+
+            <Button
+              variant="text"
               onClick={() => {
                 trigger();
                 handleSubmit(() => {
@@ -339,7 +370,7 @@ export default function Step4({ loaderData }: Route.ComponentProps) {
               {
                 method: "POST",
                 encType: "application/json",
-              }
+              },
             );
             setOpenDialog(false);
           }}
@@ -368,7 +399,7 @@ export default function Step4({ loaderData }: Route.ComponentProps) {
             {
               method: "POST",
               encType: "application/json",
-            }
+            },
           );
         }}
       >
