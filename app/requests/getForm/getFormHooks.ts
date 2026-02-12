@@ -1,6 +1,6 @@
-import { GetFormInputsSchema } from "./getForm.type";
+import { GetFormActivitiesSuccess } from "../_personal/getFormActivities/getFormActivities.schema";
 
-export const transformBikOptions = (data: GetFormInputsSchema) => {
+export const transformBikOptions = (data: GetFormActivitiesSuccess) => {
   const dataCopy = { ...data };
 
   const bikRegExp = new RegExp(`^бик`, "i");
@@ -12,7 +12,7 @@ export const transformBikOptions = (data: GetFormInputsSchema) => {
   }[] = [];
 
   const autocompleteFieldMatch = data.result.formData.find(
-    (item) => item.inputType === "autocomplete"
+    (item) => item.inputType === "autocomplete",
   );
 
   if (
@@ -28,7 +28,7 @@ export const transformBikOptions = (data: GetFormInputsSchema) => {
     });
 
     const elementIndexInData = dataCopy.result.formData.findIndex(
-      (item) => item.name === autocompleteFieldMatch.name
+      (item) => item.name === autocompleteFieldMatch.name,
     );
 
     dataCopy.result.formData[elementIndexInData].options = bikOptions;
