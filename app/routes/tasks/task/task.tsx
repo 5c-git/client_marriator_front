@@ -758,6 +758,7 @@ export default function Task({ loaderData }: Route.ComponentProps) {
               );
             }}
             items={loaderData.supervisorsToSelect}
+            value={[]}
           />
           <RadioSearchableDrawer
             translation="responsible-task"

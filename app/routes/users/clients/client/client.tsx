@@ -958,6 +958,7 @@ export default function Client({ loaderData }: Route.ComponentProps) {
           );
         }}
         items={loaderData.counterparty}
+        value={loaderData.client.counterparty.map((item) => item.id.toString())}
       />
     </>
   );

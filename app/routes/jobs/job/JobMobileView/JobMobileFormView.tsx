@@ -1069,6 +1069,7 @@ export function JobMobileFormView({
           setDayIndex(-1);
         }}
         items={locations}
+        value={[]}
       />
     </>
   );

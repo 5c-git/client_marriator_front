@@ -1357,6 +1357,7 @@ export default function Supervisor({ loaderData }: Route.ComponentProps) {
           );
         }}
         items={loaderData.counterparty}
+        value={[]}
       />
     </>
   );

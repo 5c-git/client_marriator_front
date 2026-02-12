@@ -1331,6 +1331,7 @@ export function RequestSearchDrawer(props: RequestSearchDrawerProps) {
           setDayIndex(-1);
         }}
         items={props.locations}
+        value={[]}
       />
     </>
   );

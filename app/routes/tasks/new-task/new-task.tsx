@@ -312,6 +312,7 @@ export default function NewTask({ loaderData }: Route.ComponentProps) {
           );
         }}
         items={loaderData.supervisorsToSelect}
+        value={[]}
       />
     </>
   ) : null;

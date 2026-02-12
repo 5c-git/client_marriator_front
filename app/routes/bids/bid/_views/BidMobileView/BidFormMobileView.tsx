@@ -1423,6 +1423,7 @@ export function BidFormMobileView(props: BidFormMobileViewInterface) {
           setDayIndex(-1);
         }}
         items={props.locations}
+        value={[]}
       />
     </>
   );

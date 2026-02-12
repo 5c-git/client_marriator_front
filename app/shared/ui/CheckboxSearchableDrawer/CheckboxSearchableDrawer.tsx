@@ -18,6 +18,7 @@ type CheckboxDrawerProps = {
   open: boolean;
   onClose: () => void;
   onSubmit: (value: string[]) => void;
+  value: string[];
   items: ComponentPropsWithoutRef<typeof StyledCheckboxMultiple>["options"];
 };
 
@@ -34,13 +35,13 @@ export function CheckboxSearchableDrawer(props: CheckboxDrawerProps) {
   }>({
     defaultValues: {
       searchbar: "",
-      selectedItems: [],
+      selectedItems: props.value,
     },
     resolver: zodResolver(
       z.object({
         searchbar: z.string(),
         selectedItems: z.array(z.string()).min(1),
-      })
+      }),
     ),
     shouldUnregister: true,
   });
@@ -104,7 +105,7 @@ export function CheckboxSearchableDrawer(props: CheckboxDrawerProps) {
                 onChange={(evt) => {
                   const currentFieldValue = new RegExp(
                     `${evt.target.value}`,
-                    "i"
+                    "i",
                   );
 
                   let matchingItems: typeof props.items = [];
@@ -112,7 +113,7 @@ export function CheckboxSearchableDrawer(props: CheckboxDrawerProps) {
                   if (evt.target.value !== "") {
                     matchingItems = [
                       ...props.items.filter((item) =>
-                        currentFieldValue.test(item.label)
+                        currentFieldValue.test(item.label),
                       ),
                     ];
                   } else {
