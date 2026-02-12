@@ -2,8 +2,8 @@ import { useState, useEffect } from "react";
 import { useSubmit, useNavigate, useNavigation, redirect } from "react-router";
 import type { Route } from "./+types/location";
 
-import * as Yup from "yup";
-import { yupResolver } from "@hookform/resolvers/yup";
+import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm, Controller } from "react-hook-form";
 
 import i18next from "i18next";
@@ -29,6 +29,7 @@ import { MapIcon } from "~/shared/icons/MapIcon";
 
 import { useStore } from "~/store/store";
 
+import { getData } from "~/requests/_personal/getData/getData";
 import { getPlace } from "~/requests/getPlace/getPlace";
 import { postSetPlace } from "~/requests/postSetPlace/postSetPlace";
 
@@ -50,11 +51,14 @@ export async function clientLoader() {
   if (accessToken) {
     const ymaps = await loadMap(langMap[language]);
 
+    const userData = await getData(accessToken);
     const locationsData = await getPlace(accessToken);
 
     const shops: Option[] = [];
 
     const regions: { value: string; label: string; disabled: boolean }[] = [];
+
+    const selectedLocations: string[] = [];
 
     locationsData.data.forEach((item, index) => {
       shops.push({
@@ -81,7 +85,11 @@ export async function clientLoader() {
       }
     });
 
-    return { ymaps, shops, regions };
+    userData.data.place.forEach((item) => {
+      selectedLocations.push(item.id.toString());
+    });
+
+    return { ymaps, shops, regions, selectedLocations };
   } else {
     throw new Response("Токен авторизации не обнаружен!", { status: 401 });
   }
@@ -119,14 +127,13 @@ export default function Location({ loaderData }: Route.ComponentProps) {
     defaultValues: {
       searchbar: "",
       region: "",
-      shops: [],
+      shops: loaderData.selectedLocations,
     },
-    // @ts-expect-error migrate this to zod
-    resolver: yupResolver(
-      Yup.object({
-        searchbar: Yup.string().notRequired(),
-        region: Yup.string().notRequired(),
-        shops: Yup.array().of(Yup.string()).min(1),
+    resolver: zodResolver(
+      z.object({
+        searchbar: z.string(),
+        region: z.string(),
+        shops: z.array(z.string()).min(1),
       }),
     ),
     mode: "onChange",

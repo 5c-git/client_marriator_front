@@ -23,6 +23,7 @@ import { PointerIcon } from "../../../../shared/icons/PointerIcon";
 import { DeleteIcon } from "../../../../shared/icons/DeleteIcon";
 
 import { useStore } from "~/store/store";
+import { useMetaStore } from "./metaStore";
 
 import { getData } from "~/requests/_personal/getData/getData";
 import { getBrand } from "~/requests/getBrand/getBrand";
@@ -34,6 +35,8 @@ import { postFinishRegister } from "~/requests/postFinishRegister/postFinishRegi
 
 export async function clientLoader() {
   const accessToken = useStore.getState().accessToken;
+
+  const fio = useMetaStore.getState().fio;
 
   if (accessToken) {
     const userData = await getData(accessToken);
@@ -75,7 +78,7 @@ export async function clientLoader() {
     );
 
     return {
-      userName: userData.data.name ? userData.data.name : "",
+      userName: userData.data.name ? userData.data.name : fio,
       userLogo: userData.data.logo ? userData.data.logo : "",
       brands,
       locations,
@@ -102,6 +105,7 @@ export async function clientAction({ request }: Route.ClientActionArgs) {
       // useStore.getState().setRefreshToken(data.result.token.refresh_token);
       // throw redirect(withLocale("/registration/registration-complete"));
       useStore.getState().clearStore();
+      useMetaStore.getState().clearStore();
       throw redirect(withLocale("/signin/client/registration-complete"));
     }
   } else {
@@ -115,6 +119,8 @@ export default function Meta({ loaderData }: Route.ComponentProps) {
   const navigation = useNavigation();
 
   const [open, setOpen] = useState<boolean>(false);
+
+  const setFio = useMetaStore.getState().setFio;
 
   const {
     control,
@@ -301,7 +307,9 @@ export default function Meta({ loaderData }: Route.ComponentProps) {
             render={({ field }) => (
               <StyledTextField
                 placeholder={t("fioPlaceholder")}
-                onImmediateChange={() => {}}
+                onImmediateChange={() => {
+                  setFio(getValues("fio"));
+                }}
                 inputType="text"
                 error={errors.fio?.message}
                 {...field}
