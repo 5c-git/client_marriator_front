@@ -232,6 +232,7 @@ export async function clientAction({ request }: Route.ClientActionArgs) {
       );
 
       const entity: RequestSearchDrawerInterface["entity"] = {
+        id: searchRequestData.data.id,
         logo: searchRequestData.data.viewActivity.logo,
         place: {
           id: searchRequestData.data.place.id,
@@ -302,7 +303,7 @@ export async function clientAction({ request }: Route.ClientActionArgs) {
 
       return entity;
     } else if (_action === "_updateSearchRequest") {
-      await postUpdateSearch(accessToken, fields.payload);
+      await postUpdateSearch(accessToken, fields.searchId, fields.payload);
     } else if (_action === "transformAssignmentToRequest") {
       const transformedRequestData = await postCreateBidFromOrder(
         accessToken,
@@ -701,7 +702,7 @@ export default function Order({ loaderData }: Route.ComponentProps) {
                 const payload: PostUpdateSearchPayload = {
                   place: values.place,
                   activity: values.activity,
-                  amount: values.amount,
+                  amount: Number(values.amount),
                   unitPrice: Number(values.unitPrice),
                   radius: Number(values.radius),
                   dateStart: values.dateStart.toISOString(),
@@ -739,6 +740,7 @@ export default function Order({ loaderData }: Route.ComponentProps) {
                 fetcher.submit(
                   JSON.stringify({
                     _action: "_updateSearchRequest",
+                    searchId: fetcher.data?.id,
                     payload,
                   }),
                   {

@@ -63,7 +63,7 @@ const requestSearchFormSchema = (startDate: Date, endEnd: Date) =>
     .object({
       place: z.number({ error: t("text", { ns: "constructorFields" }) }),
       activity: z.number({ error: t("text", { ns: "constructorFields" }) }),
-      amount: z.number({ error: t("text", { ns: "constructorFields" }) }),
+      amount: z.string({ error: t("text", { ns: "constructorFields" }) }),
       unitPrice: z.string({ error: t("text", { ns: "constructorFields" }) }),
       radius: z
         .string({ error: t("text", { ns: "constructorFields" }) })
@@ -167,7 +167,7 @@ export function RequestSearchDrawer(props: RequestSearchDrawerProps) {
     defaultValues: {
       place: props.entity.place.id,
       activity: props.entity.activity.id,
-      amount: props.entity.amount,
+      amount: props.entity.amount.toString(),
       unitPrice: props.entity.unitPrice.toString(),
       radius: props.entity.radius.toString(),
       dateStart: props.entity.dateStart,

@@ -28,6 +28,7 @@ export type PostUpdateSearchPayload = {
 
 export const postUpdateSearch = async (
   accessToken: string,
+  searchId: string,
   payload: PostUpdateSearchPayload,
 ): Promise<PostSearchSuccess> => {
   try {
@@ -39,7 +40,7 @@ export const postUpdateSearch = async (
         "Content-Type": "application/json",
         Authorization: `Bearer ${accessToken}`,
       },
-      body: JSON.stringify(payload),
+      body: JSON.stringify({ searchId, ...payload }),
     });
     const response = await request.json();
 

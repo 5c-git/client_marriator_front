@@ -1,5 +1,6 @@
 export type RequestSearchDrawerInterface = {
   entity: {
+    id: number;
     logo: string;
     place: {
       id: number;
