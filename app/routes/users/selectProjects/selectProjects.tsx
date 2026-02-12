@@ -26,6 +26,7 @@ import { StyledCheckboxMultiple } from "~/shared/ui/StyledCheckboxMultiple/Style
 
 import { useStore } from "~/store/store";
 
+import { getModerationSingleClient } from "~/requests/_personal/_moderation/getModerationSingleClient/getModerationSingleClient";
 import { getProject } from "~/requests/_personal/_moderation/getProject/getProject";
 import { postSetProject } from "~/requests/_personal/_moderation/postSetProject/postSetProject";
 
@@ -33,6 +34,11 @@ export async function clientLoader({ params }: Route.ClientLoaderArgs) {
   const accessToken = useStore.getState().accessToken;
 
   if (accessToken) {
+    const userData = await getModerationSingleClient(
+      accessToken,
+      Number(params.user),
+    );
+
     const data = await getProject(accessToken, Number(params.user));
 
     const options: {
@@ -41,6 +47,8 @@ export async function clientLoader({ params }: Route.ClientLoaderArgs) {
       image?: string;
       disabled: boolean;
     }[] = [];
+
+    const selectedProjects: string[] = [];
 
     data.data.forEach((item) => {
       options.push({
@@ -53,7 +61,11 @@ export async function clientLoader({ params }: Route.ClientLoaderArgs) {
       });
     });
 
-    return { userId: params.user, projects: options };
+    userData.data.project.forEach((item) => {
+      selectedProjects.push(item.id.toString());
+    });
+
+    return { userId: params.user, projects: options, selectedProjects };
   } else {
     throw new Response("Токен авторизации не обнаружен!", { status: 401 });
   }
@@ -95,14 +107,14 @@ export default function SelectProjects({ loaderData }: Route.ComponentProps) {
   }>({
     defaultValues: {
       searchbar: "",
-      projects: [],
+      projects: loaderData.selectedProjects,
     },
     // @ts-expect-error
     resolver: yupResolver(
       Yup.object({
         searchbar: Yup.string().notRequired(),
         projects: Yup.array().of(Yup.string()).min(1),
-      })
+      }),
     ),
     mode: "onChange",
   });
@@ -135,7 +147,7 @@ export default function SelectProjects({ loaderData }: Route.ComponentProps) {
               {
                 method: "POST",
                 encType: "application/json",
-              }
+              },
             );
           })}
         >
@@ -159,7 +171,7 @@ export default function SelectProjects({ loaderData }: Route.ComponentProps) {
                   onChange={(evt) => {
                     const currentFieldValue = new RegExp(
                       `${evt.target.value}`,
-                      "i"
+                      "i",
                     );
 
                     let matchingProjects: typeof loaderData.projects = [];
@@ -167,7 +179,7 @@ export default function SelectProjects({ loaderData }: Route.ComponentProps) {
                     if (evt.target.value !== "") {
                       matchingProjects = [
                         ...loaderData.projects.filter((item) =>
-                          currentFieldValue.test(item.label)
+                          currentFieldValue.test(item.label),
                         ),
                       ];
                     } else {

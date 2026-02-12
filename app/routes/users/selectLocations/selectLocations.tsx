@@ -36,6 +36,7 @@ import { MapIcon } from "~/shared/icons/MapIcon";
 
 import { useStore } from "~/store/store";
 
+import { getModerationSingleClient } from "~/requests/_personal/_moderation/getModerationSingleClient/getModerationSingleClient";
 import { getPlaceModeration } from "~/requests/_personal/_moderation/getPlaceModeration/getPlaceModeration";
 import { postSetPlaceModeration } from "~/requests/_personal/_moderation/postSetPlaceModeration/postSetPlaceModeration";
 
@@ -57,14 +58,21 @@ export async function clientLoader({ params }: Route.ClientLoaderArgs) {
   if (accessToken) {
     const ymaps = await loadMap(langMap[language]);
 
+    const userData = await getModerationSingleClient(
+      accessToken,
+      Number(params.user),
+    );
+
     const locationsData = await getPlaceModeration(
       accessToken,
-      Number(params.user)
+      Number(params.user),
     );
+
+    const regions: { value: string; label: string; disabled: boolean }[] = [];
 
     const locations: Option[] = [];
 
-    const regions: { value: string; label: string; disabled: boolean }[] = [];
+    const selectedLocations: string[] = [];
 
     locationsData.data.forEach((item, index) => {
       locations.push({
@@ -79,7 +87,7 @@ export async function clientLoader({ params }: Route.ClientLoaderArgs) {
       });
 
       const match = regions.findIndex(
-        (region) => region.value === item.region.id.toString()
+        (region) => region.value === item.region.id.toString(),
       );
 
       if (match === -1) {
@@ -91,7 +99,17 @@ export async function clientLoader({ params }: Route.ClientLoaderArgs) {
       }
     });
 
-    return { userId: params.user, ymaps, locations, regions };
+    userData.data.place.forEach((item) => {
+      selectedLocations.push(item.id.toString());
+    });
+
+    return {
+      userId: params.user,
+      ymaps,
+      locations,
+      regions,
+      selectedLocations,
+    };
   } else {
     throw new Response("Токен авторизации не обнаружен!", { status: 401 });
   }
@@ -127,7 +145,7 @@ export default function SelectLocations({ loaderData }: Route.ComponentProps) {
 
   const [showMap, setShowMap] = useState<boolean>(false);
   const [selectedLocations, setSelectedLocations] = useState(
-    loaderData.locations
+    loaderData.locations,
   );
   const [mapInstance, setMapInstance] = useState<YMap | null>(null);
 
@@ -139,7 +157,7 @@ export default function SelectLocations({ loaderData }: Route.ComponentProps) {
     defaultValues: {
       searchbar: "",
       region: "",
-      locations: [],
+      locations: loaderData.selectedLocations,
     },
     // @ts-expect-error
     resolver: yupResolver(
@@ -147,7 +165,7 @@ export default function SelectLocations({ loaderData }: Route.ComponentProps) {
         searchbar: Yup.string().notRequired(),
         region: Yup.string().notRequired(),
         locations: Yup.array().of(Yup.string()).min(1),
-      })
+      }),
     ),
     mode: "onChange",
   });
@@ -197,7 +215,7 @@ export default function SelectLocations({ loaderData }: Route.ComponentProps) {
 
       const icon = renderIcon(
         location.icon,
-        isShopSelected ? "var(--mui-palette-Corp_1)" : "transparent"
+        isShopSelected ? "var(--mui-palette-Corp_1)" : "transparent",
       );
 
       markerElement.innerHTML = icon;
@@ -210,7 +228,7 @@ export default function SelectLocations({ loaderData }: Route.ComponentProps) {
             icon: location.icon,
           },
         },
-        markerElement
+        markerElement,
       );
 
       // markers.push(marker);
@@ -234,7 +252,7 @@ export default function SelectLocations({ loaderData }: Route.ComponentProps) {
             const currentSelectedLocations = getValues("locations");
 
             const isLocationSelected = currentSelectedLocations.findIndex(
-              (shop) => shop === clickedLocation
+              (shop) => shop === clickedLocation,
             );
 
             if (isLocationSelected > -1) {
@@ -250,7 +268,7 @@ export default function SelectLocations({ loaderData }: Route.ComponentProps) {
               clickedLocationIcon,
               isLocationSelected > -1
                 ? "transparent"
-                : "var(--mui-palette-Corp_1)"
+                : "var(--mui-palette-Corp_1)",
             );
             markerElement.innerHTML = icon;
 
@@ -262,7 +280,7 @@ export default function SelectLocations({ loaderData }: Route.ComponentProps) {
                   icon: clickedLocationIcon,
                 },
               },
-              markerElement
+              markerElement,
             );
 
             mapInstance?.addChild(marker);
@@ -319,7 +337,7 @@ export default function SelectLocations({ loaderData }: Route.ComponentProps) {
               {
                 method: "POST",
                 encType: "application/json",
-              }
+              },
             );
           })}
         >
@@ -343,7 +361,7 @@ export default function SelectLocations({ loaderData }: Route.ComponentProps) {
                   onChange={(evt) => {
                     const currentFieldValue = new RegExp(
                       `${evt.target.value}`,
-                      "i"
+                      "i",
                     );
 
                     let matchingLocations: Option[] = [];
@@ -353,7 +371,7 @@ export default function SelectLocations({ loaderData }: Route.ComponentProps) {
                         ...loaderData.locations.filter(
                           (item) =>
                             currentFieldValue.test(item.name) ||
-                            currentFieldValue.test(item.address)
+                            currentFieldValue.test(item.address),
                         ),
                       ];
                     } else {
@@ -362,7 +380,7 @@ export default function SelectLocations({ loaderData }: Route.ComponentProps) {
                         currentRegion !== ""
                           ? [
                               ...loaderData.locations.filter(
-                                (item) => item.regionId === currentRegion
+                                (item) => item.regionId === currentRegion,
                               ),
                             ]
                           : [...loaderData.locations];
@@ -387,21 +405,21 @@ export default function SelectLocations({ loaderData }: Route.ComponentProps) {
                   onChange={(evt) => {
                     const currentSearchbarValue = new RegExp(
                       `^${getValues("searchbar")}`,
-                      "i"
+                      "i",
                     );
 
                     const matchingRegionLocations =
                       evt.target.value !== ""
                         ? [
                             ...loaderData.locations.filter(
-                              (item) => item.regionId === evt.target.value
+                              (item) => item.regionId === evt.target.value,
                             ),
                           ]
                         : [...loaderData.locations];
 
                     const matchingLocations = [
                       ...matchingRegionLocations.filter((item) =>
-                        currentSearchbarValue.test(item.name)
+                        currentSearchbarValue.test(item.name),
                       ),
                     ];
 
