@@ -636,7 +636,7 @@ export default function Task({ loaderData }: Route.ComponentProps) {
                     >
                       {t("searchRequest")}{" "}
                       <span>
-                        {t("searchRequest")}
+                        {t("searchRequestCount")}
                         {service.count}
                       </span>
                     </Button>
