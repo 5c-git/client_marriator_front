@@ -66,7 +66,9 @@ export default function RegistrationComplete() {
             textAlign: "center",
           })}
         >
-          {t("text_start")}
+          {/* {t("text_start")} */}
+
+          {t("text_end")}
 
           {/* <Typography
             component={Link}
@@ -77,21 +79,21 @@ export default function RegistrationComplete() {
             {t("text_link")}
           </Typography> */}
 
-          <Typography
+          {/* <Typography
             component="span"
             variant="Reg_16"
             sx={(theme) => ({ color: theme.vars.palette["Grey_2"] })}
           >
             {t("text_link")}
-          </Typography>
+          </Typography> */}
 
-          <Typography
+          {/* <Typography
             component="span"
             variant="Reg_16"
             sx={(theme) => ({ color: theme.vars.palette["Grey_2"] })}
           >
             {t("text_end")}
-          </Typography>
+          </Typography> */}
         </Typography>
       </Stack>
     </>
