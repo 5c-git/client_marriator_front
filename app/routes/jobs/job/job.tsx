@@ -57,7 +57,7 @@ export async function clientLoader({ params }: Route.ClientLoaderArgs) {
       const missionData = await getJob(
         accessToken,
         params.specialistId,
-        params.jobId
+        params.jobId,
       );
 
       const entity: JobMobileViewInterface["entity"] = {
@@ -83,7 +83,7 @@ export async function clientLoader({ params }: Route.ClientLoaderArgs) {
               [];
 
             const actedDay = missionData.data.reports.find(
-              (item) => item.dayActivityId === day.id
+              (item) => item.dayActivityId === day.id,
             );
 
             day.places.forEach((place) => {
@@ -109,7 +109,7 @@ export async function clientLoader({ params }: Route.ClientLoaderArgs) {
 
                 const canStart = isWithinInterval(now, {
                   start: subHours(new Date(day.timeStart), 1),
-                  end: subHours(new Date(day.timeEnd), 1),
+                  end: new Date(day.timeEnd),
                 });
 
                 if (
@@ -170,7 +170,7 @@ export async function clientLoader({ params }: Route.ClientLoaderArgs) {
 
             const canStart = isWithinInterval(now, {
               start: subHours(new Date(missionData.data.dateStart), 1),
-              end: subHours(new Date(missionData.data.dateEnd), 1),
+              end: new Date(missionData.data.dateEnd),
             });
 
             if (
@@ -299,7 +299,7 @@ export default function Job({ loaderData }: Route.ComponentProps) {
             : [
                 (
                   day: JobMobileViewInterface["entity"]["days"][0],
-                  action: JobMobileViewInterface["entity"]["days"][0]["action"]
+                  action: JobMobileViewInterface["entity"]["days"][0]["action"],
                 ) =>
                   action === "start" ? (
                     <>
@@ -316,7 +316,7 @@ export default function Job({ loaderData }: Route.ComponentProps) {
                             {
                               method: "POST",
                               encType: "application/json",
-                            }
+                            },
                           );
                         }}
                       >
@@ -326,7 +326,7 @@ export default function Job({ loaderData }: Route.ComponentProps) {
                   ) : null,
                 (
                   day: JobMobileViewInterface["entity"]["days"][0],
-                  action: JobMobileViewInterface["entity"]["days"][0]["action"]
+                  action: JobMobileViewInterface["entity"]["days"][0]["action"],
                 ) =>
                   action === "inProgress" ? (
                     <Button
@@ -347,7 +347,7 @@ export default function Job({ loaderData }: Route.ComponentProps) {
 
                           formData.append(
                             "bidId",
-                            loaderData.entity.id.toString()
+                            loaderData.entity.id.toString(),
                           );
 
                           submit(formData, {
@@ -363,7 +363,7 @@ export default function Job({ loaderData }: Route.ComponentProps) {
                   ) : null,
                 (
                   day: JobMobileViewInterface["entity"]["days"][0],
-                  action: JobMobileViewInterface["entity"]["days"][0]["action"]
+                  action: JobMobileViewInterface["entity"]["days"][0]["action"],
                 ) =>
                   action === "end" ? (
                     <Fragment key="end">
@@ -380,7 +380,7 @@ export default function Job({ loaderData }: Route.ComponentProps) {
                   ) : null,
                 (
                   day: JobMobileViewInterface["entity"]["days"][0],
-                  action: JobMobileViewInterface["entity"]["days"][0]["action"]
+                  action: JobMobileViewInterface["entity"]["days"][0]["action"],
                 ) =>
                   action === "reported" ? (
                     <Fragment key="reported">
@@ -397,7 +397,7 @@ export default function Job({ loaderData }: Route.ComponentProps) {
                   ) : null,
                 (
                   day: JobMobileViewInterface["entity"]["days"][0],
-                  action: JobMobileViewInterface["entity"]["days"][0]["action"]
+                  action: JobMobileViewInterface["entity"]["days"][0]["action"],
                 ) =>
                   action === "accept" ? (
                     <Fragment key="accept">
@@ -414,7 +414,7 @@ export default function Job({ loaderData }: Route.ComponentProps) {
                   ) : null,
                 (
                   day: JobMobileViewInterface["entity"]["days"][0],
-                  action: JobMobileViewInterface["entity"]["days"][0]["action"]
+                  action: JobMobileViewInterface["entity"]["days"][0]["action"],
                 ) =>
                   action === "forPay" ? (
                     <Button
@@ -430,7 +430,7 @@ export default function Job({ loaderData }: Route.ComponentProps) {
                           {
                             method: "POST",
                             encType: "application/json",
-                          }
+                          },
                         );
                       }}
                     >
@@ -439,7 +439,7 @@ export default function Job({ loaderData }: Route.ComponentProps) {
                   ) : null,
                 (
                   day: JobMobileViewInterface["entity"]["days"][0],
-                  action: JobMobileViewInterface["entity"]["days"][0]["action"]
+                  action: JobMobileViewInterface["entity"]["days"][0]["action"],
                 ) =>
                   action === "paid" ? (
                     <Fragment key="paid">
@@ -502,7 +502,7 @@ export default function Job({ loaderData }: Route.ComponentProps) {
                   {
                     method: "POST",
                     encType: "application/json",
-                  }
+                  },
                 );
               }}
             >
@@ -519,7 +519,7 @@ export default function Job({ loaderData }: Route.ComponentProps) {
                   {
                     method: "POST",
                     encType: "application/json",
-                  }
+                  },
                 );
               }}
             >
@@ -544,7 +544,7 @@ export default function Job({ loaderData }: Route.ComponentProps) {
                     {
                       method: "POST",
                       encType: "application/json",
-                    }
+                    },
                   );
                 }}
               >
@@ -639,7 +639,7 @@ export default function Job({ loaderData }: Route.ComponentProps) {
                     {
                       method: "POST",
                       encType: "application/json",
-                    }
+                    },
                   );
                 }}
               >
@@ -676,7 +676,7 @@ export default function Job({ loaderData }: Route.ComponentProps) {
                 {
                   method: "POST",
                   encType: "application/json",
-                }
+                },
               );
             }}
           >
