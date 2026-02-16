@@ -4,13 +4,6 @@ export const postSearchSuccessSchema = z.object({
   data: z.object({
     id: z.number(),
     selfEmployed: z.boolean(),
-    status: z.union([
-      z.literal(1),
-      z.literal(2),
-      z.literal(3),
-      z.literal(4),
-      z.literal(5),
-    ]),
     place: z.object({
       id: z.number(),
       name: z.string(),
@@ -95,26 +88,6 @@ export const postSearchSuccessSchema = z.object({
         }),
       }),
     ]),
-    acceptingUsers: z.array(
-      z.object({
-        id: z.number(),
-        phone: z.number(),
-        email: z.string(),
-        logo: z.string(),
-        roles: z.array(
-          z.object({
-            id: z.number().gte(1).lte(6),
-            name: z.enum([
-              "admin",
-              "manager",
-              "supervisor",
-              "client",
-              "specialist",
-            ]),
-          }),
-        ),
-      }),
-    ),
   }),
 });
 
