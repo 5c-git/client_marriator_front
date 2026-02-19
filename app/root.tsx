@@ -24,8 +24,10 @@ import { CssBaseline, ThemeProvider } from "@mui/material";
 import { changeLanguage } from "i18next";
 import { supportedLngs } from "./entry.client";
 
+import { Welcome } from "./shared/ui/Welcome/Welcome";
+
 export function HydrateFallback() {
-  return <div></div>;
+  return <Welcome />;
 }
 
 export async function clientLoader({
