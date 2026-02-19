@@ -9,8 +9,8 @@ import type { Route } from "./+types/phone";
 import { useTranslation } from "react-i18next";
 import { withLocale } from "~/shared/withLocale";
 
-import * as Yup from "yup";
-import { yupResolver } from "@hookform/resolvers/yup";
+import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { phoneRegExp } from "~/shared/validators";
 
 import { useForm, Controller } from "react-hook-form";
@@ -37,25 +37,18 @@ export async function clientAction({ request }: Route.ClientActionArgs) {
 
   const data = await postSendPhone(fields.phone);
 
-  if (data.status === "success") {
-    if (data.result.type === "moderation") {
-      throw redirect(withLocale("/signin/client/registration-complete"));
-    }
-
-    if (data.result.code.status !== "errorSend") {
-      params.set("ttl", data.result.code.ttl.toString());
-      params.set("type", data.result.type);
-
-      throw redirect(withLocale(`/signin/sms?${params}`));
-    } else {
-      currentURL.searchParams.set("error", "error");
-
-      throw redirect(currentURL.toString());
-    }
-  } else {
+  if ("status" in data && data.status === "error") {
     currentURL.searchParams.set("timer", data.result.code.ttl.toString());
-
-    throw redirect(currentURL.toString());
+  } else if (data.result.type === "register") {
+    params.set("ttl", data.result.code.ttl.toString());
+    params.set("type", data.result.type);
+    throw redirect(withLocale(`/signin/sms?${params}`));
+  } else if (data.result.type === "auth") {
+    useStore.getState().setAccessToken(data.result.token.access_token);
+    useStore.getState().setRefreshToken(data.result.token.refresh_token);
+    throw redirect(withLocale("/signin/pin"));
+  } else if (data.result.type === "moderation") {
+    throw redirect(withLocale("/signin/client/registration-complete"));
   }
 }
 
@@ -78,12 +71,12 @@ export default function Phone() {
     defaultValues: {
       phone: "",
     },
-    resolver: yupResolver(
-      Yup.object().shape({
-        phone: Yup.string()
-          .matches(phoneRegExp, t("inputValidation_regExp"))
-          .required(t("inputValidation")),
-      })
+    resolver: zodResolver(
+      z.object({
+        phone: z
+          .string({ error: t("inputValidation") })
+          .regex(phoneRegExp, { error: t("inputValidation_regExp") }),
+      }),
     ),
   });
 
