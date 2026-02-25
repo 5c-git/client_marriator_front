@@ -85,6 +85,10 @@ const calculatePrice = (day: {
 
   criteriaPrice += Number(day.unitPrice) * Number(day.unitAmount);
 
+  if (criteriaPrice < 0) {
+    criteriaPrice = 0;
+  }
+
   return criteriaPrice;
 };
 

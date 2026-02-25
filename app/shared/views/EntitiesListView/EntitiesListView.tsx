@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useEffectEvent } from "react";
 
 import type {
   EntitiesListViewInterface,
@@ -59,15 +59,16 @@ export function EntitiesListView(props: EntitiesListViewInterface) {
   const [clustererInstance, setClustererInstance] =
     useState<YMapClusterer | null>(null);
 
-  //стартовая фильтрация сущностей
-  useEffect(() => {
-    if (props.entities.length > 0) {
+  const setInitialSorting = useEffectEvent((entities: Entity[]) => {
+    //сортировка
+    if (entities.length > 0) {
       const allFilters = [
         ...new Set(props.entities.map((entity) => entity["status"])),
       ].sort((a, b) => a - b);
 
-      const filteredEntites: { [key: (typeof allFilters)[number]]: Entity[] } =
-        {};
+      const filteredEntites: {
+        [key: (typeof allFilters)[number]]: Entity[];
+      } = {};
 
       allFilters.forEach((filter) => {
         filteredEntites[filter] = [];
@@ -79,62 +80,64 @@ export function EntitiesListView(props: EntitiesListViewInterface) {
         );
       }
 
+      //сортировка по убыванию/возрастанию
+      if (sorting === "ascending") {
+        const emptyDurationEntities = filteredEntites[allFilters[0]].filter(
+          (item) => item.duration.start === null && item.duration.end === null,
+        );
+
+        const notEmptyDurationEntities = filteredEntites[allFilters[0]].filter(
+          (item) => item.duration.start !== null && item.duration.end !== null,
+        );
+
+        notEmptyDurationEntities.sort(
+          (a, b) =>
+            new Date(a.duration.start as string).valueOf() -
+            new Date(b.duration.start as string).valueOf(),
+        );
+
+        setActiveEntities([
+          ...emptyDurationEntities,
+          ...notEmptyDurationEntities,
+        ]);
+      } else if (sorting === "descending") {
+        const emptyDurationEntities = filteredEntites[
+          Number(Object.keys(filteredEntites)[0])
+        ].filter(
+          (item) => item.duration.start === null && item.duration.end === null,
+        );
+
+        const notEmptyDurationEntities = filteredEntites[
+          Number(Object.keys(filteredEntites)[0])
+        ].filter(
+          (item) => item.duration.start !== null && item.duration.end !== null,
+        );
+
+        notEmptyDurationEntities.sort(
+          (a, b) =>
+            new Date(b.duration.start as string).valueOf() -
+            new Date(a.duration.start as string).valueOf(),
+        );
+
+        setActiveEntities([
+          ...emptyDurationEntities,
+          ...notEmptyDurationEntities,
+        ]);
+      }
+      //сортировка по убыванию/возрастанию
+
       setFilteredEntities(filteredEntites);
-      setActiveEntities(
-        filteredEntites[Number(Object.keys(filteredEntites)[0])],
-      );
       setFilter(allFilters[0]);
     }
+  });
+  useEffect(() => {
+    setInitialSorting(props.entities);
   }, [props.entities]);
 
-  //сортировка и фильтрация
-  useEffect(() => {
-    if (activeEntities.length > 0 && sorting === "ascending") {
-      const emptyDurationEntities = activeEntities.filter(
-        (item) => item.duration.start === null && item.duration.end === null,
-      );
-
-      const notEmptyDurationEntities = activeEntities.filter(
-        (item) => item.duration.start !== null && item.duration.end !== null,
-      );
-
-      notEmptyDurationEntities.sort(
-        (a, b) =>
-          new Date(a.duration.start as string).valueOf() -
-          new Date(b.duration.start as string).valueOf(),
-      );
-
-      setActiveEntities([
-        ...emptyDurationEntities,
-        ...notEmptyDurationEntities,
-      ]);
-    } else if (activeEntities.length > 0 && sorting === "descending") {
-      const emptyDurationEntities = activeEntities.filter(
-        (item) => item.duration.start === null && item.duration.end === null,
-      );
-
-      const notEmptyDurationEntities = activeEntities.filter(
-        (item) => item.duration.start !== null && item.duration.end !== null,
-      );
-
-      notEmptyDurationEntities.sort(
-        (a, b) =>
-          new Date(b.duration.start as string).valueOf() -
-          new Date(a.duration.start as string).valueOf(),
-      );
-
-      setActiveEntities([
-        ...emptyDurationEntities,
-        ...notEmptyDurationEntities,
-      ]);
-    }
-  }, [filter, sorting]);
-
-  // рисуем пустую карту
-  useEffect(() => {
+  const drawEmptyMap = useEffectEvent((mapView: boolean) => {
     let map: YMapType | null;
 
-    if (props.mapView) {
+    if (mapView) {
       const container = document.querySelector("#map") as HTMLElement;
 
       if (container) {
@@ -153,135 +156,146 @@ export function EntitiesListView(props: EntitiesListViewInterface) {
         );
 
         setMapInstance(map);
-      }
 
-      return () => {
-        map?.destroy();
-        mapInstance?.destroy();
-        setMapInstance(null);
-      };
+        return map;
+      }
     }
+
+    return null;
+  });
+  // рисуем пустую карту
+  useEffect(() => {
+    const map = drawEmptyMap(props.mapView);
+
+    return () => {
+      map?.destroy();
+    };
   }, [props.mapView]);
 
-  // рисуем на карте маркеры
-  useEffect(() => {
-    if (mapInstance && activeEntities) {
-      //рисуем новые маркеры из свежих данных
-      const coordinates: {
-        locationId: number;
-        image: string;
-        borderColor: string;
-        coordinates: LngLat;
-      }[] = [];
+  const drawMarkers = useEffectEvent(
+    (mapInstance: YMapType | null, entities: Entity[]) => {
+      if (mapInstance && entities) {
+        //рисуем новые маркеры из свежих данных
+        const coordinates: {
+          locationId: number;
+          image: string;
+          borderColor: string;
+          coordinates: LngLat;
+        }[] = [];
 
-      //отрисовка и обновления точек БЕЗ кластерзиции
-      // const markers: YMapMarkerType[] = [];
-      // mapInstance.children.forEach((child) => {
-      //   if ("coordinates" in child) {
-      //     markers.push(child as YMapMarkerType);
-      //   }
-      // });
-      // markers.forEach((marker) => {
-      //   mapInstance?.removeChild(marker);
-      // });
-      // activeEntities.forEach((location) => {
-      //   const markerElement = document.createElement("div");
+        //отрисовка и обновления точек БЕЗ кластерзиции
+        // const markers: YMapMarkerType[] = [];
+        // mapInstance.children.forEach((child) => {
+        //   if ("coordinates" in child) {
+        //     markers.push(child as YMapMarkerType);
+        //   }
+        // });
+        // markers.forEach((marker) => {
+        //   mapInstance?.removeChild(marker);
+        // });
+        // activeEntities.forEach((location) => {
+        //   const markerElement = document.createElement("div");
 
-      //   const icon = renderIcon(location.address.logo, location.statusColor);
+        //   const icon = renderIcon(location.address.logo, location.statusColor);
 
-      //   markerElement.innerHTML = icon;
+        //   markerElement.innerHTML = icon;
 
-      //   const marker = new YMapMarker(
-      //     {
-      //       coordinates: location.coordinates as LngLat,
-      //       properties: {
-      //         id: location.id,
-      //         icon: location.address.logo,
-      //       },
-      //     },
-      //     markerElement,
-      //   );
-      //   mapInstance.addChild(marker);
-      //отрисовка и обновления точек БЕЗ кластерзиции
+        //   const marker = new YMapMarker(
+        //     {
+        //       coordinates: location.coordinates as LngLat,
+        //       properties: {
+        //         id: location.id,
+        //         icon: location.address.logo,
+        //       },
+        //     },
+        //     markerElement,
+        //   );
+        //   mapInstance.addChild(marker);
+        //отрисовка и обновления точек БЕЗ кластерзиции
 
-      // mapInstance?.setLocation({ center: activeEntities[0].coordinates });
+        // mapInstance?.setLocation({ center: activeEntities[0].coordinates });
 
-      activeEntities.forEach((location) => {
-        const markerElement = document.createElement("div");
-        const icon = renderIcon(location.address.logo, location.statusColor);
-        markerElement.innerHTML = icon;
-
-        coordinates.push({
-          locationId: location.id,
-          image: location.address.logo,
-          borderColor: location.statusColor,
-          coordinates: location.coordinates as LngLat,
-        });
-      });
-
-      const points: Feature[] = coordinates.map((item, i) => ({
-        type: "Feature",
-        id: i.toString(),
-        geometry: { coordinates: item.coordinates, type: "Point" },
-        properties: {
-          locationId: item.locationId,
-          image: item.image,
-          borderColor: item.borderColor,
-        },
-      }));
-
-      if (clustererInstance) {
-        mapInstance.removeChild(clustererInstance);
-      }
-
-      const clusterer = new YMapClusterer({
-        method: clusterByGrid({ gridSize: 64 }),
-        features: points,
-        marker: (point) => {
+        activeEntities.forEach((location) => {
           const markerElement = document.createElement("div");
-          const icon = renderIcon(
-            point.properties?.image as string,
-            point.properties?.borderColor as string,
-          );
+          const icon = renderIcon(location.address.logo, location.statusColor);
           markerElement.innerHTML = icon;
 
-          return new YMapMarker(
-            {
-              coordinates: point.geometry.coordinates as LngLat,
-              properties: {
-                locationId: point.properties?.locationId,
-                image: point.properties?.image,
-                borderColor: point.properties?.borderColor,
+          coordinates.push({
+            locationId: location.id,
+            image: location.address.logo,
+            borderColor: location.statusColor,
+            coordinates: location.coordinates as LngLat,
+          });
+        });
+
+        const points: Feature[] = coordinates.map((item, i) => ({
+          type: "Feature",
+          id: i.toString(),
+          geometry: { coordinates: item.coordinates, type: "Point" },
+          properties: {
+            locationId: item.locationId,
+            image: item.image,
+            borderColor: item.borderColor,
+          },
+        }));
+
+        if (clustererInstance) {
+          mapInstance.removeChild(clustererInstance);
+        }
+
+        const clusterer = new YMapClusterer({
+          method: clusterByGrid({ gridSize: 64 }),
+          features: points,
+          marker: (point) => {
+            const markerElement = document.createElement("div");
+            const icon = renderIcon(
+              point.properties?.image as string,
+              point.properties?.borderColor as string,
+            );
+            markerElement.innerHTML = icon;
+
+            return new YMapMarker(
+              {
+                coordinates: point.geometry.coordinates as LngLat,
+                properties: {
+                  locationId: point.properties?.locationId,
+                  image: point.properties?.image,
+                  borderColor: point.properties?.borderColor,
+                },
+                source: "my-source",
               },
-              source: "my-source",
-            },
-            markerElement,
-          );
-        },
-        cluster: (coordinates, features) => {
-          const clusterElement = document.createElement("div");
-          const clusterCounter = renderClusterCounter(
-            features.length,
-            activeEntities[0].statusColor,
-          );
-          clusterElement.innerHTML = clusterCounter;
+              markerElement,
+            );
+          },
+          cluster: (coordinates, features) => {
+            const clusterElement = document.createElement("div");
+            const clusterCounter = renderClusterCounter(
+              features.length,
+              activeEntities[0].statusColor,
+            );
+            clusterElement.innerHTML = clusterCounter;
 
-          return new YMapMarker(
-            {
-              coordinates,
-              source: "my-source",
-            },
-            clusterElement,
-          );
-        },
-      });
+            return new YMapMarker(
+              {
+                coordinates,
+                source: "my-source",
+              },
+              clusterElement,
+            );
+          },
+        });
 
-      mapInstance.addChild(clusterer);
-      setClustererInstance(clusterer);
-    }
+        mapInstance.addChild(clusterer);
+        setClustererInstance(clusterer);
+      }
+    },
+  );
+  // рисуем на карте маркеры
+  useEffect(() => {
+    drawMarkers(mapInstance, activeEntities);
   }, [mapInstance, activeEntities]);
 
-  // обновляем слушатель событий
+  // // обновляем слушатель событий
   useEffect(() => {
     if (mapInstance) {
       const mapListener = new YMapListener({
@@ -308,8 +322,6 @@ export function EntitiesListView(props: EntitiesListViewInterface) {
     }
   }, [activeEntities, mapInstance]);
 
-  console.log(filter);
-
   return (
     <>
       {props.entities.length > 0 ? (
@@ -326,8 +338,62 @@ export function EntitiesListView(props: EntitiesListViewInterface) {
             <StatusSelect
               value={filter.toString()}
               onChange={(value) => {
+                if (sorting === "ascending") {
+                  const emptyDurationEntities = filteredEntities[
+                    Number(value)
+                  ].filter(
+                    (item) =>
+                      item.duration.start === null &&
+                      item.duration.end === null,
+                  );
+
+                  const notEmptyDurationEntities = filteredEntities[
+                    Number(value)
+                  ].filter(
+                    (item) =>
+                      item.duration.start !== null &&
+                      item.duration.end !== null,
+                  );
+
+                  notEmptyDurationEntities.sort(
+                    (a, b) =>
+                      new Date(a.duration.start as string).valueOf() -
+                      new Date(b.duration.start as string).valueOf(),
+                  );
+
+                  setActiveEntities([
+                    ...emptyDurationEntities,
+                    ...notEmptyDurationEntities,
+                  ]);
+                } else if (sorting === "descending") {
+                  const emptyDurationEntities = filteredEntities[
+                    Number(value)
+                  ].filter(
+                    (item) =>
+                      item.duration.start === null &&
+                      item.duration.end === null,
+                  );
+
+                  const notEmptyDurationEntities = filteredEntities[
+                    Number(value)
+                  ].filter(
+                    (item) =>
+                      item.duration.start !== null &&
+                      item.duration.end !== null,
+                  );
+
+                  notEmptyDurationEntities.sort(
+                    (a, b) =>
+                      new Date(b.duration.start as string).valueOf() -
+                      new Date(a.duration.start as string).valueOf(),
+                  );
+
+                  setActiveEntities([
+                    ...emptyDurationEntities,
+                    ...notEmptyDurationEntities,
+                  ]);
+                }
                 setFilter(Number(value));
-                setActiveEntities(filteredEntities[Number(value)]);
               }}
               options={(() => {
                 const options: {
@@ -370,7 +436,64 @@ export function EntitiesListView(props: EntitiesListViewInterface) {
                   },
                 ]}
                 onChange={(value) => {
-                  setSorting(value as typeof sorting);
+                  const currentSorting = value as typeof sorting;
+
+                  if (currentSorting === "ascending") {
+                    const emptyDurationEntities = filteredEntities[
+                      filter
+                    ].filter(
+                      (item) =>
+                        item.duration.start === null &&
+                        item.duration.end === null,
+                    );
+
+                    const notEmptyDurationEntities = filteredEntities[
+                      filter
+                    ].filter(
+                      (item) =>
+                        item.duration.start !== null &&
+                        item.duration.end !== null,
+                    );
+
+                    notEmptyDurationEntities.sort(
+                      (a, b) =>
+                        new Date(a.duration.start as string).valueOf() -
+                        new Date(b.duration.start as string).valueOf(),
+                    );
+
+                    setActiveEntities([
+                      ...emptyDurationEntities,
+                      ...notEmptyDurationEntities,
+                    ]);
+                  } else if (currentSorting === "descending") {
+                    const emptyDurationEntities = filteredEntities[
+                      filter
+                    ].filter(
+                      (item) =>
+                        item.duration.start === null &&
+                        item.duration.end === null,
+                    );
+
+                    const notEmptyDurationEntities = filteredEntities[
+                      filter
+                    ].filter(
+                      (item) =>
+                        item.duration.start !== null &&
+                        item.duration.end !== null,
+                    );
+
+                    notEmptyDurationEntities.sort(
+                      (a, b) =>
+                        new Date(b.duration.start as string).valueOf() -
+                        new Date(a.duration.start as string).valueOf(),
+                    );
+
+                    setActiveEntities([
+                      ...emptyDurationEntities,
+                      ...notEmptyDurationEntities,
+                    ]);
+                  }
+                  setSorting(currentSorting);
                 }}
               />
             ) : null}
