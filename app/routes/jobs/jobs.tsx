@@ -94,7 +94,7 @@ export default function Jobs({ loaderData }: Route.ComponentProps) {
             entityType="job"
             entityListView={(entity) => (
               <EntityCard
-                key={entity.id}
+                key={entity.id + entity.userId}
                 to={
                   userRole === "specialist"
                     ? withLocale(`/jobs/${entity.id}/${entity.userId}`)

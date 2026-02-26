@@ -16,7 +16,11 @@ import { SwipeableDrawer, Typography } from "@mui/material";
 import { StatusSelect } from "~/shared/ui/StatusSelect/StatusSelect";
 import { SortingSelect } from "~/shared/ui/SortingSelect/SortingSelect";
 
-import { YMap as YMapType, YMapMarker as YMapMarkerType, LngLat } from "ymaps3";
+import {
+  YMap as YMapType,
+  LngLat,
+  // YMapMarker as YMapMarkerType
+} from "ymaps3";
 import {
   YMap,
   YMapMarker,
@@ -404,6 +408,7 @@ export function EntitiesListView(props: EntitiesListViewInterface) {
                 }[] = [];
 
                 for (const key in filteredEntities) {
+                  // eslint-disable-next-line @typescript-eslint/no-unused-vars
                   const selectedStatusMap = statusObject[props.entityType];
                   options.push({
                     id: key,
