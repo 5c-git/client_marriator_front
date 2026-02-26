@@ -113,7 +113,7 @@ export function SpecialistsInviteFormMobileView(
 
                 //обрабатываем радиус
                 const sortedSpecialists = matchingSpecialists.filter(
-                  (item) => Number(item.radius) <= currentRadius,
+                  (item) => Number(item.radius) <= Number(currentRadius),
                 );
 
                 //обрабатываем "выбрать всё"
