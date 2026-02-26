@@ -310,10 +310,15 @@ export default function Step4({ loaderData }: Route.ComponentProps) {
             <Button
               variant="contained"
               onClick={() => {
-                submit(JSON.stringify({ _action: "finishRegister" }), {
-                  method: "POST",
-                  encType: "application/json",
-                });
+                trigger();
+                handleSubmit(() => {
+                  if (loaderData.formStatus === "allowedNewStep") {
+                    submit(JSON.stringify({ _action: "finishRegister" }), {
+                      method: "POST",
+                      encType: "application/json",
+                    });
+                  }
+                })();
               }}
             >
               {t("endButton")}
