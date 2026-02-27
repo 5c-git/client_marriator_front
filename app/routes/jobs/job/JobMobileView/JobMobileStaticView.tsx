@@ -23,6 +23,8 @@ import { LocationIcon } from "~/shared/icons/LocationIcon";
 
 import { statusCodeMap } from "~/shared/specialistStatus";
 
+import { useStore } from "~/store/store";
+
 export function JobMobileStaticView({
   entity,
   actions,
@@ -37,6 +39,8 @@ export function JobMobileStaticView({
 
   const [jobDetails, setJobDetails] =
     useState<ComponentPropsWithoutRef<typeof DetailsPopUp>["details"]>(null);
+
+  const userRole = useStore.getState().userRole;
 
   return (
     <Box
@@ -59,11 +63,13 @@ export function JobMobileStaticView({
           cursor: "pointer",
         }}
         onClick={() => {
-          setJobDetails({
-            text: entity.activity,
-            details: entity.activityDetailsText,
-            img: entity.logo,
-          });
+          if (userRole === "specialist") {
+            setJobDetails({
+              text: entity.activity,
+              details: entity.activityDetailsText,
+              img: entity.logo,
+            });
+          }
         }}
       />
 
