@@ -334,12 +334,10 @@ export default function Job({ loaderData }: Route.ComponentProps) {
                       key="inProgress"
                       startIcon={<CheckIcon />}
                       variant="contained"
-                      disabled={
-                        !isWithinInterval(new Date(), {
-                          start: subHours(new Date(day.timeEnd), 1),
-                          end: new Date(day.timeEnd),
-                        })
-                      }
+                      disabled={isWithinInterval(new Date(), {
+                        start: subHours(new Date(day.timeStart), 1),
+                        end: new Date(day.timeEnd),
+                      })}
                       onClick={() => {
                         if (loaderData.entity.needPhoto) {
                           setOpenFilesPopup(true);
