@@ -9,6 +9,7 @@ export type JobMobileViewInterface = {
       logo: string;
     };
     activity: string;
+    activityDetailsText: string;
     unitPrice: number;
     dateStart: Date;
     dateEnd: Date;

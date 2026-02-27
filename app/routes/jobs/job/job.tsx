@@ -70,6 +70,7 @@ export async function clientLoader({ params }: Route.ClientLoaderArgs) {
           logo: `${import.meta.env.VITE_ASSET_PATH}${missionData.data.place.logo}`,
         },
         activity: missionData.data.viewActivity.name,
+        activityDetailsText: missionData.data.viewActivity.detailText,
         unitPrice: missionData.data.price,
         dateStart: new Date(missionData.data.dateStart),
         dateEnd: new Date(missionData.data.dateEnd),

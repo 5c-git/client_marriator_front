@@ -1,4 +1,6 @@
 import type { JobMobileViewInterface } from "./JobMobileViewInterface";
+import { useState } from "react";
+import type { ComponentPropsWithoutRef } from "react";
 import { useTranslation } from "react-i18next";
 
 import { format, getDay } from "date-fns";
@@ -13,6 +15,8 @@ import {
   S_AccordionDetails,
 } from "./JobMobileView.styled";
 
+import { DetailsPopUp } from "../components/DetailsPopUp";
+
 import { PhoneIcon } from "~/shared/icons/PhoneIcon";
 import { ExpandIcon } from "~/shared/icons/ExpandIcon";
 import { LocationIcon } from "~/shared/icons/LocationIcon";
@@ -26,10 +30,13 @@ export function JobMobileStaticView({
   entity: JobMobileViewInterface["entity"];
   actions: ((
     day: JobMobileViewInterface["entity"]["days"][0],
-    action: JobMobileViewInterface["entity"]["days"][0]["action"]
+    action: JobMobileViewInterface["entity"]["days"][0]["action"],
   ) => React.ReactNode)[];
 }) {
   const { t } = useTranslation("JobMobileView");
+
+  const [jobDetails, setJobDetails] =
+    useState<ComponentPropsWithoutRef<typeof DetailsPopUp>["details"]>(null);
 
   return (
     <Box
@@ -45,7 +52,19 @@ export function JobMobileStaticView({
     >
       <Avatar
         src={entity.logo}
-        sx={{ width: "100px", height: "100px", margin: "0 auto" }}
+        sx={{
+          width: "100px",
+          height: "100px",
+          margin: "0 auto",
+          cursor: "pointer",
+        }}
+        onClick={() => {
+          setJobDetails({
+            text: entity.activity,
+            details: entity.activityDetailsText,
+            img: entity.logo,
+          });
+        }}
       />
 
       <Box
@@ -92,7 +111,7 @@ export function JobMobileStaticView({
             {t(
               `status.${
                 statusCodeMap[entity.status as keyof typeof statusCodeMap].value
-              }`
+              }`,
             )}
           </Typography>
         </Box>
@@ -575,6 +594,13 @@ export function JobMobileStaticView({
           </IconButton>
         </Box>
       </Box>
+
+      <DetailsPopUp
+        details={jobDetails}
+        onClose={() => {
+          setJobDetails(null);
+        }}
+      />
     </Box>
   );
 }
