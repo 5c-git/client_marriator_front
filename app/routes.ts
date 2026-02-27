@@ -140,7 +140,7 @@ export default [
     route(":lang?/registration/step4", "routes/registration/step4/step4.tsx"),
     route(":lang?/registration/step5", "routes/registration/step5/step5.tsx"),
     route(":lang?/registration/step6", "routes/registration/step6/step6.tsx"),
-    route(":lang?/registration/step7", "routes/registration/step7/step7.tsx"),
+    // route(":lang?/registration/step7", "routes/registration/step7/step7.tsx"),
     route(
       ":lang?/registration/confirm-email",
       "routes/registration/confirm-email/confirm-email.tsx",

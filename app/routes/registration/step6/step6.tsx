@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { useFetcher, useNavigate, useNavigation } from "react-router";
+import { useFetcher, useNavigate, useNavigation, redirect } from "react-router";
 import type { Route } from "./+types/step6";
 import * as Yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -23,6 +23,7 @@ import { Loader } from "~/shared/ui/Loader/Loader";
 import { getForm } from "~/requests/getForm/getForm";
 import { transformBikOptions } from "~/requests/getForm/getFormHooks";
 import { postSaveForm } from "~/requests/postSaveForm/postSaveForm";
+import { postFinishRegister } from "~/requests/postFinishRegister/postFinishRegister";
 
 import { useStore } from "~/store/store";
 
@@ -46,12 +47,23 @@ export async function clientLoader() {
 
 export async function clientAction({ request }: Route.ClientActionArgs) {
   const accessToken = useStore.getState().accessToken;
-  const fields = await request.json();
+  const { _action, ...fields } = await request.json();
 
   if (accessToken) {
-    const data = await postSaveForm(accessToken, 6, fields);
+    if (_action === "finishRegister") {
+      await postFinishRegister(accessToken);
 
-    return data;
+      // useStore.getState().setAccessToken(data.result.token.access_token);
+      // useStore.getState().setRefreshToken(data.result.token.refresh_token);
+
+      useStore.getState().clearStore();
+
+      throw redirect(withLocale("/registration/registration-complete"));
+    } else {
+      const data = await postSaveForm(accessToken, 6, fields);
+
+      return data;
+    }
   } else {
     throw new Response("Токен авторизации не обнаружен!", { status: 401 });
   }
@@ -75,7 +87,7 @@ export default function Step6({ loaderData }: Route.ComponentProps) {
   } = useForm({
     defaultValues: generateDefaultValues(loaderData.formFields),
     resolver: yupResolver(
-      Yup.object(generateValidationSchema(loaderData.formFields))
+      Yup.object(generateValidationSchema(loaderData.formFields)),
     ),
     mode: "onChange",
     shouldUnregister: true,
@@ -147,7 +159,7 @@ export default function Step6({ loaderData }: Route.ComponentProps) {
                 encType: "application/json",
               });
             },
-            loaderData.accessToken
+            loaderData.accessToken,
           )}
 
           <Box
@@ -166,11 +178,18 @@ export default function Step6({ loaderData }: Route.ComponentProps) {
               onClick={() => {
                 trigger();
                 handleSubmit(() => {
-                  if (loaderData.formStatus === "allowedNewStep") {
-                    navigate(withLocale("/registration/step7"), {
-                      viewTransition: true,
-                    });
-                  }
+                  // if (loaderData.formStatus === "allowedNewStep") {
+                  //   navigate(withLocale("/registration/step7"), {
+                  //     viewTransition: true,
+                  //   });
+                  // }
+                  fetcher.submit(
+                    JSON.stringify({ _action: "finishRegister" }),
+                    {
+                      method: "POST",
+                      encType: "application/json",
+                    },
+                  );
                 })();
               }}
             >
