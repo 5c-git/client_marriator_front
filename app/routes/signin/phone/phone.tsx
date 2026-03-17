@@ -37,16 +37,13 @@ export async function clientAction({ request }: Route.ClientActionArgs) {
 
   const data = await postSendPhone(fields.phone);
 
-  if ("status" in data && data.status === "error") {
+  if (data.status === "error") {
     currentURL.searchParams.set("timer", data.result.code.ttl.toString());
-  } else if (data.result.type === "register") {
+    throw redirect(currentURL.toString());
+  } else if (data.result.type === "register" || data.result.type === "auth") {
     params.set("ttl", data.result.code.ttl.toString());
     params.set("type", data.result.type);
     throw redirect(withLocale(`/signin/sms?${params}`));
-  } else if (data.result.type === "auth") {
-    useStore.getState().setAccessToken(data.result.token.access_token);
-    useStore.getState().setRefreshToken(data.result.token.refresh_token);
-    throw redirect(withLocale("/signin/pin"));
   } else if (data.result.type === "moderation") {
     throw redirect(withLocale("/signin/client/registration-complete"));
   }

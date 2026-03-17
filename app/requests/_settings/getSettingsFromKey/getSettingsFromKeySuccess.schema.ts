@@ -1,8 +1,10 @@
 import { z } from "zod";
 
 export const getSettingsFromKeySuccessSchema = z.object({
-  status: z.literal("success"),
-  result: z.string(),
+  data: z.object({
+    key: z.string(),
+    value: z.string(),
+  }),
 });
 
 export type GetSettingsFromKeySuccess = z.infer<

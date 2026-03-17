@@ -165,6 +165,8 @@ export default function Step6({ loaderData }: Route.ComponentProps) {
           <Box
             sx={(theme) => ({
               position: "fixed",
+              display: "grid",
+              rowGap: "14px",
               zIndex: 1,
               width: "100%",
               bottom: "0",
@@ -194,6 +196,10 @@ export default function Step6({ loaderData }: Route.ComponentProps) {
               }}
             >
               {t("finishButton")}
+            </Button>
+
+            <Button variant="contained" component={Link} to={"/"}>
+              {t("termsButton")}
             </Button>
           </Box>
         </form>

@@ -2,7 +2,7 @@ export type JobMobileViewInterface = {
   entity: {
     id: number;
     logo: string;
-    status: 1 | 2 | 3 | 4 | 5 | 6;
+    status: 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8;
     place: {
       id: number;
       name: string;
@@ -66,4 +66,8 @@ export type JobMobileViewInterface = {
     logo: string | null;
     disabled: boolean;
   }[];
+  defaultTimeRange: {
+    start: Date;
+    end: Date;
+  };
 };

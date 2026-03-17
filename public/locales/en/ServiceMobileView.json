@@ -1,6 +1,7 @@
 {
   "service": {
     "header": "New service",
+    "popupHeader": "Add locations",
     "fields": {
       "servicePlaceholder": "Type of service *",
       "amountPlaceholder": "Amount *",
@@ -31,6 +32,8 @@
     "startTime": "Start time",
     "endTime": "End time",
     "addDayButton": "Add day",
-    "deleteDayButton": "Delete day"
+    "deleteDayButton": "Delete day",
+    "earlierThanDefaultError": "Earlier than default",
+    "laterThanDefaultError": "Later that default"
   }
 }

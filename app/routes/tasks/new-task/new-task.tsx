@@ -28,7 +28,7 @@ import { postUpdateTask } from "~/requests/_personal/postUpdateTask/postUpdateTa
 import { postDeleteTaskActivity } from "~/requests/_personal/postDeleteTaskActivity/postDeleteTaskActivity";
 import { postCancelTask } from "~/requests/_personal/postCancelTask/postCancelTask";
 import { postInvoiceTask } from "~/requests/_personal/postInvoiceTask/postInvoiceTask";
-import { postInstructTask } from "~/requests/_personal/postInstructTask/postInstructTask";
+// import { postInstructTask } from "~/requests/_personal/postInstructTask/postInstructTask";
 
 type MobileModeData = {
   mode: "mobile";
@@ -52,7 +52,7 @@ export async function clientLoader({ request }: Route.ClientLoaderArgs) {
 
   if (accessToken) {
     if (mode === "mobile") {
-      let task: MobileModeData["task"] = {
+      const task: MobileModeData["task"] = {
         id: "",
         projectId: null,
         place: {

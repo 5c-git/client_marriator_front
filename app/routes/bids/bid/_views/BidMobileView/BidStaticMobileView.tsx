@@ -320,29 +320,6 @@ export function BidStaticMobileView(props: BidMobileViewInterface) {
             </Typography>
           </Box>
 
-          <Box
-            sx={{
-              display: "grid",
-              rowGap: "4px",
-            }}
-          >
-            <Typography
-              component="p"
-              variant="Reg_12"
-              sx={(theme) => ({
-                color: theme.vars.palette["Grey_2"],
-              })}
-            >
-              {t("radiusPlaceholder")}
-            </Typography>
-            <Typography
-              component="p"
-              variant="Reg_14"
-              sx={(theme) => ({ color: theme.vars.palette["Black"] })}
-            >
-              {props.entity.radius}
-            </Typography>
-          </Box>
 
           <Box
             sx={{

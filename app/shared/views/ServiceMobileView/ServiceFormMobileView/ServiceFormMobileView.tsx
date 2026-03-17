@@ -19,6 +19,8 @@ import {
   subDays,
   format,
   isSameDay,
+  isBefore,
+  isAfter,
 } from "date-fns";
 
 import { LocalizationProvider, DateTimeField } from "@mui/x-date-pickers";
@@ -60,97 +62,207 @@ type ServiceFormMobileViewInterface = Omit<
   "headerButtonAction" | "logo"
 >;
 
-const serviceFormSchema = z
-  .object({
-    activity: z
-      .string()
-      .trim()
-      .min(1, { error: t("text", { ns: "constructorFields" }) }),
-    amount: z
-      .string()
-      .trim()
-      .min(1, { error: t("text", { ns: "constructorFields" }) }),
-    dateStart: z
-      .union([
-        z.date().min(new Date(), {
-          error: t("inFututreDate", { ns: "constructorFields" }),
-        }),
-        z.null(),
-      ])
-      .pipe(z.date({ message: t("text", { ns: "constructorFields" }) })),
-    dateEnd: z
-      .union([
-        z.date().min(new Date(), {
-          error: t("inFututreDate", { ns: "constructorFields" }),
-        }),
+const createServiceFormSchema = (
+  defaultStartDate: Date,
+  defaultEndDate: Date,
+) =>
+  z
+    .object({
+      activity: z
+        .string()
+        .trim()
+        .min(1, { error: t("text", { ns: "constructorFields" }) }),
+      amount: z
+        .string()
+        .trim()
+        .min(1, { error: t("text", { ns: "constructorFields" }) }),
+      dateStart: z
+        .union([
+          z.date().min(new Date(), {
+            error: t("inFututreDate", { ns: "constructorFields" }),
+          }),
+          z.null(),
+        ])
+        .pipe(z.date({ message: t("text", { ns: "constructorFields" }) })),
+      dateEnd: z
+        .union([
+          z.date().min(new Date(), {
+            error: t("inFututreDate", { ns: "constructorFields" }),
+          }),
 
-        z.null(),
-      ])
-      .pipe(z.date({ message: t("text", { ns: "constructorFields" }) })),
-    needDays: z.boolean(),
-    needFoto: z.boolean(),
-    days: z
-      .array(
-        z.object({
-          timeStart: z.date({
-            error: t("text", { ns: "constructorFields" }),
+          z.null(),
+        ])
+        .pipe(z.date({ message: t("text", { ns: "constructorFields" }) })),
+      needDays: z.boolean(),
+      needFoto: z.boolean(),
+      days: z
+        .array(
+          z.object({
+            timeStart: z.date({
+              error: t("text", { ns: "constructorFields" }),
+            }),
+            timeEnd: z.date({
+              error: t("text", { ns: "constructorFields" }),
+            }),
+            needRoute: z.boolean().optional(),
+            locations: z
+              .array(
+                z.object({
+                  id: z
+                    .string()
+                    .trim()
+                    .min(1, {
+                      error: t("text", { ns: "constructorFields" }),
+                    }),
+                  name: z
+                    .string()
+                    .trim()
+                    .min(1, {
+                      error: t("text", { ns: "constructorFields" }),
+                    }),
+                  logo: z.string().optional(),
+                }),
+              )
+              .optional(),
           }),
-          timeEnd: z.date({
-            error: t("text", { ns: "constructorFields" }),
-          }),
-          needRoute: z.boolean().optional(),
-          locations: z
-            .array(
-              z.object({
-                id: z
-                  .string()
-                  .trim()
-                  .min(1, {
-                    error: t("text", { ns: "constructorFields" }),
-                  }),
-                name: z
-                  .string()
-                  .trim()
-                  .min(1, {
-                    error: t("text", { ns: "constructorFields" }),
-                  }),
-                logo: z.string().optional(),
-              }),
-            )
-            .optional(),
+        )
+        .superRefine((days, ctx) => {
+          days.forEach((day, index) => {
+            const locations = day.locations;
+            if (locations && locations.length < 1 && day.needRoute === true) {
+              ctx.addIssue({
+                code: "custom",
+                message: t("locationsNeeded", { ns: "constructorFields" }),
+                input: day.locations,
+                path: [index],
+              });
+            }
+          });
         }),
-      )
-      .superRefine((days, ctx) => {
-        days.forEach((day, index) => {
-          const locations = day.locations;
-          if (locations && locations.length < 1 && day.needRoute === true) {
+    })
+    .superRefine((values, ctx) => {
+      const dateStart = values.dateStart;
+      const dateEnd = values.dateEnd;
+
+      const result = compareAsc(dateStart, dateEnd);
+
+      if (result > 0) {
+        ctx.addIssue({
+          code: "custom",
+          message: t("lessThanStartDate", { ns: "constructorFields" }),
+          input: values.dateEnd,
+          path: ["dateEnd"],
+        });
+      }
+
+      //проверяем что дни не выходят за заданные временные рамки
+      // первый и последний дни проверяем по указанному пользователем времени
+      // все внутренние дни проверяем по заданному промежутку с сервера
+      const days = values.days;
+
+      days.forEach((day, index) => {
+        const isStartDay = isSameDay(dateStart, day.timeStart);
+        const isEndDay = isSameDay(dateEnd, day.timeStart);
+
+        if (isStartDay) {
+          if (isBefore(day.timeStart, dateStart)) {
             ctx.addIssue({
               code: "custom",
-              message: t("locationsNeeded", { ns: "constructorFields" }),
-              input: day.locations,
-              path: [index],
+              message: t("service.earlierThanDefaultError", {
+                ns: "ServiceMobileView",
+              }),
+              input: values.days[index],
+              path: [`days.${index}.timeStart`],
             });
           }
-        });
-      }),
-  })
-  .superRefine((values, ctx) => {
-    const dateStart = values.dateStart;
-    const dateEnd = values.dateEnd;
 
-    const result = compareAsc(dateStart, dateEnd);
+          if (
+            isAfter(
+              day.timeEnd,
+              set(day.timeEnd, {
+                hours: defaultEndDate.getHours(),
+                minutes: defaultEndDate.getMinutes(),
+              }),
+            )
+          ) {
+            ctx.addIssue({
+              code: "custom",
+              message: t("service.laterThanDefaultError", {
+                ns: "ServiceMobileView",
+              }),
+              input: values.days[index],
+              path: [`days.${index}.timeEnd`],
+            });
+          }
+        } else if (isEndDay) {
+          if (isAfter(day.timeEnd, dateEnd)) {
+            ctx.addIssue({
+              code: "custom",
+              message: t("service.laterThanDefaultError", {
+                ns: "ServiceMobileView",
+              }),
+              input: values.days[index],
+              path: [`days.${index}.timeEnd`],
+            });
+          }
 
-    if (result > 0) {
-      ctx.addIssue({
-        code: "custom",
-        message: t("lessThanStartDate", { ns: "constructorFields" }),
-        input: values.dateEnd,
-        path: ["dateEnd"],
+          if (
+            isBefore(
+              day.timeStart,
+              set(day.timeStart, {
+                hours: defaultStartDate.getHours(),
+                minutes: defaultStartDate.getMinutes(),
+              }),
+            )
+          ) {
+            ctx.addIssue({
+              code: "custom",
+              message: t("service.earlierThanDefaultError", {
+                ns: "ServiceMobileView",
+              }),
+              input: values.days[index],
+              path: [`days.${index}.timeStart`],
+            });
+          }
+        } else if (
+          isBefore(
+            day.timeStart,
+            set(day.timeStart, {
+              hours: defaultStartDate.getHours(),
+              minutes: defaultStartDate.getMinutes(),
+            }),
+          )
+        ) {
+          ctx.addIssue({
+            code: "custom",
+            message: t("service.earlierThanDefaultError", {
+              ns: "ServiceMobileView",
+            }),
+            input: values.days[index],
+            path: [`days.${index}.timeStart`],
+          });
+        } else if (
+          isAfter(
+            day.timeEnd,
+            set(day.timeEnd, {
+              hours: defaultEndDate.getHours(),
+              minutes: defaultEndDate.getMinutes(),
+            }),
+          )
+        ) {
+          ctx.addIssue({
+            code: "custom",
+            message: t("service.laterThanDefaultError", {
+              ns: "ServiceMobileView",
+            }),
+            input: values.days[index],
+            path: [`days.${index}.timeEnd`],
+          });
+        }
       });
-    }
-  });
+    });
 
-export type submitValues = z.output<typeof serviceFormSchema>;
+export type submitValues = z.output<ReturnType<typeof createServiceFormSchema>>;
 
 export function ServiceFormMobileView(props: ServiceFormMobileViewInterface) {
   const { t } = useTranslation("ServiceMobileView");
@@ -176,7 +288,12 @@ export function ServiceFormMobileView(props: ServiceFormMobileViewInterface) {
       needFoto: props.entity.needPhoto,
       days: props.entity.days,
     },
-    resolver: zodResolver(serviceFormSchema),
+    resolver: zodResolver(
+      createServiceFormSchema(
+        props.defaultTimeRange.start,
+        props.defaultTimeRange.end,
+      ),
+    ),
   });
   const { fields, append, prepend, insert, remove } = useFieldArray({
     control,
@@ -356,7 +473,9 @@ export function ServiceFormMobileView(props: ServiceFormMobileViewInterface) {
                         if (i === 0) {
                           append({
                             timeStart: dateStart,
-                            timeEnd: set(days[i], { hours: 21 }),
+                            timeEnd: set(days[i], {
+                              hours: props.defaultTimeRange.end.getHours(),
+                            }),
                             ...((() => {
                               let result = false;
                               const match = props.activities.find(
@@ -372,7 +491,9 @@ export function ServiceFormMobileView(props: ServiceFormMobileViewInterface) {
                           });
                         } else if (i === days.length - 1) {
                           append({
-                            timeStart: set(days[i], { hours: 9 }),
+                            timeStart: set(days[i], {
+                              hours: props.defaultTimeRange.start.getHours(),
+                            }),
                             timeEnd: dateEnd,
                             ...((() => {
                               let result = false;
@@ -389,8 +510,12 @@ export function ServiceFormMobileView(props: ServiceFormMobileViewInterface) {
                           });
                         } else {
                           append({
-                            timeStart: set(days[i], { hours: 9 }),
-                            timeEnd: set(days[i], { hours: 21 }),
+                            timeStart: set(days[i], {
+                              hours: props.defaultTimeRange.start.getHours(),
+                            }),
+                            timeEnd: set(days[i], {
+                              hours: props.defaultTimeRange.end.getHours(),
+                            }),
                             ...((() => {
                               let result = false;
                               const match = props.activities.find(
@@ -572,14 +697,23 @@ export function ServiceFormMobileView(props: ServiceFormMobileViewInterface) {
                           control={control}
                           render={({ field }) => (
                             <TimeField
-                              minTime={field.value}
-                              maxTime={set(field.value, {
-                                hours: 21,
-                              })}
+                              // minTime={field.value}
+                              // maxTime={set(field.value, {
+                              //   hours: 21,
+                              // })}
                               placeholder={t(
                                 `${props.translation}.fields.startClockPlaceholder`,
                               )}
-                              // error={errors.days[index]?.message}
+                              error={(() => {
+                                const daysErrors = errors.days;
+
+                                if (daysErrors) {
+                                  if (daysErrors[index]) {
+                                    return daysErrors[index].timeStart?.message;
+                                  }
+                                }
+                                return undefined;
+                              })()}
                               {...field}
                               value={field.value.toString()}
                               onChange={(evt) => {
@@ -596,14 +730,23 @@ export function ServiceFormMobileView(props: ServiceFormMobileViewInterface) {
                           control={control}
                           render={({ field }) => (
                             <TimeField
-                              minTime={set(field.value, {
-                                hours: 9,
-                              })}
-                              maxTime={field.value}
+                              // minTime={set(field.value, {
+                              //   hours: 9,
+                              // })}
+                              // maxTime={field.value}
                               placeholder={t(
                                 `${props.translation}.fields.endClockPlaceholder`,
                               )}
-                              // error={errors.days[index]?.message}
+                              error={(() => {
+                                const daysErrors = errors.days;
+
+                                if (daysErrors) {
+                                  if (daysErrors[index]) {
+                                    return daysErrors[index].timeEnd?.message;
+                                  }
+                                }
+                                return undefined;
+                              })()}
                               {...field}
                               value={field.value.toString()}
                               onChange={(evt) => {
@@ -793,8 +936,23 @@ export function ServiceFormMobileView(props: ServiceFormMobileViewInterface) {
                           startIcon={<CalendarIcon />}
                           onClick={() => {
                             insert(index + 1, {
-                              timeStart: addDays(day.timeStart, 1),
-                              timeEnd: addDays(day.timeEnd, 2),
+                              timeStart: addDays(
+                                set(day.timeStart, {
+                                  hours:
+                                    props.defaultTimeRange.start.getHours(),
+                                  minutes:
+                                    props.defaultTimeRange.start.getMinutes(),
+                                }),
+                                1,
+                              ),
+                              timeEnd: addDays(
+                                set(day.timeEnd, {
+                                  hours: props.defaultTimeRange.end.getHours(),
+                                  minutes:
+                                    props.defaultTimeRange.end.getMinutes(),
+                                }),
+                                2,
+                              ),
                               ...((() => {
                                 let result = false;
                                 const match = props.activities.find(
@@ -832,7 +990,7 @@ export function ServiceFormMobileView(props: ServiceFormMobileViewInterface) {
                           onClick={() => {
                             append({
                               timeStart: addDays(day.timeStart, 1),
-                              timeEnd: addDays(day.timeEnd, 2),
+                              timeEnd: endDate,
                               ...((() => {
                                 let result = false;
                                 const match = props.activities.find(

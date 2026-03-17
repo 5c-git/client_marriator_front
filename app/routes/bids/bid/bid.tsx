@@ -18,11 +18,17 @@ import { getPlaceForBid } from "~/requests/_personal/getPlaceForBid/getPlaceForB
 import { getRadiusSelect } from "~/requests/_personal/getRadiusSelect/getRadiusSelect";
 import { postUpdateBid } from "~/requests/_personal/postUpdateBid/postUpdateBid";
 import { postCancelBid } from "~/requests/_personal/postCancelBid/postCancelBid";
+import { getSettingsFromKey } from "~/requests/_settings/getSettingsFromKey/getSettingsFromKey";
 
 type MobileModeData = {
   mode: "mobile";
   locations: BidMobileViewInterface["locations"];
   radiuses: BidMobileViewInterface["radiuses"];
+} & {
+  defaultTimeRange: {
+    start: Date;
+    end: Date;
+  };
 };
 
 export async function clientLoader() {
@@ -59,10 +65,25 @@ export async function clientLoader() {
       });
     });
 
+    const intervalDayStart = await getSettingsFromKey(
+      accessToken,
+      "intervalDayStart",
+    );
+    const intervalDayEnd = await getSettingsFromKey(
+      accessToken,
+      "intervalDayEnd",
+    );
+
     data = {
       mode,
       locations,
       radiuses,
+      defaultTimeRange: {
+        start: new Date(
+          `2026-03-12T${intervalDayStart.data.value.startsWith("0") ? intervalDayStart.data.value : `0${intervalDayStart.data.value}`}:00`,
+        ),
+        end: new Date(`2026-03-12T${intervalDayEnd.data.value}:00`),
+      },
     } as MobileModeData;
     return data as MobileModeData | { mode: "desktop" };
   } else {
@@ -208,6 +229,7 @@ export default function Bid({ loaderData }: Route.ComponentProps) {
               entity={mobileEntity}
               locations={loaderData.locations}
               radiuses={loaderData.radiuses}
+              defaultTimeRange={loaderData.defaultTimeRange}
               submitAction={(values) => {
                 const payload: postUpdateBidPayload = {
                   bidId: bidMobileData.id,
@@ -274,6 +296,7 @@ export default function Bid({ loaderData }: Route.ComponentProps) {
               entity={mobileEntity}
               locations={loaderData.locations}
               radiuses={loaderData.radiuses}
+              defaultTimeRange={loaderData.defaultTimeRange}
             />
           )}
         </>

@@ -36,6 +36,7 @@ import { postStartDay } from "~/requests/_personal/postStartDay/postStartDay";
 import { postRejectBid } from "~/requests/_personal/postRejectBid/postRejectBid";
 import { postEndDay } from "~/requests/_personal/postEndDay/postEndDay";
 import { postPayReport } from "~/requests/_personal/postPayReport/postPayReport";
+import { getSettingsFromKey } from "~/requests/_settings/getSettingsFromKey/getSettingsFromKey";
 // import { postEndJob } from "~/requests/_personal/postEndJob/postEndJob";
 // import { postEndSpecialistJob } from "~/requests/_personal/postEndSpecialistJob/postEndSpecialistJob";
 
@@ -43,6 +44,7 @@ type MobileModeData = {
   mode: "mobile";
   entity: JobMobileViewInterface["entity"];
   locations: JobMobileViewInterface["locations"];
+  defaultTimeRange: JobMobileViewInterface["defaultTimeRange"];
 };
 
 export async function clientLoader({ params }: Route.ClientLoaderArgs) {
@@ -209,10 +211,25 @@ export async function clientLoader({ params }: Route.ClientLoaderArgs) {
             : null,
       };
 
+      const intervalDayStart = await getSettingsFromKey(
+        accessToken,
+        "intervalDayStart",
+      );
+      const intervalDayEnd = await getSettingsFromKey(
+        accessToken,
+        "intervalDayEnd",
+      );
+
       data = {
         mode,
         entity,
         locations,
+        defaultTimeRange: {
+          start: new Date(
+            `2026-03-12T${intervalDayStart.data.value.startsWith("0") ? intervalDayStart.data.value : `0${intervalDayStart.data.value}`}:00`,
+          ),
+          end: new Date(`2026-03-12T${intervalDayEnd.data.value}:00`),
+        },
       } as MobileModeData;
     }
 
@@ -457,7 +474,7 @@ export default function Job({ loaderData }: Route.ComponentProps) {
         }
       />
 
-      {/*<JobMobileFormView
+      {/* <JobMobileFormView
         entity={loaderData.entity}
         locations={loaderData.locations}
         formID="formView"
@@ -478,7 +495,7 @@ export default function Job({ loaderData }: Route.ComponentProps) {
         }}
       >
         Ref submit form
-      </button>*/}
+      </button> */}
 
       <Box
         sx={{

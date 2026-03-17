@@ -31,7 +31,7 @@
   "projectTypePlaceholder": "Project",
   "amountPlaceholder": "Amount",
   "unitPricePlaceholder": "Price (per unit) *",
-  "paxPricePlaceholder": "Taxed price",
+  "paxPricePlaceholder": "Final price",
   "finalPricePlaceholder": "Final price",
   "radiusPlaceholder": "Radius",
   "dayStartPlaceholder": "Start date",

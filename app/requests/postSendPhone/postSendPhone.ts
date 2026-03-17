@@ -1,7 +1,6 @@
 import { http, delay, HttpResponse } from "msw";
 
-import { postSendPhoneLoginSchema } from "./postSendPhoneLogin.schema";
-import { postSendPhoneRegisterSchema } from "./postSendPhoneRegister.schema";
+import { postSendPhoneSuccessSchema } from "./postSendPhoneSuccess.schema";
 import { postSendPhoneErrorSchema } from "./postSendPhoneError.schema";
 import { postSendPhoneErrorTimerSchema } from "./postSendPhoneErrorTimer.schema";
 
@@ -32,15 +31,12 @@ export const postSendPhone = async (phone: string) => {
       });
     }
 
-    const parsedLogin = postSendPhoneLoginSchema.safeParse(response);
-    const parsedRegister = postSendPhoneRegisterSchema.safeParse(response);
+    const parsedSuccess = postSendPhoneSuccessSchema.safeParse(response);
     const parsedError = postSendPhoneErrorSchema.safeParse(response);
     const parsedErrorTimer = postSendPhoneErrorTimerSchema.safeParse(response);
 
-    if (parsedLogin.success) {
-      data = parsedLogin.data;
-    } else if (parsedRegister.success) {
-      data = parsedRegister.data;
+    if (parsedSuccess.success) {
+      data = parsedSuccess.data;
     } else if (parsedError.success) {
       throw new Response("Поле телефон обязательно для заполнения");
     } else if (parsedErrorTimer.success) {

@@ -5,6 +5,7 @@ import {
   useNavigation,
   redirect,
   useSubmit,
+  Link,
 } from "react-router";
 import type { Route } from "./+types/step4";
 import * as Yup from "yup";
@@ -171,7 +172,7 @@ export default function Step4({ loaderData }: Route.ComponentProps) {
 
       <Box
         sx={{
-          paddingBottom: "140px",
+          paddingBottom: "190px",
         }}
       >
         <TopNavigation
@@ -322,6 +323,10 @@ export default function Step4({ loaderData }: Route.ComponentProps) {
               }}
             >
               {t("endButton")}
+            </Button>
+
+            <Button variant="contained" component={Link} to={"/"}>
+              {t("termsButton")}
             </Button>
 
             <Button

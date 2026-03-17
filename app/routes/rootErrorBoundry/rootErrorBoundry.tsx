@@ -18,6 +18,7 @@ import { UnxpectedError } from "~/shared/unexpectedError/unexpectedError";
 export const ErrorBoundary = ({ error }: Route.ErrorBoundaryProps) => {
   const { t } = useTranslation("rootErrorBoundry");
   const navigate = useNavigate();
+  const refresh_token = useStore.getState().refreshToken;
 
   // const userPhone = useStore.getState().userPhone;
 
@@ -32,7 +33,9 @@ export const ErrorBoundary = ({ error }: Route.ErrorBoundaryProps) => {
   useEffect(() => {
     if (isRouteErrorResponse(error) && error.status === 401) {
       (async () => {
-        const newTokens = await postRefreshToken("old_token");
+        const newTokens = await postRefreshToken(
+          refresh_token ? refresh_token : "bad_refresh_token",
+        );
 
         if ("token_type" in newTokens.result.token) {
           useStore
@@ -48,7 +51,7 @@ export const ErrorBoundary = ({ error }: Route.ErrorBoundaryProps) => {
         }
       })();
     }
-  }, [error, navigate]);
+  }, [error, refresh_token, navigate]);
   //
 
   //logging unxpected errors to Sentry

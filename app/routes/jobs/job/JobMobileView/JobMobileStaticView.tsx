@@ -185,7 +185,7 @@ export function JobMobileStaticView({
         </Typography>
       </Box>
 
-      <Box
+      {/* <Box
         sx={{
           display: "grid",
           rowGap: "4px",
@@ -209,7 +209,7 @@ export function JobMobileStaticView({
         >
           {entity.forPay}
         </Typography>
-      </Box>
+      </Box> */}
 
       <Box
         sx={{

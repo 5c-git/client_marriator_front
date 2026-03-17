@@ -27,12 +27,13 @@
     "addSelectedAddressButton": "Добавить отмеченные",
     "cancelButton": "Отменить",
     "saveButton": "Сохранить",
-
     "startDate": "Дата начала",
     "endDate": "Дата окончания",
     "startTime": "Время начала",
     "endTime": "Время окончания",
     "addDayButton": "Добавить день",
-    "deleteDayButton": "Удалить день"
+    "deleteDayButton": "Удалить день",
+    "earlierThanDefaultError": "Время раньше изначального",
+    "laterThanDefaultError": "Время позже изначального"
   }
 }

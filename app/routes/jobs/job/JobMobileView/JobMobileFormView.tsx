@@ -17,6 +17,8 @@ import {
   addDays,
   intervalToDuration,
   eachDayOfInterval,
+  isAfter,
+  isBefore,
 } from "date-fns";
 
 import { LocalizationProvider, DateTimeField } from "@mui/x-date-pickers";
@@ -45,88 +47,200 @@ import {
 
 import { statusCodeMap } from "~/shared/specialistStatus";
 
-const jobMobileFormSchema = z
-  .object({
-    dateStart: z
-      .union([
-        z.date().min(new Date(), {
-          error: t("inFututreDate", { ns: "constructorFields" }),
-        }),
-        z.null(),
-      ])
-      .pipe(z.date({ message: t("text", { ns: "constructorFields" }) })),
-    dateEnd: z
-      .union([
-        z.date().min(new Date(), {
-          error: t("inFututreDate", { ns: "constructorFields" }),
-        }),
+const createJobMobileFormSchema = (
+  defaultStartDate: Date,
+  defaultEndDate: Date,
+) =>
+  z
+    .object({
+      dateStart: z
+        .union([
+          z.date().min(new Date(), {
+            error: t("inFututreDate", { ns: "constructorFields" }),
+          }),
+          z.null(),
+        ])
+        .pipe(z.date({ message: t("text", { ns: "constructorFields" }) })),
+      dateEnd: z
+        .union([
+          z.date().min(new Date(), {
+            error: t("inFututreDate", { ns: "constructorFields" }),
+          }),
 
-        z.null(),
-      ])
-      .pipe(z.date({ message: t("text", { ns: "constructorFields" }) })),
-    needDays: z.boolean(),
-    days: z
-      .array(
-        z.object({
-          timeStart: z.date({
-            error: t("text", { ns: "constructorFields" }),
+          z.null(),
+        ])
+        .pipe(z.date({ message: t("text", { ns: "constructorFields" }) })),
+      needDays: z.boolean(),
+      days: z
+        .array(
+          z.object({
+            timeStart: z.date({
+              error: t("text", { ns: "constructorFields" }),
+            }),
+            timeEnd: z.date({
+              error: t("text", { ns: "constructorFields" }),
+            }),
+            needRoute: z.boolean().optional(),
+            locations: z
+              .array(
+                z.object({
+                  id: z
+                    .string()
+                    .trim()
+                    .min(1, {
+                      error: t("text", { ns: "constructorFields" }),
+                    }),
+                  name: z
+                    .string()
+                    .trim()
+                    .min(1, {
+                      error: t("text", { ns: "constructorFields" }),
+                    }),
+                  logo: z.string().optional(),
+                }),
+              )
+              .optional(),
           }),
-          timeEnd: z.date({
-            error: t("text", { ns: "constructorFields" }),
-          }),
-          needRoute: z.boolean().optional(),
-          locations: z
-            .array(
-              z.object({
-                id: z
-                  .string()
-                  .trim()
-                  .min(1, {
-                    error: t("text", { ns: "constructorFields" }),
-                  }),
-                name: z
-                  .string()
-                  .trim()
-                  .min(1, {
-                    error: t("text", { ns: "constructorFields" }),
-                  }),
-                logo: z.string().optional(),
-              }),
-            )
-            .optional(),
+        )
+        .superRefine((days, ctx) => {
+          days.forEach((day, index) => {
+            const locations = day.locations;
+            if (locations && locations.length < 1 && day.needRoute === true) {
+              ctx.addIssue({
+                code: "custom",
+                message: t("locationsNeeded", { ns: "constructorFields" }),
+                input: day.locations,
+                path: [index],
+              });
+            }
+          });
         }),
-      )
-      .superRefine((days, ctx) => {
-        days.forEach((day, index) => {
-          const locations = day.locations;
-          if (locations && locations.length < 1 && day.needRoute === true) {
+    })
+    .superRefine((values, ctx) => {
+      const dateStart = values.dateStart;
+      const dateEnd = values.dateEnd;
+
+      const result = compareAsc(dateStart, dateEnd);
+
+      if (result > 0) {
+        ctx.addIssue({
+          code: "custom",
+          message: t("lessThanStartDate", { ns: "constructorFields" }),
+          input: values.dateEnd,
+          path: ["dateEnd"],
+        });
+      }
+
+      //проверяем что дни не выходят за заданные временные рамки
+      // первый и последний дни проверяем по указанному пользователем времени
+      // все внутренние дни проверяем по заданному промежутку с сервера
+      const days = values.days;
+
+      days.forEach((day, index) => {
+        const isStartDay = isSameDay(dateStart, day.timeStart);
+        const isEndDay = isSameDay(dateEnd, day.timeStart);
+
+        if (isStartDay) {
+          if (isBefore(day.timeStart, dateStart)) {
             ctx.addIssue({
               code: "custom",
-              message: t("locationsNeeded", { ns: "constructorFields" }),
-              input: day.locations,
-              path: [index],
+              message: t("service.earlierThanDefaultError", {
+                ns: "ServiceMobileView",
+              }),
+              input: values.days[index],
+              path: [`days.${index}.timeStart`],
             });
           }
-        });
-      }),
-  })
-  .superRefine((values, ctx) => {
-    const dateStart = values.dateStart;
-    const dateEnd = values.dateEnd;
 
-    const result = compareAsc(dateStart, dateEnd);
+          if (
+            isAfter(
+              day.timeEnd,
+              set(day.timeEnd, {
+                hours: defaultEndDate.getHours(),
+                minutes: defaultEndDate.getMinutes(),
+              }),
+            )
+          ) {
+            ctx.addIssue({
+              code: "custom",
+              message: t("service.laterThanDefaultError", {
+                ns: "ServiceMobileView",
+              }),
+              input: values.days[index],
+              path: [`days.${index}.timeEnd`],
+            });
+          }
+        } else if (isEndDay) {
+          if (isAfter(day.timeEnd, dateEnd)) {
+            ctx.addIssue({
+              code: "custom",
+              message: t("service.laterThanDefaultError", {
+                ns: "ServiceMobileView",
+              }),
+              input: values.days[index],
+              path: [`days.${index}.timeEnd`],
+            });
+          }
 
-    if (result > 0) {
-      ctx.addIssue({
-        code: "custom",
-        message: t("lessThanStartDate", { ns: "constructorFields" }),
-        input: values.dateEnd,
-        path: ["dateEnd"],
+          if (
+            isBefore(
+              day.timeStart,
+              set(day.timeStart, {
+                hours: defaultStartDate.getHours(),
+                minutes: defaultStartDate.getMinutes(),
+              }),
+            )
+          ) {
+            ctx.addIssue({
+              code: "custom",
+              message: t("service.earlierThanDefaultError", {
+                ns: "ServiceMobileView",
+              }),
+              input: values.days[index],
+              path: [`days.${index}.timeStart`],
+            });
+          }
+        } else if (
+          isBefore(
+            day.timeStart,
+            set(day.timeStart, {
+              hours: defaultStartDate.getHours(),
+              minutes: defaultStartDate.getMinutes(),
+            }),
+          )
+        ) {
+          ctx.addIssue({
+            code: "custom",
+            message: t("service.earlierThanDefaultError", {
+              ns: "ServiceMobileView",
+            }),
+            input: values.days[index],
+            path: [`days.${index}.timeStart`],
+          });
+        } else if (
+          isAfter(
+            day.timeEnd,
+            set(day.timeEnd, {
+              hours: defaultEndDate.getHours(),
+              minutes: defaultEndDate.getMinutes(),
+            }),
+          )
+        ) {
+          ctx.addIssue({
+            code: "custom",
+            message: t("service.laterThanDefaultError", {
+              ns: "ServiceMobileView",
+            }),
+            input: values.days[index],
+            path: [`days.${index}.timeEnd`],
+          });
+        }
       });
-    }
-  });
+    });
 
-export type submitValues = z.output<typeof jobMobileFormSchema>;
+export type submitValues = z.output<
+  ReturnType<typeof createJobMobileFormSchema>
+>;
 
 export function JobMobileFormView({
   entity,
@@ -187,7 +301,7 @@ export function JobMobileFormView({
         return days;
       })(),
     },
-    resolver: zodResolver(jobMobileFormSchema),
+    resolver: zodResolver(createJobMobileFormSchema(entity.dateStart, entity.dateEnd)),
   });
 
   const { fields, remove, prepend, insert, append } = useFieldArray({

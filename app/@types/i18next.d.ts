@@ -78,7 +78,7 @@ import JobMobileView from "../../public/locales/ru/JobMobileView.json";
 import DayReviewMobileView from "../../public/locales/ru/DayReviewMobileView.json";
 import SpecialistMobileView from "../../public/locales/ru/SpecialistMobileView.json";
 import SpecialistsMobileView from "../../public/locales/ru/SpecialistsMobileView.json";
-import ServiceMobileView from "../../public/locales/ru/ServiceFormMobileView.json";
+import ServiceMobileView from "../../public/locales/ru/ServiceMobileView.json";
 import BidMobileView from "../../public/locales/ru/BidMobileView.json";
 import TaskMobileView from "../../public/locales/ru/TaskMobileView.json";
 import OrderMobileView from "../../public/locales/ru/OrderMobileView.json";

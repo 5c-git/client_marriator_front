@@ -63,7 +63,12 @@ import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
 import CloseIcon from "@mui/icons-material/Close";
 import { CalendarIcon } from "~/shared/icons/CalendarIcon";
 
-const createBidFormSchema = (startDate: Date, endEnd: Date) =>
+const createBidFormSchema = (
+  startDate: Date,
+  endDate: Date,
+  defaultStartDate: Date,
+  defaultEndDate: Date,
+) =>
   z
     .object({
       place: z.number({ error: t("text", { ns: "constructorFields" }) }),
@@ -80,7 +85,7 @@ const createBidFormSchema = (startDate: Date, endEnd: Date) =>
         }),
       dateEnd: z
         .date({ error: t("text", { ns: "constructorFields" }) })
-        .max(endEnd, {
+        .max(endDate, {
           error: t("newDateAfterFinish", { ns: "constructorFields" }),
         }),
       needDays: z.boolean(),
@@ -135,7 +140,6 @@ const createBidFormSchema = (startDate: Date, endEnd: Date) =>
       const dateEnd = values.dateEnd;
 
       const result = compareAsc(dateStart, dateEnd);
-
       if (result > 0) {
         ctx.addIssue({
           code: "custom",
@@ -144,6 +148,112 @@ const createBidFormSchema = (startDate: Date, endEnd: Date) =>
           path: ["dateEnd"],
         });
       }
+
+      //проверяем что дни не выходят за заданные временные рамки
+      // первый и последний дни проверяем по указанному пользователем времени
+      // все внутренние дни проверяем по заданному промежутку с сервера
+      const days = values.days;
+
+      days.forEach((day, index) => {
+        const isStartDay = isSameDay(dateStart, day.timeStart);
+        const isEndDay = isSameDay(dateEnd, day.timeStart);
+
+        if (isStartDay) {
+          if (isBefore(day.timeStart, startDate)) {
+            ctx.addIssue({
+              code: "custom",
+              message: t("earlierThanDefaultError", {
+                ns: "BidMobileView",
+              }),
+              input: values.days[index],
+              path: [`days.${index}.timeStart`],
+            });
+          }
+
+          if (
+            isAfter(
+              day.timeEnd,
+              set(day.timeEnd, {
+                hours: defaultEndDate.getHours(),
+                minutes: defaultEndDate.getMinutes(),
+              }),
+            )
+          ) {
+            ctx.addIssue({
+              code: "custom",
+              message: t("laterThanDefaultError", {
+                ns: "BidMobileView",
+              }),
+              input: values.days[index],
+              path: [`days.${index}.timeEnd`],
+            });
+          }
+        } else if (isEndDay) {
+          if (isAfter(day.timeEnd, dateEnd)) {
+            ctx.addIssue({
+              code: "custom",
+              message: t("laterThanDefaultError", {
+                ns: "BidMobileView",
+              }),
+              input: values.days[index],
+              path: [`days.${index}.timeEnd`],
+            });
+          }
+
+          if (
+            isBefore(
+              day.timeStart,
+              set(day.timeStart, {
+                hours: defaultStartDate.getHours(),
+                minutes: defaultStartDate.getMinutes(),
+              }),
+            )
+          ) {
+            ctx.addIssue({
+              code: "custom",
+              message: t("earlierThanDefaultError", {
+                ns: "BidMobileView",
+              }),
+              input: values.days[index],
+              path: [`days.${index}.timeStart`],
+            });
+          }
+        } else if (
+          isBefore(
+            day.timeStart,
+            set(day.timeStart, {
+              hours: defaultStartDate.getHours(),
+              minutes: defaultStartDate.getMinutes(),
+            }),
+          )
+        ) {
+          ctx.addIssue({
+            code: "custom",
+            message: t("earlierThanDefaultError", {
+              ns: "BidMobileView",
+            }),
+            input: values.days[index],
+            path: [`days.${index}.timeStart`],
+          });
+        } else if (
+          isAfter(
+            day.timeEnd,
+            set(day.timeEnd, {
+              hours: defaultEndDate.getHours(),
+              minutes: defaultEndDate.getMinutes(),
+            }),
+          )
+        ) {
+          ctx.addIssue({
+            code: "custom",
+            message: t("laterThanDefaultError", {
+              ns: "BidMobileView",
+            }),
+            input: values.days[index],
+            path: [`days.${index}.timeEnd`],
+          });
+        }
+      });
     });
 
 type submitValues = z.output<ReturnType<typeof createBidFormSchema>>;
@@ -161,7 +271,6 @@ export function BidFormMobileView(props: BidFormMobileViewInterface) {
     control,
     handleSubmit,
     formState: { errors },
-    setError,
     watch,
     getValues,
     setValue,
@@ -180,7 +289,12 @@ export function BidFormMobileView(props: BidFormMobileViewInterface) {
       days: props.entity.days,
     },
     resolver: zodResolver(
-      createBidFormSchema(props.entity.dateStart, props.entity.dateEnd),
+      createBidFormSchema(
+        props.entity.dateStart,
+        props.entity.dateEnd,
+        props.defaultTimeRange.start,
+        props.defaultTimeRange.end,
+      ),
     ),
   });
 
@@ -383,42 +497,7 @@ export function BidFormMobileView(props: BidFormMobileViewInterface) {
         <form
           id="bid-edit-form"
           onSubmit={handleSubmit((values) => {
-            const submittedDays = values.days;
-            const incomingDays = props.entity.days;
-
-            if (submittedDays.length > 0 && incomingDays.length > 0) {
-              let error = false;
-              for (let i = 0; i < submittedDays.length; ++i) {
-                const match = incomingDays.find((incomingDay) =>
-                  isSameDay(incomingDay.timeStart, submittedDays[i].timeStart),
-                );
-
-                if (match) {
-                  if (isBefore(submittedDays[i].timeStart, match.timeStart)) {
-                    setError(`days.${i}.timeStart` as const, {
-                      type: "manual",
-                      message: t("earlierThanDefaultError"),
-                    });
-                    error = true;
-                    break;
-                  }
-                  if (isAfter(submittedDays[i].timeEnd, match.timeEnd)) {
-                    setError(`days.${i}.timeEnd` as const, {
-                      type: "manual",
-                      message: t("laterThanDefaultError"),
-                    });
-                    error = true;
-                    break;
-                  }
-                }
-              }
-
-              if (!error) {
-                props.submitAction(values);
-              }
-            } else {
-              props.submitAction(values);
-            }
+            props.submitAction(values);
           })}
           style={{
             display: "grid",
@@ -525,10 +604,11 @@ export function BidFormMobileView(props: BidFormMobileViewInterface) {
                 variant="Reg_14"
                 sx={(theme) => ({ color: theme.vars.palette["Black"] })}
               >
-                {watch("unitPrice")}
+                
+                {props.entity.finalPrice}
               </Typography>
             </Box>
-            <Box
+            {/* <Box
               sx={{
                 display: "grid",
                 rowGap: "4px",
@@ -552,7 +632,7 @@ export function BidFormMobileView(props: BidFormMobileViewInterface) {
                   ? Math.floor(Number(getValues("unitPrice")) * 0.94)
                   : Math.floor(Number(getValues("unitPrice")) * 0.87)}
               </Typography>
-            </Box>
+            </Box> */}
           </Box>
 
           <Controller
@@ -787,8 +867,8 @@ export function BidFormMobileView(props: BidFormMobileViewInterface) {
                           color: theme.vars.palette["Black"],
                         })}
                       >
-                        {format(getValues(`days.${index}.timeStart`), "kk:mm")}-
-                        {format(getValues(`days.${index}.timeEnd`), "kk:mm")}
+                        {format(watch(`days.${index}.timeStart`), "kk:mm")}-
+                        {format(watch(`days.${index}.timeEnd`), "kk:mm")}
                       </Typography>
 
                       {(() => {
@@ -842,10 +922,10 @@ export function BidFormMobileView(props: BidFormMobileViewInterface) {
                             control={control}
                             render={({ field }) => (
                               <TimeField
-                                minTime={field.value}
-                                maxTime={set(field.value, {
-                                  hours: 21,
-                                })}
+                                // minTime={field.value}
+                                // maxTime={set(field.value, {
+                                //   hours: 21,
+                                // })}
                                 placeholder={t("timeStartPlaceholder")}
                                 {...field}
                                 error={(() => {
@@ -874,10 +954,10 @@ export function BidFormMobileView(props: BidFormMobileViewInterface) {
                             control={control}
                             render={({ field }) => (
                               <TimeField
-                                minTime={set(field.value, {
-                                  hours: 9,
-                                })}
-                                maxTime={field.value}
+                                // minTime={set(field.value, {
+                                //   hours: 9,
+                                // })}
+                                // maxTime={field.value}
                                 placeholder={t("timeEndPlaceholder")}
                                 error={(() => {
                                   const daysErrors = errors.days;

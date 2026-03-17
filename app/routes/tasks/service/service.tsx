@@ -20,6 +20,7 @@ import { getViewActivitiesForTask } from "~/requests/_personal/getViewActivities
 import { getPlaceForTask } from "~/requests/_personal/getPlaceForTask/getPlaceForTask";
 import { postCreateTaskActivity } from "~/requests/_personal/postCreateTaskActivity/postCreateTaskActivity";
 import { postUpdateTaskActivity } from "~/requests/_personal/postUpdateTaskActivity/postUpdateTaskActivity";
+import { getSettingsFromKey } from "~/requests/_settings/getSettingsFromKey/getSettingsFromKey";
 
 type MobileModeData = Omit<
   ServiceMobileViewInterface,
@@ -36,6 +37,10 @@ type MobileModeData = Omit<
   setting_mode: "mobile";
   setting_isNew: boolean;
   setting_canEdit: boolean;
+  defaultTimeRange: {
+    start: Date;
+    end: Date;
+  };
 };
 
 export async function clientLoader({
@@ -154,6 +159,15 @@ export async function clientLoader({
         });
       });
 
+      const intervalDayStart = await getSettingsFromKey(
+        accessToken,
+        "intervalDayStart",
+      );
+      const intervalDayEnd = await getSettingsFromKey(
+        accessToken,
+        "intervalDayEnd",
+      );
+
       data = {
         taskId: params.taskId,
         entity,
@@ -165,6 +179,12 @@ export async function clientLoader({
         setting_mode: setting_mode,
         setting_isNew: setting_isNew,
         setting_canEdit: setting_canEdit,
+        defaultTimeRange: {
+          start: new Date(
+            `2026-03-12T${intervalDayStart.data.value.startsWith("0") ? intervalDayStart.data.value : `0${intervalDayStart.data.value}`}:00`,
+          ),
+          end: new Date(`2026-03-12T${intervalDayEnd.data.value}:00`),
+        },
       } as MobileModeData;
     }
 
@@ -212,6 +232,8 @@ export default function Service({ loaderData }: Route.ComponentProps) {
 
   const [editMode, setEditMode] = useState<boolean>(false);
 
+  console.log(loaderData);
+
   return (
     <>
       {navigation.state !== "idle" ? <Loader /> : null}
@@ -224,6 +246,7 @@ export default function Service({ loaderData }: Route.ComponentProps) {
             entity={loaderData.entity}
             activities={loaderData.activities}
             locations={loaderData.locations}
+            defaultTimeRange={loaderData.defaultTimeRange}
             headerBackAction={() => {
               navigate(-1);
             }}
@@ -334,6 +357,7 @@ export default function Service({ loaderData }: Route.ComponentProps) {
             entity={loaderData.entity}
             activities={loaderData.activities}
             locations={loaderData.locations}
+            defaultTimeRange={loaderData.defaultTimeRange}
             headerBackAction={() => {
               navigate(-1);
             }}

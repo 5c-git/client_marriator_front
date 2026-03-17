@@ -37,6 +37,10 @@ export type ServiceMobileViewInterface = {
     logo: string | null;
     disabled: boolean;
   }[];
+  defaultTimeRange: {
+    start: Date;
+    end: Date;
+  };
   headerBackAction: () => void;
   headerButtonAction?: () => void;
   cancelAction: () => void;

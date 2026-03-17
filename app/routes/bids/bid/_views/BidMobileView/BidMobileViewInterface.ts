@@ -53,4 +53,8 @@ export type BidMobileViewInterface = {
     label: string;
     disabled: boolean;
   }[];
+  defaultTimeRange: {
+    start: Date;
+    end: Date;
+  };
 };

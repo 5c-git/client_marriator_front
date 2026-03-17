@@ -23,7 +23,9 @@
     "declined": "Declined",
     "consideration": "In consideration",
     "work": "Work",
-    "canceled": "Cancelled"
+    "canceled": "Cancelled",
+    "archive": "Архив",
+    "placeholder": "Placeholder"
   },
   "dayMap": {
     "0": "SUN",

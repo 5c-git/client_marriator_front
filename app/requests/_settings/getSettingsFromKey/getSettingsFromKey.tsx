@@ -9,7 +9,7 @@ import { UnxpectedError } from "~/shared/unexpectedError/unexpectedError";
 
 export const getSettingsFromKeyKeys = ["getSettingsFromKey"];
 
-type Setting = "radius";
+type Setting = "radius" | "intervalDayStart" | "intervalDayEnd";
 
 export const getSettingsFromKey = async (
   accessToken: string,
