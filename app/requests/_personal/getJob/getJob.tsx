@@ -107,6 +107,11 @@ export const mockResponseSuccess: GetJobSuccess = {
         "Помощник повара,Пиццмейкер розничной сети,Пиццмейкер,Тестомес,Тестомес розничной сети,Пекарь розничной сети",
       logo: "/storage/source/directory/view_activities/3-img/1661081678_53-pofoto-club-p-beloborodii-pekari-65.jpg",
       traveling: false,
+      standard: {
+        id: 1,
+        coefficient: 1,
+        name: "Трудотонна",
+      },
     },
     dateStart: "2025-11-05T16:30:00.000000Z",
     dateEnd: "2025-11-09T20:00:00.000000Z",

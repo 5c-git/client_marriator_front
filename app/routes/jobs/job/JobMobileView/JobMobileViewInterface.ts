@@ -59,6 +59,8 @@ export type JobMobileViewInterface = {
       | "notEnded"
       | "none";
     oneDayReportId: number | null;
+    units: string;
+    currency: string;
   };
   locations: {
     value: string;

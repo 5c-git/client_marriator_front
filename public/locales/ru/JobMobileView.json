@@ -6,7 +6,7 @@
   "serviceTypeText": "Вид услуги",
   "forPayText": "К оплате",
   "incomeText": "К выплате на руки",
-  "pricePerUnitText": "Цена за ед. измерения",
+  "pricePerUnitText": "Цена за ",
   "dateStartText": "Дата начала",
   "dateEndText": "Дата окончания",
   "needDaysPlaceholder": "Раскрыть по дням",

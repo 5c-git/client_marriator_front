@@ -209,6 +209,8 @@ export async function clientLoader({ params }: Route.ClientLoaderArgs) {
           missionData.data.reports.length > 0
             ? missionData.data.reports[0].id
             : null,
+        units: missionData.data.viewActivity.standard.name,
+        currency: "₽",
       };
 
       const intervalDayStart = await getSettingsFromKey(
