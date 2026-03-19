@@ -60,6 +60,8 @@ export async function clientLoader() {
             Number(item.place.latitude),
             Number(item.place.longitude),
           ],
+          units: item.viewActivity.standard.name,
+          currency: "₽",
         });
       });
 
@@ -113,8 +115,8 @@ export default function Jobs({ loaderData }: Route.ComponentProps) {
                 subHeader={{
                   text: t("amount", {
                     price: entity.subHeader,
-                    curency: "₽",
-                    measure: "{ед. измерения}",
+                    curency: entity.currency,
+                    measure: entity.units,
                   }),
                   bold: true,
                 }}
@@ -135,8 +137,8 @@ export default function Jobs({ loaderData }: Route.ComponentProps) {
                 subHeader={{
                   text: t("amount", {
                     price: entity.subHeader,
-                    curency: "₽",
-                    measure: "{ед. измерения}",
+                    curency: entity.currency,
+                    measure: entity.units,
                   }),
                   bold: true,
                 }}

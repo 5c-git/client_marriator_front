@@ -61,5 +61,7 @@ export type SpecialistMobileViewInterface = {
       | "notEnded"
       | "none";
     oneDayReportId: number | null;
+    units: string;
+    currency: string;
   };
 };

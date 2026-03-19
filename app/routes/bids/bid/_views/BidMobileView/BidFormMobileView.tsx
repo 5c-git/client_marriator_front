@@ -559,7 +559,7 @@ export function BidFormMobileView(props: BidFormMobileViewInterface) {
             render={({ field }) => (
               <TextField
                 {...field}
-                label={t("unitPricePlaceholder")}
+                label={`${t("unitPricePlaceholder")} ${props.entity.units}`}
                 error={errors.amount?.message ? true : false}
                 helperText={errors.amount?.message}
                 slotProps={{

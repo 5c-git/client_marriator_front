@@ -39,6 +39,8 @@ export type RequestSearchDrawerInterface = {
       needRoute: boolean;
       locations: { id: string; name: string; logo: string }[];
     }[];
+    units: string;
+    currency: string;
   };
   locations: {
     value: string;
@@ -46,4 +48,5 @@ export type RequestSearchDrawerInterface = {
     logo: string | null;
     disabled: boolean;
   }[];
+
 };

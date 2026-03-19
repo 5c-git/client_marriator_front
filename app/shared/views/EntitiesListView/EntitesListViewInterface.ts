@@ -16,6 +16,8 @@ export type Entity = {
     end: string | null;
   };
   coordinates: Coordinates;
+  units: string;
+  currency: string;
 };
 
 export type EntitiesListViewInterface = {

@@ -460,7 +460,7 @@ export function JobMobileFormView({
                 color: theme.vars.palette["Grey_2"],
               })}
             >
-              {t("pricePerUnitText")}
+              {t("pricePerUnitText")} {entity.units}
             </Typography>
             <Typography
               component="p"

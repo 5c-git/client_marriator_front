@@ -197,14 +197,14 @@ export function SpecialistMobileView(
                 color: theme.vars.palette["Grey_2"],
               })}
             >
-              {t("pricePerUnitText")}
+              {t("pricePerUnitText")} {props.entity.units}
             </Typography>
             <Typography
               component="p"
               variant="Reg_14"
               sx={(theme) => ({ color: theme.vars.palette["Corp_1"] })}
             >
-              {props.entity.unitPrice}
+              {props.entity.unitPrice} 
             </Typography>
           </Box>
 

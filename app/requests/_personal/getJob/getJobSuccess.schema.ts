@@ -62,6 +62,11 @@ export const getJobSuccessSchema = z.object({
       linkText: z.string(),
       link: z.union([z.string(), z.null()]),
       traveling: z.boolean(),
+      standard: z.object({
+        id: z.number(),
+        coefficient: z.number(),
+        name: z.string(),
+      }),
     }),
     dateStart: z.string(),
     dateEnd: z.string(),

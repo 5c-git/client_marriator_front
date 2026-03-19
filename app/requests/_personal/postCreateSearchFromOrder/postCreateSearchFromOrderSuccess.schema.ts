@@ -48,6 +48,11 @@ export const postCreateSearchFromOrderSuccessSchema = z.object({
       previewText: z.string(),
       logo: z.string(),
       traveling: z.boolean(),
+      standard: z.object({
+        id: z.number(),
+        coefficient: z.number(),
+        name: z.string(),
+      }),
     }),
     dateStart: z.string(),
     dateEnd: z.string(),

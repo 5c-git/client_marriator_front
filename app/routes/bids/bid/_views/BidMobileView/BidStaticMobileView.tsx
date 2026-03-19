@@ -285,7 +285,7 @@ export function BidStaticMobileView(props: BidMobileViewInterface) {
                 color: theme.vars.palette["Grey_2"],
               })}
             >
-              {t("unitPricePlaceholder")}
+              {t("unitPricePlaceholder")} {props.entity.units}
             </Typography>
             <Typography
               component="p"

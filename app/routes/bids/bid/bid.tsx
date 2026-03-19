@@ -211,6 +211,8 @@ export default function Bid({ loaderData }: Route.ComponentProps) {
 
           return days;
         })(),
+        units: bidMobileData.viewActivity.standard.name,
+        currency: "₽",
       };
 
       setMobileEntity(entity);

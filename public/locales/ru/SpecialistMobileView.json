@@ -36,7 +36,7 @@
   "statusText": "Статус",
   "locationText": "Место оказания услуг",
   "serviceTypeText": "Вид услуги",
-  "pricePerUnitText": "Цена за ед. измерения",
+  "pricePerUnitText": "Цена за ",
   "dateStartText": "Дата начала",
   "dateEndText": "Дата окончания",
   "timeStartText": "Время начала",

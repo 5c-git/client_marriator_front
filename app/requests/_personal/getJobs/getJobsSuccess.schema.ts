@@ -43,6 +43,11 @@ export const getJobsSuccessSchema = z.object({
         detailName: z.string(),
         previewText: z.string(),
         logo: z.string(),
+        standard: z.object({
+          id: z.number(),
+          coefficient: z.number(),
+          name: z.string(),
+        })
       }),
       dateStart: z.string(),
       dateEnd: z.string(),

@@ -299,6 +299,8 @@ export async function clientAction({ request }: Route.ClientActionArgs) {
 
           return days;
         })(),
+        units: searchRequestData.data.viewActivity.standard.name,
+        currency: "₽",
       };
 
       return entity;

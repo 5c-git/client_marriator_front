@@ -68,7 +68,9 @@ export async function clientLoader() {
             Number(item.place.latitude),
             Number(item.place.longitude),
           ],
-        });
+          units: item.viewActivity.standard.name,
+          currency: "₽",
+        }); 
       });
 
       data = {

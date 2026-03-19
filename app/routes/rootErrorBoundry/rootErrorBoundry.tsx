@@ -33,22 +33,27 @@ export const ErrorBoundary = ({ error }: Route.ErrorBoundaryProps) => {
   useEffect(() => {
     if (isRouteErrorResponse(error) && error.status === 401) {
       (async () => {
-        const newTokens = await postRefreshToken(
-          refresh_token ? refresh_token : "bad_refresh_token",
-        );
 
-        if ("token_type" in newTokens.result.token) {
-          useStore
-            .getState()
-            .setAccessToken(newTokens.result.token.access_token);
-          useStore
-            .getState()
-            .setRefreshToken(newTokens.result.token.refresh_token);
-          navigate(withLocale("/signin/pin"), { viewTransition: true });
+        if(refresh_token) {
+          const newTokens = await postRefreshToken(refresh_token);
+
+          if ("token_type" in newTokens.result.token) {
+            useStore
+              .getState()
+              .setAccessToken(newTokens.result.token.access_token);
+            useStore
+              .getState()
+              .setRefreshToken(newTokens.result.token.refresh_token);
+            navigate(withLocale("/signin/pin"), { viewTransition: true });
+          } else {
+            useStore.getState().clearStore();
+            navigate(withLocale("/signin/phone"), { viewTransition: true });
+          }
         } else {
           useStore.getState().clearStore();
           navigate(withLocale("/signin/phone"), { viewTransition: true });
         }
+        
       })();
     }
   }, [error, refresh_token, navigate]);

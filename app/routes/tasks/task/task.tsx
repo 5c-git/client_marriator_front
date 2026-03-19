@@ -300,6 +300,8 @@ export async function clientAction({
 
           return days;
         })(),
+        units: searchRequestData.data.viewActivity.standard.name,
+        currency: "₽",
       };
 
       return entity;
