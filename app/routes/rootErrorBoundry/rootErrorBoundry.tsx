@@ -12,12 +12,14 @@ import { Button, Typography } from "@mui/material";
 import Box from "@mui/material/Box";
 import logoTurnOff from "./logo-turnoff.svg";
 import { UnxpectedError } from "~/shared/unexpectedError/unexpectedError";
+import { postSendError } from "~/requests/postSendError/postSendError";
 
 // 401 - WE THROW THIS STATUS CODE IF USER IS UNAUTHORIZED
 
 export const ErrorBoundary = ({ error }: Route.ErrorBoundaryProps) => {
   const { t } = useTranslation("rootErrorBoundry");
   const navigate = useNavigate();
+  const access_token = useStore.getState().accessToken;
   const refresh_token = useStore.getState().refreshToken;
 
   // const userPhone = useStore.getState().userPhone;
@@ -60,11 +62,15 @@ export const ErrorBoundary = ({ error }: Route.ErrorBoundaryProps) => {
   //
 
   //logging unxpected errors to Sentry
-  // useEffect(() => {
-  //   if (error instanceof Error || error instanceof UnxpectedError) {
-  //     console.log("sentry");
-  //   }
-  // }, [error]);
+  useEffect(() => {
+    if (error instanceof Error || error instanceof UnxpectedError) {
+      console.log("sentry");
+
+      if(access_token) {
+        postSendError(access_token, window.location.href, error.message);
+      }
+    }
+  }, [access_token,error]);
 
   console.log(error);
 

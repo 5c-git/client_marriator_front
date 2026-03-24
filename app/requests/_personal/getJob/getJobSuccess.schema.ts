@@ -59,7 +59,7 @@ export const getJobSuccessSchema = z.object({
       previewText: z.string(),
       detailImg: z.string(),
       logo: z.string(),
-      linkText: z.string(),
+      linkText: z.union([z.string(), z.null()]),
       link: z.union([z.string(), z.null()]),
       traveling: z.boolean(),
       standard: z.object({

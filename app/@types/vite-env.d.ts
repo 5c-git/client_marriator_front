@@ -131,6 +131,7 @@ interface ImportMetaEnv {
   readonly VITE_POST_CREATE_SEARCH_FROM_TASK: string;
   readonly VITE_POST_CREATE_SEARCH_FROM_ORDER: string;
   readonly VITE_POST_UPDATE_SEARCH: string;
+  readonly VITE_POST_SEND_ERROR: string;
   // more env variables...
 }
 

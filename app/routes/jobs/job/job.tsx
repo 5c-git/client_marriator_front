@@ -576,7 +576,7 @@ export default function Job({ loaderData }: Route.ComponentProps) {
                 variant="contained"
                 disabled={
                   !isWithinInterval(new Date(), {
-                    start: subHours(new Date(loaderData.entity.dateEnd), 1),
+                    start: subHours(new Date(loaderData.entity.dateStart), 1),
                     end: new Date(loaderData.entity.dateEnd),
                   })
                 }
