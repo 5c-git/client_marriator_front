@@ -233,7 +233,7 @@ export function JobMobileStaticView({
             color: theme.vars.palette["Black"],
           })}
         >
-          {entity.income}
+          {entity.forPay}
         </Typography>
       </Box>
 
