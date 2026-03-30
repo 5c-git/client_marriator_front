@@ -413,10 +413,10 @@ export function RequestSearchDrawer(props: RequestSearchDrawerProps) {
                   variant="Reg_14"
                   sx={(theme) => ({ color: theme.vars.palette["Black"] })}
                 >
-                  {watch("unitPrice")}
+                  {props.entity.finalPrice}
                 </Typography>
               </Box>
-              <Box
+              {/* <Box
                 sx={{
                   display: "grid",
                   rowGap: "4px",
@@ -440,7 +440,7 @@ export function RequestSearchDrawer(props: RequestSearchDrawerProps) {
                     ? Math.floor(Number(getValues("unitPrice")) * 0.94)
                     : Math.floor(Number(getValues("unitPrice")) * 0.87)}
                 </Typography>
-              </Box>
+              </Box> */}
             </Box>
 
             <Controller

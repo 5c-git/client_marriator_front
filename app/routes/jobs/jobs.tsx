@@ -47,7 +47,7 @@ export async function clientLoader() {
           status: item.acceptingUser.status,
           statusColor: statusCodeMap[item.acceptingUser.status].color,
           header: item.viewActivity.name,
-          subHeader: item.priceResult.toString(),
+          subHeader: item.price.toString(),
           address: {
             logo: `${import.meta.env.VITE_ASSET_PATH}${item.place.logo}`,
             text: item.place.address_kladr,

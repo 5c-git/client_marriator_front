@@ -20,7 +20,7 @@ export const canCancelNewOrNotAccepted = (
   if (
     userId === cardUserId &&
     isFuture(dateStart) &&
-    differenceInHours(dateStart, new Date()) >= CANCEL_TIME_INTERVAL &&
+    (differenceInHours(dateStart, new Date()) >= CANCEL_TIME_INTERVAL) &&
     (status === 1 || status === 3)
   ) {
     return true;
@@ -51,7 +51,7 @@ export const canRepeatCancelled = (
   if (
     userId === cardUserId &&
     isFuture(dateStart) &&
-    differenceInHours(dateStart, new Date()) >= REPEAT_TIME_INTERVAL &&
+    (differenceInHours(dateStart, new Date()) >= REPEAT_TIME_INTERVAL) &&
     status === 4
   ) {
     return true;

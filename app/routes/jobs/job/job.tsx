@@ -14,7 +14,7 @@ import { useStore } from "~/store/store";
 import { withLocale } from "~/shared/withLocale";
 import { determineRole } from "~/shared/determineRole";
 
-import { isWithinInterval, subHours } from "date-fns";
+import { isWithinInterval, subHours, isAfter } from "date-fns";
 
 // import { JobMobileFormView } from "./JobMobileView/JobMobileFormView";
 import { JobMobileStaticView } from "./JobMobileView/JobMobileStaticView";
@@ -575,10 +575,8 @@ export default function Job({ loaderData }: Route.ComponentProps) {
                 startIcon={<CheckIcon />}
                 variant="contained"
                 disabled={
-                  !isWithinInterval(new Date(), {
-                    start: subHours(new Date(loaderData.entity.dateStart), 1),
-                    end: new Date(loaderData.entity.dateEnd),
-                  })
+                  isAfter(new Date(loaderData.entity.dateEnd), new Date())
+                  
                 }
                 onClick={() => {
                   if (loaderData.entity.needPhoto) {
