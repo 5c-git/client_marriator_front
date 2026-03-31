@@ -325,9 +325,16 @@ export default function Step4({ loaderData }: Route.ComponentProps) {
               {t("endButton")}
             </Button>
 
-            <Button variant="contained" component={Link} to={"/"}>
-              {t("termsButton")}
-            </Button>
+
+          <Button
+            variant="outlined"
+            component='a'
+            href='../../public/client_marriator_front/file-sample_150kB.pdf'
+            target="_blank"
+            rel="noreferrer"
+          >
+          {t("termsButton")}
+        </Button>
 
             <Button
               variant="text"

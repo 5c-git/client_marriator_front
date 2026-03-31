@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { useFetcher, useNavigate, useNavigation, redirect } from "react-router";
+import { useFetcher, useNavigate, useNavigation, redirect, Link } from "react-router";
 import type { Route } from "./+types/step6";
 import * as Yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -198,9 +198,15 @@ export default function Step6({ loaderData }: Route.ComponentProps) {
               {t("finishButton")}
             </Button>
 
-            <Button variant="contained" component={Link} to={"/"}>
-              {t("termsButton")}
-            </Button>
+        <Button
+          variant="outlined"
+          component='a'
+          href='../../public/client_marriator_front/file-sample_150kB.pdf'
+          target="_blank"
+          rel="noreferrer"
+        >
+          {t("termsButton")}
+        </Button>
           </Box>
         </form>
       </Box>
