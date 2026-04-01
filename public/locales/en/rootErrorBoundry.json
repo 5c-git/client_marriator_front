@@ -1,4 +1,6 @@
 {
   "error": "Error occurred!",
-  "refresh": "Go back"
+  "refresh": "Go back",
+  "offlineTitle": "No internet connection",
+  "refreshButton": "Refresh"
 }

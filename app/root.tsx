@@ -10,16 +10,11 @@ import {
 
 // import { UAParser } from "ua-parser-js";
 
-// import HawkCatcher from "@hawk.so/javascript";
 
 // MUI
 import { theme } from "./theme/theme";
 import { CssBaseline, ThemeProvider } from "@mui/material";
-// MUI
-// import "@mui/material-pigment-css/styles.css";
-// import DefaultPropsProvider from "@mui/material/DefaultPropsProvider";
-// import { AlertIcon } from "./theme/icons/AlertIcon";
-// MUI
+
 
 import { changeLanguage } from "i18next";
 import { supportedLngs } from "./entry.client";
@@ -31,13 +26,11 @@ export function HydrateFallback() {
 }
 
 export async function clientLoader({
-  // request,
+
   params,
 }: LoaderFunctionArgs) {
   const locale = params.lang ?? "ru";
 
-  // const { device } = UAParser();
-  // console.log(device);
 
   if (!supportedLngs.includes(locale)) {
     throw new Response(null, {
@@ -54,20 +47,10 @@ export async function clientLoader({
 export function Layout({ children }: { children: React.ReactNode }) {
   const locale = useLoaderData<typeof clientLoader>();
 
-  //we have to use useEffect, because HawkCatcher is using browser apis
-  // useEffect(() => {
-  //   const hawk = new HawkCatcher({
-  //     token: import.meta.env.VITE_HAWK_KEY,
-  //     release: window.HAWK_RELEASE,
-  //   });
-
-  //   console.log(hawk);
-  // }, []);
-
   return (
     <html lang={locale}>
       <head>
-        {/* <meta charSet="utf-8" /> */}
+        <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <meta name="google" content="notranslate" />
         <script
@@ -83,18 +66,6 @@ export function Layout({ children }: { children: React.ReactNode }) {
           <CssBaseline />
           {children}
         </ThemeProvider>
-        {/* <DefaultPropsProvider
-          value={{
-            MuiAlert: {
-              severity: "info",
-              iconMapping: {
-                info: <AlertIcon />,
-              },
-            },
-          }}
-        >
-          {children}
-        </DefaultPropsProvider> */}
         <ScrollRestoration />
         <Scripts />
       </body>

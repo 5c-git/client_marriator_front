@@ -40,6 +40,7 @@ type MobileModeData = {
   assignments: EntitiesListViewInterface["entities"];
 };
 
+
 export async function clientLoader() {
   const mode = "mobile";
 

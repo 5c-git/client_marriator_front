@@ -24,16 +24,9 @@ export const ErrorBoundary = ({ error }: Route.ErrorBoundaryProps) => {
 
   // const userPhone = useStore.getState().userPhone;
 
-  // maybe network error occured because we are offline, if yes, we send user to offline page
-  useEffect(() => {
-    if (!navigator.onLine) {
-      navigate(withLocale("/offline"));
-    }
-  }, [navigate]);
-
   // логика обновления accessToken с сервера через refreshToken, если обновление неуспешно - значит ссессия протухла совсем, удяляем токены из кранилища и переводим пользователя на авторизацию
   useEffect(() => {
-    if (isRouteErrorResponse(error) && error.status === 401) {
+    if (isRouteErrorResponse(error) && error.status === 401 && navigator.onLine) {
       (async () => {
 
         try {
@@ -71,12 +64,19 @@ export const ErrorBoundary = ({ error }: Route.ErrorBoundaryProps) => {
 
   //logging unxpected errors to Sentry
   useEffect(() => {
-    if (error instanceof Error || error instanceof UnxpectedError) {
+    if ((error instanceof Error || error instanceof UnxpectedError) && navigator.onLine) {
       console.log("sentry");
 
-      if(access_token) {
-        postSendError(access_token, window.location.href, error.message);
-      }
+      (async () => {      
+        if(access_token) {
+          try {
+            await postSendError(access_token, window.location.href, error.message);
+          } catch {
+            console.log("failed to send exeption to the server");
+          }
+      }})()
+
+
     }
   }, [access_token,error]);
 
@@ -84,6 +84,38 @@ export const ErrorBoundary = ({ error }: Route.ErrorBoundaryProps) => {
 
   return (
     <>
+      {/* showing this screen only if user is offline */}
+      {!navigator.onLine ? <Box
+        sx={{
+          paddingRight: "16px",
+          paddingLeft: "16px",
+          paddingTop: "60px",
+        }}
+      >
+        <Typography
+          component="p"
+          variant="Reg_14"
+          sx={(theme) => ({
+            color: theme.vars.palette["Black"],
+            textAlign: "center",
+            paddingTop: "40px",
+            paddingBottom: "40px",
+          })}
+        >
+          {t("offlineTitle")}
+        </Typography>
+        <Button
+          variant="outlined"
+          onClick={() => {
+            if (navigator.onLine) {
+              window.location.reload()
+            }
+          }}
+        >
+          {t("refreshButton")}
+        </Button>
+      </Box> : null}
+
       {/* showing this screen only if user is authorized and we are not offline */}
       {isRouteErrorResponse(error) &&
       error.status !== 401 &&
@@ -147,7 +179,7 @@ export const ErrorBoundary = ({ error }: Route.ErrorBoundaryProps) => {
       ) : null}
 
       {/* showing this screen only if there is unxpected error, meaning that we DO NOT expect such behaviour */}
-      {error instanceof Error || error instanceof UnxpectedError ? (
+      {(error instanceof Error || error instanceof UnxpectedError) && navigator.onLine ? (
         <Box
           sx={{
             paddingRight: "16px",
@@ -210,12 +242,15 @@ export const ErrorBoundary = ({ error }: Route.ErrorBoundaryProps) => {
             variant="outlined"
             onClick={() => {
               navigate(-1);
+              
             }}
           >
             {t("refresh")}
           </Button>
         </Box>
       ) : null}
+
+      
     </>
   );
 };

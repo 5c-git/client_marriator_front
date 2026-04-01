@@ -105,6 +105,7 @@ export default function HomeLayout({ loaderData }: Route.ComponentProps) {
 
   return (
     <>
+    
       <TopNavigation
         header={{
           text: t("header"),

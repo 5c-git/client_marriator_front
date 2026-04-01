@@ -190,7 +190,5 @@ export default [
       ":lang?/tasks/:taskId/service/:serviceId?",
       "routes/tasks/service/service.tsx",
     ),
-
-    route(":lang?/offline", "routes/offline/offline.tsx"),
   ]),
 ] satisfies RouteConfig;
