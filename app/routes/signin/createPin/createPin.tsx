@@ -12,8 +12,8 @@ import type { Route } from "./+types/createPin";
 import { useTranslation } from "react-i18next";
 import { withLocale } from "~/shared/withLocale";
 
-import * as Yup from "yup";
-import { yupResolver } from "@hookform/resolvers/yup";
+import {zodResolver} from "@hookform/resolvers/zod";
+import {z} from 'zod';
 
 import { useForm, Controller } from "react-hook-form";
 
@@ -81,11 +81,20 @@ export default function CreatePin() {
       pin: "",
       confirmPin: "",
     },
-    resolver: yupResolver(
-      Yup.object().shape({
-        pin: Yup.string().min(4).max(4).required(),
-        confirmPin: Yup.string().oneOf([Yup.ref("pin")], "Pins must match"),
-      })
+    resolver: zodResolver(
+      z.object({pin: z.string().length(4),
+        confirmPin: z.string(),
+      }).superRefine(({confirmPin, pin}, ctx) => {
+        if (confirmPin !== pin) {
+          ctx.addIssue({
+            code: 'custom',
+            message: t("error"),
+            input: confirmPin,
+            path: ['confirmPin'],
+          });
+        }
+      }),
+      
     ),
   });
 

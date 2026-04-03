@@ -12,8 +12,8 @@ import { t, loadNamespaces } from "i18next";
 import { useTranslation } from "react-i18next";
 import { withLocale } from "~/shared/withLocale";
 
-import * as Yup from "yup";
-import { yupResolver } from "@hookform/resolvers/yup";
+import {zodResolver} from "@hookform/resolvers/zod";
+import {z} from 'zod';
 
 import { useForm, Controller } from "react-hook-form";
 
@@ -101,12 +101,10 @@ export default function ConfirmEmail({ loaderData }: Route.ComponentProps) {
     defaultValues: {
       code: "",
     },
-    resolver: yupResolver(
-      Yup.object().shape({
-        code: Yup.string()
-          .default("")
-          .length(4, t("inputValidation_lenght"))
-          .required(t("inputValidation")),
+    resolver: zodResolver(
+      z.object({
+        code: z.string({error: t("inputValidation")})
+          .length(4, {error: t("inputValidation_lenght")}),
       }),
     ),
   });

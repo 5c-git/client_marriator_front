@@ -1,8 +1,9 @@
 import { useNavigation, useNavigate, useSubmit } from "react-router";
 import type { Route } from "./+types/certificates";
 
-import * as Yup from "yup";
-import { yupResolver } from "@hookform/resolvers/yup";
+import {zodResolver} from "@hookform/resolvers/zod";
+import {z} from "zod";
+
 import { useForm, Controller } from "react-hook-form";
 
 import { useTranslation } from "react-i18next";
@@ -125,14 +126,10 @@ export default function Certificates({ loaderData }: Route.ComponentProps) {
       organization: "",
       certificate: "",
     },
-    resolver: yupResolver(
-      Yup.object({
-        organization: Yup.string().required(
-          t("select", { ns: "constructorFields" })
-        ),
-        certificate: Yup.string().required(
-          t("select", { ns: "constructorFields" })
-        ),
+    resolver: zodResolver(
+      z.object({
+        organization: z.string({error: t("select", { ns: "constructorFields" })}).trim().min(1, {error: t("select", { ns: "constructorFields" })}),
+        certificate: z.string({error: t("select", { ns: "constructorFields" })}).trim().min(1, {error: t("select", { ns: "constructorFields" })}),
       })
     ),
   });

@@ -10,8 +10,8 @@ import type { Route } from "./+types/phone";
 import { useTranslation } from "react-i18next";
 import { withLocale } from "~/shared/withLocale";
 
-import * as Yup from "yup";
-import { yupResolver } from "@hookform/resolvers/yup";
+import {zodResolver} from "@hookform/resolvers/zod";
+import {z} from 'zod';
 import { phoneRegExp } from "~/shared/validators";
 
 import { useForm, Controller } from "react-hook-form";
@@ -89,11 +89,10 @@ export default function Phone({ loaderData }: Route.ComponentProps) {
     defaultValues: {
       phone: loaderData.userPhone,
     },
-    resolver: yupResolver(
-      Yup.object().shape({
-        phone: Yup.string()
-          .matches(phoneRegExp, t("inputValidation_regExp"))
-          .required(t("inputValidation")),
+    resolver: zodResolver(
+      z.object({
+        phone: z.string({error: t("inputValidation")})
+          .regex(phoneRegExp, {error: t("inputValidation_regExp")})
       })
     ),
   });

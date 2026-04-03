@@ -5,8 +5,8 @@ import { t } from "i18next";
 import { useTranslation } from "react-i18next";
 import { withLocale } from "~/shared/withLocale";
 
-import * as Yup from "yup";
-import { yupResolver } from "@hookform/resolvers/yup";
+import {zodResolver} from "@hookform/resolvers/zod";
+import {z} from 'zod';
 
 import { useForm, Controller } from "react-hook-form";
 
@@ -74,9 +74,9 @@ export default function Pin({ actionData }: Route.ComponentProps) {
     defaultValues: {
       pin: "",
     },
-    resolver: yupResolver(
-      Yup.object().shape({
-        pin: Yup.string().min(4).max(4).required(),
+    resolver: zodResolver(
+      z.object({
+        pin: z.string().length(4)
       })
     ),
   });

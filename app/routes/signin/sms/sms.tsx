@@ -12,8 +12,8 @@ import { t, loadNamespaces } from "i18next";
 import { useTranslation } from "react-i18next";
 import { withLocale } from "~/shared/withLocale";
 
-import * as Yup from "yup";
-import { yupResolver } from "@hookform/resolvers/yup";
+import {zodResolver} from "@hookform/resolvers/zod";
+import {z} from 'zod';
 
 import { useForm, Controller } from "react-hook-form";
 
@@ -105,14 +105,12 @@ export default function Sms({ loaderData }: Route.ComponentProps) {
       phone: loaderData.phone,
       sms: "",
     },
-    resolver: yupResolver(
-      Yup.object().shape({
-        phone: Yup.string().notRequired(),
-        sms: Yup.string()
-          .default("")
-          .length(4, t("inputValidation_lenght"))
-          .required(t("inputValidation")),
-      }),
+    resolver: zodResolver(
+      z.object({
+        phone: z.string().optional(),
+        sms: z.string({error: t("inputValidation")})
+          .length(4, {error: t("inputValidation_lenght")})
+      })
     ),
   });
 

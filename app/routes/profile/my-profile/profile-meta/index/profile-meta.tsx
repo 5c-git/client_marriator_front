@@ -2,8 +2,8 @@ import { useState, useEffect } from "react";
 import { useFetcher, useNavigate, useNavigation, redirect } from "react-router";
 import type { Route } from "./+types/profile-meta";
 
-import * as Yup from "yup";
-import { yupResolver } from "@hookform/resolvers/yup";
+import {zodResolver} from "@hookform/resolvers/zod";
+import {z} from 'zod';
 import { useForm, Controller } from "react-hook-form";
 
 import { useTranslation } from "react-i18next";
@@ -127,21 +127,15 @@ export default function ProfileMeta({ loaderData }: Route.ComponentProps) {
       metaPhone: loaderData.phone,
       metaEmail: loaderData.email,
     },
-    resolver: yupResolver(
-      Yup.object({
-        metaPhoto: Yup.string().required(
-          t("photo", { ns: "constructorFields" })
-        ),
-        metaPhone: Yup.string().required(
-          t("phone", { ns: "constructorFields" })
-        ),
-        metaEmail: Yup.string()
-          .default("")
-          .matches(
+    resolver: zodResolver(
+      z.object({
+        metaPhoto: z.string().trim().min(1, {error: t("photo", { ns: "constructorFields" })}),
+        metaPhone: z.string().trim().min(1, {error: t("phone", { ns: "constructorFields" })}),
+        metaEmail: z.string({error: t("email", { ns: "constructorFields" })})
+          .regex(
             emailRegExp,
-            t("email_wrongValue", { ns: "constructorFields" })
+            {error: t("email_wrongValue", { ns: "constructorFields" })}
           )
-          .required(t("email", { ns: "constructorFields" })),
       })
     ),
     mode: "onChange",

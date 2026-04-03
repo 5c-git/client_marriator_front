@@ -1,8 +1,8 @@
 import { useFetcher, useNavigation, redirect } from "react-router";
 import type { Route } from "./+types/recruiter";
 
-import * as Yup from "yup";
-import { yupResolver } from "@hookform/resolvers/yup";
+import {zodResolver} from "@hookform/resolvers/zod";
+import {z} from 'zod';
 import { useForm, Controller } from "react-hook-form";
 
 import { useTranslation } from "react-i18next";
@@ -85,28 +85,21 @@ export default function Recruiter({ loaderData }: Route.ComponentProps) {
     getValues,
     handleSubmit,
     formState: { errors, isValid },
-    reset,
   } = useForm({
     defaultValues: {
       fio: "",
       locations: loaderData.locations,
     },
-    resolver: yupResolver(
-      Yup.object({
-        fio: Yup.string().required(t("form.fio")),
-        locations: Yup.array()
-          .min(1)
-          .of(
-            Yup.object().shape({
-              id: Yup.number().required(),
-              name: Yup.string().required(),
-              icon: Yup.string().required(),
-              coordinates: Yup.array().min(2).max(2).of(Yup.string()),
-              address: Yup.string().required(),
-              // region: Yup.string().required(),
-            })
-          )
-          .required(t("form.locations")),
+    resolver: zodResolver(
+      z.object({
+        fio: z.string().trim().min(1, {error: t("form.fio")}),
+        locations: z.array(z.object({
+          id: z.number(),
+          name: z.string(),
+          icon: z.string(),
+          coordinates: z.array(z.string()).min(2).max(2),
+          address: z.string(),
+        })).min(1, {error: t("form.locations")}),
       })
     ),
     mode: "onChange",

@@ -8,8 +8,8 @@ import {
 } from "react-router";
 import type { Route } from "./+types/billing-edit";
 
-import * as Yup from "yup";
-import { yupResolver } from "@hookform/resolvers/yup";
+import {zodResolver} from "@hookform/resolvers/zod";
+import {z} from "zod";
 import { useForm, Controller } from "react-hook-form";
 
 import { useTranslation } from "react-i18next";
@@ -137,44 +137,16 @@ export default function BillingEdit({ loaderData }: Route.ComponentProps) {
       payWithCard: passedBillingInfo.payWithCard,
       cardDue: passedBillingInfo.cardDue,
     },
-    resolver: yupResolver(
-      Yup.object({
-        confidant: Yup.boolean().required(),
-        fio: Yup.string().required(t("text", { ns: "constructorFields" })),
-        bik: Yup.string().required(
-          t("autocomplete", { ns: "constructorFields" })
-        ),
-        account: Yup.string()
-          .default("")
-          .test(
-            "is-account",
-            () => t("account_wrongAccount", { ns: "constructorFields" }),
-            (value, context) => {
-              const { bik } = context.parent;
+    resolver: zodResolver(
+      z.object({
+        confidant: z.boolean(),
+        fio: z.string({error: t("text", { ns: "constructorFields" })}).trim().min(1, {error: t("text", { ns: "constructorFields" })}),
+        bik: z.string({error: t("autocomplete", { ns: "constructorFields" })}).trim().min(1, {error: t("autocomplete", { ns: "constructorFields" })}),
 
-              // const bikRs = "0" + bik.slice(4, -3) + value;
-              const bikRs = bik.slice(-3) + value;
-              let checksum = 0;
-              const coefficients = [
-                7, 1, 3, 7, 1, 3, 7, 1, 3, 7, 1, 3, 7, 1, 3, 7, 1, 3, 7, 1, 3,
-                7, 1,
-              ];
-              for (const i in coefficients) {
-                checksum += coefficients[i] * (Number(bikRs[i]) % 10);
-              }
-              if (checksum % 10 === 0) {
-                return true;
-              }
-
-              return false;
-            }
-          )
-          .length(20, t("account_wrongValue", { ns: "constructorFields" }))
-          .required(t("account", { ns: "constructorFields" })),
-        card: Yup.string()
-          .test(
-            "is-card",
-            () => t("card_wrongValue", { ns: "constructorFields" }),
+        account: z.string({error: t("account", { ns: "constructorFields" })})
+          .length(20, {error: t("account_wrongValue", { ns: "constructorFields" })}),
+        card: z.string({error: t("card", { ns: "constructorFields" })})
+          .refine(
             (value) => {
               // accept only digits, dashes or spaces
               // if (/[^0-9-\s]+/.test(value)) return false;
@@ -194,15 +166,34 @@ export default function BillingEdit({ loaderData }: Route.ComponentProps) {
               // @ts-expect-error value is always present
               sum += lastDigit;
               return sum % 10 === 0;
+            }, {
+              error: t("card_wrongValue", { ns: "constructorFields" }),
             }
-          )
-          .required(t("card", { ns: "constructorFields" })),
-        payWithCard: Yup.string().required(
-          t("radio", { ns: "constructorFields" })
-        ),
-        cardDue: Yup.string()
-          .nullable()
-          .required(t("date", { ns: "constructorFields" })),
+          ),
+        payWithCard: z.string().trim().min(1, {error: t("radio", { ns: "constructorFields" })}),
+        cardDue: z.string().nullable(),
+      }).superRefine((values, context) => {
+        const bik = values.bik;
+        if (bik) {
+            // const bikRs = "0" + bik.slice(4, -3) + value;
+            const bikRs = bik.slice(-3) + values.account;
+            let checksum = 0;
+            const coefficients = [
+              7, 1, 3, 7, 1, 3, 7, 1, 3, 7, 1, 3, 7, 1, 3, 7, 1, 3, 7, 1, 3,
+              7, 1,
+            ];
+            for (const i in coefficients) {
+              checksum += coefficients[i] * (Number(bikRs[i]) % 10);
+            }
+            if (checksum % 10 !== 0) {
+              context.addIssue({
+                code: "custom",
+                message: t("account_wrongAccount", { ns: "constructorFields" }),
+                input: values.account,
+                path: ["account"],
+              });
+            }
+        }
       })
     ),
   });

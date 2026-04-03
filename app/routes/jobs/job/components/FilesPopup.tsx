@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import { useForm, useFieldArray } from "react-hook-form";
 
-import * as Yup from "yup";
-import { yupResolver } from "@hookform/resolvers/yup";
+import {zodResolver} from "@hookform/resolvers/zod";
+import {z} from "zod";
 
 import Box from "@mui/material/Box";
 import { Dialog, Typography, Button } from "@mui/material";
@@ -36,9 +36,15 @@ export const FilesPopup = ({
     defaultValues: {
       files: [],
     },
-    resolver: yupResolver(
-      Yup.object({
-        files: Yup.array().min(4),
+    resolver: zodResolver(
+      z.object({
+        files: z
+          .array(
+            z.object({
+              file: z.instanceof(File),
+            })
+          )
+          .min(4),
       })
     ),
   });
