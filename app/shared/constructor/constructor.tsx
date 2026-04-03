@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 // @ts-nocheck
 
-import * as Yup from "yup";
+import { z} from "zod";
 import {
   Controller,
   Control,
@@ -59,92 +59,58 @@ const inputMap = {
   bic: StyledAutocompleteBic,
 };
 
-const validationMap: {
-  // [key: string]: {
-  //   [key: string]:
-  //     | Yup.ISchema<unknown>
-  //     | ((value: string, error: string) => Yup.ISchema<unknown>);
-  // };
-  [key: string]: {
-    [key: string]: Yup.ISchema<unknown>;
-  };
-} = {
-  text: {
-    none: Yup.string().default("").notRequired(),
-    default: Yup.string().required(t("text", { ns: "constructorFields" })),
+const validationMap: Record<string, Record<string, z.ZodSchema<unknown>>> = {
+  text: { 
+    none: z.string().default("").optional(),
+    default: z.string().trim().min(1, {error: t("text", { ns: "constructorFields" })}),
 
-    // wrongValue: (value: string, error: string) =>
-    //   Yup.string().test(
-    //     "wrong",
-    //     error,
-    //     (currentValue) => currentValue !== value,
-    //   ),
   },
   phone: {
-    none: Yup.string().default("").notRequired(),
-    default: Yup.string()
-      .matches(phoneRegExp, t("phone_wrongValue", { ns: "constructorFields" }))
-      .required(t("phone", { ns: "constructorFields" })),
+    none: z.string().default("").optional(),
+    default: z.string().trim().min(1, {error: t("phone", { ns: "constructorFields" })}).regex(phoneRegExp, {error: t("phone_wrongValue", { ns: "constructorFields" })})
   },
   select: {
-    none: Yup.string().default("").notRequired(),
-    default: Yup.string().required(t("select", { ns: "constructorFields" })),
+    none: z.string().default("").optional(),
+    default: z.string().trim().min(1, {error: t("select", { ns: "constructorFields" })}),
   },
   selectMultiple: {
-    none: Yup.array().notRequired(),
-    default: Yup.array().min(
-      1,
-      t("selectMultiple", { ns: "constructorFields" })
-    ),
+    none: z.array().optional(),
+    default: z.array(z.string()).min(1, {error: t("selectMultiple", { ns: "constructorFields" })}),
   },
-  radio: {
-    none: Yup.string().default("").notRequired(),
-    default: Yup.string().required(t("radio", { ns: "constructorFields" })),
+  radio: {  
+    none: z.string().default("").optional(),
+    default: z.string().trim().min(1, {error: t("radio", { ns: "constructorFields" })}),
   },
   checkbox: {
-    none: Yup.boolean(),
-    checked: Yup.boolean().oneOf(
-      [true],
-      t("checkbox_checked", { ns: "constructorFields" })
-    ),
-    unchecked: Yup.boolean().oneOf(
-      [false],
-      t("checkbox_unchecked", { ns: "constructorFields" })
-    ),
+    none: z.boolean(),
+    checked: z.boolean().parse(true, {error: t("checkbox_checked", { ns: "constructorFields" })}),
+    unchecked: z.boolean().parse(false, {error: t("checkbox_unchecked", { ns: "constructorFields" })}),
   },
   checkboxMultiple: {
-    none: Yup.array().notRequired(),
-    default: Yup.array().min(
-      1,
-      t("checkboxMultiple", { ns: "constructorFields" })
-    ),
+    none: z.array().optional(),
+    default: z.array(z.string()).min(1, {error: t("checkboxMultiple", { ns: "constructorFields" })}),
   },
   photoCheckbox: {
-    none: Yup.array().notRequired(),
-    default: Yup.array().min(
-      1,
-      t("photoCheckbox", { ns: "constructorFields" })
-    ),
+    none: z.array().optional(),
+    default: z.array(z.string()).min(1, {error: t("photoCheckbox", { ns: "constructorFields" })}),
   },
   file: {
-    none: Yup.string().default("").notRequired(),
-    default: Yup.string().required(t("file", { ns: "constructorFields" })),
+    none: z.string().default("").optional(),
+    default: z.string().trim().min(1, {error: t("file", { ns: "constructorFields" })}),
   },
   photo: {
-    none: Yup.string().default("").notRequired(),
-    default: Yup.string().required(t("photo", { ns: "constructorFields" })),
+    none: z.string().default("").optional(),
+    default: z.string().trim().min(1, {error: t("photo", { ns: "constructorFields" })}),
   },
   date: {
-    none: Yup.string().default("").notRequired(),
-    default: Yup.string().required(t("date", { ns: "constructorFields" })),
-    "16years": Yup.string().required(t("data", { ns: "constructorFields" })),
+    none: z.string().default("").optional(),
+    default: z.string().trim().min(1, {error: t("date", { ns: "constructorFields" })}),
+    "16years": z.string().trim().min(1, {error: t("data", { ns: "constructorFields" })}),
   },
   card: {
-    none: Yup.string().default("").notRequired(),
-    default: Yup.string()
-      .test(
-        "is-card",
-        () => t("card_wrongValue", { ns: "constructorFields" }),
+    none: z.string().default("").optional(),
+    default: z.string().trim().min(1, {error: t("card", { ns: "constructorFields" })})
+      .refine(
         (value) => {
           // accept only digits, dashes or spaces
           // if (/[^0-9-\s]+/.test(value)) return false;
@@ -161,66 +127,24 @@ const validationMap: {
           );
           sum += lastDigit;
           return sum % 10 === 0;
-        }
+        },
+        {error: t("card_wrongValue", { ns: "constructorFields" })}
       )
-      .required(t("card", { ns: "constructorFields" })),
+
   },
   month: {
-    none: Yup.string().default("").notRequired(),
-    default: Yup.string().required(t("month", { ns: "constructorFields" })),
+    none: z.string().default("").optional(),
+    default: z.string().trim().min(1, {error: t("month", { ns: "constructorFields" })}),
   },
   email: {
-    // none: Yup.string()
-    //   .default("")
-    //   .email(t("Constructor.email", { context: "wrongVaue" }))
-    //   .notRequired(),
-    default: Yup.string()
-      .default("")
-      // .email(t("Constructor.email", { context: "wrongVaue" }))
-      .matches(emailRegExp, t("email_wrongValue", { ns: "constructorFields" }))
-      .required(t("email", { ns: "constructorFields" })),
-  },
-  account: {
-    none: Yup.string().default("").notRequired(),
-    default: (bik: string | undefined) =>
-      Yup.string()
-        .default("")
-        .test(
-          "is-account",
-          () => t("account_wrongAccount", { ns: "constructorFields" }),
-          (value, context) => {
-            if (bik) {
-              // const bikRs = "0" + bik.slice(4, -3) + value;
-              const bikRs = context.parent[bik].slice(-3) + value;
-              let checksum = 0;
-              const coefficients = [
-                7, 1, 3, 7, 1, 3, 7, 1, 3, 7, 1, 3, 7, 1, 3, 7, 1, 3, 7, 1, 3,
-                7, 1,
-              ];
-              for (const i in coefficients) {
-                checksum += coefficients[i] * (Number(bikRs[i]) % 10);
-              }
-              if (checksum % 10 === 0) {
-                return true;
-              }
-              return false;
-            }
-
-            return true;
-          }
-        )
-        .length(20, t("account_wrongValue", { ns: "constructorFields" }))
-        .required(t("account", { ns: "constructorFields" })),
+    default: z.string({error: t("email", { ns: "constructorFields" })})
+      .regex(emailRegExp, {error: t("email_wrongValue", { ns: "constructorFields" })})
   },
   inn: {
-    none: Yup.string().default("").notRequired(),
-    default: Yup.string()
-      .default("")
+    none: z.string().default("").optional(),
+    default: z.string({error: t("inn", { ns: "constructorFields" })})
       .length(12, t("inn_wrongValue", { ns: "constructorFields" }))
-      .required(t("inn", { ns: "constructorFields" }))
-      .test(
-        "is-inn",
-        () => t("inn_wrongInn", { ns: "constructorFields" }),
+      .refine(
         (value) => {
           const checkDigit = function (inn: string, coefficients) {
             let n = 0;
@@ -248,18 +172,15 @@ const validationMap: {
           }
 
           return false;
-        }
+        }, 
+        {error: t("inn_wrongInn", { ns: "constructorFields" })}
       ),
   },
   snils: {
-    none: Yup.string().default("").notRequired(),
-    default: Yup.string()
-      .default("")
+    none: z.string().default("").optional(),
+    default: z.string({error: t("snils", { ns: "constructorFields" })})
       .length(11, t("snils_wrongSnils", { ns: "constructorFields" }))
-      .required(t("snils", { ns: "constructorFields" }))
-      .test(
-        "is-snils",
-        () => t("snils_wrongSnils", { ns: "constructorFields" }),
+      .refine(
         (value) => {
           let sum = 0;
           for (let i = 0; i < 9; i++) {
@@ -279,27 +200,28 @@ const validationMap: {
           } else {
             return false;
           }
-        }
+        },
+        {error: t("snils_wrongSnils", { ns: "constructorFields" })}
       ),
   },
   sms: {
-    none: Yup.string().default("").notRequired(),
-    default: Yup.string()
-      .default("")
+    none: z.string().default("").optional(),
+    default: z.string({error: t("sms", { ns: "constructorFields" })})
       .length(4, t("sms_wrongValue", { ns: "constructorFields" }))
-      .required(t("sms", { ns: "constructorFields" })),
   },
   autocomplete: {
-    none: Yup.string().default("").notRequired(),
-    default: Yup.string().required(
-      t("autocomplete", { ns: "constructorFields" })
-    ),
+    none: z.string().default("").optional(),
+    default: z.string().trim().min(1, {error: t("autocomplete", { ns: "constructorFields" })}),
   },
   bic: {
-    none: Yup.string().default("").notRequired(),
-    default: Yup.string().required(
-      t("autocomplete", { ns: "constructorFields" })
-    ),
+    none: z.string().default("").optional(),
+    default: z.string().trim().min(1, {error: t("autocomplete", { ns: "constructorFields" })})
+    
+  },
+  account: {
+    none: z.string().default("").optional(),
+    default: z.string({error: t("account", { ns: "constructorFields" })})
+    .length(20, t("account_wrongValue", { ns: "constructorFields" }))
   },
 };
 
@@ -327,38 +249,51 @@ export const generateValidationSchema = (
     validation: string;
   }[]
 ) => {
-  const validationSchema: Yup.ObjectShape = {};
+  let validationSchema: z.ZodObject<Record<string, z.ZodSchema<unknown>>> = z.object({});
 
   const bikRegExp = new RegExp(`^бик`, "i");
 
   const bikField = items.find((item) => bikRegExp.test(item.placeholder));
 
+
   items.forEach((item) => {
-    // account validation requires bik field value, so we find bik field above and pass its name to our account validation so it can grab its value when validation is needed
-    //if there is no bik field but only account field we pass undefined to account validation so part of validation which requires bik field is ignored
+    // account validation requires bik field value, so if there is bik field we add superRefine to validation schema to validate account field
     if (item.inputType === "account" && item.validation === "default") {
       if (bikField) {
-        validationSchema[item.name] = validationMap[item.inputType][
-          item.validation
-        ](bikField.name);
-      } else {
-        validationSchema[item.name] =
-          validationMap[item.inputType][item.validation](undefined);
+        validationSchema.superRefine((values, context) => {
+          const bik = values[bikField.name];
+          if (bik) {
+              // const bikRs = "0" + bik.slice(4, -3) + value;
+              const bikRs = bik.slice(-3) + value;
+              let checksum = 0;
+              const coefficients = [
+                7, 1, 3, 7, 1, 3, 7, 1, 3, 7, 1, 3, 7, 1, 3, 7, 1, 3, 7, 1, 3,
+                7, 1,
+              ];
+              for (const i in coefficients) {
+                checksum += coefficients[i] * (Number(bikRs[i]) % 10);
+              }
+              if (checksum % 10 !== 0) {
+                context.addIssue({
+                  code: "custom",
+                  message: t("account_wrongAccount", { ns: "constructorFields" }),
+                  input: values[item.name],
+                  path: [item.name],
+                });
+              }
+          }
+        })
       }
     } else {
-      validationSchema[item.name] =
-        validationMap[item.inputType][item.validation];
-    }
 
-    // if (item.validation === "wrongValue") {
-    //   validationSchema[item.name] = validationMap[item.inputType][
-    //     item.validation
-    //   ](item.value, item.error);
-    // } else {
-    //   validationSchema[item.name] =
-    //     validationMap[item.inputType][item.validation];
-    // }
+      validationSchema = z.object({
+        ...validationSchema.shape,
+        [item.name]: validationMap[item.inputType][item.validation],
+      });
+    }
   });
+
+  console.log(validationSchema.toJSONSchema());
 
   return validationSchema;
 };
