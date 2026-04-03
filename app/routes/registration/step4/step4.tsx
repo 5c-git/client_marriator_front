@@ -5,11 +5,11 @@ import {
   useNavigation,
   redirect,
   useSubmit,
-  Link,
 } from "react-router";
 import type { Route } from "./+types/step4";
-import * as Yup from "yup";
-import { yupResolver } from "@hookform/resolvers/yup";
+
+import {z} from "zod";
+import {zodResolver} from "@hookform/resolvers/zod";
 import { useForm, Controller } from "react-hook-form";
 
 import { useTranslation } from "react-i18next";
@@ -132,18 +132,14 @@ export default function Step4({ loaderData }: Route.ComponentProps) {
       staticEmail: loaderData.staticFields.email,
       ...generateDefaultValues(loaderData.formFields),
     },
-    resolver: yupResolver(
-      Yup.object({
-        staticPhoto: Yup.string().required(
-          t("photo", { ns: "constructorFields" }),
-        ),
-        staticEmail: Yup.string()
-          .default("")
-          .matches(
+    resolver: zodResolver(
+      z.object({
+        staticPhoto: z.string().trim().min(1, {error: t("photo", { ns: "constructorFields" })}),
+        staticEmail: z.string({error: t("email", { ns: "constructorFields" })})
+          .regex(
             emailRegExp,
             t("email_wrongValue", { ns: "constructorFields" }),
-          )
-          .required(t("email", { ns: "constructorFields" })),
+          ),
         ...generateValidationSchema(loaderData.formFields),
       }),
     ),

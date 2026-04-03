@@ -2,8 +2,7 @@ import { useEffect } from "react";
 import { useFetcher, useNavigate, useNavigation } from "react-router";
 import type { Route } from "./+types/step5";
 
-import * as Yup from "yup";
-import { yupResolver } from "@hookform/resolvers/yup";
+import {zodResolver} from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 
 import { useTranslation } from "react-i18next";
@@ -74,8 +73,8 @@ export default function Step5({ loaderData }: Route.ComponentProps) {
     reset,
   } = useForm({
     defaultValues: generateDefaultValues(loaderData.formFields),
-    resolver: yupResolver(
-      Yup.object(generateValidationSchema(loaderData.formFields))
+    resolver: zodResolver(
+      generateValidationSchema(loaderData.formFields)
     ),
     mode: "onChange",
     shouldUnregister: true,
