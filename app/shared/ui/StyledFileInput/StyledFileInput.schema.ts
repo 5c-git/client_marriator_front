@@ -36,4 +36,7 @@ export const file = z.object({
   moreData: z
     .array(z.object({ name: z.string(), value: z.string() }))
     .optional(),
+  default: z.string().optional(),
+  pregValue: z.string().optional(),
+  pregText: z.string().optional(),
 });

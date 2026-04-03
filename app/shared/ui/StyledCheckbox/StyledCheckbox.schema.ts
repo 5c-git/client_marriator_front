@@ -25,5 +25,7 @@ export const checkbox = z.object({
     })
     .strict()
     .optional(),
-  additionalProperties: z.unknown().optional(),
+  default: z.boolean().optional(),
+  pregValue: z.boolean().optional(),
+  pregText: z.string().optional(),
 });

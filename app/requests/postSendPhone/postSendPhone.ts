@@ -62,15 +62,15 @@ export const postSendPhone = async (phone: string) => {
 // MOCKS
 
 export const mockPostSendPhoneResponseRegister = {
-  result: {
-    type: "register",
-    code: {
-      status: "success",
-      code: 1111,
-      ttl: 120,
-    },
+  "result": {
+      "type": "register",
+      "code": {
+          "status": "success",
+          "code": 1111,
+          "ttl": 120
+      }
   },
-  status: "success",
+  "status": "success"
 };
 
 export const mockPOstSendPhoneResponseModeration = {

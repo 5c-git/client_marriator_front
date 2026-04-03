@@ -33,5 +33,7 @@ export const radio = z.object({
       }),
     )
     .min(1),
-  additionalProperties: z.unknown().optional(),
+  default: z.string().optional(),
+  pregValue: z.string().optional(),
+  pregText: z.string().optional(),
 });

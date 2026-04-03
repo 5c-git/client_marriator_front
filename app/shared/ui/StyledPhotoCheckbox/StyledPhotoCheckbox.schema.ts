@@ -48,5 +48,7 @@ export const photoCheckbox = z.object({
       }),
     )
     .min(1),
-  additionalProperties: z.unknown().optional(),
+  default: z.array(z.string()).optional(),
+  pregValue: z.array(z.string()).optional(),
+  pregText: z.string().optional(),
 });
