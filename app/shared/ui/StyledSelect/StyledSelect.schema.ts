@@ -34,7 +34,6 @@ export const select = z.object({
     })
     .strict()
     .optional(),
-  default: z.string().optional(),
   pregValue: z.string().optional(),
   pregText: z.string().optional(),
 });

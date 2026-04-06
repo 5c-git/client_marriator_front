@@ -247,6 +247,8 @@ export const generateValidationSchema = (
     // value: string;
     // error: string;
     validation: string;
+    pregValue?: string;
+    pregText?: string;
   }[]
 ) => {
   let validationSchema: z.ZodObject<Record<string, z.ZodSchema<unknown>>> = z.object({});
@@ -284,16 +286,18 @@ export const generateValidationSchema = (
           }
         })
       }
+    } else if (item.pregValue && item.pregText) {
+      validationSchema = z.object({
+        ...validationSchema.shape,
+        [item.name]: z.string().regex(new RegExp(item.pregValue), {error: item.pregText}),
+      });
     } else {
-
       validationSchema = z.object({
         ...validationSchema.shape,
         [item.name]: validationMap[item.inputType][item.validation],
       });
     }
   });
-
-  console.log(validationSchema.toJSONSchema());
 
   return validationSchema;
 };

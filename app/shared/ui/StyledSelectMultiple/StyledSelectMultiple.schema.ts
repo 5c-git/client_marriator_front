@@ -34,7 +34,6 @@ export const selectMultiple = z.object({
     })
     .strict()
     .optional(),
-  default: z.array(z.string()).optional(),
-  pregValue: z.array(z.string()).optional(),
+  pregValue: z.string().optional(),
   pregText: z.string().optional(),
 });

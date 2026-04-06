@@ -32,7 +32,6 @@ export const checkboxMultiple = z.object({
       }),
     )
     .min(1),
-  default: z.array(z.string()).optional(),
-  pregValue: z.array(z.string()).optional(),
+  pregValue: z.string().optional(),
   pregText: z.string().optional(),
 });
