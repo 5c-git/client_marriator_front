@@ -24,6 +24,7 @@ export const getSpecialistForBidSuccessSchema = z.object({
       age: z.string(),
       country: z.string(),
       viewActivities: z.array(z.string()),
+      viewActivitiesAccurate: z.boolean(),
     }),
   ),
 });

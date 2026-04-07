@@ -6,9 +6,11 @@
     "4": "Consideration",
     "5": "In work",
     "6": "Cancelled",
-    "7": "Archive"
+    "7": "Archive",
+    "8": "Placeholder"
   },
   "searchbarPlaceholder": "Search",
   "selectAllPlaceholder": "Select all",
+  "onlyAccuratePlaceholder": "Only suitable specialists",
   "inviteButton": "Invite"
 }

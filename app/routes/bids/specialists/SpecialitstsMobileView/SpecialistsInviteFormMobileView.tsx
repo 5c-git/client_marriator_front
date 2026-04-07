@@ -33,12 +33,14 @@ export function SpecialistsInviteFormMobileView(
   const { control, getValues, setValue, handleSubmit } = useForm<{
     searchbar: string;
     selectAll: boolean;
+    onlyAccurate: boolean;
     radius: string;
     specialists: string[];
   }>({
     defaultValues: {
       searchbar: "",
       selectAll: false,
+      onlyAccurate: true,
       radius: props.startingRadius.toString(),
       specialists: [],
     },
@@ -46,13 +48,14 @@ export function SpecialistsInviteFormMobileView(
       z.object({
         searchbar: z.string(),
         selectAll: z.boolean(),
+        onlyAccurate: z.boolean(),
         radius: z.string(),
         specialists: z.array(z.string()).min(1),
       }),
     ),
   });
 
-  const startingSpecialists = props.specialists.filter(
+  const startingSpecialists = props.specialists.filter((item) => item.viewActivitiesAccurate === true).filter(
     (item) => Number(item.radius) <= props.startingRadius,
   );
 
@@ -91,8 +94,6 @@ export function SpecialistsInviteFormMobileView(
                   `${evt.target.value}`,
                   "i",
                 );
-                const currentRadius = getValues("radius");
-                const isSelectedAll = getValues("selectAll");
 
                 let matchingSpecialists: SpecialistsInviteFormMobileViewInterface["specialists"] =
                   [];
@@ -112,12 +113,19 @@ export function SpecialistsInviteFormMobileView(
                 }
 
                 //обрабатываем радиус
-                const sortedSpecialists = matchingSpecialists.filter(
-                  (item) => Number(item.radius) <= Number(currentRadius),
+                let sortedSpecialists = matchingSpecialists.filter(
+                  (item) => Number(item.radius) <= Number(getValues("radius")),
                 );
 
+                //обрабатываем "только подходящие специалисты"
+                if(getValues("onlyAccurate")) {
+                  sortedSpecialists = sortedSpecialists.filter(
+                    (item) => item.viewActivitiesAccurate === true,
+                  );
+                }
+
                 //обрабатываем "выбрать всё"
-                if (isSelectedAll) {
+                if (getValues("selectAll")) {
                   const newValues: string[] = [];
 
                   sortedSpecialists.forEach((item) => {
@@ -184,9 +192,16 @@ export function SpecialistsInviteFormMobileView(
 
                   const selectedValue: number = Number(evt.target.value);
 
-                  const sortedSpecialists = props.specialists.filter(
+                  let sortedSpecialists = props.specialists.filter(
                     (item) => Number(item.radius) <= selectedValue,
                   );
+
+                  //обрабатываем "только подходящие специалисты"
+                  if(getValues("onlyAccurate")) {
+                    sortedSpecialists = sortedSpecialists.filter(
+                      (item) => item.viewActivitiesAccurate === true,
+                    );
+                  }
 
                   setSelectedSpecialists(sortedSpecialists);
                 }}
@@ -194,6 +209,53 @@ export function SpecialistsInviteFormMobileView(
             )}
           />
         </Box>
+
+        <Controller
+            name="onlyAccurate"
+            control={control}
+            render={({ field }) => (
+              <StyledCheckbox
+                {...field}
+                inputType="checkbox"
+                label={t("onlyAccuratePlaceholder")}
+                onImmediateChange={() => {}}
+                validation="none"
+                disabled={props.specialists.filter((item) => item.viewActivitiesAccurate === false).length === 0}
+                onChange={(evt) => {
+                  field.onChange(evt);
+
+                  let matchingSpecialists: SpecialistsInviteFormMobileViewInterface["specialists"] =
+                  [...props.specialists];
+
+
+                  //обрабатываем радиус
+                  matchingSpecialists = matchingSpecialists.filter(
+                    (item) => Number(item.radius) <= Number(getValues("radius")),
+                  );
+
+                  //обрабатываем "только подходящие специалисты"
+                  if(getValues("onlyAccurate")) {
+                    matchingSpecialists = matchingSpecialists.filter(
+                      (item) => item.viewActivitiesAccurate === true,
+                    );
+                  }
+  
+                  // //обрабатываем "выбрать всё"
+                  if (getValues("selectAll")) {
+                    const newValues: string[] = [];
+  
+                    matchingSpecialists.forEach((item) => {
+                      newValues.push(item.id.toString());
+                    });
+  
+                    setValue("specialists", newValues);
+                  }
+
+                  setSelectedSpecialists(matchingSpecialists);
+                }}
+              />
+            )}
+          />
 
         <Controller
           name="specialists"

@@ -16,10 +16,14 @@ import { EntityCard } from "~/shared/ui/EntityCard/EntityCard";
 
 import { PhoneIcon } from "~/shared/icons/PhoneIcon";
 
+type Specialist = Omit<SpecialistsMobileViewInterface["specialists"][0], 'viewActivitiesAccurate'>;  
+
 type SpecialistsStaticMobileViewInterface = Pick<
   SpecialistsMobileViewInterface,
-  "bid" | "specialists" | "activeService"
->;
+  "bid" |"activeService"
+> & {
+  specialists: Specialist[];
+};
 
 export function SpecialistsStaticMobileView(
   props: SpecialistsStaticMobileViewInterface,

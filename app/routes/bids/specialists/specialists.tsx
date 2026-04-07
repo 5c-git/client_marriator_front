@@ -55,6 +55,7 @@ export async function clientLoader({ params }: Route.ClientLoaderArgs) {
           country: item.country,
           viewActivities: item.viewActivities,
           status: 1,
+          viewActivitiesAccurate: item.viewActivitiesAccurate,
         });
       });
       let startingRadius = 1;

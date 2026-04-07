@@ -21,6 +21,7 @@ export type SpecialistsMobileViewInterface = {
     country: string;
     viewActivities: string[];
     status: 4 | 1 | 2 | 3 | 5 | 6 | 7;
+    viewActivitiesAccurate: boolean;
   }[];
   radiuses: {
     value: string;
