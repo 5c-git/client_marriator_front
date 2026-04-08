@@ -140,8 +140,8 @@ export default function Step4({ loaderData }: Route.ComponentProps) {
             emailRegExp,
             t("email_wrongValue", { ns: "constructorFields" }),
           ),
-        ...generateValidationSchema(loaderData.formFields),
-      }),
+        ...generateValidationSchema(loaderData.formFields).shape,
+      })
     ),
     mode: "onChange",
     shouldUnregister: true,

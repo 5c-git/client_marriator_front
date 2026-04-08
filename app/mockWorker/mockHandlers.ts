@@ -128,7 +128,7 @@ import { postCreateSearchFromOrderMockResponse } from "~/requests/_personal/post
 import { postUpdateSearchMockResponse } from "~/requests/_personal/postUpdateSearch/postUpdateSearch";
 
 export const handlers = [
-  // getFormMockResponse,
+  getFormMockResponse,
   // postSaveFormMockResponse,
   // postSendPhoneMockResponse,
   // mockPostCheckCodeMockResponse,
@@ -215,7 +215,7 @@ export const handlers = [
   // postUpdateTaskActivityMockResponse,
   // getPlaceForBidMockResponse,
   // postUpdateBidMockResponse,
-  getSpecialistForBidMockResponse,
+  // getSpecialistForBidMockResponse,
   // postInvoiceBidMockResponse,
   // getManagerMockResponse,
   // postDelManagerMockResponse,

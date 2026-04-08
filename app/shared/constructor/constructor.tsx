@@ -82,7 +82,7 @@ const validationMap: Record<string, Record<string, z.ZodSchema<unknown>>> = {
     default: z.string().trim().min(1, {error: t("radio", { ns: "constructorFields" })}),
   },
   checkbox: {
-    none: z.boolean(),
+    none: z.boolean().optional(),
     checked: z.boolean().parse(true, {error: t("checkbox_checked", { ns: "constructorFields" })}),
     unchecked: z.boolean().parse(false, {error: t("checkbox_unchecked", { ns: "constructorFields" })}),
   },
@@ -298,6 +298,8 @@ export const generateValidationSchema = (
       });
     }
   });
+
+  console.log(validationSchema.shape);
 
   return validationSchema;
 };

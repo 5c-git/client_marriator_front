@@ -3,7 +3,7 @@ import { z } from "zod";
 export const postSaveFormSuccessSchema = z.object({
   result: z.object({
     step: z.number(),
-    type: z.enum(["needRequired", "allowedNewStep", "addedNewFields"]),
+    type: z.enum(["needRequired", "allowedNewStep", "addedNewFields", "pregNotValid"]),
   }),
   status: z.literal("success"),
 });
