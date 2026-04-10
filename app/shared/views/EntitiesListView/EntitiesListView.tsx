@@ -206,7 +206,7 @@ export function EntitiesListView(props: EntitiesListViewInterface) {
 
         //   const marker = new YMapMarker(
         //     {
-        //       coordinates: location.coordinates as LngLat,
+        //       coordinates: [location.coordinates[1], location.coordinates[0]] as LngLat,
         //       properties: {
         //         id: location.id,
         //         icon: location.address.logo,
@@ -228,7 +228,7 @@ export function EntitiesListView(props: EntitiesListViewInterface) {
             locationId: location.id,
             image: location.address.logo,
             borderColor: location.statusColor,
-            coordinates: location.coordinates as LngLat,
+            coordinates: [location.coordinates[1], location.coordinates[0]] as LngLat,
           });
         });
 
