@@ -35,6 +35,7 @@ import Box from "@mui/material/Box";
 import { TopNavigation } from "~/shared/ui/TopNavigation/TopNavigation";
 import { Loader } from "~/shared/ui/Loader/Loader";
 
+import { StyledCheckbox } from "~/shared/ui/StyledCheckbox/StyledCheckbox";
 import { StyledPhotoInput } from "~/shared/ui/StyledPhotoInput/StyledPhotoInput";
 import { StyledEmailField } from "~/shared/ui/StyledEmailField/StyledEmailField";
 
@@ -126,10 +127,12 @@ export default function Step4({ loaderData }: Route.ComponentProps) {
     handleSubmit,
     formState: { errors },
     reset,
+    watch,
   } = useForm({
     defaultValues: {
       staticPhoto: loaderData.staticFields.img,
       staticEmail: loaderData.staticFields.email,
+      isTermsAccepted: false,
       ...generateDefaultValues(loaderData.formFields),
     },
     resolver: zodResolver(
@@ -140,6 +143,7 @@ export default function Step4({ loaderData }: Route.ComponentProps) {
             emailRegExp,
             t("email_wrongValue", { ns: "constructorFields" }),
           ),
+        isTermsAccepted: z.boolean().refine((value) => value === true),
         ...generateValidationSchema(loaderData.formFields).shape,
       })
     ),
@@ -147,12 +151,14 @@ export default function Step4({ loaderData }: Route.ComponentProps) {
     shouldUnregister: true,
   });
 
+
   useEffect(() => {
     setTimeout(() => {
       reset(
         {
           staticPhoto: loaderData.staticFields.img,
           staticEmail: loaderData.staticFields.email,
+          isTermsAccepted: false,
           ...generateDefaultValues(loaderData.formFields),
         },
         {
@@ -168,7 +174,7 @@ export default function Step4({ loaderData }: Route.ComponentProps) {
 
       <Box
         sx={{
-          paddingBottom: "190px",
+          paddingBottom: "220px",
         }}
       >
         <TopNavigation
@@ -275,7 +281,9 @@ export default function Step4({ loaderData }: Route.ComponentProps) {
             )}
           />
 
-          {generateInputsMarkup(
+            
+            
+            {generateInputsMarkup(
             loaderData.formFields,
             errors,
             // @ts-expect-error wrong automatic type narroing
@@ -283,10 +291,10 @@ export default function Step4({ loaderData }: Route.ComponentProps) {
             setValue,
             trigger,
             () => {
-              fetcher.submit(JSON.stringify(getValues()), {
-                method: "POST",
-                encType: "application/json",
-              });
+              // fetcher.submit(JSON.stringify(getValues()), {
+              //   method: "POST",
+              //   encType: "application/json",
+              // });
             },
             loaderData.accessToken,
           )}
@@ -304,6 +312,31 @@ export default function Step4({ loaderData }: Route.ComponentProps) {
               backgroundColor: theme.vars.palette["White"],
             })}
           >
+            <Box sx={{
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+            }}>
+              <Typography sx={{ textAlign: "center" }} variant="Reg_14" color="Black">{t("terms_start")}<Typography variant="Reg_14" color="Corp_1" component='a' href='../../public/client_marriator_front/file-sample_150kB.pdf'
+            target="_blank"
+            rel="noreferrer">{t("terms_personal")}</Typography>{t("terms_and")}<Typography sx={{ textAlign: "center" }} variant="Reg_14" color="Corp_1" component='a' href='../../public/client_marriator_front/file-sample_150kB.pdf'
+            target="_blank"
+            rel="noreferrer">{t("terms_security")}</Typography></Typography>
+              <Controller
+                name="isTermsAccepted"
+                control={control}
+                render={({ field }) => (
+                  <StyledCheckbox
+                    inputType="checkbox"
+                    {...field}
+                    validation="none"
+                    label={t("terms_button")}
+                    onImmediateChange={() => {}}
+                    />
+                  )}
+                />
+            </Box>
+
             <Button
               variant="contained"
               onClick={() => {
@@ -317,20 +350,10 @@ export default function Step4({ loaderData }: Route.ComponentProps) {
                   }
                 })();
               }}
+              disabled={watch("isTermsAccepted") === false}
             >
               {t("endButton")}
             </Button>
-
-
-          <Button
-            variant="outlined"
-            component='a'
-            href='../../public/client_marriator_front/file-sample_150kB.pdf'
-            target="_blank"
-            rel="noreferrer"
-          >
-          {t("termsButton")}
-        </Button>
 
             <Button
               variant="text"

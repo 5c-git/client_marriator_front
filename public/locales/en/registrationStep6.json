@@ -2,6 +2,11 @@
   "header": "Add more personal information",
   "step": "Step 6",
   "intro": "To speed up payments, provide more information for the accounting department",
+  "terms_start": "I agree to the processing of ",
+  "terms_personal": "personal data",
+  "terms_and": " and with ",
+  "terms_security": "security policy",
+  "terms_button": "I agree",
   "finishButton": "Finish registration",
   "termsButton": "Terms and services"
 }

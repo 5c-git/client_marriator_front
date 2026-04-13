@@ -2,9 +2,9 @@ import { useEffect } from "react";
 import { useFetcher, useNavigate, useNavigation, redirect } from "react-router";
 import type { Route } from "./+types/step6";
 
-
+import {z} from "zod";
 import {zodResolver} from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
+import { Controller, useForm } from "react-hook-form";
 
 import { useTranslation } from "react-i18next";
 import { withLocale } from "~/shared/withLocale";
@@ -20,6 +20,7 @@ import Box from "@mui/material/Box";
 
 import { TopNavigation } from "~/shared/ui/TopNavigation/TopNavigation";
 import { Loader } from "~/shared/ui/Loader/Loader";
+import { StyledCheckbox } from "~/shared/ui/StyledCheckbox/StyledCheckbox";
 
 import { getForm } from "~/requests/getForm/getForm";
 import { transformBikOptions } from "~/requests/getForm/getFormHooks";
@@ -85,10 +86,14 @@ export default function Step6({ loaderData }: Route.ComponentProps) {
     handleSubmit,
     formState: { errors },
     reset,
+    watch
   } = useForm({
-    defaultValues: generateDefaultValues(loaderData.formFields),
+    defaultValues:{isTermsAccepted: false, ...generateDefaultValues(loaderData.formFields)},
     resolver: zodResolver(
-      generateValidationSchema(loaderData.formFields),
+      z.object({
+        isTermsAccepted: z.boolean().refine((value) => value === true),
+        ...generateValidationSchema(loaderData.formFields).shape,
+      })
     ),
     mode: "onChange",
     shouldUnregister: true,
@@ -96,7 +101,7 @@ export default function Step6({ loaderData }: Route.ComponentProps) {
 
   useEffect(() => {
     setTimeout(() => {
-      reset(generateDefaultValues(loaderData.formFields));
+      reset({isTermsAccepted: false, ...generateDefaultValues(loaderData.formFields)});
     });
   }, [loaderData.formFields, reset]);
 
@@ -106,7 +111,7 @@ export default function Step6({ loaderData }: Route.ComponentProps) {
 
       <Box
         sx={{
-          paddingBottom: "80px",
+          paddingBottom: "180px",
         }}
       >
         <TopNavigation
@@ -151,6 +156,7 @@ export default function Step6({ loaderData }: Route.ComponentProps) {
           {generateInputsMarkup(
             loaderData.formFields,
             errors,
+            // @ts-expect-error wrong automatic type narroing
             control,
             setValue,
             trigger,
@@ -176,8 +182,34 @@ export default function Step6({ loaderData }: Route.ComponentProps) {
               backgroundColor: theme.vars.palette["White"],
             })}
           >
+
+            <Box sx={{
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+            }}>
+              <Typography sx={{ textAlign: "center" }} variant="Reg_14" color="Black">{t("terms_start")}<Typography variant="Reg_14" color="Corp_1" component='a' href='../../public/client_marriator_front/file-sample_150kB.pdf'
+            target="_blank"
+            rel="noreferrer">{t("terms_personal")}</Typography>{t("terms_and")}<Typography sx={{ textAlign: "center" }} variant="Reg_14" color="Corp_1" component='a' href='../../public/client_marriator_front/file-sample_150kB.pdf'
+            target="_blank"
+            rel="noreferrer">{t("terms_security")}</Typography></Typography>
+              <Controller
+                name="isTermsAccepted"
+                control={control}
+                render={({ field }) => (
+                  <StyledCheckbox
+                    inputType="checkbox"
+                    {...field}
+                    validation="none"
+                    label={t("terms_button")}
+                    onImmediateChange={() => {}}
+                    />
+                  )}
+                />
+            </Box>
             <Button
               variant="contained"
+              disabled={watch("isTermsAccepted") === false}
               onClick={() => {
                 trigger();
                 handleSubmit(() => {
@@ -198,16 +230,6 @@ export default function Step6({ loaderData }: Route.ComponentProps) {
             >
               {t("finishButton")}
             </Button>
-
-        <Button
-          variant="outlined"
-          component='a'
-          href='../../public/client_marriator_front/file-sample_150kB.pdf'
-          target="_blank"
-          rel="noreferrer"
-        >
-          {t("termsButton")}
-        </Button>
           </Box>
         </form>
       </Box>
