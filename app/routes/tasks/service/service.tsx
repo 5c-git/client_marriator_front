@@ -232,8 +232,6 @@ export default function Service({ loaderData }: Route.ComponentProps) {
 
   const [editMode, setEditMode] = useState<boolean>(false);
 
-  console.log(loaderData);
-
   return (
     <>
       {navigation.state !== "idle" ? <Loader /> : null}

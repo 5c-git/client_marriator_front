@@ -390,9 +390,6 @@ export default function Client({ loaderData }: Route.ComponentProps) {
                 },
               );
             },
-            (errors) => {
-              console.log(errors);
-            },
           )}
         >
           <Box
@@ -910,7 +907,6 @@ export default function Client({ loaderData }: Route.ComponentProps) {
                 options={getRadioButtons(loaderData.client.organizations)}
                 {...field}
                 onChange={(evt) => {
-                  console.log(evt);
                   field.onChange(evt);
 
                   const selectedOrganization =

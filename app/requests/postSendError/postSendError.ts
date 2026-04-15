@@ -15,14 +15,15 @@ export const postSendError = async (accessToken: string, requestUrl: string, err
 
     formData.append("requestUrl", requestUrl);
     formData.append("requestResponse", errorMessage);
-    formData.append("requestStatus", 405);
-    formData.append("requestBody[bidId]", []);
-    formData.append("requestBody[count]", []);
+    formData.append("requestStatus", -1);
+    formData.append("requestBody[bidId]", [-1]);
+    formData.append("requestBody[count]", [-1]);
+    formData.append("anyData", -1);
 
     const request = await fetch(url, {
       method: "POST",
       headers: {
-        "Content-Type": "application/json",
+        // "Content-Type": "application/json",
         Authorization: `Bearer ${accessToken}`,
       },
       body: formData,

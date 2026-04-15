@@ -206,8 +206,7 @@ export async function clientAction({
   const accessToken = useStore.getState().accessToken;
 
   const isNew = searchParams.get("new");
-
-  console.log(isNew);
+  
   if (accessToken) {
     if (_action === "createService") {
       await postCreateOrderActivity(accessToken, fields.payload);

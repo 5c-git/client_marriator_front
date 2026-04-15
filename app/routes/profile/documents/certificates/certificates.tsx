@@ -189,7 +189,6 @@ export default function Certificates({ loaderData }: Route.ComponentProps) {
                   method: "POST",
                   encType: "application/json",
                 });
-                // console.log(values);
               })}
               style={{
                 display: "grid",

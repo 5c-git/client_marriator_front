@@ -64,9 +64,8 @@ export const ErrorBoundary = ({ error }: Route.ErrorBoundaryProps) => {
 
   //logging unxpected errors to Sentry
   useEffect(() => {
-    if ((error instanceof Error || error instanceof UnxpectedError) && navigator.onLine) {
-      console.log("sentry");
 
+    if((error instanceof Error || error instanceof UnxpectedError) && navigator.onLine) {
       (async () => {      
         if(access_token) {
           try {
@@ -75,10 +74,21 @@ export const ErrorBoundary = ({ error }: Route.ErrorBoundaryProps) => {
             console.log("failed to send exeption to the server");
           }
       }})()
+    }
+
+    if ((isRouteErrorResponse(error) && error.status !== 401) && navigator.onLine) {
+      (async () => {
+        if(access_token) {
+          try {
+            await postSendError(access_token, window.location.href, error.data as string);
+          } catch {
+            console.log("failed to send exeption to the server");
+          }
+      }})()
 
 
     }
-  }, [access_token,error]);
+  }, [access_token, error]);
 
   console.log(error);
 

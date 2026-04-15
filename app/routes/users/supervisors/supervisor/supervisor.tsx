@@ -1187,7 +1187,6 @@ export default function Supervisor({ loaderData }: Route.ComponentProps) {
                 options={getRadioButtons(loaderData.client.organizations)}
                 {...field}
                 onChange={(evt) => {
-                  console.log(evt);
                   field.onChange(evt);
 
                   const selectedOrganization =

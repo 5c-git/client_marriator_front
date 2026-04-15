@@ -299,8 +299,6 @@ export const generateValidationSchema = (
     }
   });
 
-  console.log(validationSchema.shape);
-
   return validationSchema;
 };
 
