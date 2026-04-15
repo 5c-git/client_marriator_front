@@ -1,5 +1,5 @@
 // import { renderToStaticMarkup } from "react-dom/server";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useEffectEvent } from "react";
 import {
   useSubmit,
   useNavigate,
@@ -13,14 +13,19 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm, Controller } from "react-hook-form";
 
-import i18next from "i18next";
 import { useTranslation } from "react-i18next";
 import { withLocale } from "~/shared/withLocale";
 
 //map
-import { YMap, LngLat, YMapMarker } from "ymaps3";
-import { loadMap, langMap, renderIcon } from "~/shared/ymap/ymap";
-import type { Coordinates } from "~/shared/ymap/ymap";
+import { YMap as YMapType, LngLat, YMapMarker as YMapMarkerType } from "ymaps3";
+import { renderIcon } from "~/shared/ymap/ymap";
+import {
+  YMap,
+  YMapMarker,
+  YMapListener,
+  YMapDefaultSchemeLayer,
+  YMapDefaultFeaturesLayer,
+} from "~/shared/ymap/map";
 //map
 
 import { Button } from "@mui/material";
@@ -44,7 +49,7 @@ type Option = {
   value: string;
   name: string;
   icon: string;
-  coordinates: Coordinates;
+  coordinates: LngLat;
   address: string;
   region: string;
   regionId: string;
@@ -52,12 +57,9 @@ type Option = {
 };
 
 export async function clientLoader({ params }: Route.ClientLoaderArgs) {
-  const language = i18next.language as "en" | "ru";
   const accessToken = useStore.getState().accessToken;
 
   if (accessToken) {
-    const ymaps = await loadMap(langMap[language]);
-
     const userData = await getModerationSingleClient(
       accessToken,
       Number(params.user),
@@ -105,7 +107,6 @@ export async function clientLoader({ params }: Route.ClientLoaderArgs) {
 
     return {
       userId: params.user,
-      ymaps,
       locations,
       regions,
       selectedLocations,
@@ -147,7 +148,7 @@ export default function SelectLocations({ loaderData }: Route.ComponentProps) {
   const [selectedLocations, setSelectedLocations] = useState(
     loaderData.locations,
   );
-  const [mapInstance, setMapInstance] = useState<YMap | null>(null);
+  const [mapInstance, setMapInstance] = useState<YMapType | null>(null);
 
   const { control, setValue, getValues, handleSubmit, reset, watch } = useForm<{
     searchbar: string;
@@ -169,34 +170,39 @@ export default function SelectLocations({ loaderData }: Route.ComponentProps) {
     mode: "onChange",
   });
 
+  const drawEmptyMap = useEffectEvent(() => {
+    const container = document.querySelector("#map") as HTMLElement;
+    const map = new YMap(container, {
+      location: { center: selectedLocations[0].coordinates, zoom: 12 },
+    });
+    map.addChild(new YMapDefaultSchemeLayer({}));
+    map.addChild(new YMapDefaultFeaturesLayer({}));
+    setMapInstance(map);
+    return map;
+  });
+
   // рисуем пустую карту
   useEffect(() => {
+
+    let map: YMapType | null = null;
+
     if (showMap) {
-      const { YMap, YMapDefaultSchemeLayer, YMapDefaultFeaturesLayer } =
-        loaderData.ymaps;
-
-      const container = document.querySelector("#map") as HTMLElement;
-
-      const map = new YMap(container, {
-        location: { center: selectedLocations[0].coordinates, zoom: 12 },
-      });
-
-      map.addChild(new YMapDefaultSchemeLayer({}));
-      map.addChild(new YMapDefaultFeaturesLayer({}));
-
-      setMapInstance(map);
+      map = drawEmptyMap();
     }
-  }, [showMap, loaderData.ymaps, selectedLocations]);
+
+    return () => {
+      map?.destroy();
+    };
+  }, [showMap]);
 
   // рисуем на карте маркеры, опираясь на данные(далее по коду работаем только с selectedLocations и этот эффект будет нам перерисовывать маркеры)
   useEffect(() => {
-    const { YMapMarker } = loaderData.ymaps;
 
-    const markers: YMapMarker[] = [];
+    const markers: YMapMarkerType[] = [];
 
     mapInstance?.children.forEach((child) => {
       if ("coordinates" in child) {
-        markers.push(child as YMapMarker);
+        markers.push(child as YMapMarkerType);
       }
     });
 
@@ -233,12 +239,10 @@ export default function SelectLocations({ loaderData }: Route.ComponentProps) {
       // markers.push(marker);
       mapInstance?.addChild(marker);
     });
-  }, [loaderData.ymaps, mapInstance, selectedLocations, getValues]);
+  }, [mapInstance, selectedLocations, getValues]);
 
   // обновляем слушатель событий
   useEffect(() => {
-    const { YMapListener, YMapMarker } = loaderData.ymaps;
-
     const mapListener = new YMapListener({
       layer: "any",
       onClick: (object) => {
@@ -292,7 +296,7 @@ export default function SelectLocations({ loaderData }: Route.ComponentProps) {
     if (mapInstance) {
       mapInstance.addChild(mapListener);
     }
-  }, [loaderData.ymaps, mapInstance, getValues, setValue]);
+  }, [mapInstance, getValues, setValue]);
 
   return (
     <>

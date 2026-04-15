@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useEffectEvent } from "react";
 import { useSubmit, useNavigate, useNavigation, redirect } from "react-router";
 import type { Route } from "./+types/location";
 
@@ -6,14 +6,19 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm, Controller } from "react-hook-form";
 
-import i18next from "i18next";
 import { useTranslation } from "react-i18next";
 import { withLocale } from "~/shared/withLocale";
 
 //map
-import { YMap, LngLat, YMapMarker } from "ymaps3";
-import { loadMap, langMap, renderIcon } from "~/shared/ymap/ymap";
-import type { Coordinates } from "~/shared/ymap/ymap";
+import { YMap as YMapType, LngLat, YMapMarker as YMapMarkerType } from "ymaps3";
+import { renderIcon } from "~/shared/ymap/ymap";
+import {
+  YMap,
+  YMapMarker,
+  YMapListener,
+  YMapDefaultSchemeLayer,
+  YMapDefaultFeaturesLayer,
+} from "~/shared/ymap/map";
 //map
 
 import { Button } from "@mui/material";
@@ -37,7 +42,7 @@ type Option = {
   value: string;
   name: string;
   icon: string;
-  coordinates: Coordinates;
+  coordinates: LngLat;
   address: string;
   region: string;
   regionId: string;
@@ -45,11 +50,9 @@ type Option = {
 };
 
 export async function clientLoader() {
-  const language = i18next.language as "en" | "ru";
   const accessToken = useStore.getState().accessToken;
 
   if (accessToken) {
-    const ymaps = await loadMap(langMap[language]);
 
     const userData = await getData(accessToken);
     const locationsData = await getPlace(accessToken);
@@ -89,7 +92,7 @@ export async function clientLoader() {
       selectedLocations.push(item.id.toString());
     });
 
-    return { ymaps, shops, regions, selectedLocations };
+    return { shops, regions, selectedLocations };
   } else {
     throw new Response("Токен авторизации не обнаружен!", { status: 401 });
   }
@@ -117,7 +120,7 @@ export default function Location({ loaderData }: Route.ComponentProps) {
 
   const [showMap, setShowMap] = useState<boolean>(false);
   const [selectedShops, setSelectedShops] = useState(loaderData.shops);
-  const [mapInstance, setMapInstance] = useState<YMap | null>(null);
+  const [mapInstance, setMapInstance] = useState<YMapType | null>(null);
 
   const { control, setValue, getValues, handleSubmit, reset, watch } = useForm<{
     searchbar: string;
@@ -139,34 +142,38 @@ export default function Location({ loaderData }: Route.ComponentProps) {
     mode: "onChange",
   });
 
+  const drawEmptyMap = useEffectEvent(() => {
+    const container = document.querySelector("#map") as HTMLElement;
+    const map = new YMap(container, {
+      location: { center: [37.588144, 55.733842], zoom: 12 },
+    });
+    map.addChild(new YMapDefaultSchemeLayer({}));
+    map.addChild(new YMapDefaultFeaturesLayer({}));
+    setMapInstance(map);
+    return map;
+  });
+
   // рисуем пустую карту
   useEffect(() => {
+
+    let map: YMapType | null = null;
+
     if (showMap) {
-      const { YMap, YMapDefaultSchemeLayer, YMapDefaultFeaturesLayer } =
-        loaderData.ymaps;
-
-      const container = document.querySelector("#map") as HTMLElement;
-
-      const map = new YMap(container, {
-        location: { center: [37.588144, 55.733842], zoom: 12 },
-      });
-
-      map.addChild(new YMapDefaultSchemeLayer({}));
-      map.addChild(new YMapDefaultFeaturesLayer({}));
-
-      setMapInstance(map);
+      map = drawEmptyMap();
     }
-  }, [showMap, loaderData.ymaps]);
+
+    return () => {
+      map?.destroy();
+    };
+  }, [showMap]);
 
   // рисуем на карте маркеры, опираясь на данные(далее по коду работаем толлько с selectedShops и этот эффект будет нам перерисовывать маркеры)
   useEffect(() => {
-    const { YMapMarker } = loaderData.ymaps;
-
-    const markers: YMapMarker[] = [];
+    const markers: YMapMarkerType[] = [];
 
     mapInstance?.children.forEach((child) => {
       if ("coordinates" in child) {
-        markers.push(child as YMapMarker);
+        markers.push(child as YMapMarkerType);
       }
     });
 
@@ -206,11 +213,10 @@ export default function Location({ loaderData }: Route.ComponentProps) {
     if (markers.length > 0) {
       mapInstance?.setLocation({ center: markers[0].coordinates });
     }
-  }, [loaderData.ymaps, mapInstance, selectedShops, getValues]);
+  }, [mapInstance, selectedShops, getValues]);
 
   // обновляем слушатель событий
   useEffect(() => {
-    const { YMapListener, YMapMarker } = loaderData.ymaps;
 
     const mapListener = new YMapListener({
       layer: "any",
@@ -263,7 +269,7 @@ export default function Location({ loaderData }: Route.ComponentProps) {
     if (mapInstance) {
       mapInstance.addChild(mapListener);
     }
-  }, [loaderData.ymaps, mapInstance, getValues, setValue]);
+  }, [mapInstance, getValues, setValue]);
 
   return (
     <>

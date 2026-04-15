@@ -1,8 +1,6 @@
 import {
   ComponentPropsWithoutRef,
-  useState,
-  useEffect,
-  useEffectEvent,
+  useState
 } from "react";
 
 import { useTranslation } from "react-i18next";
@@ -28,7 +26,7 @@ type RadioDrawerProps = {
 export function RadioSearchableDrawer(props: RadioDrawerProps) {
   const { t } = useTranslation("RadioSearchableDrawer");
 
-  const [selectedItems, setSelectedItems] = useState<typeof props.items>([]);
+  const [selectedItems, setSelectedItems] = useState<typeof props.items>(props.items);
 
   const {
     control,
@@ -51,13 +49,6 @@ export function RadioSearchableDrawer(props: RadioDrawerProps) {
       }),
     ),
   });
-
-  const onInit = useEffectEvent((items: typeof props.items) => {
-    setSelectedItems(items);
-  });
-  useEffect(() => {
-    onInit(props.items);
-  }, [props.items]);
 
   return (
     <SwipeableDrawer

@@ -4,6 +4,7 @@ export const {
   YMap,
   YMapMarker,
   YMapListener,
+  YMapFeature,
   YMapDefaultSchemeLayer,
   YMapDefaultFeaturesLayer,
   YMapFeatureDataSource,

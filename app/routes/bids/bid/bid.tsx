@@ -1,4 +1,4 @@
-import { useState, useEffect, useEffectEvent } from "react";
+import { useState } from "react";
 import { useOutletContext, redirect, useSubmit } from "react-router";
 import type { Route } from "./+types/bid";
 import type { GetBidSuccess } from "~/requests/_personal/getBid/getBidSuccess.schema";
@@ -121,13 +121,11 @@ export default function Bid({ loaderData }: Route.ComponentProps) {
     editMode: boolean;
   }>();
 
-  const [mobileEntity, setMobileEntity] = useState<
+  const [mobileEntity] = useState<
     BidMobileViewInterface["entity"] | null
-  >();
-
-  const onInit = useEffectEvent((data: typeof loaderData) => {
-    if (data.mode === "mobile") {
-      const entity: BidMobileViewInterface["entity"] = {
+  >(() => {
+    if (loaderData.mode === "mobile") {
+       return  {
         logo: bidMobileData.viewActivity.logo,
         status: bidMobileData.status,
         place: {
@@ -215,12 +213,11 @@ export default function Bid({ loaderData }: Route.ComponentProps) {
         currency: "₽",
       };
 
-      setMobileEntity(entity);
+
+    } else {
+      return null
     }
   });
-  useEffect(() => {
-    onInit(loaderData);
-  }, [loaderData]);
 
   return loaderData.mode === "mobile" ? (
     <>
