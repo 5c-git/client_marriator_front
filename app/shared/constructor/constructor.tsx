@@ -286,10 +286,11 @@ export const generateValidationSchema = (
           }
         })
       }
-    } else if (item.pregValue && item.pregText) {
+    } else if (item.pregValue && item.pregText) {      
       validationSchema = z.object({
         ...validationSchema.shape,
-        [item.name]: z.string().regex(new RegExp(item.pregValue), {error: item.pregText}),
+        [item.name]: z.string().regex(item.pregValue, {error: item.pregText}),
+        // [item.name]: z.string().regex(/^[а-яА-ЯёЁ-]{1,140}$/, {error: item.pregText}),
       });
     } else {
       validationSchema = z.object({
@@ -298,6 +299,7 @@ export const generateValidationSchema = (
       });
     }
   });
+
 
   return validationSchema;
 };

@@ -58,7 +58,7 @@ import { PointerIcon } from "~/shared/icons/PointerIcon";
 // import CloseIcon from "@mui/icons-material/Close";
 import { CalendarIcon } from "~/shared/icons/CalendarIcon";
 
-const requestSearchFormSchema = (startDate: Date, endEnd: Date) =>
+const requestSearchFormSchema = (defaultStartDate: Date, defaultEndDate: Date) =>
   z
     .object({
       place: z.number({ error: t("text", { ns: "constructorFields" }) }),
@@ -70,12 +70,12 @@ const requestSearchFormSchema = (startDate: Date, endEnd: Date) =>
         .min(1),
       dateStart: z
         .date({ error: t("text", { ns: "constructorFields" }) })
-        .min(startDate, {
+        .min(defaultStartDate, {
           error: t("newDateBeforeStart", { ns: "constructorFields" }),
         }),
       dateEnd: z
         .date({ error: t("text", { ns: "constructorFields" }) })
-        .max(endEnd, {
+        .max(defaultEndDate, {
           error: t("newDateAfterFinish", { ns: "constructorFields" }),
         }),
       needDays: z.boolean(),
@@ -129,8 +129,8 @@ const requestSearchFormSchema = (startDate: Date, endEnd: Date) =>
       const dateStart = values.dateStart;
       const dateEnd = values.dateEnd;
 
+      //проверяем что дата конца не раньше даты старта
       const result = compareAsc(dateStart, dateEnd);
-
       if (result > 0) {
         ctx.addIssue({
           code: "custom",
@@ -139,6 +139,37 @@ const requestSearchFormSchema = (startDate: Date, endEnd: Date) =>
           path: ["dateEnd"],
         });
       }
+
+      //проверяем что дата старта и дата конца не выходят за заданные временные рамки
+      if(isAfter(dateEnd, set(dateEnd, {
+        hours: defaultEndDate.getHours(),
+        minutes: defaultEndDate.getMinutes(),
+      }))) {
+        ctx.addIssue({
+          code: "custom",
+          message: t("service.laterThanDefaultError", {
+            ns: "ServiceMobileView",
+          }),
+          input: values.dateEnd,
+          path: ["dateEnd"],
+        });
+      }
+
+      if(isBefore(dateStart, set(dateStart, {
+        hours: defaultStartDate.getHours(),
+        minutes: defaultStartDate.getMinutes(),
+      }))) {
+        ctx.addIssue({
+          code: "custom",
+          message: t("service.earlierThanDefaultError", {
+            ns: "ServiceMobileView",
+          }),
+          input: values.dateStart,
+          path: ["dateStart"],
+        });
+      }
+
+
     });
 
 type submitValues = z.output<ReturnType<typeof requestSearchFormSchema>>;

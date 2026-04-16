@@ -144,8 +144,8 @@ const createServiceFormSchema = (
       const dateStart = values.dateStart;
       const dateEnd = values.dateEnd;
 
+      //проверяем что дата конца не раньше даты старта
       const result = compareAsc(dateStart, dateEnd);
-
       if (result > 0) {
         ctx.addIssue({
           code: "custom",
@@ -155,7 +155,37 @@ const createServiceFormSchema = (
         });
       }
 
-      //проверяем что дни не выходят за заданные временные рамки
+      //проверяем что дата старта и дата конца не выходят за заданные временные рамки
+      if(isAfter(dateEnd, set(dateEnd, {
+        hours: defaultEndDate.getHours(),
+        minutes: defaultEndDate.getMinutes(),
+      }))) {
+        ctx.addIssue({
+          code: "custom",
+          message: t("service.laterThanDefaultError", {
+            ns: "ServiceMobileView",
+          }),
+          input: values.dateEnd,
+          path: ["dateEnd"],
+        });
+      }
+
+      if(isBefore(dateStart, set(dateStart, {
+        hours: defaultStartDate.getHours(),
+        minutes: defaultStartDate.getMinutes(),
+      }))) {
+        ctx.addIssue({
+          code: "custom",
+          message: t("service.earlierThanDefaultError", {
+            ns: "ServiceMobileView",
+          }),
+          input: values.dateStart,
+          path: ["dateStart"],
+        });
+      }
+
+
+      //проверяем что детальные дни не выходят за заданные временные рамки
       // первый и последний дни проверяем по указанному пользователем времени
       // все внутренние дни проверяем по заданному промежутку с сервера
       const days = values.days;
@@ -163,6 +193,48 @@ const createServiceFormSchema = (
       days.forEach((day, index) => {
         const isStartDay = isSameDay(dateStart, day.timeStart);
         const isEndDay = isSameDay(dateEnd, day.timeStart);
+
+
+
+        if (
+          isBefore(
+            day.timeStart,
+            set(day.timeStart, {
+              hours: defaultStartDate.getHours(),
+              minutes: defaultStartDate.getMinutes(),
+            }),
+          )
+        ) {
+          ctx.addIssue({
+            code: "custom",
+            message: t("service.earlierThanDefaultError", {
+              ns: "ServiceMobileView",
+            }),
+            input: values.days[index],
+            path: [`days.${index}.timeStart`],
+          });
+        } if (
+          isAfter(
+            day.timeEnd,
+            set(day.timeEnd, {
+              hours: defaultEndDate.getHours(),
+              minutes: defaultEndDate.getMinutes(),
+            }),
+          )
+        ) {
+          ctx.addIssue({
+            code: "custom",
+            message: t("service.laterThanDefaultError", {
+              ns: "ServiceMobileView",
+            }),
+            input: values.days[index],
+            path: [`days.${index}.timeEnd`],
+          });
+        }
+
+
+
+
 
         if (isStartDay) {
           if (isBefore(day.timeStart, dateStart)) {
@@ -205,7 +277,6 @@ const createServiceFormSchema = (
               path: [`days.${index}.timeEnd`],
             });
           }
-
           if (
             isBefore(
               day.timeStart,
@@ -224,41 +295,43 @@ const createServiceFormSchema = (
               path: [`days.${index}.timeStart`],
             });
           }
-        } else if (
-          isBefore(
-            day.timeStart,
-            set(day.timeStart, {
-              hours: defaultStartDate.getHours(),
-              minutes: defaultStartDate.getMinutes(),
-            }),
-          )
-        ) {
-          ctx.addIssue({
-            code: "custom",
-            message: t("service.earlierThanDefaultError", {
-              ns: "ServiceMobileView",
-            }),
-            input: values.days[index],
-            path: [`days.${index}.timeStart`],
-          });
-        } else if (
-          isAfter(
-            day.timeEnd,
-            set(day.timeEnd, {
-              hours: defaultEndDate.getHours(),
-              minutes: defaultEndDate.getMinutes(),
-            }),
-          )
-        ) {
-          ctx.addIssue({
-            code: "custom",
-            message: t("service.laterThanDefaultError", {
-              ns: "ServiceMobileView",
-            }),
-            input: values.days[index],
-            path: [`days.${index}.timeEnd`],
-          });
-        }
+        } else {
+          // if (
+          //   isBefore(
+          //     day.timeStart,
+          //     set(day.timeStart, {
+          //       hours: defaultStartDate.getHours(),
+          //       minutes: defaultStartDate.getMinutes(),
+          //     }),
+          //   )
+          // ) {
+          //   ctx.addIssue({
+          //     code: "custom",
+          //     message: t("service.earlierThanDefaultError", {
+          //       ns: "ServiceMobileView",
+          //     }),
+          //     input: values.days[index],
+          //     path: [`days.${index}.timeStart`],
+          //   });
+          // } if (
+          //   isAfter(
+          //     day.timeEnd,
+          //     set(day.timeEnd, {
+          //       hours: defaultEndDate.getHours(),
+          //       minutes: defaultEndDate.getMinutes(),
+          //     }),
+          //   )
+          // ) {
+          //   ctx.addIssue({
+          //     code: "custom",
+          //     message: t("service.laterThanDefaultError", {
+          //       ns: "ServiceMobileView",
+          //     }),
+          //     input: values.days[index],
+          //     path: [`days.${index}.timeEnd`],
+          //   });
+          // }
+        } 
       });
     });
 

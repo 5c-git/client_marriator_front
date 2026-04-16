@@ -291,10 +291,10 @@ export default function Step4({ loaderData }: Route.ComponentProps) {
             setValue,
             trigger,
             () => {
-              // fetcher.submit(JSON.stringify(getValues()), {
-              //   method: "POST",
-              //   encType: "application/json",
-              // });
+              fetcher.submit(JSON.stringify(getValues()), {
+                method: "POST",
+                encType: "application/json",
+              });
             },
             loaderData.accessToken,
           )}

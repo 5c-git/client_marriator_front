@@ -139,6 +139,7 @@ const createBidFormSchema = (
       const dateStart = values.dateStart;
       const dateEnd = values.dateEnd;
 
+      //проверяем что дата конца не раньше даты старта
       const result = compareAsc(dateStart, dateEnd);
       if (result > 0) {
         ctx.addIssue({
@@ -149,7 +150,36 @@ const createBidFormSchema = (
         });
       }
 
-      //проверяем что дни не выходят за заданные временные рамки
+      //проверяем что дата старта и дата конца не выходят за заданные временные рамки
+      if(isAfter(dateEnd, set(dateEnd, {
+        hours: defaultEndDate.getHours(),
+        minutes: defaultEndDate.getMinutes(),
+      }))) {
+        ctx.addIssue({
+          code: "custom",
+          message: t("service.laterThanDefaultError", {
+            ns: "ServiceMobileView",
+          }),
+          input: values.dateEnd,
+          path: ["dateEnd"],
+        });
+      }
+
+      if(isBefore(dateStart, set(dateStart, {
+        hours: defaultStartDate.getHours(),
+        minutes: defaultStartDate.getMinutes(),
+      }))) {
+        ctx.addIssue({
+          code: "custom",
+          message: t("service.earlierThanDefaultError", {
+            ns: "ServiceMobileView",
+          }),
+          input: values.dateStart,
+          path: ["dateStart"],
+        });
+      }
+
+      //проверяем что детальные дни не выходят за заданные временные рамки
       // первый и последний дни проверяем по указанному пользователем времени
       // все внутренние дни проверяем по заданному промежутку с сервера
       const days = values.days;
