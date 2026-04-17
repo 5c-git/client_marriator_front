@@ -286,11 +286,13 @@ export const generateValidationSchema = (
           }
         })
       }
-    } else if (item.pregValue && item.pregText) {      
+    } else if (item.pregValue && item.pregText) {     
+
+      const regex = item.pregValue.replace(/[\/\\]/g, '');
+      
       validationSchema = z.object({
         ...validationSchema.shape,
-        [item.name]: z.string().regex(item.pregValue, {error: item.pregText}),
-        // [item.name]: z.string().regex(/^[а-яА-ЯёЁ-]{1,140}$/, {error: item.pregText}),
+        [item.name]: z.string().regex(new RegExp(regex), {error: item.pregText}),
       });
     } else {
       validationSchema = z.object({
