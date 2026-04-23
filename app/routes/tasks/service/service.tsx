@@ -73,10 +73,10 @@ export async function clientLoader({
       const activities: MobileModeData["activities"] = [];
       const locations: MobileModeData["locations"] = [];
 
+      const taskData = await getTask(accessToken, params.taskId);
+
       if (params.serviceId) {
         setting_isNew = false;
-
-        const taskData = await getTask(accessToken, params.taskId);
 
         const service = taskData.data.orderActivities.find(
           (item) => item.id.toString() === params.serviceId,
@@ -181,9 +181,11 @@ export async function clientLoader({
         setting_canEdit: setting_canEdit,
         defaultTimeRange: {
           start: new Date(
-            `2026-03-12T${intervalDayStart.data.value.startsWith("0") ? intervalDayStart.data.value : `0${intervalDayStart.data.value}`}:00`,
+            `2026-03-12T${taskData.data.project.timeStart ? taskData.data.project.timeStart.startsWith("0") ? taskData.data.project.timeStart : `0${taskData.data.project.timeStart}` : intervalDayStart.data.value.startsWith("0") ? intervalDayStart.data.value : `0${intervalDayStart.data.value}`}:00`,
           ),
-          end: new Date(`2026-03-12T${intervalDayEnd.data.value}:00`),
+          end: new Date(
+            `2026-03-12T${taskData.data.project.timeEnd ? taskData.data.project.timeEnd : intervalDayEnd.data.value}:00`,
+          )
         },
       } as MobileModeData;
     }

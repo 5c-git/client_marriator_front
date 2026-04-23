@@ -192,6 +192,8 @@ export const getBidSuccessSchema = z.object({
       name: z.string(),
       dateStart: z.string(),
       dateEnd: z.string(),
+      timeStart: z.union([z.null(), z.string()]),
+      timeEnd: z.union([z.null(), z.string()]),
       brand: z.array(
         z.object({
           id: z.number(),

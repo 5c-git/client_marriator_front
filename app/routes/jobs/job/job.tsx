@@ -228,9 +228,11 @@ export async function clientLoader({ params }: Route.ClientLoaderArgs) {
         locations,
         defaultTimeRange: {
           start: new Date(
-            `2026-03-12T${intervalDayStart.data.value.startsWith("0") ? intervalDayStart.data.value : `0${intervalDayStart.data.value}`}:00`,
+            `2026-03-12T${missionData.data.project.timeStart ? missionData.data.project.timeStart.startsWith("0") ? missionData.data.project.timeStart : `0${missionData.data.project.timeStart}` : intervalDayStart.data.value.startsWith("0") ? intervalDayStart.data.value : `0${intervalDayStart.data.value}`}:00`,
           ),
-          end: new Date(`2026-03-12T${intervalDayEnd.data.value}:00`),
+          end: new Date(
+            `2026-03-12T${missionData.data.project.timeEnd ? missionData.data.project.timeEnd : intervalDayEnd.data.value}:00`,
+          )
         },
       } as MobileModeData;
     }

@@ -211,6 +211,22 @@ export const getJobSuccessSchema = z.object({
         ),
       }),
     ),
+    project: z.object({
+      id: z.number(),
+      name: z.string(),
+      dateStart: z.string(),
+      dateEnd: z.string(),
+      timeStart: z.union([z.null(), z.string()]),
+      timeEnd: z.union([z.null(), z.string()]),
+      brand: z.array(
+        z.object({
+          id: z.number(),
+          name: z.string(),
+          logo: z.string(),
+          description: z.string(),
+        }),
+      ),
+    }),
   }),
 });
 

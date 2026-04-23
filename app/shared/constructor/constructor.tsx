@@ -288,8 +288,12 @@ export const generateValidationSchema = (
       }
     } else if (item.pregValue && item.pregText) {     
 
-      const regex = item.pregValue.replace(/[\/\\]/g, '');
-      
+      // const regex = item.pregValue.replace(/[\/\\]/g, '');
+      const bytes = Uint8Array.fromBase64(item.pregValue);
+      const decoded = new TextDecoder().decode(bytes); 
+
+      const regex = decoded.slice(1, -1);
+
       validationSchema = z.object({
         ...validationSchema.shape,
         [item.name]: z.string().regex(new RegExp(regex), {error: item.pregText}),
