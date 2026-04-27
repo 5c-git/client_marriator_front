@@ -2,5 +2,7 @@
   "error": "Error occurred!",
   "refresh": "Go back",
   "offlineTitle": "No internet connection",
-  "refreshButton": "Refresh"
+  "refreshButton": "Refresh",
+  "offlineTitle": "No internet connection",
+  "offlineText": "Waiting for connection..."
 }

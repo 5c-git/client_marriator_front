@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Outlet, useNavigate, isRouteErrorResponse } from "react-router";
 import type { Route } from "./+types/rootErrorBoundry";
 import { useTranslation } from "react-i18next";
@@ -8,7 +8,8 @@ import { postRefreshToken } from "~/requests/postRefreshToken/postRefreshToken";
 
 import { useStore } from "~/store/store";
 
-import { Button, Typography } from "@mui/material";
+import { Button, Typography, Dialog, DialogTitle, DialogContent, LinearProgress } from "@mui/material";
+
 import Box from "@mui/material/Box";
 import logoTurnOff from "./logo-turnoff.svg";
 import { UnxpectedError } from "~/shared/unexpectedError/unexpectedError";
@@ -16,11 +17,23 @@ import { postSendError } from "~/requests/postSendError/postSendError";
 
 // 401 - WE THROW THIS STATUS CODE IF USER IS UNAUTHORIZED
 
+
+
+// function authMiddleware() {
+//   console.log(window.innerWidth);
+// }
+
+// export const clientMiddleware: Route.ClientMiddlewareFunction[] = [
+//   authMiddleware,
+// ];
+
 export const ErrorBoundary = ({ error }: Route.ErrorBoundaryProps) => {
   const { t } = useTranslation("rootErrorBoundry");
   const navigate = useNavigate();
   const access_token = useStore.getState().accessToken;
   const refresh_token = useStore.getState().refreshToken;
+
+
 
   // const userPhone = useStore.getState().userPhone;
 
@@ -95,7 +108,7 @@ export const ErrorBoundary = ({ error }: Route.ErrorBoundaryProps) => {
   return (
     <>
       {/* showing this screen only if user is offline */}
-      {!navigator.onLine ? <Box
+      {/* {!navigator.onLine ? <Box
         sx={{
           paddingRight: "16px",
           paddingLeft: "16px",
@@ -124,7 +137,7 @@ export const ErrorBoundary = ({ error }: Route.ErrorBoundaryProps) => {
         >
           {t("refreshButton")}
         </Button>
-      </Box> : null}
+      </Box> : null} */}
 
       {/* showing this screen only if user is authorized and we are not offline */}
       {isRouteErrorResponse(error) &&
@@ -266,5 +279,38 @@ export const ErrorBoundary = ({ error }: Route.ErrorBoundaryProps) => {
 };
 
 export default function RootErrorBoundry() {
-  return <Outlet />;
+  const { t } = useTranslation("rootErrorBoundry");
+  const [isOnline, setIsOnline] = useState<boolean>(true);
+
+  useEffect(() => {
+    const handleOnline = () => {
+      console.log("[network] online"); // временный лог для отладки
+      setIsOnline(true);
+    };
+    const handleOffline = () => {
+      console.log("[network] offline"); // временный лог для отладки
+      setIsOnline(false);
+    };
+    window.addEventListener("online", handleOnline);
+    window.addEventListener("offline", handleOffline);
+
+    return () => {
+      window.removeEventListener("online", handleOnline);
+      window.removeEventListener("offline", handleOffline);
+    };
+  }, []);
+
+  return <>
+          <Dialog open={!isOnline} onClose={() => {}}>
+            <DialogTitle sx={{ textAlign: "center" }}>{t("offlineTitle")}</DialogTitle>
+            <DialogContent sx={{ textAlign: "center", padding: 0 }}>{t("offlineText")}</DialogContent>
+            <Box sx={{
+              padding: "16px",
+            }}>
+              <LinearProgress color="corp" />
+            </Box>
+            
+            </Dialog>
+          <Outlet />
+        </>;
 }
