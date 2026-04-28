@@ -48,6 +48,8 @@ import {
 import { statusCodeMap } from "~/shared/specialistStatus";
 
 const createJobMobileFormSchema = (
+  startDate: Date,
+  endDate: Date,
   defaultStartDate: Date,
   defaultEndDate: Date,
 ) =>
@@ -169,12 +171,66 @@ const createJobMobileFormSchema = (
         const isStartDay = isSameDay(dateStart, day.timeStart);
         const isEndDay = isSameDay(dateEnd, day.timeStart);
 
+
+        //проверяем что дата конца не раньше даты старта
+      const result = compareAsc(day.timeStart, day.timeEnd);
+      if (result > 0) {
+        ctx.addIssue({
+          code: "custom",
+          message: t("moreThanEndDate", { ns: "constructorFields" }),
+          input: values.days[index],
+          path: [`days.${index}.timeStart`],
+        });
+        ctx.addIssue({
+          code: "custom",
+          message: t("lessThanStartDate", { ns: "constructorFields" }),
+          input: values.days[index],
+          path: [`days.${index}.timeEnd`],
+        });
+      }
+
+        if (
+          isBefore(
+            day.timeStart,
+            set(day.timeStart, {
+              hours: defaultStartDate.getHours(),
+              minutes: defaultStartDate.getMinutes(),
+            }),
+          )
+        ) {
+          ctx.addIssue({
+            code: "custom",
+            message: t("earlierThanDefaultError", {
+              ns: "BidMobileView",
+            }),
+            input: values.days[index],
+            path: [`days.${index}.timeStart`],
+          });
+        } else if (
+          isAfter(
+            day.timeEnd,
+            set(day.timeEnd, {
+              hours: defaultEndDate.getHours(),
+              minutes: defaultEndDate.getMinutes(),
+            }),
+          )
+        ) {
+          ctx.addIssue({
+            code: "custom",
+            message: t("laterThanDefaultError", {
+              ns: "BidMobileView",
+            }),
+            input: values.days[index],
+            path: [`days.${index}.timeEnd`],
+          });
+        }
+
         if (isStartDay) {
-          if (isBefore(day.timeStart, dateStart)) {
+          if (isBefore(day.timeStart, startDate)) {
             ctx.addIssue({
               code: "custom",
-              message: t("service.earlierThanDefaultError", {
-                ns: "ServiceMobileView",
+              message: t("earlierThanDefaultError", {
+                ns: "BidMobileView",
               }),
               input: values.days[index],
               path: [`days.${index}.timeStart`],
@@ -192,8 +248,8 @@ const createJobMobileFormSchema = (
           ) {
             ctx.addIssue({
               code: "custom",
-              message: t("service.laterThanDefaultError", {
-                ns: "ServiceMobileView",
+              message: t("laterThanDefaultError", {
+                ns: "BidMobileView",
               }),
               input: values.days[index],
               path: [`days.${index}.timeEnd`],
@@ -203,8 +259,8 @@ const createJobMobileFormSchema = (
           if (isAfter(day.timeEnd, dateEnd)) {
             ctx.addIssue({
               code: "custom",
-              message: t("service.laterThanDefaultError", {
-                ns: "ServiceMobileView",
+              message: t("laterThanDefaultError", {
+                ns: "BidMobileView",
               }),
               input: values.days[index],
               path: [`days.${index}.timeEnd`],
@@ -222,48 +278,14 @@ const createJobMobileFormSchema = (
           ) {
             ctx.addIssue({
               code: "custom",
-              message: t("service.earlierThanDefaultError", {
-                ns: "ServiceMobileView",
+              message: t("earlierThanDefaultError", {
+                ns: "BidMobileView",
               }),
               input: values.days[index],
               path: [`days.${index}.timeStart`],
             });
           }
-        } else if (
-          isBefore(
-            day.timeStart,
-            set(day.timeStart, {
-              hours: defaultStartDate.getHours(),
-              minutes: defaultStartDate.getMinutes(),
-            }),
-          )
-        ) {
-          ctx.addIssue({
-            code: "custom",
-            message: t("service.earlierThanDefaultError", {
-              ns: "ServiceMobileView",
-            }),
-            input: values.days[index],
-            path: [`days.${index}.timeStart`],
-          });
-        } else if (
-          isAfter(
-            day.timeEnd,
-            set(day.timeEnd, {
-              hours: defaultEndDate.getHours(),
-              minutes: defaultEndDate.getMinutes(),
-            }),
-          )
-        ) {
-          ctx.addIssue({
-            code: "custom",
-            message: t("service.laterThanDefaultError", {
-              ns: "ServiceMobileView",
-            }),
-            input: values.days[index],
-            path: [`days.${index}.timeEnd`],
-          });
-        }
+        } 
       });
     });
 
@@ -277,12 +299,14 @@ export function JobMobileFormView({
   submitAction,
   formID,
   ref,
+  defaultTimeRange,
 }: {
   entity: JobMobileViewInterface["entity"];
   locations: JobMobileViewInterface["locations"];
   submitAction: (values: submitValues) => void;
   formID: string;
   ref?: Ref<HTMLFormElement>;
+  defaultTimeRange: JobMobileViewInterface["defaultTimeRange"];
 }) {
   const { t } = useTranslation("JobMobileView");
   const [dayIndex, setDayIndex] = useState<number>(-1);
@@ -330,7 +354,11 @@ export function JobMobileFormView({
         return days;
       })(),
     },
-    resolver: zodResolver(createJobMobileFormSchema(entity.dateStart, entity.dateEnd)),
+    resolver: zodResolver(createJobMobileFormSchema(
+      entity.dateStart,
+      entity.dateEnd,
+      defaultTimeRange.start,
+      defaultTimeRange.end)),
   });
 
   const { fields, remove, prepend, insert, append } = useFieldArray({

@@ -196,6 +196,23 @@ const createServiceFormSchema = (
 
 
 
+        //проверяем что дата конца не раньше даты старта
+      const result = compareAsc(day.timeStart, day.timeEnd);
+      if (result > 0) {
+        ctx.addIssue({
+          code: "custom",
+          message: t("moreThanEndDate", { ns: "constructorFields" }),
+          input: values.days[index],
+          path: [`days.${index}.timeStart`],
+        });
+        ctx.addIssue({
+          code: "custom",
+          message: t("lessThanStartDate", { ns: "constructorFields" }),
+          input: values.days[index],
+          path: [`days.${index}.timeEnd`],
+        });
+      }
+
         if (
           isBefore(
             day.timeStart,
@@ -231,10 +248,6 @@ const createServiceFormSchema = (
             path: [`days.${index}.timeEnd`],
           });
         }
-
-
-
-
 
         if (isStartDay) {
           if (isBefore(day.timeStart, dateStart)) {
@@ -295,42 +308,6 @@ const createServiceFormSchema = (
               path: [`days.${index}.timeStart`],
             });
           }
-        } else {
-          // if (
-          //   isBefore(
-          //     day.timeStart,
-          //     set(day.timeStart, {
-          //       hours: defaultStartDate.getHours(),
-          //       minutes: defaultStartDate.getMinutes(),
-          //     }),
-          //   )
-          // ) {
-          //   ctx.addIssue({
-          //     code: "custom",
-          //     message: t("service.earlierThanDefaultError", {
-          //       ns: "ServiceMobileView",
-          //     }),
-          //     input: values.days[index],
-          //     path: [`days.${index}.timeStart`],
-          //   });
-          // } if (
-          //   isAfter(
-          //     day.timeEnd,
-          //     set(day.timeEnd, {
-          //       hours: defaultEndDate.getHours(),
-          //       minutes: defaultEndDate.getMinutes(),
-          //     }),
-          //   )
-          // ) {
-          //   ctx.addIssue({
-          //     code: "custom",
-          //     message: t("service.laterThanDefaultError", {
-          //       ns: "ServiceMobileView",
-          //     }),
-          //     input: values.days[index],
-          //     path: [`days.${index}.timeEnd`],
-          //   });
-          // }
         } 
       });
     });

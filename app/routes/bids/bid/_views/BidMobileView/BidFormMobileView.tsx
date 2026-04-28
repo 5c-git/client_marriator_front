@@ -188,6 +188,60 @@ const createBidFormSchema = (
         const isStartDay = isSameDay(dateStart, day.timeStart);
         const isEndDay = isSameDay(dateEnd, day.timeStart);
 
+
+        //проверяем что дата конца не раньше даты старта
+      const result = compareAsc(day.timeStart, day.timeEnd);
+      if (result > 0) {
+        ctx.addIssue({
+          code: "custom",
+          message: t("moreThanEndDate", { ns: "constructorFields" }),
+          input: values.days[index],
+          path: [`days.${index}.timeStart`],
+        });
+        ctx.addIssue({
+          code: "custom",
+          message: t("lessThanStartDate", { ns: "constructorFields" }),
+          input: values.days[index],
+          path: [`days.${index}.timeEnd`],
+        });
+      }
+
+        if (
+          isBefore(
+            day.timeStart,
+            set(day.timeStart, {
+              hours: defaultStartDate.getHours(),
+              minutes: defaultStartDate.getMinutes(),
+            }),
+          )
+        ) {
+          ctx.addIssue({
+            code: "custom",
+            message: t("earlierThanDefaultError", {
+              ns: "BidMobileView",
+            }),
+            input: values.days[index],
+            path: [`days.${index}.timeStart`],
+          });
+        } else if (
+          isAfter(
+            day.timeEnd,
+            set(day.timeEnd, {
+              hours: defaultEndDate.getHours(),
+              minutes: defaultEndDate.getMinutes(),
+            }),
+          )
+        ) {
+          ctx.addIssue({
+            code: "custom",
+            message: t("laterThanDefaultError", {
+              ns: "BidMobileView",
+            }),
+            input: values.days[index],
+            path: [`days.${index}.timeEnd`],
+          });
+        }
+
         if (isStartDay) {
           if (isBefore(day.timeStart, startDate)) {
             ctx.addIssue({
@@ -248,41 +302,7 @@ const createBidFormSchema = (
               path: [`days.${index}.timeStart`],
             });
           }
-        } else if (
-          isBefore(
-            day.timeStart,
-            set(day.timeStart, {
-              hours: defaultStartDate.getHours(),
-              minutes: defaultStartDate.getMinutes(),
-            }),
-          )
-        ) {
-          ctx.addIssue({
-            code: "custom",
-            message: t("earlierThanDefaultError", {
-              ns: "BidMobileView",
-            }),
-            input: values.days[index],
-            path: [`days.${index}.timeStart`],
-          });
-        } else if (
-          isAfter(
-            day.timeEnd,
-            set(day.timeEnd, {
-              hours: defaultEndDate.getHours(),
-              minutes: defaultEndDate.getMinutes(),
-            }),
-          )
-        ) {
-          ctx.addIssue({
-            code: "custom",
-            message: t("laterThanDefaultError", {
-              ns: "BidMobileView",
-            }),
-            input: values.days[index],
-            path: [`days.${index}.timeEnd`],
-          });
-        }
+        } 
       });
     });
 
@@ -831,9 +851,12 @@ export function BidFormMobileView(props: BidFormMobileViewInterface) {
                     startIcon={<CalendarIcon />}
                     onClick={() => {
                       prepend({
-                        timeStart: props.entity.dateStart,
+                        timeStart: set(props.entity.dateStart, {
+                          hours: props.defaultTimeRange.start.getHours(),
+                          minutes: 0,
+                        }),
                         timeEnd: set(props.entity.dateStart, {
-                          hours: 21,
+                          hours: props.defaultTimeRange.end.getHours(),
                           minutes: 0,
                         }),
                         ...(props.entity.activity.travelling === true && {
