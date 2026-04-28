@@ -175,10 +175,9 @@ export default function Profile({ loaderData }: Route.ComponentProps) {
                 }}
               >
                 <ListItemButton
-                  disabled
                   component={Link}
                   viewTransition
-                  to="/"
+                  to={withLocale("settings")}
                   sx={{
                     padding: "16px 0px",
                     columnGap: "12px",

@@ -2,6 +2,7 @@ import { type RouteConfig, route, layout } from "@react-router/dev/routes";
 
 export default [
   layout("routes/rootErrorBoundry/rootErrorBoundry.tsx", [
+
     layout("routes/MenuLayout/MenuLayout.tsx", [
       layout("routes/home/HomeLayout/HomeLayout.tsx", [
         route(":lang?/", "routes/home/home.tsx"),
@@ -62,6 +63,10 @@ export default [
         ":lang?/profile/documents",
         "routes/profile/documents/documents.tsx",
       ),
+      // route(
+      //   ":lang?/profile/settings",
+      //   "routes/profile/settings/settings.tsx",
+      // ),
       route(
         ":lang?/profile/documents/sign",
         "routes/profile/documents/sign/sign.tsx",
