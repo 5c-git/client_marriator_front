@@ -73,7 +73,7 @@ export async function clientLoader() {
 
     const coordinates: LngLat =
       mapData.result.latitude !== null && mapData.result.longitude !== null
-        ? [Number(mapData.result.latitude), Number(mapData.result.longitude)]
+        ? [Number(mapData.result.longitude), Number(mapData.result.latitude)]
         : geolocation;
 
     return {
@@ -117,10 +117,10 @@ export async function clientAction({ request }: Route.ClientActionArgs) {
         clientGeoData.radius,
         yandexGeoData.response.GeoObjectCollection.featureMember[0].GeoObject.Point.pos.split(
           " "
-        )[0],
+        )[1],
         yandexGeoData.response.GeoObjectCollection.featureMember[0].GeoObject.Point.pos.split(
           " "
-        )[1]
+        )[0]
       );
       return null;
     } else {
