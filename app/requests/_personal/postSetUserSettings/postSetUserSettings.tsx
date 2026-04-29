@@ -1,31 +1,27 @@
 import { http, delay, HttpResponse } from "msw";
 
-import {
-  getSettingsFromKeySuccessSchema,
-  GetSettingsFromKeySuccess,
-} from "./getUserSettings.schema";
+import { postSetUserSettingsSuccessSchema, PostSetUserSettingsSuccess } from "./postSetUserSettingsSuccess.schema";
 
 import { UnxpectedError } from "~/shared/unexpectedError/unexpectedError";
 
-export const getSettingsFromKeyKeys = ["getSettingsFromKey"];
+export const postSetUserSettingsKeys = ["postSetUserSettings"];
 
-type Setting = "radius" | "intervalDayStart" | "intervalDayEnd";
-
-export const getSettingsFromKey = async (
+export const postSetUserSettings = async (
   accessToken: string,
-  setting: Setting,
-): Promise<GetSettingsFromKeySuccess> => {
+  notificationNewBids: boolean,
+): Promise<PostSetUserSettingsSuccess> => {
   try {
-    const url = new URL(import.meta.env.VITE_SETTINGS_FROM_KEY);
-
-    url.searchParams.append("key", setting);
+    const url = new URL(import.meta.env.VITE_POST_SET_USER_SETTINGS);
 
     const request = await fetch(url, {
-      method: "GET",
+      method: "POST",
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${accessToken}`,
       },
+      body: JSON.stringify({
+        notificationNewBids,
+      }),
     });
     const response = await request.json();
 
@@ -37,13 +33,13 @@ export const getSettingsFromKey = async (
       });
     }
 
-    const parsed = getSettingsFromKeySuccessSchema.safeParse(response);
+    const parsed = postSetUserSettingsSuccessSchema.safeParse(response);
 
     if (parsed.success) {
       data = parsed.data;
     } else {
       console.log(parsed.error);
-      throw new Response(`Данные запроса getSettingsFromKey не валидны схеме`);
+      throw new Response(`Данные запроса postSetUserSettings не валидны схеме`);
     }
 
     return data;
@@ -61,15 +57,16 @@ export const getSettingsFromKey = async (
 };
 
 // MOCKS
-export const mockResponseSuccess = {
-  status: "success",
-  result: "1",
+export const mockResponseSuccess: PostSetUserSettingsSuccess = {
+  data: {
+    success: true,
+  },
 };
 
 export const mockResponseError = {};
 
-export const getSettingsFromKeyMockResponse = http.get(
-  import.meta.env.VITE_SETTINGS_FROM_KEY,
+export const postSetUserSettingsMockResponse = http.post(
+  import.meta.env.VITE_POST_SET_USER_SETTINGS,
   async () => {
     await delay(2000);
     return HttpResponse.json(mockResponseSuccess);

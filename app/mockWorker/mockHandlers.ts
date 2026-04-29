@@ -126,6 +126,8 @@ import { getDataMockResponse } from "~/requests/_personal/getData/getData";
 import { postCreateSearchFromTaskMockResponse } from "~/requests/_personal/postCreateSearchFromTask/postCreateSearchFromTask";
 import { postCreateSearchFromOrderMockResponse } from "~/requests/_personal/postCreateSearchFromOrder/postCreateSearchFromOrder";
 import { postUpdateSearchMockResponse } from "~/requests/_personal/postUpdateSearch/postUpdateSearch";
+import { getUserSettingsMockResponse } from "~/requests/_personal/getUserSettings/getUserSettings";
+import { postSetUserSettingsMockResponse } from "~/requests/_personal/postSetUserSettings/postSetUserSettings";
 
 export const handlers = [
   getFormMockResponse,
@@ -252,4 +254,6 @@ export const handlers = [
   // postCreateSearchFromTaskMockResponse,
   // postCreateSearchFromOrderMockResponse,
   // postUpdateSearchMockResponse,
+  // getUserSettingsMockResponse
+  // postSetUserSettingsMockResponse
 ];

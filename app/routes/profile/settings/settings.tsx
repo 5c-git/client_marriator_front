@@ -1,4 +1,4 @@
-import { useNavigation, useNavigate, Link } from "react-router";
+import { useNavigation, useNavigate, useSubmit } from "react-router";
 import type { Route } from "./+types/settings";
 
 import { useTranslation } from "react-i18next";
@@ -8,23 +8,20 @@ import { withLocale } from "~/shared/withLocale";
 import {useStore} from "~/store/store";
 
 import {
-  Typography,
   List,
   ListItem,
-  ListItemButton,
-  ListItemIcon,
   Divider,
 } from "@mui/material";
+
 import Box from "@mui/material/Box";
 
 import { TopNavigation } from "~/shared/ui/TopNavigation/TopNavigation";
 
 import { Loader } from "~/shared/ui/Loader/Loader";
+import { StyledCheckbox } from "~/shared/ui/StyledCheckbox/StyledCheckbox";
 
-import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
-// import { BulletIcon } from "~/shared/icons/BulletIcon";
-
-import {getUserSettings} from "~/requests/_settings/getUserSettings/getUserSettings";
+import { getUserSettings } from "~/requests/_personal/getUserSettings/getUserSettings";
+import { postSetUserSettings } from "~/requests/_personal/postSetUserSettings/postSetUserSettings";
 
 export async function clientLoader() {
     const accessToken = useStore.getState().accessToken;
@@ -37,15 +34,26 @@ export async function clientLoader() {
     }
   }
   
-  export async function clientAction() {
+  export async function clientAction({ request }: Route.ClientActionArgs) {
+    
+    const accessToken = useStore.getState().accessToken;
+    const { notificationNewBids } = await request.json();
+
+    if (accessToken) {
+      const data = await postSetUserSettings(accessToken, notificationNewBids);
+      return data;
+    } else {
+      throw new Response("Токен авторизации не обнаружен!", { status: 401 });
+    }
   }
 
 export default function Settings({loaderData}: Route.ComponentProps) {
-  const { t } = useTranslation("documents");
+  const { t } = useTranslation("settings");
   const navigation = useNavigation();
   const navigate = useNavigate();
+  const submit = useSubmit();
 
-  console.log(loaderData);
+  const valueNotificationNewBids = Boolean(loaderData.data.notificationNewBids);
 
   return (
     <>
@@ -78,46 +86,23 @@ export default function Settings({loaderData}: Route.ComponentProps) {
               paddingLeft: "16px",
             }}
           >
-            <ListItemButton
-              component={Link}
-              viewTransition
-              to={`${withLocale("/profile/documents/sign")}`}
-              sx={{
-                display: "flex",
-                padding: "16px 0px",
-                columnGap: "12px",
+            <StyledCheckbox
+              inputType="checkbox"
+              validation="none"
+              name="notificationNewBids"
+              value={valueNotificationNewBids}
+              label={t("notificationNewBids")}
+              onImmediateChange={() => {}}
+              onChange={() => {
+                submit(JSON.stringify({
+                  notificationNewBids: !valueNotificationNewBids,
+                }), {
+                  method: "POST",
+                  encType: "application/json",
+                });
               }}
-            >
-              <Typography
-                sx={(theme) => ({
-                  color: theme.vars.palette["Black"],
-                  overflow: "hidden",
-                  textOverflow: "ellipsis",
-                  whiteSpace: "nowrap",
-                })}
-                component="p"
-                variant="Reg_16"
-              >
-                {t("item_sign")}
-              </Typography>
-
-              {/* <BulletIcon
-                sx={{
-                  width: "6px",
-                  height: "6px",
-                  color: theme.vars.palette["Red"],
-                }}
-              /> */}
-
-              <ListItemIcon
-                sx={{
-                  minWidth: "unset",
-                  marginLeft: "auto",
-                }}
-              >
-                <ArrowForwardIosIcon htmlColor={"var(--mui-palette-Grey_2)"} />
-              </ListItemIcon>
-            </ListItemButton>
+              
+            />
             <Divider
               sx={(theme) => ({
                 backgroundColor: theme.vars.palette["Grey_4"],

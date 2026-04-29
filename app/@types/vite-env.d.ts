@@ -133,6 +133,7 @@ interface ImportMetaEnv {
   readonly VITE_POST_UPDATE_SEARCH: string;
   readonly VITE_POST_SEND_ERROR: string;
   readonly VITE_GET_USER_SETTINGS: string;
+  readonly VITE_POST_SET_USER_SETTINGS: string;
   // more env variables...
 }
 

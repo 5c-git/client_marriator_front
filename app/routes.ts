@@ -63,10 +63,10 @@ export default [
         ":lang?/profile/documents",
         "routes/profile/documents/documents.tsx",
       ),
-      // route(
-      //   ":lang?/profile/settings",
-      //   "routes/profile/settings/settings.tsx",
-      // ),
+      route(
+        ":lang?/profile/settings",
+        "routes/profile/settings/settings.tsx",
+      ),
       route(
         ":lang?/profile/documents/sign",
         "routes/profile/documents/sign/sign.tsx",

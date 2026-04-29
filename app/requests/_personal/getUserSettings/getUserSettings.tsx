@@ -32,16 +32,16 @@ export const getUserSettings = async (
 
 
 
-    // const parsed = getUserSettingsSuccessSchema.safeParse(response);
+    const parsed = getUserSettingsSuccessSchema.safeParse(response);
 
-    // if (parsed.success) {
-    //   data = parsed.data;
-    // } else {
-    //   console.log(parsed.error);
-    //   throw new Response(`Данные запроса getUserSettings не валидны схеме`);
-    // }
+    if (parsed.success) {
+      data = parsed.data;
+    } else {
+      console.log(parsed.error);
+      throw new Response(`Данные запроса getUserSettings не валидны схеме`);
+    }
 
-    return response;
+    return data;
   } catch (error) {
     if (error instanceof Response) {
       throw error;
@@ -56,10 +56,11 @@ export const getUserSettings = async (
 };
 
 // MOCKS
-export const mockResponseSuccess = {
-  status: "success",
-  result: "1",
-};
+export const mockResponseSuccess: GetUserSettingsSuccess = {
+  "data": {
+      "notificationNewBids": 1
+  }
+}
 
 export const mockResponseError = {};
 

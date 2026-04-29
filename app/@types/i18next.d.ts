@@ -69,6 +69,8 @@ import tasks from "../../public/locales/ru/tasks.json";
 
 import order from "../../public/locales/ru/order.json";
 import orders from "../../public/locales/ru/orders.json";
+
+import settings from "../../public/locales/ru/settings.json";
 //routes
 
 //views
@@ -169,6 +171,8 @@ declare module "i18next" {
 
       order: typeof order;
       orders: typeof orders;
+
+      settings: typeof settings;
 
       HomeLayout: typeof HomeLayout;
 
