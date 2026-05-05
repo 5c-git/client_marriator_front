@@ -155,18 +155,19 @@ export default function Step4({ loaderData }: Route.ComponentProps) {
   useEffect(() => {
     setTimeout(() => {
       reset(
-        {
+        (values) => ({
           staticPhoto: loaderData.staticFields.img,
           staticEmail: loaderData.staticFields.email,
-          isTermsAccepted: false,
+          isTermsAccepted: values.isTermsAccepted,
           ...generateDefaultValues(loaderData.formFields),
-        },
+        }),
         {
           keepErrors: false,
         },
       );
     });
   }, [loaderData.staticFields, loaderData.formFields, reset, getValues]);
+
 
   return (
     <>

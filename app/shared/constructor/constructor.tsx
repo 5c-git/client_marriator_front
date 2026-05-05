@@ -292,11 +292,13 @@ export const generateValidationSchema = (
       const bytes = Uint8Array.fromBase64(item.pregValue);
       const decoded = new TextDecoder().decode(bytes); 
 
-      const regex = decoded.slice(1, -1);
+      const regexString = decoded.slice(1, -1);
+
+      const regex = new RegExp(regexString, "u");
 
       validationSchema = z.object({
         ...validationSchema.shape,
-        [item.name]: z.string().regex(new RegExp(regex), {error: item.pregText}),
+        [item.name]: z.string().regex(regex, {error: item.pregText}),
       });
     } else {
       validationSchema = z.object({
