@@ -6,24 +6,30 @@ import {
   ScrollRestoration,
   useLoaderData,
   LoaderFunctionArgs,
+  useRouteError,
+  isRouteErrorResponse,
+  useNavigate,
 } from "react-router";
+import { useEffect, useState } from "react";
 
-// import { UAParser } from "ua-parser-js";
-
-
-// MUI
-import { theme } from "./theme/theme";
-import { CssBaseline, ThemeProvider } from "@mui/material";
-
+import { UnxpectedError } from "./shared/unexpectedError/unexpectedError";
+import { withLocale } from "./shared/withLocale";
 
 import { changeLanguage } from "i18next";
+import { useTranslation } from "react-i18next";
 import { supportedLngs } from "./entry.client";
+
+import { useStore } from "~/store/store";
+
+import { theme } from "./theme/theme";
+import { Box, Button, CssBaseline, ThemeProvider, Typography, Dialog, DialogTitle, DialogContent, LinearProgress } from "@mui/material";
 
 import { Welcome } from "./shared/ui/Welcome/Welcome";
 
-export function HydrateFallback() {
-  return <Welcome />;
-}
+import { postRefreshToken } from "./requests/postRefreshToken/postRefreshToken";
+import { postSendError } from "./requests/postSendError/postSendError";
+
+import logoTurnOff from "./logo-turnoff.svg";
 
 export async function clientLoader({
 
@@ -43,6 +49,194 @@ export async function clientLoader({
 
   return locale;
 }
+
+export function HydrateFallback() {
+  return <Welcome />;
+}
+
+export function ErrorBoundary() {
+  const { t } = useTranslation("rootErrorBoundry");
+  const error = useRouteError();
+  const navigate = useNavigate();
+  const access_token = useStore.getState().accessToken;
+  const refresh_token = useStore.getState().refreshToken;
+
+
+  // 401 - WE THROW THIS STATUS CODE IF USER IS UNAUTHORIZED
+
+  // логика обновления accessToken с сервера через refreshToken, если обновление неуспешно - значит ссессия протухла совсем, удяляем токены из хранилища и переводим пользователя на авторизацию
+  useEffect(() => {
+    if (isRouteErrorResponse(error) && error.status === 401) {
+      (async () => {
+        try {
+          if(refresh_token) {
+            const newTokens = await postRefreshToken(refresh_token);
+  
+            if ("token_type" in newTokens.result.token) {
+              useStore
+                .getState()
+                .setAccessToken(newTokens.result.token.access_token);
+              useStore
+                .getState()
+                .setRefreshToken(newTokens.result.token.refresh_token);
+              navigate(withLocale("/signin/pin"), { viewTransition: true });
+            } else {
+              useStore.getState().clearStore();
+              navigate(withLocale("/signin/phone"), { viewTransition: true });
+            }
+          } else {
+            useStore.getState().clearStore();
+            navigate(withLocale("/signin/phone"), { viewTransition: true });
+          }
+          
+        } catch {
+          useStore.getState().clearStore();
+            navigate(withLocale("/signin/phone"), { viewTransition: true });
+        }
+      })();
+    }
+  }, [error, refresh_token, navigate]);
+  //
+
+  //logging unxpected errors to Sentry
+  useEffect(() => {
+    if((error instanceof Error || error instanceof UnxpectedError)) {
+      (async () => {      
+        if(access_token) {
+          try {
+            await postSendError(access_token, window.location.href, error.message);
+          } catch {
+            console.log("failed to send exeption to the server");
+          }
+      }})()
+    }
+
+    if ((isRouteErrorResponse(error) && error.status !== 401)) {
+      (async () => {
+        if(access_token) {
+          try {
+            await postSendError(access_token, window.location.href, error.data as string);
+          } catch {
+            console.log("failed to send exeption to the server");
+          }
+      }})()
+    }
+  }, [access_token, error]);
+
+  return (
+    <>
+      {/* showing this screen only if user is authorized */}
+      {isRouteErrorResponse(error) &&
+      error.status !== 401 ? (
+        <Box
+          sx={{
+            paddingRight: "16px",
+            paddingLeft: "16px",
+            paddingTop: "60px",
+          }}
+        >
+          <Box
+            sx={{
+              width: "164px",
+              height: "78px",
+              margin: "0 auto",
+            }}
+          >
+            <img
+              src={logoTurnOff}
+              style={{
+                height: "100%",
+                width: "100%",
+                objectFit: "cover",
+              }}
+              alt="marriator"
+            />
+          </Box>
+          <Typography
+            component="h1"
+            variant="Bold_28"
+            sx={(theme) => ({
+              color: theme.vars.palette["Red"],
+              textAlign: "center",
+              paddingTop: "40px",
+            })}
+          >
+            {t("error")}
+          </Typography>
+          <Typography
+            component="p"
+            variant="Reg_14"
+            sx={(theme) => ({
+              color: theme.vars.palette["Black"],
+              textAlign: "center",
+              paddingTop: "40px",
+              paddingBottom: "40px",
+            })}
+          >
+            {error.data}
+          </Typography>
+          <Button
+            variant="outlined"
+            onClick={() => {
+              navigate(-1);
+            }}
+          >
+            {t("refresh")}
+          </Button>
+        </Box>
+      ) : null}
+
+      {/* showing this screen only if there is unxpected error, meaning that we DO NOT expect such behaviour */}
+      {(error instanceof Error || error instanceof UnxpectedError) ? (
+        <Box
+          sx={{
+            paddingRight: "16px",
+            paddingLeft: "16px",
+            paddingTop: "60px",
+          }}
+        >
+          <Box
+            sx={{
+              width: "164px",
+              height: "78px",
+              margin: "0 auto",
+            }}
+          >
+            <img
+              src={logoTurnOff}
+              style={{
+                height: "100%",
+                width: "100%",
+                objectFit: "cover",
+              }}
+              alt="marriator"
+            />
+          </Box>
+          <Typography
+            component="h1"
+            variant="Bold_28"
+            sx={(theme) => ({
+              color: theme.vars.palette["Red"],
+              textAlign: "center",
+              paddingTop: "40px",
+            })}
+          >
+            {t("error")}
+          </Typography>
+          <Button
+            variant="outlined"
+            onClick={() => {
+              navigate(-1);
+              
+            }}
+          >
+            {t("refresh")}
+          </Button>
+        </Box>
+      ) : null}
+    </>
+  );
+};
 
 export function Layout({ children }: { children: React.ReactNode }) {
   const locale = useLoaderData<typeof clientLoader>();
@@ -74,5 +268,36 @@ export function Layout({ children }: { children: React.ReactNode }) {
 }
 
 export default function App() {
-  return <Outlet />;
+  const { t } = useTranslation("rootErrorBoundry");
+  const [isOnline, setIsOnline] = useState<boolean>(true);
+
+  useEffect(() => {
+    const handleOnline = () => {
+      setIsOnline(true);
+    };
+    const handleOffline = () => {
+      setIsOnline(false);
+    };
+    window.addEventListener("online", handleOnline);
+    window.addEventListener("offline", handleOffline);
+
+    return () => {
+      window.removeEventListener("online", handleOnline);
+      window.removeEventListener("offline", handleOffline);
+    };
+  }, []);
+
+
+  return <>
+    <Dialog open={!isOnline} onClose={() => {}}>
+      <DialogTitle sx={{ textAlign: "center" }}>{t("offlineTitle")}</DialogTitle>
+      <DialogContent sx={{ textAlign: "center", padding: 0 }}>{t("offlineText")}</DialogContent>
+      <Box sx={{
+        padding: "16px",
+      }}>
+        <LinearProgress color="corp" />
+      </Box>
+      </Dialog>
+    <Outlet />
+</>;;
 }

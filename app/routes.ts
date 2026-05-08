@@ -1,8 +1,6 @@
 import { type RouteConfig, route, layout } from "@react-router/dev/routes";
 
 export default [
-  layout("routes/rootErrorBoundry/rootErrorBoundry.tsx", [
-
     layout("routes/MenuLayout/MenuLayout.tsx", [
       layout("routes/home/HomeLayout/HomeLayout.tsx", [
         route(":lang?/", "routes/home/home.tsx"),
@@ -195,5 +193,5 @@ export default [
       ":lang?/tasks/:taskId/service/:serviceId?",
       "routes/tasks/service/service.tsx",
     ),
-  ]),
+  
 ] satisfies RouteConfig;

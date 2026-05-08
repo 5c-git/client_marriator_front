@@ -143,7 +143,7 @@ export default function Step4({ loaderData }: Route.ComponentProps) {
             emailRegExp,
             t("email_wrongValue", { ns: "constructorFields" }),
           ),
-        isTermsAccepted: z.boolean().refine((value) => value === true),
+        isTermsAccepted: z.boolean(),
         ...generateValidationSchema(loaderData.formFields).shape,
       })
     ),
