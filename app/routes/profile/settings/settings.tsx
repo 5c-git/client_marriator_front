@@ -5,61 +5,49 @@ import { useTranslation } from "react-i18next";
 
 import { withLocale } from "~/shared/withLocale";
 
-import {useStore} from "~/store/store";
-
-import {
-  List,
-  ListItem,
-  Divider,
-} from "@mui/material";
-
-import Box from "@mui/material/Box";
-
-import { TopNavigation } from "~/shared/ui/TopNavigation/TopNavigation";
-
+import { SettingsView } from "./_views/SettingsView";
 import { Loader } from "~/shared/ui/Loader/Loader";
 import { StyledCheckbox } from "~/shared/ui/StyledCheckbox/StyledCheckbox";
 
-import { getUserSettings } from "~/requests/_personal/getUserSettings/getUserSettings";
-import { postSetUserSettings } from "~/requests/_personal/postSetUserSettings/postSetUserSettings";
+import {appContainer} from "~/container";
+import { settingsTokens } from "./settings.tokens";
+import { useSettingsHooks } from "./settings.hooks";
 
 export async function clientLoader() {
-    const accessToken = useStore.getState().accessToken;
-  
-    if (accessToken) {
-      const data = await getUserSettings(accessToken);
-      return data;
-    } else {
-      throw new Response("Токен авторизации не обнаружен!", { status: 401 });
-    }
-  }
-  
-  export async function clientAction({ request }: Route.ClientActionArgs) {
-    
-    const accessToken = useStore.getState().accessToken;
-    const { notificationNewBids } = await request.json();
 
-    if (accessToken) {
-      const data = await postSetUserSettings(accessToken, notificationNewBids);
-      return data;
-    } else {
-      throw new Response("Токен авторизации не обнаружен!", { status: 401 });
-    }
-  }
+  return await appContainer.get(settingsTokens.settingsService).getNotificationsToggleData();
+}
+  
+export async function clientAction({ request }: Route.ClientActionArgs) {
+  
+    const { newNotificationValue } = await request.json();
+
+    await appContainer.get(settingsTokens.settingsService).setNewNotificationsToggle(newNotificationValue);
+}
 
 export default function Settings({loaderData}: Route.ComponentProps) {
   const { t } = useTranslation("settings");
-  const navigation = useNavigation();
-  const navigate = useNavigate();
-  const submit = useSubmit();
-
-  const valueNotificationNewBids = Boolean(loaderData.data.notificationNewBids);
+  const { isLoading, navigateTo, submitNotificationValue } = useSettingsHooks();
 
   return (
     <>
-      {navigation.state !== "idle" ? <Loader /> : null}
+      {isLoading ? <Loader /> : null}
 
-      <Box>
+      <SettingsView
+        translation="settings"
+        headerBackAction={() => {navigateTo("/profile")}}
+        options={[<StyledCheckbox
+          inputType="checkbox"
+          validation="none"
+          name="notificationNewBids"
+          value={loaderData}
+          label={t("notificationNewBids")}
+          onImmediateChange={() => {}}
+          onChange={() => {submitNotificationValue(loaderData)}}
+        />]}
+      />
+
+      {/* <Box>
         <TopNavigation
           header={{
             text: t("header"),
@@ -90,18 +78,17 @@ export default function Settings({loaderData}: Route.ComponentProps) {
               inputType="checkbox"
               validation="none"
               name="notificationNewBids"
-              value={valueNotificationNewBids}
+              value={loaderData}
               label={t("notificationNewBids")}
               onImmediateChange={() => {}}
               onChange={() => {
                 submit(JSON.stringify({
-                  notificationNewBids: !valueNotificationNewBids,
+                  notificationNewBids: !loaderData,
                 }), {
                   method: "POST",
                   encType: "application/json",
                 });
               }}
-              
             />
             <Divider
               sx={(theme) => ({
@@ -111,7 +98,7 @@ export default function Settings({loaderData}: Route.ComponentProps) {
           </ListItem>
 
         </List>
-      </Box>
+      </Box> */}
     </>
   );
 }

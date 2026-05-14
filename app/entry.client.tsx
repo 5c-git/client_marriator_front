@@ -9,6 +9,7 @@ import HttpBackend from "i18next-http-backend";
 
 export const supportedLngs = ["ru", "en"];
 
+
 async function enableMocking() {
   if (process.env.NODE_ENV !== "development") {
     return;

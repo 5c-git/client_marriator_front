@@ -8,7 +8,7 @@ import {
 } from "react-router";
 
 import type { Route } from "./+types/order";
-import type { EntityMobileViewInterface } from "../../../shared/ui/EntityMobileView/EntityMobileViewInterface";
+import type { EntityMobileViewInterface } from "../../../shared/views/EntityMobileView/EntityMobileViewInterface";
 import type { RequestSearchDrawerInterface } from "~/shared/views/RequestSearchDrawer/RequestSearchDrawerInterface";
 import type { PostUpdateSearchPayload } from "~/requests/_personal/postUpdateSearch/postUpdateSearch";
 
@@ -36,8 +36,8 @@ import { StyledRadioButton } from "~/shared/ui/StyledRadioButton/StyledRadioButt
 import { RadioSearchableDrawer } from "../../../shared/ui/RadioSearchableDrawer/RadioSearchableDrawer";
 import { RequestSearchDrawer } from "~/shared/views/RequestSearchDrawer/RequestSearchDrawer";
 
-import { EntityStaticMobileView } from "../../../shared/ui/EntityMobileView/EntityStaticMobileView";
-import { EntityEditMobileView } from "../../../shared/ui/EntityMobileView/EntityEditMobileView";
+import { EntityStaticMobileView } from "../../../shared/views/EntityMobileView/EntityStaticMobileView";
+import { EntityEditMobileView } from "../../../shared/views/EntityMobileView/EntityEditMobileView";
 
 import AddIcon from "@mui/icons-material/Add";
 import ClearIcon from "@mui/icons-material/Clear";
