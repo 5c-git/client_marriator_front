@@ -1,28 +1,25 @@
-import { useNavigation, useNavigate, useSubmit } from "react-router";
 import type { Route } from "./+types/settings";
 
 import { useTranslation } from "react-i18next";
-
-import { withLocale } from "~/shared/withLocale";
 
 import { SettingsView } from "./_views/SettingsView";
 import { Loader } from "~/shared/ui/Loader/Loader";
 import { StyledCheckbox } from "~/shared/ui/StyledCheckbox/StyledCheckbox";
 
-import {appContainer} from "~/container";
+import {settingsContainer} from "./settings.module";
 import { settingsTokens } from "./settings.tokens";
 import { useSettingsHooks } from "./settings.hooks";
 
 export async function clientLoader() {
 
-  return await appContainer.get(settingsTokens.settingsService).getNotificationsToggleData();
+  return await settingsContainer.get(settingsTokens.settingsService).getNotificationsToggleData();
 }
   
 export async function clientAction({ request }: Route.ClientActionArgs) {
   
     const { newNotificationValue } = await request.json();
 
-    await appContainer.get(settingsTokens.settingsService).setNewNotificationsToggle(newNotificationValue);
+    await settingsContainer.get(settingsTokens.settingsService).setNewNotificationsToggle(newNotificationValue);
 }
 
 export default function Settings({loaderData}: Route.ComponentProps) {
