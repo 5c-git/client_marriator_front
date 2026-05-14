@@ -5,7 +5,7 @@ import { UseFormSetValue } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 
 import { resizeFile } from "~/shared/resizeFile/resizeFile";
-import { postSendFile } from "~/requests/postSendFile/postSendFile";
+import { postSendFile } from "~/api/postSendFile/postSendFile";
 
 import { Avatar, Divider, Typography } from "@mui/material";
 import Box from "@mui/material/Box";

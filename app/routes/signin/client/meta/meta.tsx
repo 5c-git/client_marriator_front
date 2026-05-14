@@ -25,13 +25,13 @@ import { DeleteIcon } from "../../../../shared/icons/DeleteIcon";
 import { useStore } from "~/store/store";
 import { useMetaStore } from "./metaStore";
 
-import { getData } from "~/requests/_personal/getData/getData";
-import { getBrand } from "~/requests/getBrand/getBrand";
+import { getData } from "~/api/_personal/getData/getData";
+import { getBrand } from "~/api/getBrand/getBrand";
 // import { getPlace } from "~/requests/getPlace/getPlace";
-import { postDelPlace } from "~/requests/postDelPlace/postDelPlace";
-import { postSetBrandImg } from "~/requests/postSetBrandImg/postSetBrandImg";
-import { postSetUserData } from "~/requests/postSetUserData/postSetUserData";
-import { postFinishRegister } from "~/requests/postFinishRegister/postFinishRegister";
+import { postDelPlace } from "~/api/postDelPlace/postDelPlace";
+import { postSetBrandImg } from "~/api/postSetBrandImg/postSetBrandImg";
+import { postSetUserData } from "~/api/postSetUserData/postSetUserData";
+import { postFinishRegister } from "~/api/postFinishRegister/postFinishRegister";
 
 export async function clientLoader() {
   const accessToken = useStore.getState().accessToken;

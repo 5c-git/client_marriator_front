@@ -23,8 +23,8 @@ import { Loader } from "~/shared/ui/Loader/Loader";
 
 import FileDownloadOutlinedIcon from "@mui/icons-material/FileDownloadOutlined";
 
-import { getDocumentArchive } from "~/requests/_personal/_documents/getDocumentArchive/getDocumentArchive";
-import { getSignedDocument } from "~/requests/_personal/getSignedDocument/getSignedDocument";
+import { getDocumentArchive } from "~/api/_personal/_documents/getDocumentArchive/getDocumentArchive";
+import { getSignedDocument } from "~/api/_personal/getSignedDocument/getSignedDocument";
 
 export async function clientLoader() {
   const accessToken = useStore.getState().accessToken;

@@ -17,10 +17,10 @@ import { Loader } from "~/shared/ui/Loader/Loader";
 
 import { useStore } from "~/store/store";
 
-import { getGeoData } from "~/requests/getGeoData/getGeoData";
-import { getMapField } from "~/requests/_personal/getMapField/getMapField";
-import { getSettingsFromKey } from "~/requests/_settings/getSettingsFromKey/getSettingsFromKey";
-import { postSetMapField } from "~/requests/_personal/postSetMapField/postSetMapField";
+import { getGeoData } from "~/api/getGeoData/getGeoData";
+import { getMapField } from "~/api/_personal/getMapField/getMapField";
+import { getSettingsFromKey } from "~/api/_settings/getSettingsFromKey/getSettingsFromKey";
+import { postSetMapField } from "~/api/_personal/postSetMapField/postSetMapField";
 
 import { MarkerIcon } from "./icons/MarkerIcon";
 

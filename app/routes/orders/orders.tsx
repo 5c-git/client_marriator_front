@@ -31,9 +31,9 @@ import { Button, Dialog, DialogActions, DialogTitle, Fab } from "@mui/material";
 import LoopIcon from "@mui/icons-material/Loop";
 import AddIcon from "@mui/icons-material/Add";
 
-import { getOrders } from "~/requests/_personal/getOrders/getOrders";
-import { postCancelOrder } from "~/requests/_personal/postCancelOrder/postCancelOrder";
-import { postRepeatOrder } from "~/requests/_personal/postRepeatOrder/postRepeatOrder";
+import { getOrders } from "~/api/_personal/getOrders/getOrders";
+import { postCancelOrder } from "~/api/_personal/postCancelOrder/postCancelOrder";
+import { postRepeatOrder } from "~/api/_personal/postRepeatOrder/postRepeatOrder";
 
 type MobileModeData = {
   mode: "mobile";

@@ -26,8 +26,8 @@ import { Box, Button, CssBaseline, ThemeProvider, Typography, Dialog, DialogTitl
 
 import { Welcome } from "./shared/ui/Welcome/Welcome";
 
-import { postRefreshToken } from "./requests/postRefreshToken/postRefreshToken";
-import { postSendError } from "./requests/postSendError/postSendError";
+import { postRefreshToken } from "./api/postRefreshToken/postRefreshToken";
+import { postSendError } from "./api/postSendError/postSendError";
 
 import logoTurnOff from "./logo-turnoff.svg";
 

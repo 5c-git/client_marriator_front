@@ -12,8 +12,8 @@ import { TopNavigation } from "~/shared/ui/TopNavigation/TopNavigation";
 
 import { EditIcon } from "~/shared/icons/EditIcon";
 
-import { getBid } from "~/requests/_personal/getBid/getBid";
-import type { GetBidSuccess } from "~/requests/_personal/getBid/getBidSuccess.schema";
+import { getBid } from "~/api/_personal/getBid/getBid";
+import type { GetBidSuccess } from "~/api/_personal/getBid/getBidSuccess.schema";
 
 type MobileModeData = {
   mode: "mobile";

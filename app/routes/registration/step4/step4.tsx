@@ -41,12 +41,12 @@ import { StyledEmailField } from "~/shared/ui/StyledEmailField/StyledEmailField"
 
 import { useStore } from "~/store/store";
 
-import { getForm } from "~/requests/getForm/getForm";
-import { transformBikOptions } from "~/requests/getForm/getFormHooks";
-import { getStaticUserInfo } from "~/requests/getStaticUserInfo/getStaticUserInfo";
-import { postSaveForm } from "~/requests/postSaveForm/postSaveForm";
-import { postSetUserEmail } from "~/requests/_personal/postSetUserEmail/postSetUserEmail";
-import { postFinishRegister } from "~/requests/postFinishRegister/postFinishRegister";
+import { getForm } from "~/api/getForm/getForm";
+import { transformBikOptions } from "~/api/getForm/getFormHooks";
+import { getStaticUserInfo } from "~/api/getStaticUserInfo/getStaticUserInfo";
+import { postSaveForm } from "~/api/postSaveForm/postSaveForm";
+import { postSetUserEmail } from "~/api/_personal/postSetUserEmail/postSetUserEmail";
+import { postFinishRegister } from "~/api/postFinishRegister/postFinishRegister";
 
 export async function clientLoader() {
   const accessToken = useStore.getState().accessToken;

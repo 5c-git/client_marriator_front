@@ -9,11 +9,11 @@ import type { DayReviewMobileViewInterface } from "./DayReviewMobileView/DayRevi
 
 import { Loader } from "~/shared/ui/Loader/Loader";
 
-import { getJob } from "~/requests/_personal/getJob/getJob";
-import { getReasons } from "~/requests/_personal/getReasons/getReasons";
-import { postAcceptReport } from "~/requests/_personal/postAcceptReport/postAcceptReport";
-import { postUpdateReport } from "~/requests/_personal/postUpdateReport/postUpdateReport";
-import { postAcceptAllReportJob } from "~/requests/_personal/postAcceptAllReportJob/postAcceptAllReportJob";
+import { getJob } from "~/api/_personal/getJob/getJob";
+import { getReasons } from "~/api/_personal/getReasons/getReasons";
+import { postAcceptReport } from "~/api/_personal/postAcceptReport/postAcceptReport";
+import { postUpdateReport } from "~/api/_personal/postUpdateReport/postUpdateReport";
+import { postAcceptAllReportJob } from "~/api/_personal/postAcceptAllReportJob/postAcceptAllReportJob";
 
 type MobileModeData = Omit<DayReviewMobileViewInterface, "submitAction"> & {
   mode: "mobile";

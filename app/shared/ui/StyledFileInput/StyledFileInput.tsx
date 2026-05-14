@@ -7,7 +7,7 @@ import { resizeFile } from "~/shared/resizeFile/resizeFile";
 
 import { useTranslation } from "react-i18next";
 
-import { postSendFile } from "~/requests/postSendFile/postSendFile";
+import { postSendFile } from "~/api/postSendFile/postSendFile";
 
 import {
   IconButton,

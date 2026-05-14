@@ -24,8 +24,8 @@ import { StyledSmsField } from "~/shared/ui/StyledSmsField/StyledSmsField";
 import { TopNavigation } from "~/shared/ui/TopNavigation/TopNavigation";
 import { Loader } from "~/shared/ui/Loader/Loader";
 
-import { postStartRestorePin } from "~/requests/postStartRestorePin/postStartRestorePin";
-import { postCheckCodeRestore } from "~/requests/postCheckCodeRestore/postCheckCodeRestore";
+import { postStartRestorePin } from "~/api/postStartRestorePin/postStartRestorePin";
+import { postCheckCodeRestore } from "~/api/postCheckCodeRestore/postCheckCodeRestore";
 
 import { useStore } from "~/store/store";
 

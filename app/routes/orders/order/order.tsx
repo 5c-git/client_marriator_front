@@ -10,7 +10,7 @@ import {
 import type { Route } from "./+types/order";
 import type { EntityMobileViewInterface } from "../../../shared/views/EntityMobileView/EntityMobileViewInterface";
 import type { RequestSearchDrawerInterface } from "~/shared/views/RequestSearchDrawer/RequestSearchDrawerInterface";
-import type { PostUpdateSearchPayload } from "~/requests/_personal/postUpdateSearch/postUpdateSearch";
+import type { PostUpdateSearchPayload } from "~/api/_personal/postUpdateSearch/postUpdateSearch";
 
 import { determineRole } from "~/shared/determineRole";
 
@@ -45,16 +45,16 @@ import CheckIcon from "@mui/icons-material/Check";
 import LogoutIcon from "@mui/icons-material/Logout";
 import { RouteIcon } from "~/shared/icons/RouteIcon";
 
-import { getOrder } from "~/requests/_personal/getOrder/getOrder";
-import { postDeleteOrderActivity } from "~/requests/_personal/postDeleteOrderActivity/postDeleteOrderActivity";
-import { postConvertTask } from "~/requests/_personal/postConvertTask/postConvertTask";
-import { postAcceptOrder } from "~/requests/_personal/postAcceptOrder/postAcceptOrder";
-import { postSendOrder } from "~/requests/_personal/postSendOrder/postSendOrder";
-import { getSupervisorsForTask } from "~/requests/_personal/getSupervisorsForTask/getSupervisorsForTask";
-import { postCreateBidFromOrder } from "~/requests/_personal/postCreateBidFromOrder/postCreateBidFromOrder";
-import { postCreateSearchFromOrder } from "~/requests/_personal/postCreateSearchFromOrder/postCreateSearchFromOrder";
-import { postUpdateSearch } from "~/requests/_personal/postUpdateSearch/postUpdateSearch";
-import { getPlaceForBid } from "~/requests/_personal/getPlaceForBid/getPlaceForBid";
+import { getOrder } from "~/api/_personal/getOrder/getOrder";
+import { postDeleteOrderActivity } from "~/api/_personal/postDeleteOrderActivity/postDeleteOrderActivity";
+import { postConvertTask } from "~/api/_personal/postConvertTask/postConvertTask";
+import { postAcceptOrder } from "~/api/_personal/postAcceptOrder/postAcceptOrder";
+import { postSendOrder } from "~/api/_personal/postSendOrder/postSendOrder";
+import { getSupervisorsForTask } from "~/api/_personal/getSupervisorsForTask/getSupervisorsForTask";
+import { postCreateBidFromOrder } from "~/api/_personal/postCreateBidFromOrder/postCreateBidFromOrder";
+import { postCreateSearchFromOrder } from "~/api/_personal/postCreateSearchFromOrder/postCreateSearchFromOrder";
+import { postUpdateSearch } from "~/api/_personal/postUpdateSearch/postUpdateSearch";
+import { getPlaceForBid } from "~/api/_personal/getPlaceForBid/getPlaceForBid";
 
 type MobileModeData = {
   mode: "mobile";

@@ -14,7 +14,7 @@ import type { EntitiesListViewInterface } from "~/shared/views/EntitiesListView/
 import { EntityCard } from "~/shared/ui/EntityCard/EntityCard";
 import { Loader } from "~/shared/ui/Loader/Loader";
 
-import { getBids } from "~/requests/_personal/getBids/getBids";
+import { getBids } from "~/api/_personal/getBids/getBids";
 
 type MobileModeData = {
   mode: "mobile";

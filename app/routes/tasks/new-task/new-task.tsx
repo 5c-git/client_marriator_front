@@ -19,15 +19,15 @@ import { CheckboxSearchableDrawer } from "~/shared/ui/CheckboxSearchableDrawer/C
 
 import { useStore } from "~/store/store";
 
-import { getTask } from "~/requests/_personal/getTask/getTask";
-import { getPlaceForTask } from "~/requests/_personal/getPlaceForTask/getPlaceForTask";
-import { getProjectsForTask } from "~/requests/_personal/getProjectsForTask/getProjectsForTask";
-import { getSupervisorsForTask } from "~/requests/_personal/getSupervisorsForTask/getSupervisorsForTask";
-import { postCreateTask } from "~/requests/_personal/postCreateTask/postCreateTask";
-import { postUpdateTask } from "~/requests/_personal/postUpdateTask/postUpdateTask";
-import { postDeleteTaskActivity } from "~/requests/_personal/postDeleteTaskActivity/postDeleteTaskActivity";
-import { postCancelTask } from "~/requests/_personal/postCancelTask/postCancelTask";
-import { postInvoiceTask } from "~/requests/_personal/postInvoiceTask/postInvoiceTask";
+import { getTask } from "~/api/_personal/getTask/getTask";
+import { getPlaceForTask } from "~/api/_personal/getPlaceForTask/getPlaceForTask";
+import { getProjectsForTask } from "~/api/_personal/getProjectsForTask/getProjectsForTask";
+import { getSupervisorsForTask } from "~/api/_personal/getSupervisorsForTask/getSupervisorsForTask";
+import { postCreateTask } from "~/api/_personal/postCreateTask/postCreateTask";
+import { postUpdateTask } from "~/api/_personal/postUpdateTask/postUpdateTask";
+import { postDeleteTaskActivity } from "~/api/_personal/postDeleteTaskActivity/postDeleteTaskActivity";
+import { postCancelTask } from "~/api/_personal/postCancelTask/postCancelTask";
+import { postInvoiceTask } from "~/api/_personal/postInvoiceTask/postInvoiceTask";
 // import { postInstructTask } from "~/requests/_personal/postInstructTask/postInstructTask";
 
 type MobileModeData = {

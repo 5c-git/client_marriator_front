@@ -20,10 +20,10 @@ import Box from "@mui/material/Box";
 import { TopNavigation } from "~/shared/ui/TopNavigation/TopNavigation";
 import { Loader } from "~/shared/ui/Loader/Loader";
 
-import { getForm } from "~/requests/getForm/getForm";
-import { transformBikOptions } from "~/requests/getForm/getFormHooks";
-import { postSaveForm } from "~/requests/postSaveForm/postSaveForm";
-import { postFinishRegister } from "~/requests/postFinishRegister/postFinishRegister";
+import { getForm } from "~/api/getForm/getForm";
+import { transformBikOptions } from "~/api/getForm/getFormHooks";
+import { postSaveForm } from "~/api/postSaveForm/postSaveForm";
+import { postFinishRegister } from "~/api/postFinishRegister/postFinishRegister";
 
 import { useStore } from "~/store/store";
 

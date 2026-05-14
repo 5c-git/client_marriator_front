@@ -14,9 +14,9 @@ import {
   generateValidationSchema,
 } from "~/shared/constructor/constructor";
 
-import { getForm } from "~/requests/getForm/getForm";
-import { transformBikOptions } from "~/requests/getForm/getFormHooks";
-import { postSaveForm } from "~/requests/postSaveForm/postSaveForm";
+import { getForm } from "~/api/getForm/getForm";
+import { transformBikOptions } from "~/api/getForm/getFormHooks";
+import { postSaveForm } from "~/api/postSaveForm/postSaveForm";
 import { useStore } from "~/store/store";
 
 import { Typography, Button } from "@mui/material";

@@ -26,9 +26,9 @@ import { StyledCheckboxMultiple } from "~/shared/ui/StyledCheckboxMultiple/Style
 
 import { useStore } from "~/store/store";
 
-import { getModerationSingleClient } from "~/requests/_personal/_moderation/getModerationSingleClient/getModerationSingleClient";
-import { getProject } from "~/requests/_personal/_moderation/getProject/getProject";
-import { postSetProject } from "~/requests/_personal/_moderation/postSetProject/postSetProject";
+import { getModerationSingleClient } from "~/api/_personal/_moderation/getModerationSingleClient/getModerationSingleClient";
+import { getProject } from "~/api/_personal/_moderation/getProject/getProject";
+import { postSetProject } from "~/api/_personal/_moderation/postSetProject/postSetProject";
 
 export async function clientLoader({ params }: Route.ClientLoaderArgs) {
   const accessToken = useStore.getState().accessToken;

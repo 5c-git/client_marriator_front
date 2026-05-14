@@ -30,9 +30,9 @@ import { StyledPhoneField } from "~/shared/ui/StyledPhoneField/StyledPhoneField"
 
 import { useStore } from "~/store/store";
 
-import { getUserInfo } from "~/requests/_personal/getUserInfo/getUserInfo";
-import { postChangeUserPhone } from "~/requests/_personal/postChangeUserPhone/postChangeUserPhone";
-import { postPersonalSetUserEmail } from "~/requests/postPersonalSetUserEmail/postPersonalSetUserEmail";
+import { getUserInfo } from "~/api/_personal/getUserInfo/getUserInfo";
+import { postChangeUserPhone } from "~/api/_personal/postChangeUserPhone/postChangeUserPhone";
+import { postPersonalSetUserEmail } from "~/api/postPersonalSetUserEmail/postPersonalSetUserEmail";
 
 export async function clientLoader() {
   const accessToken = useStore.getState().accessToken;

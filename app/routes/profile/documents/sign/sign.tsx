@@ -29,11 +29,11 @@ import { Loader } from "~/shared/ui/Loader/Loader";
 
 import { S_OrderedList, S_OrderedItem } from "./sign.styled";
 
-import { getDocumentSigned } from "~/requests/_personal/_documents/getDocumentSigned/getDocumentSigned";
+import { getDocumentSigned } from "~/api/_personal/_documents/getDocumentSigned/getDocumentSigned";
 
-import { postSignedDocument } from "~/requests/_personal/_documents/postSignedDocument/postSignedDocument";
-import { postRetriesSms } from "~/requests/_personal/postRetriesSms/postRetriesSms";
-import { postSendCode } from "~/requests/_personal/postSendCode/postSendCode";
+import { postSignedDocument } from "~/api/_personal/_documents/postSignedDocument/postSignedDocument";
+import { postRetriesSms } from "~/api/_personal/postRetriesSms/postRetriesSms";
+import { postSendCode } from "~/api/_personal/postSendCode/postSendCode";
 
 import { postCreateTestDoc } from "./postCreateTestDoc/postCreateTestDoc";
 

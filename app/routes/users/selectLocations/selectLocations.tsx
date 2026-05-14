@@ -41,9 +41,9 @@ import { MapIcon } from "~/shared/icons/MapIcon";
 
 import { useStore } from "~/store/store";
 
-import { getModerationSingleClient } from "~/requests/_personal/_moderation/getModerationSingleClient/getModerationSingleClient";
-import { getPlaceModeration } from "~/requests/_personal/_moderation/getPlaceModeration/getPlaceModeration";
-import { postSetPlaceModeration } from "~/requests/_personal/_moderation/postSetPlaceModeration/postSetPlaceModeration";
+import { getModerationSingleClient } from "~/api/_personal/_moderation/getModerationSingleClient/getModerationSingleClient";
+import { getPlaceModeration } from "~/api/_personal/_moderation/getPlaceModeration/getPlaceModeration";
+import { postSetPlaceModeration } from "~/api/_personal/_moderation/postSetPlaceModeration/postSetPlaceModeration";
 
 type Option = {
   value: string;

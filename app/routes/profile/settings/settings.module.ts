@@ -4,8 +4,8 @@ import { SettingsService } from "./settings.service";
 import { settingsTokens } from "./settings.tokens";
 
 import { useStore } from "~/store/store";
-import { getUserSettings } from "~/requests/_personal/getUserSettings/getUserSettings";
-import { postSetUserSettings } from "~/requests/_personal/postSetUserSettings/postSetUserSettings";
+import { getUserSettings } from "~/api/_personal/getUserSettings/getUserSettings";
+import { postSetUserSettings } from "~/api/_personal/postSetUserSettings/postSetUserSettings";
 
 export const settingsModule = new DependencyModule();
 

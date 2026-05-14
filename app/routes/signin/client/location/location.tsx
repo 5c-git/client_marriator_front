@@ -34,9 +34,9 @@ import { MapIcon } from "~/shared/icons/MapIcon";
 
 import { useStore } from "~/store/store";
 
-import { getData } from "~/requests/_personal/getData/getData";
-import { getPlace } from "~/requests/getPlace/getPlace";
-import { postSetPlace } from "~/requests/postSetPlace/postSetPlace";
+import { getData } from "~/api/_personal/getData/getData";
+import { getPlace } from "~/api/getPlace/getPlace";
+import { postSetPlace } from "~/api/postSetPlace/postSetPlace";
 
 type Option = {
   value: string;

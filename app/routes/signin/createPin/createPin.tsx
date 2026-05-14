@@ -24,7 +24,7 @@ import { StyledOptField } from "~/shared/ui/StyledOtpField/StyledOtpField";
 import { TopNavigation } from "~/shared/ui/TopNavigation/TopNavigation";
 import { Loader } from "~/shared/ui/Loader/Loader";
 
-import { postSetUserPin } from "~/requests/postSetUserPin/postSetUserPin";
+import { postSetUserPin } from "~/api/postSetUserPin/postSetUserPin";
 
 import { useStore } from "~/store/store";
 

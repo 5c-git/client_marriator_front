@@ -53,17 +53,17 @@ import { DeleteIcon } from "~/shared/icons/DeleteIcon";
 
 import { useStore } from "~/store/store";
 
-import { getCounterparty } from "~/requests/_personal/_moderation/getCounterparty/getCounterparty";
-import { getModerationSingleClient } from "~/requests/_personal/_moderation/getModerationSingleClient/getModerationSingleClient";
-import { getSupervisors } from "~/requests/_personal/_moderation/getSupervisors/getSupervisors";
-import { postSetUserImg } from "~/requests/_personal/_moderation/postSetUserImg/postSetUserImg";
-import { postDelProject } from "~/requests/_personal/_moderation/delProject/delProject";
-import { postDelPlaceModeration } from "~/requests/_personal/_moderation/postDelPlaceModeration/postDelPlaceModeration";
-import { postConfirmUserRegister } from "~/requests/_personal/_moderation/postConfirmUserRegister/postConfirmUserRegister";
-import { postSetSupervisors } from "~/requests/_personal/_moderation/postSetSupervisors/postSetSupervisors";
-import { postDelSupervisor } from "~/requests/_personal/_moderation/postDelSupervisor/postDelSupervisor";
-import { postSetCounterparty } from "~/requests/_personal/_moderation/postSetCounterparty/postSetCounterparty";
-import { postDeleteCounterparty } from "~/requests/_personal/_moderation/postDeleteCounterparty/postDeleteCounterparty";
+import { getCounterparty } from "~/api/_personal/_moderation/getCounterparty/getCounterparty";
+import { getModerationSingleClient } from "~/api/_personal/_moderation/getModerationSingleClient/getModerationSingleClient";
+import { getSupervisors } from "~/api/_personal/_moderation/getSupervisors/getSupervisors";
+import { postSetUserImg } from "~/api/_personal/_moderation/postSetUserImg/postSetUserImg";
+import { postDelProject } from "~/api/_personal/_moderation/delProject/delProject";
+import { postDelPlaceModeration } from "~/api/_personal/_moderation/postDelPlaceModeration/postDelPlaceModeration";
+import { postConfirmUserRegister } from "~/api/_personal/_moderation/postConfirmUserRegister/postConfirmUserRegister";
+import { postSetSupervisors } from "~/api/_personal/_moderation/postSetSupervisors/postSetSupervisors";
+import { postDelSupervisor } from "~/api/_personal/_moderation/postDelSupervisor/postDelSupervisor";
+import { postSetCounterparty } from "~/api/_personal/_moderation/postSetCounterparty/postSetCounterparty";
+import { postDeleteCounterparty } from "~/api/_personal/_moderation/postDeleteCounterparty/postDeleteCounterparty";
 
 const getRadioButtons = (
   list: { id: number; name: string; logo: string }[],

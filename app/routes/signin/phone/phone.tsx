@@ -24,7 +24,7 @@ import marriator from "./marriator.svg";
 
 import { useStore } from "~/store/store";
 
-import { postSendPhone } from "~/requests/postSendPhone/postSendPhone";
+import { postSendPhone } from "~/api/postSendPhone/postSendPhone";
 
 const setUserPhone = useStore.getState().setUserPhone;
 

@@ -8,19 +8,19 @@ import { ServiceStaticMobileView } from "~/shared/views/ServiceMobileView/Servic
 
 import { useStore } from "~/store/store";
 
-import type { postCreateTaskActivityPayload } from "~/requests/_personal/postCreateTaskActivity/postCreateTaskActivity";
-import type { postUpdateTaskActivityPayload } from "~/requests/_personal/postUpdateTaskActivity/postUpdateTaskActivity";
+import type { postCreateTaskActivityPayload } from "~/api/_personal/postCreateTaskActivity/postCreateTaskActivity";
+import type { postUpdateTaskActivityPayload } from "~/api/_personal/postUpdateTaskActivity/postUpdateTaskActivity";
 
 import type { ServiceMobileViewInterface } from "~/shared/views/ServiceMobileView/ServiceMobileViewInterface";
 
 import { Loader } from "~/shared/ui/Loader/Loader";
 
-import { getTask } from "~/requests/_personal/getTask/getTask";
-import { getViewActivitiesForTask } from "~/requests/_personal/getViewActivitiesForTask/getViewActivitiesForTask";
-import { getPlaceForTask } from "~/requests/_personal/getPlaceForTask/getPlaceForTask";
-import { postCreateTaskActivity } from "~/requests/_personal/postCreateTaskActivity/postCreateTaskActivity";
-import { postUpdateTaskActivity } from "~/requests/_personal/postUpdateTaskActivity/postUpdateTaskActivity";
-import { getSettingsFromKey } from "~/requests/_settings/getSettingsFromKey/getSettingsFromKey";
+import { getTask } from "~/api/_personal/getTask/getTask";
+import { getViewActivitiesForTask } from "~/api/_personal/getViewActivitiesForTask/getViewActivitiesForTask";
+import { getPlaceForTask } from "~/api/_personal/getPlaceForTask/getPlaceForTask";
+import { postCreateTaskActivity } from "~/api/_personal/postCreateTaskActivity/postCreateTaskActivity";
+import { postUpdateTaskActivity } from "~/api/_personal/postUpdateTaskActivity/postUpdateTaskActivity";
+import { getSettingsFromKey } from "~/api/_settings/getSettingsFromKey/getSettingsFromKey";
 
 type MobileModeData = Omit<
   ServiceMobileViewInterface,

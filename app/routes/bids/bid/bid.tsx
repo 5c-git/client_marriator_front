@@ -1,9 +1,9 @@
 import { useState } from "react";
 import { useOutletContext, redirect, useSubmit } from "react-router";
 import type { Route } from "./+types/bid";
-import type { GetBidSuccess } from "~/requests/_personal/getBid/getBidSuccess.schema";
+import type { GetBidSuccess } from "~/api/_personal/getBid/getBidSuccess.schema";
 import type { BidMobileViewInterface } from "./_views/BidMobileView/BidMobileViewInterface";
-import type { postUpdateBidPayload } from "~/requests/_personal/postUpdateBid/postUpdateBid";
+import type { postUpdateBidPayload } from "~/api/_personal/postUpdateBid/postUpdateBid";
 
 import { useTranslation } from "react-i18next";
 
@@ -14,11 +14,11 @@ import { statusCodeMap } from "~/shared/specialistStatus";
 import { BidFormMobileView } from "./_views/BidMobileView/BidFormMobileView";
 import { BidStaticMobileView } from "./_views/BidMobileView/BidStaticMobileView";
 
-import { getPlaceForBid } from "~/requests/_personal/getPlaceForBid/getPlaceForBid";
-import { getRadiusSelect } from "~/requests/_personal/getRadiusSelect/getRadiusSelect";
-import { postUpdateBid } from "~/requests/_personal/postUpdateBid/postUpdateBid";
-import { postCancelBid } from "~/requests/_personal/postCancelBid/postCancelBid";
-import { getSettingsFromKey } from "~/requests/_settings/getSettingsFromKey/getSettingsFromKey";
+import { getPlaceForBid } from "~/api/_personal/getPlaceForBid/getPlaceForBid";
+import { getRadiusSelect } from "~/api/_personal/getRadiusSelect/getRadiusSelect";
+import { postUpdateBid } from "~/api/_personal/postUpdateBid/postUpdateBid";
+import { postCancelBid } from "~/api/_personal/postCancelBid/postCancelBid";
+import { getSettingsFromKey } from "~/api/_settings/getSettingsFromKey/getSettingsFromKey";
 
 type MobileModeData = {
   mode: "mobile";

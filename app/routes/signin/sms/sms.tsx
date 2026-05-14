@@ -26,8 +26,8 @@ import { Loader } from "~/shared/ui/Loader/Loader";
 
 import { useStore } from "~/store/store";
 
-import { postSendPhone } from "~/requests/postSendPhone/postSendPhone";
-import { postCheckCode } from "~/requests/postCheckCode/postCheckCode";
+import { postSendPhone } from "~/api/postSendPhone/postSendPhone";
+import { postCheckCode } from "~/api/postCheckCode/postCheckCode";
 
 export async function clientLoader({ request }: Route.ClientLoaderArgs) {
   await loadNamespaces("sms");

@@ -15,7 +15,7 @@ import type { EntitiesListViewInterface } from "~/shared/views/EntitiesListView/
 import { EntityCard } from "~/shared/ui/EntityCard/EntityCard";
 import { Loader } from "~/shared/ui/Loader/Loader";
 
-import { getJobs } from "~/requests/_personal/getJobs/getJobs";
+import { getJobs } from "~/api/_personal/getJobs/getJobs";
 
 type MobileModeData = {
   mode: "mobile";

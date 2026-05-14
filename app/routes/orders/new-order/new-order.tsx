@@ -9,13 +9,13 @@ import type { NewOrderMobileViewInterface } from "./_views/NewOrderMobileViewInt
 
 import { useStore } from "~/store/store";
 
-import { getOrder } from "~/requests/_personal/getOrder/getOrder";
-import { getPlaceForOrder } from "~/requests/_personal/getPlaceForOrder/getPlaceForOrder";
-import { postCreateOrder } from "~/requests/_personal/postCreateOrder/postCreateOrder";
-import { postUpdateOrder } from "~/requests/_personal/postUpdateOrder/postUpdateOrder";
-import { postDeleteOrderActivity } from "~/requests/_personal/postDeleteOrderActivity/postDeleteOrderActivity";
-import { postCancelOrder } from "~/requests/_personal/postCancelOrder/postCancelOrder";
-import { postSendOrder } from "~/requests/_personal/postSendOrder/postSendOrder";
+import { getOrder } from "~/api/_personal/getOrder/getOrder";
+import { getPlaceForOrder } from "~/api/_personal/getPlaceForOrder/getPlaceForOrder";
+import { postCreateOrder } from "~/api/_personal/postCreateOrder/postCreateOrder";
+import { postUpdateOrder } from "~/api/_personal/postUpdateOrder/postUpdateOrder";
+import { postDeleteOrderActivity } from "~/api/_personal/postDeleteOrderActivity/postDeleteOrderActivity";
+import { postCancelOrder } from "~/api/_personal/postCancelOrder/postCancelOrder";
+import { postSendOrder } from "~/api/_personal/postSendOrder/postSendOrder";
 
 type MobileModeData = {
   mode: "mobile";

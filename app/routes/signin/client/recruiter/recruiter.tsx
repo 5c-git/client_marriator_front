@@ -18,9 +18,9 @@ import { Loader } from "~/shared/ui/Loader/Loader";
 
 import { useStore } from "~/store/store";
 
-import { getPlace } from "~/requests/getPlace/getPlace";
-import { postSetUserData } from "~/requests/postSetUserData/postSetUserData";
-import { postFinishRegister } from "~/requests/postFinishRegister/postFinishRegister";
+import { getPlace } from "~/api/getPlace/getPlace";
+import { postSetUserData } from "~/api/postSetUserData/postSetUserData";
+import { postFinishRegister } from "~/api/postFinishRegister/postFinishRegister";
 
 export async function clientLoader() {
   const accessToken = useStore.getState().accessToken;

@@ -1,7 +1,7 @@
 import { useSubmit, redirect, useOutletContext } from "react-router";
 import type { Route } from "./+types/specialists";
 import type { SpecialistsMobileViewInterface } from "./SpecialitstsMobileView/SpecialistsMobileViewInterface";
-import type { GetBidSuccess } from "~/requests/_personal/getBid/getBidSuccess.schema";
+import type { GetBidSuccess } from "~/api/_personal/getBid/getBidSuccess.schema";
 
 import { useStore } from "~/store/store";
 
@@ -10,9 +10,9 @@ import { withLocale } from "~/shared/withLocale";
 import { SpecialistsInviteFormMobileView } from "./SpecialitstsMobileView/SpecialistsInviteFormMobileView";
 import { SpecialistsStaticMobileView } from "./SpecialitstsMobileView/SpecialistsStaticMobileView";
 
-import { getSpecialistForBid } from "~/requests/_personal/getSpecialistForBid/getSpecialistForBid";
-import { getRadiusSelect } from "~/requests/_personal/getRadiusSelect/getRadiusSelect";
-import { postInvoiceBid } from "~/requests/_personal/postInvoiceBid/postInvoiceBid";
+import { getSpecialistForBid } from "~/api/_personal/getSpecialistForBid/getSpecialistForBid";
+import { getRadiusSelect } from "~/api/_personal/getRadiusSelect/getRadiusSelect";
+import { postInvoiceBid } from "~/api/_personal/postInvoiceBid/postInvoiceBid";
 
 type MobileModeData = SpecialistsMobileViewInterface & { mode: "mobile" };
 

@@ -30,13 +30,13 @@ import { TopNavigation } from "~/shared/ui/TopNavigation/TopNavigation";
 import CheckIcon from "@mui/icons-material/Check";
 import PlayArrowOutlinedIcon from "@mui/icons-material/PlayArrowOutlined";
 
-import { getJob } from "~/requests/_personal/getJob/getJob";
-import { postAcceptBid } from "~/requests/_personal/postAcceptBid/postAcceptBid";
-import { postStartDay } from "~/requests/_personal/postStartDay/postStartDay";
-import { postRejectBid } from "~/requests/_personal/postRejectBid/postRejectBid";
-import { postEndDay } from "~/requests/_personal/postEndDay/postEndDay";
-import { postPayReport } from "~/requests/_personal/postPayReport/postPayReport";
-import { getSettingsFromKey } from "~/requests/_settings/getSettingsFromKey/getSettingsFromKey";
+import { getJob } from "~/api/_personal/getJob/getJob";
+import { postAcceptBid } from "~/api/_personal/postAcceptBid/postAcceptBid";
+import { postStartDay } from "~/api/_personal/postStartDay/postStartDay";
+import { postRejectBid } from "~/api/_personal/postRejectBid/postRejectBid";
+import { postEndDay } from "~/api/_personal/postEndDay/postEndDay";
+import { postPayReport } from "~/api/_personal/postPayReport/postPayReport";
+import { getSettingsFromKey } from "~/api/_settings/getSettingsFromKey/getSettingsFromKey";
 // import { postEndJob } from "~/requests/_personal/postEndJob/postEndJob";
 // import { postEndSpecialistJob } from "~/requests/_personal/postEndSpecialistJob/postEndSpecialistJob";
 

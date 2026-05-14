@@ -8,18 +8,18 @@ import { ServiceStaticMobileView } from "~/shared/views/ServiceMobileView/Servic
 
 import { useStore } from "~/store/store";
 
-import type { postCreateOrderActivityPayload } from "~/requests/_personal/postCreateOrderActivity/postCreateOrderActivity";
-import type { postUpdateOrderActivityPayload } from "~/requests/_personal/postUpdateOrderActivity/postUpdateOrderActivity";
+import type { postCreateOrderActivityPayload } from "~/api/_personal/postCreateOrderActivity/postCreateOrderActivity";
+import type { postUpdateOrderActivityPayload } from "~/api/_personal/postUpdateOrderActivity/postUpdateOrderActivity";
 import type { ServiceMobileViewInterface } from "~/shared/views/ServiceMobileView/ServiceMobileViewInterface";
 
 import { Loader } from "~/shared/ui/Loader/Loader";
 
-import { getOrder } from "~/requests/_personal/getOrder/getOrder";
-import { getViewActivitiesForOrder } from "~/requests/_personal/getViewActivitiesForOrder/getViewActivitiesForOrder";
-import { getPlaceForOrder } from "~/requests/_personal/getPlaceForOrder/getPlaceForOrder";
-import { postCreateOrderActivity } from "~/requests/_personal/postCreateOrderActivity/postCreateOrderActivity";
-import { postUpdateOrderActivity } from "~/requests/_personal/postUpdateOrderActivity/postUpdateOrderActivity";
-import { getSettingsFromKey } from "~/requests/_settings/getSettingsFromKey/getSettingsFromKey";
+import { getOrder } from "~/api/_personal/getOrder/getOrder";
+import { getViewActivitiesForOrder } from "~/api/_personal/getViewActivitiesForOrder/getViewActivitiesForOrder";
+import { getPlaceForOrder } from "~/api/_personal/getPlaceForOrder/getPlaceForOrder";
+import { postCreateOrderActivity } from "~/api/_personal/postCreateOrderActivity/postCreateOrderActivity";
+import { postUpdateOrderActivity } from "~/api/_personal/postUpdateOrderActivity/postUpdateOrderActivity";
+import { getSettingsFromKey } from "~/api/_settings/getSettingsFromKey/getSettingsFromKey";
 
 type MobileModeData = Omit<
   ServiceMobileViewInterface,

@@ -19,10 +19,10 @@ import { Button, Typography } from "@mui/material";
 
 import CheckIcon from "@mui/icons-material/Check";
 
-import { getJob } from "~/requests/_personal/getJob/getJob";
-import { postAcceptSpecialist } from "~/requests/_personal/postAcceptSpecialist/postAcceptSpecialist";
-import { postEndSpecialistJob } from "~/requests/_personal/postEndSpecialistJob/postEndSpecialistJob";
-import { postPayReportForManager } from "~/requests/_personal/postPayReportForManager/postPayReportForManager";
+import { getJob } from "~/api/_personal/getJob/getJob";
+import { postAcceptSpecialist } from "~/api/_personal/postAcceptSpecialist/postAcceptSpecialist";
+import { postEndSpecialistJob } from "~/api/_personal/postEndSpecialistJob/postEndSpecialistJob";
+import { postPayReportForManager } from "~/api/_personal/postPayReportForManager/postPayReportForManager";
 
 type MobileModeData = SpecialistMobileViewInterface & { mode: "mobile" };
 

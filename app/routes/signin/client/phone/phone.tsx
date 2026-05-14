@@ -26,8 +26,8 @@ import marriator from "./marriator.svg";
 
 import { useStore } from "~/store/store";
 
-import { getUserByHash } from "~/requests/getUserByHash/getUserByHash";
-import { postSendPhone } from "~/requests/postSendPhone/postSendPhone";
+import { getUserByHash } from "~/api/getUserByHash/getUserByHash";
+import { postSendPhone } from "~/api/postSendPhone/postSendPhone";
 
 const setUserPhone = useStore.getState().setUserPhone;
 const setUserRole = useStore.getState().setUserRole;

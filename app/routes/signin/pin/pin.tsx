@@ -16,9 +16,9 @@ import Box from "@mui/material/Box";
 import { StyledOptField } from "~/shared/ui/StyledOtpField/StyledOtpField";
 import { Loader } from "~/shared/ui/Loader/Loader";
 
-import { postCheckPin } from "~/requests/postCheckPin/postCheckPin";
-import { getUserInfo } from "~/requests/_personal/getUserInfo/getUserInfo";
-import { postStartRestorePin } from "~/requests/postStartRestorePin/postStartRestorePin";
+import { postCheckPin } from "~/api/postCheckPin/postCheckPin";
+import { getUserInfo } from "~/api/_personal/getUserInfo/getUserInfo";
+import { postStartRestorePin } from "~/api/postStartRestorePin/postStartRestorePin";
 
 import { useStore } from "~/store/store";
 import { determineRole } from "~/shared/determineRole";

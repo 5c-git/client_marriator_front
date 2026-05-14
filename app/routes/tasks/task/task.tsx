@@ -10,7 +10,7 @@ import {
 import type { Route } from "./+types/task";
 import type { EntityMobileViewInterface } from "~/shared/views/EntityMobileView/EntityMobileViewInterface";
 import type { RequestSearchDrawerInterface } from "~/shared/views/RequestSearchDrawer/RequestSearchDrawerInterface";
-import type { PostUpdateSearchPayload } from "~/requests/_personal/postUpdateSearch/postUpdateSearch";
+import type { PostUpdateSearchPayload } from "~/api/_personal/postUpdateSearch/postUpdateSearch";
 
 import { useStore } from "~/store/store";
 import { useTranslation } from "react-i18next";
@@ -42,17 +42,17 @@ import ClearIcon from "@mui/icons-material/Clear";
 import CheckIcon from "@mui/icons-material/Check";
 import { RouteIcon } from "~/shared/icons/RouteIcon";
 
-import { getTask } from "~/requests/_personal/getTask/getTask";
-import { getSupervisorsForTask } from "~/requests/_personal/getSupervisorsForTask/getSupervisorsForTask";
-import { postDeleteTaskActivity } from "~/requests/_personal/postDeleteTaskActivity/postDeleteTaskActivity";
-import { postCreateBidFromTask } from "~/requests/_personal/postCreateBidFromTask/postCreateBidFromTask";
-import { postInstructTask } from "~/requests/_personal/postInstructTask/postInstructTask";
-import { postInvoiceTask } from "~/requests/_personal/postInvoiceTask/postInvoiceTask";
-import { postAcceptTask } from "~/requests/_personal/postAcceptTask/postAcceptTask";
+import { getTask } from "~/api/_personal/getTask/getTask";
+import { getSupervisorsForTask } from "~/api/_personal/getSupervisorsForTask/getSupervisorsForTask";
+import { postDeleteTaskActivity } from "~/api/_personal/postDeleteTaskActivity/postDeleteTaskActivity";
+import { postCreateBidFromTask } from "~/api/_personal/postCreateBidFromTask/postCreateBidFromTask";
+import { postInstructTask } from "~/api/_personal/postInstructTask/postInstructTask";
+import { postInvoiceTask } from "~/api/_personal/postInvoiceTask/postInvoiceTask";
+import { postAcceptTask } from "~/api/_personal/postAcceptTask/postAcceptTask";
 
-import { getPlaceForBid } from "~/requests/_personal/getPlaceForBid/getPlaceForBid";
-import { postCreateSearchFromTask } from "~/requests/_personal/postCreateSearchFromTask/postCreateSearchFromTask";
-import { postUpdateSearch } from "~/requests/_personal/postUpdateSearch/postUpdateSearch";
+import { getPlaceForBid } from "~/api/_personal/getPlaceForBid/getPlaceForBid";
+import { postCreateSearchFromTask } from "~/api/_personal/postCreateSearchFromTask/postCreateSearchFromTask";
+import { postUpdateSearch } from "~/api/_personal/postUpdateSearch/postUpdateSearch";
 
 type MobileModeData = {
   mode: "mobile";

@@ -12,7 +12,7 @@ import Box from "@mui/material/Box";
 import { Avatar, Typography } from "@mui/material";
 import { Loader } from "~/shared/ui/Loader/Loader";
 
-import { getModerationClient } from "~/requests/_personal/_moderation/getModerationClient/getModerationClient";
+import { getModerationClient } from "~/api/_personal/_moderation/getModerationClient/getModerationClient";
 
 type MobileModeData = {
   mode: "mobile";

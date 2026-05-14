@@ -32,9 +32,9 @@ import { Button, Dialog, DialogActions, DialogTitle, Fab } from "@mui/material";
 import LoopIcon from "@mui/icons-material/Loop";
 import AddIcon from "@mui/icons-material/Add";
 
-import { getTasks } from "~/requests/_personal/getTasks/getTasks";
-import { postCancelTask } from "~/requests/_personal/postCancelTask/postCancelTask";
-import { postRepeatTask } from "~/requests/_personal/postRepeatTask/postRepeatTask";
+import { getTasks } from "~/api/_personal/getTasks/getTasks";
+import { postCancelTask } from "~/api/_personal/postCancelTask/postCancelTask";
+import { postRepeatTask } from "~/api/_personal/postRepeatTask/postRepeatTask";
 
 type MobileModeData = {
   mode: "mobile";

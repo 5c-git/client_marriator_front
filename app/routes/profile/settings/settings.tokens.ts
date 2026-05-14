@@ -1,7 +1,7 @@
 import { token } from "brandi";
 
-import type { GetUserSettingsSuccess } from "~/requests/_personal/getUserSettings/getUserSettingsSuccess.schema";
-import type { PostSetUserSettingsSuccess } from "~/requests/_personal/postSetUserSettings/postSetUserSettingsSuccess.schema";
+import type { GetUserSettingsSuccess } from "~/api/_personal/getUserSettings/getUserSettingsSuccess.schema";
+import type { PostSetUserSettingsSuccess } from "~/api/_personal/postSetUserSettings/postSetUserSettingsSuccess.schema";
 
 import type { SettingsService } from "./settings.service";
 
