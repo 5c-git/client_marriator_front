@@ -9,7 +9,9 @@ import {
   useRouteError,
   isRouteErrorResponse,
   useNavigate,
+  redirect,
 } from "react-router";
+import type { Route } from "./+types/root";
 import { useEffect, useState } from "react";
 
 import { UnxpectedError } from "./shared/unexpectedError/unexpectedError";
@@ -32,7 +34,6 @@ import { postSendError } from "./api/postSendError/postSendError";
 import logoTurnOff from "./logo-turnoff.svg";
 
 export async function clientLoader({
-
   params,
 }: LoaderFunctionArgs) {
   const locale = params.lang ?? "ru";

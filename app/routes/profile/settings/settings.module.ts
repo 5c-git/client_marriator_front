@@ -1,24 +1,23 @@
-import { DependencyModule, Container } from "brandi";
+import { Container } from "brandi";
+
+import { appContainer } from "~/container";
 
 import { SettingsService } from "./settings.service";
+import { settingsPrivateTokens } from "./settings.private-tokens";
 import { settingsTokens } from "./settings.tokens";
 
-import { useStore } from "~/store/store";
 import { getUserSettings } from "~/api/_personal/getUserSettings/getUserSettings";
 import { postSetUserSettings } from "~/api/_personal/postSetUserSettings/postSetUserSettings";
 
-export const settingsContainer = new Container();
+export const settingsContainer = new Container().extend(appContainer);
+
 
 settingsContainer
-  .bind(settingsTokens.getAccessToken)
-  .toConstant(() => useStore.getState().accessToken);
-
-settingsContainer
-  .bind(settingsTokens.fetchUserSettings)
+  .bind(settingsPrivateTokens.fetchUserSettings)
   .toConstant((accessToken) => getUserSettings(accessToken));
 
 settingsContainer
-  .bind(settingsTokens.saveNotificationsToggle)
+  .bind(settingsPrivateTokens.saveNotificationsToggle)
   .toConstant((accessToken, toggleNewState) =>
     postSetUserSettings(accessToken, toggleNewState),
   );
