@@ -5,7 +5,7 @@ import { appTokens } from "./container.tokens";
 
 import { AppService } from "./container.service";
 
-import { useStore } from "./store/store";
+import { useStore } from "../../store/store";
 
 
 export const appContainer = new Container();

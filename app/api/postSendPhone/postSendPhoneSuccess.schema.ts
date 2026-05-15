@@ -12,4 +12,4 @@ export const postSendPhoneSuccessSchema = z.object({
   status: z.literal("success"),
 });
 
-export type postSendPhoneSuccess = z.infer<typeof postSendPhoneSuccessSchema>;
+export type PostSendPhoneSuccess = z.infer<typeof postSendPhoneSuccessSchema>;

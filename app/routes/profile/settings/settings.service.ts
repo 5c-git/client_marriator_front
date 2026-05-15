@@ -1,10 +1,10 @@
 import {injected} from "brandi";
 
-import type { AppService } from "~/container.service";
+import type { AppService } from "~/shared/container/container.service";
 import type { FetchUserSettings, SaveNotificationsToggle } from "./settings.private-tokens";
 
 import { settingsPrivateTokens } from "./settings.private-tokens";
-import { appTokens } from "~/container.tokens";
+import { appTokens } from "~/shared/container/container.tokens";
 
 export class SettingsService {
     constructor(

@@ -1,6 +1,6 @@
 import { Container } from "brandi";
 
-import { appContainer } from "~/container";
+import { appContainer } from "~/shared/container/container";
 
 import { SettingsService } from "./settings.service";
 import { settingsPrivateTokens } from "./settings.private-tokens";

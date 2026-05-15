@@ -74,6 +74,7 @@ import settings from "../../public/locales/ru/settings.json";
 //routes
 
 //views
+import PhoneView from '../../public/locales/ru/PhoneView.json'
 import SettingsView from "../../public/locales/ru/SettingsView.json";
 import UsersMobileView from "../../public/locales/ru/UsersMobileView.json";
 import JobMobileView from "../../public/locales/ru/JobMobileView.json";
@@ -178,6 +179,7 @@ declare module "i18next" {
       HomeLayout: typeof HomeLayout;
 
       //views
+      PhoneView: typeof PhoneView;
       SettingsView: typeof SettingsView;
       UsersMobileView: typeof UsersMobileView;
       JobMobileView: typeof JobMobileView;

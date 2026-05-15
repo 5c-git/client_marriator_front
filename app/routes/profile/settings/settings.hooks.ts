@@ -1,19 +1,10 @@
-import { useCallback, useMemo } from "react";
-import { useNavigation, useNavigate, useSubmit } from "react-router";
+import { useCallback } from "react";
+import { useSubmit } from "react-router";
 
-import {withLocale} from "~/shared/withLocale";
 
 export function useSettingsHooks() {
   const submit = useSubmit();
-  const navigation = useNavigation();
-  const navigate = useNavigate();
 
-  const isLoading = useMemo(() => {
-    if (navigation.state !== "idle") return true;
-    return false;
-  }, [navigation]);
-
-  const navigateTo = useCallback((navPath: string) => navigate(withLocale(navPath), { viewTransition: true }), [navigate]);
 
   const submitNotificationValue = useCallback((notificationValue: boolean) => {
     submit(
@@ -31,5 +22,5 @@ export function useSettingsHooks() {
       };
   }, [submit]);
 
-  return { isLoading, navigateTo, submitNotificationValue };
+  return {  submitNotificationValue };
 }
