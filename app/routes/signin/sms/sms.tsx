@@ -36,10 +36,12 @@ export async function clientAction({ request }: Route.ClientActionArgs) {
   if (_action === "sendAgain") {
     const data = await smsService.resendCode(fields.phone);
 
-    if (data.result.code.status !== "errorSend") {
+    if (
+      data.result.code.status === "success" ||
+      data.result.code.status === "exists"
+    ) {
       currentURL.searchParams.set("ttl", data.result.code.ttl.toString());
       currentURL.searchParams.set("type", data.result.type);
-
       throw redirect(currentURL.toString());
     }
 
