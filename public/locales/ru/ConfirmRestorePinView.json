@@ -1,0 +1,10 @@
+{
+    "confirmRestorePin": {
+        "header": "Подтвердите код",
+        "sendAgain": "Получить код повторно",
+        "timer": "Повторная отправка доступна через",
+        "inputPlaceholder": "Код из сообщения",
+        "inputValidation": "Обязательное поле",
+        "inputValidation_lenght": "Укажите корректный код"
+    }
+}

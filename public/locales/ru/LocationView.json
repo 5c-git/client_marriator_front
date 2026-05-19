@@ -1,0 +1,11 @@
+{
+  "location": {
+    "header": "Места проведения",
+    "headerListAction": "Списком",
+    "headerMapAction": "Картой",
+    "searchbarPlaceholder": "Найти...",
+    "regionPlaceholder": "Регион",
+    "cancelButton": "Отменить",
+    "selectButton": "Выбрать"
+  }
+}

@@ -1,208 +1,57 @@
-import { useSubmit, useNavigation, redirect } from "react-router";
+import { redirect } from "react-router";
 import type { Route } from "./+types/pin";
 
 import { t } from "i18next";
 import { useTranslation } from "react-i18next";
 import { withLocale } from "~/shared/withLocale";
 
-import {zodResolver} from "@hookform/resolvers/zod";
-import {z} from 'zod';
-
-import { useForm, Controller } from "react-hook-form";
-
-import { Typography, Snackbar, Alert, Button } from "@mui/material";
-import Box from "@mui/material/Box";
-
-import { StyledOptField } from "~/shared/ui/StyledOtpField/StyledOtpField";
+import { Alert, Snackbar } from "@mui/material";
 import { Loader } from "~/shared/ui/Loader/Loader";
 
-import { postCheckPin } from "~/api/postCheckPin/postCheckPin";
-import { getUserInfo } from "~/api/_personal/getUserInfo/getUserInfo";
-import { postStartRestorePin } from "~/api/postStartRestorePin/postStartRestorePin";
-
-import { useStore } from "~/store/store";
-import { determineRole } from "~/shared/determineRole";
+import { PinView } from "./_views/PinView";
+import { pinContainer } from "./pin.module";
+import { pinTokens } from "./pin.tokens";
+import { useAppHooks } from "~/shared/hooks/app.hooks";
+import { usePinHooks } from "./pin.hooks";
 
 export async function clientAction({ request }: Route.ClientActionArgs) {
   const { _action, ...fields } = await request.json();
-  const params = new URLSearchParams();
-  const accessToken = useStore.getState().accessToken;
+  const pinService = pinContainer.get(pinTokens.pinService);
 
-  if (accessToken) {
-    if (_action && _action === "restorePin") {
-      const data = await postStartRestorePin(accessToken);
 
-      useStore.getState().setAccessToken(data.result.token.access_token);
-      useStore.getState().setRefreshToken(data.result.token.refresh_token);
+  if (_action === "restorePin") {
+    const data = await pinService.restorePin();
+    const params = new URLSearchParams();
 
-      params.set("ttl", data.result.code.ttl.toString());
+    params.set("ttl", data.result.code.ttl.toString());
 
-      throw redirect(withLocale(`/signin/confirm-restore-pin?${params}`));
-    } else {
-      const data = await postCheckPin(accessToken, fields.pin);
-      if (data.status === "success") {
-        useStore.getState().setAccessToken(data.result.token.access_token);
-        useStore.getState().setRefreshToken(data.result.token.refresh_token);
-
-        //getting and saving userRole
-        const userData = await getUserInfo(data.result.token.access_token);
-        const currentRole = determineRole(userData.result.userData.roles);
-        useStore.getState().setUserRole(currentRole);
-        useStore.getState().setUserId(userData.result.userData.id);
-        //getting and saving userRole
-
-        throw redirect(withLocale("/"));
-      } else if (data.status === "error") {
-        return { error: t("pinError", { ns: "pin" }) };
-      }
-    }
-  } else {
-    throw new Response("Токен авторизации не обнаружен!", { status: 401 });
+    throw redirect(withLocale(`/signin/confirm-restore-pin?${params}`));
   }
+
+  const data = await pinService.verifyPin(fields.pin);
+
+  if (data.status === "success") {
+    throw redirect(withLocale("/"));
+  }
+
+  return { error: t("pinError", { ns: "pin" }) };
 }
 
 export default function Pin({ actionData }: Route.ComponentProps) {
   const { t } = useTranslation("pin");
-  const submit = useSubmit();
-  const navigation = useNavigation();
 
-  const {
-    control,
-    handleSubmit,
-    formState: { errors },
-  } = useForm({
-    defaultValues: {
-      pin: "",
-    },
-    resolver: zodResolver(
-      z.object({
-        pin: z.string().length(4)
-      })
-    ),
-  });
+  const { isLoading } = useAppHooks();
+  const { submitPin, submitRestorePin } = usePinHooks();
 
   return (
     <>
-      {navigation.state !== "idle" ? <Loader /> : null}
+      {isLoading ? <Loader /> : null}
 
-      <Box
-        sx={{
-          paddingTop: "38px",
-          paddingLeft: "16px",
-          paddingRight: "16px",
-        }}
-      >
-        <Typography
-          component="p"
-          variant="Bold_28"
-          sx={(theme) => ({
-            color: theme.vars.palette["Black"],
-            textAlign: "center",
-            paddingBottom: "8px",
-          })}
-        >
-          {t("header")}
-        </Typography>
-
-        <Typography
-          component="p"
-          variant="Reg_18"
-          sx={(theme) => ({
-            color: theme.vars.palette["Black"],
-            textAlign: "center",
-            paddingBottom: "37px",
-          })}
-        >
-          {t("intro")}
-        </Typography>
-
-        <Typography
-          component="p"
-          variant="Reg_14"
-          sx={(theme) => ({
-            color: theme.vars.palette["Black"],
-            textAlign: "center",
-            paddingBottom: "20px",
-          })}
-        >
-          {t("text")}
-        </Typography>
-
-        <form
-          style={{
-            display: "flex",
-            justifyContent: "center",
-          }}
-          onSubmit={handleSubmit((values) => {
-            submit(JSON.stringify(values), {
-              method: "POST",
-              encType: "application/json",
-            });
-          })}
-        >
-          <Controller
-            name="pin"
-            control={control}
-            render={({ field }) => (
-              <StyledOptField
-                error={errors.pin ? true : false}
-                onComplete={() => {
-                  handleSubmit((values) => {
-                    submit(JSON.stringify(values), {
-                      method: "POST",
-                      encType: "application/json",
-                    });
-                  })();
-                }}
-                {...field}
-              />
-            )}
-          />
-        </form>
-
-        <Box
-          sx={{
-            display: "flex",
-            justifyContent: "center",
-            columnGap: "10px",
-            paddingTop: "20px",
-          }}
-        >
-          <Typography
-            component="p"
-            variant="Reg_16"
-            sx={(theme) => ({
-              color: theme.vars.palette["Black"],
-            })}
-          >
-            {t("forgetPin")}
-          </Typography>
-
-          <Button
-            sx={{
-              textDecoration: "none",
-              width: "unset",
-              padding: 0,
-            }}
-            onClick={() => {
-              submit(JSON.stringify({ _action: "restorePin" }), {
-                method: "POST",
-                encType: "application/json",
-              });
-            }}
-          >
-            <Typography
-              component="p"
-              variant="Bold_16"
-              sx={(theme) => ({
-                color: theme.vars.palette["Corp_1"],
-              })}
-            >
-              {t("restorePin")}
-            </Typography>
-          </Button>
-        </Box>
-      </Box>
+      <PinView
+        translation="pin"
+        submitPinAction={submitPin}
+        submitRestorePinAction={submitRestorePin}
+      />
 
       <Snackbar open={actionData ? true : false} autoHideDuration={3000}>
         <Alert

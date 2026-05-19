@@ -10,11 +10,6 @@ import pin from "../../public/locales/ru/pin.json";
 import createPin from "../../public/locales/ru/createPin.json";
 import confirmRestorePin from "../../public/locales/ru/confirmRestorePin.json";
 
-import signin_client_phone from "../../public/locales/ru/signin_client_phone.json";
-import signin_client_meta from "../../public/locales/ru/signin_client_meta.json";
-import signin_client_location from "../../public/locales/ru/signin_client_location.json";
-import signin_client_recruiter from "../../public/locales/ru/signin_client_recruiter.json";
-import signin_client_registration_complete from "../../public/locales/ru/signin_client_registration_complete.json";
 //auth
 
 //registration
@@ -74,6 +69,14 @@ import settings from "../../public/locales/ru/settings.json";
 //routes
 
 //views
+import ConfirmRestorePinView from "../../public/locales/ru/ConfirmRestorePinView.json";
+import CreatePinView from "../../public/locales/ru/CreatePinView.json";
+import PinView from "../../public/locales/ru/PinView.json";
+import LocationView from "../../public/locales/ru/LocationView.json";
+import MetaView from "../../public/locales/ru/MetaView.json";
+import RecruiterView from "../../public/locales/ru/RecruiterView.json";
+import ClientPhoneView from "../../public/locales/ru/ClientPhoneView.json";
+import RegistrationCompleteView from "../../public/locales/ru/RegistrationCompleteView.json";
 import PhoneView from '../../public/locales/ru/PhoneView.json'
 import SmsView from "../../public/locales/ru/SmsView.json";
 import SettingsView from "../../public/locales/ru/SettingsView.json";
@@ -115,11 +118,6 @@ declare module "i18next" {
       createPin: typeof createPin;
       confirmRestorePin: typeof confirmRestorePin;
 
-      signin_client_phone: typeof signin_client_phone;
-      signin_client_meta: typeof signin_client_meta;
-      signin_client_location: typeof signin_client_location;
-      signin_client_recruiter: typeof signin_client_recruiter;
-      signin_client_registration_complete: typeof signin_client_registration_complete;
       //auth
 
       //registration
@@ -180,6 +178,14 @@ declare module "i18next" {
       HomeLayout: typeof HomeLayout;
 
       //views
+      ConfirmRestorePinView: typeof ConfirmRestorePinView;
+      CreatePinView: typeof CreatePinView;
+      PinView: typeof PinView;
+      LocationView: typeof LocationView;
+      MetaView: typeof MetaView;
+      RecruiterView: typeof RecruiterView;
+      ClientPhoneView: typeof ClientPhoneView;
+      RegistrationCompleteView: typeof RegistrationCompleteView;
       PhoneView: typeof PhoneView;
       SmsView: typeof SmsView;
       SettingsView: typeof SettingsView;

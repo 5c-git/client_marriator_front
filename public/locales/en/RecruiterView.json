@@ -1,0 +1,11 @@
+{
+  "recruiter": {
+    "form": {
+      "fio": "Required field",
+      "locations": "At least one location must be chosen"
+    },
+    "header": "Setting up the account",
+    "fioPlaceholder": "Full name *",
+    "completeRegistration": "Complete registration"
+  }
+}
