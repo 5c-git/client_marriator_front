@@ -18,6 +18,5 @@ export type SetPlace = (
 export const locationPrivateTokens = {
   getData: token<GetData>("location-private:getData"),
   getPlace: token<GetPlace>("location-private:getPlace"),
-  setPlace: token<SetPlace>("location-private:setPlace"),
-  appService: token<AppService>("location-private:appService"),
+  setPlace: token<SetPlace>("location-private:setPlace")
 };

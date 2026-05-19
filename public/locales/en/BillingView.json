@@ -1,0 +1,16 @@
+{
+  "billing": {
+    "header": "Billing details",
+    "header_action": "+ Add",
+    "empty_text": "To receive payments, you need to become self-employed and add payment details, or add details of a trusted person registered as self-employed.",
+    "field_fio": "Recipient full name",
+    "field_bik": "BIC",
+    "field_account": "Account number",
+    "field_card": "Bank card number",
+    "field_payWithCard": "Payments by bank card number?",
+    "field_cardDue": "Card expiration date",
+    "yes": "Yes",
+    "no": "No",
+    "button_edit": "Edit"
+  }
+}

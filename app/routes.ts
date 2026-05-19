@@ -19,7 +19,7 @@ export default [
       route(":lang?/profile", "routes/profile/profile.tsx"),
       route(
         ":lang?/profile/my-profile",
-        "routes/profile/my-profile/index/my-profile.tsx",
+        "routes/profile/my-profile/my-profile.tsx",
       ),
       route(
         ":lang?/profile/my-profile/profile-edit",
@@ -43,7 +43,7 @@ export default [
       ),
       route(
         ":lang?/profile/my-profile/billing",
-        "routes/profile/my-profile/billing/index/billing.tsx",
+        "routes/profile/my-profile/billing/billing.tsx",
       ),
       route(
         ":lang?/profile/my-profile/billing/billing-add",

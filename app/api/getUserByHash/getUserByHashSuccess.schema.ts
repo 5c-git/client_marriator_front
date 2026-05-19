@@ -5,7 +5,7 @@ export const getUserByHashSuccessSchema = z.object({
     userId: z.number(),
     phone: z.number(),
     email: z.string(),
-    role: z.enum(["admin", "manager", "client", "recruiter"]),
+    role: z.enum(["admin" , "supervisor" , "manager" , "client" , "specialist"]),
   }),
   status: z.string(),
 });

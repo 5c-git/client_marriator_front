@@ -11,6 +11,7 @@ import type {
   DetermineUserRole,
 } from "./pin.private-tokens";
 import { pinPrivateTokens } from "./pin.private-tokens";
+import { appTokens } from "~/shared/container/container.tokens";
 import type { AppService } from "~/shared/container/container.service";
 
 export class PinService {
@@ -78,5 +79,5 @@ injected(
   pinPrivateTokens.setUserRole,
   pinPrivateTokens.setUserId,
   pinPrivateTokens.determineUserRole,
-  pinPrivateTokens.appService,
+  appTokens.appService,
 );

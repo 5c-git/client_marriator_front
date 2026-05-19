@@ -26,15 +26,14 @@ import registrationComplete from "../../public/locales/ru/registrationComplete.j
 
 //internal
 import HomeLayout from "../../public/locales/ru/HomeLayout.json";
-import profile from "../../public/locales/ru/profile.json";
-import myProfile from "../../public/locales/ru/myProfile.json";
+import MyProfileView from "../../public/locales/ru/MyProfileView.json";
 import profileEdit from "../../public/locales/ru/profileEdit.json";
 import profileMeta from "../../public/locales/ru/profileMeta.json";
 import userActivities from "../../public/locales/ru/userActivities.json";
 import workRadius from "../../public/locales/ru/workRadius.json";
 import confirmPersonalPhone from "../../public/locales/ru/confirmPersonalPhone.json";
 import confirmPersonalEmail from "../../public/locales/ru/confirmPersonalEmail.json";
-import billing from "../../public/locales/ru/billing.json";
+import BillingView from "../../public/locales/ru/BillingView.json";
 import billingAdd from "../../public/locales/ru/billingAdd.json";
 import billingEdit from "../../public/locales/ru/billingEdit.json";
 import documents from "../../public/locales/ru/documents.json";
@@ -80,6 +79,7 @@ import RegistrationCompleteView from "../../public/locales/ru/RegistrationComple
 import PhoneView from '../../public/locales/ru/PhoneView.json'
 import SmsView from "../../public/locales/ru/SmsView.json";
 import SettingsView from "../../public/locales/ru/SettingsView.json";
+import ProfileView from "../../public/locales/ru/ProfileView.json";
 import UsersMobileView from "../../public/locales/ru/UsersMobileView.json";
 import JobMobileView from "../../public/locales/ru/JobMobileView.json";
 import DayReviewMobileView from "../../public/locales/ru/DayReviewMobileView.json";
@@ -133,15 +133,14 @@ declare module "i18next" {
       //registration
 
       //internal
-      profile: typeof profile;
-      myProfile: typeof myProfile;
+      MyProfileView: typeof MyProfileView;
       profileEdit: typeof profileEdit;
       profileMeta: typeof profileMeta;
       userActivities: typeof userActivities;
       workRadius: typeof workRadius;
       confirmPersonalPhone: typeof confirmPersonalPhone;
       confirmPersonalEmail: typeof confirmPersonalEmail;
-      billing: typeof billing;
+      BillingView: typeof BillingView;
       billingAdd: typeof billingAdd;
       billingEdit: typeof billingEdit;
       documents: typeof documents;
@@ -189,6 +188,7 @@ declare module "i18next" {
       PhoneView: typeof PhoneView;
       SmsView: typeof SmsView;
       SettingsView: typeof SettingsView;
+      ProfileView: typeof ProfileView;
       UsersMobileView: typeof UsersMobileView;
       JobMobileView: typeof JobMobileView;
       DayReviewMobileView: typeof DayReviewMobileView;

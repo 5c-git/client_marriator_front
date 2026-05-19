@@ -1,13 +1,14 @@
 import { token } from "brandi";
 
 import type { GetUserByHashSuccess } from "~/api/getUserByHash/getUserByHashSuccess.schema";
+import type { GetUserByHashError } from "~/api/getUserByHash/getUserByHashError.schema";
 import type { PostSendPhoneSuccess } from "~/api/postSendPhone/postSendPhoneSuccess.schema";
 import type { PostSendPhoneErrorTimer } from "~/api/postSendPhone/postSendPhoneErrorTimer.schema";
 
 export type GetUserByHash = (
   accessToken: string,
   hash: string,
-) => Promise<GetUserByHashSuccess>;
+) => Promise<GetUserByHashSuccess |GetUserByHashError>;
 
 export type SendPhone = (
   phone: string,

@@ -8,9 +8,11 @@ import type {
 } from "./phone.private-tokens";
 
 import { phonePrivateTokens } from "./phone.private-tokens";
+import { appTokens } from "~/shared/container/container.tokens";
+import type { AppService } from "~/shared/container/container.service";
+
 import { PhoneMapper } from "./phone.mapper";
 
-const AUTH_HASH_TOKEN = "authHash";
 
 export type PhoneLoaderData = {
   userPhone: string;
@@ -27,10 +29,15 @@ export class PhoneService {
     private readonly sendPhone: SendPhone,
     private readonly setUserPhone: SetUserPhone,
     private readonly setUserRole: SetUserRole,
+    private readonly appService: AppService,
   ) {}
 
   async loadPhone(hash: string): Promise<PhoneLoaderData> {
-    const userData = await this.getUserByHash(AUTH_HASH_TOKEN, hash);
+    const userData = await this.getUserByHash(this.appService.getToken(), hash);
+
+    if ("error" in userData) {
+      throw new Error(userData.error);
+    }
 
     this.setUserRole(userData.result.role);
 
@@ -41,21 +48,29 @@ export class PhoneService {
 
   async submitPhone(phone: string): Promise<SubmitPhoneResult> {
     this.setUserPhone(phone);
-
+  
     const data = await this.sendPhone(phone);
-
+  
     if (data.result.type === "moderation") {
       return { type: "moderation" };
     }
-
-    if (data.result.code.status !== "errorSend") {
+  
+    if (data.status === "error") {
       return {
         type: "sms",
         ttl: data.result.code.ttl,
         smsType: data.result.type,
       };
     }
-
+  
+    if (data.result.code.status === "success") {
+      return {
+        type: "sms",
+        ttl: data.result.code.ttl,
+        smsType: data.result.type,
+      };
+    }
+  
     return { type: "error" };
   }
 }
@@ -66,4 +81,5 @@ injected(
   phonePrivateTokens.sendPhone,
   phonePrivateTokens.setUserPhone,
   phonePrivateTokens.setUserRole,
+  appTokens.appService,
 );

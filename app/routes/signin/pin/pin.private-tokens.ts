@@ -6,7 +6,6 @@ import type { PostStartRestorePinSuccess } from "~/api/postStartRestorePin/postS
 import type { PostStartRestorePinError } from "~/api/postStartRestorePin/postStartRestorePinError.schema";
 import type { GetUserInfoSuccess } from "~/api/_personal/getUserInfo/getUserInfoSuccess.schema";
 import type { determineRole } from "~/shared/determineRole";
-import type { AppService } from "~/shared/container/container.service";
 
 export type CheckPin = (
   accessToken: string,
@@ -43,5 +42,4 @@ export const pinPrivateTokens = {
   setUserRole: token<SetUserRole>("pin-private:setUserRole"),
   setUserId: token<SetUserId>("pin-private:setUserId"),
   determineUserRole: token<DetermineUserRole>("pin-private:determineUserRole"),
-  appService: token<AppService>("pin-private:appService"),
 };
