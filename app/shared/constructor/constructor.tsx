@@ -1,7 +1,11 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 // @ts-nocheck
 
-import { z} from "zod";
+import { useRef, useMemo } from "react";
+
+import { debounce } from "../debounce";
+
+import {z} from "zod";
 import {
   Controller,
   Control,
@@ -35,6 +39,58 @@ import { StyledSnilsField } from "../ui/StyledSnilsField/StyledSnilsField";
 import { StyledSmsField } from "../ui/StyledSmsField/StyledSmsField";
 import { StyledAutocomplete } from "../ui/StyledAutocomplete/StyledAutocomplete";
 import { StyledAutocompleteBic } from "../ui/StyledAutocompleteBic/StyledAutocompleteBic";
+
+const TEXT_FIELD_IMMEDIATE_CHANGE_DEBOUNCE_MS = 15_000;
+
+type ConstructorTextFieldProps = {
+  name: string;
+  control: Control<FieldValues>;
+  errors: FieldErrors;
+  onImmediateChange: () => void;
+  debounceMs?: number;
+  // остальные поля из item: placeholder, heading, validation, …
+  [key: string]: unknown;
+};
+
+function ConstructorTextField({
+  name,
+  control,
+  errors,
+  onImmediateChange,
+  debounceMs = TEXT_FIELD_IMMEDIATE_CHANGE_DEBOUNCE_MS,
+  ...itemProps
+}: ConstructorTextFieldProps) {
+
+  const onImmediateChangeRef = useRef(onImmediateChange);
+  onImmediateChangeRef.current = onImmediateChange;
+  const debouncedImmediateChange = useMemo(
+    () =>
+      debounce(() => {
+        onImmediateChangeRef.current();
+      }, debounceMs),
+    [debounceMs],
+  );
+  return (
+    <Controller
+      name={name}
+      control={control}
+      defaultValue={itemProps.value}
+      render={({ field }) => (
+        <StyledTextField
+          inputType="text"
+          error={errors[name]?.message}
+          onImmediateChange={debouncedImmediateChange}
+          inputStyle={{
+            paddingRight: "16px",
+            paddingLeft: "16px",
+          }}
+          {...itemProps}
+          {...field}
+        />
+      )}
+    />
+  );
+}
 
 const inputMap = {
   text: StyledTextField,
@@ -374,6 +430,17 @@ export const generateInputsMarkup = (
               {...item}
             />
           )}
+        />
+      );
+    } else if (item.inputType === 'text') {
+      return (
+        <ConstructorTextField
+          key={item.name}
+          name={item.name}
+          control={control}
+          errors={errors}
+          onImmediateChange={onImmediateChange}
+          {...item}
         />
       );
     } else {
