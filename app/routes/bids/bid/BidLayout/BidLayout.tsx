@@ -4,6 +4,8 @@ import { useState } from "react";
 
 import { useTranslation } from "react-i18next";
 
+import {isBefore} from "date-fns";
+
 import { withLocale } from "~/shared/withLocale";
 import { useStore } from "~/store/store";
 
@@ -62,7 +64,8 @@ export default function BidLayout({ loaderData }: Route.ComponentProps) {
         }}
         {...(!editMode &&
         !location.pathname.includes("specialists") &&
-        loaderData.bidData.status <= 2
+        loaderData.bidData.status <= 2 &&
+        isBefore(new Date(), loaderData.bidData.dateStart)
           ? {
               buttonAction: {
                 text: "",

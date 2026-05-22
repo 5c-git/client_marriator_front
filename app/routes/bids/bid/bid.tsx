@@ -121,6 +121,8 @@ export default function Bid({ loaderData }: Route.ComponentProps) {
     editMode: boolean;
   }>();
 
+  console.log(bidMobileData)
+
   const [mobileEntity] = useState<
     BidMobileViewInterface["entity"] | null
   >(() => {

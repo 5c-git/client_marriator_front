@@ -36,7 +36,6 @@ export const TimeField = (props: TimeFieldProps) => (
       error={props.error ? true : false}
     >
       <TimePicker
-        enableAccessibleFieldDOMStructure={false}
         ampm={false}
         label={props.placeholder}
         value={props.value === null ? null : new Date(props.value)}
@@ -48,47 +47,65 @@ export const TimeField = (props: TimeFieldProps) => (
             props.onChange(formatISO(newValue));
           }
         }}
-        slotProps={{
-          textField: {
-            style: {
-              "--borderColor": props.error
-                ? "var(--mui-palette-Red)"
-                : "transparent",
-              "--color": props.error
-                ? "var(--mui-palette-Red)"
-                : "var(--mui-palette-Grey_2)",
-            },
-            sx: {
-              "& .MuiOutlinedInput-root": {
-                borderColor: "var(--borderColor)",
-              },
-              "& .MuiInputLabel-root": {
-                color: "var(--color)",
-              },
-            },
-          },
-          dialog: {
-            sx: (theme) => ({
-              "& .MuiClock-pin": {
-                backgroundColor: theme.vars.palette["Corp_1"],
-              },
-              "& .MuiClockPointer-root": {
-                backgroundColor: theme.vars.palette["Corp_1"],
-              },
-              "& .MuiClockPointer-thumb": {
-                borderColor: theme.vars.palette["Corp_1"],
-                backgroundColor: theme.vars.palette["Corp_2"],
-              },
-            }),
-          },
-        }}
-        slots={{
-          toolbar: () => undefined,
-        }}
+        // slotProps={{
+        //   textField: {
+        //     style: {
+        //       "--borderColor": props.error
+        //         ? "var(--mui-palette-Red)"
+        //         : "transparent",
+        //       "--color": props.error
+        //         ? "var(--mui-palette-Red)"
+        //         : "var(--mui-palette-Grey_2)",
+        //     },
+        //     sx: {
+        //       "& .MuiOutlinedInput-root": {
+        //         borderColor: "var(--borderColor)",
+        //       },
+        //       "& .MuiInputLabel-root": {
+        //         color: "var(--color)",
+        //       },
+        //     },
+        //   },
+        //   dialog: {
+        //     sx: (theme) => ({
+        //       "& .MuiClock-pin": {
+        //         backgroundColor: theme.vars.palette["Corp_1"],
+        //       },
+        //       "& .MuiClockPointer-root": {
+        //         backgroundColor: theme.vars.palette["Corp_1"],
+        //       },
+        //       "& .MuiClockPointer-thumb": {
+        //         borderColor: theme.vars.palette["Corp_1"],
+        //         backgroundColor: theme.vars.palette["Corp_2"],
+        //       },
+        //     }),
+        //   },
+        // }}
+        // sx={(theme) => ({
+        //   "& .MuiClock-pin": {
+        //     backgroundColor: theme.vars.palette["Corp_1"],
+        //   },
+        // })}
         sx={(theme) => ({
-          "& .MuiClock-pin": {
-            backgroundColor: theme.vars.palette["Corp_1"],
+          backgroundColor: theme.vars.palette["Grey_5"],
+          borderRadius: "6px",
+          border: "1px solid transparent",
+
+          "&.Mui-error": {
+            borderColor: theme.vars.palette["Red"],
+            color: theme.vars.palette["Red"],
           },
+          "&.Mui-disabled": {
+            opacity: "0.6",
+          },
+          "& .MuiPickersOutlinedInput-notchedOutline": {
+            display: 'none'  
+          },
+          "& .MuiPickersSectionList-root": {
+            paddingLeft: 0,
+            width: '100px'
+          },
+          
         })}
       />
       {props.error ? (

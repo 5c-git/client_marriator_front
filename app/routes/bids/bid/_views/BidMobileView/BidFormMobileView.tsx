@@ -140,8 +140,8 @@ const createBidFormSchema = (
       const dateEnd = values.dateEnd;
 
       //проверяем что дата конца не раньше даты старта
-      const result = compareAsc(dateStart, dateEnd);
-      if (result > 0) {
+      const result = compareAsc(dateStart, dateEnd );
+      if (result >= 0) {
         ctx.addIssue({
           code: "custom",
           message: t("lessThanStartDate", { ns: "constructorFields" }),
@@ -191,7 +191,7 @@ const createBidFormSchema = (
 
         //проверяем что дата конца не раньше даты старта
       const result = compareAsc(day.timeStart, day.timeEnd);
-      if (result > 0) {
+      if (result >= 0) {
         ctx.addIssue({
           code: "custom",
           message: t("moreThanEndDate", { ns: "constructorFields" }),
@@ -347,6 +347,8 @@ export function BidFormMobileView(props: BidFormMobileViewInterface) {
       ),
     ),
   });
+
+  console.log(errors);
 
   const { fields, append, prepend, insert, remove } = useFieldArray({
     control,
@@ -792,7 +794,10 @@ export function BidFormMobileView(props: BidFormMobileViewInterface) {
                         if (i === 0) {
                           append({
                             timeStart: dateStart,
-                            timeEnd: set(days[i], { hours: 21 }),
+                            timeEnd: set(days[i], {
+                              hours: props.defaultTimeRange.end.getHours(),
+                              minutes: 0,
+                            }),
                             ...(props.entity.activity.travelling === true && {
                               needRoute: false,
                               locations: [],
@@ -800,7 +805,10 @@ export function BidFormMobileView(props: BidFormMobileViewInterface) {
                           });
                         } else if (i === days.length - 1) {
                           append({
-                            timeStart: set(days[i], { hours: 9 }),
+                            timeStart: set(days[i], {
+                              hours: props.defaultTimeRange.start.getHours(),
+                              minutes: 0,
+                            }),
                             timeEnd: dateEnd,
                             ...(props.entity.activity.travelling === true && {
                               needRoute: false,
@@ -809,8 +817,14 @@ export function BidFormMobileView(props: BidFormMobileViewInterface) {
                           });
                         } else {
                           append({
-                            timeStart: set(days[i], { hours: 9 }),
-                            timeEnd: set(days[i], { hours: 21 }),
+                            timeStart: set(days[i], {
+                              hours: props.defaultTimeRange.start.getHours(),
+                              minutes: 0,
+                            }),
+                            timeEnd: set(days[i], {
+                              hours: props.defaultTimeRange.end.getHours(),
+                              minutes: 0,
+                            }),
                             ...(props.entity.activity.travelling === true && {
                               needRoute: false,
                               locations: [],
@@ -851,10 +865,7 @@ export function BidFormMobileView(props: BidFormMobileViewInterface) {
                     startIcon={<CalendarIcon />}
                     onClick={() => {
                       prepend({
-                        timeStart: set(props.entity.dateStart, {
-                          hours: props.defaultTimeRange.start.getHours(),
-                          minutes: 0,
-                        }),
+                        timeStart: props.entity.dateStart,
                         timeEnd: set(props.entity.dateStart, {
                           hours: props.defaultTimeRange.end.getHours(),
                           minutes: 0,
@@ -1237,11 +1248,17 @@ export function BidFormMobileView(props: BidFormMobileViewInterface) {
                                 timeStart:
                                   "timeStart" in match
                                     ? match.timeStart
-                                    : set(match, { hours: 9 }),
+                                    : set(match, {
+                                      hours: props.defaultTimeRange.start.getHours(),
+                                      minutes: 0,
+                                    }),
                                 timeEnd:
                                   "timeEnd" in match
                                     ? match.timeEnd
-                                    : getValues("dateEnd"),
+                                    : set(match, {
+                                      hours: props.defaultTimeRange.end.getHours(),
+                                      minutes: 0,
+                                    }),
                                 ...(props.entity.activity.travelling ===
                                   true && {
                                   needRoute: false,
@@ -1305,7 +1322,10 @@ export function BidFormMobileView(props: BidFormMobileViewInterface) {
                                 timeStart:
                                   "timeStart" in match
                                     ? match.timeStart
-                                    : set(match, { hours: 9 }),
+                                    : set(match, {
+                                      hours: props.defaultTimeRange.start.getHours(),
+                                      minutes: 0,
+                                    }),
                                 timeEnd:
                                   "timeEnd" in match
                                     ? match.timeEnd
