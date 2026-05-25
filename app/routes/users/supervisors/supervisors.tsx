@@ -73,7 +73,7 @@ export async function clientLoader() {
           logo: `${import.meta.env.VITE_ASSET_PATH}${item.logo}`,
         };
 
-        if (user.status === 3 && userRole === "admin") {
+        if (user.status === 3 && (userRole === "admin" || userRole === 'manager')) {
           users.push(user);
         } else if (user.status !== 3) {
           users.push(user);
