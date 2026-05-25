@@ -27,7 +27,7 @@ profileContainer
 
 profileContainer
   .bind(profilePrivateTokens.clearAppStore)
-  .toConstant(() => useStore.getState().clearStore);
+  .toConstant(useStore.getState().clearStore);
 
 profileContainer
   .bind(profilePrivateTokens.invalidateUserInfoQueries)

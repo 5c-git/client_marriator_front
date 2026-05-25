@@ -15,7 +15,7 @@ export type SpecialistsMobileViewInterface = {
       id: number;
       name: "admin" | "manager" | "supervisor" | "client" | "specialist";
     }[];
-    radius: string;
+    radius: number;
     name: string;
     age: string;
     country: string;

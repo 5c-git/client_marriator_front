@@ -14,7 +14,8 @@ export async function clientLoader() {
 }
 
 export async function clientAction() {
-  return profileContainer.get(profileTokens.profileService).logout();
+  useStore.getState().clearStore()
+  // return profileContainer.get(profileTokens.profileService).logout();
 }
 
 export default function Profile({ loaderData }: Route.ComponentProps) {

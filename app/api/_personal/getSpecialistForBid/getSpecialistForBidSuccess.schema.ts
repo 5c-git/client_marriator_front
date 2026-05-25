@@ -19,7 +19,7 @@ export const getSpecialistForBidSuccessSchema = z.object({
           ]),
         }),
       ),
-      radius: z.string(),
+      radius: z.number(),
       name: z.string(),
       age: z.string(),
       country: z.string(),
