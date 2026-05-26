@@ -24,7 +24,7 @@ type BillingEditViewProps = {
 };
 
 export function BillingEditView(props: BillingEditViewProps) {
-  const { t } = useTranslation("billingEdit");
+  const { t } = useTranslation("BillingEditView");
   const [openDialog, setOpenDialog] = useState(false);
   const [openDelete, setOpenDelete] = useState(false);
 
@@ -48,7 +48,7 @@ export function BillingEditView(props: BillingEditViewProps) {
         })}
       >
         <BillingRequisiteFormFields
-          namespace="billingEdit"
+          namespace="BillingEditView"
           control={props.control}
           errors={props.errors}
           bikOptions={props.loaderData.bikOptions}

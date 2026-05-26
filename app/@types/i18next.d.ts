@@ -28,14 +28,13 @@ import registrationComplete from "../../public/locales/ru/registrationComplete.j
 import HomeLayout from "../../public/locales/ru/HomeLayout.json";
 import MyProfileView from "../../public/locales/ru/MyProfileView.json";
 import profileEdit from "../../public/locales/ru/profileEdit.json";
-import profileMeta from "../../public/locales/ru/profileMeta.json";
-import userActivities from "../../public/locales/ru/userActivities.json";
-import workRadius from "../../public/locales/ru/workRadius.json";
-import confirmPersonalPhone from "../../public/locales/ru/confirmPersonalPhone.json";
-import confirmPersonalEmail from "../../public/locales/ru/confirmPersonalEmail.json";
-import BillingView from "../../public/locales/ru/BillingView.json";
-import billingAdd from "../../public/locales/ru/billingAdd.json";
-import billingEdit from "../../public/locales/ru/billingEdit.json";
+
+
+
+
+
+
+
 import documents from "../../public/locales/ru/documents.json";
 import sign from "../../public/locales/ru/sign.json";
 import signADeal from "../../public/locales/ru/signADeal.json";
@@ -65,9 +64,18 @@ import order from "../../public/locales/ru/order.json";
 import orders from "../../public/locales/ru/orders.json";
 
 import settings from "../../public/locales/ru/settings.json";
+
+import confirmPersonalPhone from "../../public/locales/ru/confirmPersonalPhone.json";
+import confirmPersonalEmail from "../../public/locales/ru/confirmPersonalEmail.json";
 //routes
 
 //views
+import WorkRadiusView from "../../public/locales/ru/WorkRadiusView.json";
+import ProfileMetaView from "../../public/locales/ru/ProfileMetaView.json";
+import BillingEditView from "../../public/locales/ru/BillingEditView.json";
+import BillingAddView from "../../public/locales/ru/BillingAddView.json";
+import BillingView from "../../public/locales/ru/BillingView.json";
+import UserActivitiesView from "../../public/locales/ru/UserActivitiesView.json";
 import ConfirmRestorePinView from "../../public/locales/ru/ConfirmRestorePinView.json";
 import CreatePinView from "../../public/locales/ru/CreatePinView.json";
 import PinView from "../../public/locales/ru/PinView.json";
@@ -133,16 +141,13 @@ declare module "i18next" {
       //registration
 
       //internal
-      MyProfileView: typeof MyProfileView;
+
       profileEdit: typeof profileEdit;
-      profileMeta: typeof profileMeta;
-      userActivities: typeof userActivities;
-      workRadius: typeof workRadius;
+
+
       confirmPersonalPhone: typeof confirmPersonalPhone;
       confirmPersonalEmail: typeof confirmPersonalEmail;
-      BillingView: typeof BillingView;
-      billingAdd: typeof billingAdd;
-      billingEdit: typeof billingEdit;
+
       documents: typeof documents;
       sign: typeof sign;
       signADeal: typeof signADeal;
@@ -177,6 +182,13 @@ declare module "i18next" {
       HomeLayout: typeof HomeLayout;
 
       //views
+      WorkRadiusView: typeof WorkRadiusView;
+      ProfileMetaView: typeof ProfileMetaView;
+      BillingView: typeof BillingView;
+      BillingAddView: typeof BillingAddView;
+      BillingEditView: typeof BillingEditView;
+      MyProfileView: typeof MyProfileView;
+      UserActivitiesView: typeof UserActivitiesView;
       ConfirmRestorePinView: typeof ConfirmRestorePinView;
       CreatePinView: typeof CreatePinView;
       PinView: typeof PinView;

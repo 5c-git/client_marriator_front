@@ -23,7 +23,7 @@ type BillingAddViewProps = {
 };
 
 export function BillingAddView(props: BillingAddViewProps) {
-  const { t } = useTranslation("billingAdd");
+  const { t } = useTranslation("BillingAddView");
   const [openDialog, setOpenDialog] = useState(false);
 
   return (
@@ -42,7 +42,7 @@ export function BillingAddView(props: BillingAddViewProps) {
 
       <form onSubmit={props.handleSubmit(props.onSubmit)}>
         <BillingRequisiteFormFields
-          namespace="billingAdd"
+          namespace="BillingAddView"
           control={props.control}
           errors={props.errors}
           bikOptions={props.loaderData.bikOptions}

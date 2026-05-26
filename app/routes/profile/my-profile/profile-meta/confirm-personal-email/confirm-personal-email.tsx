@@ -1,40 +1,29 @@
-import { useState, useEffect } from "react";
-import {
-  useSubmit,
-  useNavigation,
-  useNavigate,
-  redirect,
-  useSearchParams,
-} from "react-router";
+import { useState } from "react";
+import { redirect } from "react-router";
 import type { Route } from "./+types/confirm-personal-email";
 
 import { t, loadNamespaces } from "i18next";
 import { useTranslation } from "react-i18next";
 import { withLocale } from "~/shared/withLocale";
 
-import {zodResolver} from "@hookform/resolvers/zod";
-import {z} from 'zod';
-
-import { useForm, Controller } from "react-hook-form";
-
-import { Button, Typography, Snackbar, Alert } from "@mui/material";
-import Box from "@mui/material/Box";
-
-import { StyledSmsField } from "~/shared/ui/StyledSmsField/StyledSmsField";
-import { TopNavigation } from "~/shared/ui/TopNavigation/TopNavigation";
+import { Alert, Snackbar } from "@mui/material";
 import { Loader } from "~/shared/ui/Loader/Loader";
 
-import { useStore } from "~/store/store";
-
-import { postPersonalSetUserEmail } from "~/api/postPersonalSetUserEmail/postPersonalSetUserEmail";
-import { postPersonalCheckEmailCode } from "~/api/_personal/postPersonalCheckEmailCode/postPersonalCheckEmailCode";
+import { ConfirmPersonalCodeView } from "../_views/ConfirmPersonalCodeView";
+import { confirmPersonalEmailContainer } from "./confirm-personal-email.module";
+import { confirmPersonalEmailPrivateTokens } from "./confirm-personal-email.private-tokens";
+import { confirmPersonalEmailTokens } from "./confirm-personal-email.tokens";
+import { useConfirmPersonalCodeHooks } from "../confirm-personal-code.hooks";
+import { useAppHooks } from "~/shared/hooks/app.hooks";
 
 export async function clientLoader({ request }: Route.ClientLoaderArgs) {
   await loadNamespaces("confirmPersonalEmail");
 
   const currentURL = new URL(request.url);
-
-  const email = useStore.getState().userEmail;
+  const getUserEmail = confirmPersonalEmailContainer.get(
+    confirmPersonalEmailPrivateTokens.getUserEmail,
+  );
+  const email = getUserEmail();
   const ttl = currentURL.searchParams.get("ttl");
 
   if (!email || !ttl) {
@@ -46,203 +35,62 @@ export async function clientLoader({ request }: Route.ClientLoaderArgs) {
 
 export async function clientAction({ request }: Route.ClientActionArgs) {
   const currentURL = new URL(request.url);
-  const accessToken = useStore.getState().accessToken;
+  const confirmPersonalEmailService = confirmPersonalEmailContainer.get(
+    confirmPersonalEmailTokens.confirmPersonalEmailService,
+  );
 
   const { _action, currentTTL, ...fields } = await request.json();
 
-  if (accessToken) {
-    if (_action === "sendAgain") {
-      const data = await postPersonalSetUserEmail(accessToken, fields.email);
-
-      if ("result" in data) {
-        currentURL.searchParams.set("ttl", data.result.code.ttl.toString());
-
-        throw redirect(currentURL.toString());
-      }
-    } else if (_action === "sendCode") {
-      const data = await postPersonalCheckEmailCode(accessToken, fields.code);
-
-      if (data.status === "error") {
-        currentURL.searchParams.set("error", "error");
-
-        currentURL.searchParams.set("ttl", currentTTL.toString());
-
-        throw redirect(currentURL.toString());
-      } else {
-        throw redirect(withLocale("/profile/my-profile/profile-meta"));
-      }
-    }
-  } else {
-    throw new Response("Токен авторизации не обнаружен!", { status: 401 });
+  if (_action === "sendAgain") {
+    const ttl = await confirmPersonalEmailService.resendCode(fields.email);
+    currentURL.searchParams.set("ttl", ttl.toString());
+    throw redirect(currentURL.toString());
   }
+
+  if (_action === "sendCode") {
+    const data = await confirmPersonalEmailService.verifyCode(fields.code);
+
+    if (data.status === "error") {
+      currentURL.searchParams.set("error", "error");
+      currentURL.searchParams.set("ttl", currentTTL.toString());
+      throw redirect(currentURL.toString());
+    }
+
+    throw redirect(withLocale("/profile/my-profile/profile-meta"));
+  }
+
+  return null;
 }
 
 export default function ConfirmPersonalEmail({
   loaderData,
 }: Route.ComponentProps) {
   const { t } = useTranslation("confirmPersonalEmail");
-  const submit = useSubmit();
-  const navigation = useNavigation();
-  const navigate = useNavigate();
+  const { isLoading, navigateTo } = useAppHooks();
+  const { seconds, error, submitCode, submitSendAgain, clearError } =
+    useConfirmPersonalCodeHooks(loaderData.ttl, { email: loaderData.email });
 
-  const [seconds, setSeconds] = useState<number>(Number(loaderData.ttl));
-  const [open, setOpen] = useState<boolean>(true);
-
-  const [searchParams, setSearchParams] = useSearchParams();
-
-  const error = searchParams.get("error");
-
-  const {
-    control,
-    handleSubmit,
-    formState: { errors },
-  } = useForm({
-    defaultValues: {
-      code: "",
-    },
-    resolver: zodResolver(
-      z.object({
-        code: z.string({error: t("inputValidation")})
-          .length(4, {error: t("inputValidation_lenght")}),
-      }),
-    ),
-  });
-
-  useEffect(() => {
-    const timer = setInterval(() => {
-      if (seconds > 0) {
-        setSeconds(seconds - 1);
-      }
-    }, 1000);
-
-    return () => clearInterval(timer);
-  }, [seconds, navigation.state]);
+  const [notificationOpen, setNotificationOpen] = useState(true);
 
   return (
     <>
-      {navigation.state !== "idle" ? <Loader /> : null}
+      {isLoading ? <Loader /> : null}
 
-      <Box>
-        <TopNavigation
-          header={{
-            text: t("header"),
-            bold: false,
-          }}
-          backAction={() => {
-            navigate(withLocale("/profile/my-profile/profile-meta"), {
-              viewTransition: true,
-            });
-          }}
-        />
-
-        <Box
-          sx={{
-            padding: "20px 16px",
-          }}
-        >
-          <form
-            style={{
-              display: "grid",
-              rowGap: "4px",
-            }}
-            onSubmit={handleSubmit((values) => {
-              submit(
-                JSON.stringify({
-                  _action: "sendCode",
-                  currentTTL: seconds,
-                  ...values,
-                }),
-                {
-                  method: "POST",
-                  encType: "application/json",
-                },
-              );
-            })}
-          >
-            <Controller
-              name="code"
-              control={control}
-              render={({ field }) => (
-                <StyledSmsField
-                  inputType="sms"
-                  error={errors.code?.message}
-                  placeholder={t("inputPlaceholder")}
-                  onImmediateChange={handleSubmit((values) => {
-                    submit(
-                      JSON.stringify({
-                        _action: "sendCode",
-                        currentTTL: seconds,
-                        ...values,
-                      }),
-                      {
-                        method: "POST",
-                        encType: "application/json",
-                      },
-                    );
-                  })}
-                  {...field}
-                />
-              )}
-            />
-          </form>
-
-          <Button
-            type="button"
-            variant="text"
-            disabled={seconds > 0 ? true : false}
-            sx={{
-              fontSize: "1rem",
-              lineHeight: "1.25rem",
-            }}
-            onClick={() => {
-              submit(
-                JSON.stringify({
-                  _action: "sendAgain",
-                  email: loaderData.email,
-                }),
-                {
-                  method: "POST",
-                  encType: "application/json",
-                },
-              );
-              setSeconds(Number(loaderData.ttl));
-            }}
-          >
-            {t("sendAgain")}
-          </Button>
-
-          {seconds !== 0 ? (
-            <Typography
-              component="p"
-              variant="Reg_12"
-              sx={(theme) => ({
-                color: theme.vars.palette["Black"],
-                textAlign: "center",
-              })}
-            >
-              {t("timer")}{" "}
-              <Typography
-                component="span"
-                variant="Bold_12"
-                sx={(theme) => ({
-                  color: theme.vars.palette["Black"],
-                })}
-              >
-                {Math.floor(seconds / 60) < 10
-                  ? `0${Math.floor(seconds / 60)}`
-                  : Math.floor(seconds / 60)}
-                :{seconds % 60 < 10 ? `0${seconds % 60}` : seconds % 60}
-              </Typography>
-            </Typography>
-          ) : null}
-        </Box>
-      </Box>
+      <ConfirmPersonalCodeView
+        translation="confirmPersonalEmail"
+        seconds={seconds}
+        onBack={() => {
+          navigateTo("/profile/my-profile/profile-meta");
+        }}
+        onSubmitCode={submitCode}
+        onSendAgain={submitSendAgain}
+      />
 
       <Snackbar
-        open={open}
+        open={notificationOpen}
         autoHideDuration={3000}
         onClose={() => {
-          setOpen(false);
+          setNotificationOpen(false);
         }}
       >
         <Alert
@@ -258,14 +106,9 @@ export default function ConfirmPersonalEmail({
       </Snackbar>
 
       <Snackbar
-        open={error ? true : false}
+        open={error !== null}
         autoHideDuration={3000}
-        onClose={() => {
-          setSearchParams((prev) => {
-            prev.delete("error");
-            return prev;
-          });
-        }}
+        onClose={clearError}
       >
         <Alert
           severity="info"

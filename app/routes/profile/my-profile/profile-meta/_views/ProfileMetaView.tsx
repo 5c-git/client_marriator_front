@@ -45,7 +45,7 @@ type ProfileMetaViewProps = {
 };
 
 export function ProfileMetaView(props: ProfileMetaViewProps) {
-  const { t } = useTranslation("profileMeta");
+  const { t } = useTranslation("ProfileMetaView");
 
   return (
     <>

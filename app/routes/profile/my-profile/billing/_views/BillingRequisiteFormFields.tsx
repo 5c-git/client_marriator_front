@@ -15,7 +15,7 @@ import { StyledAutocomplete } from "~/shared/ui/StyledAutocomplete/StyledAutocom
 import type { BikOption, BillingFormValues } from "../billing.service";
 
 type BillingRequisiteFormFieldsProps = {
-  namespace: "billingAdd" | "billingEdit";
+  namespace: "BillingEditView" | "BillingAddView";
   control: Control<BillingFormValues>;
   errors: FieldErrors<BillingFormValues>;
   bikOptions: BikOption[];
