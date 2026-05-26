@@ -1,9 +1,12 @@
 import { Container } from "brandi";
 
+import { getBik } from "~/api/_personal/getBik/getBik";
 import {
   getRequisitesData,
   getRequisitesDataKeys,
 } from "~/api/_personal/getRequisitesData/getRequisitesData";
+import { postDeleteRequisite } from "~/api/_personal/postDeleteRequisite/postDeleteRequisite";
+import { postSaveRequisitesData } from "~/api/_personal/postSaveRequisitesData/postSaveRequisitesData";
 import { queryClient } from "~/shared/queryClient";
 
 import { appContainer } from "~/shared/container/container";
@@ -22,6 +25,22 @@ billingContainer
       queryFn: () => getRequisitesData(accessToken),
       staleTime: 60000,
     }),
+  );
+
+billingContainer
+  .bind(billingPrivateTokens.fetchBik)
+  .toConstant((accessToken) => getBik(accessToken));
+
+billingContainer
+  .bind(billingPrivateTokens.saveRequisitesData)
+  .toConstant((accessToken, formData, dataId) =>
+    postSaveRequisitesData(accessToken, formData, dataId),
+  );
+
+billingContainer
+  .bind(billingPrivateTokens.deleteRequisite)
+  .toConstant((accessToken, dataId) =>
+    postDeleteRequisite(accessToken, dataId),
   );
 
 billingContainer
