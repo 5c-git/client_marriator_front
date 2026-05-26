@@ -1,314 +1,46 @@
-import { useNavigation, useNavigate, useSubmit } from "react-router";
+import { useNavigation, useNavigate } from "react-router";
 import type { Route } from "./+types/certificates";
 
-import {zodResolver} from "@hookform/resolvers/zod";
-import {z} from "zod";
-
-import { useForm, Controller } from "react-hook-form";
-
-import { useTranslation } from "react-i18next";
-
 import { withLocale } from "~/shared/withLocale";
-
-import { Button, Typography, Divider, IconButton } from "@mui/material";
-import Box from "@mui/material/Box";
-import Stack from "@mui/material/Stack";
-import { TopNavigation } from "~/shared/ui/TopNavigation/TopNavigation";
-import { StyledSelect } from "~/shared/ui/StyledSelect/StyledSelect";
-
-import FileDownloadOutlinedIcon from "@mui/icons-material/FileDownloadOutlined";
-
-import { Loader } from "~/shared/ui/Loader/Loader";
-
-import { useStore } from "~/store/store";
-import { getDocumentInquiries } from "~/api/_personal/_documents/getDocumentInquiries/getDocumentInquiries";
-import { getCompanyAndCertificatesInquiries } from "~/api/_personal/_documents/getCompanyAndCertificatesInquiries/getCompanyAndCertificatesInquiries";
-import { postRequestInquiries } from "~/api/_personal/_documents/postRequestInquiries/postRequestInquiries";
-
-const generateOrganizationOptions = (
-  organizations: {
-    uuid: string;
-    name: string;
-  }[]
-) => {
-  const options: {
-    value: string;
-    label: string;
-    disabled: boolean;
-  }[] = [];
-
-  organizations.forEach((item) => {
-    options.push({
-      value: item.uuid,
-      label: item.name,
-      disabled: false,
-    });
-  });
-
-  return options;
-};
-
-const generateCertificateOptions = (
-  certificates: {
-    id: number;
-    key: string;
-    value: string;
-  }[]
-) => {
-  const options: {
-    value: string;
-    label: string;
-    disabled: boolean;
-  }[] = [];
-
-  certificates.forEach((item) => {
-    options.push({
-      value: item.value,
-      label: item.key,
-      disabled: false,
-    });
-  });
-
-  return options;
-};
+import { CertificatesView } from "./_views/CertificatesView";
+import { useCertificatesHooks } from "./certificates.hooks";
+import { certificatesContainer } from "./certificates.module";
+import { certificatesTokens } from "./certificates.tokens";
 
 export async function clientLoader() {
-  const accessToken = useStore.getState().accessToken;
-
-  if (accessToken) {
-    const certificatesData = await getDocumentInquiries(accessToken);
-    const fieldsData = await getCompanyAndCertificatesInquiries(accessToken);
-
-    return {
-      certificates: certificatesData.result,
-      fields: fieldsData.result,
-    };
-  } else {
-    throw new Response("Токен авторизации не обнаружен!", { status: 401 });
-  }
+  return await certificatesContainer
+    .get(certificatesTokens.certificatesService)
+    .loadData();
 }
 
 export async function clientAction({ request }: Route.ClientActionArgs) {
   const fields = await request.json();
-  const accessToken = useStore.getState().accessToken;
-
-  if (accessToken) {
-    await postRequestInquiries(
-      accessToken,
-      fields.organization,
-      fields.certificate
-    );
-    return null;
-  } else {
-    throw new Response("Токен авторизации не обнаружен!", { status: 401 });
-  }
+  await certificatesContainer
+    .get(certificatesTokens.certificatesService)
+    .submitRequest(fields.organization, fields.certificate);
+  return null;
 }
 
 export default function Certificates({ loaderData }: Route.ComponentProps) {
-  const { t } = useTranslation("certificates");
   const navigation = useNavigation();
   const navigate = useNavigate();
-  const submit = useSubmit();
 
-  const organizationOptions = generateOrganizationOptions(
-    loaderData.fields.organization
+  const { organizationOptions, certificateOptions } = useCertificatesHooks(
+    loaderData.fields.organization,
+    loaderData.fields.certificates,
   );
-  const certificateOptions = generateCertificateOptions(
-    loaderData.fields.certificates
-  );
-
-  const {
-    control,
-    handleSubmit,
-    formState: { isDirty, errors },
-  } = useForm({
-    defaultValues: {
-      organization: "",
-      certificate: "",
-    },
-    resolver: zodResolver(
-      z.object({
-        organization: z.string({error: t("select", { ns: "constructorFields" })}).trim().min(1, {error: t("select", { ns: "constructorFields" })}),
-        certificate: z.string({error: t("select", { ns: "constructorFields" })}).trim().min(1, {error: t("select", { ns: "constructorFields" })}),
-      })
-    ),
-  });
 
   return (
-    <>
-      {navigation.state !== "idle" ? <Loader /> : null}
-
-      <Box
-        sx={{
-          height: "100%",
-        }}
-      >
-        <TopNavigation
-          header={{
-            text: t("header"),
-            bold: false,
-          }}
-          backAction={() => {
-            navigate(withLocale("/profile/documents"), {
-              viewTransition: true,
-            });
-          }}
-        />
-
-        <Box
-          sx={{
-            display: "flex",
-            flexDirection: "column",
-            paddingTop: "20px",
-            paddingBottom: "20px",
-
-            height: "calc(100% - 56px)",
-          }}
-        >
-          <Box
-            sx={{
-              paddingRight: "16px",
-              paddingLeft: "16px",
-              paddingBottom: "16px",
-            }}
-          >
-            <Typography
-              component="h1"
-              variant="Reg_18"
-              sx={(theme) => ({
-                color: theme.vars.palette["Black"],
-                paddingBottom: "16px",
-              })}
-            >
-              {t("header_text")}
-            </Typography>
-
-            <form
-              onSubmit={handleSubmit((values) => {
-                submit(JSON.stringify(values), {
-                  method: "POST",
-                  encType: "application/json",
-                });
-              })}
-              style={{
-                display: "grid",
-                rowGap: "16px",
-              }}
-            >
-              <Controller
-                name="organization"
-                control={control}
-                render={({ field }) => (
-                  <StyledSelect
-                    inputType="select"
-                    placeholder={t("input_organization")}
-                    onImmediateChange={() => {}}
-                    validation="none"
-                    options={organizationOptions}
-                    error={errors.organization?.message}
-                    {...field}
-                  />
-                )}
-              />
-
-              <Controller
-                name="certificate"
-                control={control}
-                render={({ field }) => (
-                  <StyledSelect
-                    inputType="select"
-                    placeholder={t("input_certificate")}
-                    onImmediateChange={() => {}}
-                    validation="none"
-                    options={certificateOptions}
-                    error={errors.certificate?.message}
-                    {...field}
-                  />
-                )}
-              />
-
-              <Button variant="contained" disabled={!isDirty} type="submit">
-                {t("button_action")}
-              </Button>
-            </form>
-          </Box>
-          <Divider
-            sx={(theme) => ({
-              backgroundColor: theme.vars.palette["Grey_4"],
-            })}
-          />
-
-          {loaderData.certificates.length !== 0 ? (
-            <Box
-              sx={{
-                display: "grid",
-                paddingTop: "16px",
-                paddingRight: "16px",
-                paddingLeft: "16px",
-                rowGap: "8px",
-              }}
-            >
-              <Typography
-                component="p"
-                variant="Bold_14"
-                sx={(theme) => ({
-                  color: theme.vars.palette["Black"],
-                })}
-              >
-                {t("done_documents")}
-              </Typography>
-
-              {loaderData.certificates.map((item) => (
-                <Box
-                  sx={{
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "space-between",
-                    columnGap: "8px",
-                  }}
-                  key={item.uuid}
-                >
-                  <Stack>
-                    {/* <Typography
-                      component="p"
-                      variant="Reg_14"
-                      sx={{
-                        color: theme.vars.palette["Black"],
-                      }}
-                    >
-                      Организация №2
-                    </Typography> */}
-                    <Typography
-                      component="p"
-                      variant="Reg_14"
-                      sx={(theme) => ({
-                        color: theme.vars.palette["Black"],
-                      })}
-                    >
-                      {item.name}
-                    </Typography>
-                  </Stack>
-
-                  <IconButton
-                    LinkComponent="a"
-                    href={item.path}
-                    target="_blank"
-                    rel="noreferrer"
-                    edge="end"
-                    aria-label="download file"
-                  >
-                    <FileDownloadOutlinedIcon
-                      sx={(theme) => ({
-                        color: theme.vars.palette["Black"],
-                      })}
-                    />
-                  </IconButton>
-                </Box>
-              ))}
-            </Box>
-          ) : null}
-        </Box>
-      </Box>
-    </>
+    <CertificatesView
+      loaderData={loaderData}
+      isLoading={navigation.state !== "idle"}
+      backAction={() => {
+        navigate(withLocale("/profile/documents"), {
+          viewTransition: true,
+        });
+      }}
+      organizationOptions={organizationOptions}
+      certificateOptions={certificateOptions}
+    />
   );
 }

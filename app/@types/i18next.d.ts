@@ -32,15 +32,12 @@ import profileEdit from "../../public/locales/ru/profileEdit.json";
 
 
 
-
-
-
 import documents from "../../public/locales/ru/documents.json";
-import sign from "../../public/locales/ru/sign.json";
-import signADeal from "../../public/locales/ru/signADeal.json";
+
+
 import terminateADeal from "../../public/locales/ru/terminateADeal.json";
-import documentsArchive from "../../public/locales/ru/documentsArchive.json";
-import certificates from "../../public/locales/ru/certificates.json";
+
+
 import users_client from "../../public/locales/ru/users_client.json";
 import users_manager from "../../public/locales/ru/users_manager.json";
 import users_supervisor from "../../public/locales/ru/users_supervisor.json";
@@ -70,6 +67,10 @@ import confirmPersonalEmail from "../../public/locales/ru/confirmPersonalEmail.j
 //routes
 
 //views
+import SignADealView from "../../public/locales/ru/SignADealView.json";
+import SignView from "../../public/locales/ru/SignView.json";
+import CertificatesView from "../../public/locales/ru/CertificatesView.json";
+import ArchiveView from "../../public/locales/ru/ArchiveView.json";
 import WorkRadiusView from "../../public/locales/ru/WorkRadiusView.json";
 import ProfileMetaView from "../../public/locales/ru/ProfileMetaView.json";
 import BillingEditView from "../../public/locales/ru/BillingEditView.json";
@@ -121,7 +122,7 @@ declare module "i18next" {
 
       //auth
       phone: typeof phone;
-      sms: typeof sms;
+
       pin: typeof pin;
       createPin: typeof createPin;
       confirmRestorePin: typeof confirmRestorePin;
@@ -148,12 +149,11 @@ declare module "i18next" {
       confirmPersonalPhone: typeof confirmPersonalPhone;
       confirmPersonalEmail: typeof confirmPersonalEmail;
 
-      documents: typeof documents;
-      sign: typeof sign;
-      signADeal: typeof signADeal;
+
+
       terminateADeal: typeof terminateADeal;
       documentsArchive: typeof documentsArchive;
-      certificates: typeof certificates;
+
       users_clients: typeof users_clients;
       users_client: typeof users_client;
       users_manager: typeof users_manager;
@@ -182,6 +182,10 @@ declare module "i18next" {
       HomeLayout: typeof HomeLayout;
 
       //views
+      SignADealView: typeof SignADealView;
+      SignView: typeof SignView;
+      CertificatesView: typeof CertificatesView;
+      ArchiveView: typeof ArchiveView;
       WorkRadiusView: typeof WorkRadiusView;
       ProfileMetaView: typeof ProfileMetaView;
       BillingView: typeof BillingView;
