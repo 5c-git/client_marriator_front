@@ -4,7 +4,6 @@ import type { Route } from "./+types/sign-a-deal";
 import { withLocale } from "~/shared/withLocale";
 
 import { SignADealView } from "./_views/SignADealView";
-import type { CheckboxItem } from "./sign-a-deal.hooks";
 import { useSignADealHooks } from "./sign-a-deal.hooks";
 import { signADealContainer } from "./sign-a-deal.module";
 import { signADealTokens } from "./sign-a-deal.tokens";

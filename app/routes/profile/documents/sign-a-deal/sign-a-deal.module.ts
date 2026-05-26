@@ -9,11 +9,10 @@ import { SignADealService } from "./sign-a-deal.service";
 import { signADealPrivateTokens } from "./sign-a-deal.private-tokens";
 import { signADealTokens } from "./sign-a-deal.tokens";
 
-export const signADealContainer = new Container();
+import { appContainer } from "~/shared/container/container";
 
-signADealContainer
-  .bind(signADealPrivateTokens.getAccessToken)
-  .toConstant(() => useStore.getState().accessToken);
+export const signADealContainer = new Container().extend(appContainer)
+
 signADealContainer
   .bind(signADealPrivateTokens.getDocumentConclude)
   .toConstant(getDocumentConclude);
