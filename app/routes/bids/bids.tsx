@@ -101,6 +101,7 @@ export default function Bids({ loaderData }: Route.ComponentProps) {
             mapView={showMap}
             entityType="bid"
             entities={loaderData.bids}
+            sorting="ascending"
             entityListView={(entity) => (
               <EntityCard
                 key={entity.id}

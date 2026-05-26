@@ -94,6 +94,7 @@ export default function Jobs({ loaderData }: Route.ComponentProps) {
             mapView={showMap}
             entities={loaderData.jobs}
             entityType="job"
+            sorting="ascending"
             entityListView={(entity) => (
               <EntityCard
                 key={entity.id + entity.userId}

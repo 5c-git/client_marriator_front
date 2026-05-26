@@ -110,7 +110,11 @@ export default [
     ]),
 
     //signin
-    route(":lang?/signin/phone", "routes/signin/phone/phone.tsx"),
+    layout("routes/signin/phone/_views/MenuLayout.tsx", [
+      route(":lang?/signin/phone", "routes/signin/phone/phone.tsx"),
+      route(":lang?/signin/jobs", "routes/signin/jobs/jobs.tsx"),
+
+    ]),
     route(":lang?/signin/sms", "routes/signin/sms/sms.tsx"),
     route(":lang?/signin/createPin", "routes/signin/createPin/createPin.tsx"),
     route(":lang?/signin/pin", "routes/signin/pin/pin.tsx"),

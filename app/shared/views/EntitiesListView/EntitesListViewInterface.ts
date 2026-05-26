@@ -25,6 +25,7 @@ export type EntitiesListViewInterface = {
   mapView: boolean;
   entityType: "order" | "task" | "bid" | "job";
   entities: Entity[];
+  sorting: "ascending" | "descending",
   entityListView: (entity: Entity) => React.ReactNode;
   entityMapView: (entity: Entity) => React.ReactNode;
 };

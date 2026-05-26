@@ -304,7 +304,7 @@ const createBidFormSchema = (
           }
         } 
       });
-    });
+});
 
 type submitValues = z.output<ReturnType<typeof createBidFormSchema>>;
 

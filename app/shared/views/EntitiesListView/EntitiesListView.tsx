@@ -51,8 +51,8 @@ export function EntitiesListView(props: EntitiesListViewInterface) {
     [key: number]: Entity[];
   }>({});
   const [filter, setFilter] = useState<number>(0);
-  const [sorting, setSorting] = useState<"ascending" | "descending">(
-    "ascending",
+  const [sorting, setSorting] = useState<EntitiesListViewInterface['sorting']>(
+    props.sorting
   );
 
   const [activeEntities, setActiveEntities] = useState<Entity[]>([]);
@@ -339,7 +339,7 @@ export function EntitiesListView(props: EntitiesListViewInterface) {
               padding: "20px 16px 16px 20px",
             }}
           >
-            <StatusSelect
+            {filter !== -1 ? <StatusSelect
               value={filter.toString()}
               onChange={(value) => {
                 if (sorting === "ascending") {
@@ -425,7 +425,8 @@ export function EntitiesListView(props: EntitiesListViewInterface) {
 
                 return options;
               })()}
-            />
+            /> : null}
+            
 
             {!props.mapView ? (
               <SortingSelect

@@ -55,24 +55,25 @@ const createJobMobileFormSchema = (
 ) =>
   z
     .object({
+      place: z.number({ error: t("text", { ns: "constructorFields" }) }),
+      activity: z.number({ error: t("text", { ns: "constructorFields" }) }),
+      amount: z.number({ error: t("text", { ns: "constructorFields" }) }),
+      unitPrice: z.string({ error: t("text", { ns: "constructorFields" }) }),
+      radius: z
+        .string({ error: t("text", { ns: "constructorFields" }) })
+        .min(1),
       dateStart: z
-        .union([
-          z.date().min(new Date(), {
-            error: t("inFututreDate", { ns: "constructorFields" }),
-          }),
-          z.null(),
-        ])
-        .pipe(z.date({ message: t("text", { ns: "constructorFields" }) })),
+        .date({ error: t("text", { ns: "constructorFields" }) })
+        .min(startDate, {
+          error: t("newDateBeforeStart", { ns: "constructorFields" }),
+        }),
       dateEnd: z
-        .union([
-          z.date().min(new Date(), {
-            error: t("inFututreDate", { ns: "constructorFields" }),
-          }),
-
-          z.null(),
-        ])
-        .pipe(z.date({ message: t("text", { ns: "constructorFields" }) })),
+        .date({ error: t("text", { ns: "constructorFields" }) })
+        .max(endDate, {
+          error: t("newDateAfterFinish", { ns: "constructorFields" }),
+        }),
       needDays: z.boolean(),
+      needFoto: z.boolean(),
       days: z
         .array(
           z.object({
@@ -123,8 +124,8 @@ const createJobMobileFormSchema = (
       const dateEnd = values.dateEnd;
 
       //проверяем что дата конца не раньше даты старта
-      const result = compareAsc(dateStart, dateEnd);
-      if (result > 0) {
+      const result = compareAsc(dateStart, dateEnd );
+      if (result >= 0) {
         ctx.addIssue({
           code: "custom",
           message: t("lessThanStartDate", { ns: "constructorFields" }),
@@ -174,7 +175,7 @@ const createJobMobileFormSchema = (
 
         //проверяем что дата конца не раньше даты старта
       const result = compareAsc(day.timeStart, day.timeEnd);
-      if (result > 0) {
+      if (result >= 0) {
         ctx.addIssue({
           code: "custom",
           message: t("moreThanEndDate", { ns: "constructorFields" }),
@@ -287,7 +288,7 @@ const createJobMobileFormSchema = (
           }
         } 
       });
-    });
+});
 
 export type submitValues = z.output<
   ReturnType<typeof createJobMobileFormSchema>
@@ -698,7 +699,10 @@ export function JobMobileFormView({
                                 // timeStart: startDate,
                                 // timeEnd: subDays(fields[0].timeEnd, 2),
                                 timeStart: entity.days[0].timeStart,
-                                timeEnd: entity.days[0].timeEnd,
+                                timeEnd: set(startDate, {
+                                  hours: defaultTimeRange.end.getHours(),
+                                  minutes: 0,
+                                }),
                                 ...(entity.travelling === true && {
                                   needRoute: false,
                                   locations: [],
@@ -1037,97 +1041,161 @@ export function JobMobileFormView({
                           </S_AccordionDetails>
                         </S_Accordion>
                         {(() => {
-                          const endDate = getValues("dateEnd") as Date;
+                  const endDate = getValues("dateEnd") as Date;
 
-                          // смотрим есть ли в массиве дней после текущего дня ещё день
-                          const nextDayinArray = fields[index + 1];
+                  // смотрим есть ли в массиве дней после текущего дня ещё день
+                  const nextDayinArray = fields[index + 1];
 
-                          if (nextDayinArray) {
-                            //дни есть, нужно проверить есть ли промежуток между днями или они идут друг за другом, для этого берем текущий день, прибавляем к нему 24 часа и берем следующий день в массиве и сравниваем, если день один и тотже, то дни идут друг за другом
-                            const sameDay = isSameDay(
-                              addDays(day.timeStart, 1),
-                              nextDayinArray.timeStart,
-                            );
+                  if (nextDayinArray) {
+                    //дни есть, нужно проверить есть ли промежуток между днями или они идут друг за другом, для этого берем текущий день, прибавляем к нему 24 часа и берем следующий день в массиве и сравниваем, если день один и тотже, то дни идут друг за другом
+                    const sameDay = isSameDay(
+                      addDays(day.timeStart, 1),
+                      nextDayinArray.timeStart,
+                    );
 
-                            //если день не один и тотже, значит есть промежуток, вставляем кнопку
-                            if (!sameDay) {
-                              return (
-                                <Button
-                                  variant="outlined"
-                                  type="button"
-                                  startIcon={<CalendarIcon />}
-                                  onClick={() => {
-                                    //ищем нужный нам день в пропсах, чтобы из него взять время старта и окончания
-                                    const match = entity.days.find((propsDay) =>
-                                      isSameDay(
-                                        addDays(day.timeStart, 1),
-                                        propsDay.timeStart,
-                                      ),
-                                    );
+                    //если день не один и тотже, значит есть промежуток, вставляем кнопку
+                    if (!sameDay) {
+                      return (
+                        <Button
+                          variant="outlined"
+                          type="button"
+                          startIcon={<CalendarIcon />}
+                          onClick={() => {
+                            //ищем нужный нам день в пропсах, чтобы из него взять время старта и окончания
 
-                                    if (match) {
-                                      insert(index + 1, {
-                                        //   timeStart: addDays(day.timeStart, 1),
-                                        //   timeEnd: addDays(day.timeEnd, 2),
-                                        timeStart: match.timeStart,
-                                        timeEnd: match.timeEnd,
-                                        ...(entity.travelling === true && {
-                                          needRoute: false,
-                                          locations: [],
-                                        }),
-                                      });
-                                    }
-                                  }}
-                                >
-                                  {t("addDayButton")}
-                                </Button>
+                            const days = eachDayOfInterval({
+                              start: entity.dateStart,
+                              end: entity.dateEnd,
+                            });
+
+                            let match;
+
+                            if (entity.days.length > 0) {
+                              match = entity.days.find((propsDay) =>
+                                isSameDay(
+                                  addDays(day.timeStart, 1),
+                                  propsDay.timeStart,
+                                ),
                               );
+
+                              if (!match) {
+                                match = days.find((propsDay) =>
+                                  isSameDay(
+                                    addDays(day.timeStart, 1),
+                                    propsDay,
+                                  ),
+                                );
+                              }
                             } else {
-                              return null;
-                            }
-                          } else {
-                            //если после текущего дня дней больше нет, надо проверить является ли текущий день датой окончания
-
-                            const sameDay = isSameDay(day.timeStart, endDate);
-                            //если день не один и тотже, значит есть промежуток, вставляем кнопку
-                            if (!sameDay) {
-                              // текущий день не является датой окончания, рисуем кнопку
-                              return (
-                                <Button
-                                  variant="outlined"
-                                  type="button"
-                                  startIcon={<CalendarIcon />}
-                                  onClick={() => {
-                                    //ищем нужный нам день в пропсах, чтобы из него взять время старта и окончания
-                                    const match = entity.days.find((propsDay) =>
-                                      isSameDay(
-                                        addDays(day.timeStart, 1),
-                                        propsDay.timeStart,
-                                      ),
-                                    );
-
-                                    if (match) {
-                                      append({
-                                        // timeStart: addDays(day.timeStart, 1),
-                                        // timeEnd: addDays(day.timeEnd, 2),
-                                        timeStart: match.timeStart,
-                                        timeEnd: match.timeEnd,
-                                        ...(entity.travelling === true && {
-                                          needRoute: false,
-                                          locations: [],
-                                        }),
-                                      });
-                                    }
-                                  }}
-                                >
-                                  {t("addDayButton")}
-                                </Button>
+                              match = days.find((propsDay) =>
+                                isSameDay(addDays(day.timeStart, 1), propsDay),
                               );
-                            } else {
-                              return null;
                             }
-                          }
-                        })()}
+
+                            if (match) {
+                              insert(index + 1, {
+                                timeStart:
+                                  "timeStart" in match
+                                    ? match.timeStart
+                                    : set(match, {
+                                      hours: defaultTimeRange.start.getHours(),
+                                      minutes: 0,
+                                    }),
+                                timeEnd:
+                                  "timeEnd" in match
+                                    ? match.timeEnd
+                                    : set(match, {
+                                      hours: defaultTimeRange.end.getHours(),
+                                      minutes: 0,
+                                    }),
+                                ...(entity.travelling ===
+                                  true && {
+                                  needRoute: false,
+                                  locations: [],
+                                }),
+                              });
+                            }
+                          }}
+                        >
+                          {t("addDayButton")}
+                        </Button>
+                      );
+                    } else {
+                      return null;
+                    }
+                  } else {
+                    //если после текущего дня дней больше нет, надо проверить является ли текущий день датой окончания
+
+                    const sameDay = isSameDay(day.timeStart, endDate);
+                    //если день не один и тотже, значит есть промежуток, вставляем кнопку
+                    if (!sameDay) {
+                      // текущий день не является датой окончания, рисуем кнопку
+                      return (
+                        <Button
+                          variant="outlined"
+                          type="button"
+                          startIcon={<CalendarIcon />}
+                          onClick={() => {
+                            //ищем нужный нам день в пропсах, чтобы из него взять время старта и окончания
+                            const days = eachDayOfInterval({
+                              start: entity.dateStart,
+                              end: entity.dateEnd,
+                            });
+
+                            let match;
+
+                            if (entity.days.length > 0) {
+                              match = entity.days.find((propsDay) =>
+                                isSameDay(
+                                  addDays(day.timeStart, 1),
+                                  propsDay.timeStart,
+                                ),
+                              );
+
+                              if (!match) {
+                                match = days.find((propsDay) =>
+                                  isSameDay(
+                                    addDays(day.timeStart, 1),
+                                    propsDay,
+                                  ),
+                                );
+                              }
+                            } else {
+                              match = days.find((propsDay) =>
+                                isSameDay(addDays(day.timeStart, 1), propsDay),
+                              );
+                            }
+
+                            if (match) {
+                              append({
+                                timeStart:
+                                  "timeStart" in match
+                                    ? match.timeStart
+                                    : set(match, {
+                                      hours: defaultTimeRange.start.getHours(),
+                                      minutes: 0,
+                                    }),
+                                timeEnd:
+                                  "timeEnd" in match
+                                    ? match.timeEnd
+                                    : getValues("dateEnd"),
+                                ...(entity.travelling ===
+                                  true && {
+                                  needRoute: false,
+                                  locations: [],
+                                }),
+                              });
+                            }
+                          }}
+                        >
+                          {t("addDayButton")}
+                        </Button>
+                      );
+                    } else {
+                      return null;
+                    }
+                  }
+                })()}
                       </Box>
                     ))}
                   </Box>

@@ -134,6 +134,7 @@ interface ImportMetaEnv {
   readonly VITE_POST_SEND_ERROR: string;
   readonly VITE_GET_USER_SETTINGS: string;
   readonly VITE_POST_SET_USER_SETTINGS: string;
+  readonly VITE_GET_SIGNIN_JOBS: string;
   // more env variables...
 }
 

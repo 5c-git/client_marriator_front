@@ -289,16 +289,18 @@ export default function Service({ loaderData }: Route.ComponentProps) {
                       })(),
                     }),
                 };
-                submit(
-                  JSON.stringify({
-                    _action: "createService",
-                    payload: createPayload,
-                  }),
-                  {
-                    method: "POST",
-                    encType: "application/json",
-                  },
-                );
+
+                console.log(values)
+                // submit(
+                //   JSON.stringify({
+                //     _action: "createService",
+                //     payload: createPayload,
+                //   }),
+                //   {
+                //     method: "POST",
+                //     encType: "application/json",
+                //   },
+                // );
               } else {
                 const updatePayload: postUpdateTaskActivityPayload = {
                   taskId: Number(loaderData.taskId),
@@ -336,16 +338,18 @@ export default function Service({ loaderData }: Route.ComponentProps) {
                     }),
                 };
 
-                submit(
-                  JSON.stringify({
-                    _action: "updateService",
-                    payload: updatePayload,
-                  }),
-                  {
-                    method: "POST",
-                    encType: "application/json",
-                  },
-                );
+                console.log(values)
+
+                // submit(
+                //   JSON.stringify({
+                //     _action: "updateService",
+                //     payload: updatePayload,
+                //   }),
+                //   {
+                //     method: "POST",
+                //     encType: "application/json",
+                //   },
+                // );
               }
             }}
           />

@@ -150,6 +150,7 @@ export default function Orders({ loaderData }: Route.ComponentProps) {
             mapView={showMap}
             entityType="order"
             entities={loaderData.assignments}
+            sorting="ascending"
             entityListView={(entity) => (
               <EntityCard
                 key={entity.id}

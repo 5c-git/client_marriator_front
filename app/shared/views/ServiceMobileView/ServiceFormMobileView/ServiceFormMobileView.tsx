@@ -350,6 +350,9 @@ export function ServiceFormMobileView(props: ServiceFormMobileViewInterface) {
     name: "days",
   });
 
+  // console.log(errors)
+  console.log(getValues())
+
   return (
     <>
       <TopNavigation
@@ -614,7 +617,10 @@ export function ServiceFormMobileView(props: ServiceFormMobileViewInterface) {
                     onClick={() => {
                       prepend({
                         timeStart: startDate,
-                        timeEnd: subDays(fields[0].timeEnd, 2),
+                        timeEnd: set(startDate, {
+                          hours: props.defaultTimeRange.end.getHours(),
+                          minutes: 0,
+                        }),
                         ...((() => {
                           let result = false;
                           const match = props.activities.find(
@@ -996,12 +1002,12 @@ export function ServiceFormMobileView(props: ServiceFormMobileViewInterface) {
                                 1,
                               ),
                               timeEnd: addDays(
-                                set(day.timeEnd, {
+                                set(day.timeStart, {
                                   hours: props.defaultTimeRange.end.getHours(),
                                   minutes:
                                     props.defaultTimeRange.end.getMinutes(),
                                 }),
-                                2,
+                                1,
                               ),
                               ...((() => {
                                 let result = false;

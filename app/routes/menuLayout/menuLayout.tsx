@@ -137,7 +137,7 @@ export default function MenuLayout({ loaderData }: Route.ComponentProps) {
           position: "fixed",
           width: "100%",
           bottom: 0,
-          zIndex: 1,
+          zIndex: 1001,
         }}
         links={loaderData}
       />

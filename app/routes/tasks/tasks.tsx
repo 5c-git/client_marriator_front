@@ -150,6 +150,7 @@ export default function Tasks({ loaderData }: Route.ComponentProps) {
             mapView={showMap}
             entityType="task"
             entities={loaderData.tasks}
+            sorting="ascending"
             entityListView={(entity) => (
               <EntityCard
                 key={entity.id}
