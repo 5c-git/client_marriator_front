@@ -27,7 +27,7 @@ export default [
       ),
       route(
         ":lang?/profile/my-profile/profile-meta",
-        "routes/profile/my-profile/profile-meta/index/profile-meta.tsx",
+        "routes/profile/my-profile/profile-meta/profile-meta.tsx",
       ),
       route(
         ":lang?/profile/my-profile/profile-meta/confirm-personal-email",
