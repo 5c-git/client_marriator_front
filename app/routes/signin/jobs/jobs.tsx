@@ -40,11 +40,6 @@ export default function SigninJobs({ loaderData }: Route.ComponentProps) {
   const { isLoading } = useAppHooks();
   const { mapView, setMapView, activeCard, openDialog, closeDialog } = useSigninJobsHooks();
 
-
-
-
-  console.log(activeCard);
-
   return (
     <>
         {isLoading ? <Loader /> : null}
@@ -54,27 +49,27 @@ export default function SigninJobs({ loaderData }: Route.ComponentProps) {
             text: t("header", {ns: 'HomeLayout'}),
             bold: false,
             }}
-            buttonAction={{
-            text: mapView ? t("headerListAction",{ns: 'HomeLayout'}) : t("headerMapAction", {ns: 'HomeLayout'}),
-            icon: mapView ? (
-                <ListIcon
-                sx={{
-                    width: "15px",
-                    height: "15px",
-                }}
-                />
-            ) : (
-                <MapIcon
-                sx={{
-                    width: "15px",
-                    height: "15px",
-                }}
-                />
-            ),
-            action: () => {
-                setMapView(!mapView);
-            },
-            }}
+            // buttonAction={{
+            // text: mapView ? t("headerListAction",{ns: 'HomeLayout'}) : t("headerMapAction", {ns: 'HomeLayout'}),
+            // icon: mapView ? (
+            //     <ListIcon
+            //     sx={{
+            //         width: "15px",
+            //         height: "15px",
+            //     }}
+            //     />
+            // ) : (
+            //     <MapIcon
+            //     sx={{
+            //         width: "15px",
+            //         height: "15px",
+            //     }}
+            //     />
+            // ),
+            // action: () => {
+            //     setMapView(!mapView);
+            // },
+            // }}
             style={{
             position: "relative",
             boxShadow: "none",
@@ -85,7 +80,7 @@ export default function SigninJobs({ loaderData }: Route.ComponentProps) {
 
         <EntitiesListView
             translation="jobs"
-            mapView={mapView}
+            mapView={false}
             entities={loaderData}
             entityType="job"
             sorting="descending"
