@@ -348,7 +348,7 @@ export function BidFormMobileView(props: BidFormMobileViewInterface) {
     ),
   });
 
-  console.log(errors);
+  console.log(props)
 
   const { fields, append, prepend, insert, remove } = useFieldArray({
     control,

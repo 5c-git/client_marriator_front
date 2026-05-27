@@ -231,8 +231,8 @@ export default function Bid({ loaderData }: Route.ComponentProps) {
               locations={loaderData.locations}
               radiuses={loaderData.radiuses}
               defaultTimeRange={bidMobileData.project.timeStart && bidMobileData.project.timeEnd ? { 
-                start: new Date(`2026-03-12T${bidMobileData.project.timeStart.startsWith("0") ? bidMobileData.project.timeStart : `0${bidMobileData.project.timeStart}`}:00`),
-                end: new Date(`2026-03-12T${bidMobileData.project.timeEnd.startsWith("0") ? bidMobileData.project.timeEnd : `0${bidMobileData.project.timeEnd}`}:00`)
+                start: new Date(`2026-03-12T${bidMobileData.project.timeStart}:00`),
+                end: new Date(`2026-03-12T${bidMobileData.project.timeEnd}:00`)
               }:loaderData.defaultTimeRange}
               submitAction={(values) => {
                 const payload: postUpdateBidPayload = {
