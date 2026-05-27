@@ -7,7 +7,7 @@ import { ListIcon } from "~/shared/ui/Menu/icons/ListIcon";
 import { ProfileIcon } from "~/shared/ui/Menu/icons/ProfileIcon";
 
 
-export default function MenuLayout() {
+export default function MenuOutlet() {
   return (
     <Stack
       sx={{
@@ -19,7 +19,7 @@ export default function MenuLayout() {
     >
       <Outlet />
 
-      {/* <Menu
+      <Menu
         style={{
           position: "fixed",
           width: "100%",
@@ -41,7 +41,7 @@ export default function MenuLayout() {
               icon: <ListIcon sx={{ width: "30px", height: "30px" }} />,
           }
         ]}
-      /> */}
+      />
     </Stack>
   );
 }

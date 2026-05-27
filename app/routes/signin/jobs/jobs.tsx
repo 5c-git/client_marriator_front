@@ -19,7 +19,7 @@ import { ListIcon } from "~/shared/ui/Menu/icons/ListIcon";
 
 import { signinJobsContainer } from "./jobs.module";
 import { SigninJobsTokens } from "./jobs.tokens";
-import { SigninJobsMapper } from "./jobs.mapper";
+import { Job, SigninJobsMapper } from "./jobs.mapper";
 
 
 import { useAppHooks } from '~/shared/hooks/app.hooks';
@@ -91,7 +91,7 @@ export default function SigninJobs({ loaderData }: Route.ComponentProps) {
             sorting="descending"
             entityListView={(entity) => (
                 <Box onClick={() => {
-                    openDialog(entity)
+                    openDialog(entity as Job)
                 }}>
                     <EntityCard
                     key={entity.id + entity.userId}
@@ -118,7 +118,7 @@ export default function SigninJobs({ loaderData }: Route.ComponentProps) {
             )}
             entityMapView={(entity) => (
                 <Box onClick={() => {
-                    openDialog(entity)
+                    openDialog(entity as Job)
                 }}>
                 <EntityCard
                 status={
@@ -186,7 +186,7 @@ export default function SigninJobs({ loaderData }: Route.ComponentProps) {
               </IconButton>
 
               <img
-                src={activeCard?.address.logo}
+                src={activeCard?.viewActivityLogo}
                 alt="checkbox banner"
                 style={{
                   height: "100%",
@@ -211,7 +211,7 @@ export default function SigninJobs({ loaderData }: Route.ComponentProps) {
                   color: theme.vars.palette["Black"],
                 })}
               >
-                {activeCard?.header}
+                {activeCard?.viewActivityText}
               </Typography>
 
               <Typography
@@ -221,7 +221,7 @@ export default function SigninJobs({ loaderData }: Route.ComponentProps) {
                   color: theme.vars.palette["Black"],
                 })}
               >
-                {activeCard?.address.text}
+                {activeCard?.viewActivityDescription}
               </Typography>
             </Box>
           </Box>

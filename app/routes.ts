@@ -110,7 +110,7 @@ export default [
     ]),
 
     //signin
-    layout("routes/signin/phone/_views/MenuLayout.tsx", [
+    layout("routes/signin/phone/_views/MenuOutlet.tsx", [
       route(":lang?/signin/phone", "routes/signin/phone/phone.tsx"),
       route(":lang?/signin/jobs", "routes/signin/jobs/jobs.tsx"),
 

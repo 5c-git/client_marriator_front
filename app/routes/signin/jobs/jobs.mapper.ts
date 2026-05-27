@@ -1,10 +1,16 @@
 
 import type { GetSigninJobsSuccess } from "~/api/getSigninJobs/getSigninJobsSuccess.schema";
-import type { EntitiesListViewInterface } from "~/shared/views/EntitiesListView/EntitesListViewInterface";
+import type { Entity } from "~/shared/views/EntitiesListView/EntitesListViewInterface";
+
+export type Job = Entity & {
+  viewActivityLogo: string,
+  viewActivityText: string,
+  viewActivityDescription: string,
+}
 
 export class SigninJobsMapper {
 
-    static mapDataToJobs(data: GetSigninJobsSuccess['data']): EntitiesListViewInterface['entities'] {
+    static mapDataToJobs(data: GetSigninJobsSuccess['data']): Job[] {
         return data.map((item) => ({
             id: item.id,
             userId: -1,
@@ -26,6 +32,9 @@ export class SigninJobsMapper {
             ],
             units: item.viewActivity.standard.name,
             currency: "₽",
+            viewActivityLogo: `${import.meta.env.VITE_ASSET_PATH}${item.viewActivity.logo}`,
+            viewActivityText: item.viewActivity.detailName,
+            viewActivityDescription: item.viewActivity.previewText
           }
         )       
     );

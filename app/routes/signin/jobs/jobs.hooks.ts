@@ -1,19 +1,19 @@
-import { useState, useCallback } from "react";
+import type {Job} from './jobs.mapper'
 
+import { useState, useCallback } from "react";
 import { useStore } from "~/store/store";
 
-import { Entity } from "~/shared/views/EntitiesListView/EntitesListViewInterface";
 
 export function useSigninJobsHooks() {
 
     const mapView = useStore((state) => state.mapView);
     const setMapView = useStore((state) => state.setMapView);
 
-    const [activeCard, setActiveCard] = useState<Entity | null>(null);
+    const [activeCard, setActiveCard] = useState<Job | null>(null);
 
 
 
-    const openDialog = useCallback((enitity: Entity) => {
+    const openDialog = useCallback((enitity: Job) => {
         setActiveCard(enitity);
     }, []);
   
