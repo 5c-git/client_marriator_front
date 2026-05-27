@@ -350,9 +350,6 @@ export function ServiceFormMobileView(props: ServiceFormMobileViewInterface) {
     name: "days",
   });
 
-  // console.log(errors)
-  console.log(getValues())
-
   return (
     <>
       <TopNavigation
