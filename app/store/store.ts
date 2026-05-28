@@ -1,7 +1,7 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 
-type State = {
+export type State = {
   userEmail: null | string;
   userPhone: null | string;
   accessToken: null | string;
