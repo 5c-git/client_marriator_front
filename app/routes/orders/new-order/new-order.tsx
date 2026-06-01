@@ -16,11 +16,13 @@ import { postUpdateOrder } from "~/api/_personal/postUpdateOrder/postUpdateOrder
 import { postDeleteOrderActivity } from "~/api/_personal/postDeleteOrderActivity/postDeleteOrderActivity";
 import { postCancelOrder } from "~/api/_personal/postCancelOrder/postCancelOrder";
 import { postSendOrder } from "~/api/_personal/postSendOrder/postSendOrder";
+import { getProjectsForOrder } from "~/api/_personal/getProjectsForOrder/getProjectsForOrder";
 
 type MobileModeData = {
   mode: "mobile";
   order: NewOrderMobileViewInterface["order"];
   options: NewOrderMobileViewInterface["options"];
+  projectOptions: NewOrderMobileViewInterface["projectOptions"];
 };
 
 export async function clientLoader({ request }: Route.ClientLoaderArgs) {
@@ -36,6 +38,7 @@ export async function clientLoader({ request }: Route.ClientLoaderArgs) {
     if (mode === "mobile") {
       const order: MobileModeData["order"] = {
         id: "",
+        projectId: null,
         place: {
           id: "",
           name: "",
@@ -47,11 +50,18 @@ export async function clientLoader({ request }: Route.ClientLoaderArgs) {
       };
 
       const options: MobileModeData["options"] = [];
+      const projectOptions: MobileModeData["projectOptions"] = [];
 
       if (orderId) {
         const orderData = await getOrder(accessToken, orderId);
 
+        const projectsOptionsData = await getProjectsForOrder(
+          accessToken,
+          orderId,
+        );
+
         order.id = orderId;
+        order.projectId = orderData.data.project ? orderData.data.project.id.toString() : null;
         order.place.id = orderData.data.place.id.toString();
         order.place.name = orderData.data.place.name;
         order.place.region = orderData.data.place.region.name;
@@ -63,6 +73,14 @@ export async function clientLoader({ request }: Route.ClientLoaderArgs) {
             id: item.id,
             count: item.count,
             name: item.viewActivity.name,
+          });
+        });
+
+        projectsOptionsData.data.forEach((item) => {
+          projectOptions.push({
+            value: item.id.toString(),
+            label: item.name,
+            disabled: false,
           });
         });
       }
@@ -81,6 +99,7 @@ export async function clientLoader({ request }: Route.ClientLoaderArgs) {
         mode: "mobile",
         order,
         options,
+        projectOptions
       } as MobileModeData;
     }
 
@@ -104,6 +123,7 @@ export async function clientAction({ request }: Route.ClientActionArgs) {
       const order = await postCreateOrder(
         accessToken,
         fields.placeId,
+        fields.projectId,
         fields.selfEmployed,
       );
       currentURL.searchParams.set("orderId", order.data.id.toString());
@@ -114,6 +134,7 @@ export async function clientAction({ request }: Route.ClientActionArgs) {
         accessToken,
         fields.placeId,
         Number(orderId),
+        Number(fields.projectId),
         fields.selfEmployed,
       );
     } else if (_action === "_delete" && orderId) {
@@ -140,6 +161,8 @@ export default function NewOrder({ loaderData }: Route.ComponentProps) {
 
   const fetcher = useFetcher();
 
+  console.log(loaderData)
+
   return loaderData.mode === "mobile" ? (
     <>
       {navigation.state !== "idle" ? <Loader /> : null}
@@ -147,17 +170,19 @@ export default function NewOrder({ loaderData }: Route.ComponentProps) {
       <NewOrderMobileView
         order={loaderData.order}
         options={loaderData.options}
+        projectOptions={loaderData.projectOptions}
         headerBackAction={() => {
           navigate(withLocale("/"), {
             viewTransition: true,
           });
         }}
-        submitAction={(placeId, selfEmployed) => {
+        submitAction={(placeId, projectId, selfEmployed) => {
           if (loaderData.order.isNewOrder) {
             fetcher.submit(
               JSON.stringify({
                 _action: "_create",
                 placeId: placeId,
+                projectId: projectId,
                 selfEmployed: selfEmployed,
               }),
               {
@@ -169,9 +194,10 @@ export default function NewOrder({ loaderData }: Route.ComponentProps) {
             fetcher.submit(
               JSON.stringify({
                 _action: "_update",
-                placeId: placeId,
-                selfEmployed: selfEmployed,
                 orderId: fetcher.data,
+                placeId: placeId,
+                projectId: projectId,
+                selfEmployed: selfEmployed,
               }),
               {
                 method: "POST",
@@ -221,3 +247,4 @@ export default function NewOrder({ loaderData }: Route.ComponentProps) {
     </>
   ) : null;
 }
+

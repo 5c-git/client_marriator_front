@@ -13,6 +13,7 @@ export const postUpdateOrder = async (
   accessToken: string,
   placeId: number,
   orderId: number,
+  projectId: number,
   selfEmployed: boolean,
 ): Promise<PostUpdateOrderSuccess> => {
   try {
@@ -27,6 +28,7 @@ export const postUpdateOrder = async (
       body: JSON.stringify({
         placeId,
         orderId,
+        projectId,
         selfEmployed,
       }),
     });

@@ -129,6 +129,7 @@ import { postUpdateSearchMockResponse } from "~/api/_personal/postUpdateSearch/p
 import { getUserSettingsMockResponse } from "~/api/_personal/getUserSettings/getUserSettings";
 import { postSetUserSettingsMockResponse } from "~/api/_personal/postSetUserSettings/postSetUserSettings";
 import { getSigninJobsMockResponse } from "~/api/getSigninJobs/getSigninJobs";
+import { getProjectsForOrderMockResponse } from "~/api/_personal/getProjectsForOrder/getProjectsForOrder";
 
 export const handlers = [
   getFormMockResponse,
@@ -255,7 +256,8 @@ export const handlers = [
   postCreateSearchFromTaskMockResponse,
   postCreateSearchFromOrderMockResponse,
   postUpdateSearchMockResponse,
-  getUserSettingsMockResponse
-  postSetUserSettingsMockResponse
-  getSigninJobsMockResponse
+  getUserSettingsMockResponse,
+  postSetUserSettingsMockResponse,
+  getSigninJobsMockResponse,
+  getProjectsForOrderMockResponse
 ];

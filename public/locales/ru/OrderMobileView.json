@@ -2,6 +2,7 @@
   "header": "Создание поручения",
   "fields": {
     "locationPlaceholder": "Место оказания услуг *",
+    "projectPlaceholder": "Проект",
     "selfEmployedPlaceholder": "Работать с самозанятыми"
   },
   "services": "Услуги",

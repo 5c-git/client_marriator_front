@@ -1,6 +1,7 @@
 export type NewOrderMobileViewInterface = {
   order: {
     id: string;
+    projectId: null | string;
     place: {
       id: string;
       name: string;
@@ -15,8 +16,11 @@ export type NewOrderMobileViewInterface = {
     }[];
   };
   options: { value: string; label: string; disabled: boolean }[];
+  projectOptions: { value: string; label: string; disabled: boolean }[];
   headerBackAction: () => void;
-  submitAction: (placeId: string, selfEmployed: boolean) => void;
+  submitAction: (placeId: string,
+    projectId: string,
+    selfEmployed: boolean) => void;
   cancelAction: () => void;
   saveAction: () => void;
   deleteAction: (serviceId: number) => void;

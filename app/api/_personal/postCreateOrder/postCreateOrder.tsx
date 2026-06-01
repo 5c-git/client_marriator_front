@@ -12,6 +12,7 @@ export const postCreateOrderKeys = ["postCreateOrder"];
 export const postCreateOrder = async (
   accessToken: string,
   placeId: number,
+  projectId: number,
   selfEmployed: boolean,
 ): Promise<PostCreateOrderSuccess> => {
   try {
@@ -25,6 +26,7 @@ export const postCreateOrder = async (
       },
       body: JSON.stringify({
         placeId,
+        projectId,
         selfEmployed,
       }),
     });

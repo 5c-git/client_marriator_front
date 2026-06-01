@@ -41,6 +41,10 @@ type MobileModeData = Omit<
     start: Date;
     end: Date;
   };
+  projectTimeRange: {
+    start: Date;
+    end: Date;
+  };
 };
 
 export async function clientLoader({
@@ -73,10 +77,10 @@ export async function clientLoader({
       const activities: MobileModeData["activities"] = [];
       const locations: MobileModeData["locations"] = [];
 
+      const orderData = await getOrder(accessToken, params.orderId);
+
       if (params.serviceId) {
         setting_isNew = false;
-
-        const orderData = await getOrder(accessToken, params.orderId);
 
         const service = orderData.data.orderActivities.find(
           (item) => item.id.toString() === params.serviceId,
@@ -188,6 +192,11 @@ export async function clientLoader({
           ),
           end: new Date(`2026-03-12T${intervalDayEnd.data.value}:00`),
         },
+        projectTimeRange: {
+          // "as string" because at this point there is no way we can create service if there is no order with project
+          start: new Date(orderData.data.project?.dateStart as string),
+          end: new Date(orderData.data.project?.dateEnd as string),
+        },
       } as MobileModeData;
     }
 
@@ -248,6 +257,7 @@ export default function Service({ loaderData }: Route.ComponentProps) {
             activities={loaderData.activities}
             locations={loaderData.locations}
             defaultTimeRange={loaderData.defaultTimeRange}
+            projectTimeRange={loaderData.projectTimeRange}
             headerBackAction={() => {
               navigate(-1);
             }}

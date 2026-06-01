@@ -68,6 +68,8 @@ const createBidFormSchema = (
   endDate: Date,
   defaultStartDate: Date,
   defaultEndDate: Date,
+  projectStartDate: Date,
+  projectEndDate: Date,
 ) =>
   z
     .object({
@@ -80,13 +82,25 @@ const createBidFormSchema = (
         .min(1),
       dateStart: z
         .date({ error: t("text", { ns: "constructorFields" }) })
+        .min(projectStartDate, {
+          error: t("earlierThanProject", { ns: "constructorFields" }),
+        })
         .min(startDate, {
           error: t("newDateBeforeStart", { ns: "constructorFields" }),
+        })
+        .max(projectEndDate, {
+          error: t("laterThanProject", { ns: "constructorFields" }),
         }),
       dateEnd: z
         .date({ error: t("text", { ns: "constructorFields" }) })
+        .min(projectStartDate, {
+          error: t("earlierThanProject", { ns: "constructorFields" }),
+        })
         .max(endDate, {
           error: t("newDateAfterFinish", { ns: "constructorFields" }),
+        })
+        .max(projectEndDate, {
+          error: t("laterThanProject", { ns: "constructorFields" }),
         }),
       needDays: z.boolean(),
       needFoto: z.boolean(),
@@ -344,11 +358,11 @@ export function BidFormMobileView(props: BidFormMobileViewInterface) {
         props.entity.dateEnd,
         props.defaultTimeRange.start,
         props.defaultTimeRange.end,
+        props.projectTimeRange.start,
+        props.projectTimeRange.end
       ),
     ),
   });
-
-  console.log(props)
 
   const { fields, append, prepend, insert, remove } = useFieldArray({
     control,

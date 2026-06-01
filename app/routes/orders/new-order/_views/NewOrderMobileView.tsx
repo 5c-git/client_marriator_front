@@ -46,11 +46,13 @@ export default function NewOrderMobileView(props: NewOrderMobileViewInterface) {
   } = useForm({
     defaultValues: {
       location: props.order.place.id,
+      project: props.order.projectId ? props.order.projectId : "",
       selfEmployed: props.order.selfEmployed,
     },
     resolver: zodResolver(
       z.object({
         location: z.string(t("text", { ns: "constructorFields" })),
+        project: z.string(t("text", { ns: "constructorFields" })),
         selfEmployed: z.boolean(),
       }),
     ),
@@ -92,7 +94,8 @@ export default function NewOrderMobileView(props: NewOrderMobileViewInterface) {
                 onImmediateChange={() => {
                   props.submitAction(
                     getValues("location"),
-                    getValues("selfEmployed"),
+                      getValues("project"),
+                      getValues("selfEmployed"),
                   );
                 }}
                 validation="none"
@@ -101,6 +104,32 @@ export default function NewOrderMobileView(props: NewOrderMobileViewInterface) {
                 {...field}
               />
             )}
+          />
+
+          <Controller
+            name="project"
+            control={control}
+            render={({ field }) =>
+              props.projectOptions.length > 0 ? (
+                <StyledSelect
+                  inputType="select"
+                  placeholder={t(`fields.projectPlaceholder`)}
+                  onImmediateChange={() => {
+                    props.submitAction(
+                      getValues("location"),
+                      getValues("project"),
+                      getValues("selfEmployed"),
+                    );
+                  }}
+                  validation="none"
+                  error={errors.project?.message}
+                  options={props.projectOptions}
+                  {...field}
+                />
+              ) : (
+                <></>
+              )
+            }
           />
 
           {!props.order.isNewOrder ? (
@@ -114,6 +143,7 @@ export default function NewOrderMobileView(props: NewOrderMobileViewInterface) {
                   onImmediateChange={() => {
                     props.submitAction(
                       getValues("location"),
+                      getValues("project"),
                       getValues("selfEmployed"),
                     );
                   }}

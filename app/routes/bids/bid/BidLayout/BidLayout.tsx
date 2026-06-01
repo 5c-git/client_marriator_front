@@ -106,7 +106,7 @@ export default function BidLayout({ loaderData }: Route.ComponentProps) {
           component={Link}
         />
       </Tabs>
-      <Outlet context={{ bidMobileData: loaderData.bidData, editMode }} />
+      <Outlet context={{ bidMobileData: loaderData.bidData, editMode, projectTimeRange: {start: loaderData.bidData.project.dateStart, end:loaderData.bidData.project.dateEnd } }} />
     </>
   ) : null;
 }

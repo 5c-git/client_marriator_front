@@ -26,6 +26,14 @@ export const getOrderSuccessSchema = z.object({
         description: z.string(),
       }),
     }),
+    project: z.union([z.null(), z.object({
+      id: z.number(),
+      name: z.string(),
+      dateStart: z.string(),
+      dateEnd: z.string(),
+      timeStart: z.string(),
+      timeEnd: z.string()
+    })]),
     user: z.object({
       id: z.number(),
       phone: z.number(),

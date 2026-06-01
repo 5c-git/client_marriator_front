@@ -52,6 +52,8 @@ const createJobMobileFormSchema = (
   endDate: Date,
   defaultStartDate: Date,
   defaultEndDate: Date,
+  projectStartDate: Date,
+  projectEndDate: Date,
 ) =>
   z
     .object({
@@ -64,13 +66,25 @@ const createJobMobileFormSchema = (
         .min(1),
       dateStart: z
         .date({ error: t("text", { ns: "constructorFields" }) })
+        .min(projectStartDate, {
+          error: t("earlierThanProject", { ns: "constructorFields" }),
+        })
         .min(startDate, {
           error: t("newDateBeforeStart", { ns: "constructorFields" }),
+        })
+        .max(projectEndDate, {
+          error: t("laterThanProject", { ns: "constructorFields" }),
         }),
       dateEnd: z
         .date({ error: t("text", { ns: "constructorFields" }) })
+        .min(projectStartDate, {
+          error: t("earlierThanProject", { ns: "constructorFields" }),
+        })
         .max(endDate, {
           error: t("newDateAfterFinish", { ns: "constructorFields" }),
+        })
+        .max(projectEndDate, {
+          error: t("laterThanProject", { ns: "constructorFields" }),
         }),
       needDays: z.boolean(),
       needFoto: z.boolean(),
@@ -301,6 +315,7 @@ export function JobMobileFormView({
   formID,
   ref,
   defaultTimeRange,
+  projectTimeRange
 }: {
   entity: JobMobileViewInterface["entity"];
   locations: JobMobileViewInterface["locations"];
@@ -308,6 +323,7 @@ export function JobMobileFormView({
   formID: string;
   ref?: Ref<HTMLFormElement>;
   defaultTimeRange: JobMobileViewInterface["defaultTimeRange"];
+  projectTimeRange: JobMobileViewInterface["projectTimeRange"];
 }) {
   const { t } = useTranslation("JobMobileView");
   const [dayIndex, setDayIndex] = useState<number>(-1);
@@ -359,7 +375,9 @@ export function JobMobileFormView({
       entity.dateStart,
       entity.dateEnd,
       defaultTimeRange.start,
-      defaultTimeRange.end)),
+      defaultTimeRange.end,
+      projectTimeRange.start,
+      projectTimeRange.end)),
   });
 
   const { fields, remove, prepend, insert, append } = useFieldArray({

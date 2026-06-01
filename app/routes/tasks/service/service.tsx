@@ -41,6 +41,10 @@ type MobileModeData = Omit<
     start: Date;
     end: Date;
   };
+  projectTimeRange: {
+    start: Date;
+    end: Date;
+  };
 };
 
 export async function clientLoader({
@@ -187,6 +191,10 @@ export async function clientLoader({
             `2026-03-12T${taskData.data.project.timeEnd ? taskData.data.project.timeEnd : intervalDayEnd.data.value}:00`,
           )
         },
+        projectTimeRange: {
+          start: new Date(taskData.data.project.dateStart),
+          end: new Date(taskData.data.project?.dateEnd),
+        },
       } as MobileModeData;
     }
 
@@ -247,6 +255,7 @@ export default function Service({ loaderData }: Route.ComponentProps) {
             activities={loaderData.activities}
             locations={loaderData.locations}
             defaultTimeRange={loaderData.defaultTimeRange}
+            projectTimeRange={loaderData.projectTimeRange}
             headerBackAction={() => {
               navigate(-1);
             }}

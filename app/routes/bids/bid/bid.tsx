@@ -116,12 +116,14 @@ export async function clientAction({
 export default function Bid({ loaderData }: Route.ComponentProps) {
   const submit = useSubmit();
   const { t } = useTranslation("SpecialistMobileView");
-  const { bidMobileData, editMode } = useOutletContext<{
+  const { bidMobileData, editMode, projectTimeRange } = useOutletContext<{
     bidMobileData: GetBidSuccess["data"];
     editMode: boolean;
+    projectTimeRange: {
+      start: Date;
+      end: Date;
+    };
   }>();
-
-  console.log(bidMobileData)
 
   const [mobileEntity] = useState<
     BidMobileViewInterface["entity"] | null
@@ -234,6 +236,7 @@ export default function Bid({ loaderData }: Route.ComponentProps) {
                 start: new Date(`2026-03-12T${bidMobileData.project.timeStart}:00`),
                 end: new Date(`2026-03-12T${bidMobileData.project.timeEnd}:00`)
               }:loaderData.defaultTimeRange}
+              projectTimeRange={projectTimeRange}
               submitAction={(values) => {
                 const payload: postUpdateBidPayload = {
                   bidId: bidMobileData.id,
@@ -304,6 +307,7 @@ export default function Bid({ loaderData }: Route.ComponentProps) {
                 start: new Date(`2026-03-12T${bidMobileData.project.timeStart.startsWith("0") ? bidMobileData.project.timeStart : `0${bidMobileData.project.timeStart}`}:00`),
                 end: new Date(`2026-03-12T${bidMobileData.project.timeEnd.startsWith("0") ? bidMobileData.project.timeEnd : `0${bidMobileData.project.timeEnd}`}:00`)
               }:loaderData.defaultTimeRange}
+              projectTimeRange={projectTimeRange}
             />
           )}
         </>

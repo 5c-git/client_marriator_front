@@ -65,6 +65,8 @@ type ServiceFormMobileViewInterface = Omit<
 const createServiceFormSchema = (
   defaultStartDate: Date,
   defaultEndDate: Date,
+  projectStartDate: Date,
+  projectEndDate: Date,
 ) =>
   z
     .object({
@@ -78,18 +80,31 @@ const createServiceFormSchema = (
         .min(1, { error: t("text", { ns: "constructorFields" }) }),
       dateStart: z
         .union([
-          z.date().min(new Date(), {
+          z.date()
+          .min(projectStartDate, {
+            error: t("earlierThanProject", { ns: "constructorFields" }),
+          })
+          .min(new Date(), {
             error: t("inFututreDate", { ns: "constructorFields" }),
+          })
+          .max(projectEndDate, {
+            error: t("laterThanProject", { ns: "constructorFields" }),
           }),
           z.null(),
         ])
         .pipe(z.date({ message: t("text", { ns: "constructorFields" }) })),
       dateEnd: z
         .union([
-          z.date().min(new Date(), {
+          z.date()
+          .min(projectStartDate, {
+            error: t("earlierThanProject", { ns: "constructorFields" }),
+          })
+          .min(new Date(), {
             error: t("inFututreDate", { ns: "constructorFields" }),
+          })
+          .max(projectEndDate, {
+            error: t("laterThanProject", { ns: "constructorFields" }),
           }),
-
           z.null(),
         ])
         .pipe(z.date({ message: t("text", { ns: "constructorFields" }) })),
@@ -342,6 +357,8 @@ export function ServiceFormMobileView(props: ServiceFormMobileViewInterface) {
       createServiceFormSchema(
         props.defaultTimeRange.start,
         props.defaultTimeRange.end,
+        props.projectTimeRange.start,
+        props.projectTimeRange.end
       ),
     ),
   });

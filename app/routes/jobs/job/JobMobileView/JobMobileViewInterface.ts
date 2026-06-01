@@ -72,4 +72,8 @@ export type JobMobileViewInterface = {
     start: Date;
     end: Date;
   };
+  projectTimeRange: {
+    start: Date;
+    end: Date;
+  };
 };

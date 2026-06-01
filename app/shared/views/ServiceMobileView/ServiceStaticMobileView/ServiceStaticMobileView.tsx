@@ -21,7 +21,7 @@ import { LocationIcon } from "~/shared/icons/LocationIcon";
 
 type ServiceStaticMobileViewInterface = Omit<
   ServiceMobileViewInterface,
-  "submitAction" | "cancelAction"
+  "submitAction" | "cancelAction" | "projectTimeRange"
 >;
 
 export function ServiceStaticMobileView(

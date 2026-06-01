@@ -16,7 +16,7 @@ import { determineRole } from "~/shared/determineRole";
 
 import { isWithinInterval, subHours, isAfter } from "date-fns";
 
-// import { JobMobileFormView } from "./JobMobileView/JobMobileFormView";
+import { JobMobileFormView } from "./JobMobileView/JobMobileFormView";
 import { JobMobileStaticView } from "./JobMobileView/JobMobileStaticView";
 
 import { FilesPopup } from "./components/FilesPopup";
@@ -45,6 +45,7 @@ type MobileModeData = {
   entity: JobMobileViewInterface["entity"];
   locations: JobMobileViewInterface["locations"];
   defaultTimeRange: JobMobileViewInterface["defaultTimeRange"];
+  projectTimeRange: JobMobileViewInterface["projectTimeRange"];
 };
 
 export async function clientLoader({ params }: Route.ClientLoaderArgs) {
@@ -233,6 +234,10 @@ export async function clientLoader({ params }: Route.ClientLoaderArgs) {
           end: new Date(
             `2026-03-12T${missionData.data.project.timeEnd ? missionData.data.project.timeEnd : intervalDayEnd.data.value}:00`,
           )
+        },
+        projectTimeRange: {
+          start: new Date(missionData.data.project.dateStart),
+          end: new Date(missionData.data.project.dateEnd),
         },
       } as MobileModeData;
     }
@@ -486,6 +491,7 @@ export default function Job({ loaderData }: Route.ComponentProps) {
           console.log(values);
         }}
         ref={formRef}
+        projectTimeRange={loaderData.projectTimeRange}
       />
       <button type="submit" form="formView">
         Submit Form

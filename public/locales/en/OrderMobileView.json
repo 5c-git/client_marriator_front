@@ -2,6 +2,7 @@
   "header": "New order",
   "fields": {
     "locationPlaceholder": "Order location *",
+    "projectPlaceholder": "Project",
     "selfEmployedPlaceholder": "Work with self-employed"
   },
   "services": "Services",

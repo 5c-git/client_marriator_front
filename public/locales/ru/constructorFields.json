@@ -34,5 +34,7 @@
   "moreThanEndDate": "Выбранная дата позже даты конца",
   "locationsNeeded": "Укажите точки маршрута",
   "newDateBeforeStart": "Выбранная дата не может быть раньше изначальной",
-  "newDateAfterFinish": "Выбранная дата не может быть позже изначальной"
+  "newDateAfterFinish": "Выбранная дата не может быть позже изначальной",
+  "earlierThanProject": "Дата раньше старта проекта",
+  "laterThanProject": "Дата позже конца проекта"
 }

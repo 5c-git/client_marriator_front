@@ -34,5 +34,7 @@
   "moreThanEndDate": "Selected date is more than end date",
   "locationsNeeded": "Please provide route locations",
   "newDateBeforeStart": "Selected date can not be earlier than previously set date",
-  "newDateAfterFinish": "Selected date can not be later than previously set date"
+  "newDateAfterFinish": "Selected date can not be later than previously set date",
+  "earlierThanProject": "Earlier than project start",
+  "laterThanProject": "Later than project end"
 }
