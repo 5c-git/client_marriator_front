@@ -161,8 +161,6 @@ export default function NewOrder({ loaderData }: Route.ComponentProps) {
 
   const fetcher = useFetcher();
 
-  console.log(loaderData)
-
   return loaderData.mode === "mobile" ? (
     <>
       {navigation.state !== "idle" ? <Loader /> : null}

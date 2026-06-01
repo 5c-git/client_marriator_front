@@ -41,6 +41,7 @@ export default function NewOrderMobileView(props: NewOrderMobileViewInterface) {
     control,
     handleSubmit,
     reset,
+    watch,
     getValues,
     formState: { errors },
   } = useForm({
@@ -236,7 +237,7 @@ export default function NewOrderMobileView(props: NewOrderMobileViewInterface) {
           component={Link}
           to={withLocale(`/orders/${props.order.id}/service?new=true`)}
           variant="outlined"
-          disabled={props.order.isNewOrder}
+          disabled={props.order.isNewOrder || watch('project') === ''}
           startIcon={<AddIcon />}
         >
           {t(`serviceButton`)}
