@@ -564,7 +564,7 @@ export default function Order({ loaderData }: Route.ComponentProps) {
                     </>
                   ) : null}
 
-                  {userRole === "supervisor" &&
+                  {(userRole === "manager" ||userRole === "supervisor") &&
                   loaderData.entity.status === 3 &&
                   service.buttonBidNeed ? (
                     <Button
