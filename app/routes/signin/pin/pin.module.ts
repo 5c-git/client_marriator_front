@@ -1,5 +1,6 @@
 import { Container } from "brandi";
 
+import { getData } from "~/api/_personal/getData/getData";
 import { postCheckPin } from "~/api/postCheckPin/postCheckPin";
 import { postStartRestorePin } from "~/api/postStartRestorePin/postStartRestorePin";
 import { getUserInfo } from "~/api/_personal/getUserInfo/getUserInfo";
@@ -35,6 +36,18 @@ pinContainer
 pinContainer
   .bind(pinPrivateTokens.determineUserRole)
   .toConstant(determineRole);
+  pinContainer
+  .bind(pinPrivateTokens.setUserManager)
+  .toConstant(useStore.getState().setUserManager);
+pinContainer
+  .bind(pinPrivateTokens.setUserSupervisor)
+  .toConstant(useStore.getState().setUserSupervisor);
+
+pinContainer
+  .bind(pinPrivateTokens.getUserData)
+  .toConstant(getData);
+
+
 
 pinContainer
   .bind(pinTokens.pinService)

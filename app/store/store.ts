@@ -10,6 +10,19 @@ export type State = {
   userId: null | number;
   mapView: boolean;
 
+  userManager: {
+    id: number,
+    name: string,
+    email: string,
+    phone: number
+  } | null
+  userSupervisor: {
+    id: number,
+    name: string,
+    email: string,
+    phone: number
+  } | null
+
   setUserEmail: (newUserEmail: string) => void;
   setUserPhone: (newUserPhone: string) => void;
   setUserRole: (
@@ -25,6 +38,19 @@ export type State = {
   removeAccessToken: () => void;
   removeRefreshToken: () => void;
 
+  setUserManager: (manager: {
+    id: number,
+    name: string,
+    email: string,
+    phone: number
+  }| null) => void;
+  setUserSupervisor: (manager: {
+    id: number,
+    name: string,
+    email: string,
+    phone: number
+  } | null) => void;
+
   clearStore: () => void;
 };
 
@@ -38,6 +64,8 @@ export const useStore = create<State>()(
       userRole: "specialist",
       userId: null,
       mapView: true,
+      userManager: null,
+      userSupervisor: null,
 
       setUserEmail: (newUserEmail) => set({ userEmail: newUserEmail }),
       setUserPhone: (newUserPhone) => set({ userPhone: newUserPhone }),
@@ -54,6 +82,8 @@ export const useStore = create<State>()(
       removeUserId: () => set({ userId: null }),
       removeAccessToken: () => set({ accessToken: null }),
       removeRefreshToken: () => set({ refreshToken: null }),
+      setUserManager: (manager) => set({ userManager: manager }),
+      setUserSupervisor: (supervisor) => set({ userSupervisor: supervisor }),
 
       clearStore: () =>
         set({
@@ -64,6 +94,8 @@ export const useStore = create<State>()(
           accessToken: null,
           refreshToken: null,
           mapView: true,
+          userManager: null,
+          userSupervisor: null,
         }),
     }),
     {

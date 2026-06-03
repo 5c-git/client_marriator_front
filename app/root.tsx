@@ -272,6 +272,9 @@ export default function App() {
   const { t } = useTranslation("rootErrorBoundry");
   const [isOnline, setIsOnline] = useState<boolean>(true);
 
+  const manager = useStore((state) => state.userManager);
+  const supervisor = useStore((state) => state.userSupervisor);
+
   useEffect(() => {
     const handleOnline = () => {
       setIsOnline(true);
@@ -298,6 +301,53 @@ export default function App() {
       }}>
         <LinearProgress color="corp" />
       </Box>
+
+      {manager ? <Box sx={{
+        display: 'grid',
+        rowGap: '8px',
+        padding: '0 24px 24px 24px'
+      }}>
+        <Typography sx={{
+          fontWeight: 'bold',
+          textAlign: 'center'
+        }}>{t("offlineSuperior.manager")}</Typography>
+        <Typography>
+          <Typography component='span' sx={{
+          fontWeight: 'bold'
+        }}>{t("offlineSuperior.name")}</Typography> {manager.name}</Typography>
+        <Typography><Typography component='span' sx={{
+          fontWeight: 'bold'
+        }}>{t("offlineSuperior.id")}</Typography>{manager.id}</Typography>
+        <Typography component='span' sx={{
+          fontWeight: 'bold'
+        }}>{t("offlineSuperior.phone")}<Typography component={'a'} href={`tel:+${manager.phone}`} sx={(theme) => ({
+          color: theme.vars.palette["Corp_1"]
+        })}>{manager.phone}</Typography></Typography>
+      </Box> : null}
+
+      {!manager && supervisor ? <Box sx={{
+        display: 'grid',
+        rowGap: '8px',
+        padding: '0 24px 24px 24px'
+      }}>
+        <Typography sx={{
+          fontWeight: 'bold',
+          textAlign: 'center'
+        }}>{t("offlineSuperior.supervisor")}</Typography>
+        <Typography>
+          <Typography component='span' sx={{
+          fontWeight: 'bold'
+        }}>{t("offlineSuperior.name")}</Typography> {supervisor.name}</Typography>
+        <Typography><Typography component='span' sx={{
+          fontWeight: 'bold'
+        }}>{t("offlineSuperior.id")}</Typography>{supervisor.id}</Typography>
+        <Typography component='span' sx={{
+          fontWeight: 'bold'
+        }}>{t("offlineSuperior.phone")}<Typography component={'a'} href={`tel:+${supervisor.phone}`} sx={(theme) => ({
+          color: theme.vars.palette["Corp_1"]
+        })}>{supervisor.phone}</Typography></Typography>
+      </Box> : null}
+
       </Dialog>
     <Outlet />
 </>;;
