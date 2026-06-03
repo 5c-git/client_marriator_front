@@ -312,7 +312,7 @@ export async function clientAction({ request }: Route.ClientActionArgs) {
         fields.orderId,
         fields.orderActivityId,
       );
-      throw redirect(withLocale(`/requests/${transformedRequestData.data.id}`));
+      throw redirect(withLocale(`/bids/${transformedRequestData.data.id}`));
     } else if (_action === "acceptAssignment") {
       await postAcceptOrder(accessToken, fields.orderId);
       throw redirect(currentURL.toString());
