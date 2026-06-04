@@ -120,10 +120,12 @@ export default function Bid({ loaderData }: Route.ComponentProps) {
     bidMobileData: GetBidSuccess["data"];
     editMode: boolean;
     projectTimeRange: {
-      start: Date;
-      end: Date;
+      start: string;
+      end: string;
     };
   }>();
+
+  console.log(projectTimeRange)
 
   const [mobileEntity] = useState<
     BidMobileViewInterface["entity"] | null
@@ -236,7 +238,7 @@ export default function Bid({ loaderData }: Route.ComponentProps) {
                 start: new Date(`2026-03-12T${bidMobileData.project.timeStart}:00`),
                 end: new Date(`2026-03-12T${bidMobileData.project.timeEnd}:00`)
               }:loaderData.defaultTimeRange}
-              projectTimeRange={projectTimeRange}
+              projectTimeRange={{start: new Date(projectTimeRange.start), end: new Date(projectTimeRange.end)}}
               submitAction={(values) => {
                 const payload: postUpdateBidPayload = {
                   bidId: bidMobileData.id,
