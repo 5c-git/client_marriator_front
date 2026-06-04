@@ -616,7 +616,7 @@ export default function Order({ loaderData }: Route.ComponentProps) {
                       {t("searchRequest")}{" "}
                       <span>
                         {t("searchRequestCount")}
-                        {service.count}
+                        {service.countSearch}
                       </span>
                     </Button>
                   ) : null}
