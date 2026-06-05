@@ -1,12 +1,22 @@
 import type { GetUserPersonalMenuSuccess } from "~/api/_personal/getUserPersonalMenu/getUserPersonalMenu.schema";
 
-import type { MyProfileLoaderData } from "./my-profile.service";
+
+export type MyProfileSection = {
+  name: string;
+  value: string;
+  hasNotification: boolean;
+};
+
+export type MyProfileData = {
+  sections: MyProfileSection[];
+  hasSectionsWithNotifications: boolean;
+};
 
 export class MyProfileMapper {
-  static toLoaderData(data: GetUserPersonalMenuSuccess): MyProfileLoaderData {
+  static toData(data: GetUserPersonalMenuSuccess): MyProfileData {
     const sections = data.result.section.map((item) => ({
       name: item.name,
-      value: item.value,
+      value: item.value.toString(),
       hasNotification: item.notification,
     }));
 

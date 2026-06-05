@@ -9,9 +9,9 @@ import {
   useRouteError,
   isRouteErrorResponse,
   useNavigate,
-  redirect,
+  useNavigation
 } from "react-router";
-import type { Route } from "./+types/root";
+// import type { Route } from "./+types/root";
 import { useEffect, useState } from "react";
 
 import { UnxpectedError } from "./shared/unexpectedError/unexpectedError";
@@ -27,11 +27,14 @@ import { theme } from "./theme/theme";
 import { Box, Button, CssBaseline, ThemeProvider, Typography, Dialog, DialogTitle, DialogContent, LinearProgress } from "@mui/material";
 
 import { Welcome } from "./shared/ui/Welcome/Welcome";
+import { Loader } from "./shared/ui/Loader/Loader";
+
+import logoTurnOff from "./logo-turnoff.svg";
 
 import { postRefreshToken } from "./api/postRefreshToken/postRefreshToken";
 import { postSendError } from "./api/postSendError/postSendError";
 
-import logoTurnOff from "./logo-turnoff.svg";
+
 
 export async function clientLoader({
   params,
@@ -270,6 +273,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
 
 export default function App() {
   const { t } = useTranslation("rootErrorBoundry");
+  const navigation = useNavigation();
   const [isOnline, setIsOnline] = useState<boolean>(true);
 
   const manager = useStore((state) => state.userManager);
@@ -293,6 +297,7 @@ export default function App() {
 
 
   return <>
+    {navigation.state !== "idle" ? <Loader /> : null}
     <Dialog open={!isOnline} onClose={() => {}}>
       <DialogTitle sx={{ textAlign: "center" }}>{t("offlineTitle")}</DialogTitle>
       <DialogContent sx={{ textAlign: "center", padding: 0 }}>{t("offlineText")}</DialogContent>
@@ -348,7 +353,7 @@ export default function App() {
         })}>{supervisor.phone}</Typography></Typography>
       </Box> : null}
 
-      </Dialog>
+    </Dialog>
     <Outlet />
-</>;;
+  </>;
 }

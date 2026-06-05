@@ -6,18 +6,8 @@ import type { AppService } from "~/shared/container/container.service";
 import { myProfilePrivateTokens } from "./my-profile.private-tokens";
 import { appTokens } from "~/shared/container/container.tokens";
 
-import { MyProfileMapper } from "./my-profile.mapper";
+import { MyProfileMapper, MyProfileData } from "./my-profile.mapper";
 
-export type MyProfileSection = {
-  name: string;
-  value: number;
-  hasNotification: boolean;
-};
-
-export type MyProfileLoaderData = {
-  sections: MyProfileSection[];
-  hasSectionsWithNotifications: boolean;
-};
 
 export class MyProfileService {
   constructor(
@@ -25,11 +15,11 @@ export class MyProfileService {
     private readonly appService: AppService,
   ) {}
 
-  async loadMyProfile(): Promise<MyProfileLoaderData> {
+  async loadMyProfile(): Promise<MyProfileData> {
     const accessToken = this.appService.getToken();
     const data = await this.fetchUserPersonalMenuCached(accessToken);
 
-    return MyProfileMapper.toLoaderData(data);
+    return MyProfileMapper.toData(data);
   }
 }
 
