@@ -26,24 +26,23 @@ import { StyledDropdown } from "~/shared/ui/StyledDropdown/StyledDropdown";
 import { MapIcon } from "~/shared/icons/MapIcon";
 
 import type {
-  LocationLoaderData,
+  LocationData,
 } from "../location.service";
 
 import type { LocationOption } from "../location.mapper";
 
-type LocationViewInterface = {
+type LocationViewProps = {
   translation: "location";
-  loaderData: LocationLoaderData;
+  data: LocationData;
   backAction: () => void;
   submitShopsAction: (shopIds: string[]) => void;
 };
 
-export function LocationView(props: LocationViewInterface) {
+export function LocationView(props: LocationViewProps) {
   const { t } = useTranslation("LocationView");
-  const { loaderData } = props;
 
   const [showMap, setShowMap] = useState<boolean>(false);
-  const [selectedShops, setSelectedShops] = useState(loaderData.shops);
+  const [selectedShops, setSelectedShops] = useState(props.data.shops);
   const [mapInstance, setMapInstance] = useState<YMapType | null>(null);
 
   const { control, setValue, getValues, handleSubmit, reset, watch } = useForm<{
@@ -54,7 +53,7 @@ export function LocationView(props: LocationViewInterface) {
     defaultValues: {
       searchbar: "",
       region: "",
-      shops: loaderData.selectedLocations,
+      shops: props.data.selectedLocations,
     },
     resolver: zodResolver(
       z.object({
@@ -247,7 +246,7 @@ export function LocationView(props: LocationViewInterface) {
 
                   if (evt.target.value !== "") {
                     matchingShops = [
-                      ...loaderData.shops.filter(
+                      ...props.data.shops.filter(
                         (item) =>
                           currentFieldValue.test(item.name) ||
                           currentFieldValue.test(item.address),
@@ -258,11 +257,11 @@ export function LocationView(props: LocationViewInterface) {
                     matchingShops =
                       currentRegion !== ""
                         ? [
-                            ...loaderData.shops.filter(
+                            ...props.data.shops.filter(
                               (item) => item.regionId === currentRegion,
                             ),
                           ]
-                        : [...loaderData.shops];
+                        : [...props.data.shops];
                   }
 
                   setSelectedShops(matchingShops);
@@ -279,7 +278,7 @@ export function LocationView(props: LocationViewInterface) {
             render={({ field }) => (
               <StyledDropdown
                 placeholder={t(`${props.translation}.regionPlaceholder`)}
-                options={loaderData.regions}
+                options={props.data.regions}
                 {...field}
                 onChange={(evt) => {
                   const currentSearchbarValue = new RegExp(
@@ -290,11 +289,11 @@ export function LocationView(props: LocationViewInterface) {
                   const matchingRegionShops =
                     evt.target.value !== ""
                       ? [
-                          ...loaderData.shops.filter(
+                          ...props.data.shops.filter(
                             (item) => item.regionId === evt.target.value,
                           ),
                         ]
-                      : [...loaderData.shops];
+                      : [...props.data.shops];
 
                   const matchingShops = [
                     ...matchingRegionShops.filter((item) =>
@@ -352,7 +351,7 @@ export function LocationView(props: LocationViewInterface) {
               type="button"
               onClick={() => {
                 reset();
-                setSelectedShops(loaderData.shops);
+                setSelectedShops(props.data.shops);
               }}
             >
               {t(`${props.translation}.cancelButton`)}

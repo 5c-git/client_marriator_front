@@ -1,4 +1,4 @@
-import { redirect } from "react-router";
+import { redirect, useNavigate } from "react-router";
 import type { Route } from "./+types/sms";
 
 import { t, loadNamespaces } from "i18next";
@@ -6,13 +6,16 @@ import { useTranslation } from "react-i18next";
 import { withLocale } from "~/shared/withLocale";
 
 import { Alert, Snackbar } from "@mui/material";
-import { Loader } from "~/shared/ui/Loader/Loader";
 
 import { SmsView } from "./_views/SmsView";
 import { smsContainer } from "./sms.module";
 import { smsTokens } from "./sms.tokens";
-import { useAppHooks } from "~/shared/hooks/app.hooks";
 import { useSmsHooks } from "./sms.hooks";
+
+export const SMS_ACTIONS = {
+  sendAgain: "sendAgain",
+  sendSms: "sendSms"
+}
 
 export async function clientLoader({ request }: Route.ClientLoaderArgs) {
   await loadNamespaces("sms");
@@ -76,8 +79,8 @@ export async function clientAction({ request }: Route.ClientActionArgs) {
 
 export default function Sms({ loaderData }: Route.ComponentProps) {
   const { t } = useTranslation("sms");
+  const navigate = useNavigate();
 
-  const { isLoading, navigateTo } = useAppHooks();
   const {
     seconds,
     notificationOpen,
@@ -90,14 +93,12 @@ export default function Sms({ loaderData }: Route.ComponentProps) {
 
   return (
     <>
-      {isLoading ? <Loader /> : null}
-
       <SmsView
         translation="sms"
         phone={loaderData.phone}
         seconds={seconds}
         backAction={() => {
-          navigateTo("/signin/phone");
+          navigate(withLocale("/signin/phone"));
         }}
         submitSmsAction={(values) => {
           submitSms(values.sms);

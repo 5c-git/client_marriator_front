@@ -3,12 +3,9 @@ import type { Route } from "./+types/recruiter";
 
 import { withLocale } from "~/shared/withLocale";
 
-import { Loader } from "~/shared/ui/Loader/Loader";
-
 import { RecruiterView } from "./_views/RecruiterView";
 import { recruiterContainer } from "./recruiter.module";
 import { recruiterTokens } from "./recruiter.tokens";
-import { useAppHooks } from "~/shared/hooks/app.hooks";
 import { useRecruiterHooks } from "./recruiter.hooks";
 
 export async function clientLoader() {
@@ -30,18 +27,13 @@ export async function clientAction({ request }: Route.ClientActionArgs) {
 }
 
 export default function Recruiter({ loaderData }: Route.ComponentProps) {
-  const { isLoading } = useAppHooks();
   const { finishRegister } = useRecruiterHooks();
 
   return (
-    <>
-      {isLoading ? <Loader /> : null}
-
       <RecruiterView
         translation="recruiter"
-        loaderData={loaderData}
+        data={loaderData}
         finishRegisterAction={finishRegister}
       />
-    </>
   );
 }

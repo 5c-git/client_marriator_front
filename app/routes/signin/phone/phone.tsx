@@ -9,11 +9,9 @@ import { withLocale } from "~/shared/withLocale";
 
 import {PhoneView} from "./_views/PhoneView";
 import { Alert, Snackbar } from "@mui/material";
-import { Loader } from "~/shared/ui/Loader/Loader";
 
 import { phoneContainer } from "./phone.module";
 import { phoneTokens } from "./phone.tokens";
-import { useAppHooks } from "~/shared/hooks/app.hooks";
 import {usePhoneHooks} from "./phone.hooks";
 
 export async function clientAction({ request }: Route.ClientActionArgs) {
@@ -40,13 +38,10 @@ export async function clientAction({ request }: Route.ClientActionArgs) {
 
 export default function Phone() {
   const { t } = useTranslation("phone");
-
-  const { isLoading } = useAppHooks();
   const { submitPhone, error, timer, clearTimer, clearError } = usePhoneHooks();
 
   return (
     <>
-      {isLoading ? <Loader /> : null}
 
       <PhoneView translation="phone" submitAction={(values) => submitPhone(values.phone)} />
 

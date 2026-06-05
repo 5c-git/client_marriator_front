@@ -10,7 +10,7 @@ import { appTokens } from "~/shared/container/container.tokens";
 
 import { LocationMapper } from "./location.mapper";
 
-export type LocationLoaderData = {
+export type LocationData = {
   shops: LocationOption[];
   regions: LocationRegionOption[];
   selectedLocations: string[];
@@ -24,7 +24,7 @@ export class LocationService {
     private readonly appService: AppService,
   ) {}
 
-  async loadLocations(): Promise<LocationLoaderData> {
+  async loadLocations(): Promise<LocationData> {
     const accessToken = this.appService.getToken();
     const userData = await this.getData(accessToken);
     const locationsData = await this.getPlace(accessToken);

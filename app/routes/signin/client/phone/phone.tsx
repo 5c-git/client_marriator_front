@@ -6,12 +6,9 @@ import { withLocale } from "~/shared/withLocale";
 
 import { Alert, Snackbar } from "@mui/material";
 
-import { Loader } from "~/shared/ui/Loader/Loader";
-
 import { ClientPhoneView } from "./_views/ClientPhoneView";
 import { phoneContainer } from "./phone.module";
 import { phoneTokens } from "./phone.tokens";
-import { useAppHooks } from "~/shared/hooks/app.hooks";
 import { usePhoneHooks } from "./phone.hooks";
 
 export async function clientLoader({ request }: Route.ClientLoaderArgs) {
@@ -51,17 +48,13 @@ export async function clientAction({ request }: Route.ClientActionArgs) {
 
 export default function Phone({ loaderData }: Route.ComponentProps) {
   const { t } = useTranslation("ClientPhoneView");
-
-  const { isLoading } = useAppHooks();
   const { submitPhone, error, clearError } = usePhoneHooks();
 
   return (
     <>
-      {isLoading ? <Loader /> : null}
-
       <ClientPhoneView
         translation="clientPhone"
-        loaderData={loaderData}
+        data={loaderData}
         submitAction={submitPhone}
       />
 

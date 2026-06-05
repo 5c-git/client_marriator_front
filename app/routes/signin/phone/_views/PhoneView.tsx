@@ -13,21 +13,21 @@ import { StyledPhoneField } from "~/shared/ui/StyledPhoneField/StyledPhoneField"
 
 import marriator from './marriator.svg';
 
-type PhoneViewInterface = {
+type PhoneViewProps = {
     translation: "phone";
     submitAction: (values: submitValues) => void;
   };
 
 type submitValues = z.output<ReturnType<typeof createFormSchema>>;
 
-const createFormSchema = (translation:PhoneViewInterface['translation'] ) => z.object({
+const createFormSchema = (translation:PhoneViewProps['translation'] ) => z.object({
     phone: z
       .string({ error: t(`${translation}.inputValidation`, {ns: "PhoneView"}) })
       .regex(phoneRegExp, { error: t(`${translation}.inputValidation_regExp`, {ns: "PhoneView"}) }),
   });
 
 
-export function PhoneView(props: PhoneViewInterface) {
+export function PhoneView(props: PhoneViewProps) {
     const { t } = useTranslation("PhoneView");
 
     const {

@@ -1,14 +1,11 @@
-import { redirect } from "react-router";
+import { redirect, useNavigate } from "react-router";
 import type { Route } from "./+types/location";
 
 import { withLocale } from "~/shared/withLocale";
 
-import { Loader } from "~/shared/ui/Loader/Loader";
-
 import { LocationView } from "./_views/LocationView";
 import { locationContainer } from "./location.module";
 import { locationTokens } from "./location.tokens";
-import { useAppHooks } from "~/shared/hooks/app.hooks";
 import { useLocationHooks } from "./location.hooks";
 
 export async function clientLoader() {
@@ -31,21 +28,17 @@ export async function clientAction({ request }: Route.ClientActionArgs) {
 }
 
 export default function Location({ loaderData }: Route.ComponentProps) {
-  const { isLoading, navigateTo } = useAppHooks();
+  const navigate = useNavigate();
   const { submitShops } = useLocationHooks();
 
   return (
-    <>
-      {isLoading ? <Loader /> : null}
-
       <LocationView
         translation="location"
-        loaderData={loaderData}
+        data={loaderData}
         backAction={() => {
-          navigateTo("/signin/client/meta");
+          navigate(withLocale("/signin/client/meta"));
         }}
         submitShopsAction={submitShops}
       />
-    </>
   );
 }

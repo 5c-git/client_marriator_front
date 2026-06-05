@@ -14,7 +14,7 @@ import type { AppService } from "~/shared/container/container.service";
 import { PhoneMapper } from "./phone.mapper";
 
 
-export type PhoneLoaderData = {
+export type PhoneData = {
   userPhone: string;
 };
 
@@ -32,7 +32,7 @@ export class PhoneService {
     private readonly appService: AppService,
   ) {}
 
-  async loadPhone(hash: string): Promise<PhoneLoaderData> {
+  async loadPhone(hash: string): Promise<PhoneData> {
     const userData = await this.getUserByHash(this.appService.getToken(), hash);
 
     if ("error" in userData) {

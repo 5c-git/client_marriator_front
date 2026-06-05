@@ -14,7 +14,7 @@ import { appTokens } from "~/shared/container/container.tokens";
 
 import { RecruiterMapper } from "./recruiter.mapper";
 
-export type RecruiterLoaderData = {
+export type RecruiterData = {
   locations: RecruiterLocationOption[];
 };
 
@@ -27,7 +27,7 @@ export class RecruiterService {
     private readonly appService: AppService,
   ) {}
 
-  async loadRecruiter(): Promise<RecruiterLoaderData> {
+  async loadRecruiter(): Promise<RecruiterData> {
     const accessToken = this.appService.getToken();
     const locationsData = await this.getPlace(accessToken);
 

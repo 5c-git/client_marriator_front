@@ -6,20 +6,22 @@ import { useTranslation } from "react-i18next";
 import { withLocale } from "~/shared/withLocale";
 
 import { Alert, Snackbar } from "@mui/material";
-import { Loader } from "~/shared/ui/Loader/Loader";
 
 import { PinView } from "./_views/PinView";
 import { pinContainer } from "./pin.module";
 import { pinTokens } from "./pin.tokens";
-import { useAppHooks } from "~/shared/hooks/app.hooks";
 import { usePinHooks } from "./pin.hooks";
+
+export const PIN_ACTIONS = {
+  restorePin: "restorePin"
+}
 
 export async function clientAction({ request }: Route.ClientActionArgs) {
   const { _action, ...fields } = await request.json();
   const pinService = pinContainer.get(pinTokens.pinService);
 
 
-  if (_action === "restorePin") {
+  if (_action === PIN_ACTIONS.restorePin) {
     const data = await pinService.restorePin();
     const params = new URLSearchParams();
 
@@ -40,13 +42,10 @@ export async function clientAction({ request }: Route.ClientActionArgs) {
 export default function Pin({ actionData }: Route.ComponentProps) {
   const { t } = useTranslation("pin");
 
-  const { isLoading } = useAppHooks();
   const { submitPin, submitRestorePin } = usePinHooks();
 
   return (
     <>
-      {isLoading ? <Loader /> : null}
-
       <PinView
         translation="pin"
         submitPinAction={submitPin}

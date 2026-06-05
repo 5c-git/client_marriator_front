@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { redirect } from "react-router";
+import { redirect, useNavigate } from "react-router";
 import type { Route } from "./+types/confirm-restore-pin";
 
 import { t, loadNamespaces } from "i18next";
@@ -7,13 +7,16 @@ import { useTranslation } from "react-i18next";
 import { withLocale } from "~/shared/withLocale";
 
 import { Alert, Snackbar } from "@mui/material";
-import { Loader } from "~/shared/ui/Loader/Loader";
 
 import { ConfirmRestorePinView } from "./_views/ConfirmRestorePinView";
 import { confirmRestorePinContainer } from "./confirmRestorePin.module";
 import { confirmRestorePinTokens } from "./confirmRestorePin.tokens";
-import { useAppHooks } from "~/shared/hooks/app.hooks";
 import { useConfirmRestorePinHooks } from "./confirmRestorePin.hooks";
+
+export const CONFIRM_RESTORE_PIN_ACTIONS = {
+  sendAgain: "sendAgain",
+  sendCode: "sendCode"
+}
 
 export async function clientLoader({ request }: Route.ClientLoaderArgs) {
   await loadNamespaces("confirmRestorePin");
@@ -36,13 +39,13 @@ export async function clientAction({ request }: Route.ClientActionArgs) {
 
   const { _action, currentTTL, ...fields } = await request.json();
 
-  if (_action === "sendAgain") {
+  if (_action === CONFIRM_RESTORE_PIN_ACTIONS.sendAgain) {
     const ttl = await confirmRestorePinService.resendCode();
     currentURL.searchParams.set("ttl", ttl.toString());
     throw redirect(currentURL.toString());
   }
 
-  if (_action === "sendCode") {
+  if (_action === CONFIRM_RESTORE_PIN_ACTIONS.sendCode) {
     const data = await confirmRestorePinService.verifyCode(fields.code);
 
     if ("token" in data.result) {
@@ -63,8 +66,7 @@ export default function ConfirmRestorePin({
   loaderData,
 }: Route.ComponentProps) {
   const { t } = useTranslation("confirmRestorePin");
-
-  const { isLoading, navigateTo } = useAppHooks();
+  const navigate = useNavigate();
   const { seconds, error, submitCode, submitSendAgain, clearError } =
     useConfirmRestorePinHooks(loaderData.ttl);
 
@@ -72,13 +74,12 @@ export default function ConfirmRestorePin({
 
   return (
     <>
-      {isLoading ? <Loader /> : null}
 
       <ConfirmRestorePinView
         translation="confirmRestorePin"
         seconds={seconds}
         backAction={() => {
-          navigateTo("/signin/pin");
+          navigate(withLocale("/signin/pin"));
         }}
         submitCodeAction={submitCode}
         submitSendAgainAction={submitSendAgain}

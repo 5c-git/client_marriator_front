@@ -11,8 +11,6 @@ export function useSigninJobsHooks() {
 
     const [activeCard, setActiveCard] = useState<Job | null>(null);
 
-
-
     const openDialog = useCallback((enitity: Job) => {
         setActiveCard(enitity);
     }, []);

@@ -17,11 +17,11 @@ import { StyledRadioButton } from "~/shared/ui/StyledRadioButton/StyledRadioButt
 import { PointerIcon } from "~/shared/icons/PointerIcon";
 import { DeleteIcon } from "~/shared/icons/DeleteIcon";
 
-import type { MetaLoaderData } from "../meta.service";
+import type { MetaData } from "../meta.service";
 
 type MetaViewProps = {
   translation: "meta";
-  loaderData: MetaLoaderData;
+  data: MetaData;
   navigateToLocationAction: () => void;
   setFioAction: (fio: string) => void;
   deleteLocationAction: (placeId: number) => void;
@@ -31,7 +31,6 @@ type MetaViewProps = {
 
 export function MetaView(props: MetaViewProps) {
   const { t } = useTranslation("MetaView");
-  const { loaderData } = props;
 
   const [open, setOpen] = useState<boolean>(false);
 
@@ -45,9 +44,9 @@ export function MetaView(props: MetaViewProps) {
     reset,
   } = useForm({
     defaultValues: {
-      logo: loaderData.userLogo,
-      fio: loaderData.userName,
-      locations: loaderData.locations,
+      logo: props.data.userLogo,
+      fio: props.data.userName,
+      locations: props.data.locations,
     },
     resolver: zodResolver(
       z.object({
@@ -77,12 +76,12 @@ export function MetaView(props: MetaViewProps) {
   useEffect(() => {
     setTimeout(() => {
       reset({
-        logo: loaderData.userLogo,
+        logo: props.data.userLogo,
         fio: getValues("fio"),
-        locations: loaderData.locations,
+        locations: props.data.locations,
       });
     });
-  }, [loaderData, reset, getValues]);
+  }, [props.data, reset, getValues]);
 
   return (
     <Box
@@ -349,7 +348,7 @@ export function MetaView(props: MetaViewProps) {
                 }}
                 inputType="radio"
                 validation="none"
-                options={loaderData.brands}
+                options={props.data.brands}
               />
             )}
           />

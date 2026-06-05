@@ -1,16 +1,14 @@
-import { redirect } from "react-router";
+import { redirect, useNavigate } from "react-router";
 import type { Route } from "./+types/createPin";
 
 import { useTranslation } from "react-i18next";
 import { withLocale } from "~/shared/withLocale";
 
 import { Alert, Snackbar } from "@mui/material";
-import { Loader } from "~/shared/ui/Loader/Loader";
 
 import { CreatePinView } from "./_views/CreatePinView";
 import { createPinContainer } from "./createPin.module";
 import { createPinTokens } from "./createPin.tokens";
-import { useAppHooks } from "~/shared/hooks/app.hooks";
 import { useCreatePinHooks } from "./createPin.hooks";
 
 export async function clientAction({ request }: Route.ClientActionArgs) {
@@ -34,18 +32,17 @@ export async function clientAction({ request }: Route.ClientActionArgs) {
 
 export default function CreatePin() {
   const { t } = useTranslation("createPin");
+  const navigate = useNavigate();
 
-  const { isLoading, navigateTo } = useAppHooks();
   const { error, submitPin, clearError } = useCreatePinHooks();
 
   return (
     <>
-      {isLoading ? <Loader /> : null}
 
       <CreatePinView
         translation="createPin"
         backAction={() => {
-          navigateTo("/signin/createPin");
+          navigate(withLocale("/signin/createPin"));
         }}
         submitPinAction={submitPin}
       />

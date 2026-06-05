@@ -181,6 +181,8 @@ declare module "i18next" {
 
       HomeLayout: typeof HomeLayout;
 
+      sms: typeof sms;
+
       //views
       UsersLayoutView: typeof UsersLayoutView;
       SignADealView: typeof SignADealView;

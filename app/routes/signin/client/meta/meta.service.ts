@@ -19,7 +19,7 @@ import { appTokens } from "~/shared/container/container.tokens";
 
 import { MetaMapper } from "./meta.mapper";
 
-export type MetaLoaderData = {
+export type MetaData = {
   userName: string;
   userLogo: string;
   brands: MetaBrandOption[];
@@ -40,7 +40,7 @@ export class MetaService {
     private readonly appService: AppService,
   ) {}
 
-  async loadMeta(): Promise<MetaLoaderData> {
+  async loadMeta(): Promise<MetaData> {
     const accessToken = this.appService.getToken();
     const persistedFio = this.getPersistedFio();
     const userData = await this.getData(accessToken);

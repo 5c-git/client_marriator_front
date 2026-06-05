@@ -11,13 +11,13 @@ import Box from "@mui/material/Box";
 import { StyledPhoneField } from "~/shared/ui/StyledPhoneField/StyledPhoneField";
 import { phoneRegExp } from "~/shared/validators";
 
-import type { PhoneLoaderData } from "../phone.service";
+import type { PhoneData } from "../phone.service";
 
 import marriator from "../marriator.svg";
 
 type ClientPhoneViewProps = {
   translation: "clientPhone";
-  loaderData: PhoneLoaderData;
+  data: PhoneData;
   submitAction: (phone: string) => void;
 };
 
@@ -32,7 +32,6 @@ const createFormSchema = (translation: ClientPhoneViewProps["translation"]) =>
 
 export function ClientPhoneView(props: ClientPhoneViewProps) {
   const { t } = useTranslation("ClientPhoneView");
-  const { loaderData } = props;
 
   const {
     control,
@@ -40,7 +39,7 @@ export function ClientPhoneView(props: ClientPhoneViewProps) {
     formState: { errors },
   } = useForm({
     defaultValues: {
-      phone: loaderData.userPhone,
+      phone: props.data.userPhone,
     },
     resolver: zodResolver(createFormSchema(props.translation)),
   });

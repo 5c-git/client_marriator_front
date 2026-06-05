@@ -3,6 +3,8 @@ import { useFetcher } from "react-router";
 
 import { useMetaStore } from "./metaStore";
 
+import { META_ACTIONS } from "./meta";
+
 export function useMetaHooks() {
   const fetcher = useFetcher();
   const setFio = useMetaStore((state) => state.setFio);
@@ -11,7 +13,7 @@ export function useMetaHooks() {
     (placeId: number) => {
       fetcher.submit(
         JSON.stringify({
-          _action: "deleteLocation",
+          _action: META_ACTIONS.deleteLocation,
           placeId,
         }),
         {
@@ -27,7 +29,7 @@ export function useMetaHooks() {
     (logo: string) => {
       fetcher.submit(
         JSON.stringify({
-          _action: "saveLogo",
+          _action: META_ACTIONS.saveLogo,
           logo,
         }),
         {
@@ -43,7 +45,7 @@ export function useMetaHooks() {
     (name: string) => {
       fetcher.submit(
         JSON.stringify({
-          _action: "finishRegister",
+          _action: META_ACTIONS.finishRegister,
           name,
         }),
         {

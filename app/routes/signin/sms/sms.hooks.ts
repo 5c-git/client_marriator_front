@@ -1,6 +1,8 @@
 import { useCallback, useEffect, useState } from "react";
 import { useSearchParams, useSubmit } from "react-router";
 
+import { SMS_ACTIONS } from "./sms";
+
 export function useSmsHooks(phone: string, ttl: string) {
   const submit = useSubmit();
   const [searchParams, setSearchParams] = useSearchParams();
@@ -22,7 +24,7 @@ export function useSmsHooks(phone: string, ttl: string) {
     (sms: string) => {
       submit(
         JSON.stringify({
-          _action: "sendSms",
+          _action: SMS_ACTIONS.sendSms,
           currentTTL: seconds,
           phone,
           sms,

@@ -9,20 +9,15 @@ import { EntitiesListView } from "~/shared/views/EntitiesListView/EntitiesListVi
 
 import { Dialog, Box, IconButton, Typography } from '@mui/material';
 import { EntityCard } from "~/shared/ui/EntityCard/EntityCard";
-import { Loader } from "~/shared/ui/Loader/Loader";
 import { TopNavigation } from "~/shared/ui/TopNavigation/TopNavigation";
 
 import CloseIcon from "@mui/icons-material/Close";
-
-import { MapIcon } from "~/shared/icons/MapIcon";
-import { ListIcon } from "~/shared/ui/Menu/icons/ListIcon";
 
 import { signinJobsContainer } from "./jobs.module";
 import { SigninJobsTokens } from "./jobs.tokens";
 import { Job, SigninJobsMapper } from "./jobs.mapper";
 
 
-import { useAppHooks } from '~/shared/hooks/app.hooks';
 import { useSigninJobsHooks } from './jobs.hooks';
 
 
@@ -37,13 +32,10 @@ export async function clientLoader() {
 export default function SigninJobs({ loaderData }: Route.ComponentProps) {
   const { t } = useTranslation("jobs");
 
-  const { isLoading } = useAppHooks();
   const { mapView, setMapView, activeCard, openDialog, closeDialog } = useSigninJobsHooks();
 
   return (
     <>
-        {isLoading ? <Loader /> : null}
-
         <TopNavigation
             header={{
             text: t("header", {ns: 'HomeLayout'}),

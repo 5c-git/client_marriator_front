@@ -11,17 +11,16 @@ import Stack from "@mui/material/Stack";
 import { TopNavigation } from "~/shared/ui/TopNavigation/TopNavigation";
 import { StyledTextField } from "~/shared/ui/StyledTextField/StyledTextField";
 
-import type { RecruiterLoaderData } from "../recruiter.service";
+import type { RecruiterData } from "../recruiter.service";
 
 type RecruiterViewProps = {
   translation: "recruiter";
-  loaderData: RecruiterLoaderData;
+  data: RecruiterData;
   finishRegisterAction: (name: string) => void;
 };
 
 export function RecruiterView(props: RecruiterViewProps) {
   const { t } = useTranslation("RecruiterView");
-  const { loaderData } = props;
 
   const {
     control,
@@ -31,7 +30,7 @@ export function RecruiterView(props: RecruiterViewProps) {
   } = useForm({
     defaultValues: {
       fio: "",
-      locations: loaderData.locations,
+      locations: props.data.locations,
     },
     resolver: zodResolver(
       z.object({

@@ -11,7 +11,7 @@ import Box from "@mui/material/Box";
 import { StyledOptField } from "~/shared/ui/StyledOtpField/StyledOtpField";
 import { TopNavigation } from "~/shared/ui/TopNavigation/TopNavigation";
 
-type CreatePinViewInterface = {
+type CreatePinViewProps = {
   translation: "createPin";
   backAction: () => void;
   submitPinAction: (pin: string) => void;
@@ -34,7 +34,7 @@ const createFormSchema = (mismatchError: string) =>
       }
     });
 
-export function CreatePinView(props: CreatePinViewInterface) {
+export function CreatePinView(props: CreatePinViewProps) {
   const { t } = useTranslation("CreatePinView");
 
   const [step, setStep] = useState<1 | 2>(1);

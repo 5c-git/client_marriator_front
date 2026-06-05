@@ -1,6 +1,8 @@
 import { useCallback } from "react";
 import { useSubmit } from "react-router";
 
+import { PIN_ACTIONS } from "./pin";
+
 export function usePinHooks() {
   const submit = useSubmit();
 
@@ -15,7 +17,7 @@ export function usePinHooks() {
   );
 
   const submitRestorePin = useCallback(() => {
-    submit(JSON.stringify({ _action: "restorePin" }), {
+    submit(JSON.stringify({ _action: PIN_ACTIONS.restorePin }), {
       method: "POST",
       encType: "application/json",
     });

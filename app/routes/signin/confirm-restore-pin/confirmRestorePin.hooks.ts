@@ -1,6 +1,8 @@
 import { useCallback, useEffect, useState } from "react";
 import { useSearchParams, useSubmit } from "react-router";
 
+import { CONFIRM_RESTORE_PIN_ACTIONS } from "./confirm-restore-pin";
+
 export function useConfirmRestorePinHooks(initialTtl: string) {
   const submit = useSubmit();
   const [searchParams, setSearchParams] = useSearchParams();
@@ -21,7 +23,7 @@ export function useConfirmRestorePinHooks(initialTtl: string) {
     (code: string) => {
       submit(
         JSON.stringify({
-          _action: "sendCode",
+          _action: CONFIRM_RESTORE_PIN_ACTIONS.sendCode,
           currentTTL: seconds,
           code,
         }),
@@ -37,7 +39,7 @@ export function useConfirmRestorePinHooks(initialTtl: string) {
   const submitSendAgain = useCallback(() => {
     submit(
       JSON.stringify({
-        _action: "sendAgain",
+        _action: CONFIRM_RESTORE_PIN_ACTIONS.sendAgain,
       }),
       {
         method: "POST",

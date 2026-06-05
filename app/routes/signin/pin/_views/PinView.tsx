@@ -9,7 +9,7 @@ import Box from "@mui/material/Box";
 
 import { StyledOptField } from "~/shared/ui/StyledOtpField/StyledOtpField";
 
-type PinViewInterface = {
+type PinViewProps = {
   translation: "pin";
   submitPinAction: (pin: string) => void;
   submitRestorePinAction: () => void;
@@ -20,7 +20,7 @@ const createFormSchema = () =>
     pin: z.string().length(4),
   });
 
-export function PinView(props: PinViewInterface) {
+export function PinView(props: PinViewProps) {
   const { t } = useTranslation("PinView");
 
   const {

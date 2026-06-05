@@ -11,7 +11,7 @@ import Box from "@mui/material/Box";
 import { StyledSmsField } from "~/shared/ui/StyledSmsField/StyledSmsField";
 import { TopNavigation } from "~/shared/ui/TopNavigation/TopNavigation";
 
-type SmsViewInterface = {
+type SmsViewProps = {
   translation: "sms";
   phone: string;
   seconds: number;
@@ -22,7 +22,7 @@ type SmsViewInterface = {
 
 type SubmitValues = z.output<ReturnType<typeof createFormSchema>>;
 
-const createFormSchema = (translation: SmsViewInterface["translation"]) =>
+const createFormSchema = (translation: SmsViewProps["translation"]) =>
   z.object({
     phone: z.string().optional(),
     sms: z
@@ -32,7 +32,7 @@ const createFormSchema = (translation: SmsViewInterface["translation"]) =>
       }),
   });
 
-export function SmsView(props: SmsViewInterface) {
+export function SmsView(props: SmsViewProps) {
   const { t } = useTranslation("SmsView");
 
   const {
