@@ -4,10 +4,6 @@ import {
   Avatar,
   Typography,
   List,
-  ListItem,
-  ListItemButton,
-  ListItemIcon,
-  Divider,
   Dialog,
   DialogActions,
   DialogTitle,
@@ -36,6 +32,7 @@ type ProfileViewProps = {
   onCloseDialog: () => void;
   onConfirmLogout: () => void;
 };
+
 
 export function ProfileView(props: ProfileViewProps) {
   const { t } = useTranslation("ProfileView");
