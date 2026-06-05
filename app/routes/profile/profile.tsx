@@ -3,19 +3,20 @@ import type { Route } from "./+types/profile";
 import { ProfileView } from "./_views/ProfileView";
 import { Loader } from "~/shared/ui/Loader/Loader";
 
+import { useStore } from "~/store/store";
+
 import { profileContainer } from "./profile.module";
 import { profileTokens } from "./profile.tokens";
 import { useAppHooks } from "~/shared/hooks/app.hooks";
 import { useProfileHooks } from "./profile.hooks";
-import { useStore } from "~/store/store";
+
 
 export async function clientLoader() {
   return await profileContainer.get(profileTokens.profileService).loadProfile();
 }
 
 export async function clientAction() {
-  useStore.getState().clearStore()
-  // return profileContainer.get(profileTokens.profileService).logout();
+  profileContainer.get(profileTokens.profileService).logout();
 }
 
 export default function Profile({ loaderData }: Route.ComponentProps) {
@@ -30,7 +31,7 @@ export default function Profile({ loaderData }: Route.ComponentProps) {
 
       <ProfileView
         translation="profile"
-        loaderData={loaderData}
+        data={loaderData}
         userRole={userRole}
         openDialog={openDialog}
         onOpenLogoutDialog={openLogoutDialog}

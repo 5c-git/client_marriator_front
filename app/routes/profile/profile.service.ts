@@ -10,13 +10,9 @@ import type { AppService } from "~/shared/container/container.service";
 import { profilePrivateTokens } from "./profile.private-tokens";
 import { appTokens } from "~/shared/container/container.tokens";
 
-import { ProfileMapper } from "./profile.mapper";
+import { ProfileMapper, ProfileData } from "./profile.mapper";
 
-export type ProfileLoaderData = {
-  avatarUrl: string;
-  displayName: string | null;
-  hasProfileErrors: boolean;
-};
+
 
 export class ProfileService {
   constructor(
@@ -26,11 +22,11 @@ export class ProfileService {
     private readonly appService: AppService,
   ) {}
 
-  async loadProfile(): Promise<ProfileLoaderData> {
+  async loadProfile(): Promise<ProfileData> {
     const accessToken = this.appService.getToken();
     const data = await this.fetchUserInfoCached(accessToken);
 
-    return ProfileMapper.toLoaderData(data);
+    return ProfileMapper.toData(data);
   }
 
   logout() {

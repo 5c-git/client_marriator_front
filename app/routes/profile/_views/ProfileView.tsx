@@ -1,5 +1,4 @@
 import { useTranslation } from "react-i18next";
-import { Link } from "react-router";
 
 import {
   Avatar,
@@ -19,18 +18,18 @@ import Stack from "@mui/material/Stack";
 
 import { withLocale } from "~/shared/withLocale";
 import { TopNavigation } from "~/shared/ui/TopNavigation/TopNavigation";
-import { BulletIcon } from "~/shared/icons/BulletIcon";
+import { ProfileMenuItem } from "../_components/ProfileMenuItem";
 
 import { ProfileIcon } from "../_icons/ProfileIcon";
 import { SettingsIcon } from "../_icons/SettingsIcon";
 import { DocumentsIcon } from "../_icons/DocumentsIcon";
 import { ExitIcon } from "../_icons/ExitIcon";
 
-import type { ProfileLoaderData } from "../profile.service";
+import type { ProfileData } from "../profile.mapper";
 
 type ProfileViewProps = {
   translation: "profile";
-  loaderData: ProfileLoaderData;
+  data: ProfileData;
   userRole: "admin" | "manager" | "supervisor" | "client" | "specialist";
   openDialog: boolean;
   onOpenLogoutDialog: () => void;
@@ -38,84 +37,8 @@ type ProfileViewProps = {
   onConfirmLogout: () => void;
 };
 
-type ProfileMenuItemProps = {
-  icon: React.ReactNode;
-  label: string;
-  to?: string;
-  showBullet?: boolean;
-  onClick?: () => void;
-};
-
-function ProfileMenuItem({
-  icon,
-  label,
-  to,
-  showBullet,
-  onClick,
-}: ProfileMenuItemProps) {
-
-  const content = (
-    <>
-      <ListItemIcon sx={(theme) => ({
-          minWidth: "24px",
-          color: theme.vars.palette["Grey_2"],
-          })}>{icon}</ListItemIcon>
-      <Typography sx={(theme) => ({
-          display: "flex",
-          alignItems: "center",
-          columnGap: "12px",
-          color: theme.vars.palette["Black"],
-        })} 
-        component="p" 
-        variant="Reg_16">
-        {label}{" "}
-        {showBullet ? (
-          <BulletIcon
-            sx={(theme) => ({
-              width: "6px",
-              height: "6px",
-              color: theme.vars.palette["Red"],
-            })}
-          />
-        ) : null}
-      </Typography>
-    </>
-  );
-
-  return (
-    <ListItem disableGutters disablePadding sx={{
-      display: "block",
-      paddingRight: "16px",
-      paddingLeft: "16px",
-    }}>
-      {to ? (
-        <ListItemButton
-          component={Link}
-          viewTransition
-          to={to}
-          sx={{
-            padding: "16px 0px",
-            columnGap: "12px",
-          }}
-        >
-          {content}
-        </ListItemButton>
-      ) : (
-        <ListItemButton onClick={onClick} sx={{
-          padding: "16px 0px",
-          columnGap: "12px",
-        }}>
-          {content}
-        </ListItemButton>
-      )}
-      {to ? <Divider sx={(theme) => ({backgroundColor: theme.vars.palette["Grey_4"]})} /> : null}
-    </ListItem>
-  );
-}
-
 export function ProfileView(props: ProfileViewProps) {
   const { t } = useTranslation("ProfileView");
-  const { loaderData, userRole } = props;
 
   return (
     <>
@@ -139,24 +62,24 @@ export function ProfileView(props: ProfileViewProps) {
               width: "90px",
               height: "90px",
             }}
-            src={loaderData.avatarUrl}
+            src={props.data.avatarUrl}
           />
 
-          {loaderData.displayName ? (
+          {props.data.displayName ? (
             <Typography component="p" variant="Bold_18">
-              {loaderData.displayName}
+              {props.data.displayName}
             </Typography>
           ) : null}
         </Stack>
 
         <List>
-          {userRole === "specialist" ? (
+          {props.userRole === "specialist" ? (
             <>
               <ProfileMenuItem
                 icon={<ProfileIcon />}
                 label={t(`${props.translation}.profile`)}
                 to={withLocale("my-profile")}
-                showBullet={loaderData.hasProfileErrors}
+                showBullet={props.data.hasProfileErrors}
               />
               <ProfileMenuItem
                 icon={<SettingsIcon />}

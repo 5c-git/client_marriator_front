@@ -1,9 +1,13 @@
 import type { GetUserInfoSuccess } from "~/api/_personal/getUserInfo/getUserInfoSuccess.schema";
 
-import type { ProfileLoaderData } from "./profile.service";
 
+export type ProfileData = {
+  avatarUrl: string;
+  displayName: string | null;
+  hasProfileErrors: boolean;
+};
 export class ProfileMapper {
-  static toLoaderData(data: GetUserInfoSuccess): ProfileLoaderData {
+  static toData(data: GetUserInfoSuccess): ProfileData {
     const { userData } = data.result;
 
     return {
