@@ -11,10 +11,7 @@
   ],
   "compilerOptions": {
     "lib": ["DOM", "DOM.Iterable", "ES2022"],
-    "types": [
-      "@react-router/node",
-      "vite/client",
-    ],
+    "types": ["@react-router/node", "vite/client"],
     "rootDirs": [".", "./.react-router/types"],
     "isolatedModules": true,
     "esModuleInterop": true,
@@ -28,7 +25,6 @@
     "allowJs": true,
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
-    "baseUrl": ".",
     "paths": {
       "~/*": ["./app/*"],
       "ymaps3": ["./node_modules/@yandex/ymaps3-types"]

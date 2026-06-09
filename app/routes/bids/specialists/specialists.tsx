@@ -31,13 +31,13 @@ export async function clientLoader({ params }: Route.ClientLoaderArgs) {
       const radiusData = await getRadiusSelect(accessToken);
       const specialistsData = await getSpecialistForBid(
         accessToken,
-        params.bidId
+        params.bidId,
       );
 
       radiusData.data.forEach((item) => {
         radiuses.push({
           value: item.id.toString(),
-          label: `${item.id.toString()} км`,
+          label: `${item.value.toString()} км`,
           disabled: false,
         });
       });
@@ -61,7 +61,7 @@ export async function clientLoader({ params }: Route.ClientLoaderArgs) {
       let startingRadius = 1;
 
       const defaultRadius = radiusData.data.find(
-        (item) => item.default === true
+        (item) => item.default === true,
       );
 
       if (defaultRadius) {

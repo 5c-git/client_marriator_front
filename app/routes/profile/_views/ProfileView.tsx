@@ -33,7 +33,6 @@ type ProfileViewProps = {
   onConfirmLogout: () => void;
 };
 
-
 export function ProfileView(props: ProfileViewProps) {
   const { t } = useTranslation("ProfileView");
 
