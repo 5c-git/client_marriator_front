@@ -9,7 +9,8 @@ import { Loader } from "~/shared/ui/Loader/Loader";
 import { profileEditContainer } from "./profile-edit.module";
 import { profileEditTokens } from "./profile-edit.tokens";
 import { useProfileEditHooks } from "./profile-edit.hooks";
-import { useAppHooks } from "~/shared/hooks/app.hooks";
+import { withLocale } from "~/shared/withLocale";
+import { useNavigate } from "react-router";
 
 export async function clientLoader({ request }: Route.ClientLoaderArgs) {
   await loadNamespaces("profileEdit");
@@ -35,7 +36,7 @@ export async function clientAction({ request }: Route.ClientActionArgs) {
 
 export default function ProfileEdit({ loaderData }: Route.ComponentProps) {
   const { t } = useTranslation("profileEdit");
-  const { navigateTo, isLoading } = useAppHooks();
+  const navigate = useNavigate();
   const {
     control,
     setValue,
@@ -51,25 +52,21 @@ export default function ProfileEdit({ loaderData }: Route.ComponentProps) {
   const headerText = loaderData.currentSection ?? t("sectionHeader");
 
   return (
-    <>
-      {isLoading ? <Loader /> : null}
-
-      <ProfileEditView
-        headerText={headerText}
-        formFields={loaderData.formFields}
-        accessToken={loaderData.accessToken}
-        errors={errors}
-        control={control}
-        isDirty={isDirty}
-        setValue={setValue}
-        trigger={trigger}
-        onBack={() => {
-          navigateTo("/profile/my-profile");
-        }}
-        onSubmit={handleSubmit(submitForm)}
-        onCancel={resetForm}
-        onConfirm={confirmForm}
-      />
-    </>
+    <ProfileEditView
+      headerText={headerText}
+      formFields={loaderData.formFields}
+      accessToken={loaderData.accessToken}
+      errors={errors}
+      control={control}
+      isDirty={isDirty}
+      setValue={setValue}
+      trigger={trigger}
+      onBack={() => {
+        navigate(withLocale("/profile/my-profile"));
+      }}
+      onSubmit={handleSubmit(submitForm)}
+      onCancel={resetForm}
+      onConfirm={confirmForm}
+    />
   );
 }

@@ -1,13 +1,11 @@
-import { redirect } from "react-router";
+import { redirect, useNavigate } from "react-router";
 import type { Route } from "./+types/profile-meta";
 
 import { ProfileMetaView } from "./_views/ProfileMetaView";
-import { Loader } from "~/shared/ui/Loader/Loader";
 
 import { profileMetaContainer } from "./profile-meta.module";
 import { profileMetaTokens } from "./profile-meta.tokens";
 import { useProfileMetaHooks } from "./profile-meta.hooks";
-import { useAppHooks } from "~/shared/hooks/app.hooks";
 import { withLocale } from "~/shared/withLocale";
 
 export async function clientLoader() {
@@ -50,7 +48,7 @@ export async function clientAction({ request }: Route.ClientActionArgs) {
 }
 
 export default function ProfileMeta({ loaderData }: Route.ComponentProps) {
-  const { isLoading, navigateTo } = useAppHooks();
+  const navigate = useNavigate();
   const {
     control,
     setValue,
@@ -70,30 +68,26 @@ export default function ProfileMeta({ loaderData }: Route.ComponentProps) {
   } = useProfileMetaHooks(loaderData);
 
   return (
-    <>
-      {isLoading ? <Loader /> : null}
-
-      <ProfileMetaView
-        loaderData={loaderData}
-        control={control}
-        errors={errors}
-        setValue={setValue}
-        trigger={trigger}
-        fetcherData={fetcherData}
-        openPhoneDialog={openPhoneDialog}
-        openEmailDialog={openEmailDialog}
-        onBack={() => {
-          navigateTo("/profile/my-profile");
-        }}
-        onPhotoChange={submitPhotoChange}
-        onPhoneBlur={onPhoneBlur}
-        onEmailBlur={onEmailBlur}
-        onConfirmPhone={confirmPhone}
-        onConfirmEmail={confirmEmail}
-        onClosePhoneDialog={closePhoneDialog}
-        onCloseEmailDialog={closeEmailDialog}
-        onResetFetcherError={resetFetcherError}
-      />
-    </>
+    <ProfileMetaView
+      loaderData={loaderData}
+      control={control}
+      errors={errors}
+      setValue={setValue}
+      trigger={trigger}
+      fetcherData={fetcherData}
+      openPhoneDialog={openPhoneDialog}
+      openEmailDialog={openEmailDialog}
+      onBack={() => {
+        navigate(withLocale("/profile/my-profile"));
+      }}
+      onPhotoChange={submitPhotoChange}
+      onPhoneBlur={onPhoneBlur}
+      onEmailBlur={onEmailBlur}
+      onConfirmPhone={confirmPhone}
+      onConfirmEmail={confirmEmail}
+      onClosePhoneDialog={closePhoneDialog}
+      onCloseEmailDialog={closeEmailDialog}
+      onResetFetcherError={resetFetcherError}
+    />
   );
 }

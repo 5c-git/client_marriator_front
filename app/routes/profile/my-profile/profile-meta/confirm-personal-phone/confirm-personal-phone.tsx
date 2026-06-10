@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { redirect } from "react-router";
+import { redirect, useNavigate } from "react-router";
 import type { Route } from "./+types/confirm-personal-phone";
 
 import { t, loadNamespaces } from "i18next";
@@ -14,7 +14,6 @@ import { confirmPersonalPhoneContainer } from "./confirm-personal-phone.module";
 import { confirmPersonalPhonePrivateTokens } from "./confirm-personal-phone.private-tokens";
 import { confirmPersonalPhoneTokens } from "./confirm-personal-phone.tokens";
 import { useConfirmPersonalCodeHooks } from "../confirm-personal-code.hooks";
-import { useAppHooks } from "~/shared/hooks/app.hooks";
 
 export async function clientLoader({ request }: Route.ClientLoaderArgs) {
   await loadNamespaces("confirmPersonalPhone");
@@ -66,7 +65,7 @@ export default function ConfirmPersonalPhone({
   loaderData,
 }: Route.ComponentProps) {
   const { t } = useTranslation("confirmPersonalPhone");
-  const { isLoading, navigateTo } = useAppHooks();
+  const navigate = useNavigate();
   const { seconds, error, submitCode, submitSendAgain, clearError } =
     useConfirmPersonalCodeHooks(loaderData.ttl, { phone: loaderData.phone });
 
@@ -74,13 +73,11 @@ export default function ConfirmPersonalPhone({
 
   return (
     <>
-      {isLoading ? <Loader /> : null}
-
       <ConfirmPersonalCodeView
         translation="confirmPersonalPhone"
         seconds={seconds}
         onBack={() => {
-          navigateTo("/profile/my-profile/profile-meta");
+          navigate(withLocale("/profile/my-profile/profile-meta"));
         }}
         onSubmitCode={submitCode}
         onSendAgain={submitSendAgain}

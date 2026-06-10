@@ -1,5 +1,5 @@
 import { useCallback, useEffect } from "react";
-import { useFetcher, useSearchParams } from "react-router";
+import { useFetcher, useSearchParams, useNavigate } from "react-router";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 
@@ -8,12 +8,12 @@ import {
   generateValidationSchema,
 } from "~/shared/constructor/constructor";
 
-import { useAppHooks } from "~/shared/hooks/app.hooks";
 import type { UserActivitiesLoaderData } from "./user-activities.service";
+import { withLocale } from "~/shared/withLocale";
 
 export function useUserActivitiesHooks(loaderData: UserActivitiesLoaderData) {
   const fetcher = useFetcher();
-  const { navigateTo } = useAppHooks();
+  const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();
 
   const stepParams = searchParams.get("step");
@@ -54,9 +54,9 @@ export function useUserActivitiesHooks(loaderData: UserActivitiesLoaderData) {
         return prev;
       });
     } else if (loaderData.formStatus === "allowedNewStep") {
-      navigateTo("/profile/my-profile");
+      navigate(withLocale("/profile/my-profile"));
     }
-  }, [loaderData.formStatus, navigateTo, setSearchParams, step]);
+  }, [loaderData.formStatus, navigate, setSearchParams, step]);
 
   const handleFormSubmit = useCallback(() => {
     handleSubmit(goToNextStepOrFinish)();
@@ -69,14 +69,14 @@ export function useUserActivitiesHooks(loaderData: UserActivitiesLoaderData) {
 
   const goBack = useCallback(() => {
     if (step === 1) {
-      navigateTo("/profile/my-profile");
+      navigate(withLocale("/profile/my-profile"));
     } else {
       setSearchParams((prev) => {
         prev.set("step", (step - 1).toString());
         return prev;
       });
     }
-  }, [navigateTo, setSearchParams, step]);
+  }, [navigate, setSearchParams, step]);
 
   return {
     step,

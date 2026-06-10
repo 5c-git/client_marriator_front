@@ -1,4 +1,11 @@
-import { ChangeEvent, useCallback, useEffect, useEffectEvent, useMemo, useState } from "react";
+import {
+  ChangeEvent,
+  useCallback,
+  useEffect,
+  useEffectEvent,
+  useMemo,
+  useState,
+} from "react";
 import { renderToStaticMarkup } from "react-dom/server";
 import { useFetcher } from "react-router";
 import { useForm } from "react-hook-form";
@@ -46,29 +53,21 @@ export function useWorkRadiusHooks(loaderData: WorkRadiusLoaderData) {
     },
   });
 
-  const isLoading = fetcher.state !== "idle";
-
   const submitGeoData = useCallback(
     (value: string, radius: string) => {
-      fetcher.submit(
-        JSON.stringify({ value, radius }),
-        {
-          method: "POST",
-          encType: "application/json",
-        },
-      );
+      fetcher.submit(JSON.stringify({ value, radius }), {
+        method: "POST",
+        encType: "application/json",
+      });
     },
     [fetcher],
   );
 
   const resetFetcherError = useCallback(() => {
-    fetcher.submit(
-      JSON.stringify({ _action: "reset" }),
-      {
-        method: "POST",
-        encType: "application/json",
-      },
-    );
+    fetcher.submit(JSON.stringify({ _action: "reset" }), {
+      method: "POST",
+      encType: "application/json",
+    });
   }, [fetcher]);
 
   const drawEmptyMap = useEffectEvent(() => {
@@ -218,7 +217,6 @@ export function useWorkRadiusHooks(loaderData: WorkRadiusLoaderData) {
 
   return {
     control,
-    isLoading,
     isMapGrayscale,
     fetcherError,
     debouncedTextFieldSubmit,
