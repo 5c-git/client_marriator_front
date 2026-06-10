@@ -29,14 +29,7 @@ import HomeLayout from "../../public/locales/ru/HomeLayout.json";
 import MyProfileView from "../../public/locales/ru/MyProfileView.json";
 import profileEdit from "../../public/locales/ru/profileEdit.json";
 
-
-
-
-import documents from "../../public/locales/ru/documents.json";
-
-
 import terminateADeal from "../../public/locales/ru/terminateADeal.json";
-
 
 import users_client from "../../public/locales/ru/users_client.json";
 import users_manager from "../../public/locales/ru/users_manager.json";
@@ -67,6 +60,7 @@ import confirmPersonalEmail from "../../public/locales/ru/confirmPersonalEmail.j
 //routes
 
 //views
+import DocumentsView from "../../public/locales/ru/DocumentsView.json";
 import UsersLayoutView from "../../public/locales/ru/UsersLayoutView.json";
 import SignADealView from "../../public/locales/ru/SignADealView.json";
 import SignView from "../../public/locales/ru/SignView.json";
@@ -86,7 +80,7 @@ import MetaView from "../../public/locales/ru/MetaView.json";
 import RecruiterView from "../../public/locales/ru/RecruiterView.json";
 import ClientPhoneView from "../../public/locales/ru/ClientPhoneView.json";
 import RegistrationCompleteView from "../../public/locales/ru/RegistrationCompleteView.json";
-import PhoneView from '../../public/locales/ru/PhoneView.json'
+import PhoneView from "../../public/locales/ru/PhoneView.json";
 import SmsView from "../../public/locales/ru/SmsView.json";
 import SettingsView from "../../public/locales/ru/SettingsView.json";
 import ProfileView from "../../public/locales/ru/ProfileView.json";
@@ -146,11 +140,8 @@ declare module "i18next" {
 
       profileEdit: typeof profileEdit;
 
-
       confirmPersonalPhone: typeof confirmPersonalPhone;
       confirmPersonalEmail: typeof confirmPersonalEmail;
-
-
 
       terminateADeal: typeof terminateADeal;
       documentsArchive: typeof documentsArchive;
@@ -184,6 +175,7 @@ declare module "i18next" {
       sms: typeof sms;
 
       //views
+      DocumentsView: typeof DocumentsView;
       UsersLayoutView: typeof UsersLayoutView;
       SignADealView: typeof SignADealView;
       SignView: typeof SignView;
