@@ -7,18 +7,14 @@ import { TopNavigation } from "~/shared/ui/TopNavigation/TopNavigation";
 
 import marriator from "../marriator.svg";
 
-type RegistrationCompleteViewProps = {
-  translation: "registrationComplete";
-};
-
-export function RegistrationCompleteView(props: RegistrationCompleteViewProps) {
-  const { t } = useTranslation("RegistrationCompleteView");
+export function RegistrationCompleteView() {
+  const { t } = useTranslation("m_signin_client_registrationComplete");
 
   return (
     <>
       <TopNavigation
         header={{
-          text: t(`${props.translation}.header`),
+          text: t(`header`),
           bold: false,
         }}
       />
@@ -57,7 +53,7 @@ export function RegistrationCompleteView(props: RegistrationCompleteViewProps) {
             color: theme.vars.palette["Black"],
           })}
         >
-          {t(`${props.translation}.message`)}
+          {t(`message`)}
         </Typography>
       </Box>
     </>

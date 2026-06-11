@@ -1,5 +1,5 @@
-import {t} from 'i18next';
-import { useTranslation } from 'react-i18next';
+import { t } from "i18next";
+import { useTranslation } from "react-i18next";
 
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -11,88 +11,92 @@ import Box from "@mui/material/Box";
 import { Button } from "@mui/material";
 import { StyledPhoneField } from "~/shared/ui/StyledPhoneField/StyledPhoneField";
 
-import marriator from './marriator.svg';
+import marriator from "./marriator.svg";
 
 type PhoneViewProps = {
-    translation: "phone";
-    submitAction: (values: submitValues) => void;
-  };
+  submitAction: (values: submitValues) => void;
+};
 
 type submitValues = z.output<ReturnType<typeof createFormSchema>>;
 
-const createFormSchema = (translation:PhoneViewProps['translation'] ) => z.object({
+const createFormSchema = () =>
+  z.object({
     phone: z
-      .string({ error: t(`${translation}.inputValidation`, {ns: "PhoneView"}) })
-      .regex(phoneRegExp, { error: t(`${translation}.inputValidation_regExp`, {ns: "PhoneView"}) }),
+      .string({
+        error: t(`inputValidation`, { ns: "PhoneView" }),
+      })
+      .regex(phoneRegExp, {
+        error: t(`inputValidation_regExp`, { ns: "PhoneView" }),
+      }),
   });
 
-
 export function PhoneView(props: PhoneViewProps) {
-    const { t } = useTranslation("PhoneView");
+  const { t } = useTranslation("m_signin_phone");
 
-    const {
-        control,
-        handleSubmit,
-        formState: { errors },
-      } = useForm({
-        defaultValues: {
-          phone: "",
-        },
-        resolver: zodResolver(createFormSchema(props.translation)),
-      });
+  const {
+    control,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({
+    defaultValues: {
+      phone: "",
+    },
+    resolver: zodResolver(createFormSchema()),
+  });
 
-    return (
+  return (
     <Box
+      sx={{
+        paddingRight: "16px",
+        paddingLeft: "16px",
+        paddingTop: "60px",
+      }}
+    >
+      <Box
         sx={{
-          paddingRight: "16px",
-          paddingLeft: "16px",
-          paddingTop: "60px",
+          width: "164px",
+          height: "78px",
+          margin: "0 auto",
         }}
       >
-        <Box
-          sx={{
-            width: "164px",
-            height: "78px",
-            margin: "0 auto",
+        <img
+          src={marriator}
+          style={{
+            height: "100%",
+            width: "100%",
+            objectFit: "cover",
           }}
-        >
-          <img
-            src={marriator}
-            style={{
-              height: "100%",
-              width: "100%",
-              objectFit: "cover",
-            }}
-            alt="marriator"
-          />
-        </Box>
+          alt="marriator"
+        />
+      </Box>
 
-        <form
-          onSubmit={handleSubmit((values) => {
-            props.submitAction(values);
-          })}
-        >
-          <Controller
-            name="phone"
-            control={control}
-            render={({ field }) => (
-              <StyledPhoneField
-                inputType="phone"
-                error={errors.phone?.message}
-                placeholder={t(`${props.translation}.inputPlaceholder`)}
-                onImmediateChange={() => {}}
-                style={{
-                  paddingBottom: "16px",
-                  paddingTop: "38px",
-                }}
-                {...field}
-              />
-            )}
-          />
+      <form
+        onSubmit={handleSubmit((values) => {
+          props.submitAction(values);
+        })}
+      >
+        <Controller
+          name="phone"
+          control={control}
+          render={({ field }) => (
+            <StyledPhoneField
+              inputType="phone"
+              error={errors.phone?.message}
+              placeholder={t(`inputPlaceholder`)}
+              onImmediateChange={() => {}}
+              style={{
+                paddingBottom: "16px",
+                paddingTop: "38px",
+              }}
+              {...field}
+            />
+          )}
+        />
 
-          <Button type="submit" variant="outlined">
-            {t(`${props.translation}.submitButton`)}
-          </Button>
-        </form>
-      </Box>)
+        <Button type="submit" variant="outlined">
+          {t(`submitButton`)}
+        </Button>
+      </form>
+    </Box>
+  );
 }

@@ -30,10 +30,6 @@ export default function Recruiter({ loaderData }: Route.ComponentProps) {
   const { finishRegister } = useRecruiterHooks();
 
   return (
-      <RecruiterView
-        translation="recruiter"
-        data={loaderData}
-        finishRegisterAction={finishRegister}
-      />
+    <RecruiterView data={loaderData} finishRegisterAction={finishRegister} />
   );
 }

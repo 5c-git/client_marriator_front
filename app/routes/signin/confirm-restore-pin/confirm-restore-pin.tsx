@@ -15,8 +15,8 @@ import { useConfirmRestorePinHooks } from "./confirmRestorePin.hooks";
 
 export const CONFIRM_RESTORE_PIN_ACTIONS = {
   sendAgain: "sendAgain",
-  sendCode: "sendCode"
-}
+  sendCode: "sendCode",
+};
 
 export async function clientLoader({ request }: Route.ClientLoaderArgs) {
   await loadNamespaces("confirmRestorePin");
@@ -65,7 +65,7 @@ export async function clientAction({ request }: Route.ClientActionArgs) {
 export default function ConfirmRestorePin({
   loaderData,
 }: Route.ComponentProps) {
-  const { t } = useTranslation("confirmRestorePin");
+  const { t } = useTranslation("m_signin_confirmRestorePin");
   const navigate = useNavigate();
   const { seconds, error, submitCode, submitSendAgain, clearError } =
     useConfirmRestorePinHooks(loaderData.ttl);
@@ -74,9 +74,7 @@ export default function ConfirmRestorePin({
 
   return (
     <>
-
       <ConfirmRestorePinView
-        translation="confirmRestorePin"
         seconds={seconds}
         backAction={() => {
           navigate(withLocale("/signin/pin"));

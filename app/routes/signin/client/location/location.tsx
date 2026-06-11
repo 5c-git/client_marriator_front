@@ -9,18 +9,14 @@ import { locationTokens } from "./location.tokens";
 import { useLocationHooks } from "./location.hooks";
 
 export async function clientLoader() {
-  const locationService = locationContainer.get(
-    locationTokens.locationService,
-  );
+  const locationService = locationContainer.get(locationTokens.locationService);
 
   return locationService.loadLocations();
 }
 
 export async function clientAction({ request }: Route.ClientActionArgs) {
   const shops = await request.json();
-  const locationService = locationContainer.get(
-    locationTokens.locationService,
-  );
+  const locationService = locationContainer.get(locationTokens.locationService);
 
   await locationService.saveLocations(shops);
 
@@ -32,13 +28,12 @@ export default function Location({ loaderData }: Route.ComponentProps) {
   const { submitShops } = useLocationHooks();
 
   return (
-      <LocationView
-        translation="location"
-        data={loaderData}
-        backAction={() => {
-          navigate(withLocale("/signin/client/meta"));
-        }}
-        submitShopsAction={submitShops}
-      />
+    <LocationView
+      data={loaderData}
+      backAction={() => {
+        navigate(withLocale("/signin/client/meta"));
+      }}
+      submitShopsAction={submitShops}
+    />
   );
 }

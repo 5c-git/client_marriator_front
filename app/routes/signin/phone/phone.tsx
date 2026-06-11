@@ -1,18 +1,15 @@
-import {
-  redirect,
-} from "react-router";
+import { redirect } from "react-router";
 import type { Route } from "./+types/phone";
 
 import { useTranslation } from "react-i18next";
 import { withLocale } from "~/shared/withLocale";
 
-
-import {PhoneView} from "./_views/PhoneView";
+import { PhoneView } from "./_views/PhoneView";
 import { Alert, Snackbar } from "@mui/material";
 
 import { phoneContainer } from "./phone.module";
 import { phoneTokens } from "./phone.tokens";
-import {usePhoneHooks} from "./phone.hooks";
+import { usePhoneHooks } from "./phone.hooks";
 
 export async function clientAction({ request }: Route.ClientActionArgs) {
   const currentURL = new URL(request.url);
@@ -20,9 +17,13 @@ export async function clientAction({ request }: Route.ClientActionArgs) {
 
   const fields = await request.json();
 
-  phoneContainer.get(phoneTokens.phoneService).saveUserPhoneToStore(fields.phone);
+  phoneContainer
+    .get(phoneTokens.phoneService)
+    .saveUserPhoneToStore(fields.phone);
 
-  const data = await phoneContainer.get(phoneTokens.phoneService).authPhone(fields.phone);
+  const data = await phoneContainer
+    .get(phoneTokens.phoneService)
+    .authPhone(fields.phone);
 
   if (data.status === "error") {
     currentURL.searchParams.set("timer", data.result.code.ttl.toString());
@@ -37,13 +38,12 @@ export async function clientAction({ request }: Route.ClientActionArgs) {
 }
 
 export default function Phone() {
-  const { t } = useTranslation("phone");
+  const { t } = useTranslation("m_signin_phone");
   const { submitPhone, error, timer, clearTimer, clearError } = usePhoneHooks();
 
   return (
     <>
-
-      <PhoneView translation="phone" submitAction={(values) => submitPhone(values.phone)} />
+      <PhoneView submitAction={(values) => submitPhone(values.phone)} />
 
       <Snackbar
         open={timer !== null ? true : false}

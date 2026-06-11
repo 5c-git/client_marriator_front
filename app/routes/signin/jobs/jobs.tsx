@@ -28,7 +28,7 @@ export async function clientLoader() {
 }
 
 export default function SigninJobs({ loaderData }: Route.ComponentProps) {
-  const { t } = useTranslation("jobs");
+  const { t } = useTranslation("m_signin_jobs");
 
   const {
     // mapView, setMapView,

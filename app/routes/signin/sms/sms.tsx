@@ -14,8 +14,8 @@ import { useSmsHooks } from "./sms.hooks";
 
 export const SMS_ACTIONS = {
   sendAgain: "sendAgain",
-  sendSms: "sendSms"
-}
+  sendSms: "sendSms",
+};
 
 export async function clientLoader({ request }: Route.ClientLoaderArgs) {
   await loadNamespaces("sms");
@@ -78,7 +78,7 @@ export async function clientAction({ request }: Route.ClientActionArgs) {
 }
 
 export default function Sms({ loaderData }: Route.ComponentProps) {
-  const { t } = useTranslation("sms");
+  const { t } = useTranslation("m_signin_sms");
   const navigate = useNavigate();
 
   const {
@@ -94,7 +94,6 @@ export default function Sms({ loaderData }: Route.ComponentProps) {
   return (
     <>
       <SmsView
-        translation="sms"
         phone={loaderData.phone}
         seconds={seconds}
         backAction={() => {

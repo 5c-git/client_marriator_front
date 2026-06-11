@@ -10,7 +10,6 @@ import Box from "@mui/material/Box";
 import { StyledOptField } from "~/shared/ui/StyledOtpField/StyledOtpField";
 
 type PinViewProps = {
-  translation: "pin";
   submitPinAction: (pin: string) => void;
   submitRestorePinAction: () => void;
 };
@@ -21,7 +20,7 @@ const createFormSchema = () =>
   });
 
 export function PinView(props: PinViewProps) {
-  const { t } = useTranslation("PinView");
+  const { t } = useTranslation("m_signin_pin");
 
   const {
     control,
@@ -55,7 +54,7 @@ export function PinView(props: PinViewProps) {
           paddingBottom: "8px",
         })}
       >
-        {t(`${props.translation}.header`)}
+        {t(`header`)}
       </Typography>
 
       <Typography
@@ -67,7 +66,7 @@ export function PinView(props: PinViewProps) {
           paddingBottom: "37px",
         })}
       >
-        {t(`${props.translation}.intro`)}
+        {t(`intro`)}
       </Typography>
 
       <Typography
@@ -79,7 +78,7 @@ export function PinView(props: PinViewProps) {
           paddingBottom: "20px",
         })}
       >
-        {t(`${props.translation}.text`)}
+        {t(`text`)}
       </Typography>
 
       <form
@@ -119,7 +118,7 @@ export function PinView(props: PinViewProps) {
             color: theme.vars.palette["Black"],
           })}
         >
-          {t(`${props.translation}.forgetPin`)}
+          {t(`forgetPin`)}
         </Typography>
 
         <Button
@@ -138,7 +137,7 @@ export function PinView(props: PinViewProps) {
               color: theme.vars.palette["Corp_1"],
             })}
           >
-            {t(`${props.translation}.restorePin`)}
+            {t(`restorePin`)}
           </Typography>
         </Button>
       </Box>

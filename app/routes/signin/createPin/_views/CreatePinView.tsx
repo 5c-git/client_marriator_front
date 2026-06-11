@@ -12,7 +12,6 @@ import { StyledOptField } from "~/shared/ui/StyledOtpField/StyledOtpField";
 import { TopNavigation } from "~/shared/ui/TopNavigation/TopNavigation";
 
 type CreatePinViewProps = {
-  translation: "createPin";
   backAction: () => void;
   submitPinAction: (pin: string) => void;
 };
@@ -35,7 +34,7 @@ const createFormSchema = (mismatchError: string) =>
     });
 
 export function CreatePinView(props: CreatePinViewProps) {
-  const { t } = useTranslation("CreatePinView");
+  const { t } = useTranslation("m_signin_createPin");
 
   const [step, setStep] = useState<1 | 2>(1);
 
@@ -50,7 +49,7 @@ export function CreatePinView(props: CreatePinViewProps) {
       pin: "",
       confirmPin: "",
     },
-    resolver: zodResolver(createFormSchema(t(`${props.translation}.error`))),
+    resolver: zodResolver(createFormSchema(t(`error`))),
   });
 
   const submitForm = handleSubmit(() => {
@@ -62,7 +61,7 @@ export function CreatePinView(props: CreatePinViewProps) {
       <Box>
         <TopNavigation
           header={{
-            text: t(`${props.translation}.header`),
+            text: t(`header`),
             bold: false,
           }}
           backAction={() => {
@@ -91,7 +90,7 @@ export function CreatePinView(props: CreatePinViewProps) {
               paddingBottom: "24px",
             })}
           >
-            {t(`${props.translation}.intro`)}
+            {t(`intro`)}
           </Typography>
 
           <Divider />
@@ -106,7 +105,7 @@ export function CreatePinView(props: CreatePinViewProps) {
               paddingBottom: "20px",
             })}
           >
-            {step === 1 ? t(`${props.translation}.text`) : t(`${props.translation}.text_step2`)}
+            {step === 1 ? t(`text`) : t(`text_step2`)}
           </Typography>
 
           <form
@@ -171,7 +170,7 @@ export function CreatePinView(props: CreatePinViewProps) {
             width: "100%",
           }}
         >
-          {t(`${props.translation}.error`)}
+          {t(`error`)}
         </Alert>
       </Snackbar>
     </>

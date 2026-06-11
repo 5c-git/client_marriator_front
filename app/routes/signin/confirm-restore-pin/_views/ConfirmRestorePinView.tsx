@@ -11,25 +11,19 @@ import { StyledSmsField } from "~/shared/ui/StyledSmsField/StyledSmsField";
 import { TopNavigation } from "~/shared/ui/TopNavigation/TopNavigation";
 
 type ConfirmRestorePinViewProps = {
-  translation: "confirmRestorePin";
   seconds: number;
   backAction: () => void;
   submitCodeAction: (code: string) => void;
   submitSendAgainAction: () => void;
 };
 
-const createFormSchema = (
-  requiredError: string,
-  lengthError: string,
-) =>
+const createFormSchema = (requiredError: string, lengthError: string) =>
   z.object({
-    code: z
-      .string({ error: requiredError })
-      .length(4, { error: lengthError }),
+    code: z.string({ error: requiredError }).length(4, { error: lengthError }),
   });
 
 export function ConfirmRestorePinView(props: ConfirmRestorePinViewProps) {
-  const { t } = useTranslation("ConfirmRestorePinView");
+  const { t } = useTranslation("m_signin_confirmRestorePin");
 
   const {
     control,
@@ -40,7 +34,7 @@ export function ConfirmRestorePinView(props: ConfirmRestorePinViewProps) {
       code: "",
     },
     resolver: zodResolver(
-      createFormSchema(t(`${props.translation}.inputValidation`), t(`${props.translation}.inputValidation_lenght`)),
+      createFormSchema(t(`inputValidation`), t(`inputValidation_lenght`)),
     ),
   });
 
@@ -52,7 +46,7 @@ export function ConfirmRestorePinView(props: ConfirmRestorePinViewProps) {
     <Box>
       <TopNavigation
         header={{
-          text: t(`${props.translation}.header`),
+          text: t(`header`),
           bold: false,
         }}
         backAction={props.backAction}
@@ -77,7 +71,7 @@ export function ConfirmRestorePinView(props: ConfirmRestorePinViewProps) {
               <StyledSmsField
                 inputType="sms"
                 error={errors.code?.message}
-                placeholder={t(`${props.translation}.inputPlaceholder`)}
+                placeholder={t(`inputPlaceholder`)}
                 onImmediateChange={handleSubmit((values) => {
                   props.submitCodeAction(values.code);
                 })}
@@ -97,7 +91,7 @@ export function ConfirmRestorePinView(props: ConfirmRestorePinViewProps) {
           }}
           onClick={props.submitSendAgainAction}
         >
-          {t(`${props.translation}.sendAgain`)}
+          {t(`sendAgain`)}
         </Button>
 
         {props.seconds !== 0 ? (
@@ -109,7 +103,7 @@ export function ConfirmRestorePinView(props: ConfirmRestorePinViewProps) {
               textAlign: "center",
             })}
           >
-            {t(`${props.translation}.timer`)}{" "}
+            {t(`timer`)}{" "}
             <Typography
               component="span"
               variant="Bold_12"

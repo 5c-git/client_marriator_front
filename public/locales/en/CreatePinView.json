@@ -1,9 +1,0 @@
-{
-    "createPin": {
-        "header": "Welcome",
-        "intro": "Персональные настройки безопасности",
-        "text": "Enter four last numbers of your phone or any combination which is easy for you to remember",
-        "text_step2": "Confirm the code",
-        "error": "Wrong value!"
-    }
-}

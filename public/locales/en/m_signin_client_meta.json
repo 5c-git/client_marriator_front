@@ -1,0 +1,16 @@
+{
+  "form": {
+    "logo": "Required field",
+    "fio": "Required field",
+    "locations": "At least one location must be chosen"
+  },
+  "header": "Setting up the account",
+  "avatar": {
+    "placeholder": "Logo",
+    "text": "Avatar *",
+    "value": "Choose"
+  },
+  "fioPlaceholder": "Full name *",
+  "locationsButton": "Choose locations",
+  "completeRegistration": "Complete registration"
+}

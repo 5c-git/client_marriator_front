@@ -25,21 +25,18 @@ import { StyledDropdown } from "~/shared/ui/StyledDropdown/StyledDropdown";
 
 import { MapIcon } from "~/shared/icons/MapIcon";
 
-import type {
-  LocationData,
-} from "../location.service";
+import type { LocationData } from "../location.service";
 
 import type { LocationOption } from "../location.mapper";
 
 type LocationViewProps = {
-  translation: "location";
   data: LocationData;
   backAction: () => void;
   submitShopsAction: (shopIds: string[]) => void;
 };
 
 export function LocationView(props: LocationViewProps) {
-  const { t } = useTranslation("LocationView");
+  const { t } = useTranslation("m_signin_client_location");
 
   const [showMap, setShowMap] = useState<boolean>(false);
   const [selectedShops, setSelectedShops] = useState(props.data.shops);
@@ -192,13 +189,11 @@ export function LocationView(props: LocationViewProps) {
     <Box>
       <TopNavigation
         header={{
-          text: t(`${props.translation}.header`),
+          text: t(`header`),
           bold: false,
         }}
         buttonAction={{
-          text: showMap
-            ? t(`${props.translation}.headerListAction`)
-            : t(`${props.translation}.headerMapAction`),
+          text: showMap ? t(`headerListAction`) : t(`headerMapAction`),
           icon: (
             <MapIcon
               sx={{
@@ -234,7 +229,7 @@ export function LocationView(props: LocationViewProps) {
             control={control}
             render={({ field }) => (
               <StyledSearchBar
-                placeholder={t(`${props.translation}.searchbarPlaceholder`)}
+                placeholder={t(`searchbarPlaceholder`)}
                 {...field}
                 onChange={(evt) => {
                   const currentFieldValue = new RegExp(
@@ -277,7 +272,7 @@ export function LocationView(props: LocationViewProps) {
             control={control}
             render={({ field }) => (
               <StyledDropdown
-                placeholder={t(`${props.translation}.regionPlaceholder`)}
+                placeholder={t(`regionPlaceholder`)}
                 options={props.data.regions}
                 {...field}
                 onChange={(evt) => {
@@ -314,10 +309,7 @@ export function LocationView(props: LocationViewProps) {
               name="shops"
               control={control}
               render={({ field }) => (
-                <LocationCheckboxMultiple
-                  options={selectedShops}
-                  {...field}
-                />
+                <LocationCheckboxMultiple options={selectedShops} {...field} />
               )}
             />
           ) : (
@@ -354,10 +346,10 @@ export function LocationView(props: LocationViewProps) {
                 setSelectedShops(props.data.shops);
               }}
             >
-              {t(`${props.translation}.cancelButton`)}
+              {t(`cancelButton`)}
             </Button>
             <Button type="submit" variant="contained">
-              {t(`${props.translation}.selectButton`)}{" "}
+              {t(`selectButton`)}{" "}
               {watch("shops").length > 0
                 ? ` ${getValues("shops").length}`
                 : null}

@@ -13,13 +13,12 @@ import { pinTokens } from "./pin.tokens";
 import { usePinHooks } from "./pin.hooks";
 
 export const PIN_ACTIONS = {
-  restorePin: "restorePin"
-}
+  restorePin: "restorePin",
+};
 
 export async function clientAction({ request }: Route.ClientActionArgs) {
   const { _action, ...fields } = await request.json();
   const pinService = pinContainer.get(pinTokens.pinService);
-
 
   if (_action === PIN_ACTIONS.restorePin) {
     const data = await pinService.restorePin();
@@ -40,14 +39,13 @@ export async function clientAction({ request }: Route.ClientActionArgs) {
 }
 
 export default function Pin({ actionData }: Route.ComponentProps) {
-  const { t } = useTranslation("pin");
+  const { t } = useTranslation("m_signin_pin");
 
   const { submitPin, submitRestorePin } = usePinHooks();
 
   return (
     <>
       <PinView
-        translation="pin"
         submitPinAction={submitPin}
         submitRestorePinAction={submitRestorePin}
       />

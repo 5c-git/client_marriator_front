@@ -1,15 +1,20 @@
-//meta
+//meta DONE
 import constructorFields from "../../public/locales/ru/constructorFields.json";
 import rootErrorBoundry from "../../public/locales/ru/rootErrorBoundry.json";
 //meta
 
 //auth
-import phone from "../../public/locales/ru/phone.json";
-import sms from "../../public/locales/ru/sms.json";
-import pin from "../../public/locales/ru/pin.json";
-import createPin from "../../public/locales/ru/createPin.json";
-import confirmRestorePin from "../../public/locales/ru/confirmRestorePin.json";
-
+import m_signin_phone from "../../public/locales/ru/m_signin_phone.json";
+import m_signin_sms from "../../public/locales/ru/m_signin_sms.json";
+import m_signin_pin from "../../public/locales/ru/pin.json";
+import m_signin_createPin from "../../public/locales/ru/m_signin_createPin.json";
+import m_signin_confirmRestorePin from "../../public/locales/ru/m_signin_confirmRestorePin.json";
+import m_signin_jobs from "../../public/locales/ru/m_signin_jobs.json";
+import m_signin_client_phone from "../../public/locales/ru/m_signin_client_phone.json";
+import m_signin_client_location from "../../public/locales/ru/m_signin_client_location.json";
+import m_signin_client_meta from "../../public/locales/ru/m_signin_client_meta.json";
+import m_signin_client_recruiter from "../../public/locales/ru/m_signin_client_recruiter.json";
+import m_signin_client_registrationComplete from "../../public/locales/ru/m_signin_client_registrationComplete.json";
 //auth
 
 //registration
@@ -42,7 +47,6 @@ import users_select_locations from "../../public/locales/ru/users_select_locatio
 
 //routes
 import job from "../../public/locales/ru/job.json";
-import jobs from "../../public/locales/ru/jobs.json";
 
 import BidLayout from "../../public/locales/ru/BidLayout.json";
 import bids from "../../public/locales/ru/bids.json";
@@ -72,16 +76,7 @@ import BillingEditView from "../../public/locales/ru/BillingEditView.json";
 import BillingAddView from "../../public/locales/ru/BillingAddView.json";
 import BillingView from "../../public/locales/ru/BillingView.json";
 import UserActivitiesView from "../../public/locales/ru/UserActivitiesView.json";
-import ConfirmRestorePinView from "../../public/locales/ru/ConfirmRestorePinView.json";
-import CreatePinView from "../../public/locales/ru/CreatePinView.json";
-import PinView from "../../public/locales/ru/PinView.json";
-import LocationView from "../../public/locales/ru/LocationView.json";
-import MetaView from "../../public/locales/ru/MetaView.json";
-import RecruiterView from "../../public/locales/ru/RecruiterView.json";
-import ClientPhoneView from "../../public/locales/ru/ClientPhoneView.json";
-import RegistrationCompleteView from "../../public/locales/ru/RegistrationCompleteView.json";
-import PhoneView from "../../public/locales/ru/PhoneView.json";
-import SmsView from "../../public/locales/ru/SmsView.json";
+
 import SettingsView from "../../public/locales/ru/SettingsView.json";
 import ProfileView from "../../public/locales/ru/ProfileView.json";
 import UsersMobileView from "../../public/locales/ru/UsersMobileView.json";
@@ -116,12 +111,17 @@ declare module "i18next" {
       //meta
 
       //auth
-      phone: typeof phone;
-
-      pin: typeof pin;
-      createPin: typeof createPin;
-      confirmRestorePin: typeof confirmRestorePin;
-
+      m_signin_phone: typeof m_signin_phone;
+      m_signin_sms: typeof m_signin_sms;
+      m_signin_pin: typeof m_signin_pin;
+      m_signin_createPin: typeof m_signin_createPin;
+      m_signin_confirmRestorePin: typeof m_signin_confirmRestorePin;
+      m_signin_jobs: typeof m_signin_jobs;
+      m_signin_client_phone: typeof m_signin_client_phone;
+      m_signin_client_location: typeof m_signin_client_location;
+      m_signin_client_meta: typeof m_signin_client_meta;
+      m_signin_client_recruiter: typeof m_signin_client_recruiter;
+      m_signin_client_registrationComplete: typeof m_signin_client_registrationComplete;
       //auth
 
       //registration
@@ -157,7 +157,6 @@ declare module "i18next" {
 
       //routes
       job: typeof job;
-      jobs: typeof jobs;
 
       BidLayout: typeof BidLayout;
       bids: typeof bids;
@@ -188,16 +187,7 @@ declare module "i18next" {
       BillingEditView: typeof BillingEditView;
       MyProfileView: typeof MyProfileView;
       UserActivitiesView: typeof UserActivitiesView;
-      ConfirmRestorePinView: typeof ConfirmRestorePinView;
-      CreatePinView: typeof CreatePinView;
-      PinView: typeof PinView;
-      LocationView: typeof LocationView;
-      MetaView: typeof MetaView;
-      RecruiterView: typeof RecruiterView;
-      ClientPhoneView: typeof ClientPhoneView;
-      RegistrationCompleteView: typeof RegistrationCompleteView;
-      PhoneView: typeof PhoneView;
-      SmsView: typeof SmsView;
+
       SettingsView: typeof SettingsView;
       ProfileView: typeof ProfileView;
       UsersMobileView: typeof UsersMobileView;

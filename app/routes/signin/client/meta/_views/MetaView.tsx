@@ -20,7 +20,6 @@ import { DeleteIcon } from "~/shared/icons/DeleteIcon";
 import type { MetaData } from "../meta.service";
 
 type MetaViewProps = {
-  translation: "meta";
   data: MetaData;
   navigateToLocationAction: () => void;
   setFioAction: (fio: string) => void;
@@ -30,7 +29,7 @@ type MetaViewProps = {
 };
 
 export function MetaView(props: MetaViewProps) {
-  const { t } = useTranslation("MetaView");
+  const { t } = useTranslation("m_signin_client_meta");
 
   const [open, setOpen] = useState<boolean>(false);
 
@@ -50,12 +49,12 @@ export function MetaView(props: MetaViewProps) {
     },
     resolver: zodResolver(
       z.object({
-        logo: z.string({ error: t(`${props.translation}.form.logo`) }),
+        logo: z.string({ error: t(`form.logo`) }),
         fio: z
           .string()
           .trim()
           .min(1, {
-            error: t(`${props.translation}.form.fio`),
+            error: t(`form.fio`),
           }),
         locations: z
           .array(
@@ -67,7 +66,7 @@ export function MetaView(props: MetaViewProps) {
               address: z.string(),
             }),
           )
-          .min(1, { error: t(`${props.translation}.form.locations`) }),
+          .min(1, { error: t(`form.locations`) }),
       }),
     ),
     mode: "onChange",
@@ -91,7 +90,7 @@ export function MetaView(props: MetaViewProps) {
     >
       <TopNavigation
         header={{
-          text: t(`${props.translation}.header`),
+          text: t(`header`),
           bold: false,
         }}
       />
@@ -117,7 +116,7 @@ export function MetaView(props: MetaViewProps) {
             ...theme.typography.Reg_16,
           })}
         >
-          {t(`${props.translation}.avatar.placeholder`)}
+          {t(`avatar.placeholder`)}
         </Avatar>
 
         <Box>
@@ -150,7 +149,7 @@ export function MetaView(props: MetaViewProps) {
                 color: (theme) => theme.vars.palette["Grey_2"],
               }}
             >
-              {t(`${props.translation}.avatar.text`)}
+              {t(`avatar.text`)}
             </Typography>
             <Stack
               direction="row"
@@ -173,7 +172,7 @@ export function MetaView(props: MetaViewProps) {
                   textAlign: "left",
                 }}
               >
-                {t(`${props.translation}.avatar.value`)}
+                {t(`avatar.value`)}
               </Typography>{" "}
               <KeyboardArrowDownIcon
                 sx={{
@@ -191,7 +190,7 @@ export function MetaView(props: MetaViewProps) {
                 color: theme.vars.palette["Red"],
               })}
             >
-              {t(`${props.translation}.form.logo`)}
+              {t(`form.logo`)}
             </Typography>
           ) : null}
         </Box>
@@ -201,7 +200,7 @@ export function MetaView(props: MetaViewProps) {
           control={control}
           render={({ field }) => (
             <StyledTextField
-              placeholder={t(`${props.translation}.fioPlaceholder`)}
+              placeholder={t(`fioPlaceholder`)}
               onImmediateChange={() => {
                 props.setFioAction(getValues("fio"));
               }}
@@ -282,7 +281,7 @@ export function MetaView(props: MetaViewProps) {
             borderColor: "var(--color)",
           }}
         >
-          {t(`${props.translation}.locationsButton`)}
+          {t(`locationsButton`)}
         </Button>
 
         {errors.locations?.message ? (
@@ -294,7 +293,7 @@ export function MetaView(props: MetaViewProps) {
               textAlign: "center",
             })}
           >
-            {t(`${props.translation}.form.locations`)}
+            {t(`form.locations`)}
           </Typography>
         ) : null}
 
@@ -317,7 +316,7 @@ export function MetaView(props: MetaViewProps) {
             variant="contained"
             disabled={!isValid}
           >
-            {t(`${props.translation}.completeRegistration`)}
+            {t(`completeRegistration`)}
           </Button>
         </Box>
       </form>

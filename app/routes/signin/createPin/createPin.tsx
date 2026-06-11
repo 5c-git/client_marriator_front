@@ -19,7 +19,6 @@ export async function clientAction({ request }: Route.ClientActionArgs) {
     createPinTokens.createPinService,
   );
 
-
   const data = await createPinService.setPin(fields.pin);
 
   if ("status" in data) {
@@ -31,16 +30,14 @@ export async function clientAction({ request }: Route.ClientActionArgs) {
 }
 
 export default function CreatePin() {
-  const { t } = useTranslation("createPin");
+  const { t } = useTranslation("m_signin_createPin");
   const navigate = useNavigate();
 
   const { error, submitPin, clearError } = useCreatePinHooks();
 
   return (
     <>
-
       <CreatePinView
-        translation="createPin"
         backAction={() => {
           navigate(withLocale("/signin/createPin"));
         }}

@@ -16,22 +16,21 @@ import type { PhoneData } from "../phone.service";
 import marriator from "../marriator.svg";
 
 type ClientPhoneViewProps = {
-  translation: "clientPhone";
   data: PhoneData;
   submitAction: (phone: string) => void;
 };
 
-const createFormSchema = (translation: ClientPhoneViewProps["translation"]) =>
+const createFormSchema = () =>
   z.object({
     phone: z
-      .string({ error: t(`${translation}.inputValidation`, { ns: "ClientPhoneView" }) })
+      .string({ error: t(`inputValidation`, { ns: "ClientPhoneView" }) })
       .regex(phoneRegExp, {
-        error: t(`${translation}.inputValidation_regExp`, { ns: "ClientPhoneView" }),
+        error: t(`inputValidation_regExp`, { ns: "ClientPhoneView" }),
       }),
   });
 
 export function ClientPhoneView(props: ClientPhoneViewProps) {
-  const { t } = useTranslation("ClientPhoneView");
+  const { t } = useTranslation("m_signin_client_phone");
 
   const {
     control,
@@ -41,7 +40,7 @@ export function ClientPhoneView(props: ClientPhoneViewProps) {
     defaultValues: {
       phone: props.data.userPhone,
     },
-    resolver: zodResolver(createFormSchema(props.translation)),
+    resolver: zodResolver(createFormSchema()),
   });
 
   return (
@@ -60,7 +59,7 @@ export function ClientPhoneView(props: ClientPhoneViewProps) {
           paddingBottom: "58px",
         }}
       >
-        {t(`${props.translation}.header`)}
+        {t(`header`)}
       </Typography>
       <Box
         sx={{
@@ -93,7 +92,7 @@ export function ClientPhoneView(props: ClientPhoneViewProps) {
               inputType="phone"
               disabled
               error={errors.phone?.message}
-              placeholder={t(`${props.translation}.inputPlaceholder`)}
+              placeholder={t(`inputPlaceholder`)}
               onImmediateChange={() => {}}
               style={{
                 paddingBottom: "16px",
@@ -113,7 +112,7 @@ export function ClientPhoneView(props: ClientPhoneViewProps) {
             ...theme.typography.Bold_16,
           })}
         >
-          {t(`${props.translation}.submitButton`)}
+          {t(`submitButton`)}
         </Button>
       </form>
     </Box>

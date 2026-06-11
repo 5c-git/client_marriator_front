@@ -1,0 +1,11 @@
+{
+  "header": "Confirm code",
+  "sendAgain": "Resend code",
+  "timer": "Resend available after",
+  "inputPlaceholder": "Code from message",
+  "inputValidation": "Required field",
+  "inputValidation_lenght": "Please provide correct value",
+  "notification": "Code has been sent to provided phone!",
+  "errorNotifivation": "Wrong code!",
+  "wrongData": "Wrong data revieved!"
+}

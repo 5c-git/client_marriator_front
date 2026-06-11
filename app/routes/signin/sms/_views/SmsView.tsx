@@ -12,7 +12,6 @@ import { StyledSmsField } from "~/shared/ui/StyledSmsField/StyledSmsField";
 import { TopNavigation } from "~/shared/ui/TopNavigation/TopNavigation";
 
 type SmsViewProps = {
-  translation: "sms";
   phone: string;
   seconds: number;
   backAction: () => void;
@@ -22,18 +21,18 @@ type SmsViewProps = {
 
 type SubmitValues = z.output<ReturnType<typeof createFormSchema>>;
 
-const createFormSchema = (translation: SmsViewProps["translation"]) =>
+const createFormSchema = () =>
   z.object({
     phone: z.string().optional(),
     sms: z
-      .string({ error: t(`${translation}.inputValidation`, { ns: "SmsView" }) })
+      .string({ error: t(`inputValidation`, { ns: "m_signin_sms" }) })
       .length(4, {
-        error: t(`${translation}.inputValidation_lenght`, { ns: "SmsView" }),
+        error: t(`inputValidation_lenght`, { ns: "m_signin_sms" }),
       }),
   });
 
 export function SmsView(props: SmsViewProps) {
-  const { t } = useTranslation("SmsView");
+  const { t } = useTranslation("m_signin_sms");
 
   const {
     control,
@@ -44,7 +43,7 @@ export function SmsView(props: SmsViewProps) {
       phone: props.phone,
       sms: "",
     },
-    resolver: zodResolver(createFormSchema(props.translation)),
+    resolver: zodResolver(createFormSchema()),
   });
 
   const submitForm = handleSubmit((values) => {
@@ -55,7 +54,7 @@ export function SmsView(props: SmsViewProps) {
     <Box>
       <TopNavigation
         header={{
-          text: t(`${props.translation}.header`),
+          text: t(`header`),
           bold: false,
         }}
         backAction={props.backAction}
@@ -80,7 +79,7 @@ export function SmsView(props: SmsViewProps) {
               <StyledSmsField
                 inputType="sms"
                 error={errors.sms?.message}
-                placeholder={t(`${props.translation}.inputPlaceholder`)}
+                placeholder={t(`inputPlaceholder`)}
                 onImmediateChange={submitForm}
                 {...field}
               />
@@ -98,7 +97,7 @@ export function SmsView(props: SmsViewProps) {
           }}
           onClick={props.submitResendAction}
         >
-          {t(`${props.translation}.sendAgain`)}
+          {t(`sendAgain`)}
         </Button>
 
         {props.seconds !== 0 ? (
@@ -110,7 +109,7 @@ export function SmsView(props: SmsViewProps) {
               textAlign: "center",
             })}
           >
-            {t(`${props.translation}.timer`)}{" "}
+            {t(`timer`)}{" "}
             <Typography
               component="span"
               variant="Bold_12"

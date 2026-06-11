@@ -8,11 +8,11 @@ import { metaContainer } from "./meta.module";
 import { metaTokens } from "./meta.tokens";
 import { useMetaHooks } from "./meta.hooks";
 
-export const META_ACTIONS ={
+export const META_ACTIONS = {
   deleteLocation: "deleteLocation",
   saveLogo: "saveLogo",
-  finishRegister: "finishRegister"
-}
+  finishRegister: "finishRegister",
+};
 
 export async function clientLoader() {
   const metaService = metaContainer.get(metaTokens.metaService);
@@ -39,16 +39,15 @@ export default function Meta({ loaderData }: Route.ComponentProps) {
   const { setFio, deleteLocation, saveLogo, finishRegister } = useMetaHooks();
 
   return (
-      <MetaView
-        translation="meta"
-        data={loaderData}
-        navigateToLocationAction={() => {
-          navigate(withLocale("/signin/client/location"));
-        }}
-        setFioAction={setFio}
-        deleteLocationAction={deleteLocation}
-        saveLogoAction={saveLogo}
-        finishRegisterAction={finishRegister}
-      />
+    <MetaView
+      data={loaderData}
+      navigateToLocationAction={() => {
+        navigate(withLocale("/signin/client/location"));
+      }}
+      setFioAction={setFio}
+      deleteLocationAction={deleteLocation}
+      saveLogoAction={saveLogo}
+      finishRegisterAction={finishRegister}
+    />
   );
 }

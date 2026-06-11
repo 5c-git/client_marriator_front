@@ -47,16 +47,12 @@ export async function clientAction({ request }: Route.ClientActionArgs) {
 }
 
 export default function Phone({ loaderData }: Route.ComponentProps) {
-  const { t } = useTranslation("ClientPhoneView");
+  const { t } = useTranslation("m_signin_client_phone");
   const { submitPhone, error, clearError } = usePhoneHooks();
 
   return (
     <>
-      <ClientPhoneView
-        translation="clientPhone"
-        data={loaderData}
-        submitAction={submitPhone}
-      />
+      <ClientPhoneView data={loaderData} submitAction={submitPhone} />
 
       <Snackbar
         open={error !== null}
@@ -71,7 +67,7 @@ export default function Phone({ loaderData }: Route.ComponentProps) {
             width: "100%",
           }}
         >
-          {t("clientPhone.smsError")}
+          {t("smsError")}
         </Alert>
       </Snackbar>
     </>

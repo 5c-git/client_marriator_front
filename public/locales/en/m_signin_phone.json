@@ -1,0 +1,8 @@
+{
+  "inputPlaceholder": "Phone number",
+  "inputValidation": "Required field",
+  "inputValidation_regExp": "Please provide correct number",
+  "submitButton": "Login or register",
+  "smsError": "Error sending phone. Try again later!",
+  "timerError": "Too many requests! Try again in {{seconds}} seconds."
+}

@@ -14,13 +14,12 @@ import { StyledTextField } from "~/shared/ui/StyledTextField/StyledTextField";
 import type { RecruiterData } from "../recruiter.service";
 
 type RecruiterViewProps = {
-  translation: "recruiter";
   data: RecruiterData;
   finishRegisterAction: (name: string) => void;
 };
 
 export function RecruiterView(props: RecruiterViewProps) {
-  const { t } = useTranslation("RecruiterView");
+  const { t } = useTranslation("m_signin_client_recruiter");
 
   const {
     control,
@@ -38,7 +37,7 @@ export function RecruiterView(props: RecruiterViewProps) {
           .string()
           .trim()
           .min(1, {
-            error: t(`${props.translation}.form.fio`),
+            error: t(`form.fio`),
           }),
         locations: z
           .array(
@@ -50,7 +49,7 @@ export function RecruiterView(props: RecruiterViewProps) {
               address: z.string(),
             }),
           )
-          .min(1, { error: t(`${props.translation}.form.locations`) }),
+          .min(1, { error: t(`form.locations`) }),
       }),
     ),
     mode: "onChange",
@@ -60,7 +59,7 @@ export function RecruiterView(props: RecruiterViewProps) {
     <Box>
       <TopNavigation
         header={{
-          text: t(`${props.translation}.header`),
+          text: t(`header`),
           bold: false,
         }}
       />
@@ -82,7 +81,7 @@ export function RecruiterView(props: RecruiterViewProps) {
           control={control}
           render={({ field }) => (
             <StyledTextField
-              placeholder={t(`${props.translation}.fioPlaceholder`)}
+              placeholder={t(`fioPlaceholder`)}
               onImmediateChange={() => {}}
               inputType="text"
               error={errors.fio?.message}
@@ -142,7 +141,7 @@ export function RecruiterView(props: RecruiterViewProps) {
             variant="contained"
             disabled={!isValid}
           >
-            {t(`${props.translation}.completeRegistration`)}
+            {t(`completeRegistration`)}
           </Button>
         </Box>
       </form>

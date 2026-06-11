@@ -1,0 +1,9 @@
+{
+  "header": "Locations",
+  "headerListAction": "List",
+  "headerMapAction": "Map",
+  "searchbarPlaceholder": "Find...",
+  "regionPlaceholder": "Region",
+  "cancelButton": "Cancel",
+  "selectButton": "Select"
+}

@@ -1,4 +1,0 @@
-{
-  "smsError": "Error sending phone. Try again later!",
-  "timerError": "Too many requests! Try again in {{seconds}} seconds."
-}
