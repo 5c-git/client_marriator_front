@@ -4,17 +4,9 @@ import { useTranslation } from "react-i18next";
 
 import { format } from "date-fns";
 
-import {
-  Typography,
-  List,
-  ListItem,
-  IconButton,
-  Snackbar,
-  Alert,
-} from "@mui/material";
+import { Typography, List, ListItem, IconButton } from "@mui/material";
 import Box from "@mui/material/Box";
 import { TopNavigation } from "~/shared/ui/TopNavigation/TopNavigation";
-import { Loader } from "~/shared/ui/Loader/Loader";
 
 import FileDownloadOutlinedIcon from "@mui/icons-material/FileDownloadOutlined";
 
@@ -35,34 +27,24 @@ export type ArchiveActionData =
     };
 
 type Props = {
-  loaderData: ArchiveItem[];
-  isLoading: boolean;
+  translation: "archive";
+  data: ArchiveItem[];
   backAction: () => void;
-  fetcher: ReturnType<typeof useFetcher<ArchiveActionData>>;
   assetBasePath: string;
   downloadRequestAction: (id: number) => void;
 };
 
-export function ArchiveView({
-  loaderData,
-  isLoading,
-  backAction,
-  fetcher,
-  assetBasePath,
-  downloadRequestAction,
-}: Props) {
+export function ArchiveView(props: Props) {
   const { t } = useTranslation("ArchiveView");
 
   return (
     <>
-      {isLoading ? <Loader /> : null}
-
       <TopNavigation
         header={{
-          text: t("header"),
+          text: t(`${props.translation}.header`),
           bold: false,
         }}
-        backAction={backAction}
+        backAction={props.backAction}
       />
 
       <Box
@@ -83,7 +65,7 @@ export function ArchiveView({
             paddingBottom: "8px",
           })}
         >
-          {t("archive_header")}
+          {t(`${props.translation}.archive_header`)}
         </Typography>
 
         <Typography
@@ -94,7 +76,7 @@ export function ArchiveView({
             paddingBottom: "18px",
           })}
         >
-          {t("archive_text")}
+          {t(`${props.translation}.archive_text`)}
         </Typography>
 
         <List
@@ -104,15 +86,15 @@ export function ArchiveView({
             rowGap: "4px",
           }}
         >
-          {loaderData.length !== 0 ? (
-            loaderData.map((item) => (
+          {props.data.length !== 0 ? (
+            props.data.map((item) => (
               <ListItem
                 key={item.id}
                 secondaryAction={
                   item.file_path_signed ? (
                     <IconButton
                       LinkComponent="a"
-                      href={`${assetBasePath}${item.file_path_signed}`}
+                      href={`${props.assetBasePath}${item.file_path_signed}`}
                       target="_blank"
                       rel="noreferrer"
                       edge="end"
@@ -128,7 +110,7 @@ export function ArchiveView({
                     <IconButton
                       edge="end"
                       onClick={() => {
-                        downloadRequestAction(item.id);
+                        props.downloadRequestAction(item.id);
                       }}
                     >
                       <FileDownloadOutlinedIcon
@@ -155,7 +137,8 @@ export function ArchiveView({
                     color: theme.vars.palette["Grey_1"],
                   })}
                 >
-                  {t("signed")} {format(item.date_signature, "dd.LL.yyyy HH:mm")}
+                  {t(`${props.translation}.signed`)}{" "}
+                  {format(item.date_signature, "dd.LL.yyyy HH:mm")}
                 </Typography>
               </ListItem>
             ))
@@ -165,31 +148,11 @@ export function ArchiveView({
                 justifyContent: "center",
               }}
             >
-              {t("archive_nothing")}
+              {t(`${props.translation}.archive_nothing`)}
             </ListItem>
           )}
         </List>
       </Box>
-
-      <Snackbar
-        open={fetcher.data && fetcher.data.isError === true ? true : false}
-        autoHideDuration={3000}
-        onClose={() => {
-          fetcher.reset();
-        }}
-      >
-        <Alert
-          severity="info"
-          variant="small"
-          color="Banner_Error"
-          sx={{
-            width: "100%",
-          }}
-        >
-          {t("error")}
-        </Alert>
-      </Snackbar>
     </>
   );
 }
-
