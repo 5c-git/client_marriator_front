@@ -15,7 +15,7 @@ import { useSmsHooks } from "./sms.hooks";
 export const SMS_ACTIONS = {
   sendAgain: "sendAgain",
   sendSms: "sendSms",
-};
+} as const;
 
 export async function clientLoader({ request }: Route.ClientLoaderArgs) {
   await loadNamespaces("sms");

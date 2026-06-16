@@ -1,43 +1,43 @@
 import { withLocale } from "~/shared/withLocale";
 import { useNavigate } from "react-router";
 
-import { t } from "i18next";
+import { useTranslation } from "react-i18next";
 
 import { DocumentsView } from "./_views/DocumentsView";
 
 export default function Documents() {
   const navigate = useNavigate();
+  const { t } = useTranslation("m_profile_documents");
 
   return (
     <DocumentsView
-      translation="documents"
       backAction={() => {
         navigate(withLocale("/profile"), { viewTransition: true });
       }}
       sections={[
         {
           path: withLocale("/profile/documents/sign"),
-          label: t("documents.item_sign", { ns: "DocumentsView" }),
+          label: t("item_sign"),
         },
         {
           path: withLocale("/profile/documents/sign-a-deal"),
-          label: t("documents.item_deal", { ns: "DocumentsView" }),
+          label: t("item_deal"),
         },
         {
           path: withLocale("/profile/documents/terminate-a-deal"),
-          label: t("documents.item_break", { ns: "DocumentsView" }),
+          label: t("item_break"),
         },
         {
           path: withLocale("/profile/documents/archive"),
-          label: t("documents.item_archive", { ns: "DocumentsView" }),
+          label: t("item_archive"),
         },
         {
           path: withLocale("/profile/documents/archive"),
-          label: t("documents.item_archive", { ns: "DocumentsView" }),
+          label: t("item_archive"),
         },
         {
           path: withLocale("/profile/documents/certificates"),
-          label: t("documents.item_certificates", { ns: "DocumentsView" }),
+          label: t("item_certificates"),
         },
       ]}
     />

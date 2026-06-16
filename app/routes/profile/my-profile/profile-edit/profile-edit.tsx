@@ -1,16 +1,15 @@
 import type { Route } from "./+types/profile-edit";
+import { useFetcher, useNavigate } from "react-router";
 
 import { loadNamespaces } from "i18next";
 import { useTranslation } from "react-i18next";
 
 import { ProfileEditView } from "./_views/ProfileEditView";
-import { Loader } from "~/shared/ui/Loader/Loader";
 
 import { profileEditContainer } from "./profile-edit.module";
 import { profileEditTokens } from "./profile-edit.tokens";
-import { useProfileEditHooks } from "./profile-edit.hooks";
+
 import { withLocale } from "~/shared/withLocale";
-import { useNavigate } from "react-router";
 
 export async function clientLoader({ request }: Route.ClientLoaderArgs) {
   await loadNamespaces("profileEdit");
@@ -35,19 +34,9 @@ export async function clientAction({ request }: Route.ClientActionArgs) {
 }
 
 export default function ProfileEdit({ loaderData }: Route.ComponentProps) {
-  const { t } = useTranslation("profileEdit");
+  const { t } = useTranslation("m_profile_myProfile_profileEdit");
   const navigate = useNavigate();
-  const {
-    control,
-    setValue,
-    trigger,
-    errors,
-    isDirty,
-    handleSubmit,
-    submitForm,
-    resetForm,
-    confirmForm,
-  } = useProfileEditHooks(loaderData);
+  const fetcher = useFetcher();
 
   const headerText = loaderData.currentSection ?? t("sectionHeader");
 
@@ -56,17 +45,15 @@ export default function ProfileEdit({ loaderData }: Route.ComponentProps) {
       headerText={headerText}
       formFields={loaderData.formFields}
       accessToken={loaderData.accessToken}
-      errors={errors}
-      control={control}
-      isDirty={isDirty}
-      setValue={setValue}
-      trigger={trigger}
       onBack={() => {
         navigate(withLocale("/profile/my-profile"));
       }}
-      onSubmit={handleSubmit(submitForm)}
-      onCancel={resetForm}
-      onConfirm={confirmForm}
+      onSubmit={(values) => {
+        fetcher.submit(JSON.stringify(values), {
+          method: "POST",
+          encType: "application/json",
+        });
+      }}
     />
   );
 }

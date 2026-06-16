@@ -11,8 +11,10 @@ import type {
   ProfileMetaLoaderData,
 } from "./profile-meta.service";
 
+import { PROFILE_META_ACTIONS } from "./profile-meta";
+
 export function useProfileMetaHooks(loaderData: ProfileMetaLoaderData) {
-  const { t } = useTranslation("profileMeta");
+  const { t } = useTranslation("m_profile_myProfile_profileMeta");
   const fetcher = useFetcher<ProfileMetaActionError | null>();
 
   const [openPhoneDialog, setOpenPhoneDialog] = useState(false);
@@ -29,14 +31,7 @@ export function useProfileMetaHooks(loaderData: ProfileMetaLoaderData) {
     [loaderData.photo, loaderData.phone, loaderData.email],
   );
 
-  const {
-    control,
-    setValue,
-    trigger,
-    getValues,
-    formState: { errors },
-    reset,
-  } = useForm({
+  const form = useForm({
     defaultValues,
     resolver: zodResolver(validationSchema),
     mode: "onChange",
@@ -45,12 +40,12 @@ export function useProfileMetaHooks(loaderData: ProfileMetaLoaderData) {
 
   useEffect(() => {
     setTimeout(() => {
-      reset(defaultValues, { keepErrors: false });
+      form.reset(defaultValues, { keepErrors: false });
     });
-  }, [defaultValues, reset]);
+  }, [defaultValues, form.reset]);
 
   const submitAction = useCallback(
-    (payload: Record<string, unknown>) => {
+    (payload: unknown) => {
       fetcher.submit(JSON.stringify(payload), {
         method: "POST",
         encType: "application/json",
@@ -61,52 +56,52 @@ export function useProfileMetaHooks(loaderData: ProfileMetaLoaderData) {
 
   const submitPhotoChange = useCallback(() => {
     submitAction({
-      _action: "changePhoto",
-      email: getValues("metaPhoto"),
+      _action: PROFILE_META_ACTIONS.changePhoto,
+      email: form.getValues("metaPhoto"),
     });
-  }, [submitAction, getValues]);
+  }, [submitAction, form.getValues]);
 
   const confirmPhone = useCallback(() => {
     submitAction({
-      _action: "confirmPhone",
-      phone: getValues("metaPhone"),
+      _action: PROFILE_META_ACTIONS.confirmPhone,
+      phone: form.getValues("metaPhone"),
     });
     setOpenPhoneDialog(false);
-  }, [submitAction, getValues]);
+  }, [submitAction, form.getValues]);
 
   const confirmEmail = useCallback(() => {
     submitAction({
-      _action: "confirmEmail",
-      email: getValues("metaEmail"),
+      _action: PROFILE_META_ACTIONS.confirmEmail,
+      email: form.getValues("metaEmail"),
     });
     setOpenEmailDialog(false);
-  }, [submitAction, getValues]);
+  }, [submitAction, form.getValues]);
 
   const resetFetcherError = useCallback(() => {
-    submitAction({ _action: "reset" });
+    submitAction({ _action: PROFILE_META_ACTIONS.reset });
   }, [submitAction]);
 
   const closePhoneDialog = useCallback(() => {
     setOpenPhoneDialog(false);
-    setValue("metaPhone", "");
-  }, [setValue]);
+    form.setValue("metaPhone", "");
+  }, [form.setValue]);
 
   const closeEmailDialog = useCallback(() => {
     setOpenEmailDialog(false);
-    setValue("metaEmail", "");
-  }, [setValue]);
+    form.setValue("metaEmail", "");
+  }, [form.setValue]);
 
   const onPhoneBlur = useCallback(
     (value: string) => {
       if (
         value !== "" &&
         value !== loaderData.phone &&
-        errors.metaPhone === undefined
+        form.formState.errors.metaPhone === undefined
       ) {
         setOpenPhoneDialog(true);
       }
     },
-    [loaderData.phone, errors.metaPhone],
+    [loaderData.phone, form.formState.errors.metaPhone],
   );
 
   const onEmailBlur = useCallback(
@@ -114,19 +109,16 @@ export function useProfileMetaHooks(loaderData: ProfileMetaLoaderData) {
       if (
         value !== "" &&
         value !== loaderData.email &&
-        errors.metaEmail === undefined
+        form.formState.errors.metaEmail === undefined
       ) {
         setOpenEmailDialog(true);
       }
     },
-    [loaderData.email, errors.metaEmail],
+    [loaderData.email, form.formState.errors.metaEmail],
   );
 
   return {
-    control,
-    setValue,
-    trigger,
-    errors,
+    form,
     fetcherData: fetcher.data,
     openPhoneDialog,
     openEmailDialog,

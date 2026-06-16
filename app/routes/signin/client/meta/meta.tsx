@@ -12,7 +12,7 @@ export const META_ACTIONS = {
   deleteLocation: "deleteLocation",
   saveLogo: "saveLogo",
   finishRegister: "finishRegister",
-};
+} as const;
 
 export async function clientLoader() {
   const metaService = metaContainer.get(metaTokens.metaService);

@@ -1,4 +1,4 @@
-import { useNavigation, useNavigate } from "react-router";
+import { useNavigate } from "react-router";
 import type { Route } from "./+types/certificates";
 
 import { withLocale } from "~/shared/withLocale";
@@ -22,7 +22,6 @@ export async function clientAction({ request }: Route.ClientActionArgs) {
 }
 
 export default function Certificates({ loaderData }: Route.ComponentProps) {
-  const navigation = useNavigation();
   const navigate = useNavigate();
 
   const { organizationOptions, certificateOptions } = useCertificatesHooks(
@@ -32,8 +31,7 @@ export default function Certificates({ loaderData }: Route.ComponentProps) {
 
   return (
     <CertificatesView
-      loaderData={loaderData}
-      isLoading={navigation.state !== "idle"}
+      data={loaderData}
       backAction={() => {
         navigate(withLocale("/profile/documents"), {
           viewTransition: true,

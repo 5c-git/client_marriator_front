@@ -18,7 +18,6 @@ import { TopNavigation } from "~/shared/ui/TopNavigation/TopNavigation";
 import { withLocale } from "~/shared/withLocale";
 
 type Props = {
-  translation: "documents";
   sections: {
     path: string;
     label: string;
@@ -27,13 +26,13 @@ type Props = {
 };
 
 export function DocumentsView(props: Props) {
-  const { t } = useTranslation("DocumentsView");
+  const { t } = useTranslation("m_profile_documents");
 
   return (
     <Box>
       <TopNavigation
         header={{
-          text: t(`${props.translation}.header`),
+          text: t(`header`),
           bold: false,
         }}
         backAction={props.backAction}

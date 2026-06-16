@@ -1,28 +1,35 @@
-import type { Control, FieldErrors, UseFormSetValue, UseFormTrigger } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 
 import { Typography, Button } from "@mui/material";
 import Box from "@mui/material/Box";
 import { TopNavigation } from "~/shared/ui/TopNavigation/TopNavigation";
 
-import { generateInputsMarkup } from "~/shared/constructor/constructor";
+import {
+  generateDefaultValues,
+  generateInputsMarkup,
+  generateValidationSchema,
+} from "~/shared/constructor/constructor";
 import type { UserActivitiesLoaderData } from "../user-activities.service";
+import { zodResolver } from "@hookform/resolvers/zod";
 
 type UserActivitiesViewProps = {
-  loaderData: UserActivitiesLoaderData;
+  data: UserActivitiesLoaderData;
   step: number;
-  control: Control<Record<string, unknown>>;
-  errors: FieldErrors<Record<string, unknown>>;
-  setValue: UseFormSetValue<Record<string, unknown>>;
-  trigger: UseFormTrigger<Record<string, unknown>>;
   onBack: () => void;
-  onFormSubmit: () => void;
-  onFinishClick: () => void;
-  onFieldChange: () => void;
+  onFormSubmit: (values: unknown) => void;
+  onFieldChange: (values: unknown) => void;
 };
 
 export function UserActivitiesView(props: UserActivitiesViewProps) {
-  const { t } = useTranslation("UserActivitiesView");
+  const { t } = useTranslation("m_profile_myProfile_userActivities");
+
+  const form = useForm({
+    defaultValues: generateDefaultValues(props.data.formFields),
+    resolver: zodResolver(generateValidationSchema(props.data.formFields)),
+    mode: "onChange",
+    shouldUnregister: true,
+  });
 
   return (
     <Box
@@ -67,17 +74,21 @@ export function UserActivitiesView(props: UserActivitiesViewProps) {
         }}
         onSubmit={(event) => {
           event.preventDefault();
-          props.onFormSubmit();
+          form.handleSubmit((values) => {
+            props.onFormSubmit(values);
+          });
         }}
       >
         {generateInputsMarkup(
-          props.loaderData.formFields,
-          props.errors,
-          props.control,
-          props.setValue,
-          props.trigger,
-          props.onFieldChange,
-          props.loaderData.accessToken,
+          props.data.formFields,
+          form.formState.errors,
+          form.control,
+          form.setValue,
+          form.trigger,
+          () => {
+            props.onFieldChange(form.getValues());
+          },
+          props.data.accessToken,
         )}
 
         <Box
@@ -91,7 +102,15 @@ export function UserActivitiesView(props: UserActivitiesViewProps) {
             backgroundColor: theme.vars.palette["White"],
           })}
         >
-          <Button variant="contained" onClick={props.onFinishClick}>
+          <Button
+            variant="contained"
+            onClick={() => {
+              form.trigger();
+              form.handleSubmit((values) => {
+                props.onFormSubmit(values);
+              });
+            }}
+          >
             {t("finishButton")}
           </Button>
         </Box>

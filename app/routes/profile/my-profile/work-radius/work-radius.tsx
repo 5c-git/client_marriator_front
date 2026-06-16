@@ -37,26 +37,19 @@ export function shouldRevalidate({
 
 export default function WorkRadius({ loaderData }: Route.ComponentProps) {
   const navigate = useNavigate();
-  const {
-    control,
-    isMapGrayscale,
-    fetcherError,
-    debouncedTextFieldSubmit,
-    debouncedRadiusFieldSubmit,
-    resetFetcherError,
-  } = useWorkRadiusHooks(loaderData);
+  const hooks = useWorkRadiusHooks(loaderData);
 
   return (
     <WorkRadiusView
-      control={control}
-      isMapGrayscale={isMapGrayscale}
-      fetcherError={fetcherError}
+      form={hooks.form}
+      isMapGrayscale={hooks.isMapGrayscale}
+      fetcherError={hooks.fetcherError}
       onBack={() => {
         navigate(withLocale("/profile/my-profile"));
       }}
-      onAddressChange={debouncedTextFieldSubmit}
-      onRadiusChange={debouncedRadiusFieldSubmit}
-      onSnackbarClose={resetFetcherError}
+      onAddressChange={hooks.debouncedTextFieldSubmit}
+      onRadiusChange={hooks.debouncedRadiusFieldSubmit}
+      onSnackbarClose={hooks.resetFetcherError}
     />
   );
 }

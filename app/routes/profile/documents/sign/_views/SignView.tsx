@@ -1,26 +1,15 @@
-import { useEffect } from "react";
-import { useFetcher } from "react-router";
-
 import { useTranslation } from "react-i18next";
 
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm, Controller } from "react-hook-form";
 
-import {
-  Button,
-  Typography,
-  Dialog,
-  Snackbar,
-  Alert,
-  TextField,
-} from "@mui/material";
+import { Button, Typography, Dialog, TextField } from "@mui/material";
 import Box from "@mui/material/Box";
 
 import { MaskedField } from "~/shared/ui/MaskedField/MaskedField";
 
 import { TopNavigation } from "~/shared/ui/TopNavigation/TopNavigation";
-import { Loader } from "~/shared/ui/Loader/Loader";
 
 import { S_OrderedList, S_OrderedItem } from "../sign.styled";
 
@@ -36,13 +25,9 @@ export type SignActionData =
     };
 
 type Props = {
-  loaderData: SignDocument[];
-  isLoading: boolean;
-
+  data: SignDocument[];
   popupOpen: boolean;
   seconds: number;
-
-  fetcher: ReturnType<typeof useFetcher<SignActionData>>;
 
   backAction: () => void;
   signAction: () => void;
@@ -51,19 +36,8 @@ type Props = {
   closePopupAction: () => void;
 };
 
-export function SignView({
-  loaderData,
-  isLoading,
-  popupOpen,
-  seconds,
-  fetcher,
-  backAction,
-  signAction,
-  sendAgainAction,
-  sendCodeAction,
-  closePopupAction,
-}: Props) {
-  const { t } = useTranslation("SignView");
+export function SignView(props: Props) {
+  const { t } = useTranslation("m_profile_documents_sign");
 
   const { control, handleSubmit, reset } = useForm({
     defaultValues: {
@@ -71,22 +45,13 @@ export function SignView({
     },
     resolver: zodResolver(
       z.object({
-        sms: z.string().length(4, { error: t("smsError") }),
+        sms: z.string().length(6, { error: t("smsError") }),
       }),
     ),
   });
 
-  useEffect(() => {
-    if (!popupOpen) {
-      reset();
-      fetcher.reset();
-    }
-  }, [popupOpen, reset, fetcher]);
-
   return (
     <>
-      {isLoading ? <Loader /> : null}
-
       <Box
         sx={{
           display: "flex",
@@ -99,7 +64,7 @@ export function SignView({
             text: t("header"),
             bold: false,
           }}
-          backAction={backAction}
+          backAction={props.backAction}
         />
 
         <Box
@@ -112,7 +77,7 @@ export function SignView({
             flexGrow: 1,
           }}
         >
-          {loaderData.length === 0 ? (
+          {props.data.length === 0 ? (
             <Typography
               component="h1"
               variant="Reg_18"
@@ -125,19 +90,19 @@ export function SignView({
             </Typography>
           ) : (
             <S_OrderedList>
-              {loaderData.map((item) => (
+              {props.data.map((item) => (
                 <S_OrderedItem key={item.id}>{item.file_name}</S_OrderedItem>
               ))}
             </S_OrderedList>
           )}
 
-          {loaderData.length > 0 ? (
+          {props.data.length > 0 ? (
             <Button
               sx={{
                 marginTop: "auto",
               }}
               variant="contained"
-              onClick={signAction}
+              onClick={props.signAction}
             >
               {t("button_action")}
             </Button>
@@ -146,7 +111,7 @@ export function SignView({
       </Box>
 
       <Dialog
-        open={popupOpen}
+        open={props.popupOpen}
         onClose={() => {}}
         sx={{
           "& .MuiDialog-paper": {
@@ -163,7 +128,8 @@ export function SignView({
             rowGap: "4px",
           }}
           onSubmit={handleSubmit((values) => {
-            sendCodeAction(values.sms);
+            props.sendCodeAction(values.sms);
+            reset();
           })}
         >
           <Controller
@@ -175,7 +141,8 @@ export function SignView({
                 onChange={(evt) => {
                   field.onChange(evt);
                   if (evt.target.value.length === 6) {
-                    sendCodeAction(evt.target.value);
+                    props.sendCodeAction(evt.target.value);
+                    reset();
                   }
                 }}
                 label={t("smsPlaceholder")}
@@ -194,7 +161,7 @@ export function SignView({
           />
         </form>
 
-        {seconds !== 0 ? (
+        {props.seconds !== 0 ? (
           <Typography
             component="p"
             variant="Reg_12"
@@ -211,10 +178,13 @@ export function SignView({
                 color: theme.vars.palette["Black"],
               })}
             >
-              {Math.floor(seconds / 60) < 10
-                ? `0${Math.floor(seconds / 60)}`
-                : Math.floor(seconds / 60)}
-              {""}:{seconds % 60 < 10 ? `0${seconds % 60}` : seconds % 60}
+              {Math.floor(props.seconds / 60) < 10
+                ? `0${Math.floor(props.seconds / 60)}`
+                : Math.floor(props.seconds / 60)}
+              {""}:
+              {props.seconds % 60 < 10
+                ? `0${props.seconds % 60}`
+                : props.seconds % 60}
             </Typography>
           </Typography>
         ) : null}
@@ -222,42 +192,22 @@ export function SignView({
         <Button
           type="button"
           variant="text"
-          disabled={seconds > 0}
+          disabled={props.seconds > 0}
           sx={{
             fontSize: "1rem",
             lineHeight: "1.25rem",
           }}
-          onClick={sendAgainAction}
+          onClick={props.sendAgainAction}
         >
           {t("sendAgainAction")}
         </Button>
 
-        {seconds === 0 ? (
-          <Button variant="outlined" onClick={closePopupAction}>
+        {props.seconds === 0 ? (
+          <Button variant="outlined" onClick={props.closePopupAction}>
             {t("cancelAction")}
           </Button>
         ) : null}
       </Dialog>
-
-      <Snackbar
-        open={fetcher.data && fetcher.data.isError === true ? true : false}
-        autoHideDuration={3000}
-        onClose={() => {
-          fetcher.reset();
-        }}
-      >
-        <Alert
-          severity="info"
-          variant="small"
-          color="Banner_Error"
-          sx={{
-            width: "100%",
-          }}
-        >
-          {fetcher.data?.error}
-        </Alert>
-      </Snackbar>
     </>
   );
 }
-

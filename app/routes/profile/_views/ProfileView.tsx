@@ -24,7 +24,6 @@ import { ExitIcon } from "../_icons/ExitIcon";
 import type { ProfileData } from "../profile.mapper";
 
 type ProfileViewProps = {
-  translation: "profile";
   data: ProfileData;
   userRole: "admin" | "manager" | "supervisor" | "client" | "specialist";
   openDialog: boolean;
@@ -34,14 +33,14 @@ type ProfileViewProps = {
 };
 
 export function ProfileView(props: ProfileViewProps) {
-  const { t } = useTranslation("ProfileView");
+  const { t } = useTranslation("m_profile");
 
   return (
     <>
       <Box>
         <TopNavigation
           header={{
-            text: t(`${props.translation}.header`),
+            text: t(`header`),
             bold: false,
           }}
         />
@@ -73,18 +72,18 @@ export function ProfileView(props: ProfileViewProps) {
             <>
               <ProfileMenuItem
                 icon={<ProfileIcon />}
-                label={t(`${props.translation}.profile`)}
+                label={t(`profile`)}
                 to={withLocale("my-profile")}
                 showBullet={props.data.hasProfileErrors}
               />
               <ProfileMenuItem
                 icon={<SettingsIcon />}
-                label={t(`${props.translation}.settings`)}
+                label={t(`settings`)}
                 to={withLocale("settings")}
               />
               <ProfileMenuItem
                 icon={<DocumentsIcon />}
-                label={t(`${props.translation}.documents`)}
+                label={t(`documents`)}
                 to={withLocale("documents")}
               />
             </>
@@ -92,7 +91,7 @@ export function ProfileView(props: ProfileViewProps) {
 
           <ProfileMenuItem
             icon={<ExitIcon />}
-            label={t(`${props.translation}.exit`)}
+            label={t(`exit`)}
             onClick={props.onOpenLogoutDialog}
           />
         </List>
@@ -107,13 +106,13 @@ export function ProfileView(props: ProfileViewProps) {
           },
         }}
       >
-        <DialogTitle>{t(`${props.translation}.dialog_title`)}</DialogTitle>
+        <DialogTitle>{t(`dialog_title`)}</DialogTitle>
         <DialogActions>
           <Button variant="outlined" onClick={props.onCloseDialog}>
-            {t(`${props.translation}.dialog_no`)}
+            {t(`dialog_no`)}
           </Button>
           <Button variant="contained" onClick={props.onConfirmLogout}>
-            {t(`${props.translation}.dialog_yes`)}
+            {t(`dialog_yes`)}
           </Button>
         </DialogActions>
       </Dialog>

@@ -10,7 +10,6 @@ import { TopNavigation } from "~/shared/ui/TopNavigation/TopNavigation";
 import type { BillingItem, BillingLoaderData } from "../billing.service";
 
 type BillingViewProps = {
-  translation: "billing";
   data: BillingLoaderData;
   onBack: () => void;
   onAdd: () => void;
@@ -18,25 +17,23 @@ type BillingViewProps = {
 };
 
 export function BillingView(props: BillingViewProps) {
-  const { t } = useTranslation("BillingView");
-  const { data } = props;
-  const { billingItems } = data;
+  const { t } = useTranslation("m_profile_myProfile_billing");
 
   return (
     <Box>
       <TopNavigation
         header={{
-          text: t(`${props.translation}.header`),
+          text: t(`header`),
           bold: false,
         }}
         buttonAction={{
-          text: t(`${props.translation}.header_action`),
+          text: t(`header_action`),
           action: props.onAdd,
         }}
         backAction={props.onBack}
       />
 
-      {billingItems.length <= 0 ? (
+      {props.data.billingItems.length <= 0 ? (
         <Typography
           component="p"
           variant="Reg_14"
@@ -48,10 +45,10 @@ export function BillingView(props: BillingViewProps) {
             paddingRight: "16px",
           })}
         >
-          {t(`${props.translation}.empty_text`)}
+          {t(`empty_text`)}
         </Typography>
       ) : (
-        billingItems.map((item, index) => (
+        props.data.billingItems.map((item, index) => (
           <Stack key={index}>
             <Stack
               sx={{
@@ -65,7 +62,7 @@ export function BillingView(props: BillingViewProps) {
                   variant="Bold_14"
                   sx={(theme) => ({ color: theme.vars.palette["Black"] })}
                 >
-                  {t(`${props.translation}.field_fio`)}
+                  {t(`field_fio`)}
                 </Typography>
 
                 {item.fio !== "" ? (
@@ -84,7 +81,7 @@ export function BillingView(props: BillingViewProps) {
                   variant="Reg_12"
                   sx={(theme) => ({ color: theme.vars.palette["Grey_2"] })}
                 >
-                  {t(`${props.translation}.field_bik`)}
+                  {t(`field_bik`)}
                 </Typography>
                 <Typography
                   component="p"
@@ -100,7 +97,7 @@ export function BillingView(props: BillingViewProps) {
                   variant="Reg_12"
                   sx={(theme) => ({ color: theme.vars.palette["Grey_2"] })}
                 >
-                  {t(`${props.translation}.field_account`)}
+                  {t(`field_account`)}
                 </Typography>
                 <Typography
                   component="p"
@@ -116,7 +113,7 @@ export function BillingView(props: BillingViewProps) {
                   variant="Reg_12"
                   sx={(theme) => ({ color: theme.vars.palette["Grey_2"] })}
                 >
-                  {t(`${props.translation}.field_card`)}
+                  {t(`field_card`)}
                 </Typography>
                 <Typography
                   component="p"
@@ -132,16 +129,14 @@ export function BillingView(props: BillingViewProps) {
                   variant="Reg_12"
                   sx={(theme) => ({ color: theme.vars.palette["Grey_2"] })}
                 >
-                  {t(`${props.translation}.field_payWithCard`)}
+                  {t(`field_payWithCard`)}
                 </Typography>
                 <Typography
                   component="p"
                   variant="Reg_14"
                   sx={(theme) => ({ color: theme.vars.palette["Black"] })}
                 >
-                  {item.payWithCard === "yes"
-                    ? t(`${props.translation}.yes`)
-                    : t(`${props.translation}.no`)}
+                  {item.payWithCard === "yes" ? t(`yes`) : t(`no`)}
                 </Typography>
               </Stack>
               <Stack>
@@ -150,7 +145,7 @@ export function BillingView(props: BillingViewProps) {
                   variant="Reg_12"
                   sx={(theme) => ({ color: theme.vars.palette["Grey_2"] })}
                 >
-                  {t(`${props.translation}.field_cardDue`)}
+                  {t(`field_cardDue`)}
                 </Typography>
                 <Typography
                   component="p"
@@ -167,10 +162,10 @@ export function BillingView(props: BillingViewProps) {
                   props.onEdit(index, item);
                 }}
               >
-                {t(`${props.translation}.button_edit`)}
+                {t(`button_edit`)}
               </Button>
             </Stack>
-            {index < billingItems.length - 1 ? <Divider /> : null}
+            {index < props.data.billingItems.length - 1 ? <Divider /> : null}
           </Stack>
         ))
       )}

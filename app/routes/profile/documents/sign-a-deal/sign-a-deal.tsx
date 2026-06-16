@@ -1,12 +1,21 @@
-import { useNavigation, useNavigate } from "react-router";
+import { useNavigate, useSubmit } from "react-router";
 import type { Route } from "./+types/sign-a-deal";
 
 import { withLocale } from "~/shared/withLocale";
 
 import { SignADealView } from "./_views/SignADealView";
-import { useSignADealHooks } from "./sign-a-deal.hooks";
 import { signADealContainer } from "./sign-a-deal.module";
 import { signADealTokens } from "./sign-a-deal.tokens";
+
+export type CheckboxItem = { uuid: string; name: string };
+
+export function generateDefaultValues(items: CheckboxItem[]) {
+  const defaultValues: { [key: string]: boolean } = {};
+  items.forEach((item) => {
+    defaultValues[item.uuid] = false;
+  });
+  return defaultValues;
+}
 
 export async function clientLoader() {
   return await signADealContainer
@@ -23,23 +32,28 @@ export async function clientAction({ request }: Route.ClientActionArgs) {
 }
 
 export default function SignADeal({ loaderData }: Route.ComponentProps) {
-  const navigation = useNavigation();
   const navigate = useNavigate();
-
-  const { defaultValues, submitSelection } = useSignADealHooks(loaderData);
+  const submit = useSubmit();
 
   return (
     <SignADealView
-      loaderData={loaderData}
-      isLoading={navigation.state !== "idle"}
+      data={loaderData}
       backAction={() => {
         navigate(withLocale("/profile/documents"), {
           viewTransition: true,
         });
       }}
-      defaultValues={defaultValues}
+      defaultValues={generateDefaultValues(loaderData)}
       submitSelection={(values) => {
-        submitSelection(values);
+        const checkedValues: string[] = [];
+        for (const key in values) {
+          if (values[key] === true) checkedValues.push(key);
+        }
+
+        submit(JSON.stringify(checkedValues), {
+          method: "POST",
+          encType: "application/json",
+        });
       }}
     />
   );

@@ -15,14 +15,18 @@ import { StyledAutocomplete } from "~/shared/ui/StyledAutocomplete/StyledAutocom
 import type { BikOption, BillingFormValues } from "../billing.service";
 
 type BillingRequisiteFormFieldsProps = {
-  namespace: "BillingEditView" | "BillingAddView";
+  translation:
+    | "m_profile_myProfile_billing_billingAdd"
+    | "m_profile_myProfile_billing_billingEdit";
   control: Control<BillingFormValues>;
   errors: FieldErrors<BillingFormValues>;
   bikOptions: BikOption[];
 };
 
-export function BillingRequisiteFormFields(props: BillingRequisiteFormFieldsProps) {
-  const { t } = useTranslation(props.namespace);
+export function BillingRequisiteFormFields(
+  props: BillingRequisiteFormFieldsProps,
+) {
+  const { t } = useTranslation(props.translation);
 
   return (
     <Box

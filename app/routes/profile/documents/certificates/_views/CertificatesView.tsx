@@ -13,32 +13,23 @@ import { StyledSelect } from "~/shared/ui/StyledSelect/StyledSelect";
 
 import FileDownloadOutlinedIcon from "@mui/icons-material/FileDownloadOutlined";
 
-import { Loader } from "~/shared/ui/Loader/Loader";
-
 type Option = { value: string; label: string; disabled: boolean };
 
 type Props = {
-  loaderData: {
+  data: {
     certificates: { uuid: string; name: string; path: string }[];
     fields: {
       organization: { uuid: string; name: string }[];
       certificates: { id: number; key: string; value: string }[];
     };
   };
-  isLoading: boolean;
   backAction: () => void;
   organizationOptions: Option[];
   certificateOptions: Option[];
 };
 
-export function CertificatesView({
-  loaderData,
-  isLoading,
-  backAction,
-  organizationOptions,
-  certificateOptions,
-}: Props) {
-  const { t } = useTranslation("CertificatesView");
+export function CertificatesView(props: Props) {
+  const { t } = useTranslation("m_profile_documents_certificates");
   const submit = useSubmit();
 
   const {
@@ -65,167 +56,162 @@ export function CertificatesView({
   });
 
   return (
-    <>
-      {isLoading ? <Loader /> : null}
+    <Box
+      sx={{
+        height: "100%",
+      }}
+    >
+      <TopNavigation
+        header={{
+          text: t("header"),
+          bold: false,
+        }}
+        backAction={props.backAction}
+      />
 
       <Box
         sx={{
-          height: "100%",
+          display: "flex",
+          flexDirection: "column",
+          paddingTop: "20px",
+          paddingBottom: "20px",
+          height: "calc(100% - 56px)",
         }}
       >
-        <TopNavigation
-          header={{
-            text: t("header"),
-            bold: false,
-          }}
-          backAction={backAction}
-        />
-
         <Box
           sx={{
-            display: "flex",
-            flexDirection: "column",
-            paddingTop: "20px",
-            paddingBottom: "20px",
-            height: "calc(100% - 56px)",
+            paddingRight: "16px",
+            paddingLeft: "16px",
+            paddingBottom: "16px",
           }}
         >
+          <Typography
+            component="h1"
+            variant="Reg_18"
+            sx={(theme) => ({
+              color: theme.vars.palette["Black"],
+              paddingBottom: "16px",
+            })}
+          >
+            {t("header_text")}
+          </Typography>
+
+          <form
+            onSubmit={handleSubmit((values) => {
+              submit(JSON.stringify(values), {
+                method: "POST",
+                encType: "application/json",
+              });
+            })}
+            style={{
+              display: "grid",
+              rowGap: "16px",
+            }}
+          >
+            <Controller
+              name="organization"
+              control={control}
+              render={({ field }) => (
+                <StyledSelect
+                  inputType="select"
+                  placeholder={t("input_organization")}
+                  onImmediateChange={() => {}}
+                  validation="none"
+                  options={props.organizationOptions}
+                  error={errors.organization?.message}
+                  {...field}
+                />
+              )}
+            />
+
+            <Controller
+              name="certificate"
+              control={control}
+              render={({ field }) => (
+                <StyledSelect
+                  inputType="select"
+                  placeholder={t("input_certificate")}
+                  onImmediateChange={() => {}}
+                  validation="none"
+                  options={props.certificateOptions}
+                  error={errors.certificate?.message}
+                  {...field}
+                />
+              )}
+            />
+
+            <Button variant="contained" disabled={!isDirty} type="submit">
+              {t("button_action")}
+            </Button>
+          </form>
+        </Box>
+        <Divider
+          sx={(theme) => ({
+            backgroundColor: theme.vars.palette["Grey_4"],
+          })}
+        />
+
+        {props.data.certificates.length !== 0 ? (
           <Box
             sx={{
+              display: "grid",
+              paddingTop: "16px",
               paddingRight: "16px",
               paddingLeft: "16px",
-              paddingBottom: "16px",
+              rowGap: "8px",
             }}
           >
             <Typography
-              component="h1"
-              variant="Reg_18"
+              component="p"
+              variant="Bold_14"
               sx={(theme) => ({
                 color: theme.vars.palette["Black"],
-                paddingBottom: "16px",
               })}
             >
-              {t("header_text")}
+              {t("done_documents")}
             </Typography>
 
-            <form
-              onSubmit={handleSubmit((values) => {
-                submit(JSON.stringify(values), {
-                  method: "POST",
-                  encType: "application/json",
-                });
-              })}
-              style={{
-                display: "grid",
-                rowGap: "16px",
-              }}
-            >
-              <Controller
-                name="organization"
-                control={control}
-                render={({ field }) => (
-                  <StyledSelect
-                    inputType="select"
-                    placeholder={t("input_organization")}
-                    onImmediateChange={() => {}}
-                    validation="none"
-                    options={organizationOptions}
-                    error={errors.organization?.message}
-                    {...field}
-                  />
-                )}
-              />
-
-              <Controller
-                name="certificate"
-                control={control}
-                render={({ field }) => (
-                  <StyledSelect
-                    inputType="select"
-                    placeholder={t("input_certificate")}
-                    onImmediateChange={() => {}}
-                    validation="none"
-                    options={certificateOptions}
-                    error={errors.certificate?.message}
-                    {...field}
-                  />
-                )}
-              />
-
-              <Button variant="contained" disabled={!isDirty} type="submit">
-                {t("button_action")}
-              </Button>
-            </form>
-          </Box>
-          <Divider
-            sx={(theme) => ({
-              backgroundColor: theme.vars.palette["Grey_4"],
-            })}
-          />
-
-          {loaderData.certificates.length !== 0 ? (
-            <Box
-              sx={{
-                display: "grid",
-                paddingTop: "16px",
-                paddingRight: "16px",
-                paddingLeft: "16px",
-                rowGap: "8px",
-              }}
-            >
-              <Typography
-                component="p"
-                variant="Bold_14"
-                sx={(theme) => ({
-                  color: theme.vars.palette["Black"],
-                })}
+            {props.data.certificates.map((item) => (
+              <Box
+                sx={{
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "space-between",
+                  columnGap: "8px",
+                }}
+                key={item.uuid}
               >
-                {t("done_documents")}
-              </Typography>
-
-              {loaderData.certificates.map((item) => (
-                <Box
-                  sx={{
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "space-between",
-                    columnGap: "8px",
-                  }}
-                  key={item.uuid}
-                >
-                  <Stack>
-                    <Typography
-                      component="p"
-                      variant="Reg_14"
-                      sx={(theme) => ({
-                        color: theme.vars.palette["Black"],
-                      })}
-                    >
-                      {item.name}
-                    </Typography>
-                  </Stack>
-
-                  <IconButton
-                    LinkComponent="a"
-                    href={item.path}
-                    target="_blank"
-                    rel="noreferrer"
-                    edge="end"
-                    aria-label="download file"
+                <Stack>
+                  <Typography
+                    component="p"
+                    variant="Reg_14"
+                    sx={(theme) => ({
+                      color: theme.vars.palette["Black"],
+                    })}
                   >
-                    <FileDownloadOutlinedIcon
-                      sx={(theme) => ({
-                        color: theme.vars.palette["Black"],
-                      })}
-                    />
-                  </IconButton>
-                </Box>
-              ))}
-            </Box>
-          ) : null}
-        </Box>
+                    {item.name}
+                  </Typography>
+                </Stack>
+
+                <IconButton
+                  LinkComponent="a"
+                  href={item.path}
+                  target="_blank"
+                  rel="noreferrer"
+                  edge="end"
+                  aria-label="download file"
+                >
+                  <FileDownloadOutlinedIcon
+                    sx={(theme) => ({
+                      color: theme.vars.palette["Black"],
+                    })}
+                  />
+                </IconButton>
+              </Box>
+            ))}
+          </Box>
+        ) : null}
       </Box>
-    </>
+    </Box>
   );
 }
-

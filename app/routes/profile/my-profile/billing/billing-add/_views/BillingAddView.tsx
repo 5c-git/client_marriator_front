@@ -1,30 +1,40 @@
 import { useState } from "react";
-import type { Control, FieldErrors, UseFormHandleSubmit } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 
 import { Button, Divider, Dialog, DialogTitle } from "@mui/material";
 import Box from "@mui/material/Box";
 
 import { TopNavigation } from "~/shared/ui/TopNavigation/TopNavigation";
-import { BillingRequisiteFormFields } from "../../_views/BillingRequisiteFormFields";
+import { BillingRequisiteFormFields } from "../../_components/BillingRequisiteFormFields";
 import type {
   BillingFormValues,
   BillingRequisiteLoaderData,
 } from "../../billing.service";
+import { useBillingRequisiteForm } from "../../billing-form.hooks";
 
 type BillingAddViewProps = {
-  loaderData: BillingRequisiteLoaderData;
-  control: Control<BillingFormValues>;
-  errors: FieldErrors<BillingFormValues>;
-  handleSubmit: UseFormHandleSubmit<BillingFormValues>;
+  data: BillingRequisiteLoaderData;
   onBack: () => void;
   onSubmit: (values: BillingFormValues) => void;
-  onResetForm: () => void;
+};
+
+const defaultValues: BillingFormValues = {
+  confidant: false,
+  fio: "",
+  bik: "",
+  account: "",
+  card: "",
+  payWithCard: "yes",
+  cardDue: null,
 };
 
 export function BillingAddView(props: BillingAddViewProps) {
-  const { t } = useTranslation("BillingAddView");
+  const { t } = useTranslation("m_profile_myProfile_billing_billingAdd");
   const [openDialog, setOpenDialog] = useState(false);
+  const form = useBillingRequisiteForm(
+    "m_profile_myProfile_billing_billingAdd",
+    defaultValues,
+  );
 
   return (
     <Box
@@ -40,12 +50,12 @@ export function BillingAddView(props: BillingAddViewProps) {
         backAction={props.onBack}
       />
 
-      <form onSubmit={props.handleSubmit(props.onSubmit)}>
+      <form onSubmit={form.handleSubmit(props.onSubmit)}>
         <BillingRequisiteFormFields
-          namespace="BillingAddView"
-          control={props.control}
-          errors={props.errors}
-          bikOptions={props.loaderData.bikOptions}
+          translation="m_profile_myProfile_billing_billingAdd"
+          control={form.control}
+          errors={form.errors}
+          bikOptions={props.data.bikOptions}
         />
 
         <Divider
@@ -119,7 +129,7 @@ export function BillingAddView(props: BillingAddViewProps) {
           <Button
             variant="contained"
             onClick={() => {
-              props.onResetForm();
+              form.reset(defaultValues);
               setOpenDialog(false);
             }}
             sx={{

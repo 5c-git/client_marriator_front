@@ -17,6 +17,27 @@ import m_signin_client_recruiter from "../../public/locales/ru/m_signin_client_r
 import m_signin_client_registrationComplete from "../../public/locales/ru/m_signin_client_registrationComplete.json";
 //auth
 
+//profile
+import m_profile from "../../public/locales/ru/m_profile.json";
+import m_profile_myProfile from "../../public/locales/ru/m_profile_myProfile.json";
+import m_profile_myProfile_billing from "../../public/locales/ru/m_profile_myProfile_billing.json";
+import m_profile_myProfile_billing_billingAdd from "../../public/locales/ru/m_profile_myProfile_billing_billingAdd.json";
+import m_profile_myProfile_billing_billingEdit from "../../public/locales/ru/m_profile_myProfile_billing_billingEdit.json";
+import m_profile_myProfile_profileEdit from "../../public/locales/ru/m_profile_myProfile_profileEdit.json";
+import m_profile_myProfile_profileMeta_confirmPersonalEmail from "../../public/locales/ru/m_profile_myProfile_profileMeta_confirmPersonalEmail.json";
+import m_profile_myProfile_profileMeta_confirmPersonalPhone from "../../public/locales/ru/m_profile_myProfile_profileMeta_confirmPersonalPhone.json";
+import m_profile_myProfile_userActivities from "../../public/locales/ru/m_profile_myProfile_userActivities.json";
+import m_profile_myProfile_workRadius from "../../public/locales/ru/m_profile_myProfile_workRadius.json";
+import m_profile_settings from "../../public/locales/ru/m_profile_settings.json";
+import m_profile_documents from "../../public/locales/ru/m_profile_documents.json";
+import m_profile_documents_archive from "../../public/locales/ru/m_profile_documents_archive.json";
+import m_profile_documents_certificates from "../../public/locales/ru/m_profile_documents_certificates.json";
+import m_profile_documents_sign from "../../public/locales/ru/m_profile_documents_sign.json";
+import m_profile_documents_signAdeal from "../../public/locales/ru/m_profile_documents_signAdeal.json";
+import m_profile_documents_terminateADeal from "../../public/locales/ru/m_profile_documents_terminateADeal.json";
+import m_profile_myProfile_profileMeta from "../../public/locales/ru/m_profile_myProfile_profileMeta.json";
+//profile
+
 //registration
 import confirmEmail from "../../public/locales/ru/confirmEmail.json";
 import registrationStep1 from "../../public/locales/ru/registrationStep1.json";
@@ -31,10 +52,6 @@ import registrationComplete from "../../public/locales/ru/registrationComplete.j
 
 //internal
 import HomeLayout from "../../public/locales/ru/HomeLayout.json";
-import MyProfileView from "../../public/locales/ru/MyProfileView.json";
-import profileEdit from "../../public/locales/ru/profileEdit.json";
-
-import terminateADeal from "../../public/locales/ru/terminateADeal.json";
 
 import users_client from "../../public/locales/ru/users_client.json";
 import users_manager from "../../public/locales/ru/users_manager.json";
@@ -57,28 +74,12 @@ import tasks from "../../public/locales/ru/tasks.json";
 import order from "../../public/locales/ru/order.json";
 import orders from "../../public/locales/ru/orders.json";
 
-import settings from "../../public/locales/ru/settings.json";
-
-import confirmPersonalPhone from "../../public/locales/ru/confirmPersonalPhone.json";
-import confirmPersonalEmail from "../../public/locales/ru/confirmPersonalEmail.json";
 //routes
 
 //views
-import DocumentsView from "../../public/locales/ru/DocumentsView.json";
-import UsersLayoutView from "../../public/locales/ru/UsersLayoutView.json";
-import SignADealView from "../../public/locales/ru/SignADealView.json";
-import SignView from "../../public/locales/ru/SignView.json";
-import CertificatesView from "../../public/locales/ru/CertificatesView.json";
-import ArchiveView from "../../public/locales/ru/ArchiveView.json";
-import WorkRadiusView from "../../public/locales/ru/WorkRadiusView.json";
-import ProfileMetaView from "../../public/locales/ru/ProfileMetaView.json";
-import BillingEditView from "../../public/locales/ru/BillingEditView.json";
-import BillingAddView from "../../public/locales/ru/BillingAddView.json";
-import BillingView from "../../public/locales/ru/BillingView.json";
-import UserActivitiesView from "../../public/locales/ru/UserActivitiesView.json";
 
-import SettingsView from "../../public/locales/ru/SettingsView.json";
-import ProfileView from "../../public/locales/ru/ProfileView.json";
+import UsersLayoutView from "../../public/locales/ru/UsersLayoutView.json";
+
 import UsersMobileView from "../../public/locales/ru/UsersMobileView.json";
 import JobMobileView from "../../public/locales/ru/JobMobileView.json";
 import DayReviewMobileView from "../../public/locales/ru/DayReviewMobileView.json";
@@ -124,6 +125,28 @@ declare module "i18next" {
       m_signin_client_registrationComplete: typeof m_signin_client_registrationComplete;
       //auth
 
+      //profile
+      m_profile: typeof m_profile;
+      m_profile_myProfile: typeof m_profile_myProfile;
+      m_profile_myProfile_billing: typeof m_profile_myProfile_billing;
+      m_profile_myProfile_billing_billingAdd: typeof m_profile_myProfile_billing_billingAdd;
+      m_profile_myProfile_billing_billingEdit: typeof m_profile_myProfile_billing_billingEdit;
+      m_profile_myProfile_profileEdit: typeof m_profile_myProfile_profileEdit;
+      m_profile_myProfile_profileMeta: typeof m_profile_myProfile_profileMeta;
+      m_profile_myProfile_profileMeta_confirmPersonalEmail: typeof m_profile_myProfile_profileMeta_confirmPersonalEmail;
+      m_profile_myProfile_profileMeta_confirmPersonalPhone: typeof m_profile_myProfile_profileMeta_confirmPersonalPhone;
+      m_profile_myProfile_userActivities: typeof m_profile_myProfile_userActivities;
+      m_profile_myProfile_workRadius: typeof m_profile_myProfile_workRadius;
+      m_profile_settings: typeof m_profile_settings;
+
+      m_profile_documents: typeof m_profile_documents;
+      m_profile_documents_archive: typeof m_profile_documents_archive;
+      m_profile_documents_certificates: typeof m_profile_documents_certificates;
+      m_profile_documents_sign: typeof m_profile_documents_sign;
+      m_profile_documents_signAdeal: typeof m_profile_documents_signAdeal;
+      m_profile_documents_terminateADeal: typeof m_profile_documents_terminateADeal;
+      //profile
+
       //registration
       confirmEmail: typeof confirmEmail;
       registrationStep1: typeof registrationStep1;
@@ -138,12 +161,6 @@ declare module "i18next" {
 
       //internal
 
-      profileEdit: typeof profileEdit;
-
-      confirmPersonalPhone: typeof confirmPersonalPhone;
-      confirmPersonalEmail: typeof confirmPersonalEmail;
-
-      terminateADeal: typeof terminateADeal;
       documentsArchive: typeof documentsArchive;
 
       users_clients: typeof users_clients;
@@ -167,28 +184,14 @@ declare module "i18next" {
       order: typeof order;
       orders: typeof orders;
 
-      settings: typeof settings;
-
       HomeLayout: typeof HomeLayout;
 
       sms: typeof sms;
 
       //views
-      DocumentsView: typeof DocumentsView;
-      UsersLayoutView: typeof UsersLayoutView;
-      SignADealView: typeof SignADealView;
-      SignView: typeof SignView;
-      CertificatesView: typeof CertificatesView;
-      ArchiveView: typeof ArchiveView;
-      WorkRadiusView: typeof WorkRadiusView;
-      ProfileMetaView: typeof ProfileMetaView;
-      BillingView: typeof BillingView;
-      BillingAddView: typeof BillingAddView;
-      BillingEditView: typeof BillingEditView;
-      MyProfileView: typeof MyProfileView;
-      UserActivitiesView: typeof UserActivitiesView;
 
-      SettingsView: typeof SettingsView;
+      UsersLayoutView: typeof UsersLayoutView;
+
       ProfileView: typeof ProfileView;
       UsersMobileView: typeof UsersMobileView;
       JobMobileView: typeof JobMobileView;

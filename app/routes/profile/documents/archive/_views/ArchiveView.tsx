@@ -27,7 +27,6 @@ export type ArchiveActionData =
     };
 
 type Props = {
-  translation: "archive";
   data: ArchiveItem[];
   backAction: () => void;
   assetBasePath: string;
@@ -35,13 +34,13 @@ type Props = {
 };
 
 export function ArchiveView(props: Props) {
-  const { t } = useTranslation("ArchiveView");
+  const { t } = useTranslation("m_profile_documents_archive");
 
   return (
     <>
       <TopNavigation
         header={{
-          text: t(`${props.translation}.header`),
+          text: t(`header`),
           bold: false,
         }}
         backAction={props.backAction}
@@ -65,7 +64,7 @@ export function ArchiveView(props: Props) {
             paddingBottom: "8px",
           })}
         >
-          {t(`${props.translation}.archive_header`)}
+          {t(`archive_header`)}
         </Typography>
 
         <Typography
@@ -76,7 +75,7 @@ export function ArchiveView(props: Props) {
             paddingBottom: "18px",
           })}
         >
-          {t(`${props.translation}.archive_text`)}
+          {t(`archive_text`)}
         </Typography>
 
         <List
@@ -137,7 +136,7 @@ export function ArchiveView(props: Props) {
                     color: theme.vars.palette["Grey_1"],
                   })}
                 >
-                  {t(`${props.translation}.signed`)}{" "}
+                  {t(`signed`)}{" "}
                   {format(item.date_signature, "dd.LL.yyyy HH:mm")}
                 </Typography>
               </ListItem>
@@ -148,7 +147,7 @@ export function ArchiveView(props: Props) {
                 justifyContent: "center",
               }}
             >
-              {t(`${props.translation}.archive_nothing`)}
+              {t(`archive_nothing`)}
             </ListItem>
           )}
         </List>

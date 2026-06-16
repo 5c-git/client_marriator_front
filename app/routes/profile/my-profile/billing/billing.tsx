@@ -18,7 +18,6 @@ export default function Billing({ loaderData }: Route.ComponentProps) {
 
   return (
     <BillingView
-      translation="billing"
       data={loaderData}
       onBack={() => {
         navigate(withLocale("/profile/my-profile"));

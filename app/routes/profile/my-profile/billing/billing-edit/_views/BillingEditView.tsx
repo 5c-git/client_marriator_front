@@ -1,22 +1,20 @@
 import { useState } from "react";
-import type { Control, FieldErrors, UseFormHandleSubmit } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 
 import { Button, Divider, Dialog, DialogTitle } from "@mui/material";
 import Box from "@mui/material/Box";
 
 import { TopNavigation } from "~/shared/ui/TopNavigation/TopNavigation";
-import { BillingRequisiteFormFields } from "../../_views/BillingRequisiteFormFields";
+import { BillingRequisiteFormFields } from "../../_components/BillingRequisiteFormFields";
 import type {
   BillingFormValues,
   BillingRequisiteLoaderData,
 } from "../../billing.service";
+import { useBillingRequisiteForm } from "../../billing-form.hooks";
 
 type BillingEditViewProps = {
-  loaderData: BillingRequisiteLoaderData;
-  control: Control<BillingFormValues>;
-  errors: FieldErrors<BillingFormValues>;
-  handleSubmit: UseFormHandleSubmit<BillingFormValues>;
+  data: BillingRequisiteLoaderData;
+  defaultValues: BillingFormValues;
   onBack: () => void;
   onConfirmLeave: () => void;
   onSave: (values: BillingFormValues) => void;
@@ -24,9 +22,14 @@ type BillingEditViewProps = {
 };
 
 export function BillingEditView(props: BillingEditViewProps) {
-  const { t } = useTranslation("BillingEditView");
+  const { t } = useTranslation("m_profile_myProfile_billing_billingEdit");
   const [openDialog, setOpenDialog] = useState(false);
   const [openDelete, setOpenDelete] = useState(false);
+
+  const form = useBillingRequisiteForm(
+    "m_profile_myProfile_billing_billingEdit",
+    props.defaultValues,
+  );
 
   return (
     <Box
@@ -43,15 +46,15 @@ export function BillingEditView(props: BillingEditViewProps) {
       />
 
       <form
-        onSubmit={props.handleSubmit((values) => {
+        onSubmit={form.handleSubmit((values) => {
           props.onSave(values);
         })}
       >
         <BillingRequisiteFormFields
-          namespace="BillingEditView"
-          control={props.control}
-          errors={props.errors}
-          bikOptions={props.loaderData.bikOptions}
+          translation="m_profile_myProfile_billing_billingEdit"
+          control={form.control}
+          errors={form.errors}
+          bikOptions={props.data.bikOptions}
         />
 
         <Divider
@@ -81,7 +84,7 @@ export function BillingEditView(props: BillingEditViewProps) {
 
           <Button
             type="button"
-            onClick={props.handleSubmit(props.onSave)}
+            onClick={form.handleSubmit(props.onSave)}
             variant="contained"
           >
             {t("button_save")}

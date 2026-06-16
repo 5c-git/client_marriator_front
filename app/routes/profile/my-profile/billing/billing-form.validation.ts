@@ -1,7 +1,12 @@
 import { z } from "zod";
 import type { TFunction } from "i18next";
 
-export function createBillingFormSchema(t: TFunction) {
+export function createBillingFormSchema(
+  t: TFunction<
+    | "m_profile_myProfile_billing_billingAdd"
+    | "m_profile_myProfile_billing_billingEdit"
+  >,
+) {
   return z
     .object({
       confidant: z.boolean(),
@@ -18,30 +23,26 @@ export function createBillingFormSchema(t: TFunction) {
         .length(20, {
           error: t("account_wrongValue", { ns: "constructorFields" }),
         }),
-      card: z
-        .string({ error: t("card", { ns: "constructorFields" }) })
-        .refine(
-          (value) => {
-            const arr = `${value}`
-              .split("")
-              .reverse()
-              .map((x) => Number.parseInt(x));
-            const lastDigit = arr.shift();
-            let sum = arr.reduce(
-              (acc, val, i) =>
-                i % 2 !== 0
-                  ? acc + val
-                  : acc + ((val *= 2) > 9 ? val - 9 : val),
-              0,
-            );
-            // @ts-expect-error value is always present
-            sum += lastDigit;
-            return sum % 10 === 0;
-          },
-          {
-            error: t("card_wrongValue", { ns: "constructorFields" }),
-          },
-        ),
+      card: z.string({ error: t("card", { ns: "constructorFields" }) }).refine(
+        (value) => {
+          const arr = `${value}`
+            .split("")
+            .reverse()
+            .map((x) => Number.parseInt(x));
+          const lastDigit = arr.shift();
+          let sum = arr.reduce(
+            (acc, val, i) =>
+              i % 2 !== 0 ? acc + val : acc + ((val *= 2) > 9 ? val - 9 : val),
+            0,
+          );
+          // @ts-expect-error value is always present
+          sum += lastDigit;
+          return sum % 10 === 0;
+        },
+        {
+          error: t("card_wrongValue", { ns: "constructorFields" }),
+        },
+      ),
       payWithCard: z
         .string()
         .trim()

@@ -1,9 +1,6 @@
 import { useTranslation } from "react-i18next";
 
-import {
-  Typography,
-  List,
-} from "@mui/material";
+import { Typography, List } from "@mui/material";
 import Box from "@mui/material/Box";
 import { TopNavigation } from "~/shared/ui/TopNavigation/TopNavigation";
 import { MyProfileLinkItem } from "../_components/MyProfileLinkItem";
@@ -12,19 +9,18 @@ import { BulletIcon } from "~/shared/icons/BulletIcon";
 import type { MyProfileData } from "../my-profile.mapper";
 
 type MyProfileViewProps = {
-  translation: "myProfile";
   data: MyProfileData;
   onBack: () => void;
 };
 
 export function MyProfileView(props: MyProfileViewProps) {
-  const { t } = useTranslation("MyProfileView");
+  const { t } = useTranslation("m_profile_myProfile");
 
   return (
     <Box>
       <TopNavigation
         header={{
-          text: t(`${props.translation}.header`),
+          text: t(`header`),
           bold: false,
         }}
         backAction={props.onBack}
@@ -72,7 +68,7 @@ export function MyProfileView(props: MyProfileViewProps) {
               color: theme.vars.palette["Grey_2"],
             })}
           >
-            {t(`${props.translation}.red-dot_text`)}
+            {t(`red-dot_text`)}
           </Typography>
         </Box>
       ) : null}

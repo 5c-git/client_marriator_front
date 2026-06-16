@@ -1,5 +1,5 @@
 import type { Route } from "./+types/settings";
-import { useNavigate } from "react-router";
+import { useNavigate, useSubmit } from "react-router";
 
 import { useTranslation } from "react-i18next";
 
@@ -8,7 +8,6 @@ import { StyledCheckbox } from "~/shared/ui/StyledCheckbox/StyledCheckbox";
 
 import { settingsContainer } from "./settings.module";
 import { settingsTokens } from "./settings.tokens";
-import { useSettingsHooks } from "./settings.hooks";
 import { withLocale } from "~/shared/withLocale";
 
 export async function clientLoader() {
@@ -26,13 +25,12 @@ export async function clientAction({ request }: Route.ClientActionArgs) {
 }
 
 export default function Settings({ loaderData }: Route.ComponentProps) {
-  const { t } = useTranslation("settings");
+  const { t } = useTranslation("m_profile_settings");
   const navigate = useNavigate();
-  const { submitNotificationValue } = useSettingsHooks();
+  const submit = useSubmit();
 
   return (
     <SettingsView
-      translation="settings"
       headerBackAction={() => {
         navigate(withLocale("/profile"));
       }}
@@ -45,7 +43,15 @@ export default function Settings({ loaderData }: Route.ComponentProps) {
           label={t("notificationNewBids")}
           onImmediateChange={() => {}}
           onChange={() => {
-            submitNotificationValue(loaderData);
+            submit(
+              JSON.stringify({
+                newNotificationValue: !loaderData,
+              }),
+              {
+                method: "POST",
+                encType: "application/json",
+              },
+            );
           }}
         />,
       ]}

@@ -14,7 +14,7 @@ import { usePinHooks } from "./pin.hooks";
 
 export const PIN_ACTIONS = {
   restorePin: "restorePin",
-};
+} as const;
 
 export async function clientAction({ request }: Route.ClientActionArgs) {
   const { _action, ...fields } = await request.json();

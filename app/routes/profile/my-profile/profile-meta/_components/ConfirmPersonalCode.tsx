@@ -10,26 +10,15 @@ import Box from "@mui/material/Box";
 import { StyledSmsField } from "~/shared/ui/StyledSmsField/StyledSmsField";
 import { TopNavigation } from "~/shared/ui/TopNavigation/TopNavigation";
 
-type ConfirmPersonalCodeTranslation =
-  | "confirmPersonalEmail"
-  | "confirmPersonalPhone";
-
-type ConfirmPersonalCodeViewProps = {
-  translation: ConfirmPersonalCodeTranslation;
+type ConfirmPersonalCodeProps = {
+  translation: "confirmPersonalEmail" | "confirmPersonalPhone";
   seconds: number;
   onBack: () => void;
   onSubmitCode: (code: string) => void;
   onSendAgain: () => void;
 };
 
-const createFormSchema = (requiredError: string, lengthError: string) =>
-  z.object({
-    code: z
-      .string({ error: requiredError })
-      .length(4, { error: lengthError }),
-  });
-
-export function ConfirmPersonalCodeView(props: ConfirmPersonalCodeViewProps) {
+export function ConfirmPersonalCode(props: ConfirmPersonalCodeProps) {
   const { t } = useTranslation(props.translation);
 
   const {
@@ -41,12 +30,12 @@ export function ConfirmPersonalCodeView(props: ConfirmPersonalCodeViewProps) {
       code: "",
     },
     resolver: zodResolver(
-      createFormSchema(t("inputValidation"), t("inputValidation_lenght")),
+      z.object({
+        code: z
+          .string({ error: t("inputValidation") })
+          .length(4, { error: t("inputValidation_lenght") }),
+      }),
     ),
-  });
-
-  const submitForm = handleSubmit((values) => {
-    props.onSubmitCode(values.code);
   });
 
   return (
@@ -69,7 +58,9 @@ export function ConfirmPersonalCodeView(props: ConfirmPersonalCodeViewProps) {
             display: "grid",
             rowGap: "4px",
           }}
-          onSubmit={submitForm}
+          onSubmit={handleSubmit((values) => {
+            props.onSubmitCode(values.code);
+          })}
         >
           <Controller
             name="code"

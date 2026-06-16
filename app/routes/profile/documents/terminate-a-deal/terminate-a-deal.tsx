@@ -1,13 +1,21 @@
-import { useNavigation, useNavigate } from "react-router";
+import { useNavigate, useSubmit } from "react-router";
 import type { Route } from "./+types/terminate-a-deal";
 
 import { withLocale } from "~/shared/withLocale";
 
 import { TerminateADealView } from "./_views/TerminateADealView";
-import type { CheckboxItem } from "./terminate-a-deal.hooks";
-import { useTerminateADealHooks } from "./terminate-a-deal.hooks";
 import { terminateADealContainer } from "./terminate-a-deal.module";
 import { terminateADealTokens } from "./terminate-a-deal.tokens";
+
+export type CheckboxItem = { uuid: string; name: string };
+
+export function generateDefaultValues(items: CheckboxItem[]) {
+  const defaultValues: { [key: string]: boolean } = {};
+  items.forEach((item) => {
+    defaultValues[item.uuid] = false;
+  });
+  return defaultValues;
+}
 
 export async function clientLoader() {
   return await terminateADealContainer
@@ -24,25 +32,29 @@ export async function clientAction({ request }: Route.ClientActionArgs) {
 }
 
 export default function TerminateADeal({ loaderData }: Route.ComponentProps) {
-  const navigation = useNavigation();
   const navigate = useNavigate();
-
-  const typedLoaderData = loaderData as unknown as CheckboxItem[];
-  const { defaultValues, submitSelection } = useTerminateADealHooks(
-    typedLoaderData,
-  );
+  const submit = useSubmit();
 
   return (
     <TerminateADealView
-      loaderData={typedLoaderData}
-      isLoading={navigation.state !== "idle"}
+      data={loaderData}
       backAction={() => {
         navigate(withLocale("/profile/documents"), {
           viewTransition: true,
         });
       }}
-      defaultValues={defaultValues}
-      submitSelection={submitSelection}
+      defaultValues={generateDefaultValues(loaderData)}
+      submitSelection={(values) => {
+        const checkedValues: string[] = [];
+        for (const key in values) {
+          if (values[key] === true) checkedValues.push(key);
+        }
+
+        submit(JSON.stringify(checkedValues), {
+          method: "POST",
+          encType: "application/json",
+        });
+      }}
     />
   );
 }

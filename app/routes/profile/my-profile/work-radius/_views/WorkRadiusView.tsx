@@ -1,6 +1,6 @@
 import type { ChangeEvent } from "react";
 import type { WorkRadiusFormValues } from "../work-radius.service";
-import { Controller, type Control } from "react-hook-form";
+import { Controller, UseFormReturn } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 
 import { TextField, Snackbar, Alert, Typography } from "@mui/material";
@@ -11,19 +11,22 @@ import { MaskedField } from "~/shared/ui/MaskedField/MaskedField";
 
 import { MarkerIcon } from "../icons/MarkerIcon";
 
-
 type WorkRadiusViewProps = {
-  control: Control<WorkRadiusFormValues>;
+  form: UseFormReturn<WorkRadiusFormValues>;
   isMapGrayscale: boolean;
   fetcherError: 400 | 402 | 404 | null;
   onBack: () => void;
-  onAddressChange: (event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void;
-  onRadiusChange: (event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void;
+  onAddressChange: (
+    event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+  ) => void;
+  onRadiusChange: (
+    event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+  ) => void;
   onSnackbarClose: () => void;
 };
 
 export function WorkRadiusView(props: WorkRadiusViewProps) {
-  const { t } = useTranslation("WorkRadiusView");
+  const { t } = useTranslation("m_profile_myProfile_workRadius");
 
   return (
     <>
@@ -84,7 +87,7 @@ export function WorkRadiusView(props: WorkRadiusViewProps) {
           >
             <Controller
               name="address"
-              control={props.control}
+              control={props.form.control}
               render={({ field }) => (
                 <TextField
                   {...field}
@@ -111,7 +114,7 @@ export function WorkRadiusView(props: WorkRadiusViewProps) {
 
             <Controller
               name="radius"
-              control={props.control}
+              control={props.form.control}
               render={({ field }) => (
                 <TextField
                   {...field}
@@ -138,7 +141,9 @@ export function WorkRadiusView(props: WorkRadiusViewProps) {
           <Box
             id="map"
             style={{
-              "--filter": props.isMapGrayscale ? "grayscale(1)" : "grayscale(0)",
+              "--filter": props.isMapGrayscale
+                ? "grayscale(1)"
+                : "grayscale(0)",
             }}
             sx={{
               height: "380px",

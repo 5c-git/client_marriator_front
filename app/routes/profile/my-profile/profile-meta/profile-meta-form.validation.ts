@@ -3,7 +3,9 @@ import type { TFunction } from "i18next";
 
 import { emailRegExp } from "~/shared/validators";
 
-export function createProfileMetaFormSchema(t: TFunction) {
+export function createProfileMetaFormSchema(
+  t: TFunction<"m_profile_myProfile_profileMeta">,
+) {
   return z.object({
     metaPhoto: z
       .string()

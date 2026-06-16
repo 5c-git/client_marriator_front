@@ -1,12 +1,12 @@
-import { redirect, useNavigate } from "react-router";
+import { redirect, useNavigate, useSubmit } from "react-router";
 import type { Route } from "./+types/billing-add";
 
 import { BillingAddView } from "./_views/BillingAddView";
 
 import { billingContainer } from "../billing.module";
 import { billingTokens } from "../billing.tokens";
-import { useBillingAddHooks } from "./billing-add.hooks";
 import { withLocale } from "~/shared/withLocale";
+import { BillingFormValues } from "../billing.service";
 
 export async function clientLoader() {
   return await billingContainer
@@ -26,20 +26,20 @@ export async function clientAction({ request }: Route.ClientActionArgs) {
 
 export default function BillingAdd({ loaderData }: Route.ComponentProps) {
   const navigate = useNavigate();
-  const { control, handleSubmit, errors, submitForm, resetForm } =
-    useBillingAddHooks();
+  const submit = useSubmit();
 
   return (
     <BillingAddView
-      loaderData={loaderData}
-      control={control}
-      errors={errors}
-      handleSubmit={handleSubmit}
+      data={loaderData}
       onBack={() => {
         navigate(withLocale("/profile/my-profile/billing"));
       }}
-      onSubmit={submitForm}
-      onResetForm={resetForm}
+      onSubmit={(values: BillingFormValues) => {
+        submit(JSON.stringify(values), {
+          method: "POST",
+          encType: "application/json",
+        });
+      }}
     />
   );
 }

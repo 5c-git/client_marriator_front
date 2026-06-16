@@ -8,7 +8,6 @@ import { profileContainer } from "./profile.module";
 import { profileTokens } from "./profile.tokens";
 import { useProfileHooks } from "./profile.hooks";
 
-
 export async function clientLoader() {
   return await profileContainer.get(profileTokens.profileService).loadProfile();
 }
@@ -23,15 +22,13 @@ export default function Profile({ loaderData }: Route.ComponentProps) {
   const userRole = useStore((state) => state.userRole);
 
   return (
-      <ProfileView
-        translation="profile"
-        data={loaderData}
-        userRole={userRole}
-        openDialog={openDialog}
-        onOpenLogoutDialog={openLogoutDialog}
-        onCloseDialog={closeLogoutDialog}
-        onConfirmLogout={confirmLogout}
-      />
-
+    <ProfileView
+      data={loaderData}
+      userRole={userRole}
+      openDialog={openDialog}
+      onOpenLogoutDialog={openLogoutDialog}
+      onCloseDialog={closeLogoutDialog}
+      onConfirmLogout={confirmLogout}
+    />
   );
 }

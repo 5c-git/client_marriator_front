@@ -1,5 +1,10 @@
 import { useState } from "react";
-import { redirect, useNavigate } from "react-router";
+import {
+  redirect,
+  useNavigate,
+  useSearchParams,
+  useSubmit,
+} from "react-router";
 import type { Route } from "./+types/confirm-personal-phone";
 
 import { t, loadNamespaces } from "i18next";
@@ -7,13 +12,16 @@ import { useTranslation } from "react-i18next";
 import { withLocale } from "~/shared/withLocale";
 
 import { Alert, Snackbar } from "@mui/material";
-import { Loader } from "~/shared/ui/Loader/Loader";
 
-import { ConfirmPersonalCodeView } from "../_views/ConfirmPersonalCodeView";
+import { ConfirmPersonalCode } from "../_components/ConfirmPersonalCode";
 import { confirmPersonalPhoneContainer } from "./confirm-personal-phone.module";
 import { confirmPersonalPhonePrivateTokens } from "./confirm-personal-phone.private-tokens";
 import { confirmPersonalPhoneTokens } from "./confirm-personal-phone.tokens";
-import { useConfirmPersonalCodeHooks } from "../confirm-personal-code.hooks";
+
+export const CONFIRM_PERSONAL_PHOHE_ACTIONS = {
+  sendAgain: "sendAgain",
+  sendCode: "sendCode",
+} as const;
 
 export async function clientLoader({ request }: Route.ClientLoaderArgs) {
   await loadNamespaces("confirmPersonalPhone");
@@ -40,13 +48,13 @@ export async function clientAction({ request }: Route.ClientActionArgs) {
 
   const { _action, currentTTL, ...fields } = await request.json();
 
-  if (_action === "sendAgain") {
+  if (_action === CONFIRM_PERSONAL_PHOHE_ACTIONS.sendAgain) {
     const ttl = await confirmPersonalPhoneService.resendCode(fields.phone);
     currentURL.searchParams.set("ttl", ttl.toString());
     throw redirect(currentURL.toString());
   }
 
-  if (_action === "sendCode") {
+  if (_action === CONFIRM_PERSONAL_PHOHE_ACTIONS.sendCode) {
     const data = await confirmPersonalPhoneService.verifyCode(fields.code);
 
     if (data.status === "error") {
@@ -64,23 +72,52 @@ export async function clientAction({ request }: Route.ClientActionArgs) {
 export default function ConfirmPersonalPhone({
   loaderData,
 }: Route.ComponentProps) {
-  const { t } = useTranslation("confirmPersonalPhone");
+  const { t } = useTranslation(
+    "m_profile_myProfile_profileMeta_confirmPersonalPhone",
+  );
   const navigate = useNavigate();
-  const { seconds, error, submitCode, submitSendAgain, clearError } =
-    useConfirmPersonalCodeHooks(loaderData.ttl, { phone: loaderData.phone });
+  const submit = useSubmit();
+  const [searchParams, setSearchParams] = useSearchParams();
 
   const [notificationOpen, setNotificationOpen] = useState(true);
+  const [seconds, setSeconds] = useState<number>(Number(loaderData.ttl));
+
+  const error = searchParams.get("error");
 
   return (
     <>
-      <ConfirmPersonalCodeView
+      <ConfirmPersonalCode
         translation="confirmPersonalPhone"
         seconds={seconds}
         onBack={() => {
           navigate(withLocale("/profile/my-profile/profile-meta"));
         }}
-        onSubmitCode={submitCode}
-        onSendAgain={submitSendAgain}
+        onSubmitCode={(code) => {
+          submit(
+            JSON.stringify({
+              _action: CONFIRM_PERSONAL_PHOHE_ACTIONS.sendCode,
+              currentTTL: seconds,
+              code,
+            }),
+            {
+              method: "POST",
+              encType: "application/json",
+            },
+          );
+        }}
+        onSendAgain={() => {
+          submit(
+            JSON.stringify({
+              _action: CONFIRM_PERSONAL_PHOHE_ACTIONS.sendAgain,
+              phone: loaderData.phone,
+            }),
+            {
+              method: "POST",
+              encType: "application/json",
+            },
+          );
+          setSeconds(Number(loaderData.ttl));
+        }}
       />
 
       <Snackbar
@@ -105,7 +142,12 @@ export default function ConfirmPersonalPhone({
       <Snackbar
         open={error !== null}
         autoHideDuration={3000}
-        onClose={clearError}
+        onClose={() => {
+          setSearchParams((prev) => {
+            prev.delete("error");
+            return prev;
+          });
+        }}
       >
         <Alert
           severity="info"

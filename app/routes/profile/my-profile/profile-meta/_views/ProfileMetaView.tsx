@@ -1,16 +1,8 @@
 import { Controller } from "react-hook-form";
-import type { Control, FieldErrors, UseFormSetValue, UseFormTrigger } from "react-hook-form";
+import type { UseFormReturn } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 
-import {
-  Box,
-  Button,
-  Dialog,
-  DialogTitle,
-  Snackbar,
-  Alert,
-  Typography,
-} from "@mui/material";
+import { Box, Button, Dialog, DialogTitle, Typography } from "@mui/material";
 import Stack from "@mui/material/Stack";
 
 import { TopNavigation } from "~/shared/ui/TopNavigation/TopNavigation";
@@ -25,14 +17,13 @@ import type {
 } from "../profile-meta.service";
 
 type ProfileMetaViewProps = {
-  loaderData: ProfileMetaLoaderData;
-  control: Control<ProfileMetaFormValues>;
-  errors: FieldErrors<ProfileMetaFormValues>;
-  setValue: UseFormSetValue<ProfileMetaFormValues>;
-  trigger: UseFormTrigger<ProfileMetaFormValues>;
+  data: ProfileMetaLoaderData;
+  form: UseFormReturn<ProfileMetaFormValues>;
   fetcherData?: ProfileMetaActionError | null;
+
   openPhoneDialog: boolean;
   openEmailDialog: boolean;
+
   onBack: () => void;
   onPhotoChange: () => void;
   onPhoneBlur: (value: string) => void;
@@ -45,7 +36,7 @@ type ProfileMetaViewProps = {
 };
 
 export function ProfileMetaView(props: ProfileMetaViewProps) {
-  const { t } = useTranslation("ProfileMetaView");
+  const { t } = useTranslation("m_profile_myProfile_profileMeta");
 
   return (
     <>
@@ -80,26 +71,26 @@ export function ProfileMetaView(props: ProfileMetaViewProps) {
           >
             <Controller
               name="metaPhoto"
-              control={props.control}
+              control={props.form.control}
               render={({ field }) => (
                 <StyledPhotoInput
                   inputType="photo"
                   {...field}
                   // @ts-expect-error wrong automatic type narroing
-                  onChange={props.setValue}
+                  onChange={props.form.setValue}
                   onImmediateChange={props.onPhotoChange}
                   validation="default"
                   url={import.meta.env.VITE_SEND_PERSONAL_PHOTO}
-                  token={props.loaderData.accessToken}
+                  token={props.data.accessToken}
                   // @ts-expect-error wrong automatic type narroing
                   triggerValidation={props.trigger}
-                  error={props.errors.metaPhoto?.message}
+                  error={props.form.formState.errors.metaPhoto?.message}
                 />
               )}
             />
           </Box>
 
-          {props.loaderData.id ? (
+          {props.data.id ? (
             <Stack
               sx={{
                 alignItems: "center",
@@ -118,14 +109,14 @@ export function ProfileMetaView(props: ProfileMetaViewProps) {
                 variant="Reg_14"
                 sx={{ color: (theme) => theme.vars.palette["Black"] }}
               >
-                {props.loaderData.id}
+                {props.data.id}
               </Typography>
             </Stack>
           ) : null}
 
           <Controller
             name="metaPhone"
-            control={props.control}
+            control={props.form.control}
             render={({ field }) => (
               <StyledPhoneField
                 inputType="phone"
@@ -136,7 +127,7 @@ export function ProfileMetaView(props: ProfileMetaViewProps) {
                   paddingRight: "16px",
                   paddingLeft: "16px",
                 }}
-                error={props.errors.metaPhone?.message}
+                error={props.form.formState.errors.metaPhone?.message}
                 {...field}
                 onBlur={props.onPhoneBlur}
               />
@@ -145,7 +136,7 @@ export function ProfileMetaView(props: ProfileMetaViewProps) {
 
           <Controller
             name="metaEmail"
-            control={props.control}
+            control={props.form.control}
             render={({ field }) => (
               <StyledEmailField
                 inputType="email"
@@ -156,7 +147,7 @@ export function ProfileMetaView(props: ProfileMetaViewProps) {
                   paddingRight: "16px",
                   paddingLeft: "16px",
                 }}
-                error={props.errors.metaEmail?.message}
+                error={props.form.formState.errors.metaEmail?.message}
                 {...field}
                 onBlur={(evt) => {
                   props.onEmailBlur(evt.target.value);
@@ -224,25 +215,6 @@ export function ProfileMetaView(props: ProfileMetaViewProps) {
           {t("dialog_button")}
         </Button>
       </Dialog>
-
-      <Snackbar
-        open={props.fetcherData?.error ? true : false}
-        autoHideDuration={3000}
-        onClose={props.onResetFetcherError}
-      >
-        <Alert
-          severity="info"
-          variant="small"
-          color="Banner_Error"
-          sx={{
-            width: "100%",
-          }}
-        >
-          {props.fetcherData?.error === "emailAlreadyExists"
-            ? t("error_emailAlreadyExists")
-            : t("error_phoneAlreadyExists")}
-        </Alert>
-      </Snackbar>
     </>
   );
 }

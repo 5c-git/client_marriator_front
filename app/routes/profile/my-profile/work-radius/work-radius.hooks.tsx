@@ -45,7 +45,7 @@ export function useWorkRadiusHooks(loaderData: WorkRadiusLoaderData) {
     listener: YMapListenerType;
   }>();
 
-  const { control, reset, getValues } = useForm<WorkRadiusLoaderData>({
+  const form = useForm<WorkRadiusLoaderData>({
     defaultValues: {
       address: loaderData.address,
       coordinates: loaderData.coordinates,
@@ -157,11 +157,11 @@ export function useWorkRadiusHooks(loaderData: WorkRadiusLoaderData) {
       },
     });
 
-    if (getValues("radius") !== "") {
+    if (form.getValues("radius") !== "") {
       mapController?.radius.update({
         geometry: getCircleGeoJSON(
           loaderData.coordinates as [lon: number, lat: number],
-          Number(getValues("radius")),
+          Number(form.getValues("radius")),
         ),
       });
       mapController?.map.addChild(mapController.radius);
@@ -170,7 +170,7 @@ export function useWorkRadiusHooks(loaderData: WorkRadiusLoaderData) {
     }
   }, [
     submitGeoData,
-    getValues,
+    form.getValues,
     loaderData.coordinates,
     loaderData.radius,
     mapController?.listener,
@@ -180,12 +180,17 @@ export function useWorkRadiusHooks(loaderData: WorkRadiusLoaderData) {
   ]);
 
   useEffect(() => {
-    reset({
+    form.reset({
       address: loaderData.address,
       coordinates: loaderData.coordinates,
       radius: loaderData.radius,
     });
-  }, [reset, loaderData.address, loaderData.coordinates, loaderData.radius]);
+  }, [
+    form.reset,
+    loaderData.address,
+    loaderData.coordinates,
+    loaderData.radius,
+  ]);
 
   const debouncedTextFieldSubmit = useMemo(
     () =>
@@ -216,7 +221,7 @@ export function useWorkRadiusHooks(loaderData: WorkRadiusLoaderData) {
   const isMapGrayscale = loaderData.address === "" && isActive === false;
 
   return {
-    control,
+    form,
     isMapGrayscale,
     fetcherError,
     debouncedTextFieldSubmit,

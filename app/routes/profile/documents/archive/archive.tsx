@@ -29,14 +29,13 @@ export async function clientAction({ request }: Route.ClientActionArgs) {
 }
 
 export default function Archive({ loaderData }: Route.ComponentProps) {
-  const { t } = useTranslation("ArchiveView");
+  const { t } = useTranslation("m_profile_documents_archive");
   const navigate = useNavigate();
   const fetcher = useFetcher<ArchiveActionData>();
 
   return (
     <>
       <ArchiveView
-        translation="archive"
         data={loaderData}
         backAction={() => {
           navigate(withLocale("/profile/documents"), { viewTransition: true });
@@ -64,7 +63,7 @@ export default function Archive({ loaderData }: Route.ComponentProps) {
             width: "100%",
           }}
         >
-          {t("archive.error")}
+          {t("error")}
         </Alert>
       </Snackbar>
     </>

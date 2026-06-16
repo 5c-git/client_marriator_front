@@ -16,7 +16,7 @@ import { useConfirmRestorePinHooks } from "./confirmRestorePin.hooks";
 export const CONFIRM_RESTORE_PIN_ACTIONS = {
   sendAgain: "sendAgain",
   sendCode: "sendCode",
-};
+} as const;
 
 export async function clientLoader({ request }: Route.ClientLoaderArgs) {
   await loadNamespaces("confirmRestorePin");

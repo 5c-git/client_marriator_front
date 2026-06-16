@@ -40,4 +40,3 @@ export function useSignHooks(actionData: SignActionData) {
     setSeconds,
   };
 }
-

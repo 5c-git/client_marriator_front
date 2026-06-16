@@ -1,36 +1,48 @@
 import { useTranslation } from "react-i18next";
-import type { Control, FieldErrors, UseFormSetValue, UseFormTrigger } from "react-hook-form";
+import {
+  useForm,
+  type Control,
+  type FieldErrors,
+  type UseFormSetValue,
+  type UseFormTrigger,
+} from "react-hook-form";
 
 import { Button, Typography } from "@mui/material";
 import Box from "@mui/material/Box";
 
 import { TopNavigation } from "~/shared/ui/TopNavigation/TopNavigation";
-import { generateInputsMarkup } from "~/shared/constructor/constructor";
+import {
+  generateDefaultValues,
+  generateInputsMarkup,
+  generateValidationSchema,
+} from "~/shared/constructor/constructor";
 import type { Inputs } from "~/shared/constructor/inputs.schema";
+import { useEffect } from "react";
+import { zodResolver } from "@hookform/resolvers/zod";
 
 type ProfileEditViewProps = {
   headerText: string;
   formFields: Inputs;
   accessToken: string;
-  errors: FieldErrors;
-  control: Control;
-  isDirty: boolean;
   onBack: () => void;
-  onSubmit: () => void;
-  onCancel: () => void;
-  onConfirm: () => void;
-  setValue: UseFormSetValue<{
-    [x: string]: unknown;
-    [x: number]: unknown;
-  }>;
-  trigger: UseFormTrigger<{
-    [x: string]: unknown;
-    [x: number]: unknown;
-  }>;
+  onSubmit: (values: unknown) => void;
 };
 
 export function ProfileEditView(props: ProfileEditViewProps) {
-  const { t } = useTranslation("profileEdit");
+  const { t } = useTranslation("m_profile_myProfile_profileEdit");
+
+  const form = useForm({
+    defaultValues: generateDefaultValues(props.formFields),
+    resolver: zodResolver(generateValidationSchema(props.formFields)),
+    mode: "onChange",
+    shouldUnregister: true,
+  });
+
+  useEffect(() => {
+    setTimeout(() => {
+      form.reset(generateDefaultValues(props.formFields));
+    });
+  }, [props.formFields, form.reset]);
 
   return (
     <Box
@@ -53,22 +65,24 @@ export function ProfileEditView(props: ProfileEditViewProps) {
             rowGap: "16px",
             paddingTop: "26px",
           }}
-          onSubmit={props.onSubmit}
+          onSubmit={form.handleSubmit((values) => {
+            props.onSubmit(values);
+          })}
         >
           {generateInputsMarkup(
             props.formFields,
-            props.errors,
-            props.control,
-            props.setValue,
-            props.trigger,
+            form.formState.errors,
+            form.control,
+            form.setValue,
+            form.trigger,
             () => {},
             props.accessToken,
           )}
 
           <Box
             style={{
-              "--opacity": props.isDirty ? 1 : 0,
-              "--pointerEvents": props.isDirty ? "auto" : "none",
+              "--opacity": form.formState.isDirty ? 1 : 0,
+              "--pointerEvents": form.formState.isDirty ? "auto" : "none",
             }}
             sx={(theme) => ({
               position: "fixed",
@@ -85,10 +99,23 @@ export function ProfileEditView(props: ProfileEditViewProps) {
               pointerEvents: "var(--pointerEvents)",
             })}
           >
-            <Button variant="outlined" onClick={props.onCancel}>
+            <Button
+              variant="outlined"
+              onClick={() => {
+                form.reset(generateDefaultValues(props.formFields));
+              }}
+            >
               {t("button_cancel")}
             </Button>
-            <Button variant="contained" onClick={props.onConfirm}>
+            <Button
+              variant="contained"
+              onClick={() => {
+                form.trigger();
+                form.handleSubmit((values) => {
+                  props.onSubmit(values);
+                });
+              }}
+            >
               {t("button_confirm")}
             </Button>
           </Box>

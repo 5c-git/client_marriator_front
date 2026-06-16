@@ -1,10 +1,11 @@
+import { useFetcher, useNavigate, useSearchParams } from "react-router";
 import type { Route } from "./+types/user-activities";
 
 import { UserActivitiesView } from "./_views/UserActivitiesView";
 
 import { userActivitiesContainer } from "./user-activities.module";
 import { userActivitiesTokens } from "./user-activities.tokens";
-import { useUserActivitiesHooks } from "./user-activities.hooks";
+import { withLocale } from "~/shared/withLocale";
 
 export async function clientLoader({ request }: Route.ClientLoaderArgs) {
   const currentURL = new URL(request.url);
@@ -34,30 +35,44 @@ export async function clientAction({ request }: Route.ClientActionArgs) {
 }
 
 export default function UserActivities({ loaderData }: Route.ComponentProps) {
-  const {
-    step,
-    control,
-    setValue,
-    trigger,
-    errors,
-    goBack,
-    handleFormSubmit,
-    handleFinishClick,
-    submitFormFields,
-  } = useUserActivitiesHooks(loaderData);
+  const fetcher = useFetcher();
+
+  const navigate = useNavigate();
+  const [searchParams, setSearchParams] = useSearchParams();
+
+  const stepParams = searchParams.get("step");
+  const step = stepParams ? Number(stepParams) : 1;
 
   return (
     <UserActivitiesView
-      loaderData={loaderData}
+      data={loaderData}
       step={step}
-      control={control}
-      errors={errors}
-      setValue={setValue}
-      trigger={trigger}
-      onBack={goBack}
-      onFormSubmit={handleFormSubmit}
-      onFinishClick={handleFinishClick}
-      onFieldChange={submitFormFields}
+      onBack={() => {
+        if (step === 1) {
+          navigate(withLocale("/profile/my-profile"));
+        } else {
+          setSearchParams((prev) => {
+            prev.set("step", (step - 1).toString());
+            return prev;
+          });
+        }
+      }}
+      onFormSubmit={() => {
+        if (loaderData.formStatus === "allowedNewStep" && step !== 3) {
+          setSearchParams((prev) => {
+            prev.set("step", (step + 1).toString());
+            return prev;
+          });
+        } else if (loaderData.formStatus === "allowedNewStep") {
+          navigate(withLocale("/profile/my-profile"));
+        }
+      }}
+      onFieldChange={(values) => {
+        fetcher.submit(JSON.stringify(values), {
+          method: "POST",
+          encType: "application/json",
+        });
+      }}
     />
   );
 }
