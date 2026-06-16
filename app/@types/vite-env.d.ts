@@ -136,6 +136,7 @@ interface ImportMetaEnv {
   readonly VITE_POST_SET_USER_SETTINGS: string;
   readonly VITE_GET_SIGNIN_JOBS: string;
   readonly VITE_GET_PROJECTS_FOR_ORDER: string;
+  readonly VITE_POST_SET_COUNTERPARTY_FOR_ORDER: string;
   // more env variables...
 }
 

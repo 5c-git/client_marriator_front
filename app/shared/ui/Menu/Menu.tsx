@@ -47,6 +47,7 @@ export const Menu = ({ style, links }: MenuProps) => {
         <BottomNavigationAction
           key={index}
           disabled={item.disabled}
+          nativeButton={false}
           component={forwardRef<
             HTMLAnchorElement,
             {

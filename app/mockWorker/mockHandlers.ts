@@ -1,16 +1,12 @@
 import { getFormMockResponse } from "~/api/getForm/getForm";
 import { postSaveFormMockResponse } from "~/api/postSaveForm/postSaveForm";
-
 import { postSendPhoneMockResponse } from "~/api/postSendPhone/postSendPhone";
 import { mockPostCheckCodeMockResponse } from "~/api/postCheckCode/postCheckCode";
 import { mockPostSetUserPinMockResponse } from "~/api/postSetUserPin/postSetUserPin";
-
 import { postFinishRegisterResponse } from "~/api/postFinishRegister/postFinishRegister";
 import { postCheckPinResponse } from "~/api/postCheckPin/postCheckPin";
-
 import { getUserInfoMockResponse } from "~/api/_personal/getUserInfo/getUserInfo";
 import { getUserPersonalMenuMockResponse } from "~/api/_personal/getUserPersonalMenu/getUserPersonalMenu";
-
 import { getUserFieldsMockResponse } from "~/api/_personal/getUserFields/getUserFields";
 import { getStaticUserInfoMockResponse } from "~/api/getStaticUserInfo/getStaticUserInfo";
 import { mockPostSetUserEmailMockResponse } from "~/api/_personal/postSetUserEmail/postSetUserEmail";
@@ -130,6 +126,7 @@ import { getUserSettingsMockResponse } from "~/api/_personal/getUserSettings/get
 import { postSetUserSettingsMockResponse } from "~/api/_personal/postSetUserSettings/postSetUserSettings";
 import { getSigninJobsMockResponse } from "~/api/getSigninJobs/getSigninJobs";
 import { getProjectsForOrderMockResponse } from "~/api/_personal/getProjectsForOrder/getProjectsForOrder";
+import { getCounterpartyForOrderMockResponse } from "~/api/_personal/getCounterpartyForOrder/getCounterpartyForOrder";
 
 export const handlers = [
   getFormMockResponse,
@@ -259,5 +256,6 @@ export const handlers = [
   getUserSettingsMockResponse,
   postSetUserSettingsMockResponse,
   getSigninJobsMockResponse,
-  getProjectsForOrderMockResponse
+  getProjectsForOrderMockResponse,
+  getCounterpartyForOrderMockResponse,
 ];

@@ -20,6 +20,7 @@ import { ProfileIcon } from "../_icons/ProfileIcon";
 import { SettingsIcon } from "../_icons/SettingsIcon";
 import { DocumentsIcon } from "../_icons/DocumentsIcon";
 import { ExitIcon } from "../_icons/ExitIcon";
+import ReceiptLongIcon from "@mui/icons-material/ReceiptLong";
 
 import type { ProfileData } from "../profile.mapper";
 
@@ -85,6 +86,11 @@ export function ProfileView(props: ProfileViewProps) {
                 icon={<DocumentsIcon />}
                 label={t(`documents`)}
                 to={withLocale("documents")}
+              />
+              <ProfileMenuItem
+                icon={<ReceiptLongIcon />}
+                label={t(`requests`)}
+                to={withLocale("requests")}
               />
             </>
           ) : null}

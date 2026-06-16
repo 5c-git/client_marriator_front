@@ -357,14 +357,14 @@ export const theme = createTheme(baseTheme, {
     MuiRadio: {
       styleOverrides: {
         root: {
-          padding: "8px",
+          padding: "9px",
         },
       },
     },
     MuiCheckbox: {
       styleOverrides: {
         root: {
-          padding: "8px",
+          padding: "9px",
         },
       },
     },

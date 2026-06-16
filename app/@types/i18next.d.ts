@@ -29,6 +29,7 @@ import m_profile_myProfile_profileMeta_confirmPersonalPhone from "../../public/l
 import m_profile_myProfile_userActivities from "../../public/locales/ru/m_profile_myProfile_userActivities.json";
 import m_profile_myProfile_workRadius from "../../public/locales/ru/m_profile_myProfile_workRadius.json";
 import m_profile_settings from "../../public/locales/ru/m_profile_settings.json";
+import m_profile_requests from "../../public/locales/ru/m_profile_requests.json";
 import m_profile_documents from "../../public/locales/ru/m_profile_documents.json";
 import m_profile_documents_archive from "../../public/locales/ru/m_profile_documents_archive.json";
 import m_profile_documents_certificates from "../../public/locales/ru/m_profile_documents_certificates.json";
@@ -138,7 +139,7 @@ declare module "i18next" {
       m_profile_myProfile_userActivities: typeof m_profile_myProfile_userActivities;
       m_profile_myProfile_workRadius: typeof m_profile_myProfile_workRadius;
       m_profile_settings: typeof m_profile_settings;
-
+      m_profile_requests: typeof m_profile_requests;
       m_profile_documents: typeof m_profile_documents;
       m_profile_documents_archive: typeof m_profile_documents_archive;
       m_profile_documents_certificates: typeof m_profile_documents_certificates;

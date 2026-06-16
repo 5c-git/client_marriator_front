@@ -3,6 +3,7 @@
   "profile": "My profile",
   "settings": "Settings",
   "documents": "Documents",
+  "requests": "Requests",
   "exit": "Log out",
   "dialog_title": "Are you sure you want to log out?",
   "dialog_no": "No",
