@@ -14,7 +14,7 @@ import { StyledSearchBar } from "~/shared/ui/StyledSearchBar/StyledSearchBar";
 import { StyledCheckboxMultiple } from "~/shared/ui/StyledCheckboxMultiple/StyledCheckboxMultiple";
 
 type CheckboxDrawerProps = {
-  translation: "address" | "supervisor" | "counterparty";
+  translation: "address" | "supervisor" | "manager" | "counterparty";
   open: boolean;
   onClose: () => void;
   onSubmit: (value: string[]) => void;

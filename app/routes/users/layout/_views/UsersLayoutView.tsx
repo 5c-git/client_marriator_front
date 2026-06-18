@@ -13,8 +13,8 @@ type UsersLayoutViewProps = {
   pathname: string;
 };
 
-export function UsersLayoutView({ tabs, pathname }: UsersLayoutViewProps) {
-  const { t } = useTranslation("UsersLayoutView");
+export function UsersLayoutView(props: UsersLayoutViewProps) {
+  const { t } = useTranslation("m_layout_users");
 
   return (
     <>
@@ -28,16 +28,16 @@ export function UsersLayoutView({ tabs, pathname }: UsersLayoutViewProps) {
         }}
       />
 
-      {tabs.length > 0 ? (
+      {props.tabs.length > 0 ? (
         <Tabs
-          value={pathname}
+          value={props.pathname}
           sx={(theme) => ({
             width: "100%",
             zIndex: 1,
             backgroundColor: theme.vars.palette["White"],
           })}
         >
-          {tabs.map((tab) => (
+          {props.tabs.map((tab) => (
             <Tab
               key={tab.key}
               label={t(tab.labelKey)}

@@ -9,6 +9,11 @@
     "searchbar": "Поиск",
     "submit": "Пригласить"
   },
+  "manager": {
+    "header": "Пригласить менеджеров",
+    "searchbar": "Поиск",
+    "submit": "Пригласить"
+  },
   "counterparty": {
     "header": "Выбрать контрагентов",
     "searchbar": "Поиск",

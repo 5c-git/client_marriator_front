@@ -7,16 +7,6 @@ import { TerminateADealView } from "./_views/TerminateADealView";
 import { terminateADealContainer } from "./terminate-a-deal.module";
 import { terminateADealTokens } from "./terminate-a-deal.tokens";
 
-export type CheckboxItem = { uuid: string; name: string };
-
-export function generateDefaultValues(items: CheckboxItem[]) {
-  const defaultValues: { [key: string]: boolean } = {};
-  items.forEach((item) => {
-    defaultValues[item.uuid] = false;
-  });
-  return defaultValues;
-}
-
 export async function clientLoader() {
   return await terminateADealContainer
     .get(terminateADealTokens.terminateADealService)
@@ -37,13 +27,13 @@ export default function TerminateADeal({ loaderData }: Route.ComponentProps) {
 
   return (
     <TerminateADealView
-      data={loaderData}
+      data={loaderData.items}
       backAction={() => {
         navigate(withLocale("/profile/documents"), {
           viewTransition: true,
         });
       }}
-      defaultValues={generateDefaultValues(loaderData)}
+      defaultValues={loaderData.defaultValues}
       submitSelection={(values) => {
         const checkedValues: string[] = [];
         for (const key in values) {

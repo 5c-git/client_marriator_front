@@ -3,7 +3,6 @@ import type { Route } from "./+types/certificates";
 
 import { withLocale } from "~/shared/withLocale";
 import { CertificatesView } from "./_views/CertificatesView";
-import { useCertificatesHooks } from "./certificates.hooks";
 import { certificatesContainer } from "./certificates.module";
 import { certificatesTokens } from "./certificates.tokens";
 
@@ -24,21 +23,16 @@ export async function clientAction({ request }: Route.ClientActionArgs) {
 export default function Certificates({ loaderData }: Route.ComponentProps) {
   const navigate = useNavigate();
 
-  const { organizationOptions, certificateOptions } = useCertificatesHooks(
-    loaderData.fields.organization,
-    loaderData.fields.certificates,
-  );
-
   return (
     <CertificatesView
-      data={loaderData}
+      certificates={loaderData.certificates}
+      organizationOptions={loaderData.organizationOptions}
+      certificateOptions={loaderData.certificateOptions}
       backAction={() => {
         navigate(withLocale("/profile/documents"), {
           viewTransition: true,
         });
       }}
-      organizationOptions={organizationOptions}
-      certificateOptions={certificateOptions}
     />
   );
 }

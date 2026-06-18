@@ -1,16 +1,16 @@
 import type { Route } from "./+types/selectLocations";
 import { withLocale } from "~/shared/withLocale";
-import { redirect } from "react-router";
+import { redirect, useLocation, useNavigate, useSubmit } from "react-router";
 
-import {
-  selectLocationsContainer,
-} from "./selectLocations.module";
+import { selectLocationsContainer } from "./selectLocations.module";
 import { selectLocationsTokens } from "./selectLocations.tokens";
-import {
-  type SelectLocationsActionPayload,
-  useSelectLocationsHooks,
-} from "./selectLocations.hooks";
 import { SelectLocationsView } from "./_views/SelectLocationsView";
+
+type LocationState = {
+  from: string;
+  status: string;
+  statusColor: string;
+};
 
 export async function clientLoader({ params }: Route.ClientLoaderArgs) {
   return await selectLocationsContainer
@@ -22,16 +22,38 @@ export async function clientAction({
   params,
   request,
 }: Route.ClientActionArgs) {
-  const payload = (await request.json()) as SelectLocationsActionPayload;
-  const result = await selectLocationsContainer
+  const payload = await request.json();
+  await selectLocationsContainer
     .get(selectLocationsTokens.selectLocationsService)
     .saveSelectedLocations(params.user, payload.locations);
-  if (result.kind === "redirect") {
-    throw redirect(withLocale(payload.from));
-  }
+  throw redirect(withLocale(payload.from));
 }
 
 export default function SelectLocations({ loaderData }: Route.ComponentProps) {
-  const ui = useSelectLocationsHooks(loaderData);
-  return <SelectLocationsView loaderData={loaderData} ui={ui} />;
+  const location = useLocation();
+  const navigate = useNavigate();
+  const submit = useSubmit();
+
+  const { state } = location as { state: LocationState };
+
+  return (
+    <SelectLocationsView
+      data={loaderData}
+      onBack={() => {
+        navigate(withLocale(state.from), {
+          viewTransition: true,
+          state: {
+            status: state.status,
+            statusColor: state.statusColor,
+          },
+        });
+      }}
+      onSubmit={(values) => {
+        submit(JSON.stringify({ from: state.from, locations: values }), {
+          method: "POST",
+          encType: "application/json",
+        });
+      }}
+    />
+  );
 }

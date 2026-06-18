@@ -31,7 +31,9 @@ export class SelectProjectsService {
     private readonly saveProjects: SaveProjects,
   ) {}
 
-  async getSelectProjectsData(userId: number): Promise<SelectProjectsLoaderData> {
+  async getSelectProjectsData(
+    userId: number,
+  ): Promise<SelectProjectsLoaderData> {
     const accessToken = this.appService.getToken();
     const [userData, data] = await Promise.all([
       this.fetchModerationSingleClient(accessToken, userId),
@@ -65,8 +67,7 @@ export class SelectProjectsService {
 
   async saveSelectedProjects(userId: string, projects: string[]) {
     const accessToken = this.appService.getToken();
-    await this.saveProjects(accessToken, userId, projects);
-    return { kind: "redirect" } as const;
+    return await this.saveProjects(accessToken, userId, projects);
   }
 }
 

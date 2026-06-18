@@ -2,10 +2,11 @@ import type { GetModerationSingleClientSuccess } from "~/api/_personal/_moderati
 import type { GetCounterpartySuccess } from "~/api/_personal/_moderation/getCounterparty/getCounterpartySuccess.schema";
 import type { GetManagerSuccess } from "~/api/_personal/getManager/getManagerSuccess.schema";
 import type { CheckboxSearchableDrawer } from "~/shared/ui/CheckboxSearchableDrawer/CheckboxSearchableDrawer";
+import { State } from "~/store/store";
 
 type SupervisorStatusCode = 1 | 2 | 3;
 
-export type SupervisorLoaderData = {
+export type SupervisorData = {
   client: {
     id: number;
     logo: string | null;
@@ -24,6 +25,7 @@ export type SupervisorLoaderData = {
     notification_start: number;
     confirmRegister: boolean;
     status: SupervisorStatusCode;
+    userRole: State["userRole"];
   };
   counterparty: React.ComponentPropsWithoutRef<
     typeof CheckboxSearchableDrawer
@@ -76,7 +78,9 @@ export class SupervisorMapper {
     }));
   }
 
-  static mapStatus(data: GetModerationSingleClientSuccess): SupervisorStatusCode {
+  static mapStatus(
+    data: GetModerationSingleClientSuccess,
+  ): SupervisorStatusCode {
     if (
       data.data.confirmRegister === false &&
       data.data.finishRegister === true
@@ -90,5 +94,13 @@ export class SupervisorMapper {
       return 2;
     }
     return 3;
+  }
+
+  static formatHHmm(date: Date) {
+    const hours = date.getHours();
+    const minutes = date.getMinutes();
+    const hh = hours >= 10 ? String(hours) : `0${hours}`;
+    const mm = minutes >= 10 ? String(minutes) : `0${minutes}`;
+    return `${hh}:${mm}`;
   }
 }

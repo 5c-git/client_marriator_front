@@ -9,6 +9,11 @@
     "searchbar": "Search supervisors",
     "submit": "Add selected"
   },
+  "manager": {
+    "header": "Invite managers",
+    "searchbar": "Search managers",
+    "submit": "Add selected"
+  },
   "counterparty": {
     "header": "Choose counterparty",
     "searchbar": "Search",

@@ -8,7 +8,7 @@ import Box from "@mui/material/Box";
 import { TopNavigation } from "~/shared/ui/TopNavigation/TopNavigation";
 import { StyledCheckbox } from "~/shared/ui/StyledCheckbox/StyledCheckbox";
 
-import type { CheckboxItem } from "../terminate-a-deal";
+import type { CheckboxItem } from "../terminate-a-deal.mapper";
 
 type Props = {
   data: CheckboxItem[];

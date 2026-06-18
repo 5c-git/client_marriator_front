@@ -13,29 +13,48 @@ import type {
   DeleteCounterparty,
 } from "./client.private-tokens";
 
-import type { ClientLoaderData } from "./client.mapper";
+import type { ClientData } from "./client.mapper";
 
 import { clientPrivateTokens } from "./client.private-tokens";
 import { appTokens } from "~/shared/container/container.tokens";
 
 import { ClientMapper } from "./client.mapper";
 
+import { CLIENT_ACTIONS } from "./client";
+
 export type ClientActionPayload =
   | {
-      _action: "_confirm";
+      _action: typeof CLIENT_ACTIONS.confirm;
       userId: number;
       confirm: "1";
-      fields: unknown;
+      fields: { fields: unknown };
     }
-  | { _action: "_decline"; userId: number; confirm: "0" }
-  | { _action: "_saveLogo"; userId: number; projectId: number }
-  | { _action: "_deleteProject"; userId: number; projectId: number }
-  | { _action: "_deletePlace"; userId: number; projectId: number }
-  | { _action: "_setCounterparty"; userId: number; counterparties: string[] }
-  | { _action: "_deleteCounterparty"; userId: number; counterpartyId: number };
-
-
-
+  | { _action: typeof CLIENT_ACTIONS.decline; userId: number; confirm: "0" }
+  | {
+      _action: typeof CLIENT_ACTIONS.saveLogo;
+      userId: number;
+      projectId: number;
+    }
+  | {
+      _action: typeof CLIENT_ACTIONS.deleteProject;
+      userId: number;
+      projectId: number;
+    }
+  | {
+      _action: typeof CLIENT_ACTIONS.deletePlace;
+      userId: number;
+      projectId: number;
+    }
+  | {
+      _action: typeof CLIENT_ACTIONS.setCounterparty;
+      userId: number;
+      counterparties: string[];
+    }
+  | {
+      _action: typeof CLIENT_ACTIONS.deleteCounterparty;
+      userId: number;
+      counterpartyId: number;
+    };
 
 export class ClientService {
   constructor(
@@ -50,7 +69,7 @@ export class ClientService {
     private readonly deleteCounterparty: DeleteCounterparty,
   ) {}
 
-  async getClientData(userId: number): Promise<ClientLoaderData> {
+  async getClientData(userId: number): Promise<ClientData> {
     const accessToken = this.appService.getToken();
 
     const [clientData, counterpartyData] = await Promise.all([
@@ -66,7 +85,9 @@ export class ClientService {
 
     const locations = ClientMapper.mapLocations(clientData);
 
-    const status =  ClientMapper.mapStatus(clientData);
+    const status = ClientMapper.mapStatus(clientData);
+
+    const userRole = this.appService.getUserRole();
 
     return {
       client: {
@@ -82,6 +103,7 @@ export class ClientService {
         live_order: clientData.data.live_order,
         confirmRegister: clientData.data.confirmRegister,
         status,
+        userRole,
       },
       counterparty,
     };
@@ -91,50 +113,55 @@ export class ClientService {
     const accessToken = this.appService.getToken();
 
     switch (payload._action) {
-      case "_confirm":
-        await this.confirmUserRegister(
+      case CLIENT_ACTIONS.confirm:
+        return await this.confirmUserRegister(
           accessToken,
           payload.userId,
           payload.confirm,
-          payload.fields,
+          { fields: payload.fields },
         );
-        return { kind: "redirect", to: "/users" } as const;
 
-      case "_decline":
-        await this.confirmUserRegister(accessToken, payload.userId, payload.confirm);
-        return { kind: "redirect", to: "/users" } as const;
+      case CLIENT_ACTIONS.decline:
+        return await this.confirmUserRegister(
+          accessToken,
+          payload.userId,
+          payload.confirm,
+        );
 
-      case "_saveLogo":
-        await this.setUserImg(accessToken, payload.userId, payload.projectId);
-        return { kind: "ok" } as const;
-
-      case "_deleteProject":
-        await this.deleteProject(accessToken, payload.userId, payload.projectId);
-        return { kind: "ok" } as const;
-
-      case "_deletePlace":
-        await this.deletePlaceModeration(
+      case CLIENT_ACTIONS.saveLogo:
+        return await this.setUserImg(
           accessToken,
           payload.userId,
           payload.projectId,
         );
-        return { kind: "ok" } as const;
 
-      case "_setCounterparty":
-        await this.setCounterparty(
+      case CLIENT_ACTIONS.deleteProject:
+        return await this.deleteProject(
+          accessToken,
+          payload.userId,
+          payload.projectId,
+        );
+
+      case CLIENT_ACTIONS.deletePlace:
+        return await this.deletePlaceModeration(
+          accessToken,
+          payload.userId,
+          payload.projectId,
+        );
+
+      case CLIENT_ACTIONS.setCounterparty:
+        return await this.setCounterparty(
           accessToken,
           payload.userId,
           payload.counterparties,
         );
-        return { kind: "ok" } as const;
 
-      case "_deleteCounterparty":
-        await this.deleteCounterparty(
+      case CLIENT_ACTIONS.deleteCounterparty:
+        return await this.deleteCounterparty(
           accessToken,
           payload.userId,
           payload.counterpartyId,
         );
-        return { kind: "ok" } as const;
     }
   }
 }
@@ -151,4 +178,3 @@ injected(
   clientPrivateTokens.setCounterparty,
   clientPrivateTokens.deleteCounterparty,
 );
-

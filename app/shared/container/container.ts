@@ -7,15 +7,17 @@ import { AppService } from "./container.service";
 
 import { useStore } from "../../store/store";
 
-
 export const appContainer = new Container();
-
 
 appContainer
   .bind(appPrivateTokens.getAccessToken)
   .toConstant(() => useStore.getState().accessToken);
 
 appContainer
-    .bind(appTokens.appService)
-    .toInstance(AppService)
-    .inSingletonScope()
+  .bind(appPrivateTokens.getUserRole)
+  .toConstant(() => useStore.getState().userRole);
+
+appContainer
+  .bind(appTokens.appService)
+  .toInstance(AppService)
+  .inSingletonScope();

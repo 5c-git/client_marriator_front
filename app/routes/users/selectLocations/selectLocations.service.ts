@@ -43,7 +43,9 @@ export class SelectLocationsService {
     private readonly savePlaceModeration: SavePlaceModeration,
   ) {}
 
-  async getSelectLocationsData(userId: number): Promise<SelectLocationsLoaderData> {
+  async getSelectLocationsData(
+    userId: number,
+  ): Promise<SelectLocationsLoaderData> {
     const accessToken = this.appService.getToken();
     const [userData, locationsData] = await Promise.all([
       this.fetchModerationSingleClient(accessToken, userId),
@@ -93,8 +95,7 @@ export class SelectLocationsService {
 
   async saveSelectedLocations(userId: string, locations: string[]) {
     const accessToken = this.appService.getToken();
-    await this.savePlaceModeration(accessToken, userId, locations);
-    return { kind: "redirect" } as const;
+    return await this.savePlaceModeration(accessToken, userId, locations);
   }
 }
 

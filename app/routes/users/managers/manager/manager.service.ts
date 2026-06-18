@@ -18,25 +18,53 @@ import type {
 
 import { appTokens } from "~/shared/container/container.tokens";
 import { managerPrivateTokens } from "./manager.private-tokens";
-import { ManagerMapper } from "./manager.mapper";
+import { ManagerData, ManagerMapper } from "./manager.mapper";
+
+import { MANAGER_ACTIONS } from "./manager";
 
 export type ManagerActionPayload =
   | {
-      _action: "_confirm";
+      _action: typeof MANAGER_ACTIONS.confirm;
       userId: number;
       confirm: "1";
-      fields: { fields: { [key: string]: unknown } };
+      fields: { fields: unknown };
     }
-  | { _action: "_decline"; userId: number; confirm: "0" }
-  | { _action: "_saveLogo"; userId: number; projectId: number }
-  | { _action: "_deleteProject"; userId: number; projectId: number }
-  | { _action: "_deletePlace"; userId: number; projectId: number }
-  | { _action: "_inviteSupervisors"; userId: number; supervisors: string[] }
-  | { _action: "_deleteSupervisor"; userId: number; supervisorId: number }
-  | { _action: "_setCounterparty"; userId: number; counterparties: string[] }
-  | { _action: "_deleteCounterparty"; userId: number; counterpartyId: number };
-
-
+  | { _action: typeof MANAGER_ACTIONS.decline; userId: number; confirm: "0" }
+  | {
+      _action: typeof MANAGER_ACTIONS.saveLogo;
+      userId: number;
+      projectId: number;
+    }
+  | {
+      _action: typeof MANAGER_ACTIONS.deleteProject;
+      userId: number;
+      projectId: number;
+    }
+  | {
+      _action: typeof MANAGER_ACTIONS.deletePlace;
+      userId: number;
+      projectId: number;
+    }
+  | {
+      _action: typeof MANAGER_ACTIONS.inviteSupervisors;
+      userId: number;
+      supervisors: string[];
+    }
+  | {
+      _action: typeof MANAGER_ACTIONS.deleteSupervisor;
+      userId: number;
+      supervisorId: number;
+    }
+  | {
+      _action: typeof MANAGER_ACTIONS.setCounterparty;
+      userId: number;
+      counterparties: string[];
+    }
+  | {
+      _action: typeof MANAGER_ACTIONS.deleteCounterparty;
+      userId: number;
+      counterpartyId: number;
+    };
 
 export class ManagerService {
   constructor(
@@ -54,15 +82,16 @@ export class ManagerService {
     private readonly deleteCounterparty: DeleteCounterparty,
   ) {}
 
-  async getManagerData(userId: number) {
+  async getManagerData(userId: number): Promise<ManagerData> {
     const accessToken = this.appService.getToken();
+    const userRole = this.appService.getUserRole();
     const [data, supervisorsData, counterpartyData] = await Promise.all([
       this.fetchModerationSingleManager(accessToken, userId),
       this.fetchSupervisors(accessToken, userId),
       this.fetchCounterparty(accessToken),
     ]);
 
-    const counterparty = ManagerMapper.mapCounterparty(counterpartyData)
+    const counterparty = ManagerMapper.mapCounterparty(counterpartyData);
 
     const currentCounterparty = ManagerMapper.mapCurrentCounterparty(data);
 
@@ -70,7 +99,10 @@ export class ManagerService {
 
     const locations = ManagerMapper.mapLocations(data);
 
-    const supervisorsToSelect = ManagerMapper.mapSupervisorsToSelect(supervisorsData);
+    const supervisorsToSelect =
+      ManagerMapper.mapSupervisorsToSelect(supervisorsData);
+
+    const organizationsToSelect = ManagerMapper.mapRadioButtons(organizations);
 
     const status = ManagerMapper.mapStatus(data);
 
@@ -91,9 +123,11 @@ export class ManagerService {
         notification_start: data.data.notification_start.toString(),
         confirmRegister: data.data.confirmRegister,
         status,
+        userRole,
       },
       counterparty,
       supervisorsToSelect,
+      organizationsToSelect,
       currentSupervisors: data.data.supervisors,
     };
   }
@@ -102,58 +136,69 @@ export class ManagerService {
     const accessToken = this.appService.getToken();
 
     switch (payload._action) {
-      case "_confirm":
-        await this.confirmUserRegister(
+      case MANAGER_ACTIONS.confirm:
+        return await this.confirmUserRegister(
           accessToken,
           payload.userId,
           payload.confirm,
-          payload.fields,
+          { fields: payload.fields },
         );
-        return { kind: "redirect", to: "/users" } as const;
 
-      case "_decline":
-        await this.confirmUserRegister(accessToken, payload.userId, payload.confirm);
-        return { kind: "redirect", to: "/users" } as const;
+      case MANAGER_ACTIONS.decline:
+        return await this.confirmUserRegister(
+          accessToken,
+          payload.userId,
+          payload.confirm,
+        );
 
-      case "_saveLogo":
-        await this.setUserImg(accessToken, payload.userId, payload.projectId);
-        return { kind: "ok" } as const;
-
-      case "_deleteProject":
-        await this.deleteProject(accessToken, payload.userId, payload.projectId);
-        return { kind: "ok" } as const;
-
-      case "_deletePlace":
-        await this.deletePlaceModeration(
+      case MANAGER_ACTIONS.saveLogo:
+        return await this.setUserImg(
           accessToken,
           payload.userId,
           payload.projectId,
         );
-        return { kind: "ok" } as const;
 
-      case "_inviteSupervisors":
-        await this.setSupervisors(accessToken, payload.userId, payload.supervisors);
-        return { kind: "ok" } as const;
+      case MANAGER_ACTIONS.deleteProject:
+        return await this.deleteProject(
+          accessToken,
+          payload.userId,
+          payload.projectId,
+        );
 
-      case "_deleteSupervisor":
-        await this.deleteSupervisor(accessToken, payload.userId, payload.supervisorId);
-        return { kind: "ok" } as const;
+      case MANAGER_ACTIONS.deletePlace:
+        return await this.deletePlaceModeration(
+          accessToken,
+          payload.userId,
+          payload.projectId,
+        );
 
-      case "_setCounterparty":
-        await this.setCounterparty(
+      case MANAGER_ACTIONS.inviteSupervisors:
+        return await this.setSupervisors(
+          accessToken,
+          payload.userId,
+          payload.supervisors,
+        );
+
+      case MANAGER_ACTIONS.deleteSupervisor:
+        return await this.deleteSupervisor(
+          accessToken,
+          payload.userId,
+          payload.supervisorId,
+        );
+
+      case MANAGER_ACTIONS.setCounterparty:
+        return await this.setCounterparty(
           accessToken,
           payload.userId,
           payload.counterparties,
         );
-        return { kind: "ok" } as const;
 
-      case "_deleteCounterparty":
-        await this.deleteCounterparty(
+      case MANAGER_ACTIONS.deleteCounterparty:
+        return await this.deleteCounterparty(
           accessToken,
           payload.userId,
           payload.counterpartyId,
         );
-        return { kind: "ok" } as const;
     }
   }
 }

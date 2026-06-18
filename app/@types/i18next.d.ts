@@ -51,17 +51,16 @@ import registrationStep7 from "../../public/locales/ru/registrationStep7.json";
 import registrationComplete from "../../public/locales/ru/registrationComplete.json";
 //registration
 
-//internal
+//users
+import m_users_selectProjects from "../../public/locales/ru/m_users_selectProjects.json";
+import m_users_selectLocations from "../../public/locales/ru/m_users_selectLocations.json";
+import m_layout_users from "../../public/locales/ru/m_layout_users.json";
+import m_users_client from "../../public/locales/ru/m_users_client.json";
+import m_users_manager from "../../public/locales/ru/m_users_manager.json";
+import m_users_supervisor from "../../public/locales/ru/m_users_supervisor.json";
+
 import HomeLayout from "../../public/locales/ru/HomeLayout.json";
-
-import users_client from "../../public/locales/ru/users_client.json";
-import users_manager from "../../public/locales/ru/users_manager.json";
-import users_supervisor from "../../public/locales/ru/users_supervisor.json";
-import users_recruiter from "../../public/locales/ru/users_recruiter.json";
-import users_select_projects from "../../public/locales/ru/users_select_projects.json";
-import users_select_locations from "../../public/locales/ru/users_select_locations.json";
-
-//internal
+//users
 
 //routes
 import job from "../../public/locales/ru/job.json";
@@ -79,9 +78,6 @@ import orders from "../../public/locales/ru/orders.json";
 
 //views
 
-import UsersLayoutView from "../../public/locales/ru/UsersLayoutView.json";
-
-import UsersMobileView from "../../public/locales/ru/UsersMobileView.json";
 import JobMobileView from "../../public/locales/ru/JobMobileView.json";
 import DayReviewMobileView from "../../public/locales/ru/DayReviewMobileView.json";
 import SpecialistMobileView from "../../public/locales/ru/SpecialistMobileView.json";
@@ -93,6 +89,9 @@ import OrderMobileView from "../../public/locales/ru/OrderMobileView.json";
 import EntityMobileView from "../../public/locales/ru/EntityMobileView.json";
 import EntitiesListView from "../../public/locales/ru/EntitiesListView.json";
 import RequestSearchDrawer from "../../public/locales/ru/RequestSearchDrawer.json";
+
+//shared
+import m_shared_usersView from "../../public/locales/ru/m_shared_usersView.json";
 
 //components
 import styledPhotoCheckbox from "../../public/locales/ru/styledPhotoCheckbox.json";
@@ -160,41 +159,29 @@ declare module "i18next" {
       registrationComplete: typeof registrationComplete;
       //registration
 
-      //internal
+      //users
+      m_users_selectProjects: typeof m_users_selectProjects;
+      m_users_selectLocations: typeof m_users_selectLocations;
+      m_users_client: typeof m_users_client;
+      m_users_manager: typeof m_users_manager;
+      m_users_supervisor: typeof m_users_supervisor;
+      m_layout_users: typeof m_layout_users;
 
-      documentsArchive: typeof documentsArchive;
-
-      users_clients: typeof users_clients;
-      users_client: typeof users_client;
-      users_manager: typeof users_manager;
-      users_supervisor: typeof users_supervisor;
-      users_recruiter: typeof users_recruiter;
-      users_select_projects: typeof users_select_projects;
-      users_select_locations: typeof users_select_locations;
-      //internal
+      //users
 
       //routes
       job: typeof job;
-
       BidLayout: typeof BidLayout;
       bids: typeof bids;
-
       task: typeof task;
       tasks: typeof tasks;
-
       order: typeof order;
       orders: typeof orders;
-
       HomeLayout: typeof HomeLayout;
-
       sms: typeof sms;
 
       //views
-
-      UsersLayoutView: typeof UsersLayoutView;
-
       ProfileView: typeof ProfileView;
-      UsersMobileView: typeof UsersMobileView;
       JobMobileView: typeof JobMobileView;
       DayReviewMobileView: typeof DayReviewMobileView;
       SpecialistMobileView: typeof SpecialistMobileView;
@@ -206,6 +193,9 @@ declare module "i18next" {
       EntitiesListView: typeof EntitiesListView;
       ServiceMobileView: typeof ServiceMobileView;
       RequestSearchDrawer: typeof RequestSearchDrawer;
+
+      //shared
+      m_shared_usersView: typeof m_shared_usersView;
 
       //components
       styledPhotoCheckbox: typeof styledPhotoCheckbox;

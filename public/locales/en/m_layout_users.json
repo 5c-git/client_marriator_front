@@ -1,0 +1,8 @@
+{
+  "header": "Moderation",
+  "tabs": {
+    "client": "Clients",
+    "supervisor": "Supervisors",
+    "manager": "Managers"
+  }
+}

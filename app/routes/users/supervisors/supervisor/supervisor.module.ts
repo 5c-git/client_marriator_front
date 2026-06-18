@@ -2,7 +2,6 @@ import { Container } from "brandi";
 
 import { appContainer } from "~/shared/container/container";
 
-import { useStore } from "~/store/store";
 import { getCounterparty } from "~/api/_personal/_moderation/getCounterparty/getCounterparty";
 import { getModerationSingleClient } from "~/api/_personal/_moderation/getModerationSingleClient/getModerationSingleClient";
 import { getManager } from "~/api/_personal/getManager/getManager";
@@ -22,12 +21,10 @@ import { supervisorPrivateTokens } from "./supervisor.private-tokens";
 export const supervisorContainer = new Container().extend(appContainer);
 
 supervisorContainer
-  .bind(supervisorPrivateTokens.getUserRole)
-  .toConstant(() => useStore.getState().userRole);
-
-supervisorContainer
   .bind(supervisorPrivateTokens.fetchModerationSingleSupervisor)
-  .toConstant((accessToken, userId) => getModerationSingleClient(accessToken, userId));
+  .toConstant((accessToken, userId) =>
+    getModerationSingleClient(accessToken, userId),
+  );
 
 supervisorContainer
   .bind(supervisorPrivateTokens.fetchCounterparty)
@@ -58,7 +55,11 @@ supervisorContainer
 supervisorContainer
   .bind(supervisorPrivateTokens.deletePlaceModeration)
   .toConstant((accessToken, userId, projectId) =>
-    postDelPlaceModeration(accessToken, userId.toString(), projectId.toString()),
+    postDelPlaceModeration(
+      accessToken,
+      userId.toString(),
+      projectId.toString(),
+    ),
   );
 
 supervisorContainer
@@ -82,7 +83,11 @@ supervisorContainer
 supervisorContainer
   .bind(supervisorPrivateTokens.deleteCounterparty)
   .toConstant((accessToken, userId, counterpartyId) =>
-    postDeleteCounterparty(accessToken, userId.toString(), counterpartyId.toString()),
+    postDeleteCounterparty(
+      accessToken,
+      userId.toString(),
+      counterpartyId.toString(),
+    ),
   );
 
 supervisorContainer

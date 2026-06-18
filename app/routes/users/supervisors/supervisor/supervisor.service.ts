@@ -6,7 +6,6 @@ import type {
   FetchCounterparty,
   FetchModerationSingleSupervisor,
   FetchManagers,
-  GetUserRole,
   ConfirmUserRegister,
   SetUserImg,
   DeleteProject,
@@ -19,23 +18,53 @@ import type {
 
 import { appTokens } from "~/shared/container/container.tokens";
 import { supervisorPrivateTokens } from "./supervisor.private-tokens";
-import { SupervisorMapper, type SupervisorLoaderData } from "./supervisor.mapper";
+import { SupervisorMapper, type SupervisorData } from "./supervisor.mapper";
+
+import { SUPERVISOR_ACTIONS } from "./supervisor";
 
 export type SupervisorActionPayload =
   | {
-      _action: "_confirm";
+      _action: typeof SUPERVISOR_ACTIONS.confirm;
       userId: number;
       confirm: "1";
-      fields: { fields: { [key: string]: unknown } };
+      fields: { fields: unknown };
     }
-  | { _action: "_decline"; userId: number; confirm: "0" }
-  | { _action: "_saveLogo"; userId: number; projectId: number }
-  | { _action: "_deleteProject"; userId: number; projectId: number }
-  | { _action: "_deletePlace"; userId: number; projectId: number }
-  | { _action: "_inviteManagers"; userId: number; managers: string[] }
-  | { _action: "_deleteManager"; userId: number; managerId: number }
-  | { _action: "_setCounterparty"; userId: number; counterparties: string[] }
-  | { _action: "_deleteCounterparty"; userId: number; counterpartyId: number };
+  | { _action: typeof SUPERVISOR_ACTIONS.decline; userId: number; confirm: "0" }
+  | {
+      _action: typeof SUPERVISOR_ACTIONS.saveLogo;
+      userId: number;
+      projectId: number;
+    }
+  | {
+      _action: typeof SUPERVISOR_ACTIONS.deleteProject;
+      userId: number;
+      projectId: number;
+    }
+  | {
+      _action: typeof SUPERVISOR_ACTIONS.deletePlace;
+      userId: number;
+      projectId: number;
+    }
+  | {
+      _action: typeof SUPERVISOR_ACTIONS.inviteManagers;
+      userId: number;
+      managers: string[];
+    }
+  | {
+      _action: typeof SUPERVISOR_ACTIONS.deleteManager;
+      userId: number;
+      managerId: number;
+    }
+  | {
+      _action: typeof SUPERVISOR_ACTIONS.setCounterparty;
+      userId: number;
+      counterparties: string[];
+    }
+  | {
+      _action: typeof SUPERVISOR_ACTIONS.deleteCounterparty;
+      userId: number;
+      counterpartyId: number;
+    };
 
 export class SupervisorService {
   constructor(
@@ -43,7 +72,6 @@ export class SupervisorService {
     private readonly fetchModerationSingleSupervisor: FetchModerationSingleSupervisor,
     private readonly fetchCounterparty: FetchCounterparty,
     private readonly fetchManagers: FetchManagers,
-    private readonly getRole: GetUserRole,
     private readonly confirmUserRegister: ConfirmUserRegister,
     private readonly setUserImg: SetUserImg,
     private readonly deleteProject: DeleteProject,
@@ -54,16 +82,18 @@ export class SupervisorService {
     private readonly deleteCounterparty: DeleteCounterparty,
   ) {}
 
-  async getSupervisorData(userId: number): Promise<SupervisorLoaderData> {
+  async getSupervisorData(userId: number): Promise<SupervisorData> {
     const accessToken = this.appService.getToken();
+    const userRole = this.appService.getUserRole();
+
     const [data, counterpartyData] = await Promise.all([
       this.fetchModerationSingleSupervisor(accessToken, userId),
       this.fetchCounterparty(accessToken),
     ]);
 
-    let managersToSelect: SupervisorLoaderData["managersToSelect"] = [];
+    let managersToSelect: SupervisorData["managersToSelect"] = [];
 
-    if (this.getRole() === "admin") {
+    if (this.appService.getUserRole() === "admin") {
       const managersData = await this.fetchManagers(accessToken, userId);
       managersToSelect = SupervisorMapper.mapManagersToSelect(managersData);
     }
@@ -93,6 +123,7 @@ export class SupervisorService {
         notification_start: data.data.notification_start,
         confirmRegister: data.data.confirmRegister,
         status,
+        userRole,
       },
       counterparty,
       managersToSelect,
@@ -104,58 +135,65 @@ export class SupervisorService {
     const accessToken = this.appService.getToken();
 
     switch (payload._action) {
-      case "_confirm":
-        await this.confirmUserRegister(
+      case SUPERVISOR_ACTIONS.confirm:
+        return await this.confirmUserRegister(
           accessToken,
           payload.userId,
           payload.confirm,
-          payload.fields,
+          { fields: payload.fields },
         );
-        return { kind: "redirect", to: "/users" } as const;
 
-      case "_decline":
-        await this.confirmUserRegister(accessToken, payload.userId, payload.confirm);
-        return { kind: "redirect", to: "/users" } as const;
+      case SUPERVISOR_ACTIONS.decline:
+        return await this.confirmUserRegister(
+          accessToken,
+          payload.userId,
+          payload.confirm,
+        );
 
-      case "_saveLogo":
-        await this.setUserImg(accessToken, payload.userId, payload.projectId);
-        return { kind: "ok" } as const;
-
-      case "_deleteProject":
-        await this.deleteProject(accessToken, payload.userId, payload.projectId);
-        return { kind: "ok" } as const;
-
-      case "_deletePlace":
-        await this.deletePlaceModeration(
+      case SUPERVISOR_ACTIONS.saveLogo:
+        return await this.setUserImg(
           accessToken,
           payload.userId,
           payload.projectId,
         );
-        return { kind: "ok" } as const;
 
-      case "_inviteManagers":
-        await this.setManagers(accessToken, payload.userId, payload.managers);
-        return { kind: "ok" } as const;
+      case SUPERVISOR_ACTIONS.deleteProject:
+        return await this.deleteProject(
+          accessToken,
+          payload.userId,
+          payload.projectId,
+        );
 
-      case "_deleteManager":
-        await this.deleteManager(accessToken, payload.userId, payload.managerId);
-        return { kind: "ok" } as const;
+      case SUPERVISOR_ACTIONS.deletePlace:
+        return await this.deletePlaceModeration(
+          accessToken,
+          payload.userId,
+          payload.projectId,
+        );
 
-      case "_setCounterparty":
-        await this.setCounterparty(
+      case SUPERVISOR_ACTIONS.inviteManagers:
+        return this.setManagers(accessToken, payload.userId, payload.managers);
+
+      case SUPERVISOR_ACTIONS.deleteManager:
+        return await this.deleteManager(
+          accessToken,
+          payload.userId,
+          payload.managerId,
+        );
+
+      case SUPERVISOR_ACTIONS.setCounterparty:
+        return await this.setCounterparty(
           accessToken,
           payload.userId,
           payload.counterparties,
         );
-        return { kind: "ok" } as const;
 
-      case "_deleteCounterparty":
-        await this.deleteCounterparty(
+      case SUPERVISOR_ACTIONS.deleteCounterparty:
+        return await this.deleteCounterparty(
           accessToken,
           payload.userId,
           payload.counterpartyId,
         );
-        return { kind: "ok" } as const;
     }
   }
 }
@@ -166,7 +204,6 @@ injected(
   supervisorPrivateTokens.fetchModerationSingleSupervisor,
   supervisorPrivateTokens.fetchCounterparty,
   supervisorPrivateTokens.fetchManagers,
-  supervisorPrivateTokens.getUserRole,
   supervisorPrivateTokens.confirmUserRegister,
   supervisorPrivateTokens.setUserImg,
   supervisorPrivateTokens.deleteProject,

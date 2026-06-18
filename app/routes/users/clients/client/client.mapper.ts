@@ -3,10 +3,9 @@ import type { GetCounterpartySuccess } from "~/api/_personal/_moderation/getCoun
 
 import type { CheckboxSearchableDrawer } from "~/shared/ui/CheckboxSearchableDrawer/CheckboxSearchableDrawer";
 
+import type { State } from "~/store/store";
 
-type ClientStatusCode = 1 | 2 | 3;
-
-export type ClientLoaderData = {
+export type ClientData = {
   client: {
     id: number;
     logo: string | null;
@@ -19,7 +18,8 @@ export type ClientLoaderData = {
     cancel_order: string | null;
     live_order: string | null;
     confirmRegister: boolean;
-    status: ClientStatusCode;
+    status: 1 | 2 | 3;
+    userRole: State["userRole"];
   };
   counterparty: React.ComponentPropsWithoutRef<
     typeof CheckboxSearchableDrawer
@@ -27,52 +27,60 @@ export type ClientLoaderData = {
 };
 
 export class ClientMapper {
+  static mapCounterparty(
+    data: GetCounterpartySuccess,
+  ): ClientData["counterparty"] {
+    return data.data.map((agent) => ({
+      value: agent.id.toString(),
+      label: agent.name,
+      disabled: false,
+    }));
+  }
 
-    static mapCounterparty(data: GetCounterpartySuccess): ClientLoaderData["counterparty"] {
-        return data.data.map((agent) => ({
-            value: agent.id.toString(),
-            label: agent.name,
-            disabled: false,
-          }));
+  static formatHHmm(date: Date) {
+    const h = date.getHours();
+    const m = date.getMinutes();
+    const hh = h >= 10 ? String(h) : `0${h}`;
+    const mm = m >= 10 ? String(m) : `0${m}`;
+    return `${hh}:${mm}`;
+  }
+
+  static mapCurrentCounterparty(data: GetModerationSingleClientSuccess) {
+    return data.data.counterparty.map((party) => ({
+      id: party.id,
+      name: party.name,
+    }));
+  }
+
+  static mapOrganizations(data: GetModerationSingleClientSuccess) {
+    return data.data.project.map((org) => ({
+      id: org.id,
+      logo: org.brand[0].logo,
+      name: org.name,
+    }));
+  }
+
+  static mapLocations(data: GetModerationSingleClientSuccess) {
+    return data.data.place.map((loc) => ({
+      id: loc.id,
+      logo: loc.logo,
+      address: loc.address_kladr,
+    }));
+  }
+
+  static mapStatus(data: GetModerationSingleClientSuccess) {
+    if (
+      data.data.confirmRegister === false &&
+      data.data.finishRegister === true
+    ) {
+      return 1;
     }
-
-    static mapCurrentCounterparty(data: GetModerationSingleClientSuccess) {
-        return data.data.counterparty.map((party) => ({
-            id: party.id,
-            name: party.name,
-          }));
+    if (
+      data.data.confirmRegister === true &&
+      data.data.finishRegister === true
+    ) {
+      return 2;
     }
-
-    static mapOrganizations(data: GetModerationSingleClientSuccess) {
-        return data.data.project.map((org) => ({
-            id: org.id,
-            logo: org.brand[0].logo,
-            name: org.name,
-          }));
-    }
-
-    static mapLocations(data: GetModerationSingleClientSuccess) {
-        return data.data.place.map((loc) => ({
-            id: loc.id,
-            logo: loc.logo,
-            address: loc.address_kladr,
-          }));
-    }
-
-    static mapStatus(data: GetModerationSingleClientSuccess) {
-        if (
-            data.data.confirmRegister === false &&
-            data.data.finishRegister === true
-          ) {
-            return 1;
-          }
-          if (
-            data.data.confirmRegister === true &&
-            data.data.finishRegister === true
-          ) {
-            return 2;
-          }
-          return 3;
-    }
-
+    return 3;
+  }
 }

@@ -19,7 +19,9 @@ export const clientContainer = new Container().extend(appContainer);
 
 clientContainer
   .bind(clientPrivateTokens.fetchModerationSingleClient)
-  .toConstant((accessToken, userId) => getModerationSingleClient(accessToken, userId));
+  .toConstant((accessToken, userId) =>
+    getModerationSingleClient(accessToken, userId),
+  );
 
 clientContainer
   .bind(clientPrivateTokens.fetchCounterparty)
@@ -46,7 +48,11 @@ clientContainer
 clientContainer
   .bind(clientPrivateTokens.deletePlaceModeration)
   .toConstant((accessToken, userId, projectId) =>
-    postDelPlaceModeration(accessToken, userId.toString(), projectId.toString()),
+    postDelPlaceModeration(
+      accessToken,
+      userId.toString(),
+      projectId.toString(),
+    ),
   );
 
 clientContainer
@@ -58,11 +64,14 @@ clientContainer
 clientContainer
   .bind(clientPrivateTokens.deleteCounterparty)
   .toConstant((accessToken, userId, counterpartyId) =>
-    postDeleteCounterparty(accessToken, userId.toString(), counterpartyId.toString()),
+    postDeleteCounterparty(
+      accessToken,
+      userId.toString(),
+      counterpartyId.toString(),
+    ),
   );
 
 clientContainer
   .bind(clientTokens.clientService)
   .toInstance(ClientService)
   .inSingletonScope();
-

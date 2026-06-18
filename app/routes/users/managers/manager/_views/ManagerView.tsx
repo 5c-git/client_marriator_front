@@ -1,12 +1,13 @@
-import type { ComponentPropsWithoutRef } from "react";
-import { Controller } from "react-hook-form";
+import type { ReactNode, Ref } from "react";
+import { useState } from "react";
+
 import { Link } from "react-router";
 
-import type { UseFormReturn } from "react-hook-form";
-import type { TFunction } from "i18next";
-import type { ManagerFormValues } from "../manager.hooks";
-import type { ClientLoaderData } from "../manager.mapper";
-import type { CheckboxSearchableDrawer } from "~/shared/ui/CheckboxSearchableDrawer/CheckboxSearchableDrawer";
+import { useTranslation } from "react-i18next";
+
+import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { Controller, useForm } from "react-hook-form";
 
 import { withLocale } from "~/shared/withLocale";
 import { statusCodeMap } from "~/shared/usersStatusCodeMap";
@@ -16,75 +17,131 @@ import {
   IconButton,
   Avatar,
   Typography,
-  SwipeableDrawer,
   TextField,
 } from "@mui/material";
 import Box from "@mui/material/Box";
 import Stack from "@mui/material/Stack";
 
 import { TopNavigation } from "~/shared/ui/TopNavigation/TopNavigation";
-import { Loader } from "~/shared/ui/Loader/Loader";
 import { StyledTextField } from "~/shared/ui/StyledTextField/StyledTextField";
 import { StyledPhoneField } from "~/shared/ui/StyledPhoneField/StyledPhoneField";
 import { StyledRadioButton } from "~/shared/ui/StyledRadioButton/StyledRadioButton";
-import { StyledSearchBar } from "~/shared/ui/StyledSearchBar/StyledSearchBar";
-import { StyledCheckboxMultiple } from "~/shared/ui/StyledCheckboxMultiple/StyledCheckboxMultiple";
+
 import { MaskedField } from "~/shared/ui/MaskedField/MaskedField";
 import { TimeField } from "~/shared/ui/TimeField/TimeField";
-import { CheckboxSearchableDrawer as CheckboxSearchableDrawerComponent } from "~/shared/ui/CheckboxSearchableDrawer/CheckboxSearchableDrawer";
 import { S_SwipeableDrawer } from "../manager.styled";
 
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
-import AddIcon from "@mui/icons-material/Add";
 import { FileIcon } from "~/shared/icons/FileIcon";
 import { PointerIcon } from "~/shared/icons/PointerIcon";
-import { CheckIcon } from "~/shared/icons/CheckIcon";
 import { DeleteIcon } from "~/shared/icons/DeleteIcon";
+import { ManagerData } from "../manager.mapper";
 
-const getRadioButtons = (list: { id: number; name: string; logo: string }[]) => {
-  return list.map((item) => ({
-    id: item.id,
-    value: item.logo,
-    label: item.name,
-    disabled: false,
-    image: `${import.meta.env.VITE_ASSET_PATH}${item.logo}`,
-  }));
+type ManagerFormValues = {
+  logo: string;
+  phone: string;
+  name: string;
+  counterparty: { id: number; name: string }[];
+  organizations: { id: number; logo: string; name: string }[];
+  locations: { id: number; logo: string; address: string }[];
+  change_task: Date;
+  cancel_task: Date;
+  live_task: Date;
+  repeat_bid: Date;
+  leave_bid: Date;
+  notification_start: string;
 };
 
 type ManagerViewProps = {
-  loaderData: ClientLoaderData;
-  userRole: string | null | undefined;
-  isLoading: boolean;
-  open: boolean;
-  setOpen: (v: boolean) => void;
-  openCounterparty: boolean;
-  setOpenCounterparty: (v: boolean) => void;
-  searchSupervisors: boolean;
-  setSearchSupervisors: (v: boolean) => void;
-  selectedSupervisors: ClientLoaderData["supervisorsToSelect"];
-  setSelectedSupervisors: (v: ClientLoaderData["supervisorsToSelect"]) => void;
-  form: UseFormReturn<ManagerFormValues>;
-  supervisorForm: UseFormReturn<{ searchbar: string; supervisors: string[] }>;
+  data: ManagerData;
+  supervisorsActionSlot: ReactNode;
+  counterpartyActionSlot: ReactNode;
+  bottomSlot: ReactNode;
+  ref: Ref<HTMLFormElement>;
+
   onBack: () => void;
+  onSubmit: (values: ManagerFormValues) => void;
+  onSaveLogo: (values: { userId: number; projectId: number }) => void;
+
+  onDeleteCounterparty: (values: {
+    userId: number;
+    counterpartyId: number;
+  }) => void;
+  onDeleteProject: (values: { userId: number; projectId: number }) => void;
+  onDeletePlace: (values: { userId: number; projectId: number }) => void;
+  onDeleteSupervisor: (values: {
+    userId: number;
+    supervisorId: number;
+  }) => void;
   onDecline: () => void;
-  onSubmitConfirm: (evt: React.FormEvent<HTMLFormElement>) => void;
-  fetcher: { submit: (data: any, opts: any) => void };
-  t: TFunction<"users_manager">;
 };
 
 export function ManagerView(props: ManagerViewProps) {
-  const { t } = props;
-  const { errors } = props.form.formState;
+  const { t } = useTranslation("m_users_manager");
+
+  const [open, setOpen] = useState(false);
+
+  const form = useForm({
+    defaultValues: {
+      logo: props.data.client.logo ? props.data.client.logo : "",
+      phone: props.data.client.phone,
+      name: props.data.client.name,
+      counterparty: props.data.client.counterparty,
+      organizations: props.data.client.organizations,
+      locations: props.data.client.locations,
+      change_task: new Date(`2000-01-01T${props.data.client.change_task}`),
+      cancel_task: new Date(`2000-01-01T${props.data.client.cancel_task}`),
+      live_task: new Date(`2000-01-01T${props.data.client.live_task}`),
+      repeat_bid: new Date(`2000-01-01T${props.data.client.repeat_bid}`),
+      leave_bid: new Date(`2000-01-01T${props.data.client.leave_bid}`),
+      notification_start: props.data.client.notification_start,
+    },
+    resolver: zodResolver(
+      z.object({
+        logo: z.string({ error: t("text", { ns: "constructorFields" }) }),
+        phone: z.string({ error: t("text", { ns: "constructorFields" }) }),
+        name: z.string({ error: t("text", { ns: "constructorFields" }) }),
+        counterparty: z
+          .array(z.object({ id: z.number(), name: z.string() }))
+          .min(1),
+        organizations: z
+          .array(
+            z.object({ id: z.number(), logo: z.string(), name: z.string() }),
+          )
+          .min(1),
+        locations: z
+          .array(
+            z.object({ id: z.number(), logo: z.string(), address: z.string() }),
+          )
+          .min(1),
+        change_task: z.date({ error: t("text", { ns: "constructorFields" }) }),
+        cancel_task: z.date({ error: t("text", { ns: "constructorFields" }) }),
+        live_task: z.date({ error: t("text", { ns: "constructorFields" }) }),
+        repeat_bid: z.date({ error: t("text", { ns: "constructorFields" }) }),
+        leave_bid: z.date({ error: t("text", { ns: "constructorFields" }) }),
+        notification_start: z.string({
+          error: t("text", { ns: "constructorFields" }),
+        }),
+      }),
+    ),
+  });
 
   return (
     <>
-      {props.isLoading ? <Loader /> : null}
       <Box sx={{ paddingBottom: "54px" }}>
-        <TopNavigation header={{ text: t("header"), bold: false }} backAction={props.onBack} />
-        <form onSubmit={props.onSubmitConfirm}>
+        <TopNavigation
+          header={{ text: t("header"), bold: false }}
+          backAction={props.onBack}
+        />
+        <form
+          onSubmit={form.handleSubmit((values) => {
+            props.onSubmit(values);
+          })}
+          ref={props.ref}
+        >
           <Box sx={{ display: "grid", rowGap: "14px", pt: "20px", px: "16px" }}>
             <Avatar
-              src={`${import.meta.env.VITE_ASSET_PATH}${props.form.getValues().logo}`}
+              src={`${import.meta.env.VITE_ASSET_PATH}${form.getValues().logo}`}
               sx={(theme) => ({
                 width: "88px",
                 height: "88px",
@@ -105,75 +162,128 @@ export function ManagerView(props: ManagerViewProps) {
                 backgroundColor: (theme) => theme.vars.palette["Grey_5"],
                 borderRadius: "6px",
               }}
-              onClick={() => props.setOpen(true)}
+              onClick={() => setOpen(true)}
             >
-              <Typography component="p" variant="Reg_12" sx={{ color: (theme) => theme.vars.palette["Grey_2"] }}>
+              <Typography
+                component="p"
+                variant="Reg_12"
+                sx={{ color: (theme) => theme.vars.palette["Grey_2"] }}
+              >
                 {t("fields.avatarPlaceholder")}
               </Typography>
-              <Stack direction="row" sx={{ width: "100%", alignItems: "center" }}>
-                <Typography component="p" variant="Reg_14" sx={{ flexGrow: "1", color: (theme) => theme.vars.palette["Black"], textAlign: "left" }}>
+              <Stack
+                direction="row"
+                sx={{ width: "100%", alignItems: "center" }}
+              >
+                <Typography
+                  component="p"
+                  variant="Reg_14"
+                  sx={{
+                    flexGrow: "1",
+                    color: (theme) => theme.vars.palette["Black"],
+                    textAlign: "left",
+                  }}
+                >
                   {t("fields.avatarValue")}
                 </Typography>
-                <KeyboardArrowDownIcon sx={{ color: (theme) => theme.vars.palette["Grey_2"] }} />
+                <KeyboardArrowDownIcon
+                  sx={{ color: (theme) => theme.vars.palette["Grey_2"] }}
+                />
               </Stack>
             </Button>
 
             <Box>
-              <Typography component="p" variant="Reg_12" sx={(theme) => ({ color: theme.vars.palette.Grey_2 })}>
-                Статус
+              <Typography
+                component="p"
+                variant="Reg_12"
+                sx={(theme) => ({ color: theme.vars.palette.Grey_2 })}
+              >
+                {t("fields.statusPlaceholder")}
               </Typography>
-              <Box sx={{ display: "flex", columnGap: "8px", alignItems: "center" }}>
+              <Box
+                sx={{ display: "flex", columnGap: "8px", alignItems: "center" }}
+              >
                 <Box
-                  style={{ backgroundColor: statusCodeMap[props.loaderData.client.status as keyof typeof statusCodeMap].color }}
+                  style={{
+                    backgroundColor:
+                      statusCodeMap[
+                        props.data.client.status as keyof typeof statusCodeMap
+                      ].color,
+                  }}
                   sx={{ width: "14px", height: "14px", borderRadius: "50%" }}
                 />
                 <Typography component="p" variant="Reg_14">
-                  {t(`status.${statusCodeMap[props.loaderData.client.status as keyof typeof statusCodeMap].value}`)}
+                  {t(
+                    `status.${statusCodeMap[props.data.client.status as keyof typeof statusCodeMap].value}`,
+                  )}
                 </Typography>
               </Box>
             </Box>
 
             <Controller
               name="phone"
-              control={props.form.control}
+              control={form.control}
               render={({ field }) => (
                 <StyledPhoneField
                   inputType="phone"
                   placeholder={t("fields.phonePlaceholder")}
                   onImmediateChange={() => {}}
                   validation="none"
-                  error={errors.phone?.message}
+                  error={form.formState.errors.phone?.message}
                   {...field}
                 />
               )}
             />
             <Controller
               name="name"
-              control={props.form.control}
+              control={form.control}
               render={({ field }) => (
                 <StyledTextField
                   inputType="text"
                   placeholder={t("fields.name")}
                   onImmediateChange={() => {}}
                   validation="none"
-                  error={errors.name?.message}
+                  error={form.formState.errors.name?.message}
                   {...field}
                 />
               )}
             />
 
-            {props.form.getValues("counterparty").length > 0 ? <Typography component="p" variant="Bold_14">{t("counterparty")}</Typography> : null}
+            {form.getValues("counterparty").length > 0 ? (
+              <Typography component="p" variant="Bold_14">
+                {t("counterparty")}
+              </Typography>
+            ) : null}
             <Stack sx={{ rowGap: "14px" }}>
-              {props.form.getValues("counterparty").map((counterparty) => (
-                <Box key={counterparty.id} sx={{ display: "flex", columnGap: "12px", alignItems: "center" }}>
-                  <Typography component="p" variant="Reg_14" sx={{ flexGrow: "1" }}>{counterparty.name}</Typography>
-                  {props.form.getValues("counterparty").length > 1 ? (
+              {form.getValues("counterparty").map((counterparty) => (
+                <Box
+                  key={counterparty.id}
+                  sx={{
+                    display: "flex",
+                    columnGap: "12px",
+                    alignItems: "center",
+                  }}
+                >
+                  <Typography
+                    component="p"
+                    variant="Reg_14"
+                    sx={{ flexGrow: "1" }}
+                  >
+                    {counterparty.name}
+                  </Typography>
+                  {form.getValues("counterparty").length > 1 ? (
                     <IconButton
                       onClick={() => {
-                        const updatedList = props.form.getValues("counterparty").filter((item) => item.name !== counterparty.name);
-                        props.form.setValue("counterparty", updatedList);
-                        void props.form.trigger("counterparty");
-                        props.fetcher.submit(JSON.stringify({ _action: "_deleteCounterparty", userId: props.loaderData.client.id, counterpartyId: counterparty.id }), { method: "POST", encType: "application/json" });
+                        const updatedList = form
+                          .getValues("counterparty")
+                          .filter((item) => item.name !== counterparty.name);
+                        form.setValue("counterparty", updatedList);
+                        form.trigger("counterparty");
+
+                        props.onDeleteCounterparty({
+                          userId: props.data.client.id,
+                          counterpartyId: counterparty.id,
+                        });
                       }}
                       sx={{ width: "24px", height: "24px" }}
                     >
@@ -184,21 +294,47 @@ export function ManagerView(props: ManagerViewProps) {
               ))}
             </Stack>
 
-            <Button onClick={() => props.setOpenCounterparty(true)} variant="outlined">{t("counterpartySelector")}</Button>
+            {props.counterpartyActionSlot}
 
-            {props.form.getValues("organizations").length > 0 ? <Typography component="p" variant="Bold_14">{t("project")}</Typography> : null}
+            {form.getValues("organizations").length > 0 ? (
+              <Typography component="p" variant="Bold_14">
+                {t("project")}
+              </Typography>
+            ) : null}
             <Stack sx={{ rowGap: "14px" }}>
-              {props.form.getValues("organizations").map((organization) => (
-                <Box key={organization.name} sx={{ display: "flex", columnGap: "12px", alignItems: "center" }}>
-                  <Avatar src={`${import.meta.env.VITE_ASSET_PATH}${organization.logo}`} sx={{ width: "30px", height: "30px" }} />
-                  <Typography component="p" variant="Reg_14" sx={{ flexGrow: "1" }}>{organization.name}</Typography>
-                  {props.form.getValues("organizations").length > 1 ? (
+              {form.getValues("organizations").map((organization) => (
+                <Box
+                  key={organization.name}
+                  sx={{
+                    display: "flex",
+                    columnGap: "12px",
+                    alignItems: "center",
+                  }}
+                >
+                  <Avatar
+                    src={`${import.meta.env.VITE_ASSET_PATH}${organization.logo}`}
+                    sx={{ width: "30px", height: "30px" }}
+                  />
+                  <Typography
+                    component="p"
+                    variant="Reg_14"
+                    sx={{ flexGrow: "1" }}
+                  >
+                    {organization.name}
+                  </Typography>
+                  {form.getValues("organizations").length > 1 ? (
                     <IconButton
                       onClick={() => {
-                        const updatedList = props.form.getValues("organizations").filter((item) => item.name !== organization.name);
-                        props.form.setValue("organizations", updatedList);
-                        void props.form.trigger("organizations");
-                        props.fetcher.submit(JSON.stringify({ _action: "_deleteProject", userId: props.loaderData.client.id, projectId: organization.id }), { method: "POST", encType: "application/json" });
+                        const updatedList = form
+                          .getValues("organizations")
+                          .filter((item) => item.name !== organization.name);
+                        form.setValue("organizations", updatedList);
+                        form.trigger("organizations");
+
+                        props.onDeleteProject({
+                          userId: props.data.client.id,
+                          projectId: organization.id,
+                        });
                       }}
                       sx={{ width: "24px", height: "24px" }}
                     >
@@ -209,22 +345,54 @@ export function ManagerView(props: ManagerViewProps) {
               ))}
             </Stack>
 
-            <Button component={Link} to={withLocale(`/users/${props.loaderData.client.id}/select-projects`)} state={{ from: `/users/manager/${props.loaderData.client.id}` }} variant="outlined" startIcon={<FileIcon />}>
+            <Button
+              component={Link}
+              to={withLocale(`/users/${props.data.client.id}/select-projects`)}
+              state={{ from: `/users/manager/${props.data.client.id}` }}
+              variant="outlined"
+              startIcon={<FileIcon />}
+            >
               {t("projectSelector")}
             </Button>
 
-            {props.form.getValues("locations").length > 0 ? <Typography component="p" variant="Bold_14">{t("location")}</Typography> : null}
+            {form.getValues("locations").length > 0 ? (
+              <Typography component="p" variant="Bold_14">
+                {t("location")}
+              </Typography>
+            ) : null}
             <Stack sx={{ rowGap: "14px" }}>
-              {props.form.getValues("locations").map((location, index) => (
-                <Box key={index} sx={{ display: "flex", columnGap: "12px", alignItems: "center" }}>
-                  <Avatar src={`${import.meta.env.VITE_ASSET_PATH}${location.logo}`} sx={{ width: "30px", height: "30px" }} />
-                  <Typography component="p" variant="Reg_14" sx={{ flexGrow: "1" }}>{location.address}</Typography>
+              {form.getValues("locations").map((location, index) => (
+                <Box
+                  key={index}
+                  sx={{
+                    display: "flex",
+                    columnGap: "12px",
+                    alignItems: "center",
+                  }}
+                >
+                  <Avatar
+                    src={`${import.meta.env.VITE_ASSET_PATH}${location.logo}`}
+                    sx={{ width: "30px", height: "30px" }}
+                  />
+                  <Typography
+                    component="p"
+                    variant="Reg_14"
+                    sx={{ flexGrow: "1" }}
+                  >
+                    {location.address}
+                  </Typography>
                   <IconButton
                     onClick={() => {
-                      const updatedList = props.form.getValues("locations").filter((item) => item.address !== location.address);
-                      props.form.setValue("locations", updatedList);
-                      void props.form.trigger("locations");
-                      props.fetcher.submit(JSON.stringify({ _action: "_deletePlace", userId: props.loaderData.client.id, projectId: location.id }), { method: "POST", encType: "application/json" });
+                      const updatedList = form
+                        .getValues("locations")
+                        .filter((item) => item.address !== location.address);
+                      form.setValue("locations", updatedList);
+                      form.trigger("locations");
+
+                      props.onDeletePlace({
+                        userId: props.data.client.id,
+                        projectId: location.id,
+                      });
                     }}
                     sx={{ width: "24px", height: "24px" }}
                   >
@@ -234,21 +402,48 @@ export function ManagerView(props: ManagerViewProps) {
               ))}
             </Stack>
 
-            <Button component={Link} to={withLocale(`/users/${props.loaderData.client.id}/select-locations`)} state={{ from: `/users/manager/${props.loaderData.client.id}` }} variant="outlined" startIcon={<PointerIcon />}>
+            <Button
+              component={Link}
+              to={withLocale(`/users/${props.data.client.id}/select-locations`)}
+              state={{ from: `/users/manager/${props.data.client.id}` }}
+              variant="outlined"
+              startIcon={<PointerIcon />}
+            >
               {t("locationSelector")}
             </Button>
 
-            {props.loaderData.currentSupervisors.length > 0 ? (
+            {props.data.currentSupervisors.length > 0 ? (
               <>
-                <Typography component="p" variant="Bold_14">{t("supervisor")}</Typography>
+                <Typography component="p" variant="Bold_14">
+                  {t("supervisor")}
+                </Typography>
                 <Stack sx={{ rowGap: "14px" }}>
-                  {props.loaderData.currentSupervisors.map((supervisor) => (
-                    <Box key={supervisor.id} sx={{ display: "flex", columnGap: "12px", alignItems: "center" }}>
-                      <Avatar src={`${import.meta.env.VITE_ASSET_PATH}${supervisor.logo}`} sx={{ width: "30px", height: "30px" }} />
-                      <Typography component="p" variant="Reg_14" sx={{ flexGrow: "1" }}>{supervisor.email}</Typography>
+                  {props.data.currentSupervisors.map((supervisor) => (
+                    <Box
+                      key={supervisor.id}
+                      sx={{
+                        display: "flex",
+                        columnGap: "12px",
+                        alignItems: "center",
+                      }}
+                    >
+                      <Avatar
+                        src={`${import.meta.env.VITE_ASSET_PATH}${supervisor.logo}`}
+                        sx={{ width: "30px", height: "30px" }}
+                      />
+                      <Typography
+                        component="p"
+                        variant="Reg_14"
+                        sx={{ flexGrow: "1" }}
+                      >
+                        {supervisor.email}
+                      </Typography>
                       <IconButton
                         onClick={() => {
-                          props.fetcher.submit(JSON.stringify({ _action: "_deleteSupervisor", userId: props.loaderData.client.id, supervisorId: supervisor.id }), { method: "POST", encType: "application/json" });
+                          props.onDeleteSupervisor({
+                            userId: props.data.client.id,
+                            supervisorId: supervisor.id,
+                          });
                         }}
                         sx={{ width: "24px", height: "24px" }}
                       >
@@ -260,62 +455,161 @@ export function ManagerView(props: ManagerViewProps) {
               </>
             ) : null}
 
-            <Button variant="outlined" onClick={() => props.setSearchSupervisors(true)}>{t("supervisorInviteButton")}</Button>
+            {props.supervisorsActionSlot}
 
-            <Controller name="change_task" control={props.form.control} render={({ field }) => <TimeField placeholder={t("fields.editIntervalPlaceholder")} error={errors.change_task?.message} {...field} value={field.value.toISOString()} onChange={(value) => props.form.setValue("change_task", new Date(value))} />} />
-            <Controller name="cancel_task" control={props.form.control} render={({ field }) => <TimeField placeholder={t("fields.cancelIntervalPlaceholder")} error={errors.cancel_task?.message} {...field} value={field.value.toISOString()} onChange={(value) => props.form.setValue("cancel_task", new Date(value))} />} />
-            <Controller name="live_task" control={props.form.control} render={({ field }) => <TimeField placeholder={t("fields.durationIntervalPlaceholder")} error={errors.live_task?.message} {...field} value={field.value.toISOString()} onChange={(value) => props.form.setValue("live_task", new Date(value))} />} />
-            <Controller name="repeat_bid" control={props.form.control} render={({ field }) => <TimeField placeholder={t("fields.applicationFrequencyPlaceholder")} error={errors.repeat_bid?.message} {...field} value={field.value.toISOString()} onChange={(value) => props.form.setValue("repeat_bid", new Date(value))} />} />
-            <Controller name="leave_bid" control={props.form.control} render={({ field }) => <TimeField placeholder={t("fields.applicationCountdownPlaceholder")} error={errors.leave_bid?.message} {...field} value={field.value.toISOString()} onChange={(value) => props.form.setValue("leave_bid", new Date(value))} />} />
+            <Controller
+              name="change_task"
+              control={form.control}
+              render={({ field }) => (
+                <TimeField
+                  placeholder={t("fields.editIntervalPlaceholder")}
+                  error={form.formState.errors.change_task?.message}
+                  {...field}
+                  value={field.value.toISOString()}
+                  onChange={(value) =>
+                    form.setValue("change_task", new Date(value))
+                  }
+                />
+              )}
+            />
+            <Controller
+              name="cancel_task"
+              control={form.control}
+              render={({ field }) => (
+                <TimeField
+                  placeholder={t("fields.cancelIntervalPlaceholder")}
+                  error={form.formState.errors.cancel_task?.message}
+                  {...field}
+                  value={field.value.toISOString()}
+                  onChange={(value) =>
+                    form.setValue("cancel_task", new Date(value))
+                  }
+                />
+              )}
+            />
+            <Controller
+              name="live_task"
+              control={form.control}
+              render={({ field }) => (
+                <TimeField
+                  placeholder={t("fields.durationIntervalPlaceholder")}
+                  error={form.formState.errors.live_task?.message}
+                  {...field}
+                  value={field.value.toISOString()}
+                  onChange={(value) =>
+                    form.setValue("live_task", new Date(value))
+                  }
+                />
+              )}
+            />
+            <Controller
+              name="repeat_bid"
+              control={form.control}
+              render={({ field }) => (
+                <TimeField
+                  placeholder={t("fields.applicationFrequencyPlaceholder")}
+                  error={form.formState.errors.repeat_bid?.message}
+                  {...field}
+                  value={field.value.toISOString()}
+                  onChange={(value) =>
+                    form.setValue("repeat_bid", new Date(value))
+                  }
+                />
+              )}
+            />
+            <Controller
+              name="leave_bid"
+              control={form.control}
+              render={({ field }) => (
+                <TimeField
+                  placeholder={t("fields.applicationCountdownPlaceholder")}
+                  error={form.formState.errors.leave_bid?.message}
+                  {...field}
+                  value={field.value.toISOString()}
+                  onChange={(value) =>
+                    form.setValue("leave_bid", new Date(value))
+                  }
+                />
+              )}
+            />
 
             <Controller
               name="notification_start"
-              control={props.form.control}
+              control={form.control}
               render={({ field }) => (
                 <TextField
                   {...field}
                   label={t("fields.specialistTimerPlaceholder")}
-                  error={errors.notification_start?.message ? true : false}
-                  helperText={errors.notification_start?.message}
-                  slotProps={{ input: { inputComponent: MaskedField as never, inputProps: { mask: "00" }, inputMode: "numeric", type: "tel" } }}
+                  error={
+                    form.formState.errors.notification_start?.message
+                      ? true
+                      : false
+                  }
+                  helperText={form.formState.errors.notification_start?.message}
+                  slotProps={{
+                    input: {
+                      inputComponent: MaskedField as never,
+                      inputProps: { mask: "00" },
+                      inputMode: "numeric",
+                      type: "tel",
+                    },
+                  }}
                 />
               )}
             />
 
             <Box>
-              <Typography component="p" variant="Reg_12" sx={(theme) => ({ color: theme.vars.palette["Grey_2"] })}>{t("user_id")}</Typography>
-              <Typography component="p" variant="Reg_14" sx={(theme) => ({ color: theme.vars.palette["Black"] })}>{props.loaderData.client.id}</Typography>
+              <Typography
+                component="p"
+                variant="Reg_12"
+                sx={(theme) => ({ color: theme.vars.palette["Grey_2"] })}
+              >
+                {t("user_id")}
+              </Typography>
+              <Typography
+                component="p"
+                variant="Reg_14"
+                sx={(theme) => ({ color: theme.vars.palette["Black"] })}
+              >
+                {props.data.client.id}
+              </Typography>
             </Box>
 
-            {props.userRole === "admin" ? (
-              <>
-                <Button variant="contained" type="submit" startIcon={<CheckIcon />}>
-                  {props.loaderData.client.confirmRegister ? t("saveButton") : t("confirmButton")}
-                </Button>
-                <Button variant="text" onClick={props.onDecline}>{t("excludeButton")}</Button>
-              </>
-            ) : null}
+            {props.bottomSlot}
           </Box>
         </form>
       </Box>
 
-      <S_SwipeableDrawer open={props.open} onClose={() => props.setOpen(false)} onOpen={() => {}} disableBackdropTransition={true} disableSwipeToOpen={true} anchor="bottom">
+      <S_SwipeableDrawer
+        open={open}
+        onClose={() => setOpen(false)}
+        onOpen={() => {}}
+        disableBackdropTransition={true}
+        disableSwipeToOpen={true}
+        anchor="bottom"
+      >
         <Box sx={{ padding: "18px 16px" }}>
           <Controller
             name="logo"
-            control={props.form.control}
+            control={form.control}
             render={({ field }) => (
               <StyledRadioButton
                 onImmediateChange={() => {}}
                 inputType="radio"
                 validation="none"
-                options={getRadioButtons(props.loaderData.client.organizations)}
+                options={props.data.organizationsToSelect}
                 {...field}
                 onChange={(evt) => {
                   field.onChange(evt);
-                  const selectedOrganization = props.loaderData.client.organizations.find((item) => item.logo === evt.target.value);
+                  const selectedOrganization =
+                    props.data.client.organizations.find(
+                      (item) => item.logo === evt.target.value,
+                    );
                   if (selectedOrganization) {
-                    props.fetcher.submit(JSON.stringify({ _action: "_saveLogo", userId: props.loaderData.client.id, projectId: selectedOrganization.id }), { method: "POST", encType: "application/json" });
+                    props.onSaveLogo({
+                      userId: props.data.client.id,
+                      projectId: selectedOrganization.id,
+                    });
                   }
                 }}
               />
@@ -323,90 +617,6 @@ export function ManagerView(props: ManagerViewProps) {
           />
         </Box>
       </S_SwipeableDrawer>
-
-      <SwipeableDrawer
-        open={props.searchSupervisors}
-        onClose={() => {
-          props.supervisorForm.reset();
-          props.setSearchSupervisors(false);
-        }}
-        onOpen={() => {}}
-        disableBackdropTransition={true}
-        disableSwipeToOpen={true}
-        anchor="bottom"
-        sx={{ "& .MuiDrawer-paper": { borderRadius: "6px" } }}
-      >
-        <TopNavigation header={{ text: t("supervisorHeader"), bold: false }} />
-        <form
-          onSubmit={props.supervisorForm.handleSubmit(() => {
-            props.fetcher.submit(
-              JSON.stringify({
-                _action: "_inviteSupervisors",
-                userId: props.loaderData.client.id,
-                supervisors: props.supervisorForm.getValues("supervisors"),
-              }),
-              { method: "POST", encType: "application/json" },
-            );
-            props.supervisorForm.reset();
-            props.setSearchSupervisors(false);
-          })}
-        >
-          <Box sx={{ position: "relative", display: "grid", alignContent: "flex-start", rowGap: "14px", pt: "20px", px: "16px", height: "85vh" }}>
-            <Controller
-              name="searchbar"
-              control={props.supervisorForm.control}
-              render={({ field }) => (
-                <StyledSearchBar
-                  placeholder={t("fields.supervisorSearchPlaceholder")}
-                  {...field}
-                  onChange={(evt) => {
-                    const value = evt.target.value;
-                    const regex = new RegExp(`${value}`, "i");
-                    const matching = value !== ""
-                      ? props.selectedSupervisors.filter((item) => regex.test(item.label))
-                      : [...props.loaderData.supervisorsToSelect];
-                    props.setSelectedSupervisors(matching);
-                    field.onChange(evt);
-                  }}
-                />
-              )}
-            />
-
-            <Controller
-              name="supervisors"
-              control={props.supervisorForm.control}
-              render={({ field }) => (
-                <StyledCheckboxMultiple
-                  inputType="checkboxMultiple"
-                  onImmediateChange={() => {}}
-                  options={props.selectedSupervisors}
-                  {...field}
-                />
-              )}
-            />
-
-            <Box sx={(theme) => ({ display: "flex", columnGap: "14px", padding: "10px", backgroundColor: theme.vars.palette["White"], position: "fixed", zIndex: 1, width: "100%", bottom: "0", left: "0" })}>
-              <Button type="submit" variant="contained" startIcon={<AddIcon />}>
-                {t("supervisorInviteButton")}
-              </Button>
-            </Box>
-          </Box>
-        </form>
-      </SwipeableDrawer>
-
-      <CheckboxSearchableDrawerComponent
-        translation="counterparty"
-        open={props.openCounterparty}
-        onClose={() => props.setOpenCounterparty(false)}
-        onSubmit={(counterparties) => {
-          props.fetcher.submit(
-            JSON.stringify({ _action: "_setCounterparty", userId: props.loaderData.client.id, counterparties }),
-            { method: "POST", encType: "application/json" },
-          );
-        }}
-        items={props.loaderData.counterparty as ComponentPropsWithoutRef<typeof CheckboxSearchableDrawer>["items"]}
-        value={props.loaderData.client.counterparty.map((item) => item.id.toString())}
-      />
     </>
   );
 }

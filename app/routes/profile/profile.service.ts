@@ -12,8 +12,6 @@ import { appTokens } from "~/shared/container/container.tokens";
 
 import { ProfileMapper, ProfileData } from "./profile.mapper";
 
-
-
 export class ProfileService {
   constructor(
     private readonly fetchUserInfoCached: FetchUserInfoCached,
@@ -24,9 +22,10 @@ export class ProfileService {
 
   async loadProfile(): Promise<ProfileData> {
     const accessToken = this.appService.getToken();
+    const userRole = this.appService.getUserRole();
     const data = await this.fetchUserInfoCached(accessToken);
 
-    return ProfileMapper.toData(data);
+    return ProfileMapper.toData(data, userRole);
   }
 
   logout() {

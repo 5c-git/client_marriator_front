@@ -1,8 +1,11 @@
-import { Controller } from "react-hook-form";
-import { Link, type useFetcher } from "react-router";
+import { Link } from "react-router";
+import { ReactNode, useState } from "react";
 
-import type { UseFormReturn } from "react-hook-form";
-import type { TFunction } from "i18next";
+import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { Controller, useForm } from "react-hook-form";
+
+import { useTranslation } from "react-i18next";
 
 import { withLocale } from "~/shared/withLocale";
 import { statusCodeMap } from "~/shared/usersStatusCodeMap";
@@ -13,33 +16,28 @@ import {
   Avatar,
   Typography,
   TextField,
-  SwipeableDrawer,
 } from "@mui/material";
 import Box from "@mui/material/Box";
 import Stack from "@mui/material/Stack";
 
 import { TopNavigation } from "~/shared/ui/TopNavigation/TopNavigation";
-import { Loader } from "~/shared/ui/Loader/Loader";
+
 import { StyledTextField } from "~/shared/ui/StyledTextField/StyledTextField";
 import { StyledPhoneField } from "~/shared/ui/StyledPhoneField/StyledPhoneField";
 import { StyledRadioButton } from "~/shared/ui/StyledRadioButton/StyledRadioButton";
-import { StyledCheckboxMultiple } from "~/shared/ui/StyledCheckboxMultiple/StyledCheckboxMultiple";
-import { StyledSearchBar } from "~/shared/ui/StyledSearchBar/StyledSearchBar";
+
 import { TimeField } from "~/shared/ui/TimeField/TimeField";
 import { MaskedField } from "~/shared/ui/MaskedField/MaskedField";
-import { CheckboxSearchableDrawer } from "~/shared/ui/CheckboxSearchableDrawer/CheckboxSearchableDrawer";
 
 import { S_SwipeableDrawer } from "../supervisor.styled";
 
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
-import AddIcon from "@mui/icons-material/Add";
+
 import { FileIcon } from "~/shared/icons/FileIcon";
 import { PointerIcon } from "~/shared/icons/PointerIcon";
-import { CheckIcon } from "~/shared/icons/CheckIcon";
 import { DeleteIcon } from "~/shared/icons/DeleteIcon";
 
-import type { SupervisorLoaderData } from "../supervisor.mapper";
-import type { SupervisorFormValues } from "../supervisor.hooks";
+import type { SupervisorData } from "../supervisor.mapper";
 
 const getRadioButtons = (list: { id: number; name: string; logo: string }[]) =>
   list.map((item) => ({
@@ -50,33 +48,110 @@ const getRadioButtons = (list: { id: number; name: string; logo: string }[]) =>
     image: `${import.meta.env.VITE_ASSET_PATH}${item.logo}`,
   }));
 
+export type SupervisorFormValues = {
+  logo: string;
+  phone: string;
+  name: string;
+  counterparty: { id: number; name: string }[];
+  organizations: { id: number; logo: string; name: string }[];
+  locations: { id: number; logo: string; address: string }[];
+  repeat_bid: Date;
+  leave_bid: Date;
+  live_task: Date;
+  waiting_task: string;
+  refusal_task: Date;
+  count_wait_bid: string;
+  time_answer_bid: string;
+  notification_start: string;
+};
+
 type SupervisorViewProps = {
-  loaderData: SupervisorLoaderData;
-  userRole: string | null | undefined;
-  isLoading: boolean;
-  open: boolean;
-  setOpen: (v: boolean) => void;
-  openCounterparty: boolean;
-  setOpenCounterparty: (v: boolean) => void;
-  searchManagers: boolean;
-  setSearchManagers: (v: boolean) => void;
-  selectedManagers: SupervisorLoaderData["managersToSelect"];
-  setSelectedManagers: (v: SupervisorLoaderData["managersToSelect"]) => void;
-  form: UseFormReturn<SupervisorFormValues>;
-  managerForm: UseFormReturn<{ searchbar: string; managers: string[] }>;
+  data: SupervisorData;
+  onSubmit: (values: SupervisorFormValues) => void;
   onBack: () => void;
-  onDecline: () => void;
-  onSubmitConfirm: (evt: React.FormEvent<HTMLFormElement>) => void;
-  fetcher: Pick<ReturnType<typeof useFetcher>, "submit">;
-  t: TFunction<"users_supervisor">;
+
+  onSaveLogo: (values: { userId: number; projectId: number }) => void;
+  onDeleteProject: (values: { userId: number; projectId: number }) => void;
+  onDeletePlace: (values: { userId: number; projectId: number }) => void;
+
+  deleteManagerSlot: (values: {
+    userId: number;
+    managerId: number;
+  }) => ReactNode;
+  onDeleteCounterparty: (values: {
+    userId: number;
+    counterpartyId: number;
+  }) => void;
+
+  managersActionSlot: ReactNode;
+  counterpartyActionSlot: ReactNode;
+  bottomSlot: ReactNode;
 };
 
 export function SupervisorView(props: SupervisorViewProps) {
-  const { errors } = props.form.formState;
+  const { t } = useTranslation("m_users_supervisor");
+
+  const [open, setOpen] = useState(false);
+
+  const form = useForm({
+    defaultValues: {
+      logo: props.data.client.logo ? props.data.client.logo : "",
+      phone: props.data.client.phone,
+      name: props.data.client.name,
+      counterparty: props.data.client.counterparty,
+      organizations: props.data.client.organizations,
+      locations: props.data.client.locations,
+      repeat_bid: new Date(`2000-01-01T${props.data.client.repeat_bid}`),
+      leave_bid: new Date(`2000-01-01T${props.data.client.leave_bid}`),
+      live_task: new Date(`2000-01-01T${props.data.client.live_task}`),
+      waiting_task: props.data.client.waiting_task
+        ? props.data.client.waiting_task.toString()
+        : "",
+      refusal_task: new Date(`2000-01-01T${props.data.client.refusal_task}`),
+      count_wait_bid: props.data.client.count_wait_bid.toString(),
+      time_answer_bid: props.data.client.time_answer_bid.toString(),
+      notification_start: props.data.client.notification_start.toString(),
+    },
+    resolver: zodResolver(
+      z.object({
+        logo: z.string({ error: t("text", { ns: "constructorFields" }) }),
+        phone: z.string({ error: t("text", { ns: "constructorFields" }) }),
+        name: z.string({ error: t("text", { ns: "constructorFields" }) }),
+        counterparty: z
+          .array(z.object({ id: z.number(), name: z.string() }))
+          .min(1),
+        organizations: z
+          .array(
+            z.object({ id: z.number(), logo: z.string(), name: z.string() }),
+          )
+          .min(1),
+        locations: z
+          .array(
+            z.object({ id: z.number(), logo: z.string(), address: z.string() }),
+          )
+          .min(1),
+        repeat_bid: z.date({ error: t("text", { ns: "constructorFields" }) }),
+        leave_bid: z.date({ error: t("text", { ns: "constructorFields" }) }),
+        live_task: z.date({ error: t("text", { ns: "constructorFields" }) }),
+        waiting_task: z.string({
+          error: t("text", { ns: "constructorFields" }),
+        }),
+        refusal_task: z.date({ error: t("text", { ns: "constructorFields" }) }),
+        count_wait_bid: z.string({
+          error: t("text", { ns: "constructorFields" }),
+        }),
+        time_answer_bid: z.string({
+          error: t("text", { ns: "constructorFields" }),
+        }),
+        notification_start: z.string({
+          error: t("text", { ns: "constructorFields" }),
+        }),
+      }),
+    ),
+  });
+
   return (
     <>
-      {props.isLoading ? <Loader /> : null}
-
       <Box
         sx={{
           paddingBottom: "54px",
@@ -84,13 +159,17 @@ export function SupervisorView(props: SupervisorViewProps) {
       >
         <TopNavigation
           header={{
-            text: props.t("header"),
+            text: t("header"),
             bold: false,
           }}
           backAction={props.onBack}
         />
 
-        <form onSubmit={props.onSubmitConfirm}>
+        <form
+          onSubmit={form.handleSubmit((values) => {
+            props.onSubmit(values);
+          })}
+        >
           <Box
             sx={{
               display: "grid",
@@ -101,7 +180,7 @@ export function SupervisorView(props: SupervisorViewProps) {
             }}
           >
             <Avatar
-              src={`${import.meta.env.VITE_ASSET_PATH}${props.form.getValues().logo}`}
+              src={`${import.meta.env.VITE_ASSET_PATH}${form.getValues().logo}`}
               sx={(theme) => ({
                 width: "88px",
                 height: "88px",
@@ -109,7 +188,7 @@ export function SupervisorView(props: SupervisorViewProps) {
                 ...theme.typography.Reg_16,
               })}
             >
-              {props.t("avatar")}
+              {t("avatar")}
             </Avatar>
 
             <Button
@@ -123,7 +202,7 @@ export function SupervisorView(props: SupervisorViewProps) {
                 borderRadius: "6px",
               }}
               onClick={() => {
-                props.setOpen(true);
+                setOpen(true);
               }}
             >
               <Typography
@@ -133,7 +212,7 @@ export function SupervisorView(props: SupervisorViewProps) {
                   color: (theme) => theme.vars.palette["Grey_2"],
                 }}
               >
-                {props.t("fields.avatarPlaceholder")}
+                {t("fields.avatarPlaceholder")}
               </Typography>
               <Stack
                 direction="row"
@@ -151,7 +230,7 @@ export function SupervisorView(props: SupervisorViewProps) {
                     textAlign: "left",
                   }}
                 >
-                  {props.t("fields.avatarValue")}
+                  {t("fields.avatarValue")}
                 </Typography>{" "}
                 <KeyboardArrowDownIcon
                   sx={{
@@ -169,7 +248,7 @@ export function SupervisorView(props: SupervisorViewProps) {
                   color: theme.vars.palette.Grey_2,
                 })}
               >
-                {props.t("statusText")}
+                {t("statusText")}
               </Typography>
               <Box
                 sx={{
@@ -182,7 +261,7 @@ export function SupervisorView(props: SupervisorViewProps) {
                   style={{
                     backgroundColor:
                       statusCodeMap[
-                        props.loaderData.client.status as keyof typeof statusCodeMap
+                        props.data.client.status as keyof typeof statusCodeMap
                       ].color,
                   }}
                   sx={{
@@ -192,8 +271,8 @@ export function SupervisorView(props: SupervisorViewProps) {
                   }}
                 ></Box>
                 <Typography component="p" variant="Reg_14">
-                  {props.t(
-                    `status.${statusCodeMap[props.loaderData.client.status as keyof typeof statusCodeMap].value}`,
+                  {t(
+                    `status.${statusCodeMap[props.data.client.status as keyof typeof statusCodeMap].value}`,
                   )}
                 </Typography>
               </Box>
@@ -201,36 +280,36 @@ export function SupervisorView(props: SupervisorViewProps) {
 
             <Controller
               name="phone"
-              control={props.form.control}
+              control={form.control}
               render={({ field }) => (
                 <StyledPhoneField
                   inputType="phone"
-                  placeholder={props.t("fields.phonePlaceholder")}
+                  placeholder={t("fields.phonePlaceholder")}
                   onImmediateChange={() => {}}
                   validation="none"
-                  error={errors.phone?.message}
+                  error={form.formState.errors.phone?.message}
                   {...field}
                 />
               )}
             />
             <Controller
               name="name"
-              control={props.form.control}
+              control={form.control}
               render={({ field }) => (
                 <StyledTextField
                   inputType="text"
-                  placeholder={props.t("fields.name")}
+                  placeholder={t("fields.name")}
                   onImmediateChange={() => {}}
                   validation="none"
-                  error={errors.name?.message}
+                  error={form.formState.errors.name?.message}
                   {...field}
                 />
               )}
             />
 
-            {props.form.getValues("counterparty").length > 0 ? (
+            {form.getValues("counterparty").length > 0 ? (
               <Typography component="p" variant="Bold_14">
-                {props.t("counterparty")}
+                {t("counterparty")}
               </Typography>
             ) : null}
 
@@ -239,7 +318,7 @@ export function SupervisorView(props: SupervisorViewProps) {
                 rowGap: "14px",
               }}
             >
-              {props.form.getValues("counterparty").map((counterparty) => (
+              {form.getValues("counterparty").map((counterparty) => (
                 <Box
                   key={counterparty.id}
                   sx={{
@@ -258,27 +337,20 @@ export function SupervisorView(props: SupervisorViewProps) {
                     {counterparty.name}
                   </Typography>
 
-                  {props.form.getValues("counterparty").length > 1 ? (
+                  {form.getValues("counterparty").length > 1 ? (
                     <IconButton
                       onClick={() => {
-                        const currentList = props.form.getValues("counterparty");
+                        const currentList = form.getValues("counterparty");
                         const updatedList = currentList.filter(
                           (item) => item.name !== counterparty.name,
                         );
-                        props.form.setValue("counterparty", updatedList);
-                        props.form.trigger("counterparty");
+                        form.setValue("counterparty", updatedList);
+                        form.trigger("counterparty");
 
-                        props.fetcher.submit(
-                          JSON.stringify({
-                            _action: "_deleteCounterparty",
-                            userId: props.loaderData.client.id,
-                            counterpartyId: counterparty.id,
-                          }),
-                          {
-                            method: "POST",
-                            encType: "application/json",
-                          },
-                        );
+                        props.onDeleteCounterparty({
+                          userId: props.data.client.id,
+                          counterpartyId: counterparty.id,
+                        });
                       }}
                       sx={{
                         width: "24px",
@@ -297,18 +369,11 @@ export function SupervisorView(props: SupervisorViewProps) {
               ))}
             </Stack>
 
-            <Button
-              onClick={() => {
-                props.setOpenCounterparty(true);
-              }}
-              variant="outlined"
-            >
-              {props.t("counterpartySelector")}
-            </Button>
+            {props.counterpartyActionSlot}
 
-            {props.form.getValues("organizations").length > 0 ? (
+            {form.getValues("organizations").length > 0 ? (
               <Typography component="p" variant="Bold_14">
-                {props.t("project")}
+                {t("project")}
               </Typography>
             ) : null}
 
@@ -317,7 +382,7 @@ export function SupervisorView(props: SupervisorViewProps) {
                 rowGap: "14px",
               }}
             >
-              {props.form.getValues("organizations").map((organization) => (
+              {form.getValues("organizations").map((organization) => (
                 <Box
                   key={organization.name}
                   sx={{
@@ -343,27 +408,20 @@ export function SupervisorView(props: SupervisorViewProps) {
                     {organization.name}
                   </Typography>
 
-                  {props.form.getValues("organizations").length > 1 ? (
+                  {form.getValues("organizations").length > 1 ? (
                     <IconButton
                       onClick={() => {
-                        const currentList = props.form.getValues("organizations");
+                        const currentList = form.getValues("organizations");
                         const updatedList = currentList.filter(
                           (item) => item.name !== organization.name,
                         );
-                        props.form.setValue("organizations", updatedList);
-                        props.form.trigger("organizations");
+                        form.setValue("organizations", updatedList);
+                        form.trigger("organizations");
 
-                        props.fetcher.submit(
-                          JSON.stringify({
-                            _action: "_deleteProject",
-                            userId: props.loaderData.client.id,
-                            projectId: organization.id,
-                          }),
-                          {
-                            method: "POST",
-                            encType: "application/json",
-                          },
-                        );
+                        props.onDeleteProject({
+                          userId: props.data.client.id,
+                          projectId: organization.id,
+                        });
                       }}
                       sx={{
                         width: "24px",
@@ -384,21 +442,19 @@ export function SupervisorView(props: SupervisorViewProps) {
 
             <Button
               component={Link}
-              to={withLocale(`/users/${props.loaderData.client.id}/select-projects`)}
+              to={withLocale(`/users/${props.data.client.id}/select-projects`)}
               state={{
-                from: `/users/supervisor/${props.loaderData.client.id}`,
-                // status: state.status,
-                // statusColor: state.statusColor,
+                from: `/users/supervisor/${props.data.client.id}`,
               }}
               variant="outlined"
               startIcon={<FileIcon />}
             >
-              {props.t("projectSelector")}
+              {t("projectSelector")}
             </Button>
 
-            {props.form.getValues("locations").length > 0 ? (
+            {form.getValues("locations").length > 0 ? (
               <Typography component="p" variant="Bold_14">
-                {props.t("location")}
+                {t("location")}
               </Typography>
             ) : null}
 
@@ -407,7 +463,7 @@ export function SupervisorView(props: SupervisorViewProps) {
                 rowGap: "14px",
               }}
             >
-              {props.form.getValues("locations").map((location, index) => (
+              {form.getValues("locations").map((location, index) => (
                 <Box
                   key={index}
                   sx={{
@@ -434,24 +490,17 @@ export function SupervisorView(props: SupervisorViewProps) {
 
                   <IconButton
                     onClick={() => {
-                      const currentList = props.form.getValues("locations");
+                      const currentList = form.getValues("locations");
                       const updatedList = currentList.filter(
                         (item) => item.address !== location.address,
                       );
-                      props.form.setValue("locations", updatedList);
-                      props.form.trigger("locations");
+                      form.setValue("locations", updatedList);
+                      form.trigger("locations");
 
-                      props.fetcher.submit(
-                        JSON.stringify({
-                          _action: "_deletePlace",
-                          userId: props.loaderData.client.id,
-                          projectId: location.id,
-                        }),
-                        {
-                          method: "POST",
-                          encType: "application/json",
-                        },
-                      );
+                      props.onDeletePlace({
+                        userId: props.data.client.id,
+                        projectId: location.id,
+                      });
                     }}
                     sx={{
                       width: "24px",
@@ -471,30 +520,30 @@ export function SupervisorView(props: SupervisorViewProps) {
 
             <Button
               component={Link}
-              to={withLocale(`/users/${props.loaderData.client.id}/select-locations`)}
+              to={withLocale(`/users/${props.data.client.id}/select-locations`)}
               state={{
-                from: `/users/supervisor/${props.loaderData.client.id}`,
+                from: `/users/supervisor/${props.data.client.id}`,
                 // status: state.status,
                 // statusColor: state.statusColor,
               }}
               variant="outlined"
               startIcon={<PointerIcon />}
             >
-              {props.t("locationSelector")}
+              {t("locationSelector")}
             </Button>
 
-            {props.loaderData.currentManagers.length > 0 ? (
+            {props.data.currentManagers.length > 0 ? (
               <>
                 {" "}
                 <Typography component="p" variant="Bold_14">
-                  {props.t("manager")}
+                  {t("manager")}
                 </Typography>{" "}
                 <Stack
                   sx={{
                     rowGap: "14px",
                   }}
                 >
-                  {props.loaderData.currentManagers.map((manager, index) => (
+                  {props.data.currentManagers.map((manager, index) => (
                     <Box
                       key={index}
                       sx={{
@@ -518,93 +567,59 @@ export function SupervisorView(props: SupervisorViewProps) {
                         {manager.email}
                       </Typography>
 
-                      {props.userRole === "admin" ? (
-                        <IconButton
-                          onClick={() => {
-                            props.fetcher.submit(
-                              JSON.stringify({
-                                _action: "_deleteManager",
-                                userId: props.loaderData.client.id,
-                                managerId: manager.id,
-                              }),
-                              {
-                                method: "POST",
-                                encType: "application/json",
-                              },
-                            );
-                          }}
-                          sx={{
-                            width: "24px",
-                            height: "24px",
-                          }}
-                        >
-                          <DeleteIcon
-                            sx={{
-                              width: "12px",
-                              height: "12px",
-                            }}
-                          />
-                        </IconButton>
-                      ) : null}
+                      {props.deleteManagerSlot({
+                        userId: props.data.client.id,
+                        managerId: manager.id,
+                      })}
                     </Box>
                   ))}
                 </Stack>
               </>
             ) : null}
 
-            {props.userRole === "admin" ? (
-              <Button
-                variant="outlined"
-                onClick={() => {
-                  props.setSearchManagers(true);
-                }}
-                // startIcon={<PointerIcon />}
-              >
-                {props.t("managerInviteButton")}
-              </Button>
-            ) : null}
+            {props.managersActionSlot}
 
             <Controller
               name="repeat_bid"
-              control={props.form.control}
+              control={form.control}
               render={({ field }) => (
                 <TimeField
-                  placeholder={props.t("fields.applicationFrequencyPlaceholder")}
-                  error={errors.repeat_bid?.message}
+                  placeholder={t("fields.applicationFrequencyPlaceholder")}
+                  error={form.formState.errors.repeat_bid?.message}
                   {...field}
                   value={field.value.toISOString()}
                   onChange={(value) => {
-                    props.form.setValue("repeat_bid", new Date(value));
+                    form.setValue("repeat_bid", new Date(value));
                   }}
                 />
               )}
             />
             <Controller
               name="leave_bid"
-              control={props.form.control}
+              control={form.control}
               render={({ field }) => (
                 <TimeField
-                  placeholder={props.t("fields.applicationCountdownPlaceholder")}
-                  error={errors.leave_bid?.message}
+                  placeholder={t("fields.applicationCountdownPlaceholder")}
+                  error={form.formState.errors.leave_bid?.message}
                   {...field}
                   value={field.value.toISOString()}
                   onChange={(value) => {
-                    props.form.setValue("leave_bid", new Date(value));
+                    form.setValue("leave_bid", new Date(value));
                   }}
                 />
               )}
             />
             <Controller
               name="live_task"
-              control={props.form.control}
+              control={form.control}
               render={({ field }) => (
                 <TimeField
-                  placeholder={props.t("fields.taskCountdownCancelPlaceholder")}
-                  error={errors.live_task?.message}
+                  placeholder={t("fields.taskCountdownCancelPlaceholder")}
+                  error={form.formState.errors.live_task?.message}
                   {...field}
                   value={field.value.toISOString()}
                   onChange={(value) => {
-                    props.form.setValue("live_task", new Date(value));
+                    form.setValue("live_task", new Date(value));
                   }}
                 />
               )}
@@ -612,10 +627,10 @@ export function SupervisorView(props: SupervisorViewProps) {
 
             <Controller
               name="waiting_task"
-              control={props.form.control}
+              control={form.control}
               render={({ field }) => (
                 <TextField
-                  label={props.t("fields.taskCountdownCancelDurationPlaceholder")}
+                  label={t("fields.taskCountdownCancelDurationPlaceholder")}
                   slotProps={{
                     input: {
                       inputComponent: MaskedField as never,
@@ -633,15 +648,15 @@ export function SupervisorView(props: SupervisorViewProps) {
 
             <Controller
               name="refusal_task"
-              control={props.form.control}
+              control={form.control}
               render={({ field }) => (
                 <TimeField
-                  placeholder={props.t("fields.refusalTaskPlaceholder")}
-                  error={errors.refusal_task?.message}
+                  placeholder={t("fields.refusalTaskPlaceholder")}
+                  error={form.formState.errors.refusal_task?.message}
                   {...field}
                   value={field.value.toISOString()}
                   onChange={(value) => {
-                    props.form.setValue("refusal_task", new Date(value));
+                    form.setValue("refusal_task", new Date(value));
                   }}
                 />
               )}
@@ -649,10 +664,10 @@ export function SupervisorView(props: SupervisorViewProps) {
 
             <Controller
               name="count_wait_bid"
-              control={props.form.control}
+              control={form.control}
               render={({ field }) => (
                 <TextField
-                  // label={props.t("fields.taskCountdownCancelDurationPlaceholder")}
+                  // label={t("fields.taskCountdownCancelDurationPlaceholder")}
                   label={"count_wait_bid"}
                   slotProps={{
                     input: {
@@ -671,10 +686,10 @@ export function SupervisorView(props: SupervisorViewProps) {
 
             <Controller
               name="time_answer_bid"
-              control={props.form.control}
+              control={form.control}
               render={({ field }) => (
                 <TextField
-                  // label={props.t("fields.taskCountdownCancelDurationPlaceholder")}
+                  // label={t("fields.taskCountdownCancelDurationPlaceholder")}
                   label={"time_answer_bid"}
                   slotProps={{
                     input: {
@@ -693,10 +708,10 @@ export function SupervisorView(props: SupervisorViewProps) {
 
             <Controller
               name="notification_start"
-              control={props.form.control}
+              control={form.control}
               render={({ field }) => (
                 <TextField
-                  // label={props.t("fields.taskCountdownCancelDurationPlaceholder")}
+                  // label={t("fields.taskCountdownCancelDurationPlaceholder")}
                   label={"notification_start"}
                   slotProps={{
                     input: {
@@ -721,7 +736,7 @@ export function SupervisorView(props: SupervisorViewProps) {
                   color: theme.vars.palette["Grey_2"],
                 })}
               >
-                {props.t("user_id")}
+                {t("user_id")}
               </Typography>
               <Typography
                 component="p"
@@ -730,35 +745,19 @@ export function SupervisorView(props: SupervisorViewProps) {
                   color: theme.vars.palette["Black"],
                 })}
               >
-                {props.loaderData.client.id}
+                {props.data.client.id}
               </Typography>
             </Box>
 
-            {props.userRole === "admin" || props.userRole === "manager" ? (
-              <>
-                {" "}
-                <Button
-                  variant="contained"
-                  type="submit"
-                  startIcon={<CheckIcon />}
-                >
-                  {props.loaderData.client.confirmRegister
-                    ? props.t("saveButton")
-                    : props.t("confirmButton")}
-                </Button>
-                <Button variant="text" onClick={props.onDecline}>
-                  {props.t("excludeButton")}
-                </Button>
-              </>
-            ) : null}
+            {props.bottomSlot}
           </Box>
         </form>
       </Box>
 
       <S_SwipeableDrawer
-        open={props.open}
+        open={open}
         onClose={() => {
-          props.setOpen(false);
+          setOpen(false);
         }}
         onOpen={() => {}}
         disableBackdropTransition={true}
@@ -772,34 +771,27 @@ export function SupervisorView(props: SupervisorViewProps) {
         >
           <Controller
             name="logo"
-            control={props.form.control}
+            control={form.control}
             render={({ field }) => (
               <StyledRadioButton
                 onImmediateChange={() => {}}
                 inputType="radio"
                 validation="none"
-                options={getRadioButtons(props.loaderData.client.organizations)}
+                options={getRadioButtons(props.data.client.organizations)}
                 {...field}
                 onChange={(evt) => {
                   field.onChange(evt);
 
                   const selectedOrganization =
-                    props.loaderData.client.organizations.find(
+                    props.data.client.organizations.find(
                       (item) => item.logo === evt.target.value,
                     );
 
                   if (selectedOrganization) {
-                    props.fetcher.submit(
-                      JSON.stringify({
-                        _action: "_saveLogo",
-                        userId: props.loaderData.client.id,
-                        projectId: selectedOrganization.id,
-                      }),
-                      {
-                        method: "POST",
-                        encType: "application/json",
-                      },
-                    );
+                    props.onSaveLogo({
+                      userId: props.data.client.id,
+                      projectId: selectedOrganization.id,
+                    });
                   }
                 }}
               />
@@ -807,145 +799,6 @@ export function SupervisorView(props: SupervisorViewProps) {
           />
         </Box>
       </S_SwipeableDrawer>
-
-      <SwipeableDrawer
-        open={props.searchManagers}
-        onClose={() => {
-          props.managerForm.reset();
-          props.setSearchManagers(false);
-        }}
-        onOpen={() => {}}
-        disableBackdropTransition={true}
-        disableSwipeToOpen={true}
-        anchor="bottom"
-        sx={{
-          "& .MuiDrawer-paper": {
-            borderRadius: "6px",
-          },
-        }}
-      >
-        <TopNavigation
-          header={{
-            text: props.t("managerHeader"),
-            bold: false,
-          }}
-        />
-        <form
-          onSubmit={props.managerForm.handleSubmit(() => {
-            props.fetcher.submit(
-              JSON.stringify({
-                _action: "_inviteManagers",
-                userId: props.loaderData.client.id,
-                managers: props.managerForm.getValues("managers"),
-              }),
-              { method: "POST", encType: "application/json" },
-            );
-            props.managerForm.reset();
-            props.setSearchManagers(false);
-          })}
-        >
-          <Box
-            sx={{
-              position: "relative",
-              display: "grid",
-              alignContent: "flex-start",
-              rowGap: "14px",
-              paddingTop: "20px",
-              paddingLeft: "16px",
-              paddingRight: "16px",
-              height: "85vh",
-            }}
-          >
-            <Controller
-              name="searchbar"
-              control={props.managerForm.control}
-              render={({ field }) => (
-                <StyledSearchBar
-                  placeholder={props.t("fields.managerSearchPlaceholder")}
-                  {...field}
-                  onChange={(evt) => {
-                    const currentFieldValue = new RegExp(
-                      `${evt.target.value}`,
-                      "i",
-                    );
-
-                    let matchingManagers: typeof props.loaderData.managersToSelect =
-                      [];
-
-                    if (evt.target.value !== "") {
-                      matchingManagers = [
-                        ...props.selectedManagers.filter((item) =>
-                          currentFieldValue.test(item.label),
-                        ),
-                      ];
-                    } else {
-                      matchingManagers = [...props.loaderData.managersToSelect];
-                    }
-
-                    props.setSelectedManagers(matchingManagers);
-
-                    field.onChange(evt);
-                  }}
-                />
-              )}
-            />
-
-            <Controller
-              name="managers"
-              control={props.managerForm.control}
-              render={({ field }) => (
-                <StyledCheckboxMultiple
-                  inputType="checkboxMultiple"
-                  onImmediateChange={() => {}}
-                  options={props.selectedManagers}
-                  {...field}
-                />
-              )}
-            />
-
-            <Box
-              sx={(theme) => ({
-                display: "flex",
-                columnGap: "14px",
-                padding: "10px",
-                backgroundColor: theme.vars.palette["White"],
-                position: "fixed",
-                zIndex: 1,
-                width: "100%",
-                bottom: "0",
-                left: "0",
-              })}
-            >
-              <Button type="submit" variant="contained" startIcon={<AddIcon />}>
-                {props.t("managerInviteButton")}
-              </Button>
-            </Box>
-          </Box>
-        </form>
-      </SwipeableDrawer>
-
-      <CheckboxSearchableDrawer
-        translation="counterparty"
-        open={props.openCounterparty}
-        onClose={() => {
-          props.setOpenCounterparty(false);
-        }}
-        onSubmit={(counterparties) => {
-          props.fetcher.submit(
-            JSON.stringify({
-              _action: "_setCounterparty",
-              userId: props.loaderData.client.id,
-              counterparties,
-            }),
-            {
-              method: "POST",
-              encType: "application/json",
-            },
-          );
-        }}
-        items={props.loaderData.counterparty}
-        value={props.loaderData.client.counterparty.map((item) => item.id.toString())}
-      />
     </>
   );
 }

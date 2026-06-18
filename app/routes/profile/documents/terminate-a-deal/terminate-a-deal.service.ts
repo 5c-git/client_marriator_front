@@ -8,6 +8,7 @@ import { terminateADealPrivateTokens } from "./terminate-a-deal.private-tokens";
 
 import { AppService } from "~/shared/container/container.service";
 import { appTokens } from "~/shared/container/container.tokens";
+import { TerminateADealMapper } from "./terminate-a-deal.mapper";
 
 export class TerminateADealService {
   constructor(
@@ -19,7 +20,12 @@ export class TerminateADealService {
   async loadOrganizations() {
     const accessToken = this.appService.getToken();
     const data = await this.getDocumentTerminate(accessToken);
-    return data.result.organization;
+    return {
+      items: data.result.organization,
+      defaultValues: TerminateADealMapper.generateDefaultValues(
+        data.result.organization,
+      ),
+    };
   }
 
   async submitSelection(selected: string[]) {
@@ -34,4 +40,3 @@ injected(
   terminateADealPrivateTokens.getDocumentTerminate,
   terminateADealPrivateTokens.postSetTerminate,
 );
-

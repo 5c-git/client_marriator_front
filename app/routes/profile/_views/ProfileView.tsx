@@ -22,11 +22,12 @@ import { DocumentsIcon } from "../_icons/DocumentsIcon";
 import { ExitIcon } from "../_icons/ExitIcon";
 import ReceiptLongIcon from "@mui/icons-material/ReceiptLong";
 
+import { State } from "~/store/store";
 import type { ProfileData } from "../profile.mapper";
 
 type ProfileViewProps = {
   data: ProfileData;
-  userRole: "admin" | "manager" | "supervisor" | "client" | "specialist";
+  userRole: State["userRole"];
   openDialog: boolean;
   onOpenLogoutDialog: () => void;
   onCloseDialog: () => void;

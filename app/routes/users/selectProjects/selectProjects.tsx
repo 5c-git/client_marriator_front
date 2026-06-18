@@ -1,14 +1,18 @@
 import type { Route } from "./+types/selectProjects";
+import { redirect, useLocation, useNavigate, useSubmit } from "react-router";
+
 import { withLocale } from "~/shared/withLocale";
-import { redirect } from "react-router";
 
 import { selectProjectsContainer } from "./selectProjects.module";
 import { selectProjectsTokens } from "./selectProjects.tokens";
-import {
-  type SelectProjectsActionPayload,
-  useSelectProjectsHooks,
-} from "./selectProjects.hooks";
+
 import { SelectProjectsView } from "./_views/SelectProjectsView";
+
+type LocationState = {
+  from: string;
+  status: string;
+  statusColor: string;
+};
 
 export async function clientLoader({ params }: Route.ClientLoaderArgs) {
   return await selectProjectsContainer
@@ -20,16 +24,37 @@ export async function clientAction({
   params,
   request,
 }: Route.ClientActionArgs) {
-  const payload = (await request.json()) as SelectProjectsActionPayload;
+  const payload = await request.json();
   const result = await selectProjectsContainer
     .get(selectProjectsTokens.selectProjectsService)
     .saveSelectedProjects(params.user, payload.projects);
-  if (result.kind === "redirect") {
-    throw redirect(withLocale(payload.from));
-  }
+  throw redirect(withLocale(payload.from));
 }
 
 export default function SelectProjects({ loaderData }: Route.ComponentProps) {
-  const ui = useSelectProjectsHooks(loaderData);
-  return <SelectProjectsView loaderData={loaderData} ui={ui} />;
+  const navigate = useNavigate();
+  const location = useLocation();
+  const submit = useSubmit();
+  const { state } = location as { state: LocationState };
+
+  return (
+    <SelectProjectsView
+      data={loaderData}
+      onBack={() => {
+        navigate(withLocale(state.from), {
+          viewTransition: true,
+          state: {
+            status: state.status,
+            statusColor: state.statusColor,
+          },
+        });
+      }}
+      onSubmit={(values) => {
+        submit(JSON.stringify({ from: state.from, projects: values }), {
+          method: "POST",
+          encType: "application/json",
+        });
+      }}
+    />
+  );
 }

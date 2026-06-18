@@ -1,99 +1,146 @@
-import { Controller } from "react-hook-form";
+import { Controller, useForm } from "react-hook-form";
+import { useState } from "react";
+import { useTranslation } from "react-i18next";
 
-import type { useSelectProjectsHooks } from "../selectProjects.hooks";
-import type { SelectProjectsLoaderData } from "../selectProjects.service";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { z } from "zod";
+
+import type {
+  ProjectOption,
+  SelectProjectsLoaderData,
+} from "../selectProjects.service";
 
 import { Button } from "@mui/material";
 import Box from "@mui/material/Box";
 
 import { TopNavigation } from "~/shared/ui/TopNavigation/TopNavigation";
-import { Loader } from "~/shared/ui/Loader/Loader";
 import { StyledSearchBar } from "~/shared/ui/StyledSearchBar/StyledSearchBar";
 import { StyledCheckboxMultiple } from "~/shared/ui/StyledCheckboxMultiple/StyledCheckboxMultiple";
 
 type SelectProjectsViewProps = {
-  loaderData: SelectProjectsLoaderData;
-  ui: ReturnType<typeof useSelectProjectsHooks>;
+  data: SelectProjectsLoaderData;
+  onBack: () => void;
+  onSubmit: (values: string[]) => void;
 };
 
 export function SelectProjectsView(props: SelectProjectsViewProps) {
+  const { t } = useTranslation("m_users_selectProjects");
+  const [selectedProjects, setSelectedProjects] = useState(props.data.projects);
+
+  const form = useForm({
+    defaultValues: {
+      searchbar: "",
+      projects: props.data.selectedProjects,
+    },
+    resolver: zodResolver(
+      z.object({
+        searchbar: z.string(),
+        projects: z.array(z.string()).min(1),
+      }),
+    ),
+    mode: "onChange",
+  });
+
   return (
-    <>
-      {props.ui.isLoading ? <Loader /> : null}
+    <Box>
+      <TopNavigation
+        header={{
+          text: t("header"),
+          bold: false,
+        }}
+        backAction={props.onBack}
+      />
 
-      <Box>
-        <TopNavigation
-          header={{
-            text: props.ui.t("header"),
-            bold: false,
+      <form
+        onSubmit={form.handleSubmit((values) => {
+          props.onSubmit(values.projects);
+        })}
+      >
+        <Box
+          sx={{
+            position: "relative",
+            display: "grid",
+            rowGap: "14px",
+            paddingTop: "20px",
+            paddingLeft: "16px",
+            paddingRight: "16px",
           }}
-          backAction={props.ui.onBack}
-        />
+        >
+          <Controller
+            name="searchbar"
+            control={form.control}
+            render={({ field }) => (
+              <StyledSearchBar
+                placeholder={t("searchbarPlaceholder")}
+                {...field}
+                onChange={(evt) => {
+                  const currentFieldValue = new RegExp(
+                    `${evt.target.value}`,
+                    "i",
+                  );
+                  let matchingProjects: ProjectOption[] = [];
 
-        <form onSubmit={props.ui.onSubmit}>
+                  if (evt.target.value !== "") {
+                    matchingProjects = [
+                      ...props.data.projects.filter((item) =>
+                        currentFieldValue.test(item.label),
+                      ),
+                    ];
+                  } else {
+                    matchingProjects = [...props.data.projects];
+                  }
+
+                  setSelectedProjects(matchingProjects);
+                  field.onChange(evt);
+                }}
+              />
+            )}
+          />
+
+          <Controller
+            name="projects"
+            control={form.control}
+            render={({ field }) => (
+              <StyledCheckboxMultiple
+                inputType="checkboxMultiple"
+                onImmediateChange={() => {}}
+                options={selectedProjects}
+                {...field}
+              />
+            )}
+          />
+
           <Box
-            sx={{
-              position: "relative",
-              display: "grid",
-              rowGap: "14px",
-              paddingTop: "20px",
-              paddingLeft: "16px",
-              paddingRight: "16px",
-            }}
+            sx={(theme) => ({
+              display: "flex",
+              columnGap: "14px",
+              padding: "10px",
+              backgroundColor: theme.vars.palette["White"],
+              position: "fixed",
+              zIndex: 1,
+              width: "100%",
+              bottom: "0",
+              left: "0",
+            })}
           >
-            <Controller
-              name="searchbar"
-              control={props.ui.form.control}
-              render={({ field }) => (
-                <StyledSearchBar
-                  placeholder={props.ui.t("searchbarPlaceholder")}
-                  {...field}
-                  onChange={(evt) => {
-                    props.ui.onSearchChange(evt.target.value, field.onChange);
-                  }}
-                />
-              )}
-            />
-
-            <Controller
-              name="projects"
-              control={props.ui.form.control}
-              render={({ field }) => (
-                <StyledCheckboxMultiple
-                  inputType="checkboxMultiple"
-                  onImmediateChange={() => {}}
-                  options={props.ui.selectedProjects}
-                  {...field}
-                />
-              )}
-            />
-
-            <Box
-              sx={(theme) => ({
-                display: "flex",
-                columnGap: "14px",
-                padding: "10px",
-                backgroundColor: theme.vars.palette["White"],
-                position: "fixed",
-                zIndex: 1,
-                width: "100%",
-                bottom: "0",
-                left: "0",
-              })}
+            <Button
+              type="button"
+              onClick={() => {
+                form.reset();
+                setSelectedProjects(props.data.projects);
+              }}
             >
-              <Button type="button" onClick={props.ui.onReset}>
-                {props.ui.t("cancelButton")}
-              </Button>
-              <Button type="submit" variant="contained">
-                {props.ui.t("selectButton")}{" "}
-                {props.ui.form.watch("projects").length > 0
-                  ? ` ${props.ui.form.getValues("projects").length}`
-                  : null}
-              </Button>
-            </Box>
+              {t("cancelButton")}
+            </Button>
+            <Button type="submit" variant="contained">
+              {t("selectButton")}{" "}
+              {form.watch("projects").length > 0
+                ? ` ${form.getValues("projects").length}`
+                : null}
+            </Button>
           </Box>
-        </form>
-      </Box>
-    </>
+        </Box>
+      </form>
+    </Box>
   );
 }

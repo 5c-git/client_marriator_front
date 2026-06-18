@@ -16,16 +16,10 @@ import FileDownloadOutlinedIcon from "@mui/icons-material/FileDownloadOutlined";
 type Option = { value: string; label: string; disabled: boolean };
 
 type Props = {
-  data: {
-    certificates: { uuid: string; name: string; path: string }[];
-    fields: {
-      organization: { uuid: string; name: string }[];
-      certificates: { id: number; key: string; value: string }[];
-    };
-  };
-  backAction: () => void;
+  certificates: { uuid: string; name: string; path: string }[];
   organizationOptions: Option[];
   certificateOptions: Option[];
+  backAction: () => void;
 };
 
 export function CertificatesView(props: Props) {
@@ -151,7 +145,7 @@ export function CertificatesView(props: Props) {
           })}
         />
 
-        {props.data.certificates.length !== 0 ? (
+        {props.certificates.length !== 0 ? (
           <Box
             sx={{
               display: "grid",
@@ -171,7 +165,7 @@ export function CertificatesView(props: Props) {
               {t("done_documents")}
             </Typography>
 
-            {props.data.certificates.map((item) => (
+            {props.certificates.map((item) => (
               <Box
                 sx={{
                   display: "flex",

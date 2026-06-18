@@ -7,6 +7,7 @@
     "archive": "Archive"
   },
   "fields": {
+    "statusPlaceholder": "Status",
     "avatarPlaceholder": "Avatar *",
     "avatarValue": "Choose",
     "agentPlaceholder": "Counteragent *",

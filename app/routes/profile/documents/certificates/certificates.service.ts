@@ -7,6 +7,8 @@ import type {
 } from "./certificates.private-tokens";
 import { certificatesPrivateTokens } from "./certificates.private-tokens";
 
+import { CertificatesMapper } from "./certificates.mapper";
+
 import { AppService } from "~/shared/container/container.service";
 import { appTokens } from "~/shared/container/container.tokens";
 
@@ -18,15 +20,20 @@ export class CertificatesService {
     private readonly postRequestInquiries: PostRequestInquiries,
   ) {}
 
-
   async loadData() {
     const accessToken = this.appService.getToken();
     const certificatesData = await this.getDocumentInquiries(accessToken);
-    const fieldsData = await this.getCompanyAndCertificatesInquiries(accessToken);
+    const fieldsData =
+      await this.getCompanyAndCertificatesInquiries(accessToken);
 
     return {
       certificates: certificatesData.result,
-      fields: fieldsData.result,
+      certificateOptions: CertificatesMapper.certsToOptions(
+        fieldsData.result.certificates,
+      ),
+      organizationOptions: CertificatesMapper.orgsToOptions(
+        fieldsData.result.organization,
+      ),
     };
   }
 
@@ -44,4 +51,3 @@ injected(
   certificatesPrivateTokens.getCompanyAndCertificatesInquiries,
   certificatesPrivateTokens.postRequestInquiries,
 );
-

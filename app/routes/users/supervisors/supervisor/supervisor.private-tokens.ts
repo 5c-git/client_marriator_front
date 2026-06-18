@@ -10,8 +10,6 @@ import type { PostDeleteCounterpartyError } from "~/api/_personal/_moderation/po
 import type { PostSetCounterpartySuccess } from "~/api/_personal/_moderation/postSetCounterparty/postSetCounterpartySuccess.schema";
 import type { PostSetCounterpartyError } from "~/api/_personal/_moderation/postSetCounterparty/postSetCounterpartyError.schema";
 
-export type GetUserRole = () => State["userRole"];
-
 export type FetchModerationSingleSupervisor = (
   accessToken: string,
   userId: number,
@@ -76,7 +74,6 @@ export type DeleteCounterparty = (
 ) => Promise<PostDeleteCounterpartySuccess | PostDeleteCounterpartyError>;
 
 export const supervisorPrivateTokens = {
-  getUserRole: token<GetUserRole>("users-supervisor-private:getUserRole"),
   fetchModerationSingleSupervisor: token<FetchModerationSingleSupervisor>(
     "users-supervisor-private:fetchModerationSingleSupervisor",
   ),

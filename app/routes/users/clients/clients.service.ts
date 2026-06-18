@@ -21,8 +21,9 @@ export class ClientsService {
     private readonly fetchModerationClients: FetchModerationClients,
   ) {}
 
-  async getClientsMobileModeData(userRole: string | null | undefined) {
+  async getClientsMobileModeData() {
     const accessToken = this.appService.getToken();
+    const userRole = this.appService.getToken();
 
     const usersData = await this.fetchModerationClients(
       accessToken,
@@ -75,4 +76,3 @@ injected(
   appTokens.appService,
   clientsPrivateTokens.fetchModerationClients,
 );
-
