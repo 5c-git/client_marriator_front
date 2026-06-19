@@ -7,7 +7,12 @@ export const getFormActivitiesSuccessSchema = z.object({
   result: z.object({
     formData: inputs,
     step: z.number(),
-    type: z.enum(["needRequired", "allowedNewStep"]),
+    type: z.enum([
+      "needRequired",
+      "allowedNewStep",
+      "addedNewFields",
+      "pregNotValid",
+    ]),
   }),
 });
 

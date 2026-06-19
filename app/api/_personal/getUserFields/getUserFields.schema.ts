@@ -13,7 +13,12 @@ export const getUserFieldsSuccessSchema = z.object({
         notification: z.boolean(),
       }),
     ),
-    type: z.enum(["needRequired", "allowedNewStep", "pregNotValid"]),
+    type: z.enum([
+      "needRequired",
+      "allowedNewStep",
+      "addedNewFields",
+      "pregNotValid",
+    ]),
   }),
 });
 

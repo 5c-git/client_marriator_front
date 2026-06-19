@@ -72,12 +72,9 @@ export function UserActivitiesView(props: UserActivitiesViewProps) {
           rowGap: "16px",
           marginTop: "16px",
         }}
-        onSubmit={(event) => {
-          event.preventDefault();
-          form.handleSubmit((values) => {
-            props.onFormSubmit(values);
-          });
-        }}
+        onSubmit={form.handleSubmit((values) => {
+          props.onFormSubmit(values);
+        })}
       >
         {generateInputsMarkup(
           props.data.formFields,
@@ -104,12 +101,9 @@ export function UserActivitiesView(props: UserActivitiesViewProps) {
         >
           <Button
             variant="contained"
-            onClick={() => {
-              form.trigger();
-              form.handleSubmit((values) => {
-                props.onFormSubmit(values);
-              });
-            }}
+            onClick={form.handleSubmit((values) => {
+              props.onFormSubmit(values);
+            })}
           >
             {t("finishButton")}
           </Button>

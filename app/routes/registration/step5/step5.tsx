@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import { useFetcher, useNavigate, useNavigation } from "react-router";
 import type { Route } from "./+types/step5";
 
-import {zodResolver} from "@hookform/resolvers/zod";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 
 import { useTranslation } from "react-i18next";
@@ -32,6 +32,8 @@ export async function clientLoader() {
     const rawData = await getForm(accessToken, 5);
 
     const data = transformBikOptions(rawData);
+
+    console.log(data);
 
     return {
       accessToken,
@@ -63,6 +65,8 @@ export default function Step5({ loaderData }: Route.ComponentProps) {
   const navigate = useNavigate();
   const navigation = useNavigation();
 
+  console.log(loaderData);
+
   const {
     control,
     setValue,
@@ -73,9 +77,7 @@ export default function Step5({ loaderData }: Route.ComponentProps) {
     reset,
   } = useForm({
     defaultValues: generateDefaultValues(loaderData.formFields),
-    resolver: zodResolver(
-      generateValidationSchema(loaderData.formFields)
-    ),
+    resolver: zodResolver(generateValidationSchema(loaderData.formFields)),
     mode: "onChange",
     shouldUnregister: true,
   });
@@ -146,7 +148,7 @@ export default function Step5({ loaderData }: Route.ComponentProps) {
                 encType: "application/json",
               });
             },
-            loaderData.accessToken
+            loaderData.accessToken,
           )}
 
           <Box

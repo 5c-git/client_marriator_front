@@ -2,10 +2,7 @@ import { injected } from "brandi";
 
 import type { AppService } from "~/shared/container/container.service";
 import type { UsersMobileViewInterface } from "~/shared/views/UsersMobileView/UsersMobileViewInterface";
-import type {
-  FetchModerationSupervisors,
-  GetUserRole,
-} from "./supervisors.private-tokens";
+import type { FetchModerationSupervisors } from "./supervisors.private-tokens";
 
 import { appTokens } from "~/shared/container/container.tokens";
 import { supervisorsPrivateTokens } from "./supervisors.private-tokens";
@@ -20,7 +17,6 @@ export class SupervisorsService {
   constructor(
     private readonly appService: AppService,
     private readonly fetchModerationSupervisors: FetchModerationSupervisors,
-    private readonly getRole: GetUserRole,
   ) {}
 
   async getSupervisorsMobileModeData() {
@@ -34,7 +30,7 @@ export class SupervisorsService {
       null,
     );
 
-    const userRole = this.getRole();
+    const userRole = this.appService.getUserRole();
     const users: UsersMobileViewInterface["users"] = [];
 
     usersData.data.forEach((item) => {
@@ -78,5 +74,4 @@ injected(
   SupervisorsService,
   appTokens.appService,
   supervisorsPrivateTokens.fetchModerationSupervisors,
-  supervisorsPrivateTokens.getUserRole,
 );

@@ -5,7 +5,7 @@ import { useRef, useMemo } from "react";
 
 import { debounce } from "../debounce";
 
-import {z} from "zod";
+import { z } from "zod";
 import {
   Controller,
   Control,
@@ -60,9 +60,9 @@ function ConstructorTextField({
   debounceMs = TEXT_FIELD_IMMEDIATE_CHANGE_DEBOUNCE_MS,
   ...itemProps
 }: ConstructorTextFieldProps) {
-
   const onImmediateChangeRef = useRef(onImmediateChange);
   onImmediateChangeRef.current = onImmediateChange;
+
   const debouncedImmediateChange = useMemo(
     () =>
       debounce(() => {
@@ -70,6 +70,7 @@ function ConstructorTextField({
       }, debounceMs),
     [debounceMs],
   );
+
   return (
     <Controller
       name={name}
@@ -116,56 +117,95 @@ const inputMap = {
 };
 
 const validationMap: Record<string, Record<string, z.ZodSchema<unknown>>> = {
-  text: { 
+  text: {
     none: z.string().default("").optional(),
-    default: z.string().trim().min(1, {error: t("text", { ns: "constructorFields" })}),
-
+    default: z
+      .string()
+      .trim()
+      .min(1, { error: t("text", { ns: "constructorFields" }) }),
   },
   phone: {
     none: z.string().default("").optional(),
-    default: z.string().trim().min(1, {error: t("phone", { ns: "constructorFields" })}).regex(phoneRegExp, {error: t("phone_wrongValue", { ns: "constructorFields" })})
+    default: z
+      .string()
+      .trim()
+      .min(1, { error: t("phone", { ns: "constructorFields" }) })
+      .regex(phoneRegExp, {
+        error: t("phone_wrongValue", { ns: "constructorFields" }),
+      }),
   },
   select: {
     none: z.string().default("").optional(),
-    default: z.string().trim().min(1, {error: t("select", { ns: "constructorFields" })}),
+    default: z
+      .string()
+      .trim()
+      .min(1, { error: t("select", { ns: "constructorFields" }) }),
   },
   selectMultiple: {
     none: z.array().optional(),
-    default: z.array(z.string()).min(1, {error: t("selectMultiple", { ns: "constructorFields" })}),
+    default: z
+      .array(z.string())
+      .min(1, { error: t("selectMultiple", { ns: "constructorFields" }) }),
   },
-  radio: {  
+  radio: {
     none: z.string().default("").optional(),
-    default: z.string().trim().min(1, {error: t("radio", { ns: "constructorFields" })}),
+    default: z
+      .string()
+      .trim()
+      .min(1, { error: t("radio", { ns: "constructorFields" }) }),
   },
   checkbox: {
     none: z.boolean().optional(),
-    checked: z.boolean().parse(true, {error: t("checkbox_checked", { ns: "constructorFields" })}),
-    unchecked: z.boolean().parse(false, {error: t("checkbox_unchecked", { ns: "constructorFields" })}),
+    checked: z.boolean().parse(true, {
+      error: t("checkbox_checked", { ns: "constructorFields" }),
+    }),
+    unchecked: z.boolean().parse(false, {
+      error: t("checkbox_unchecked", { ns: "constructorFields" }),
+    }),
   },
   checkboxMultiple: {
     none: z.array().optional(),
-    default: z.array(z.string()).min(1, {error: t("checkboxMultiple", { ns: "constructorFields" })}),
+    default: z
+      .array(z.string())
+      .min(1, { error: t("checkboxMultiple", { ns: "constructorFields" }) }),
   },
   photoCheckbox: {
     none: z.array().optional(),
-    default: z.array(z.string()).min(1, {error: t("photoCheckbox", { ns: "constructorFields" })}),
+    default: z
+      .array(z.string())
+      .min(1, { error: t("photoCheckbox", { ns: "constructorFields" }) }),
   },
   file: {
     none: z.string().default("").optional(),
-    default: z.string().trim().min(1, {error: t("file", { ns: "constructorFields" })}),
+    default: z
+      .string()
+      .trim()
+      .min(1, { error: t("file", { ns: "constructorFields" }) }),
   },
   photo: {
     none: z.string().default("").optional(),
-    default: z.string().trim().min(1, {error: t("photo", { ns: "constructorFields" })}),
+    default: z
+      .string()
+      .trim()
+      .min(1, { error: t("photo", { ns: "constructorFields" }) }),
   },
   date: {
     none: z.string().default("").optional(),
-    default: z.string().trim().min(1, {error: t("date", { ns: "constructorFields" })}),
-    "16years": z.string().trim().min(1, {error: t("data", { ns: "constructorFields" })}),
+    default: z
+      .string()
+      .trim()
+      .min(1, { error: t("date", { ns: "constructorFields" }) }),
+    "16years": z
+      .string()
+      .trim()
+      .min(1, { error: t("data", { ns: "constructorFields" }) }),
   },
   card: {
     none: z.string().default("").optional(),
-    default: z.string().trim().min(1, {error: t("card", { ns: "constructorFields" })})
+    default: z
+      .string()
+      .trim()
+      .min(1, { error: t("card", { ns: "constructorFields" }) })
       .refine(
         (value) => {
           // accept only digits, dashes or spaces
@@ -179,26 +219,32 @@ const validationMap: Record<string, Record<string, z.ZodSchema<unknown>>> = {
           let sum = arr.reduce(
             (acc, val, i) =>
               i % 2 !== 0 ? acc + val : acc + ((val *= 2) > 9 ? val - 9 : val),
-            0
+            0,
           );
           sum += lastDigit;
           return sum % 10 === 0;
         },
-        {error: t("card_wrongValue", { ns: "constructorFields" })}
-      )
-
+        { error: t("card_wrongValue", { ns: "constructorFields" }) },
+      ),
   },
   month: {
     none: z.string().default("").optional(),
-    default: z.string().trim().min(1, {error: t("month", { ns: "constructorFields" })}),
+    default: z
+      .string()
+      .trim()
+      .min(1, { error: t("month", { ns: "constructorFields" }) }),
   },
   email: {
-    default: z.string({error: t("email", { ns: "constructorFields" })})
-      .regex(emailRegExp, {error: t("email_wrongValue", { ns: "constructorFields" })})
+    default: z
+      .string({ error: t("email", { ns: "constructorFields" }) })
+      .regex(emailRegExp, {
+        error: t("email_wrongValue", { ns: "constructorFields" }),
+      }),
   },
   inn: {
     none: z.string().default("").optional(),
-    default: z.string({error: t("inn", { ns: "constructorFields" })})
+    default: z
+      .string({ error: t("inn", { ns: "constructorFields" }) })
       .length(12, t("inn_wrongValue", { ns: "constructorFields" }))
       .refine(
         (value) => {
@@ -228,13 +274,14 @@ const validationMap: Record<string, Record<string, z.ZodSchema<unknown>>> = {
           }
 
           return false;
-        }, 
-        {error: t("inn_wrongInn", { ns: "constructorFields" })}
+        },
+        { error: t("inn_wrongInn", { ns: "constructorFields" }) },
       ),
   },
   snils: {
     none: z.string().default("").optional(),
-    default: z.string({error: t("snils", { ns: "constructorFields" })})
+    default: z
+      .string({ error: t("snils", { ns: "constructorFields" }) })
       .length(11, t("snils_wrongSnils", { ns: "constructorFields" }))
       .refine(
         (value) => {
@@ -257,32 +304,39 @@ const validationMap: Record<string, Record<string, z.ZodSchema<unknown>>> = {
             return false;
           }
         },
-        {error: t("snils_wrongSnils", { ns: "constructorFields" })}
+        { error: t("snils_wrongSnils", { ns: "constructorFields" }) },
       ),
   },
   sms: {
     none: z.string().default("").optional(),
-    default: z.string({error: t("sms", { ns: "constructorFields" })})
-      .length(4, t("sms_wrongValue", { ns: "constructorFields" }))
+    default: z
+      .string({ error: t("sms", { ns: "constructorFields" }) })
+      .length(4, t("sms_wrongValue", { ns: "constructorFields" })),
   },
   autocomplete: {
     none: z.string().default("").optional(),
-    default: z.string().trim().min(1, {error: t("autocomplete", { ns: "constructorFields" })}),
+    default: z
+      .string()
+      .trim()
+      .min(1, { error: t("autocomplete", { ns: "constructorFields" }) }),
   },
   bic: {
     none: z.string().default("").optional(),
-    default: z.string().trim().min(1, {error: t("autocomplete", { ns: "constructorFields" })})
-    
+    default: z
+      .string()
+      .trim()
+      .min(1, { error: t("autocomplete", { ns: "constructorFields" }) }),
   },
   account: {
     none: z.string().default("").optional(),
-    default: z.string({error: t("account", { ns: "constructorFields" })})
-    .length(20, t("account_wrongValue", { ns: "constructorFields" }))
+    default: z
+      .string({ error: t("account", { ns: "constructorFields" }) })
+      .length(20, t("account_wrongValue", { ns: "constructorFields" })),
   },
 };
 
 export const generateDefaultValues = (
-  items: { name: string; value: unknown }[]
+  items: { name: string; value: unknown }[],
 ) => {
   const defaultValues: {
     [key: string]: unknown;
@@ -305,14 +359,14 @@ export const generateValidationSchema = (
     validation: string;
     pregValue?: string;
     pregText?: string;
-  }[]
+  }[],
 ) => {
-  let validationSchema: z.ZodObject<Record<string, z.ZodSchema<unknown>>> = z.object({});
+  let validationSchema: z.ZodObject<Record<string, z.ZodSchema<unknown>>> =
+    z.object({});
 
   const bikRegExp = new RegExp(`^бик`, "i");
 
   const bikField = items.find((item) => bikRegExp.test(item.placeholder));
-
 
   items.forEach((item) => {
     // account validation requires bik field value, so if there is bik field we add superRefine to validation schema to validate account field
@@ -321,32 +375,31 @@ export const generateValidationSchema = (
         validationSchema.superRefine((values, context) => {
           const bik = values[bikField.name];
           if (bik) {
-              // const bikRs = "0" + bik.slice(4, -3) + value;
-              const bikRs = bik.slice(-3) + value;
-              let checksum = 0;
-              const coefficients = [
-                7, 1, 3, 7, 1, 3, 7, 1, 3, 7, 1, 3, 7, 1, 3, 7, 1, 3, 7, 1, 3,
-                7, 1,
-              ];
-              for (const i in coefficients) {
-                checksum += coefficients[i] * (Number(bikRs[i]) % 10);
-              }
-              if (checksum % 10 !== 0) {
-                context.addIssue({
-                  code: "custom",
-                  message: t("account_wrongAccount", { ns: "constructorFields" }),
-                  input: values[item.name],
-                  path: [item.name],
-                });
-              }
+            // const bikRs = "0" + bik.slice(4, -3) + value;
+            const bikRs = bik.slice(-3) + value;
+            let checksum = 0;
+            const coefficients = [
+              7, 1, 3, 7, 1, 3, 7, 1, 3, 7, 1, 3, 7, 1, 3, 7, 1, 3, 7, 1, 3, 7,
+              1,
+            ];
+            for (const i in coefficients) {
+              checksum += coefficients[i] * (Number(bikRs[i]) % 10);
+            }
+            if (checksum % 10 !== 0) {
+              context.addIssue({
+                code: "custom",
+                message: t("account_wrongAccount", { ns: "constructorFields" }),
+                input: values[item.name],
+                path: [item.name],
+              });
+            }
           }
-        })
+        });
       }
-    } else if (item.pregValue && item.pregText) {     
-
+    } else if (item.pregValue && item.pregText) {
       // const regex = item.pregValue.replace(/[\/\\]/g, '');
       const bytes = Uint8Array.fromBase64(item.pregValue);
-      const decoded = new TextDecoder().decode(bytes); 
+      const decoded = new TextDecoder().decode(bytes);
 
       const regexString = decoded.slice(1, -1);
 
@@ -354,7 +407,7 @@ export const generateValidationSchema = (
 
       validationSchema = z.object({
         ...validationSchema.shape,
-        [item.name]: z.string().regex(regex, {error: item.pregText}),
+        [item.name]: z.string().regex(regex, { error: item.pregText }),
       });
     } else {
       validationSchema = z.object({
@@ -363,7 +416,6 @@ export const generateValidationSchema = (
       });
     }
   });
-
 
   return validationSchema;
 };
@@ -381,7 +433,7 @@ export const generateInputsMarkup = (
     [x: number]: unknown;
   }>,
   onImmediateChange: () => void,
-  token: string
+  token: string,
 ) =>
   items.map((item) => {
     // приходится делать отдельную проверку, так как в данном случае необходимо програмно установить значение в поле
@@ -432,7 +484,7 @@ export const generateInputsMarkup = (
           )}
         />
       );
-    } else if (item.inputType === 'text') {
+    } else if (item.inputType === "text") {
       return (
         <ConstructorTextField
           key={item.name}

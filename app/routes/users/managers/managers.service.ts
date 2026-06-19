@@ -2,7 +2,7 @@ import { injected } from "brandi";
 
 import type { AppService } from "~/shared/container/container.service";
 import type { UsersMobileViewInterface } from "~/shared/views/UsersMobileView/UsersMobileViewInterface";
-import type { FetchModerationManagers, GetUserRole } from "./managers.private-tokens";
+import type { FetchModerationManagers } from "./managers.private-tokens";
 
 import { appTokens } from "~/shared/container/container.tokens";
 import { managersPrivateTokens } from "./managers.private-tokens";
@@ -17,12 +17,7 @@ export class ManagersService {
   constructor(
     private readonly appService: AppService,
     private readonly fetchModerationManagers: FetchModerationManagers,
-    private readonly getRole: GetUserRole
   ) {}
-
-  private getUserRole() {
-    return this.getRole()
-  }
 
   async getManagersMobileModeData() {
     const usersData = await this.fetchModerationManagers(
@@ -58,7 +53,7 @@ export class ManagersService {
         logo: `${import.meta.env.VITE_ASSET_PATH}${item.logo}`,
       };
 
-      if (user.status === 3 && this.getUserRole() === "admin") {
+      if (user.status === 3 && this.appService.getToken() === "admin") {
         users.push(user);
       } else if (user.status !== 3) {
         users.push(user);
@@ -69,13 +64,10 @@ export class ManagersService {
       users,
     } satisfies ManagersLoaderData;
   }
-
-
 }
 
 injected(
   ManagersService,
   appTokens.appService,
   managersPrivateTokens.fetchModerationManagers,
-  managersPrivateTokens.getUserRole
 );

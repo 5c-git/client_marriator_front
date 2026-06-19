@@ -1,9 +1,6 @@
 import { token } from "brandi";
 
-import type { State } from "~/store/store";
 import type { GetModerationClientSuccess } from "~/api/_personal/_moderation/getModerationClient/getModerationClientSuccess.schema";
-
-export type GetUserRole = () => State['userRole']
 
 export type FetchModerationManagers = (
   accessToken: string,
@@ -16,7 +13,6 @@ export type FetchModerationManagers = (
 ) => Promise<GetModerationClientSuccess>;
 
 export const managersPrivateTokens = {
-  getUserRole: token<GetUserRole>("managers-private:getUserRole"),
   fetchModerationManagers: token<FetchModerationManagers>(
     "managers-private:fetchModerationManagers",
   ),
