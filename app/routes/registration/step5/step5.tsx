@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { useFetcher, useNavigate, useNavigation } from "react-router";
+import { useFetcher, useNavigate } from "react-router";
 import type { Route } from "./+types/step5";
 
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -14,58 +14,42 @@ import {
   generateValidationSchema,
 } from "~/shared/constructor/constructor";
 
-import { getForm } from "~/api/getForm/getForm";
-import { transformBikOptions } from "~/api/getForm/getFormHooks";
-import { postSaveForm } from "~/api/postSaveForm/postSaveForm";
-import { useStore } from "~/store/store";
-
 import { Typography, Button } from "@mui/material";
 import Box from "@mui/material/Box";
 
 import { TopNavigation } from "~/shared/ui/TopNavigation/TopNavigation";
-import { Loader } from "~/shared/ui/Loader/Loader";
+
+import { registrationContainer } from "../registration.module";
+import { registrationTokens } from "../registration.tokens";
 
 export async function clientLoader() {
-  const accessToken = useStore.getState().accessToken;
+  const RegistrationService = registrationContainer.get(
+    registrationTokens.registrationService,
+  );
 
-  if (accessToken) {
-    const rawData = await getForm(accessToken, 5);
+  const accessToken = RegistrationService.getUserToken();
+  const data = await RegistrationService.getFieldsForRegistrationStep(5);
 
-    const data = transformBikOptions(rawData);
-
-    console.log(data);
-
-    return {
-      accessToken,
-      formFields: data.result.formData,
-      formStatus: data.result.type,
-    };
-  } else {
-    throw new Response("Токен авторизации не обнаружен!", { status: 401 });
-  }
+  return {
+    accessToken,
+    formFields: data.result.formData,
+    formStatus: data.result.type,
+  };
 }
 
 export async function clientAction({ request }: Route.ClientActionArgs) {
   const fields = await request.json();
-  const accessToken = useStore.getState().accessToken;
 
-  if (accessToken) {
-    const data = await postSaveForm(accessToken, 5, fields);
-
-    return data;
-  } else {
-    throw new Response("Токен авторизации не обнаружен!", { status: 401 });
-  }
+  return await registrationContainer
+    .get(registrationTokens.registrationService)
+    .sendFields(5, fields);
 }
 
 export default function Step5({ loaderData }: Route.ComponentProps) {
-  const { t } = useTranslation("registrationStep5");
+  const { t } = useTranslation("m_registration_step5");
 
   const fetcher = useFetcher();
   const navigate = useNavigate();
-  const navigation = useNavigation();
-
-  console.log(loaderData);
 
   const {
     control,
@@ -89,97 +73,85 @@ export default function Step5({ loaderData }: Route.ComponentProps) {
   }, [loaderData.formFields, reset]);
 
   return (
-    <>
-      {navigation.state !== "idle" ? <Loader /> : null}
+    <Box
+      sx={{
+        paddingBottom: "80px",
+      }}
+    >
+      <TopNavigation
+        header={{
+          text: t("header"),
+          bold: false,
+        }}
+        label={t("step")}
+        backAction={() => {
+          navigate(withLocale("/registration/step4"), {
+            viewTransition: true,
+          });
+        }}
+      />
 
       <Box
         sx={{
-          paddingBottom: "80px",
+          padding: "24px 16px",
         }}
       >
-        <TopNavigation
-          header={{
-            text: t("header"),
-            bold: false,
-          }}
-          label={t("step")}
-          backAction={() => {
-            navigate(withLocale("/registration/step4"), {
+        <Typography
+          component="p"
+          variant="Reg_18"
+          sx={(theme) => ({
+            color: theme.vars.palette["Black"],
+            paddingBottom: "14px",
+          })}
+        >
+          {t("intro")}
+        </Typography>
+      </Box>
+
+      <form
+        style={{
+          display: "grid",
+          rowGap: "16px",
+        }}
+        onSubmit={handleSubmit(() => {
+          if (loaderData.formStatus === "allowedNewStep") {
+            navigate(withLocale("/registration/step6"), {
               viewTransition: true,
             });
-          }}
-        />
+          }
+        })}
+      >
+        {generateInputsMarkup(
+          loaderData.formFields,
+          errors,
+          control,
+          setValue,
+          trigger,
+          () => {
+            fetcher.submit(JSON.stringify(getValues()), {
+              method: "POST",
+              encType: "application/json",
+            });
+          },
+          loaderData.accessToken,
+        )}
 
         <Box
-          sx={{
-            padding: "24px 16px",
-          }}
+          sx={(theme) => ({
+            position: "fixed",
+            zIndex: 1,
+            width: "100%",
+            bottom: "0",
+            left: "0",
+            padding: "10px 16px 24px 16px",
+            backgroundColor: theme.vars.palette["White"],
+          })}
         >
-          <Typography
-            component="p"
-            variant="Reg_18"
-            sx={(theme) => ({
-              color: theme.vars.palette["Black"],
-              paddingBottom: "14px",
-            })}
-          >
-            {t("intro")}
-          </Typography>
+          <Button variant="contained" type="submit">
+            {t("finishButton")}
+          </Button>
         </Box>
-
-        <form
-          style={{
-            display: "grid",
-            rowGap: "16px",
-          }}
-          onSubmit={(evt) => {
-            evt.preventDefault();
-          }}
-        >
-          {generateInputsMarkup(
-            loaderData.formFields,
-            errors,
-            control,
-            setValue,
-            trigger,
-            () => {
-              fetcher.submit(JSON.stringify(getValues()), {
-                method: "POST",
-                encType: "application/json",
-              });
-            },
-            loaderData.accessToken,
-          )}
-
-          <Box
-            sx={(theme) => ({
-              position: "fixed",
-              zIndex: 1,
-              width: "100%",
-              bottom: "0",
-              left: "0",
-              padding: "10px 16px 24px 16px",
-              backgroundColor: theme.vars.palette["White"],
-            })}
-          >
-            <Button
-              variant="contained"
-              onClick={() => {
-                trigger();
-                handleSubmit(() => {
-                  if (loaderData.formStatus === "allowedNewStep") {
-                    navigate(withLocale("/registration/step6"), {
-                      viewTransition: true,
-                    });
-                  }
-                })();
-              }}
-            >
-              {t("finishButton")}
-            </Button>
-          </Box>
-        </form>
-      </Box>
-    </>
+      </form>
+    </Box>
   );
 }

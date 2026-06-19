@@ -17,6 +17,17 @@ import m_signin_client_recruiter from "../../public/locales/ru/m_signin_client_r
 import m_signin_client_registrationComplete from "../../public/locales/ru/m_signin_client_registrationComplete.json";
 //auth
 
+//registration
+import m_registration_step1 from "../../public/locales/ru/m_registration_step1.json";
+import m_registration_step2 from "../../public/locales/ru/m_registration_step2.json";
+import m_registration_step3 from "../../public/locales/ru/m_registration_step3.json";
+import m_registration_step4 from "../../public/locales/ru/m_registration_step4.json";
+import m_registration_step5 from "../../public/locales/ru/m_registration_step5.json";
+import m_registration_step6 from "../../public/locales/ru/m_registration_step6.json";
+import m_registration_confirmEmail from "../../public/locales/ru/m_registration_confirmEmail.json";
+import m_registration_registrationComplete from "../../public/locales/ru/m_registration_registrationComplete.json";
+//registration
+
 //profile
 import m_profile from "../../public/locales/ru/m_profile.json";
 import m_profile_myProfile from "../../public/locales/ru/m_profile_myProfile.json";
@@ -38,18 +49,6 @@ import m_profile_documents_signAdeal from "../../public/locales/ru/m_profile_doc
 import m_profile_documents_terminateADeal from "../../public/locales/ru/m_profile_documents_terminateADeal.json";
 import m_profile_myProfile_profileMeta from "../../public/locales/ru/m_profile_myProfile_profileMeta.json";
 //profile
-
-//registration
-import confirmEmail from "../../public/locales/ru/confirmEmail.json";
-import registrationStep1 from "../../public/locales/ru/registrationStep1.json";
-import registrationStep2 from "../../public/locales/ru/registrationStep2.json";
-import registrationStep3 from "../../public/locales/ru/registrationStep3.json";
-import registrationStep4 from "../../public/locales/ru/registrationStep4.json";
-import registrationStep5 from "../../public/locales/ru/registrationStep5.json";
-import registrationStep6 from "../../public/locales/ru/registrationStep6.json";
-import registrationStep7 from "../../public/locales/ru/registrationStep7.json";
-import registrationComplete from "../../public/locales/ru/registrationComplete.json";
-//registration
 
 //users
 import m_users_selectProjects from "../../public/locales/ru/m_users_selectProjects.json";
@@ -125,6 +124,18 @@ declare module "i18next" {
       m_signin_client_registrationComplete: typeof m_signin_client_registrationComplete;
       //auth
 
+      //registration
+
+      m_registration_step1: typeof m_registration_step1;
+      m_registration_step2: typeof m_registration_step2;
+      m_registration_step3: typeof m_registration_step3;
+      m_registration_step4: typeof m_registration_step4;
+      m_registration_step5: typeof m_registration_step5;
+      m_registration_step6: typeof m_registration_step6;
+      m_registration_confirmEmail: typeof m_registration_confirmEmail;
+      m_registration_registrationComplete: typeof m_registration_registrationComplete;
+      //registration
+
       //profile
       m_profile: typeof m_profile;
       m_profile_myProfile: typeof m_profile_myProfile;
@@ -146,18 +157,6 @@ declare module "i18next" {
       m_profile_documents_signAdeal: typeof m_profile_documents_signAdeal;
       m_profile_documents_terminateADeal: typeof m_profile_documents_terminateADeal;
       //profile
-
-      //registration
-      confirmEmail: typeof confirmEmail;
-      registrationStep1: typeof registrationStep1;
-      registrationStep2: typeof registrationStep2;
-      registrationStep3: typeof registrationStep3;
-      registrationStep4: typeof registrationStep4;
-      registrationStep5: typeof registrationStep5;
-      registrationStep6: typeof registrationStep6;
-      registrationStep7: typeof registrationStep7;
-      registrationComplete: typeof registrationComplete;
-      //registration
 
       //users
       m_users_selectProjects: typeof m_users_selectProjects;

@@ -19,45 +19,34 @@ import Box from "@mui/material/Box";
 
 import { TopNavigation } from "~/shared/ui/TopNavigation/TopNavigation";
 
-import { getForm } from "~/api/getForm/getForm";
-import { transformBikOptions } from "~/api/getForm/getFormHooks";
-import { postSaveForm } from "~/api/postSaveForm/postSaveForm";
-
-import { useStore } from "~/store/store";
+import { registrationContainer } from "../registration.module";
+import { registrationTokens } from "../registration.tokens";
 
 export async function clientLoader() {
-  const accessToken = useStore.getState().accessToken;
+  const RegistrationService = registrationContainer.get(
+    registrationTokens.registrationService,
+  );
 
-  if (accessToken) {
-    const rawData = await getForm(accessToken, 1);
+  const accessToken = RegistrationService.getUserToken();
+  const data = await RegistrationService.getFieldsForRegistrationStep(1);
 
-    const data = transformBikOptions(rawData);
-
-    return {
-      accessToken,
-      formFields: data.result.formData,
-      formStatus: data.result.type,
-    };
-  } else {
-    throw new Response("Токен авторизации не обнаружен!", { status: 401 });
-  }
+  return {
+    accessToken,
+    formFields: data.result.formData,
+    formStatus: data.result.type,
+  };
 }
 
 export async function clientAction({ request }: Route.ClientActionArgs) {
   const fields = await request.json();
-  const accessToken = useStore.getState().accessToken;
 
-  if (accessToken) {
-    const data = await postSaveForm(accessToken, 1, fields);
-
-    return data;
-  } else {
-    throw new Response("Токен авторизации не обнаружен!", { status: 401 });
-  }
+  return await registrationContainer
+    .get(registrationTokens.registrationService)
+    .sendFields(1, fields);
 }
 
 export default function Step1({ loaderData }: Route.ComponentProps) {
-  const { t } = useTranslation("registrationStep1");
+  const { t } = useTranslation("m_registration_step1");
 
   const fetcher = useFetcher();
   const navigate = useNavigate();
@@ -160,9 +149,13 @@ export default function Step1({ loaderData }: Route.ComponentProps) {
           display: "grid",
           rowGap: "16px",
         }}
-        onSubmit={(evt) => {
-          evt.preventDefault();
-        }}
+        onSubmit={handleSubmit(() => {
+          if (loaderData.formStatus === "allowedNewStep") {
+            navigate(withLocale("/registration/step2"), {
+              viewTransition: true,
+            });
+          }
+        })}
       >
         {generateInputsMarkup(
           loaderData.formFields,
@@ -190,19 +183,7 @@ export default function Step1({ loaderData }: Route.ComponentProps) {
             backgroundColor: theme.vars.palette["White"],
           })}
         >
-          <Button
-            variant="contained"
-            onClick={() => {
-              trigger();
-              handleSubmit(() => {
-                if (loaderData.formStatus === "allowedNewStep") {
-                  navigate(withLocale("/registration/step2"), {
-                    viewTransition: true,
-                  });
-                }
-              })();
-            }}
-          >
+          <Button variant="contained" type="submit">
             {t("finishButton")}
           </Button>
         </Box>

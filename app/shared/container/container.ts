@@ -18,6 +18,10 @@ appContainer
   .toConstant(() => useStore.getState().userRole);
 
 appContainer
+  .bind(appPrivateTokens.logout)
+  .toConstant(() => useStore.getState().clearStore);
+
+appContainer
   .bind(appTokens.appService)
   .toInstance(AppService)
   .inSingletonScope();

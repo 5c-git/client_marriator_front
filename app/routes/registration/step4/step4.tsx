@@ -1,15 +1,9 @@
 import { useState, useEffect } from "react";
-import {
-  useFetcher,
-  useNavigate,
-  useNavigation,
-  redirect,
-  useSubmit,
-} from "react-router";
+import { useFetcher, useNavigate, redirect, useSubmit } from "react-router";
 import type { Route } from "./+types/step4";
 
-import {z} from "zod";
-import {zodResolver} from "@hookform/resolvers/zod";
+import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm, Controller } from "react-hook-form";
 
 import { useTranslation } from "react-i18next";
@@ -33,88 +27,77 @@ import {
 import Box from "@mui/material/Box";
 
 import { TopNavigation } from "~/shared/ui/TopNavigation/TopNavigation";
-import { Loader } from "~/shared/ui/Loader/Loader";
 
 import { StyledCheckbox } from "~/shared/ui/StyledCheckbox/StyledCheckbox";
 import { StyledPhotoInput } from "~/shared/ui/StyledPhotoInput/StyledPhotoInput";
 import { StyledEmailField } from "~/shared/ui/StyledEmailField/StyledEmailField";
 
-import { useStore } from "~/store/store";
+import { registrationContainer } from "../registration.module";
+import { registrationTokens } from "../registration.tokens";
 
-import { getForm } from "~/api/getForm/getForm";
-import { transformBikOptions } from "~/api/getForm/getFormHooks";
-import { getStaticUserInfo } from "~/api/getStaticUserInfo/getStaticUserInfo";
-import { postSaveForm } from "~/api/postSaveForm/postSaveForm";
-import { postSetUserEmail } from "~/api/_personal/postSetUserEmail/postSetUserEmail";
-import { postFinishRegister } from "~/api/postFinishRegister/postFinishRegister";
+const REGISTRATION_STEP_4_ACTIONS = {
+  reset: "reset",
+  confirmEmail: "confirmEmail",
+  finishRegister: "finishRegister",
+} as const;
 
 export async function clientLoader() {
-  const accessToken = useStore.getState().accessToken;
+  const RegistrationService = registrationContainer.get(
+    registrationTokens.registrationService,
+  );
 
-  if (accessToken) {
-    const rawData = await getForm(accessToken, 4);
+  const accessToken = RegistrationService.getUserToken();
+  const data = await RegistrationService.getFieldsForRegistrationStep(4);
+  const staticFields = await RegistrationService.getUserStaticInfo();
 
-    const data = transformBikOptions(rawData);
-
-    const staticFields = await getStaticUserInfo(accessToken);
-
-    return {
-      accessToken,
-      staticFields: staticFields.result.userData,
-      formFields: data.result.formData,
-      formStatus: data.result.type,
-    };
-  } else {
-    throw new Response("Токен авторизации не обнаружен!", { status: 401 });
-  }
+  return {
+    accessToken,
+    staticFields: staticFields.result.userData,
+    formFields: data.result.formData,
+    formStatus: data.result.type,
+  };
 }
 
 export async function clientAction({ request }: Route.ClientActionArgs) {
   const params = new URLSearchParams();
   const { _action, ...fields } = await request.json();
-  const accessToken = useStore.getState().accessToken;
-  const setUserEmail = useStore.getState().setUserEmail;
 
-  if (_action && _action === "reset") {
+  const RegistrationService = registrationContainer.get(
+    registrationTokens.registrationService,
+  );
+
+  if (_action && _action === REGISTRATION_STEP_4_ACTIONS.reset) {
     return null;
   }
 
-  if (accessToken) {
-    if (_action && _action === "confirmEmail") {
-      setUserEmail(fields.email);
-      const newEmailData = await postSetUserEmail(accessToken, fields.email);
+  if (_action && _action === REGISTRATION_STEP_4_ACTIONS.confirmEmail) {
+    RegistrationService.setUserEmail(fields.email);
+    const newEmailData = await RegistrationService.sendUserEmail(fields.email);
 
-      if (newEmailData.status === "error") {
-        return { error: "alreadyExists" };
-      } else {
-        params.set("ttl", "120");
-
-        throw redirect(withLocale(`/registration/confirm-email?${params}`));
-      }
-    } else if (_action === "finishRegister") {
-      await postFinishRegister(accessToken);
-
-      // useStore.getState().setAccessToken(data.result.token.access_token);
-      // useStore.getState().setRefreshToken(data.result.token.refresh_token);
-
-      useStore.getState().clearStore();
-
-      throw redirect(withLocale("/registration/registration-complete"));
+    if (newEmailData.status === "error") {
+      return { error: "alreadyExists" };
     } else {
-      const data = await postSaveForm(accessToken, 4, fields);
+      params.set("ttl", "120");
 
-      return data;
+      throw redirect(withLocale(`/registration/confirm-email?${params}`));
     }
+  } else if (_action === REGISTRATION_STEP_4_ACTIONS.finishRegister) {
+    await RegistrationService.finishRegistration();
+
+    RegistrationService.logout();
+
+    throw redirect(withLocale("/registration/registration-complete"));
   } else {
-    throw new Response("Токен авторизации не обнаружен!", { status: 401 });
+    const data = await RegistrationService.sendFields(4, fields);
+
+    return data;
   }
 }
 
 export default function Step4({ loaderData }: Route.ComponentProps) {
-  const { t } = useTranslation("registrationStep4");
+  const { t } = useTranslation("m_registration_step4");
   const fetcher = useFetcher<typeof clientAction>();
   const navigate = useNavigate();
-  const navigation = useNavigation();
   const submit = useSubmit();
 
   const [openDialog, setOpenDialog] = useState<boolean>(false);
@@ -137,20 +120,23 @@ export default function Step4({ loaderData }: Route.ComponentProps) {
     },
     resolver: zodResolver(
       z.object({
-        staticPhoto: z.string().trim().min(1, {error: t("photo", { ns: "constructorFields" })}),
-        staticEmail: z.string({error: t("email", { ns: "constructorFields" })})
+        staticPhoto: z
+          .string()
+          .trim()
+          .min(1, { error: t("photo", { ns: "constructorFields" }) }),
+        staticEmail: z
+          .string({ error: t("email", { ns: "constructorFields" }) })
           .regex(
             emailRegExp,
             t("email_wrongValue", { ns: "constructorFields" }),
           ),
         isTermsAccepted: z.boolean(),
         ...generateValidationSchema(loaderData.formFields).shape,
-      })
+      }),
     ),
     mode: "onChange",
     shouldUnregister: true,
   });
-
 
   useEffect(() => {
     setTimeout(() => {
@@ -168,11 +154,8 @@ export default function Step4({ loaderData }: Route.ComponentProps) {
     });
   }, [loaderData.staticFields, loaderData.formFields, reset, getValues]);
 
-
   return (
     <>
-      {navigation.state !== "idle" ? <Loader /> : null}
-
       <Box
         sx={{
           paddingBottom: "220px",
@@ -213,9 +196,13 @@ export default function Step4({ loaderData }: Route.ComponentProps) {
             display: "grid",
             rowGap: "16px",
           }}
-          onSubmit={(evt) => {
-            evt.preventDefault();
-          }}
+          onSubmit={handleSubmit(() => {
+            if (loaderData.formStatus === "allowedNewStep") {
+              navigate(withLocale("/registration/step5"), {
+                viewTransition: true,
+              });
+            }
+          })}
         >
           <Box
             sx={{
@@ -282,9 +269,7 @@ export default function Step4({ loaderData }: Route.ComponentProps) {
             )}
           />
 
-            
-            
-            {generateInputsMarkup(
+          {generateInputsMarkup(
             loaderData.formFields,
             errors,
             // @ts-expect-error wrong automatic type narroing
@@ -313,16 +298,42 @@ export default function Step4({ loaderData }: Route.ComponentProps) {
               backgroundColor: theme.vars.palette["White"],
             })}
           >
-            <Box sx={{
-              display: "flex",
-              flexDirection: "column",
-              alignItems: "center",
-            }}>
-              <Typography sx={{ textAlign: "center" }} variant="Reg_14" color="Black">{t("terms_start")}<Typography variant="Reg_14" color="Corp_1" component='a' href='../../public/client_marriator_front/file-sample_150kB.pdf'
-            target="_blank"
-            rel="noreferrer">{t("terms_personal")}</Typography>{t("terms_and")}<Typography sx={{ textAlign: "center" }} variant="Reg_14" color="Corp_1" component='a' href='../../public/client_marriator_front/file-sample_150kB.pdf'
-            target="_blank"
-            rel="noreferrer">{t("terms_security")}</Typography></Typography>
+            <Box
+              sx={{
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+              }}
+            >
+              <Typography
+                sx={{ textAlign: "center" }}
+                variant="Reg_14"
+                color="Black"
+              >
+                {t("terms_start")}
+                <Typography
+                  variant="Reg_14"
+                  color="Corp_1"
+                  component="a"
+                  href="../../public/client_marriator_front/file-sample_150kB.pdf"
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  {t("terms_personal")}
+                </Typography>
+                {t("terms_and")}
+                <Typography
+                  sx={{ textAlign: "center" }}
+                  variant="Reg_14"
+                  color="Corp_1"
+                  component="a"
+                  href="../../public/client_marriator_front/file-sample_150kB.pdf"
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  {t("terms_security")}
+                </Typography>
+              </Typography>
               <Controller
                 name="isTermsAccepted"
                 control={control}
@@ -333,9 +344,9 @@ export default function Step4({ loaderData }: Route.ComponentProps) {
                     validation="none"
                     label={t("terms_button")}
                     onImmediateChange={() => {}}
-                    />
-                  )}
-                />
+                  />
+                )}
+              />
             </Box>
 
             <Button
@@ -356,19 +367,7 @@ export default function Step4({ loaderData }: Route.ComponentProps) {
               {t("endButton")}
             </Button>
 
-            <Button
-              variant="text"
-              onClick={() => {
-                trigger();
-                handleSubmit(() => {
-                  if (loaderData.formStatus === "allowedNewStep") {
-                    navigate(withLocale("/registration/step5"), {
-                      viewTransition: true,
-                    });
-                  }
-                })();
-              }}
-            >
+            <Button variant="text" type="submit">
               {t("finishButton")}
             </Button>
           </Box>

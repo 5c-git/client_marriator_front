@@ -12,8 +12,8 @@ import { t, loadNamespaces } from "i18next";
 import { useTranslation } from "react-i18next";
 import { withLocale } from "~/shared/withLocale";
 
-import {zodResolver} from "@hookform/resolvers/zod";
-import {z} from 'zod';
+import { zodResolver } from "@hookform/resolvers/zod";
+import { z } from "zod";
 
 import { useForm, Controller } from "react-hook-form";
 
@@ -22,19 +22,19 @@ import Box from "@mui/material/Box";
 
 import { StyledSmsField } from "~/shared/ui/StyledSmsField/StyledSmsField";
 import { TopNavigation } from "~/shared/ui/TopNavigation/TopNavigation";
-import { Loader } from "~/shared/ui/Loader/Loader";
 
-import { useStore } from "~/store/store";
-
-import { postSetUserEmail } from "~/api/_personal/postSetUserEmail/postSetUserEmail";
-import { postCheckEmailCode } from "~/api/postCheckEmailCode/postCheckEmailCode";
+import { registrationContainer } from "../registration.module";
+import { registrationTokens } from "../registration.tokens";
 
 export async function clientLoader({ request }: Route.ClientLoaderArgs) {
   await loadNamespaces("confirmEmail");
 
   const currentURL = new URL(request.url);
+  const RegistrationService = registrationContainer.get(
+    registrationTokens.registrationService,
+  );
 
-  const email = useStore.getState().userEmail;
+  const email = RegistrationService.getSavedUserEmail();
   const ttl = currentURL.searchParams.get("ttl");
 
   if (!email || !ttl) {
@@ -45,43 +45,40 @@ export async function clientLoader({ request }: Route.ClientLoaderArgs) {
 }
 
 export async function clientAction({ request }: Route.ClientActionArgs) {
+  const RegistrationService = registrationContainer.get(
+    registrationTokens.registrationService,
+  );
   const currentURL = new URL(request.url);
-  const accessToken = useStore.getState().accessToken;
-
   const { _action, currentTTL, ...fields } = await request.json();
 
-  if (accessToken) {
-    if (_action === "sendAgain") {
-      const data = await postSetUserEmail(accessToken, fields.email);
+  if (_action === "sendAgain") {
+    const data = await RegistrationService.sendUserEmail(fields.email);
 
-      if ("result" in data) {
-        currentURL.searchParams.set("ttl", data.result.code.ttl.toString());
+    if ("result" in data) {
+      currentURL.searchParams.set("ttl", data.result.code.ttl.toString());
 
-        throw redirect(currentURL.toString());
-      }
-    } else if (_action === "sendCode") {
-      const data = await postCheckEmailCode(accessToken, fields.code);
-
-      if (data.status === "error") {
-        currentURL.searchParams.set("error", "error");
-
-        currentURL.searchParams.set("ttl", currentTTL.toString());
-
-        throw redirect(currentURL.toString());
-      } else {
-        //на будущее можно так проверить в регистрации мы или профиле, сделать какой-то запрос для авторизованного пользователя и если вернется ок то кидать в профиль, если нет то в регу
-
-        // поле емейла у нас статичное и в неожиданных местах появиться не может, так что мы будем знать все места откуда на эту страницу можем провалиться
-        throw redirect(withLocale("/registration/step4"));
-      }
+      throw redirect(currentURL.toString());
     }
-  } else {
-    throw new Response("Токен авторизации не обнаружен!", { status: 401 });
+  } else if (_action === "sendCode") {
+    const data = await RegistrationService.checkCodeForEmail(fields.code);
+
+    if (data.status === "error") {
+      currentURL.searchParams.set("error", "error");
+
+      currentURL.searchParams.set("ttl", currentTTL.toString());
+
+      throw redirect(currentURL.toString());
+    } else {
+      //на будущее можно так проверить в регистрации мы или профиле, сделать какой-то запрос для авторизованного пользователя и если вернется ок то кидать в профиль, если нет то в регу
+
+      // поле емейла у нас статичное и в неожиданных местах появиться не может, так что мы будем знать все места откуда на эту страницу можем провалиться
+      throw redirect(withLocale("/registration/step4"));
+    }
   }
 }
 
 export default function ConfirmEmail({ loaderData }: Route.ComponentProps) {
-  const { t } = useTranslation("confirmEmail");
+  const { t } = useTranslation("m_registration_confirmEmail");
   const submit = useSubmit();
   const navigation = useNavigation();
   const navigate = useNavigate();
@@ -103,8 +100,9 @@ export default function ConfirmEmail({ loaderData }: Route.ComponentProps) {
     },
     resolver: zodResolver(
       z.object({
-        code: z.string({error: t("inputValidation")})
-          .length(4, {error: t("inputValidation_lenght")}),
+        code: z
+          .string({ error: t("inputValidation") })
+          .length(4, { error: t("inputValidation_lenght") }),
       }),
     ),
   });
@@ -121,8 +119,6 @@ export default function ConfirmEmail({ loaderData }: Route.ComponentProps) {
 
   return (
     <>
-      {navigation.state !== "idle" ? <Loader /> : null}
-
       <Box>
         <TopNavigation
           header={{
