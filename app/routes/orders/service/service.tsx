@@ -3,6 +3,8 @@ import { useNavigation, useNavigate, redirect, useSubmit } from "react-router";
 import type { Route } from "./+types/service";
 import { withLocale } from "~/shared/withLocale";
 
+import { addHours } from "date-fns";
+
 import { ServiceFormMobileView } from "~/shared/views/ServiceMobileView/ServiceFormMobileView/ServiceFormMobileView";
 import { ServiceStaticMobileView } from "~/shared/views/ServiceMobileView/ServiceStaticMobileView/ServiceStaticMobileView";
 
@@ -174,6 +176,20 @@ export async function clientLoader({
         "intervalDayEnd",
       );
 
+      // "as string" because at this point there is no way we can create service if there is no order with project
+      const projectStartDate = new Date(
+        orderData.data.project?.dateStart as string,
+      );
+      const projectEndDate = new Date(
+        orderData.data.project?.dateEnd as string,
+      );
+      const projectStartTimeHours = new Date(
+        `2026-03-12T${orderData.data.project?.timeStart}:00`,
+      ).getHours();
+      const projectEndTimeHours = new Date(
+        `2026-03-12T${orderData.data.project?.timeEnd}:00`,
+      ).getHours();
+
       data = {
         orderId: params.orderId,
         entity,
@@ -193,9 +209,8 @@ export async function clientLoader({
           end: new Date(`2026-03-12T${intervalDayEnd.data.value}:00`),
         },
         projectTimeRange: {
-          // "as string" because at this point there is no way we can create service if there is no order with project
-          start: new Date(orderData.data.project?.dateStart as string),
-          end: new Date(orderData.data.project?.dateEnd as string),
+          start: addHours(projectStartDate, projectStartTimeHours),
+          end: addHours(projectEndDate, projectEndTimeHours),
         },
       } as MobileModeData;
     }
@@ -215,7 +230,7 @@ export async function clientAction({
   const accessToken = useStore.getState().accessToken;
 
   const isNew = searchParams.get("new");
-  
+
   if (accessToken) {
     if (_action === "createService") {
       await postCreateOrderActivity(accessToken, fields.payload);
