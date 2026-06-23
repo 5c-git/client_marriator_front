@@ -4,9 +4,8 @@ import {
   useFetcher,
   useNavigation,
 } from "react-router";
-import { useState } from "react";
-
 import type { Route } from "./+types/orders";
+import { useState } from "react";
 
 import { useTranslation } from "react-i18next";
 import { withLocale } from "~/shared/withLocale";
@@ -32,18 +31,11 @@ import LoopIcon from "@mui/icons-material/Loop";
 import AddIcon from "@mui/icons-material/Add";
 
 import { getOrders } from "~/api/_personal/getOrders/getOrders";
+import { getUserInfo } from "~/api/_personal/getUserInfo/getUserInfo";
 import { postCancelOrder } from "~/api/_personal/postCancelOrder/postCancelOrder";
 import { postRepeatOrder } from "~/api/_personal/postRepeatOrder/postRepeatOrder";
 
-type MobileModeData = {
-  mode: "mobile";
-  assignments: EntitiesListViewInterface["entities"];
-};
-
-
 export async function clientLoader() {
-  const mode = "mobile";
-
   let data;
 
   const accessToken = useStore.getState().accessToken;
@@ -51,60 +43,82 @@ export async function clientLoader() {
   const assignments: EntitiesListViewInterface["entities"] = [];
 
   if (accessToken) {
-    if (mode === "mobile") {
-      const assignmentsData = await getOrders(accessToken);
+    const userData = await getUserInfo(accessToken);
+    const assignmentsData = await getOrders(accessToken);
 
-      assignmentsData.data.forEach((item) => {
-        const earliestStartDate: string[] = [];
-        const latestEndDate: string[] = [];
+    assignmentsData.data.forEach((item) => {
+      const earliestStartDate: string[] = [];
+      const latestEndDate: string[] = [];
 
-        item.orderActivities.forEach((item) => {
-          earliestStartDate.push(item.dateStart);
-        });
-
-        item.orderActivities.forEach((item) => {
-          latestEndDate.push(item.dateEnd);
-        });
-
-        earliestStartDate.sort(
-          (a, b) => new Date(a).valueOf() - new Date(b).valueOf(),
-        );
-
-        latestEndDate.sort(
-          (a, b) => new Date(b).valueOf() - new Date(a).valueOf(),
-        );
-
-        assignments.push({
-          id: item.id,
-          userId: item.user.id,
-          status: item.status,
-          statusColor: statusCodeMap[item.status].color,
-          header: item.orderActivities.length.toString(),
-          subHeader: item.orderActivities
-            .map((activity) => `${activity.viewActivity.name}`)
-            .join(", "),
-          address: {
-            logo: `${import.meta.env.VITE_ASSET_PATH}${item.place.logo}`,
-            text: item.place.address_kladr,
-          },
-          duration: {
-            start: earliestStartDate.length > 0 ? earliestStartDate[0] : null,
-            end: latestEndDate.length > 0 ? latestEndDate[0] : null,
-          },
-          coordinates: [
-            Number(item.place.latitude),
-            Number(item.place.longitude),
-          ],
-        });
+      item.orderActivities.forEach((item) => {
+        earliestStartDate.push(item.dateStart);
       });
 
-      data = {
-        mode: "mobile",
-        assignments: assignments,
-      } as MobileModeData;
+      item.orderActivities.forEach((item) => {
+        latestEndDate.push(item.dateEnd);
+      });
+
+      earliestStartDate.sort(
+        (a, b) => new Date(a).valueOf() - new Date(b).valueOf(),
+      );
+
+      latestEndDate.sort(
+        (a, b) => new Date(b).valueOf() - new Date(a).valueOf(),
+      );
+
+      assignments.push({
+        id: item.id,
+        userId: item.user.id,
+        status: item.status,
+        statusColor: statusCodeMap[item.status].color,
+        header: item.orderActivities.length.toString(),
+        subHeader: item.orderActivities
+          .map((activity) => `${activity.viewActivity.name}`)
+          .join(", "),
+        address: {
+          logo: `${import.meta.env.VITE_ASSET_PATH}${item.place.logo}`,
+          text: item.place.address_kladr,
+        },
+        duration: {
+          start: earliestStartDate.length > 0 ? earliestStartDate[0] : null,
+          end: latestEndDate.length > 0 ? latestEndDate[0] : null,
+        },
+        coordinates: [
+          Number(item.place.latitude),
+          Number(item.place.longitude),
+        ],
+        units: "",
+        currency: "₽",
+      });
+    });
+
+    let cancel_order_interval = 6;
+    let repeat_order_interval = 6;
+
+    if (userData.result.userData.cancel_order) {
+      const date = new Date(
+        `2026-03-12T${userData.result.userData.cancel_order.startsWith("0") ? userData.result.userData.cancel_order : `0${userData.result.userData.cancel_order}`}`,
+      );
+      cancel_order_interval = date.getHours();
+    }
+    if (userData.result.userData.change_order) {
+      const date = new Date(
+        `2026-03-12T${userData.result.userData.change_order.startsWith("0") ? userData.result.userData.change_order : `0${userData.result.userData.change_order}`}`,
+      );
+      repeat_order_interval = date.getHours();
     }
 
-    return data as MobileModeData | { mode: "desktop" };
+    data = {
+      mode: "mobile",
+      assignments: assignments,
+      buttonsInfo: {
+        id: userData.result.userData.id,
+        cancel_order_interval,
+        repeat_order_interval,
+      },
+    };
+
+    return data;
   } else {
     throw new Response("Токен авторизации не обнаружен!", { status: 401 });
   }
@@ -167,9 +181,10 @@ export default function Orders({ loaderData }: Route.ComponentProps) {
                 divider
                 {...(entity.duration.start &&
                 canCancelNewOrNotAccepted(
-                  userId ? userId : -1,
+                  loaderData.buttonsInfo.id,
                   entity.userId,
                   entity.status,
+                  loaderData.buttonsInfo.cancel_order_interval,
                   entity.duration.start,
                 )
                   ? {
@@ -207,9 +222,10 @@ export default function Orders({ loaderData }: Route.ComponentProps) {
                   : {})}
                 {...(entity.duration.start &&
                 canRepeatCancelled(
-                  userId ? userId : -1,
+                  loaderData.buttonsInfo.id,
                   entity.userId,
                   entity.status,
+                  loaderData.buttonsInfo.repeat_order_interval,
                   entity.duration.start,
                 )
                   ? {
@@ -249,9 +265,10 @@ export default function Orders({ loaderData }: Route.ComponentProps) {
                 divider
                 {...(entity.duration.start &&
                 canCancelNewOrNotAccepted(
-                  userId ? userId : -1,
+                  loaderData.buttonsInfo.id,
                   entity.userId,
                   entity.status,
+                  loaderData.buttonsInfo.cancel_order_interval,
                   entity.duration.start,
                 )
                   ? {
@@ -289,9 +306,10 @@ export default function Orders({ loaderData }: Route.ComponentProps) {
                   : null)}
                 {...(entity.duration.start &&
                 canRepeatCancelled(
-                  userId ? userId : -1,
+                  loaderData.buttonsInfo.id,
                   entity.userId,
                   entity.status,
+                  loaderData.buttonsInfo.repeat_order_interval,
                   entity.duration.start,
                 )
                   ? {
