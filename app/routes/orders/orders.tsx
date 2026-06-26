@@ -1,414 +1,318 @@
-import {
-  Link,
-  useOutletContext,
-  useFetcher,
-  useNavigation,
-} from "react-router";
+import { Link, useOutletContext, useFetcher } from "react-router";
 import type { Route } from "./+types/orders";
 import { useState } from "react";
 
 import { useTranslation } from "react-i18next";
 import { withLocale } from "~/shared/withLocale";
 
-import { statusCodeMap } from "~/shared/status";
-
-import { useStore } from "~/store/store";
-
 import { EntitiesListView } from "~/shared/views/EntitiesListView/EntitiesListView";
-import type { EntitiesListViewInterface } from "~/shared/views/EntitiesListView/EntitesListViewInterface";
 
 import { EntityCard } from "~/shared/ui/EntityCard/EntityCard";
-import { Loader } from "~/shared/ui/Loader/Loader";
 
 import { Button, Dialog, DialogActions, DialogTitle, Fab } from "@mui/material";
 
 import LoopIcon from "@mui/icons-material/Loop";
 import AddIcon from "@mui/icons-material/Add";
 
-import { getOrders } from "~/api/_personal/getOrders/getOrders";
-import { getUserInfo } from "~/api/_personal/getUserInfo/getUserInfo";
-import { postCancelOrder } from "~/api/_personal/postCancelOrder/postCancelOrder";
-import { postRepeatOrder } from "~/api/_personal/postRepeatOrder/postRepeatOrder";
-
+import { ordersContainer } from "./orders.module";
+import { ordersTokens } from "./orders.tokens";
 import { ButtonActionMapper } from "~/shared/mappers/buttonActionMapper";
 
+const ORDERS_ACTIONS = {
+  repeat: "repeat",
+  cancel: "cancel",
+} as const;
+
 export async function clientLoader() {
-  let data;
+  const ordersService = ordersContainer.get(ordersTokens.ordersService);
 
-  const accessToken = useStore.getState().accessToken;
+  const orders = await ordersService.getOrders();
+  const intervals = await ordersService.getUserIntervals();
+  const userRole = ordersService.getUserRole();
 
-  const assignments: EntitiesListViewInterface["entities"] = [];
-
-  if (accessToken) {
-    const userData = await getUserInfo(accessToken);
-    const assignmentsData = await getOrders(accessToken);
-
-    assignmentsData.data.forEach((item) => {
-      const earliestStartDate: string[] = [];
-      const latestEndDate: string[] = [];
-
-      item.orderActivities.forEach((item) => {
-        earliestStartDate.push(item.dateStart);
-      });
-
-      item.orderActivities.forEach((item) => {
-        latestEndDate.push(item.dateEnd);
-      });
-
-      earliestStartDate.sort(
-        (a, b) => new Date(a).valueOf() - new Date(b).valueOf(),
-      );
-
-      latestEndDate.sort(
-        (a, b) => new Date(b).valueOf() - new Date(a).valueOf(),
-      );
-
-      assignments.push({
-        id: item.id,
-        userId: item.user.id,
-        status: item.status,
-        statusColor: statusCodeMap[item.status].color,
-        header: item.orderActivities.length.toString(),
-        subHeader: item.orderActivities
-          .map((activity) => `${activity.viewActivity.name}`)
-          .join(", "),
-        address: {
-          logo: `${import.meta.env.VITE_ASSET_PATH}${item.place.logo}`,
-          text: item.place.address_kladr,
-        },
-        duration: {
-          start: earliestStartDate.length > 0 ? earliestStartDate[0] : null,
-          end: latestEndDate.length > 0 ? latestEndDate[0] : null,
-        },
-        coordinates: [
-          Number(item.place.latitude),
-          Number(item.place.longitude),
-        ],
-        units: "",
-        currency: "₽",
-      });
-    });
-
-    let cancel_order_interval = 6;
-    let repeat_order_interval = 6;
-
-    if (userData.result.userData.cancel_order) {
-      const date = new Date(
-        `2026-03-12T${userData.result.userData.cancel_order.startsWith("0") ? userData.result.userData.cancel_order : `0${userData.result.userData.cancel_order}`}`,
-      );
-      cancel_order_interval = date.getHours();
-    }
-    if (userData.result.userData.change_order) {
-      const date = new Date(
-        `2026-03-12T${userData.result.userData.change_order.startsWith("0") ? userData.result.userData.change_order : `0${userData.result.userData.change_order}`}`,
-      );
-      repeat_order_interval = date.getHours();
-    }
-
-    data = {
-      mode: "mobile",
-      assignments: assignments,
-      buttonsInfo: {
-        id: userData.result.userData.id,
-        cancel_order_interval,
-        repeat_order_interval,
-      },
-    };
-
-    return data;
-  } else {
-    throw new Response("Токен авторизации не обнаружен!", { status: 401 });
-  }
+  return {
+    orders,
+    intervals,
+    userRole,
+  };
 }
 
 export async function clientAction({ request }: Route.ClientActionArgs) {
+  const ordersService = ordersContainer.get(ordersTokens.ordersService);
+
   const { _action, ...fields } = await request.json();
 
-  const accessToken = useStore.getState().accessToken;
-
-  if (accessToken) {
-    if (_action === "repeat") {
-      await postRepeatOrder(accessToken, fields.orderId);
-    } else if (_action === "cancel") {
-      await postCancelOrder(accessToken, fields.orderId);
-    }
-  } else {
-    throw new Response("Токен авторизации не обнаружен!", { status: 401 });
+  if (_action === ORDERS_ACTIONS.repeat) {
+    await ordersService.repeatOrder(fields.orderId);
+  } else if (_action === ORDERS_ACTIONS.cancel) {
+    await ordersService.cancelOrder(fields.orderId);
   }
 }
 
 export default function Orders({ loaderData }: Route.ComponentProps) {
-  const { t } = useTranslation("orders");
-  const navigation = useNavigation();
-  const userRole = useStore.getState().userRole;
-  const userId = useStore.getState().userId;
+  const { t } = useTranslation("m_orders");
 
   const showMap = useOutletContext<boolean>();
   const fetcher = useFetcher();
 
-  const [assignmentToAct, setAssignmentToAct] = useState<{
+  const [orderToAct, setOrderToAct] = useState<{
     action: "cancel" | "repeat";
     id: number;
   } | null>(null);
 
   return (
     <>
-      {loaderData.mode === "mobile" ? (
-        <>
-          {navigation.state !== "idle" ? <Loader /> : null}{" "}
-          <EntitiesListView
-            translation="orders"
-            mapView={showMap}
-            entityType="order"
-            entities={loaderData.assignments}
-            sorting="ascending"
-            entityListView={(entity) => (
-              <EntityCard
-                key={entity.id}
-                to={withLocale(`/orders/${entity.id}`)}
-                statusColor={entity.statusColor}
-                header={`${t("cardHeader")} ${entity.header}`}
-                subHeader={{
-                  text: entity.subHeader,
-                  bold: false,
-                }}
-                id={entity.id.toString()}
-                address={entity.address}
-                duration={entity.duration}
-                divider
-                {...(entity.duration.start &&
-                ButtonActionMapper.canCancelNewOrNotAccepted(
-                  loaderData.buttonsInfo.id,
-                  entity.userId,
-                  entity.status,
-                  loaderData.buttonsInfo.cancel_order_interval,
-                  entity.duration.start,
-                )
-                  ? {
-                      buttonAction: {
-                        action: () => {
-                          setAssignmentToAct({
-                            action: "cancel",
-                            id: entity.id,
-                          });
-                        },
-                        text: t("cancelAssignmentButton"),
-                        variant: "text",
-                      },
-                    }
-                  : {})}
-                {...(entity.duration.end &&
-                ButtonActionMapper.canCancelAccepted(
-                  userId ? userId : -1,
-                  entity.userId,
-                  entity.status,
-                  entity.duration.end,
-                )
-                  ? {
-                      buttonAction: {
-                        action: () => {
-                          setAssignmentToAct({
-                            action: "cancel",
-                            id: entity.id,
-                          });
-                        },
-                        text: t("cancelAssignmentButton"),
-                        variant: "text",
-                      },
-                    }
-                  : {})}
-                {...(entity.duration.start &&
-                ButtonActionMapper.canRepeatCancelled(
-                  loaderData.buttonsInfo.id,
-                  entity.userId,
-                  entity.status,
-                  loaderData.buttonsInfo.repeat_order_interval,
-                  entity.duration.start,
-                )
-                  ? {
-                      buttonAction: {
-                        action: () => {
-                          setAssignmentToAct({
-                            action: "repeat",
-                            id: entity.id,
-                          });
-                        },
-                        text: t("repeatAssignmentButton"),
-                        variant: "contained",
-                        icon: (
-                          <LoopIcon
-                            sx={{
-                              transform: "rotate(90deg)",
-                              marginRight: "8px",
-                            }}
-                          />
-                        ),
-                      },
-                    }
-                  : {})}
-              />
-            )}
-            entityMapView={(entity) => (
-              <EntityCard
-                to={withLocale(`/orders/${entity.id}`)}
-                header={`${t("cardHeader")} ${entity.header}`}
-                subHeader={{
-                  text: entity.subHeader,
-                  bold: false,
-                }}
-                id={entity.id.toString()}
-                address={entity.address}
-                duration={entity.duration}
-                divider
-                {...(entity.duration.start &&
-                ButtonActionMapper.canCancelNewOrNotAccepted(
-                  loaderData.buttonsInfo.id,
-                  entity.userId,
-                  entity.status,
-                  loaderData.buttonsInfo.cancel_order_interval,
-                  entity.duration.start,
-                )
-                  ? {
-                      buttonAction: {
-                        action: () => {
-                          setAssignmentToAct({
-                            action: "cancel",
-                            id: entity.id,
-                          });
-                        },
-                        text: t("cancelAssignmentButton"),
-                        variant: "text",
-                      },
-                    }
-                  : null)}
-                {...(entity.duration.end &&
-                ButtonActionMapper.canCancelAccepted(
-                  userId ? userId : -1,
-                  entity.userId,
-                  entity.status,
-                  entity.duration.end,
-                )
-                  ? {
-                      buttonAction: {
-                        action: () => {
-                          setAssignmentToAct({
-                            action: "cancel",
-                            id: entity.id,
-                          });
-                        },
-                        text: t("cancelAssignmentButton"),
-                        variant: "text",
-                      },
-                    }
-                  : null)}
-                {...(entity.duration.start &&
-                ButtonActionMapper.canRepeatCancelled(
-                  loaderData.buttonsInfo.id,
-                  entity.userId,
-                  entity.status,
-                  loaderData.buttonsInfo.repeat_order_interval,
-                  entity.duration.start,
-                )
-                  ? {
-                      buttonAction: {
-                        action: () => {
-                          setAssignmentToAct({
-                            action: "repeat",
-                            id: entity.id,
-                          });
-                        },
-                        text: t("repeatAssignmentButton"),
-                        variant: "contained",
-                        icon: (
-                          <LoopIcon
-                            sx={{
-                              transform: "rotate(90deg)",
-                              marginRight: "8px",
-                            }}
-                          />
-                        ),
-                      },
-                    }
-                  : null)}
-              />
-            )}
-          />
-          {(!showMap && userRole === "client") ||
-          (loaderData.assignments.length === 0 && userRole === "client") ? (
-            <Fab
-              component={Link}
-              to={withLocale("/orders/new-order")}
-              color="Corp_1"
-              aria-label="Create new order"
-              sx={{
-                position: "fixed",
-                bottom: "60px",
-                right: "16px",
-                width: "60px",
-                height: "60px",
-                zIndex: 1,
-              }}
-            >
-              <AddIcon
-                sx={{
-                  fontSize: "2rem",
-                }}
-              />
-            </Fab>
-          ) : null}
-          <Dialog
-            open={assignmentToAct ? true : false}
-            onClose={() => {
-              setAssignmentToAct(null);
+      <EntitiesListView
+        translation="orders"
+        mapView={showMap}
+        entityType="order"
+        entities={loaderData.orders}
+        sorting="ascending"
+        entityListView={(entity) => (
+          <EntityCard
+            key={entity.id}
+            to={withLocale(`/orders/${entity.id}`)}
+            statusColor={entity.statusColor}
+            header={`${t("cardHeader")} ${entity.header}`}
+            subHeader={{
+              text: entity.subHeader,
+              bold: false,
             }}
+            id={entity.id.toString()}
+            address={entity.address}
+            duration={entity.duration}
+            divider
+            {...(entity.duration.start &&
+            ButtonActionMapper.canCancelNewOrNotAccepted(
+              loaderData.intervals.id,
+              entity.userId,
+              entity.status,
+              loaderData.intervals.cancel_order_interval,
+              entity.duration.start,
+            )
+              ? {
+                  buttonAction: {
+                    action: () => {
+                      setOrderToAct({
+                        action: "cancel",
+                        id: entity.id,
+                      });
+                    },
+                    text: t("cancelAssignmentButton"),
+                    variant: "text",
+                  },
+                }
+              : {})}
+            {...(entity.duration.end &&
+            ButtonActionMapper.canCancelAccepted(
+              loaderData.intervals.id,
+              entity.userId,
+              entity.status,
+              entity.duration.end,
+            )
+              ? {
+                  buttonAction: {
+                    action: () => {
+                      setOrderToAct({
+                        action: "cancel",
+                        id: entity.id,
+                      });
+                    },
+                    text: t("cancelAssignmentButton"),
+                    variant: "text",
+                  },
+                }
+              : {})}
+            {...(entity.duration.start &&
+            ButtonActionMapper.canRepeatCancelled(
+              loaderData.intervals.id,
+              entity.userId,
+              entity.status,
+              loaderData.intervals.repeat_order_interval,
+              entity.duration.start,
+            )
+              ? {
+                  buttonAction: {
+                    action: () => {
+                      setOrderToAct({
+                        action: "repeat",
+                        id: entity.id,
+                      });
+                    },
+                    text: t("repeatAssignmentButton"),
+                    variant: "contained",
+                    icon: (
+                      <LoopIcon
+                        sx={{
+                          transform: "rotate(90deg)",
+                          marginRight: "8px",
+                        }}
+                      />
+                    ),
+                  },
+                }
+              : {})}
+          />
+        )}
+        entityMapView={(entity) => (
+          <EntityCard
+            to={withLocale(`/orders/${entity.id}`)}
+            header={`${t("cardHeader")} ${entity.header}`}
+            subHeader={{
+              text: entity.subHeader,
+              bold: false,
+            }}
+            id={entity.id.toString()}
+            address={entity.address}
+            duration={entity.duration}
+            divider
+            {...(entity.duration.start &&
+            ButtonActionMapper.canCancelNewOrNotAccepted(
+              loaderData.intervals.id,
+              entity.userId,
+              entity.status,
+              loaderData.intervals.cancel_order_interval,
+              entity.duration.start,
+            )
+              ? {
+                  buttonAction: {
+                    action: () => {
+                      setOrderToAct({
+                        action: "cancel",
+                        id: entity.id,
+                      });
+                    },
+                    text: t("cancelAssignmentButton"),
+                    variant: "text",
+                  },
+                }
+              : null)}
+            {...(entity.duration.end &&
+            ButtonActionMapper.canCancelAccepted(
+              loaderData.intervals.id,
+              entity.userId,
+              entity.status,
+              entity.duration.end,
+            )
+              ? {
+                  buttonAction: {
+                    action: () => {
+                      setOrderToAct({
+                        action: "cancel",
+                        id: entity.id,
+                      });
+                    },
+                    text: t("cancelAssignmentButton"),
+                    variant: "text",
+                  },
+                }
+              : null)}
+            {...(entity.duration.start &&
+            ButtonActionMapper.canRepeatCancelled(
+              loaderData.intervals.id,
+              entity.userId,
+              entity.status,
+              loaderData.intervals.repeat_order_interval,
+              entity.duration.start,
+            )
+              ? {
+                  buttonAction: {
+                    action: () => {
+                      setOrderToAct({
+                        action: "repeat",
+                        id: entity.id,
+                      });
+                    },
+                    text: t("repeatAssignmentButton"),
+                    variant: "contained",
+                    icon: (
+                      <LoopIcon
+                        sx={{
+                          transform: "rotate(90deg)",
+                          marginRight: "8px",
+                        }}
+                      />
+                    ),
+                  },
+                }
+              : null)}
+          />
+        )}
+      />
+      {(!showMap && loaderData.userRole === "client") ||
+      (loaderData.orders.length === 0 && loaderData.userRole === "client") ? (
+        <Fab
+          component={Link}
+          to={withLocale("/orders/new-order")}
+          color="Corp_1"
+          aria-label="Create new order"
+          sx={{
+            position: "fixed",
+            bottom: "60px",
+            right: "16px",
+            width: "60px",
+            height: "60px",
+            zIndex: 1,
+          }}
+        >
+          <AddIcon
             sx={{
-              "& .MuiDialog-paper": {
-                borderRadius: "8px",
-              },
+              fontSize: "2rem",
+            }}
+          />
+        </Fab>
+      ) : null}
+      <Dialog
+        open={orderToAct ? true : false}
+        onClose={() => {
+          setOrderToAct(null);
+        }}
+        sx={{
+          "& .MuiDialog-paper": {
+            borderRadius: "8px",
+          },
+        }}
+      >
+        <DialogTitle
+          sx={{
+            fontWeight: "400",
+            fontSize: "1.125rem",
+          }}
+        >
+          {orderToAct
+            ? `${t(`dialog.${orderToAct.action}`)} ${t("dialog.title")} ?`
+            : null}
+          {}
+        </DialogTitle>
+        <DialogActions>
+          <Button
+            variant="outlined"
+            onClick={() => {
+              setOrderToAct(null);
             }}
           >
-            <DialogTitle
-              sx={{
-                fontWeight: "400",
-                fontSize: "1.125rem",
-              }}
-            >
-              {assignmentToAct
-                ? `${t(`dialog.${assignmentToAct.action}`)} ${t("dialog.title")} ?`
-                : null}
-              {}
-            </DialogTitle>
-            <DialogActions>
-              <Button
-                variant="outlined"
-                onClick={() => {
-                  setAssignmentToAct(null);
-                }}
-              >
-                {t("dialog.no")}
-              </Button>
-              <Button
-                variant="contained"
-                onClick={() => {
-                  fetcher.submit(
-                    JSON.stringify({
-                      _action: assignmentToAct?.action,
-                      orderId: assignmentToAct?.id,
-                    }),
-                    {
-                      method: "POST",
-                      encType: "application/json",
-                    },
-                  );
-                  setAssignmentToAct(null);
-                }}
-              >
-                {t("dialog.yes")}
-              </Button>
-            </DialogActions>
-          </Dialog>
-        </>
-      ) : null}
+            {t("dialog.no")}
+          </Button>
+          <Button
+            variant="contained"
+            onClick={() => {
+              fetcher.submit(
+                JSON.stringify({
+                  _action: orderToAct?.action,
+                  orderId: orderToAct?.id,
+                }),
+                {
+                  method: "POST",
+                  encType: "application/json",
+                },
+              );
+              setOrderToAct(null);
+            }}
+          >
+            {t("dialog.yes")}
+          </Button>
+        </DialogActions>
+      </Dialog>
     </>
   );
 }

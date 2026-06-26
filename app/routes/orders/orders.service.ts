@@ -2,37 +2,37 @@ import { injected } from "brandi";
 
 import type {
   GetUserInfo,
-  GetTasks,
-  RepeatTask,
-  CancelTask,
-} from "./tasks.private-tokens";
+  GetOrders,
+  RepeatOrder,
+  CancelOrder,
+} from "./orders.private-tokens";
 
-import { tasksPrivateTokens } from "./tasks.private-tokens";
+import { ordersPrivateTokens } from "./orders.private-tokens";
 
 import { AppService } from "~/shared/container/container.service";
 import { appTokens } from "~/shared/container/container.tokens";
 
 import { statusCodeMap } from "~/shared/status";
 
-export class TasksService {
+export class OrdersService {
   constructor(
     private readonly appService: AppService,
-    private readonly loadTasks: GetTasks,
+    private readonly loadOrders: GetOrders,
     private readonly loadUserInfo: GetUserInfo,
-    private readonly _repeatTask: RepeatTask,
-    private readonly _cancelTask: CancelTask,
+    private readonly _repeatOrder: RepeatOrder,
+    private readonly _cancelOrder: CancelOrder,
   ) {}
 
   getUserRole() {
     return this.appService.getUserRole();
   }
 
-  async getTasks() {
+  async getOrders() {
     const token = this.appService.getToken();
 
-    const tasksData = await this.loadTasks(token);
+    const ordersData = await this.loadOrders(token);
 
-    return tasksData.data.map((item) => {
+    return ordersData.data.map((item) => {
       const earliestStartDate: string[] = [];
       const latestEndDate: string[] = [];
 
@@ -84,47 +84,47 @@ export class TasksService {
 
     const userData = await this.loadUserInfo(token);
 
-    let cancel_task_interval = 6;
-    let repeat_task_interval = 6;
+    let cancel_order_interval = 6;
+    let repeat_order_interval = 6;
 
-    if (userData.result.userData.cancel_task) {
+    if (userData.result.userData.cancel_order) {
       const date = new Date(
-        `2026-03-12T${userData.result.userData.cancel_task.startsWith("0") ? userData.result.userData.cancel_task : `0${userData.result.userData.cancel_task}`}`,
+        `2026-03-12T${userData.result.userData.cancel_order.startsWith("0") ? userData.result.userData.cancel_order : `0${userData.result.userData.cancel_order}`}`,
       );
-      cancel_task_interval = date.getHours();
+      cancel_order_interval = date.getHours();
     }
     if (userData.result.userData.change_order) {
       const date = new Date(
         `2026-03-12T${userData.result.userData.change_order.startsWith("0") ? userData.result.userData.change_order : `0${userData.result.userData.change_order}`}`,
       );
-      repeat_task_interval = date.getHours();
+      repeat_order_interval = date.getHours();
     }
 
     return {
       id: userData.result.userData.id,
-      cancel_task_interval,
-      repeat_task_interval,
+      cancel_order_interval,
+      repeat_order_interval,
     };
   }
 
-  async repeatTask(taskId: string) {
+  async repeatOrder(orderId: string) {
     const token = this.appService.getToken();
 
-    return this._repeatTask(token, taskId);
+    return this._repeatOrder(token, orderId);
   }
 
-  async cancelTask(taskId: string) {
+  async cancelOrder(orderId: string) {
     const token = this.appService.getToken();
 
-    return this._cancelTask(token, taskId);
+    return this._cancelOrder(token, orderId);
   }
 }
 
 injected(
-  TasksService,
+  OrdersService,
   appTokens.appService,
-  tasksPrivateTokens.getTasks,
-  tasksPrivateTokens.getUserInfo,
-  tasksPrivateTokens.repeatTask,
-  tasksPrivateTokens.cancelTask,
+  ordersPrivateTokens.getOrders,
+  ordersPrivateTokens.getUserInfo,
+  ordersPrivateTokens.repeatOrder,
+  ordersPrivateTokens.cancelOrder,
 );

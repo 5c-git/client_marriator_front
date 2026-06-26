@@ -70,8 +70,9 @@ import m_tasks from "../../public/locales/ru/m_tasks.json";
 import m_tasks_task from "../../public/locales/ru/m_tasks_task.json";
 import m_tasks_newTask from "../../public/locales/ru/m_tasks_newTask.json";
 
-import order from "../../public/locales/ru/order.json";
-import orders from "../../public/locales/ru/orders.json";
+import m_orders from "../../public/locales/ru/m_orders.json";
+import m_order from "../../public/locales/ru/m_order.json";
+import m_orders_newOrder from "../../public/locales/ru/m_orders_newOrder.json";
 
 //views
 
@@ -82,7 +83,6 @@ import SpecialistsMobileView from "../../public/locales/ru/SpecialistsMobileView
 import ActivityMobileView from "../../public/locales/ru/ActivityMobileView.json";
 import BidMobileView from "../../public/locales/ru/BidMobileView.json";
 
-import OrderMobileView from "../../public/locales/ru/OrderMobileView.json";
 import EntityMobileView from "../../public/locales/ru/EntityMobileView.json";
 import EntitiesListView from "../../public/locales/ru/EntitiesListView.json";
 import RequestSearchDrawer from "../../public/locales/ru/RequestSearchDrawer.json";
@@ -174,8 +174,10 @@ declare module "i18next" {
       m_tasks_task: typeof m_tasks_task;
       m_tasks_newTask: typeof m_tasks_newTask;
 
-      order: typeof order;
-      orders: typeof orders;
+      m_orders: typeof m_orders;
+      m_order: typeof m_order;
+      m_orders_newOrder: typeof m_orders_newOrder;
+
       HomeLayout: typeof HomeLayout;
       sms: typeof sms;
 
@@ -187,7 +189,6 @@ declare module "i18next" {
       SpecialistsMobileView: typeof SpecialistsMobileView;
       BidMobileView: typeof BidMobileView;
 
-      OrderMobileView: typeof OrderMobileView;
       EntityMobileView: typeof EntityMobileView;
       EntitiesListView: typeof EntitiesListView;
       ActivityMobileView: typeof ActivityMobileView;

@@ -29,7 +29,7 @@ import LogoutIcon from "@mui/icons-material/Logout";
 import ClearIcon from "@mui/icons-material/Clear";
 
 export default function NewOrderMobileView(props: NewOrderMobileViewInterface) {
-  const { t } = useTranslation("OrderMobileView");
+  const { t } = useTranslation("m_orders_newOrder");
 
   const [serviceToDelete, setServiceToDelete] = useState<{
     id: number;
@@ -95,8 +95,8 @@ export default function NewOrderMobileView(props: NewOrderMobileViewInterface) {
                 onImmediateChange={() => {
                   props.submitAction(
                     getValues("location"),
-                      getValues("project"),
-                      getValues("selfEmployed"),
+                    getValues("project"),
+                    getValues("selfEmployed"),
                   );
                 }}
                 validation="none"
@@ -237,7 +237,7 @@ export default function NewOrderMobileView(props: NewOrderMobileViewInterface) {
           component={Link}
           to={withLocale(`/orders/${props.order.id}/service?new=true`)}
           variant="outlined"
-          disabled={props.order.isNewOrder || watch('project') === ''}
+          disabled={props.order.isNewOrder || watch("project") === ""}
           startIcon={<AddIcon />}
         >
           {t(`serviceButton`)}

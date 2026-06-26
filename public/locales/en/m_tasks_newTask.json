@@ -1,26 +1,29 @@
 {
   "header": "Create task",
+  "supervisorHeader": "Select supervisors",
   "fields": {
-    "locationPlaceholder": "Location *",
+    "locationPlaceholder": "Task location *",
     "projectPlaceholder": "Project *",
-    "selfEmployedPlaceholder": "Work with selfEmployed"
+    "selfEmployedPlaceholder": "Work with self-employed",
+    "supervisorSearchPlaceholder": "Search"
   },
   "invitedSupervisors": "Invited supervisors",
-  "services": "Services",
-  "serviceAmount": "Services amount:",
-  "serviceButton": "Add service",
+  "activities": "Activities",
+  "activityAmount": "Amount:",
+  "activityButton": "Add activity",
   "cancelButton": "Cancel",
   "sendButton": "Send task",
   "supervisorButton": "Invite supervisors",
-
+  "supervisorInviteButton": "Invite selected supervisors",
   "dialog": {
-    "title": "Delete service",
+    "title": "Remove activity",
     "no": "No",
     "yes": "Yes"
   },
+  "startDate": "Start date",
   "endDate": "End date",
-  "startTime": "Start date",
-  "endTime": "Ent time",
+  "startTime": "Start time",
+  "endTime": "End time",
   "addDayButton": "Add day",
-  "deleteDayButton": "Remove day"
+  "deleteDayButton": "Delete day"
 }

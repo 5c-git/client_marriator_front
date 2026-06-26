@@ -169,7 +169,7 @@ export function NewTaskMobileView(props: NewTaskMobileViewInterface) {
                 color: theme.vars.palette["Black"],
               })}
             >
-              {t(`services`)}
+              {t(`activities`)}
             </Typography>
             {props.task.taskServices.map((item) => (
               <Box
@@ -212,7 +212,7 @@ export function NewTaskMobileView(props: NewTaskMobileViewInterface) {
                       color: theme.vars.palette["Grey_1"],
                     })}
                   >
-                    {t(`serviceAmount`)} {item.count}
+                    {t(`activityAmount`)} {item.count}
                   </Typography>
                 </Box>
 
@@ -238,7 +238,7 @@ export function NewTaskMobileView(props: NewTaskMobileViewInterface) {
           disabled={props.task.isNewTask}
           startIcon={<AddIcon />}
         >
-          {t(`serviceButton`)}
+          {t(`activityButton`)}
         </Button>
 
         {props.task.invitedSupervisors.length > 0 ? (

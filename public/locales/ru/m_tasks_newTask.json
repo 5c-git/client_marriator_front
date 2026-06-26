@@ -1,23 +1,26 @@
 {
   "header": "Создание задачи",
+  "supervisorHeader": "Выбрать супервайзеров",
   "fields": {
     "locationPlaceholder": "Место оказания услуг *",
     "projectPlaceholder": "Проект *",
-    "selfEmployedPlaceholder": "Работать с самозанятыми"
+    "selfEmployedPlaceholder": "Работать с самозанятыми",
+    "supervisorSearchPlaceholder": "Поиск"
   },
   "invitedSupervisors": "Приглашённые супервайзеры",
-  "services": "Услуги",
-  "serviceAmount": "Количество:",
-  "serviceButton": "Добавить услугу",
+  "activities": "Услуги",
+  "activityAmount": "Количество:",
+  "activityButton": "Добавить услугу",
   "cancelButton": "Отменить",
   "sendButton": "Отправить задачу",
   "supervisorButton": "Пригласить супервайзеров",
-
+  "supervisorInviteButton": "Пригласить выбранных супервайзеров",
   "dialog": {
     "title": "Удалить услугу",
     "no": "Нет",
     "yes": "Да"
   },
+  "startDate": "Дата начала",
   "endDate": "Дата окончания",
   "startTime": "Время начала",
   "endTime": "Время окончания",
