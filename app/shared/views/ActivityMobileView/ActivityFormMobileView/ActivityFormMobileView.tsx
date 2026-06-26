@@ -1,4 +1,4 @@
-import type { ServiceMobileViewInterface } from "../ServiceMobileViewInterface";
+import type { ActivityMobileViewInterface } from "../ActivityMobileViewInterface";
 
 import { useState } from "react";
 
@@ -16,7 +16,6 @@ import {
   getDay,
   compareAsc,
   addDays,
-  subDays,
   format,
   isSameDay,
   isBefore,
@@ -41,7 +40,7 @@ import {
   S_Accordion,
   S_AccordionSummary,
   S_AccordionDetails,
-} from "../ServiceMobileView.styled";
+} from "../ActivityMobileView.styled";
 
 import { CheckboxSearchableDrawer } from "~/shared/ui/CheckboxSearchableDrawer/CheckboxSearchableDrawer";
 
@@ -57,12 +56,12 @@ import { PointerIcon } from "~/shared/icons/PointerIcon";
 import { ExpandIcon } from "~/shared/icons/ExpandIcon";
 import { DeleteIcon } from "~/shared/icons/DeleteIcon";
 
-type ServiceFormMobileViewInterface = Omit<
-  ServiceMobileViewInterface,
+type ActivityFormMobileViewInterface = Omit<
+  ActivityMobileViewInterface,
   "headerButtonAction" | "logo"
 >;
 
-const createServiceFormSchema = (
+const createActivityFormSchema = (
   defaultStartDate: Date,
   defaultEndDate: Date,
   projectStartDate: Date,
@@ -80,31 +79,33 @@ const createServiceFormSchema = (
         .min(1, { error: t("text", { ns: "constructorFields" }) }),
       dateStart: z
         .union([
-          z.date()
-          .min(projectStartDate, {
-            error: t("earlierThanProject", { ns: "constructorFields" }),
-          })
-          .min(new Date(), {
-            error: t("inFututreDate", { ns: "constructorFields" }),
-          })
-          .max(projectEndDate, {
-            error: t("laterThanProject", { ns: "constructorFields" }),
-          }),
+          z
+            .date()
+            .min(projectStartDate, {
+              error: t("earlierThanProject", { ns: "constructorFields" }),
+            })
+            .min(new Date(), {
+              error: t("inFututreDate", { ns: "constructorFields" }),
+            })
+            .max(projectEndDate, {
+              error: t("laterThanProject", { ns: "constructorFields" }),
+            }),
           z.null(),
         ])
         .pipe(z.date({ message: t("text", { ns: "constructorFields" }) })),
       dateEnd: z
         .union([
-          z.date()
-          .min(projectStartDate, {
-            error: t("earlierThanProject", { ns: "constructorFields" }),
-          })
-          .min(new Date(), {
-            error: t("inFututreDate", { ns: "constructorFields" }),
-          })
-          .max(projectEndDate, {
-            error: t("laterThanProject", { ns: "constructorFields" }),
-          }),
+          z
+            .date()
+            .min(projectStartDate, {
+              error: t("earlierThanProject", { ns: "constructorFields" }),
+            })
+            .min(new Date(), {
+              error: t("inFututreDate", { ns: "constructorFields" }),
+            })
+            .max(projectEndDate, {
+              error: t("laterThanProject", { ns: "constructorFields" }),
+            }),
           z.null(),
         ])
         .pipe(z.date({ message: t("text", { ns: "constructorFields" }) })),
@@ -171,10 +172,15 @@ const createServiceFormSchema = (
       }
 
       //проверяем что дата старта и дата конца не выходят за заданные временные рамки
-      if(isAfter(dateEnd, set(dateEnd, {
-        hours: defaultEndDate.getHours(),
-        minutes: defaultEndDate.getMinutes(),
-      }))) {
+      if (
+        isAfter(
+          dateEnd,
+          set(dateEnd, {
+            hours: defaultEndDate.getHours(),
+            minutes: defaultEndDate.getMinutes(),
+          }),
+        )
+      ) {
         ctx.addIssue({
           code: "custom",
           message: t("service.laterThanDefaultError", {
@@ -185,10 +191,15 @@ const createServiceFormSchema = (
         });
       }
 
-      if(isBefore(dateStart, set(dateStart, {
-        hours: defaultStartDate.getHours(),
-        minutes: defaultStartDate.getMinutes(),
-      }))) {
+      if (
+        isBefore(
+          dateStart,
+          set(dateStart, {
+            hours: defaultStartDate.getHours(),
+            minutes: defaultStartDate.getMinutes(),
+          }),
+        )
+      ) {
         ctx.addIssue({
           code: "custom",
           message: t("service.earlierThanDefaultError", {
@@ -199,7 +210,6 @@ const createServiceFormSchema = (
         });
       }
 
-
       //проверяем что детальные дни не выходят за заданные временные рамки
       // первый и последний дни проверяем по указанному пользователем времени
       // все внутренние дни проверяем по заданному промежутку с сервера
@@ -209,24 +219,22 @@ const createServiceFormSchema = (
         const isStartDay = isSameDay(dateStart, day.timeStart);
         const isEndDay = isSameDay(dateEnd, day.timeStart);
 
-
-
         //проверяем что дата конца не раньше даты старта
-      const result = compareAsc(day.timeStart, day.timeEnd);
-      if (result > 0) {
-        ctx.addIssue({
-          code: "custom",
-          message: t("moreThanEndDate", { ns: "constructorFields" }),
-          input: values.days[index],
-          path: [`days.${index}.timeStart`],
-        });
-        ctx.addIssue({
-          code: "custom",
-          message: t("lessThanStartDate", { ns: "constructorFields" }),
-          input: values.days[index],
-          path: [`days.${index}.timeEnd`],
-        });
-      }
+        const result = compareAsc(day.timeStart, day.timeEnd);
+        if (result > 0) {
+          ctx.addIssue({
+            code: "custom",
+            message: t("moreThanEndDate", { ns: "constructorFields" }),
+            input: values.days[index],
+            path: [`days.${index}.timeStart`],
+          });
+          ctx.addIssue({
+            code: "custom",
+            message: t("lessThanStartDate", { ns: "constructorFields" }),
+            input: values.days[index],
+            path: [`days.${index}.timeEnd`],
+          });
+        }
 
         if (
           isBefore(
@@ -245,7 +253,8 @@ const createServiceFormSchema = (
             input: values.days[index],
             path: [`days.${index}.timeStart`],
           });
-        } if (
+        }
+        if (
           isAfter(
             day.timeEnd,
             set(day.timeEnd, {
@@ -323,14 +332,16 @@ const createServiceFormSchema = (
               path: [`days.${index}.timeStart`],
             });
           }
-        } 
+        }
       });
     });
 
-export type submitValues = z.output<ReturnType<typeof createServiceFormSchema>>;
+export type submitValues = z.output<
+  ReturnType<typeof createActivityFormSchema>
+>;
 
-export function ServiceFormMobileView(props: ServiceFormMobileViewInterface) {
-  const { t } = useTranslation("ServiceMobileView");
+export function ActivityFormMobileView(props: ActivityFormMobileViewInterface) {
+  const { t } = useTranslation("ActivityMobileView");
 
   const [dayIndex, setDayIndex] = useState<number>(-1);
 
@@ -354,11 +365,11 @@ export function ServiceFormMobileView(props: ServiceFormMobileViewInterface) {
       days: props.entity.days,
     },
     resolver: zodResolver(
-      createServiceFormSchema(
+      createActivityFormSchema(
         props.defaultTimeRange.start,
         props.defaultTimeRange.end,
         props.projectTimeRange.start,
-        props.projectTimeRange.end
+        props.projectTimeRange.end,
       ),
     ),
   });

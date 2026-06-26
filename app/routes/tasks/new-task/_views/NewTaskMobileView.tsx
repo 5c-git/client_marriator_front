@@ -29,7 +29,7 @@ import AddIcon from "@mui/icons-material/Add";
 import ClearIcon from "@mui/icons-material/Clear";
 
 export function NewTaskMobileView(props: NewTaskMobileViewInterface) {
-  const { t } = useTranslation("TaskMobileView");
+  const { t } = useTranslation("m_tasks_newTask");
 
   const [serviceToDelete, setServiceToDelete] = useState<{
     id: number;

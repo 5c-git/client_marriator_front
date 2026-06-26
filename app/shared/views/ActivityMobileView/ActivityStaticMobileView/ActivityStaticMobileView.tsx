@@ -1,8 +1,8 @@
-import type { ServiceMobileViewInterface } from "../ServiceMobileViewInterface";
+import type { ActivityMobileViewInterface } from "../ActivityMobileViewInterface";
 
 import { useTranslation } from "react-i18next";
 
-import { getDay, compareAsc, format } from "date-fns";
+import { getDay, format } from "date-fns";
 
 import Box from "@mui/material/Box";
 import { Avatar, Typography, Divider } from "@mui/material";
@@ -11,7 +11,7 @@ import {
   S_Accordion,
   S_AccordionSummary,
   S_AccordionDetails,
-} from "../ServiceMobileView.styled";
+} from "../ActivityMobileView.styled";
 
 import { TopNavigation } from "~/shared/ui/TopNavigation/TopNavigation";
 import { StyledCheckbox } from "~/shared/ui/StyledCheckbox/StyledCheckbox";
@@ -19,15 +19,15 @@ import { ExpandIcon } from "~/shared/icons/ExpandIcon";
 import { EditIcon } from "~/shared/icons/EditIcon";
 import { LocationIcon } from "~/shared/icons/LocationIcon";
 
-type ServiceStaticMobileViewInterface = Omit<
-  ServiceMobileViewInterface,
+type ActivityStaticMobileViewInterface = Omit<
+  ActivityMobileViewInterface,
   "submitAction" | "cancelAction" | "projectTimeRange"
 >;
 
-export function ServiceStaticMobileView(
-  props: ServiceStaticMobileViewInterface,
+export function ActivityStaticMobileView(
+  props: ActivityStaticMobileViewInterface,
 ) {
-  const { t } = useTranslation("ServiceMobileView");
+  const { t } = useTranslation("ActivityMobileView");
 
   return (
     <>

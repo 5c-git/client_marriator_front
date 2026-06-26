@@ -180,7 +180,8 @@ export default [
   route(":lang?/orders/new-order", "routes/orders/new-order/new-order.tsx"),
   route(
     ":lang?/orders/:orderId/service/:serviceId?",
-    "routes/orders/service/service.tsx",
+    "routes/activity/activity.tsx",
+    { id: "order-service" },
   ),
   //order
 
@@ -189,6 +190,7 @@ export default [
   route(":lang?/tasks/new-task", "routes/tasks/new-task/new-task.tsx"),
   route(
     ":lang?/tasks/:taskId/service/:serviceId?",
-    "routes/tasks/service/service.tsx",
+    "routes/activity/activity.tsx",
+    { id: "task-service" },
   ),
 ] satisfies RouteConfig;

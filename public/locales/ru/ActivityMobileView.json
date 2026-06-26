@@ -1,5 +1,5 @@
 {
-  "service": {
+  "activity": {
     "header": "Заказ услуги",
     "popupHeader": "Добавление точек",
     "fields": {

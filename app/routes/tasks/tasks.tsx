@@ -5,19 +5,7 @@ import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { withLocale } from "~/shared/withLocale";
 
-import { statusCodeMap } from "~/shared/status";
-
-import { useStore } from "~/store/store";
-
-import {
-  canCancelNewOrNotAccepted,
-  canCancelAccepted,
-  canRepeatCancelled,
-} from "~/shared/buttonHelpers";
-
 import { EntitiesListView } from "~/shared/views/EntitiesListView/EntitiesListView";
-import type { EntitiesListViewInterface } from "~/shared/views/EntitiesListView/EntitesListViewInterface";
-
 import { EntityCard } from "~/shared/ui/EntityCard/EntityCard";
 
 import { Button, Dialog, DialogActions, DialogTitle, Fab } from "@mui/material";
@@ -25,117 +13,42 @@ import { Button, Dialog, DialogActions, DialogTitle, Fab } from "@mui/material";
 import LoopIcon from "@mui/icons-material/Loop";
 import AddIcon from "@mui/icons-material/Add";
 
-import { getTasks } from "~/api/_personal/getTasks/getTasks";
-import { getUserInfo } from "~/api/_personal/getUserInfo/getUserInfo";
-import { postCancelTask } from "~/api/_personal/postCancelTask/postCancelTask";
-import { postRepeatTask } from "~/api/_personal/postRepeatTask/postRepeatTask";
+import { tasksContainer } from "./tasks.module";
+import { tasksTokens } from "./tasks.tokens";
+import { ButtonActionMapper } from "~/shared/mappers/buttonActionMapper";
+
+const TASKS_ACTIONS = {
+  repeat: "repeat",
+  cancel: "cancel",
+} as const;
 
 export async function clientLoader() {
-  let data;
+  const tasksService = tasksContainer.get(tasksTokens.tasksService);
 
-  const accessToken = useStore.getState().accessToken;
+  const tasks = await tasksService.getTasks();
+  const intervals = await tasksService.getUserIntervals();
+  const userRole = tasksService.getUserRole();
 
-  const tasks: EntitiesListViewInterface["entities"] = [];
-
-  if (accessToken) {
-    const userData = await getUserInfo(accessToken);
-    const tasksData = await getTasks(accessToken);
-
-    tasksData.data.forEach((item) => {
-      const earliestStartDate: string[] = [];
-      const latestEndDate: string[] = [];
-
-      item.orderActivities.forEach((item) => {
-        earliestStartDate.push(item.dateStart);
-      });
-
-      item.orderActivities.forEach((item) => {
-        latestEndDate.push(item.dateEnd);
-      });
-
-      earliestStartDate.sort(
-        (a, b) => new Date(a).valueOf() - new Date(b).valueOf(),
-      );
-
-      latestEndDate.sort(
-        (a, b) => new Date(b).valueOf() - new Date(a).valueOf(),
-      );
-
-      tasks.push({
-        id: item.id,
-        userId: item.user.id,
-        status: item.status,
-        statusColor: statusCodeMap[item.status].color,
-        header: item.orderActivities.length.toString(),
-        subHeader: item.orderActivities
-          .map((activity) => `${activity.viewActivity.name}`)
-          .join(", "),
-        address: {
-          logo: `${import.meta.env.VITE_ASSET_PATH}${item.place.logo}`,
-          text: item.place.address_kladr,
-        },
-        duration: {
-          start: earliestStartDate.length > 0 ? earliestStartDate[0] : null,
-          end: latestEndDate.length > 0 ? latestEndDate[0] : null,
-        },
-        coordinates: [
-          Number(item.place.latitude),
-          Number(item.place.longitude),
-        ],
-        units: "",
-        currency: "₽",
-      });
-    });
-
-    let cancel_task_interval = 6;
-    let repeat_task_interval = 6;
-
-    if (userData.result.userData.cancel_task) {
-      const date = new Date(
-        `2026-03-12T${userData.result.userData.cancel_task.startsWith("0") ? userData.result.userData.cancel_task : `0${userData.result.userData.cancel_task}`}`,
-      );
-      cancel_task_interval = date.getHours();
-    }
-    if (userData.result.userData.change_order) {
-      const date = new Date(
-        `2026-03-12T${userData.result.userData.change_order.startsWith("0") ? userData.result.userData.change_order : `0${userData.result.userData.change_order}`}`,
-      );
-      repeat_task_interval = date.getHours();
-    }
-
-    return (data = {
-      tasks: tasks,
-      buttonsInfo: {
-        id: userData.result.userData.id,
-        cancel_task_interval,
-        repeat_task_interval,
-      },
-    });
-  } else {
-    throw new Response("Токен авторизации не обнаружен!", { status: 401 });
-  }
+  return {
+    tasks,
+    intervals,
+    userRole,
+  };
 }
 
 export async function clientAction({ request }: Route.ClientActionArgs) {
   const { _action, ...fields } = await request.json();
+  const tasksService = tasksContainer.get(tasksTokens.tasksService);
 
-  const accessToken = useStore.getState().accessToken;
-
-  if (accessToken) {
-    if (_action === "repeat") {
-      await postRepeatTask(accessToken, fields.taskId);
-    } else if (_action === "cancel") {
-      await postCancelTask(accessToken, fields.taskId);
-    }
-  } else {
-    throw new Response("Токен авторизации не обнаружен!", { status: 401 });
+  if (_action === TASKS_ACTIONS.repeat) {
+    await tasksService.repeatTask(fields.taskId);
+  } else if (_action === TASKS_ACTIONS.cancel) {
+    await tasksService.cancelTask(fields.taskId);
   }
 }
 
 export default function Tasks({ loaderData }: Route.ComponentProps) {
-  const { t } = useTranslation("tasks");
-  const userRole = useStore.getState().userRole;
-  const userId = useStore.getState().userId;
+  const { t } = useTranslation("m_tasks");
 
   const showMap = useOutletContext<boolean>();
   const fetcher = useFetcher();
@@ -168,11 +81,11 @@ export default function Tasks({ loaderData }: Route.ComponentProps) {
             duration={entity.duration}
             divider
             {...(entity.duration.start &&
-            canCancelNewOrNotAccepted(
-              loaderData.buttonsInfo.id,
+            ButtonActionMapper.canCancelNewOrNotAccepted(
+              loaderData.intervals.id,
               entity.userId,
               entity.status,
-              loaderData.buttonsInfo.cancel_task_interval,
+              loaderData.intervals.cancel_task_interval,
               entity.duration.start,
             )
               ? {
@@ -189,8 +102,8 @@ export default function Tasks({ loaderData }: Route.ComponentProps) {
                 }
               : {})}
             {...(entity.duration.end &&
-            canCancelAccepted(
-              userId ? userId : -1,
+            ButtonActionMapper.canCancelAccepted(
+              loaderData.intervals.id,
               entity.userId,
               entity.status,
               entity.duration.end,
@@ -209,11 +122,11 @@ export default function Tasks({ loaderData }: Route.ComponentProps) {
                 }
               : {})}
             {...(entity.duration.start &&
-            canRepeatCancelled(
-              loaderData.buttonsInfo.id,
+            ButtonActionMapper.canRepeatCancelled(
+              loaderData.intervals.id,
               entity.userId,
               entity.status,
-              loaderData.buttonsInfo.repeat_task_interval,
+              loaderData.intervals.repeat_task_interval,
               entity.duration.start,
             )
               ? {
@@ -252,11 +165,11 @@ export default function Tasks({ loaderData }: Route.ComponentProps) {
             duration={entity.duration}
             divider
             {...(entity.duration.start &&
-            canCancelNewOrNotAccepted(
-              loaderData.buttonsInfo.id,
+            ButtonActionMapper.canCancelNewOrNotAccepted(
+              loaderData.intervals.id,
               entity.userId,
               entity.status,
-              loaderData.buttonsInfo.cancel_task_interval,
+              loaderData.intervals.cancel_task_interval,
               entity.duration.start,
             )
               ? {
@@ -273,8 +186,8 @@ export default function Tasks({ loaderData }: Route.ComponentProps) {
                 }
               : null)}
             {...(entity.duration.end &&
-            canCancelAccepted(
-              userId ? userId : -1,
+            ButtonActionMapper.canCancelAccepted(
+              loaderData.intervals.id,
               entity.userId,
               entity.status,
               entity.duration.end,
@@ -293,11 +206,11 @@ export default function Tasks({ loaderData }: Route.ComponentProps) {
                 }
               : null)}
             {...(entity.duration.start &&
-            canRepeatCancelled(
-              loaderData.buttonsInfo.id,
+            ButtonActionMapper.canRepeatCancelled(
+              loaderData.intervals.id,
               entity.userId,
               entity.status,
-              loaderData.buttonsInfo.repeat_task_interval,
+              loaderData.intervals.repeat_task_interval,
               entity.duration.start,
             )
               ? {
@@ -324,8 +237,8 @@ export default function Tasks({ loaderData }: Route.ComponentProps) {
           />
         )}
       />
-      {(!showMap && userRole === "manager") ||
-      (loaderData.tasks.length === 0 && userRole === "manager") ? (
+      {(!showMap && loaderData.userRole === "manager") ||
+      (loaderData.tasks.length === 0 && loaderData.userRole === "manager") ? (
         <Fab
           component={Link}
           to={withLocale("/tasks/new-task")}

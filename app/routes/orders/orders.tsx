@@ -13,11 +13,6 @@ import { withLocale } from "~/shared/withLocale";
 import { statusCodeMap } from "~/shared/status";
 
 import { useStore } from "~/store/store";
-import {
-  canCancelNewOrNotAccepted,
-  canCancelAccepted,
-  canRepeatCancelled,
-} from "~/shared/buttonHelpers";
 
 import { EntitiesListView } from "~/shared/views/EntitiesListView/EntitiesListView";
 import type { EntitiesListViewInterface } from "~/shared/views/EntitiesListView/EntitesListViewInterface";
@@ -34,6 +29,8 @@ import { getOrders } from "~/api/_personal/getOrders/getOrders";
 import { getUserInfo } from "~/api/_personal/getUserInfo/getUserInfo";
 import { postCancelOrder } from "~/api/_personal/postCancelOrder/postCancelOrder";
 import { postRepeatOrder } from "~/api/_personal/postRepeatOrder/postRepeatOrder";
+
+import { ButtonActionMapper } from "~/shared/mappers/buttonActionMapper";
 
 export async function clientLoader() {
   let data;
@@ -180,7 +177,7 @@ export default function Orders({ loaderData }: Route.ComponentProps) {
                 duration={entity.duration}
                 divider
                 {...(entity.duration.start &&
-                canCancelNewOrNotAccepted(
+                ButtonActionMapper.canCancelNewOrNotAccepted(
                   loaderData.buttonsInfo.id,
                   entity.userId,
                   entity.status,
@@ -201,7 +198,7 @@ export default function Orders({ loaderData }: Route.ComponentProps) {
                     }
                   : {})}
                 {...(entity.duration.end &&
-                canCancelAccepted(
+                ButtonActionMapper.canCancelAccepted(
                   userId ? userId : -1,
                   entity.userId,
                   entity.status,
@@ -221,7 +218,7 @@ export default function Orders({ loaderData }: Route.ComponentProps) {
                     }
                   : {})}
                 {...(entity.duration.start &&
-                canRepeatCancelled(
+                ButtonActionMapper.canRepeatCancelled(
                   loaderData.buttonsInfo.id,
                   entity.userId,
                   entity.status,
@@ -264,7 +261,7 @@ export default function Orders({ loaderData }: Route.ComponentProps) {
                 duration={entity.duration}
                 divider
                 {...(entity.duration.start &&
-                canCancelNewOrNotAccepted(
+                ButtonActionMapper.canCancelNewOrNotAccepted(
                   loaderData.buttonsInfo.id,
                   entity.userId,
                   entity.status,
@@ -285,7 +282,7 @@ export default function Orders({ loaderData }: Route.ComponentProps) {
                     }
                   : null)}
                 {...(entity.duration.end &&
-                canCancelAccepted(
+                ButtonActionMapper.canCancelAccepted(
                   userId ? userId : -1,
                   entity.userId,
                   entity.status,
@@ -305,7 +302,7 @@ export default function Orders({ loaderData }: Route.ComponentProps) {
                     }
                   : null)}
                 {...(entity.duration.start &&
-                canRepeatCancelled(
+                ButtonActionMapper.canRepeatCancelled(
                   loaderData.buttonsInfo.id,
                   entity.userId,
                   entity.status,

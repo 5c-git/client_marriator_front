@@ -7,6 +7,8 @@ export const getSettingsFromKeySuccessSchema = z.object({
   }),
 });
 
+export type Setting = "radius" | "intervalDayStart" | "intervalDayEnd";
+
 export type GetSettingsFromKeySuccess = z.infer<
   typeof getSettingsFromKeySuccessSchema
 >;

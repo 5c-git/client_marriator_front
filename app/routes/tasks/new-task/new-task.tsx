@@ -1,6 +1,5 @@
 import { useState, ComponentPropsWithoutRef } from "react";
 import {
-  useNavigation,
   useNavigate,
   useFetcher,
   redirect,
@@ -13,193 +12,101 @@ import { withLocale } from "~/shared/withLocale";
 import { NewTaskMobileView } from "./_views/NewTaskMobileView";
 import type { NewTaskMobileViewInterface } from "./_views/NewTaskMobileViewInterface";
 
-import { Loader } from "~/shared/ui/Loader/Loader";
 import { StyledCheckboxMultiple } from "~/shared/ui/StyledCheckboxMultiple/StyledCheckboxMultiple";
 import { CheckboxSearchableDrawer } from "~/shared/ui/CheckboxSearchableDrawer/CheckboxSearchableDrawer";
 
-import { useStore } from "~/store/store";
+import { newTaskContainer } from "./new-task.module";
+import { newTaskNewTokens } from "./new-task.tokens";
 
-import { getTask } from "~/api/_personal/getTask/getTask";
-import { getPlaceForTask } from "~/api/_personal/getPlaceForTask/getPlaceForTask";
-import { getProjectsForTask } from "~/api/_personal/getProjectsForTask/getProjectsForTask";
-import { getSupervisorsForTask } from "~/api/_personal/getSupervisorsForTask/getSupervisorsForTask";
-import { postCreateTask } from "~/api/_personal/postCreateTask/postCreateTask";
-import { postUpdateTask } from "~/api/_personal/postUpdateTask/postUpdateTask";
-import { postDeleteTaskActivity } from "~/api/_personal/postDeleteTaskActivity/postDeleteTaskActivity";
-import { postCancelTask } from "~/api/_personal/postCancelTask/postCancelTask";
-import { postInvoiceTask } from "~/api/_personal/postInvoiceTask/postInvoiceTask";
-// import { postInstructTask } from "~/requests/_personal/postInstructTask/postInstructTask";
-
-type MobileModeData = {
-  mode: "mobile";
-  task: NewTaskMobileViewInterface["task"];
-  placesOptions: NewTaskMobileViewInterface["placesOptions"];
-  projectOptions: NewTaskMobileViewInterface["projectsOptions"];
-  supervisorsToSelect: ComponentPropsWithoutRef<
-    typeof StyledCheckboxMultiple
-  >["options"];
-};
+const NEW_TASK_ACTIONS = {
+  create: "create",
+  update: "update",
+  delete: "delete",
+  cancel: "cancel",
+  inviteSupervisors: "inviteSupervisors",
+} as const;
 
 export async function clientLoader({ request }: Route.ClientLoaderArgs) {
-  const mode = "mobile";
-
   const currentURL = new URL(request.url);
-  const accessToken = useStore.getState().accessToken;
+  const newTaskService = newTaskContainer.get(newTaskNewTokens.NewTaskService);
   const taskId = currentURL.searchParams.get("taskId");
   const placeId = currentURL.searchParams.get("placeId");
 
-  let data;
+  let task: NewTaskMobileViewInterface["task"] = {
+    id: "",
+    projectId: null,
+    place: {
+      id: "",
+      name: "",
+      region: "",
+    },
+    selfEmployed: false,
+    isNewTask: true,
+    taskServices: [],
+    invitedSupervisors: [],
+    responsibleSupervisorId: null,
+  };
+  let supervisorOptions: ComponentPropsWithoutRef<
+    typeof StyledCheckboxMultiple
+  >["options"] = [];
+  let placesOptions: NewTaskMobileViewInterface["placesOptions"] = [];
+  let projectOptions: NewTaskMobileViewInterface["projectsOptions"] = [];
 
-  if (accessToken) {
-    if (mode === "mobile") {
-      const task: MobileModeData["task"] = {
-        id: "",
-        projectId: null,
-        place: {
-          id: "",
-          name: "",
-          region: "",
-        },
-        selfEmployed: false,
-        isNewTask: true,
-        taskServices: [],
-        invitedSupervisors: [],
-        responsibleSupervisorId: null,
-      };
-
-      const placesOptions: MobileModeData["placesOptions"] = [];
-      const projectOptions: MobileModeData["projectOptions"] = [];
-
-      const supervisorsToSelect: MobileModeData["supervisorsToSelect"] = [];
-
-      if (taskId) {
-        const taskData = await getTask(accessToken, taskId);
-
-        task.id = taskId;
-        ((task.projectId = taskData.data.project.id.toString()),
-          (task.place.id = taskData.data.place.id.toString()));
-        task.place.name = taskData.data.place.name;
-        task.place.region = taskData.data.place.region.name;
-        task.selfEmployed = taskData.data.selfEmployed;
-        task.isNewTask = false;
-        taskData.data.orderActivities.forEach((service) => {
-          task.taskServices.push({
-            id: service.id,
-            count: service.count,
-            name: service.viewActivity.name,
-          });
-        });
-        taskData.data.acceptedUser.forEach((supervisor) => {
-          task.invitedSupervisors.push({
-            id: supervisor.id,
-            phone: supervisor.phone,
-            email: supervisor.email,
-            name: supervisor.name,
-            logo: supervisor.logo,
-          });
-        });
-        task.responsibleSupervisorId = taskData.data.acceptUser
-          ? taskData.data.acceptUser.id
-          : null;
-
-        const supervisorsToSelectData = await getSupervisorsForTask(
-          accessToken,
-          taskId,
-        );
-
-        supervisorsToSelectData.data.forEach((sepervisorToSelect) => {
-          supervisorsToSelect.push({
-            value: sepervisorToSelect.id.toString(),
-            label: sepervisorToSelect.name,
-            disabled: false,
-          });
-        });
-      }
-
-      const placesOptionsData = await getPlaceForTask(accessToken);
-
-      placesOptionsData.data.forEach((item) => {
-        placesOptions.push({
-          value: item.id.toString(),
-          label: `${item.name} ${item.region.name}`,
-          disabled: false,
-        });
-      });
-
-      if (placeId) {
-        const projectsOptionsData = await getProjectsForTask(
-          accessToken,
-          placeId,
-        );
-        projectsOptionsData.data.forEach((item) => {
-          projectOptions.push({
-            value: item.id.toString(),
-            label: item.name,
-            disabled: false,
-          });
-        });
-      }
-
-      data = {
-        mode: "mobile",
-        task,
-        placesOptions,
-        projectOptions,
-        supervisorsToSelect,
-      } as MobileModeData;
-    }
-
-    return data as MobileModeData | { mode: "desktop" };
-  } else {
-    throw new Response("Токен авторизации не обнаружен!", { status: 401 });
+  if (taskId) {
+    task = await newTaskService.getTask(taskId);
+    supervisorOptions = await newTaskService.getSupervisorsOptions(taskId);
   }
+
+  if (placeId) {
+    projectOptions = await newTaskService.getProjectOptions(placeId);
+  }
+
+  placesOptions = await newTaskService.getPlaceOptions();
+
+  return {
+    task,
+    placesOptions,
+    projectOptions,
+    supervisorOptions,
+  };
 }
 
 export async function clientAction({ request }: Route.ClientActionArgs) {
   const currentURL = new URL(request.url);
+  const newTaskService = newTaskContainer.get(newTaskNewTokens.NewTaskService);
 
   const { _action, ...fields } = await request.json();
 
-  const accessToken = useStore.getState().accessToken;
-
   const taskId = currentURL.searchParams.get("taskId");
 
-  if (accessToken) {
-    if (_action === "_create") {
-      const task = await postCreateTask(
-        accessToken,
-        fields.placeId,
-        fields.projectId,
-        fields.selfEmployed,
-      );
-      currentURL.searchParams.set("taskId", task.data.id.toString());
-
-      throw redirect(currentURL.toString());
-    } else if (_action === "_update" && taskId) {
-      await postUpdateTask(
-        accessToken,
-        fields.placeId,
-        Number(taskId),
-        fields.projectId,
-        fields.selfEmployed,
-      );
-    } else if (_action === "_delete" && taskId) {
-      await postDeleteTaskActivity(accessToken, taskId, fields.orderActivityId);
-    } else if (_action === "_cancel" && taskId) {
-      await postCancelTask(accessToken, taskId);
-      throw redirect(withLocale("/tasks"));
-    } else if (_action === "_inviteSupervisors" && taskId) {
-      await postInvoiceTask(accessToken, taskId, fields.supervisors);
-      throw redirect(withLocale(`/tasks/${taskId}`));
-    }
-  } else {
-    throw new Response("Токен авторизации не обнаружен!", { status: 401 });
+  if (_action === NEW_TASK_ACTIONS.create) {
+    const task = await newTaskService.createTask(
+      fields.placeId,
+      fields.projectId,
+      fields.selfEmployed,
+    );
+    currentURL.searchParams.set("taskId", task.data.id.toString());
+    throw redirect(currentURL.toString());
+  } else if (_action === NEW_TASK_ACTIONS.update && taskId) {
+    await newTaskService.updateTask(
+      fields.placeId,
+      Number(taskId),
+      fields.projectId,
+      fields.selfEmployed,
+    );
+  } else if (_action === NEW_TASK_ACTIONS.delete && taskId) {
+    await newTaskService.deleteActivity(taskId, fields.orderActivityId);
+  } else if (_action === NEW_TASK_ACTIONS.cancel && taskId) {
+    await newTaskService.cancelTask(taskId);
+    throw redirect(withLocale("/tasks"));
+  } else if (_action === NEW_TASK_ACTIONS.inviteSupervisors && taskId) {
+    newTaskService.inviteSupervisors(taskId, fields.supervisors);
+    throw redirect(withLocale(`/tasks/${taskId}`));
   }
 }
 
 export default function NewTask({ loaderData }: Route.ComponentProps) {
   const navigate = useNavigate();
-  const navigation = useNavigation();
   const [searchParams, setSearchParams] = useSearchParams();
 
   const fetcher = useFetcher();
@@ -211,10 +118,8 @@ export default function NewTask({ loaderData }: Route.ComponentProps) {
     name: string;
   } | null>(null);
 
-  return loaderData.mode === "mobile" ? (
+  return (
     <>
-      {navigation.state !== "idle" ? <Loader /> : null}
-
       <NewTaskMobileView
         task={loaderData.task}
         placesOptions={loaderData.placesOptions}
@@ -236,7 +141,7 @@ export default function NewTask({ loaderData }: Route.ComponentProps) {
           if (loaderData.task.isNewTask && projectId !== "") {
             fetcher.submit(
               JSON.stringify({
-                _action: "_create",
+                _action: NEW_TASK_ACTIONS.create,
                 placeId: placeId,
                 projectId: projectId,
                 selfEmployed: selfEmployed,
@@ -249,7 +154,7 @@ export default function NewTask({ loaderData }: Route.ComponentProps) {
           } else if (projectId !== "") {
             fetcher.submit(
               JSON.stringify({
-                _action: "_update",
+                _action: NEW_TASK_ACTIONS.update,
                 placeId: placeId,
                 taskId: loaderData.task.id,
                 projectId: projectId,
@@ -265,7 +170,7 @@ export default function NewTask({ loaderData }: Route.ComponentProps) {
         cancelAction={() => {
           fetcher.submit(
             JSON.stringify({
-              _action: "_cancel",
+              _action: NEW_TASK_ACTIONS.cancel,
               orderId: loaderData.task.id,
             }),
             {
@@ -277,7 +182,7 @@ export default function NewTask({ loaderData }: Route.ComponentProps) {
         deleteAction={(serviceId) => {
           fetcher.submit(
             JSON.stringify({
-              _action: "_delete",
+              _action: NEW_TASK_ACTIONS.delete,
               orderId: loaderData.task.id,
               orderActivityId: serviceId,
             }),
@@ -302,7 +207,7 @@ export default function NewTask({ loaderData }: Route.ComponentProps) {
         onSubmit={(values) => {
           fetcher.submit(
             JSON.stringify({
-              _action: "_inviteSupervisors",
+              _action: NEW_TASK_ACTIONS.inviteSupervisors,
               supervisors: values,
             }),
             {
@@ -311,9 +216,9 @@ export default function NewTask({ loaderData }: Route.ComponentProps) {
             },
           );
         }}
-        items={loaderData.supervisorsToSelect}
+        items={loaderData.supervisorOptions}
         value={[]}
       />
     </>
-  ) : null;
+  );
 }

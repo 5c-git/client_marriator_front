@@ -2,10 +2,10 @@ import { ComponentPropsWithoutRef } from "react";
 
 import { CheckboxSearchableDrawer } from "~/shared/ui/CheckboxSearchableDrawer/CheckboxSearchableDrawer";
 
-import type { submitValues } from "./ServiceFormMobileView/ServiceFormMobileView";
+import type { submitValues } from "./ActivityFormMobileView/ActivityFormMobileView";
 
-export type ServiceMobileViewInterface = {
-  translation: "service";
+export type ActivityMobileViewInterface = {
+  translation: "activity";
   locationsTranslation: ComponentPropsWithoutRef<
     typeof CheckboxSearchableDrawer
   >["translation"];

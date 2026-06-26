@@ -57,23 +57,21 @@ import m_layout_users from "../../public/locales/ru/m_layout_users.json";
 import m_users_client from "../../public/locales/ru/m_users_client.json";
 import m_users_manager from "../../public/locales/ru/m_users_manager.json";
 import m_users_supervisor from "../../public/locales/ru/m_users_supervisor.json";
-
-import HomeLayout from "../../public/locales/ru/HomeLayout.json";
 //users
 
-//routes
+import HomeLayout from "../../public/locales/ru/HomeLayout.json";
+
 import job from "../../public/locales/ru/job.json";
 
 import BidLayout from "../../public/locales/ru/BidLayout.json";
 import bids from "../../public/locales/ru/bids.json";
 
-import task from "../../public/locales/ru/task.json";
-import tasks from "../../public/locales/ru/tasks.json";
+import m_tasks from "../../public/locales/ru/m_tasks.json";
+import m_tasks_task from "../../public/locales/ru/m_tasks_task.json";
+import m_tasks_newTask from "../../public/locales/ru/m_tasks_newTask.json";
 
 import order from "../../public/locales/ru/order.json";
 import orders from "../../public/locales/ru/orders.json";
-
-//routes
 
 //views
 
@@ -81,9 +79,9 @@ import JobMobileView from "../../public/locales/ru/JobMobileView.json";
 import DayReviewMobileView from "../../public/locales/ru/DayReviewMobileView.json";
 import SpecialistMobileView from "../../public/locales/ru/SpecialistMobileView.json";
 import SpecialistsMobileView from "../../public/locales/ru/SpecialistsMobileView.json";
-import ServiceMobileView from "../../public/locales/ru/ServiceMobileView.json";
+import ActivityMobileView from "../../public/locales/ru/ActivityMobileView.json";
 import BidMobileView from "../../public/locales/ru/BidMobileView.json";
-import TaskMobileView from "../../public/locales/ru/TaskMobileView.json";
+
 import OrderMobileView from "../../public/locales/ru/OrderMobileView.json";
 import EntityMobileView from "../../public/locales/ru/EntityMobileView.json";
 import EntitiesListView from "../../public/locales/ru/EntitiesListView.json";
@@ -168,12 +166,14 @@ declare module "i18next" {
 
       //users
 
-      //routes
       job: typeof job;
       BidLayout: typeof BidLayout;
       bids: typeof bids;
-      task: typeof task;
-      tasks: typeof tasks;
+
+      m_tasks: typeof m_tasks;
+      m_tasks_task: typeof m_tasks_task;
+      m_tasks_newTask: typeof m_tasks_newTask;
+
       order: typeof order;
       orders: typeof orders;
       HomeLayout: typeof HomeLayout;
@@ -186,11 +186,11 @@ declare module "i18next" {
       SpecialistMobileView: typeof SpecialistMobileView;
       SpecialistsMobileView: typeof SpecialistsMobileView;
       BidMobileView: typeof BidMobileView;
-      TaskMobileView: typeof TaskMobileView;
+
       OrderMobileView: typeof OrderMobileView;
       EntityMobileView: typeof EntityMobileView;
       EntitiesListView: typeof EntitiesListView;
-      ServiceMobileView: typeof ServiceMobileView;
+      ActivityMobileView: typeof ActivityMobileView;
       RequestSearchDrawer: typeof RequestSearchDrawer;
 
       //shared
