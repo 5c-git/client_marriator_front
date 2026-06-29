@@ -1,24 +1,19 @@
 import { ComponentPropsWithoutRef, useState } from "react";
 import {
-  useNavigation,
   useNavigate,
   useFetcher,
   Link,
   redirect,
+  useSubmit,
 } from "react-router";
 
 import type { Route } from "./+types/order";
-import type { EntityMobileViewInterface } from "../../../shared/views/EntityMobileView/EntityMobileViewInterface";
 import type { RequestSearchDrawerInterface } from "~/shared/views/RequestSearchDrawer/RequestSearchDrawerInterface";
 import type { PostUpdateSearchPayload } from "~/api/_personal/postUpdateSearch/postUpdateSearch";
-
-import { determineRole } from "~/shared/determineRole";
 
 import { t, loadNamespaces } from "i18next";
 import { useTranslation } from "react-i18next";
 import { withLocale } from "~/shared/withLocale";
-
-import { useStore } from "~/store/store";
 
 import Box from "@mui/material/Box";
 import {
@@ -31,7 +26,6 @@ import {
   Typography,
 } from "@mui/material";
 
-import { Loader } from "~/shared/ui/Loader/Loader";
 import { StyledRadioButton } from "~/shared/ui/StyledRadioButton/StyledRadioButton";
 import { RadioSearchableDrawer } from "../../../shared/ui/RadioSearchableDrawer/RadioSearchableDrawer";
 import { RequestSearchDrawer } from "~/shared/views/RequestSearchDrawer/RequestSearchDrawer";
@@ -59,7 +53,7 @@ const ORDER_ACTIONS = {
 } as const;
 
 export async function clientLoader({ params }: Route.ClientLoaderArgs) {
-  await loadNamespaces("order");
+  await loadNamespaces("m_order");
 
   const orderService = orderContainer.get(orderTokens.orderService);
   const userRole = orderService.getUserRole();
@@ -78,7 +72,7 @@ export async function clientLoader({ params }: Route.ClientLoaderArgs) {
   if (order.acceptingPerson) {
     supervisorsToSelect.push({
       value: order.acceptingPerson.id.toString(),
-      label: t("yourselfOption", { ns: "order" }),
+      label: t("yourselfOption", { ns: "m_order" }),
       disabled: false,
     });
   }
@@ -138,6 +132,7 @@ export default function Order({ loaderData }: Route.ComponentProps) {
   const navigate = useNavigate();
   const { t } = useTranslation("m_order");
 
+  const submit = useSubmit();
   const fetcher = useFetcher<RequestSearchDrawerInterface["entity"]>();
 
   const [editMode, setEditMode] = useState<boolean>(false);
@@ -148,6 +143,8 @@ export default function Order({ loaderData }: Route.ComponentProps) {
   } | null>(null);
 
   const [searchSupervisors, setSearchSupervisors] = useState<boolean>(false);
+
+  console.log(fetcher.data);
 
   return (
     <>
@@ -379,7 +376,7 @@ export default function Order({ loaderData }: Route.ComponentProps) {
                   }}
                   startIcon={<CheckIcon />}
                   onClick={() => {
-                    fetcher.submit(
+                    submit(
                       JSON.stringify({
                         _action: ORDER_ACTIONS.transformAssignmentToRequest,
                         orderId: loaderData.order.id,
@@ -457,7 +454,7 @@ export default function Order({ loaderData }: Route.ComponentProps) {
                   }}
                   startIcon={<CheckIcon />}
                   onClick={() => {
-                    fetcher.submit(
+                    submit(
                       JSON.stringify({
                         _action: ORDER_ACTIONS.acceptAssignment,
                         orderId: loaderData.order.id,
@@ -477,7 +474,7 @@ export default function Order({ loaderData }: Route.ComponentProps) {
                 <Button
                   variant="contained"
                   onClick={() => {
-                    fetcher.submit(
+                    submit(
                       JSON.stringify({
                         _action: ORDER_ACTIONS.save,
                         orderId: loaderData.order.id,
@@ -547,7 +544,7 @@ export default function Order({ loaderData }: Route.ComponentProps) {
                 }),
             };
 
-            fetcher.submit(
+            submit(
               JSON.stringify({
                 _action: ORDER_ACTIONS.updateSearchRequest,
                 searchId: fetcher.data?.id,
@@ -571,7 +568,7 @@ export default function Order({ loaderData }: Route.ComponentProps) {
           setSearchSupervisors(false);
         }}
         onSubmit={(selectedSupervisor) => {
-          fetcher.submit(
+          submit(
             JSON.stringify({
               _action: ORDER_ACTIONS.transformAssignment,
               orderId: loaderData.order.id,
@@ -617,7 +614,7 @@ export default function Order({ loaderData }: Route.ComponentProps) {
           <Button
             variant="contained"
             onClick={() => {
-              fetcher.submit(
+              submit(
                 JSON.stringify({
                   _action: ORDER_ACTIONS.deleteActivity,
                   orderId: loaderData.order.id,

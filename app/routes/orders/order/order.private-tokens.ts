@@ -42,7 +42,7 @@ export type SendOrder = (
 
 export type GetSupervisorsForTask = (
   accessToken: string,
-  taskId: string,
+  orderId: string,
 ) => Promise<GetSupervisorsForTaskSuccess>;
 
 export type CreateBidFromOrder = (

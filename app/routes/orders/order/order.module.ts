@@ -45,8 +45,8 @@ orderContainer
 
 orderContainer
   .bind(orderPrivateTokens.getSupervisorsForTask)
-  .toConstant((accessToken, taskId) =>
-    getSupervisorsForTask(accessToken, taskId),
+  .toConstant((accessToken, orderId) =>
+    getSupervisorsForTask(accessToken, orderId),
   );
 
 orderContainer
