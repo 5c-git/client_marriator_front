@@ -61,7 +61,8 @@ import m_users_supervisor from "../../public/locales/ru/m_users_supervisor.json"
 
 import HomeLayout from "../../public/locales/ru/HomeLayout.json";
 
-import job from "../../public/locales/ru/job.json";
+import m_jobs from "../../public/locales/ru/m_jobs.json";
+import m_jobs_job from "../../public/locales/ru/m_jobs_job.json";
 
 import BidLayout from "../../public/locales/ru/BidLayout.json";
 import bids from "../../public/locales/ru/bids.json";
@@ -71,7 +72,7 @@ import m_tasks_task from "../../public/locales/ru/m_tasks_task.json";
 import m_tasks_newTask from "../../public/locales/ru/m_tasks_newTask.json";
 
 import m_orders from "../../public/locales/ru/m_orders.json";
-import m_order from "../../public/locales/ru/m_order.json";
+import m_orders_order from "../../public/locales/ru/m_orders_order.json";
 import m_orders_newOrder from "../../public/locales/ru/m_orders_newOrder.json";
 
 //views
@@ -165,8 +166,9 @@ declare module "i18next" {
       m_layout_users: typeof m_layout_users;
 
       //users
+      m_jobs: typeof m_jobs;
+      m_jobs_job: typeof m_jobs_job;
 
-      job: typeof job;
       BidLayout: typeof BidLayout;
       bids: typeof bids;
 
@@ -175,7 +177,7 @@ declare module "i18next" {
       m_tasks_newTask: typeof m_tasks_newTask;
 
       m_orders: typeof m_orders;
-      m_order: typeof m_order;
+      m_orders_order: typeof m_orders_order;
       m_orders_newOrder: typeof m_orders_newOrder;
 
       HomeLayout: typeof HomeLayout;

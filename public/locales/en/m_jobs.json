@@ -1,0 +1,6 @@
+{
+  "bidStatus": "Request",
+  "jobStatus": "Mission",
+  "cardHeader": "Amount of services",
+  "amount": "{{price}} {{curency}} / {{measure}}"
+}

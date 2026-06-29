@@ -1,0 +1,6 @@
+{
+  "bidStatus": "Заявка",
+  "jobStatus": "Задание",
+  "cardHeader": "Услуг",
+  "amount": "{{price}} {{curency}} / {{measure}}"
+}

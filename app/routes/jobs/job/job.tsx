@@ -1,22 +1,15 @@
-import {
-  useNavigation,
-  useNavigate,
-  useSubmit,
-  redirect,
-  useFetcher,
-} from "react-router";
+import { useNavigate, useFetcher } from "react-router";
 import { useState, Fragment } from "react";
 import type { Route } from "./+types/job";
 
 import type { JobMobileViewInterface } from "./JobMobileView/JobMobileViewInterface";
 import { useTranslation } from "react-i18next";
-import { useStore } from "~/store/store";
+
 import { withLocale } from "~/shared/withLocale";
-import { determineRole } from "~/shared/determineRole";
 
 import { isWithinInterval, subHours, isAfter } from "date-fns";
 
-import { JobMobileFormView } from "./JobMobileView/JobMobileFormView";
+// import { JobMobileFormView } from "./JobMobileView/JobMobileFormView";
 import { JobMobileStaticView } from "./JobMobileView/JobMobileStaticView";
 
 import { FilesPopup } from "./components/FilesPopup";
@@ -24,289 +17,93 @@ import { CountDownTimer } from "./components/CountDownTimer";
 
 import Box from "@mui/material/Box";
 import { Button, Typography, Snackbar, Alert } from "@mui/material";
-import { Loader } from "~/shared/ui/Loader/Loader";
 import { TopNavigation } from "~/shared/ui/TopNavigation/TopNavigation";
 
 import CheckIcon from "@mui/icons-material/Check";
 import PlayArrowOutlinedIcon from "@mui/icons-material/PlayArrowOutlined";
 
-import { getJob } from "~/api/_personal/getJob/getJob";
-import { postAcceptBid } from "~/api/_personal/postAcceptBid/postAcceptBid";
-import { postStartDay } from "~/api/_personal/postStartDay/postStartDay";
-import { postRejectBid } from "~/api/_personal/postRejectBid/postRejectBid";
-import { postEndDay } from "~/api/_personal/postEndDay/postEndDay";
-import { postPayReport } from "~/api/_personal/postPayReport/postPayReport";
-import { getSettingsFromKey } from "~/api/_settings/getSettingsFromKey/getSettingsFromKey";
+import { jobContainer } from "./job.module";
+import { jobTokens } from "./job.tokens";
+import { JobMapper } from "./job.mapper";
 
-type MobileModeData = {
-  mode: "mobile";
-  entity: JobMobileViewInterface["entity"];
-  locations: JobMobileViewInterface["locations"];
-  defaultTimeRange: JobMobileViewInterface["defaultTimeRange"];
-  projectTimeRange: JobMobileViewInterface["projectTimeRange"];
-};
+const JOB_ACTIONS = {
+  accept: "accept",
+  deny: "deny",
+  start: "start",
+  forPay: "forPay",
+} as const;
 
 export async function clientLoader({ params }: Route.ClientLoaderArgs) {
-  const mode = "mobile";
-  let data;
-  const accessToken = useStore.getState().accessToken;
+  const jobService = jobContainer.get(jobTokens.jobService);
 
-  if (accessToken) {
-    if (mode === "mobile") {
-      const locations: MobileModeData["locations"] = [];
+  const jobData = await jobService.getJob(params.specialistId, params.jobId);
 
-      const missionData = await getJob(
-        accessToken,
-        params.specialistId,
-        params.jobId,
-      );
+  const job = JobMapper.mapDataToJob(jobData);
 
-      const entity: JobMobileViewInterface["entity"] = {
-        id: missionData.data.id,
-        logo: `${import.meta.env.VITE_ASSET_PATH}${missionData.data.viewActivity.logo}`,
-        status: missionData.data.acceptingUser.status,
-        place: {
-          id: missionData.data.place.id,
-          name: missionData.data.place.name,
-          logo: `${import.meta.env.VITE_ASSET_PATH}${missionData.data.place.logo}`,
-        },
-        activity: missionData.data.viewActivity.name,
-        activityDetailsText: missionData.data.viewActivity.detailText,
-        unitPrice: missionData.data.price,
-        dateStart: new Date(missionData.data.dateStart),
-        dateEnd: new Date(missionData.data.dateEnd),
-        income: missionData.data.income,
-        forPay: missionData.data.forPay,
-        days: (() => {
-          const days: JobMobileViewInterface["entity"]["days"] = [];
+  const intervalDayStart = await jobService.getSettings("intervalDayStart");
+  const intervalDayEnd = await jobService.getSettings("intervalDayEnd");
 
-          missionData.data.dateActivity.forEach((day) => {
-            const locations: JobMobileViewInterface["entity"]["days"][0]["locations"] =
-              [];
-
-            const actedDay = missionData.data.reports.find(
-              (item) => item.dayActivityId === day.id,
-            );
-
-            day.places.forEach((place) => {
-              locations.push({
-                id: place.id,
-                name: place.name,
-                logo: place.logo ? place.logo : "",
-              });
-            });
-
-            days.push({
-              id: day.id,
-              ...(actedDay ? { reportId: actedDay.id } : {}),
-              timeStart: new Date(day.timeStart),
-              timeEnd: new Date(day.timeEnd),
-              locations: locations,
-              needRoute: locations.length > 0 ? true : false,
-              action: (() => {
-                let action: JobMobileViewInterface["entity"]["days"][0]["action"] =
-                  "none";
-
-                const now = new Date();
-
-                const canStart = isWithinInterval(now, {
-                  start: subHours(new Date(day.timeStart), 1),
-                  end: new Date(day.timeEnd),
-                });
-
-                if (
-                  canStart &&
-                  !actedDay &&
-                  missionData.data.acceptingUser.status === 5
-                ) {
-                  action = "start";
-                }
-
-                if (actedDay) {
-                  if (actedDay.status === 1) {
-                    action = "inProgress";
-                  } else if (actedDay.status === 2) {
-                    action = "end";
-                  } else if (actedDay.status === 3) {
-                    action = "reported";
-                  } else if (actedDay.status === 4) {
-                    action = "accept";
-                  } else if (actedDay.status === 5) {
-                    action = "forPay";
-                  } else if (actedDay.status === 6) {
-                    action = "paid";
-                  } else if (actedDay.status === 7) {
-                    action = "notEnded";
-                  }
-                }
-
-                return action;
-              })(),
-            });
-          });
-
-          return days;
-        })(),
-        needDays: missionData.data.dateActivity.length > 0 ? true : false,
-        needPhoto: missionData.data.needFoto,
-        travelling: missionData.data.viewActivity.traveling,
-        user: {
-          id: missionData.data.user.id,
-          logo: missionData.data.user.logo,
-          name: missionData.data.user.name,
-          role: determineRole(missionData.data.user.roles),
-          phone: missionData.data.user.phone.toString(),
-        },
-        oneDayJob: missionData.data.dateActivity.length === 0 ? true : false,
-        oneDayJobAction: (() => {
-          let action: JobMobileViewInterface["entity"]["oneDayJobAction"] =
-            "none";
-
-          const oneDayJob =
-            missionData.data.dateActivity.length === 0 ? true : false;
-
-          if (oneDayJob) {
-            const actedDay = missionData.data.reports.length > 0 ? true : false;
-
-            const now = new Date();
-
-            const canStart = isWithinInterval(now, {
-              start: subHours(new Date(missionData.data.dateStart), 1),
-              end: new Date(missionData.data.dateEnd),
-            });
-
-            if (
-              canStart &&
-              !actedDay &&
-              missionData.data.acceptingUser.status === 5
-            ) {
-              action = "start";
-            }
-
-            if (actedDay) {
-              if (missionData.data.reports[0].status === 1) {
-                action = "inProgress";
-              } else if (missionData.data.reports[0].status === 2) {
-                action = "end";
-              } else if (missionData.data.reports[0].status === 3) {
-                action = "reported";
-              } else if (missionData.data.reports[0].status === 4) {
-                action = "accept";
-              } else if (missionData.data.reports[0].status === 5) {
-                action = "forPay";
-              } else if (missionData.data.reports[0].status === 6) {
-                action = "paid";
-              } else if (missionData.data.reports[0].status === 7) {
-                action = "notEnded";
-              }
-            }
-          }
-
-          return action;
-        })(),
-        oneDayReportId:
-          missionData.data.reports.length > 0
-            ? missionData.data.reports[0].id
-            : null,
-        units: missionData.data.viewActivity.standard.name,
-        currency: "₽",
-      };
-
-      const intervalDayStart = await getSettingsFromKey(
-        accessToken,
-        "intervalDayStart",
-      );
-      const intervalDayEnd = await getSettingsFromKey(
-        accessToken,
-        "intervalDayEnd",
-      );
-
-      data = {
-        mode,
-        entity,
-        locations,
-        defaultTimeRange: {
-          start: new Date(
-            `2026-03-12T${missionData.data.project.timeStart ? (missionData.data.project.timeStart.startsWith("0") ? missionData.data.project.timeStart : `0${missionData.data.project.timeStart}`) : intervalDayStart.data.value.startsWith("0") ? intervalDayStart.data.value : `0${intervalDayStart.data.value}`}:00`,
-          ),
-          end: new Date(
-            `2026-03-12T${missionData.data.project.timeEnd ? missionData.data.project.timeEnd : intervalDayEnd.data.value}:00`,
-          ),
-        },
-        projectTimeRange: {
-          start: new Date(missionData.data.project.dateStart),
-          end: new Date(missionData.data.project.dateEnd),
-        },
-      } as MobileModeData;
-    }
-
-    return data as MobileModeData | { mode: "desktop" };
-  } else {
-    throw new Response("Токен авторизации не обнаружен!", { status: 401 });
-  }
+  return {
+    job,
+    defaultTimeRange: {
+      start: new Date(
+        `2026-03-12T${jobData.data.project.timeStart ? (jobData.data.project.timeStart.startsWith("0") ? jobData.data.project.timeStart : `0${jobData.data.project.timeStart}`) : intervalDayStart.data.value.startsWith("0") ? intervalDayStart.data.value : `0${intervalDayStart.data.value}`}:00`,
+      ),
+      end: new Date(
+        `2026-03-12T${jobData.data.project.timeEnd ? jobData.data.project.timeEnd : intervalDayEnd.data.value}:00`,
+      ),
+    },
+    projectTimeRange: {
+      start: new Date(jobData.data.project.dateStart),
+      end: new Date(jobData.data.project.dateEnd),
+    },
+  };
 }
 
-export async function clientAction({
-  request,
-  // params,
-}: Route.ClientActionArgs) {
-  const currentURL = new URL(request.url);
+export async function clientAction({ request }: Route.ClientActionArgs) {
+  const jobService = jobContainer.get(jobTokens.jobService);
   const requestType = request.headers.get("content-type");
-  const accessToken = useStore.getState().accessToken;
 
-  if (accessToken) {
-    if (requestType === "application/json") {
-      const { _action, ...fields } = await request.json();
-      if (_action === "accept") {
-        await postAcceptBid(accessToken, fields.bidId);
-        return {
-          success: true,
-        };
-      } else if (_action === "deny") {
-        await postRejectBid(accessToken, fields.bidId);
-        throw redirect(currentURL.toString());
-      } else if (_action === "start") {
-        await postStartDay(accessToken, fields.bidId);
-        throw redirect(currentURL.toString());
-      } else if (_action === "forPay") {
-        await postPayReport(accessToken, fields.reportId);
-        throw redirect(currentURL.toString());
-      }
-    } else {
-      const formData = await request.formData();
+  if (requestType === "application/json") {
+    const { _action, ...fields } = await request.json();
 
-      const bidId = formData.get("bidId") as string;
-      const files = formData.getAll("files[]") as File[];
-
-      await postEndDay(accessToken, bidId, files);
-      throw redirect(currentURL.toString());
+    if (_action === JOB_ACTIONS.accept) {
+      await jobService.acceptBid(fields.bidId);
+      return {
+        success: true,
+      };
+    } else if (_action === JOB_ACTIONS.deny) {
+      await jobService.rejectBid(fields.bidId);
+    } else if (_action === JOB_ACTIONS.start) {
+      await jobService.startDay(fields.bidId);
+    } else if (_action === JOB_ACTIONS.forPay) {
+      await jobService.payReport(fields.reportId);
     }
   } else {
-    throw new Response("Токен авторизации не обнаружен!", { status: 401 });
+    const formData = await request.formData();
+
+    const bidId = formData.get("bidId") as string;
+    const files = formData.getAll("files[]") as File[];
+
+    await jobService.endDay(bidId, files);
   }
 }
 
 export default function Job({ loaderData }: Route.ComponentProps) {
-  const navigation = useNavigation();
+  const { t } = useTranslation("m_jobs_job");
   const navigate = useNavigate();
-  const submit = useSubmit();
   const fetcher = useFetcher<typeof clientAction>();
-  const { t } = useTranslation("job");
-
-  // const formRef = useRef<HTMLFormElement>(null);
 
   const [openFilesPopup, setOpenFilesPopup] = useState<boolean>(false);
 
-  return loaderData.mode === "mobile" ? (
+  return (
     <>
-      {navigation.state !== "idle" ? <Loader /> : null}
-
       <TopNavigation
         header={{
           text:
-            loaderData.entity.status === 1 || loaderData.entity.status === 4
-              ? `${t("bid")} ${loaderData.entity.id}`
-              : `${t("job")} ${loaderData.entity.id}`,
+            loaderData.job.status === 1 || loaderData.job.status === 4
+              ? `${t("bid")} ${loaderData.job.id}`
+              : `${t("job")} ${loaderData.job.id}`,
           bold: false,
         }}
         backAction={() => {
@@ -317,9 +114,9 @@ export default function Job({ loaderData }: Route.ComponentProps) {
       />
 
       <JobMobileStaticView
-        entity={loaderData.entity}
+        entity={loaderData.job}
         actions={
-          loaderData.entity.status === 1
+          loaderData.job.status === 1
             ? []
             : [
                 (
@@ -333,10 +130,10 @@ export default function Job({ loaderData }: Route.ComponentProps) {
                         startIcon={<PlayArrowOutlinedIcon />}
                         variant="contained"
                         onClick={() => {
-                          submit(
+                          fetcher.submit(
                             JSON.stringify({
-                              _action: "start",
-                              bidId: loaderData.entity.id,
+                              _action: JOB_ACTIONS.start,
+                              bidId: loaderData.job.id,
                             }),
                             {
                               method: "POST",
@@ -363,17 +160,17 @@ export default function Job({ loaderData }: Route.ComponentProps) {
                         end: new Date(day.timeEnd),
                       })}
                       onClick={() => {
-                        if (loaderData.entity.needPhoto) {
+                        if (loaderData.job.needPhoto) {
                           setOpenFilesPopup(true);
                         } else {
                           const formData = new FormData();
 
                           formData.append(
                             "bidId",
-                            loaderData.entity.id.toString(),
+                            loaderData.job.id.toString(),
                           );
 
-                          submit(formData, {
+                          fetcher.submit(formData, {
                             method: "POST",
                             encType: "multipart/form-data",
                           });
@@ -445,9 +242,9 @@ export default function Job({ loaderData }: Route.ComponentProps) {
                       // startIcon={<CheckIcon />}
                       variant="contained"
                       onClick={() => {
-                        submit(
+                        fetcher.submit(
                           JSON.stringify({
-                            _action: "forPay",
+                            _action: JOB_ACTIONS.forPay,
                             reportId: day.reportId,
                           }),
                           {
@@ -512,7 +309,7 @@ export default function Job({ loaderData }: Route.ComponentProps) {
           rowGap: "8px",
         }}
       >
-        {loaderData.entity.status === 1 ? (
+        {loaderData.job.status === 1 ? (
           <>
             <Button
               startIcon={<CheckIcon />}
@@ -520,8 +317,8 @@ export default function Job({ loaderData }: Route.ComponentProps) {
               onClick={() => {
                 fetcher.submit(
                   JSON.stringify({
-                    _action: "accept",
-                    bidId: loaderData.entity.id,
+                    _action: JOB_ACTIONS.accept,
+                    bidId: loaderData.job.id,
                   }),
                   {
                     method: "POST",
@@ -535,10 +332,10 @@ export default function Job({ loaderData }: Route.ComponentProps) {
             <Button
               variant="text"
               onClick={() => {
-                submit(
+                fetcher.submit(
                   JSON.stringify({
-                    _action: "deny",
-                    bidId: loaderData.entity.id,
+                    _action: JOB_ACTIONS.deny,
+                    bidId: loaderData.job.id,
                   }),
                   {
                     method: "POST",
@@ -552,18 +349,18 @@ export default function Job({ loaderData }: Route.ComponentProps) {
           </>
         ) : null}
 
-        {loaderData.entity.oneDayJob ? (
+        {loaderData.job.oneDayJob ? (
           <>
-            {loaderData.entity.oneDayJobAction === "start" ? (
+            {loaderData.job.oneDayJobAction === "start" ? (
               <Button
                 key="start"
                 startIcon={<PlayArrowOutlinedIcon />}
                 variant="contained"
                 onClick={() => {
-                  submit(
+                  fetcher.submit(
                     JSON.stringify({
-                      _action: "start",
-                      bidId: loaderData.entity.id,
+                      _action: JOB_ACTIONS.start,
+                      bidId: loaderData.job.id,
                     }),
                     {
                       method: "POST",
@@ -575,24 +372,21 @@ export default function Job({ loaderData }: Route.ComponentProps) {
                 {t("actions.start")}
               </Button>
             ) : null}
-            {loaderData.entity.oneDayJobAction === "inProgress" ? (
+            {loaderData.job.oneDayJobAction === "inProgress" ? (
               <Button
                 key="inProgress"
                 startIcon={<CheckIcon />}
                 variant="contained"
-                disabled={isAfter(
-                  new Date(loaderData.entity.dateEnd),
-                  new Date(),
-                )}
+                disabled={isAfter(new Date(loaderData.job.dateEnd), new Date())}
                 onClick={() => {
-                  if (loaderData.entity.needPhoto) {
+                  if (loaderData.job.needPhoto) {
                     setOpenFilesPopup(true);
                   } else {
                     const formData = new FormData();
 
-                    formData.append("bidId", loaderData.entity.id.toString());
+                    formData.append("bidId", loaderData.job.id.toString());
 
-                    submit(formData, {
+                    fetcher.submit(formData, {
                       method: "POST",
                       encType: "multipart/form-data",
                     });
@@ -601,11 +395,11 @@ export default function Job({ loaderData }: Route.ComponentProps) {
               >
                 {t("actions.end")}&nbsp;
                 <CountDownTimer
-                  countDownDate={new Date(loaderData.entity.dateEnd)}
+                  countDownDate={new Date(loaderData.job.dateEnd)}
                 />
               </Button>
             ) : null}
-            {loaderData.entity.oneDayJobAction === "end" ? (
+            {loaderData.job.oneDayJobAction === "end" ? (
               <Fragment key="end">
                 <Typography
                   component={"p"}
@@ -619,7 +413,7 @@ export default function Job({ loaderData }: Route.ComponentProps) {
                 </Typography>
               </Fragment>
             ) : null}
-            {loaderData.entity.oneDayJobAction === "reported" ? (
+            {loaderData.job.oneDayJobAction === "reported" ? (
               <Fragment key="reported">
                 <Typography
                   component={"p"}
@@ -633,7 +427,7 @@ export default function Job({ loaderData }: Route.ComponentProps) {
                 </Typography>
               </Fragment>
             ) : null}
-            {loaderData.entity.oneDayJobAction === "accept" ? (
+            {loaderData.job.oneDayJobAction === "accept" ? (
               <Fragment key="accept">
                 <Typography
                   component={"p"}
@@ -647,16 +441,16 @@ export default function Job({ loaderData }: Route.ComponentProps) {
                 </Typography>
               </Fragment>
             ) : null}
-            {loaderData.entity.oneDayJobAction === "forPay" ? (
+            {loaderData.job.oneDayJobAction === "forPay" ? (
               <Button
                 key="forPay"
                 // startIcon={<CheckIcon />}
                 variant="contained"
                 onClick={() => {
-                  submit(
+                  fetcher.submit(
                     JSON.stringify({
-                      _action: "forPay",
-                      reportId: loaderData.entity.oneDayReportId,
+                      _action: JOB_ACTIONS.forPay,
+                      reportId: loaderData.job.oneDayReportId,
                     }),
                     {
                       method: "POST",
@@ -668,7 +462,7 @@ export default function Job({ loaderData }: Route.ComponentProps) {
                 {t("actions.forPay")}
               </Button>
             ) : null}
-            {loaderData.entity.oneDayJobAction === "paid" ? (
+            {loaderData.job.oneDayJobAction === "paid" ? (
               <Fragment key="paid">
                 <Typography
                   component={"p"}
@@ -685,15 +479,13 @@ export default function Job({ loaderData }: Route.ComponentProps) {
           </>
         ) : null}
 
-        {loaderData.entity.status === 2 || loaderData.entity.status === 5 ? (
+        {loaderData.job.status === 2 || loaderData.job.status === 5 ? (
           <Button
             variant="text"
             onClick={() => {
-              submit(
+              fetcher.submit(
                 JSON.stringify({
-                  _action: "end",
-                  bidId: loaderData.entity.id,
-                  // specialistId: loaderData,
+                  bidId: loaderData.job.id,
                 }),
                 {
                   method: "POST",
@@ -715,13 +507,13 @@ export default function Job({ loaderData }: Route.ComponentProps) {
         onSubmit={async (files) => {
           const formData = new FormData();
 
-          formData.append("bidId", loaderData.entity.id.toString());
+          formData.append("bidId", loaderData.job.id.toString());
 
           files.forEach((file) => {
             formData.append(`files[]`, file, file.name);
           });
 
-          submit(formData, {
+          fetcher.submit(formData, {
             method: "POST",
             encType: "multipart/form-data",
           });
@@ -748,5 +540,5 @@ export default function Job({ loaderData }: Route.ComponentProps) {
         </Alert>
       </Snackbar>
     </>
-  ) : null;
+  );
 }
