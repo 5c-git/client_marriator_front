@@ -40,7 +40,7 @@ export async function clientLoader() {
 export async function clientAction({ request }: Route.ClientActionArgs) {
   const fields = await request.json();
 
-  return await registrationContainer
+  await registrationContainer
     .get(registrationTokens.registrationService)
     .sendFields(3, fields);
 }

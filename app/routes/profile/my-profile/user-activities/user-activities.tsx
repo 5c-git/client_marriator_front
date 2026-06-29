@@ -29,7 +29,7 @@ export async function clientAction({ request }: Route.ClientActionArgs) {
     throw new Response("Параметр step не указан!", { status: 400 });
   }
 
-  return await userActivitiesContainer
+  await userActivitiesContainer
     .get(userActivitiesTokens.userActivitiesService)
     .saveFormFields(Number(step), fields);
 }

@@ -97,10 +97,7 @@ export async function clientAction({ request }: Route.ClientActionArgs) {
   const { _action, ...fields } = await request.json();
 
   if (_action === ORDER_ACTIONS.deleteActivity) {
-    return await orderService.deleteActivity(
-      fields.orderId,
-      fields.orderActivityId,
-    );
+    await orderService.deleteActivity(fields.orderId, fields.orderActivityId);
   } else if (_action === ORDER_ACTIONS.transformAssignment) {
     const taskData = await orderService.convertToTask(
       fields.orderId,
@@ -109,7 +106,7 @@ export async function clientAction({ request }: Route.ClientActionArgs) {
 
     throw redirect(withLocale(`/tasks/${taskData.data.id}`));
   } else if (_action === ORDER_ACTIONS.requestSearch) {
-    return await orderService.makeSearchRequest(
+    await orderService.makeSearchRequest(
       fields.orderId,
       fields.orderActivityId,
     );
@@ -122,15 +119,15 @@ export async function clientAction({ request }: Route.ClientActionArgs) {
     );
     throw redirect(withLocale(`/bids/${bidData.data.id}`));
   } else if (_action === ORDER_ACTIONS.acceptAssignment) {
-    return await orderService.acceptOrder(fields.orderId);
+    await orderService.acceptOrder(fields.orderId);
   } else if (_action === ORDER_ACTIONS.save) {
-    return await orderService.saveOrder(fields.orderId);
+    await orderService.saveOrder(fields.orderId);
   }
 }
 
 export default function Order({ loaderData }: Route.ComponentProps) {
   const navigate = useNavigate();
-  const { t } = useTranslation("m_order");
+  const { t } = useTranslation("m_orders_order");
 
   const submit = useSubmit();
   const fetcher = useFetcher<RequestSearchDrawerInterface["entity"]>();
@@ -454,7 +451,7 @@ export default function Order({ loaderData }: Route.ComponentProps) {
                   }}
                   startIcon={<CheckIcon />}
                   onClick={() => {
-                    submit(
+                    fetcher.submit(
                       JSON.stringify({
                         _action: ORDER_ACTIONS.acceptAssignment,
                         orderId: loaderData.order.id,
@@ -474,7 +471,7 @@ export default function Order({ loaderData }: Route.ComponentProps) {
                 <Button
                   variant="contained"
                   onClick={() => {
-                    submit(
+                    fetcher.submit(
                       JSON.stringify({
                         _action: ORDER_ACTIONS.save,
                         orderId: loaderData.order.id,
@@ -544,7 +541,7 @@ export default function Order({ loaderData }: Route.ComponentProps) {
                 }),
             };
 
-            submit(
+            fetcher.submit(
               JSON.stringify({
                 _action: ORDER_ACTIONS.updateSearchRequest,
                 searchId: fetcher.data?.id,
@@ -614,7 +611,7 @@ export default function Order({ loaderData }: Route.ComponentProps) {
           <Button
             variant="contained"
             onClick={() => {
-              submit(
+              fetcher.submit(
                 JSON.stringify({
                   _action: ORDER_ACTIONS.deleteActivity,
                   orderId: loaderData.order.id,

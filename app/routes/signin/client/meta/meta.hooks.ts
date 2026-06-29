@@ -1,5 +1,5 @@
 import { useCallback } from "react";
-import { useFetcher } from "react-router";
+import { useFetcher, useSubmit } from "react-router";
 
 import { useMetaStore } from "./metaStore";
 
@@ -7,6 +7,7 @@ import { META_ACTIONS } from "./meta";
 
 export function useMetaHooks() {
   const fetcher = useFetcher();
+  const submit = useSubmit();
   const setFio = useMetaStore((state) => state.setFio);
 
   const deleteLocation = useCallback(
@@ -43,7 +44,7 @@ export function useMetaHooks() {
 
   const finishRegister = useCallback(
     (name: string) => {
-      fetcher.submit(
+      submit(
         JSON.stringify({
           _action: META_ACTIONS.finishRegister,
           name,

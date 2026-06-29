@@ -17,7 +17,7 @@ export async function clientLoader() {
 export async function clientAction({ request }: Route.ClientActionArgs) {
   const payload = await request.json();
 
-  return await workRadiusContainer
+  await workRadiusContainer
     .get(workRadiusTokens.workRadiusService)
     .submitGeoData(payload);
 }

@@ -4,6 +4,7 @@ import {
   useFetcher,
   redirect,
   useSearchParams,
+  useSubmit,
 } from "react-router";
 import type { Route } from "./+types/new-task";
 
@@ -100,7 +101,7 @@ export async function clientAction({ request }: Route.ClientActionArgs) {
     await newTaskService.cancelTask(taskId);
     throw redirect(withLocale("/tasks"));
   } else if (_action === NEW_TASK_ACTIONS.inviteSupervisors && taskId) {
-    newTaskService.inviteSupervisors(taskId, fields.supervisors);
+    await newTaskService.inviteSupervisors(taskId, fields.supervisors);
     throw redirect(withLocale(`/tasks/${taskId}`));
   }
 }
@@ -110,6 +111,7 @@ export default function NewTask({ loaderData }: Route.ComponentProps) {
   const [searchParams, setSearchParams] = useSearchParams();
 
   const fetcher = useFetcher();
+  const submit = useSubmit();
 
   const [searchSupervisors, setSearchSupervisors] = useState<boolean>(false);
   const [_, setActivityToDelete] = useState<{
@@ -168,7 +170,7 @@ export default function NewTask({ loaderData }: Route.ComponentProps) {
           }
         }}
         cancelAction={() => {
-          fetcher.submit(
+          submit(
             JSON.stringify({
               _action: NEW_TASK_ACTIONS.cancel,
               orderId: loaderData.task.id,
@@ -205,7 +207,7 @@ export default function NewTask({ loaderData }: Route.ComponentProps) {
           setSearchSupervisors(false);
         }}
         onSubmit={(values) => {
-          fetcher.submit(
+          submit(
             JSON.stringify({
               _action: NEW_TASK_ACTIONS.inviteSupervisors,
               supervisors: values,

@@ -1,4 +1,4 @@
-import { useNavigate, useFetcher, redirect } from "react-router";
+import { useNavigate, useFetcher, redirect, useSubmit } from "react-router";
 import type { Route } from "./+types/new-order";
 
 import { withLocale } from "~/shared/withLocale";
@@ -87,6 +87,7 @@ export async function clientAction({ request }: Route.ClientActionArgs) {
 export default function NewOrder({ loaderData }: Route.ComponentProps) {
   const navigate = useNavigate();
   const fetcher = useFetcher();
+  const submit = useSubmit();
 
   return (
     <NewOrderMobileView
@@ -129,7 +130,7 @@ export default function NewOrder({ loaderData }: Route.ComponentProps) {
         }
       }}
       cancelAction={() => {
-        fetcher.submit(
+        submit(
           JSON.stringify({
             _action: NEW_ORDER_ACTIONS.cancel,
             orderId: loaderData.order.id,
@@ -141,7 +142,7 @@ export default function NewOrder({ loaderData }: Route.ComponentProps) {
         );
       }}
       saveAction={() => {
-        fetcher.submit(
+        submit(
           JSON.stringify({
             _action: NEW_ORDER_ACTIONS.save,
             orderId: loaderData.order.id,

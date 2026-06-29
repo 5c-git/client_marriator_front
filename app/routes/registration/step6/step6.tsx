@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { useFetcher, useNavigate, useNavigation, redirect } from "react-router";
+import { useFetcher, useNavigate, redirect, useSubmit } from "react-router";
 import type { Route } from "./+types/step6";
 
 import { z } from "zod";
@@ -54,14 +54,13 @@ export async function clientAction({ request }: Route.ClientActionArgs) {
     await RegistrationService.logout();
     throw redirect(withLocale("/registration/registration-complete"));
   } else {
-    const data = await RegistrationService.sendFields(6, fields);
-    return data;
+    await RegistrationService.sendFields(6, fields);
   }
 }
 
 export default function Step6({ loaderData }: Route.ComponentProps) {
   const { t } = useTranslation("m_registration_step6");
-
+  const submit = useSubmit();
   const fetcher = useFetcher();
   const navigate = useNavigate();
 
@@ -140,10 +139,15 @@ export default function Step6({ loaderData }: Route.ComponentProps) {
           rowGap: "16px",
         }}
         onSubmit={handleSubmit(() => {
-          fetcher.submit(JSON.stringify({ _action: "finishRegister" }), {
-            method: "POST",
-            encType: "application/json",
-          });
+          submit(
+            JSON.stringify({
+              _action: REGISTRATION_STEP_6_ACTIONS.finishRegister,
+            }),
+            {
+              method: "POST",
+              encType: "application/json",
+            },
+          );
         })}
       >
         {generateInputsMarkup(

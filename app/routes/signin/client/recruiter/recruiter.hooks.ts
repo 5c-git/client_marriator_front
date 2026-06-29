@@ -1,17 +1,17 @@
 import { useCallback } from "react";
-import { useFetcher } from "react-router";
+import { useSubmit } from "react-router";
 
 export function useRecruiterHooks() {
-  const fetcher = useFetcher();
+  const submit = useSubmit();
 
   const finishRegister = useCallback(
     (name: string) => {
-      fetcher.submit(JSON.stringify({ name }), {
+      submit(JSON.stringify({ name }), {
         method: "POST",
         encType: "application/json",
       });
     },
-    [fetcher],
+    [submit],
   );
 
   return {

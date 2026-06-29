@@ -92,10 +92,7 @@ export async function clientAction({
   const taskService = taskContainer.get(taskTokens.taskService);
 
   if (_action === TASK_ACTIONS.deleteActivity) {
-    return await taskService.deleteTaskActivity(
-      fields.taskId,
-      fields.taskActivityId,
-    );
+    await taskService.deleteTaskActivity(fields.taskId, fields.taskActivityId);
   } else if (_action === TASK_ACTIONS.transformActivity) {
     const data = await taskService.createBidFromTask(
       fields.taskId,
@@ -109,16 +106,13 @@ export async function clientAction({
     );
     return TaskMapper.mapDataToSearchRequest(data);
   } else if (_action === TASK_ACTIONS.updateSearchRequest) {
-    return await taskService.updateSearchRequest(
-      fields.searchId,
-      fields.payload,
-    );
+    await taskService.updateSearchRequest(fields.searchId, fields.payload);
   } else if (_action === TASK_ACTIONS.inviteSupervisors) {
-    return await taskService.invoiceTask(params.taskId, fields.supervisors);
+    await taskService.invoiceTask(params.taskId, fields.supervisors);
   } else if (_action === TASK_ACTIONS.makeResponsible) {
-    return await taskService.instructTask(fields.taskId, fields.supervisorId);
+    await taskService.instructTask(fields.taskId, fields.supervisorId);
   } else if (_action === TASK_ACTIONS.acceptTask) {
-    return await taskService.acceptTask(fields.taskId);
+    await taskService.acceptTask(fields.taskId);
   }
 }
 
@@ -523,7 +517,7 @@ export default function Task({ loaderData }: Route.ComponentProps) {
                 }),
             };
 
-            submit(
+            fetcher.submit(
               JSON.stringify({
                 _action: TASK_ACTIONS.updateSearchRequest,
                 searchId: fetcher.data?.id,
