@@ -51,8 +51,8 @@ export function EntitiesListView(props: EntitiesListViewInterface) {
     [key: number]: Entity[];
   }>({});
   const [filter, setFilter] = useState<number>(0);
-  const [sorting, setSorting] = useState<EntitiesListViewInterface['sorting']>(
-    props.sorting
+  const [sorting, setSorting] = useState<EntitiesListViewInterface["sorting"]>(
+    props.sorting,
   );
 
   const [activeEntities, setActiveEntities] = useState<Entity[]>([]);
@@ -173,6 +173,7 @@ export function EntitiesListView(props: EntitiesListViewInterface) {
 
     return () => {
       map?.destroy();
+      setMapInstance(null);
     };
   }, [props.mapView]);
 
@@ -228,7 +229,10 @@ export function EntitiesListView(props: EntitiesListViewInterface) {
             locationId: location.id,
             image: location.address.logo,
             borderColor: location.statusColor,
-            coordinates: [location.coordinates[1], location.coordinates[0]] as LngLat,
+            coordinates: [
+              location.coordinates[1],
+              location.coordinates[0],
+            ] as LngLat,
           });
         });
 
@@ -339,94 +343,95 @@ export function EntitiesListView(props: EntitiesListViewInterface) {
               padding: "20px 16px 16px 20px",
             }}
           >
-            {filter !== -1 ? <StatusSelect
-              value={filter.toString()}
-              onChange={(value) => {
-                if (sorting === "ascending") {
-                  const emptyDurationEntities = filteredEntities[
-                    Number(value)
-                  ].filter(
-                    (item) =>
-                      item.duration.start === null &&
-                      item.duration.end === null,
-                  );
+            {filter !== -1 ? (
+              <StatusSelect
+                value={filter.toString()}
+                onChange={(value) => {
+                  if (sorting === "ascending") {
+                    const emptyDurationEntities = filteredEntities[
+                      Number(value)
+                    ].filter(
+                      (item) =>
+                        item.duration.start === null &&
+                        item.duration.end === null,
+                    );
 
-                  const notEmptyDurationEntities = filteredEntities[
-                    Number(value)
-                  ].filter(
-                    (item) =>
-                      item.duration.start !== null &&
-                      item.duration.end !== null,
-                  );
+                    const notEmptyDurationEntities = filteredEntities[
+                      Number(value)
+                    ].filter(
+                      (item) =>
+                        item.duration.start !== null &&
+                        item.duration.end !== null,
+                    );
 
-                  notEmptyDurationEntities.sort(
-                    (a, b) =>
-                      new Date(a.duration.start as string).valueOf() -
-                      new Date(b.duration.start as string).valueOf(),
-                  );
+                    notEmptyDurationEntities.sort(
+                      (a, b) =>
+                        new Date(a.duration.start as string).valueOf() -
+                        new Date(b.duration.start as string).valueOf(),
+                    );
 
-                  setActiveEntities([
-                    ...emptyDurationEntities,
-                    ...notEmptyDurationEntities,
-                  ]);
-                } else if (sorting === "descending") {
-                  const emptyDurationEntities = filteredEntities[
-                    Number(value)
-                  ].filter(
-                    (item) =>
-                      item.duration.start === null &&
-                      item.duration.end === null,
-                  );
+                    setActiveEntities([
+                      ...emptyDurationEntities,
+                      ...notEmptyDurationEntities,
+                    ]);
+                  } else if (sorting === "descending") {
+                    const emptyDurationEntities = filteredEntities[
+                      Number(value)
+                    ].filter(
+                      (item) =>
+                        item.duration.start === null &&
+                        item.duration.end === null,
+                    );
 
-                  const notEmptyDurationEntities = filteredEntities[
-                    Number(value)
-                  ].filter(
-                    (item) =>
-                      item.duration.start !== null &&
-                      item.duration.end !== null,
-                  );
+                    const notEmptyDurationEntities = filteredEntities[
+                      Number(value)
+                    ].filter(
+                      (item) =>
+                        item.duration.start !== null &&
+                        item.duration.end !== null,
+                    );
 
-                  notEmptyDurationEntities.sort(
-                    (a, b) =>
-                      new Date(b.duration.start as string).valueOf() -
-                      new Date(a.duration.start as string).valueOf(),
-                  );
+                    notEmptyDurationEntities.sort(
+                      (a, b) =>
+                        new Date(b.duration.start as string).valueOf() -
+                        new Date(a.duration.start as string).valueOf(),
+                    );
 
-                  setActiveEntities([
-                    ...emptyDurationEntities,
-                    ...notEmptyDurationEntities,
-                  ]);
-                }
-                setFilter(Number(value));
-              }}
-              options={(() => {
-                const options: {
-                  id: string;
-                  label: string;
-                  count: number;
-                  color: string;
-                }[] = [];
+                    setActiveEntities([
+                      ...emptyDurationEntities,
+                      ...notEmptyDurationEntities,
+                    ]);
+                  }
+                  setFilter(Number(value));
+                }}
+                options={(() => {
+                  const options: {
+                    id: string;
+                    label: string;
+                    count: number;
+                    color: string;
+                  }[] = [];
 
-                for (const key in filteredEntities) {
-                  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-                  const selectedStatusMap = statusObject[props.entityType];
-                  options.push({
-                    id: key,
-                    label: t(
-                      `${props.translation}.status.${Number(key) as keyof typeof selectedStatusMap}`,
-                    ),
-                    count: filteredEntities[Number(key)].length,
-                    color:
-                      statusObject[props.entityType][
-                        Number(key) as keyof typeof statusCodeMap
-                      ].color,
-                  });
-                }
+                  for (const key in filteredEntities) {
+                    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+                    const selectedStatusMap = statusObject[props.entityType];
+                    options.push({
+                      id: key,
+                      label: t(
+                        `${props.translation}.status.${Number(key) as keyof typeof selectedStatusMap}`,
+                      ),
+                      count: filteredEntities[Number(key)].length,
+                      color:
+                        statusObject[props.entityType][
+                          Number(key) as keyof typeof statusCodeMap
+                        ].color,
+                    });
+                  }
 
-                return options;
-              })()}
-            /> : null}
-            
+                  return options;
+                })()}
+              />
+            ) : null}
 
             {!props.mapView ? (
               <SortingSelect

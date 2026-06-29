@@ -37,8 +37,6 @@ import { postRejectBid } from "~/api/_personal/postRejectBid/postRejectBid";
 import { postEndDay } from "~/api/_personal/postEndDay/postEndDay";
 import { postPayReport } from "~/api/_personal/postPayReport/postPayReport";
 import { getSettingsFromKey } from "~/api/_settings/getSettingsFromKey/getSettingsFromKey";
-// import { postEndJob } from "~/requests/_personal/postEndJob/postEndJob";
-// import { postEndSpecialistJob } from "~/requests/_personal/postEndSpecialistJob/postEndSpecialistJob";
 
 type MobileModeData = {
   mode: "mobile";
@@ -229,11 +227,11 @@ export async function clientLoader({ params }: Route.ClientLoaderArgs) {
         locations,
         defaultTimeRange: {
           start: new Date(
-            `2026-03-12T${missionData.data.project.timeStart ? missionData.data.project.timeStart.startsWith("0") ? missionData.data.project.timeStart : `0${missionData.data.project.timeStart}` : intervalDayStart.data.value.startsWith("0") ? intervalDayStart.data.value : `0${intervalDayStart.data.value}`}:00`,
+            `2026-03-12T${missionData.data.project.timeStart ? (missionData.data.project.timeStart.startsWith("0") ? missionData.data.project.timeStart : `0${missionData.data.project.timeStart}`) : intervalDayStart.data.value.startsWith("0") ? intervalDayStart.data.value : `0${intervalDayStart.data.value}`}:00`,
           ),
           end: new Date(
             `2026-03-12T${missionData.data.project.timeEnd ? missionData.data.project.timeEnd : intervalDayEnd.data.value}:00`,
-          )
+          ),
         },
         projectTimeRange: {
           start: new Date(missionData.data.project.dateStart),
@@ -582,10 +580,10 @@ export default function Job({ loaderData }: Route.ComponentProps) {
                 key="inProgress"
                 startIcon={<CheckIcon />}
                 variant="contained"
-                disabled={
-                  isAfter(new Date(loaderData.entity.dateEnd), new Date())
-                  
-                }
+                disabled={isAfter(
+                  new Date(loaderData.entity.dateEnd),
+                  new Date(),
+                )}
                 onClick={() => {
                   if (loaderData.entity.needPhoto) {
                     setOpenFilesPopup(true);

@@ -18,8 +18,6 @@ export const SMS_ACTIONS = {
 } as const;
 
 export async function clientLoader({ request }: Route.ClientLoaderArgs) {
-  await loadNamespaces("sms");
-
   const currentURL = new URL(request.url);
   const ttl = currentURL.searchParams.get("ttl");
   const phone = smsContainer.get(smsTokens.smsService).getStoredPhone();
