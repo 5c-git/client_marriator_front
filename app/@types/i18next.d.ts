@@ -1,4 +1,4 @@
-//meta DONE
+//meta
 import constructorFields from "../../public/locales/ru/constructorFields.json";
 import rootErrorBoundry from "../../public/locales/ru/rootErrorBoundry.json";
 //meta
@@ -15,7 +15,6 @@ import m_signin_client_location from "../../public/locales/ru/m_signin_client_lo
 import m_signin_client_meta from "../../public/locales/ru/m_signin_client_meta.json";
 import m_signin_client_recruiter from "../../public/locales/ru/m_signin_client_recruiter.json";
 import m_signin_client_registrationComplete from "../../public/locales/ru/m_signin_client_registrationComplete.json";
-//auth
 
 //registration
 import m_registration_step1 from "../../public/locales/ru/m_registration_step1.json";
@@ -26,7 +25,6 @@ import m_registration_step5 from "../../public/locales/ru/m_registration_step5.j
 import m_registration_step6 from "../../public/locales/ru/m_registration_step6.json";
 import m_registration_confirmEmail from "../../public/locales/ru/m_registration_confirmEmail.json";
 import m_registration_registrationComplete from "../../public/locales/ru/m_registration_registrationComplete.json";
-//registration
 
 //profile
 import m_profile from "../../public/locales/ru/m_profile.json";
@@ -48,24 +46,22 @@ import m_profile_documents_sign from "../../public/locales/ru/m_profile_document
 import m_profile_documents_signAdeal from "../../public/locales/ru/m_profile_documents_signAdeal.json";
 import m_profile_documents_terminateADeal from "../../public/locales/ru/m_profile_documents_terminateADeal.json";
 import m_profile_myProfile_profileMeta from "../../public/locales/ru/m_profile_myProfile_profileMeta.json";
-//profile
 
 //users
 import m_users_selectProjects from "../../public/locales/ru/m_users_selectProjects.json";
 import m_users_selectLocations from "../../public/locales/ru/m_users_selectLocations.json";
-import m_layout_users from "../../public/locales/ru/m_layout_users.json";
 import m_users_client from "../../public/locales/ru/m_users_client.json";
 import m_users_manager from "../../public/locales/ru/m_users_manager.json";
 import m_users_supervisor from "../../public/locales/ru/m_users_supervisor.json";
-//users
 
-import HomeLayout from "../../public/locales/ru/HomeLayout.json";
-
+//enitities
 import m_jobs from "../../public/locales/ru/m_jobs.json";
 import m_jobs_job from "../../public/locales/ru/m_jobs_job.json";
 
 import m_bids from "../../public/locales/ru/m_bids.json";
 import m_bids_bid from "../../public/locales/ru/m_bids_bid.json";
+import m_bids_bid_specialists from "../../public/locales/ru/m_bids_bid_specialists.json";
+import m_bids_bid_specialists_specialist from "../../public/locales/ru/m_bids_bid_specialists_specialist.json";
 import m_bids_bid_specialists_specialist_dayReview from "../../public/locales/ru/m_bids_bid_specialists_specialist_dayReview.json";
 
 import m_tasks from "../../public/locales/ru/m_tasks.json";
@@ -76,20 +72,20 @@ import m_orders from "../../public/locales/ru/m_orders.json";
 import m_orders_order from "../../public/locales/ru/m_orders_order.json";
 import m_orders_newOrder from "../../public/locales/ru/m_orders_newOrder.json";
 
-//views
-
-import JobMobileView from "../../public/locales/ru/JobMobileView.json";
-
-import SpecialistMobileView from "../../public/locales/ru/SpecialistMobileView.json";
-import SpecialistsMobileView from "../../public/locales/ru/SpecialistsMobileView.json";
-import ActivityMobileView from "../../public/locales/ru/ActivityMobileView.json";
-
-import EntityMobileView from "../../public/locales/ru/EntityMobileView.json";
-import EntitiesListView from "../../public/locales/ru/EntitiesListView.json";
-import RequestSearchDrawer from "../../public/locales/ru/RequestSearchDrawer.json";
+//layout
+import m_layout_users from "../../public/locales/ru/m_layout_users.json";
+import m_layout_home from "../../public/locales/ru/m_layout_home.json";
 
 //shared
 import m_shared_usersView from "../../public/locales/ru/m_shared_usersView.json";
+
+/////////////////////////////////////DESKTOP/////////////////////////////////////
+/////////////////////////////////////DESKTOP/////////////////////////////////////
+
+//views
+import ActivityMobileView from "../../public/locales/ru/ActivityMobileView.json";
+import EntityMobileView from "../../public/locales/ru/EntityMobileView.json";
+import EntitiesListView from "../../public/locales/ru/EntitiesListView.json";
 
 //components
 import styledPhotoCheckbox from "../../public/locales/ru/styledPhotoCheckbox.json";
@@ -98,6 +94,7 @@ import styledPhotoInput from "../../public/locales/ru/styledPhotoInput.json";
 import styledAutocomplete from "../../public/locales/ru/styledAutocomplete.json";
 import RadioSearchableDrawer from "../../public/locales/ru/RadioSearchableDrawer.json";
 import CheckboxSearchableDrawer from "../../public/locales/ru/CheckboxSearchableDrawer.json";
+import RequestSearchDrawer from "../../public/locales/ru/RequestSearchDrawer.json";
 
 import "i18next";
 declare module "i18next" {
@@ -107,7 +104,6 @@ declare module "i18next" {
       //meta
       constructorFields: typeof constructorFields;
       rootErrorBoundry: typeof rootErrorBoundry;
-      //meta
 
       //auth
       m_signin_phone: typeof m_signin_phone;
@@ -121,10 +117,8 @@ declare module "i18next" {
       m_signin_client_meta: typeof m_signin_client_meta;
       m_signin_client_recruiter: typeof m_signin_client_recruiter;
       m_signin_client_registrationComplete: typeof m_signin_client_registrationComplete;
-      //auth
 
       //registration
-
       m_registration_step1: typeof m_registration_step1;
       m_registration_step2: typeof m_registration_step2;
       m_registration_step3: typeof m_registration_step3;
@@ -133,7 +127,6 @@ declare module "i18next" {
       m_registration_step6: typeof m_registration_step6;
       m_registration_confirmEmail: typeof m_registration_confirmEmail;
       m_registration_registrationComplete: typeof m_registration_registrationComplete;
-      //registration
 
       //profile
       m_profile: typeof m_profile;
@@ -155,7 +148,6 @@ declare module "i18next" {
       m_profile_documents_sign: typeof m_profile_documents_sign;
       m_profile_documents_signAdeal: typeof m_profile_documents_signAdeal;
       m_profile_documents_terminateADeal: typeof m_profile_documents_terminateADeal;
-      //profile
 
       //users
       m_users_selectProjects: typeof m_users_selectProjects;
@@ -163,14 +155,15 @@ declare module "i18next" {
       m_users_client: typeof m_users_client;
       m_users_manager: typeof m_users_manager;
       m_users_supervisor: typeof m_users_supervisor;
-      m_layout_users: typeof m_layout_users;
 
-      //users
+      //enitities
       m_jobs: typeof m_jobs;
       m_jobs_job: typeof m_jobs_job;
 
       m_bids: typeof m_bids;
       m_bids_bid: typeof m_bids_bid;
+      m_bids_bid_specialists: typeof m_bids_bid_specialists;
+      m_bids_bid_specialists_specialist: typeof m_bids_bid_specialists_specialist;
       m_bids_bid_specialists_specialist_dayReview: typeof m_bids_bid_specialists_specialist_dayReview;
 
       m_tasks: typeof m_tasks;
@@ -181,23 +174,21 @@ declare module "i18next" {
       m_orders_order: typeof m_orders_order;
       m_orders_newOrder: typeof m_orders_newOrder;
 
-      HomeLayout: typeof HomeLayout;
-      sms: typeof sms;
-
-      //views
-      ProfileView: typeof ProfileView;
-      JobMobileView: typeof JobMobileView;
-
-      SpecialistMobileView: typeof SpecialistMobileView;
-      SpecialistsMobileView: typeof SpecialistsMobileView;
-
-      EntityMobileView: typeof EntityMobileView;
-      EntitiesListView: typeof EntitiesListView;
-      ActivityMobileView: typeof ActivityMobileView;
-      RequestSearchDrawer: typeof RequestSearchDrawer;
+      //layout
+      m_layout_users: typeof m_layout_users;
+      m_layout_home: typeof m_layout_home;
 
       //shared
       m_shared_usersView: typeof m_shared_usersView;
+
+      /////////////////////////////////////DESKTOP/////////////////////////////////////
+      /////////////////////////////////////DESKTOP/////////////////////////////////////
+
+      //views
+      ProfileView: typeof ProfileView;
+      EntityMobileView: typeof EntityMobileView;
+      EntitiesListView: typeof EntitiesListView;
+      ActivityMobileView: typeof ActivityMobileView;
 
       //components
       styledPhotoCheckbox: typeof styledPhotoCheckbox;
@@ -206,6 +197,7 @@ declare module "i18next" {
       styledAutocomplete: typeof styledAutocomplete;
       RadioSearchableDrawer: typeof RadioSearchableDrawer;
       CheckboxSearchableDrawer: typeof CheckboxSearchableDrawer;
+      RequestSearchDrawer: typeof RequestSearchDrawer;
     };
   }
 }

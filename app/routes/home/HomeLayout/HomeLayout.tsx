@@ -97,7 +97,7 @@ export async function clientLoader() {
 }
 
 export default function HomeLayout({ loaderData }: Route.ComponentProps) {
-  const { t } = useTranslation("HomeLayout");
+  const { t } = useTranslation("m_layout_home");
   const userRole = useStore.getState().userRole;
 
   const mapView = useStore((state) => state.mapView);
@@ -105,7 +105,6 @@ export default function HomeLayout({ loaderData }: Route.ComponentProps) {
 
   return (
     <>
-    
       <TopNavigation
         header={{
           text: t("header"),

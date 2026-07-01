@@ -29,7 +29,7 @@ export function SpecialistMobileView(
   },
 ) {
   const navigate = useNavigate();
-  const { t } = useTranslation("SpecialistMobileView");
+  const { t } = useTranslation("m_bids_bid_specialists_specialist");
   return (
     <>
       <TopNavigation
@@ -204,7 +204,7 @@ export function SpecialistMobileView(
               variant="Reg_14"
               sx={(theme) => ({ color: theme.vars.palette["Corp_1"] })}
             >
-              {props.entity.unitPrice} 
+              {props.entity.unitPrice}
             </Typography>
           </Box>
 

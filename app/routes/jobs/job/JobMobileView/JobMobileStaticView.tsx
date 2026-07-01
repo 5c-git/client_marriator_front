@@ -35,7 +35,7 @@ export function JobMobileStaticView({
     action: JobMobileViewInterface["entity"]["days"][0]["action"],
   ) => React.ReactNode)[];
 }) {
-  const { t } = useTranslation("JobMobileView");
+  const { t } = useTranslation("m_jobs_job");
 
   const [jobDetails, setJobDetails] =
     useState<ComponentPropsWithoutRef<typeof DetailsPopUp>["details"]>(null);

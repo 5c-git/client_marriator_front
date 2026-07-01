@@ -29,5 +29,46 @@
       "cancelButton": "Отменить"
     }
   },
-  "acceptAlertText": "Ваша кандидатура на рассмотрении у супервайзера. Ожидайте подтверждения"
+  "acceptAlertText": "Ваша кандидатура на рассмотрении у супервайзера. Ожидайте подтверждения",
+  "statusText": "Статус",
+  "locationText": "Место оказания услуг",
+  "serviceTypeText": "Вид услуги",
+  "forPayText": "К оплате",
+  "incomeText": "К выплате на руки",
+  "pricePerUnitText": "Цена за ",
+  "dateStartText": "Дата начала",
+  "dateEndText": "Дата окончания",
+  "needDaysPlaceholder": "Раскрыть по дням",
+  "timeStartPlaceholder": "Время старта",
+  "timeEndPlaceholder": "Время окончания",
+  "routePlaceholder": "Маршрут дня",
+  "photoCheckbox": "Фотоотчёт",
+  "addressButton": "Добавить адрес",
+  "removeDayButton": "Удалить день",
+  "addDayButton": "Добавить день",
+  "status": {
+    "notAccepted": "Новая",
+    "accepted": "Одобрена",
+    "declined": "Отклонена",
+    "consideration": "На рассмотрении",
+    "work": "В работе",
+    "canceled": "Отменена",
+    "archive": "Архив",
+    "placeholder": "Placeholder"
+  },
+  "dayMap": {
+    "0": "ВС",
+    "1": "ПН",
+    "2": "ВТ",
+    "3": "СР",
+    "4": "ЧТ",
+    "5": "ПТ",
+    "6": "СБ"
+  },
+  "role": {
+    "manager": "Менеджер",
+    "supervisor": "Супервайзер",
+    "client": "Клиент",
+    "specialist": "Специалист"
+  }
 }
