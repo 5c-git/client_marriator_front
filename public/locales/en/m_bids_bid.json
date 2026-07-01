@@ -1,4 +1,9 @@
 {
+  "tabs": {
+    "details": "Details",
+    "specialists": "Specialists",
+    "recruitment": "Recruitment"
+  },
   "status": {
     "new": "New",
     "accepted": "Accepted",

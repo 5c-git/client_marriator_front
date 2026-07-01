@@ -154,7 +154,7 @@ const createBidFormSchema = (
       const dateEnd = values.dateEnd;
 
       //проверяем что дата конца не раньше даты старта
-      const result = compareAsc(dateStart, dateEnd );
+      const result = compareAsc(dateStart, dateEnd);
       if (result >= 0) {
         ctx.addIssue({
           code: "custom",
@@ -165,10 +165,15 @@ const createBidFormSchema = (
       }
 
       //проверяем что дата старта и дата конца не выходят за заданные временные рамки
-      if(isAfter(dateEnd, set(dateEnd, {
-        hours: defaultEndDate.getHours(),
-        minutes: defaultEndDate.getMinutes(),
-      }))) {
+      if (
+        isAfter(
+          dateEnd,
+          set(dateEnd, {
+            hours: defaultEndDate.getHours(),
+            minutes: defaultEndDate.getMinutes(),
+          }),
+        )
+      ) {
         ctx.addIssue({
           code: "custom",
           message: t("service.laterThanDefaultError", {
@@ -179,10 +184,15 @@ const createBidFormSchema = (
         });
       }
 
-      if(isBefore(dateStart, set(dateStart, {
-        hours: defaultStartDate.getHours(),
-        minutes: defaultStartDate.getMinutes(),
-      }))) {
+      if (
+        isBefore(
+          dateStart,
+          set(dateStart, {
+            hours: defaultStartDate.getHours(),
+            minutes: defaultStartDate.getMinutes(),
+          }),
+        )
+      ) {
         ctx.addIssue({
           code: "custom",
           message: t("service.earlierThanDefaultError", {
@@ -202,23 +212,22 @@ const createBidFormSchema = (
         const isStartDay = isSameDay(dateStart, day.timeStart);
         const isEndDay = isSameDay(dateEnd, day.timeStart);
 
-
         //проверяем что дата конца не раньше даты старта
-      const result = compareAsc(day.timeStart, day.timeEnd);
-      if (result >= 0) {
-        ctx.addIssue({
-          code: "custom",
-          message: t("moreThanEndDate", { ns: "constructorFields" }),
-          input: values.days[index],
-          path: [`days.${index}.timeStart`],
-        });
-        ctx.addIssue({
-          code: "custom",
-          message: t("lessThanStartDate", { ns: "constructorFields" }),
-          input: values.days[index],
-          path: [`days.${index}.timeEnd`],
-        });
-      }
+        const result = compareAsc(day.timeStart, day.timeEnd);
+        if (result >= 0) {
+          ctx.addIssue({
+            code: "custom",
+            message: t("moreThanEndDate", { ns: "constructorFields" }),
+            input: values.days[index],
+            path: [`days.${index}.timeStart`],
+          });
+          ctx.addIssue({
+            code: "custom",
+            message: t("lessThanStartDate", { ns: "constructorFields" }),
+            input: values.days[index],
+            path: [`days.${index}.timeEnd`],
+          });
+        }
 
         if (
           isBefore(
@@ -316,19 +325,21 @@ const createBidFormSchema = (
               path: [`days.${index}.timeStart`],
             });
           }
-        } 
+        }
       });
-});
+    });
 
-type submitValues = z.output<ReturnType<typeof createBidFormSchema>>;
+export type bidFormSubmitValues = z.output<
+  ReturnType<typeof createBidFormSchema>
+>;
 
 type BidFormMobileViewInterface = BidMobileViewInterface & {
-  submitAction: (values: submitValues) => void;
+  submitAction: (values: bidFormSubmitValues) => void;
   cancelAction: () => void;
 };
 
 export function BidFormMobileView(props: BidFormMobileViewInterface) {
-  const { t } = useTranslation("BidMobileView");
+  const { t } = useTranslation("m_bids_bid");
   const [dayIndex, setDayIndex] = useState<number>(-1);
 
   const {
@@ -359,7 +370,7 @@ export function BidFormMobileView(props: BidFormMobileViewInterface) {
         props.defaultTimeRange.start,
         props.defaultTimeRange.end,
         props.projectTimeRange.start,
-        props.projectTimeRange.end
+        props.projectTimeRange.end,
       ),
     ),
   });
@@ -670,7 +681,6 @@ export function BidFormMobileView(props: BidFormMobileViewInterface) {
                 variant="Reg_14"
                 sx={(theme) => ({ color: theme.vars.palette["Black"] })}
               >
-                
                 {props.entity.finalPrice}
               </Typography>
             </Box>
@@ -1263,16 +1273,18 @@ export function BidFormMobileView(props: BidFormMobileViewInterface) {
                                   "timeStart" in match
                                     ? match.timeStart
                                     : set(match, {
-                                      hours: props.defaultTimeRange.start.getHours(),
-                                      minutes: 0,
-                                    }),
+                                        hours:
+                                          props.defaultTimeRange.start.getHours(),
+                                        minutes: 0,
+                                      }),
                                 timeEnd:
                                   "timeEnd" in match
                                     ? match.timeEnd
                                     : set(match, {
-                                      hours: props.defaultTimeRange.end.getHours(),
-                                      minutes: 0,
-                                    }),
+                                        hours:
+                                          props.defaultTimeRange.end.getHours(),
+                                        minutes: 0,
+                                      }),
                                 ...(props.entity.activity.travelling ===
                                   true && {
                                   needRoute: false,
@@ -1337,9 +1349,10 @@ export function BidFormMobileView(props: BidFormMobileViewInterface) {
                                   "timeStart" in match
                                     ? match.timeStart
                                     : set(match, {
-                                      hours: props.defaultTimeRange.start.getHours(),
-                                      minutes: 0,
-                                    }),
+                                        hours:
+                                          props.defaultTimeRange.start.getHours(),
+                                        minutes: 0,
+                                      }),
                                 timeEnd:
                                   "timeEnd" in match
                                     ? match.timeEnd

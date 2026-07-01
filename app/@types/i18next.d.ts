@@ -64,8 +64,9 @@ import HomeLayout from "../../public/locales/ru/HomeLayout.json";
 import m_jobs from "../../public/locales/ru/m_jobs.json";
 import m_jobs_job from "../../public/locales/ru/m_jobs_job.json";
 
-import BidLayout from "../../public/locales/ru/BidLayout.json";
-import bids from "../../public/locales/ru/bids.json";
+import m_bids from "../../public/locales/ru/m_bids.json";
+import m_bids_bid from "../../public/locales/ru/m_bids_bid.json";
+import m_bids_bid_specialists_specialist_dayReview from "../../public/locales/ru/m_bids_bid_specialists_specialist_dayReview.json";
 
 import m_tasks from "../../public/locales/ru/m_tasks.json";
 import m_tasks_task from "../../public/locales/ru/m_tasks_task.json";
@@ -78,11 +79,10 @@ import m_orders_newOrder from "../../public/locales/ru/m_orders_newOrder.json";
 //views
 
 import JobMobileView from "../../public/locales/ru/JobMobileView.json";
-import DayReviewMobileView from "../../public/locales/ru/DayReviewMobileView.json";
+
 import SpecialistMobileView from "../../public/locales/ru/SpecialistMobileView.json";
 import SpecialistsMobileView from "../../public/locales/ru/SpecialistsMobileView.json";
 import ActivityMobileView from "../../public/locales/ru/ActivityMobileView.json";
-import BidMobileView from "../../public/locales/ru/BidMobileView.json";
 
 import EntityMobileView from "../../public/locales/ru/EntityMobileView.json";
 import EntitiesListView from "../../public/locales/ru/EntitiesListView.json";
@@ -169,8 +169,9 @@ declare module "i18next" {
       m_jobs: typeof m_jobs;
       m_jobs_job: typeof m_jobs_job;
 
-      BidLayout: typeof BidLayout;
-      bids: typeof bids;
+      m_bids: typeof m_bids;
+      m_bids_bid: typeof m_bids_bid;
+      m_bids_bid_specialists_specialist_dayReview: typeof m_bids_bid_specialists_specialist_dayReview;
 
       m_tasks: typeof m_tasks;
       m_tasks_task: typeof m_tasks_task;
@@ -186,10 +187,9 @@ declare module "i18next" {
       //views
       ProfileView: typeof ProfileView;
       JobMobileView: typeof JobMobileView;
-      DayReviewMobileView: typeof DayReviewMobileView;
+
       SpecialistMobileView: typeof SpecialistMobileView;
       SpecialistsMobileView: typeof SpecialistsMobileView;
-      BidMobileView: typeof BidMobileView;
 
       EntityMobileView: typeof EntityMobileView;
       EntitiesListView: typeof EntitiesListView;

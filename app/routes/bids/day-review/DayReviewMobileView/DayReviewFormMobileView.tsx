@@ -100,7 +100,7 @@ export function DayReviewMobileView(
   },
 ) {
   const navigate = useNavigate();
-  const { t } = useTranslation("DayReviewMobileView");
+  const { t } = useTranslation("m_bids_bid_specialists_specialist_dayReview");
 
   const [expanded, setExpanded] = useState<number>(0);
 
