@@ -99,15 +99,15 @@ export default function Bid({ loaderData }: Route.ComponentProps) {
                 );
               }}
               cancelAction={() => {
-                fetcher.submit(
-                  JSON.stringify({
-                    _action: BID_ACTIONS.cancel,
-                  }),
-                  {
-                    method: "POST",
-                    encType: "application/json",
-                  },
-                );
+                // fetcher.submit(
+                //   JSON.stringify({
+                //     _action: BID_ACTIONS.cancel,
+                //   }),
+                //   {
+                //     method: "POST",
+                //     encType: "application/json",
+                //   },
+                // );
               }}
             />
           ) : (

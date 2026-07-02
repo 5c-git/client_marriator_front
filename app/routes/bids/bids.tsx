@@ -1,5 +1,7 @@
-import { useOutletContext } from "react-router";
+import { useFetcher, useOutletContext } from "react-router";
 import type { Route } from "./+types/bids";
+
+import { isBefore } from "date-fns";
 
 import { useTranslation } from "react-i18next";
 import { withLocale } from "~/shared/withLocale";
@@ -11,15 +13,27 @@ import { EntityCard } from "~/shared/ui/EntityCard/EntityCard";
 import { bidsContainer } from "./bids.module";
 import { bidsTokens } from "./bids.tokens";
 
+import { bidContainer } from "./bid/bid.module";
+import { bidTokens } from "./bid/bid.tokens";
+
 export async function clientLoader() {
   const bidsService = bidsContainer.get(bidsTokens.bidsService);
 
   return await bidsService.getBids();
 }
 
+export async function clientAction({ request }: Route.ClientActionArgs) {
+  const bidService = bidContainer.get(bidTokens.bidService);
+
+  const fields = await request.json();
+
+  await bidService.cancelBid(fields.bidId);
+}
+
 export default function Bids({ loaderData }: Route.ComponentProps) {
   const { t } = useTranslation("m_bids");
   const showMap = useOutletContext<boolean>();
+  const fetcher = useFetcher();
 
   return (
     <EntitiesListView
@@ -42,6 +56,27 @@ export default function Bids({ loaderData }: Route.ComponentProps) {
           address={entity.address}
           duration={entity.duration}
           divider
+          {...(entity.status <= 2 &&
+          entity.duration.start &&
+          isBefore(new Date(), entity.duration.start)
+            ? {
+                buttonAction: {
+                  action: () => {
+                    fetcher.submit(
+                      JSON.stringify({
+                        bidId: entity.id,
+                      }),
+                      {
+                        method: "POST",
+                        encType: "application/json",
+                      },
+                    );
+                  },
+                  text: t("cancelBid"),
+                  variant: "text",
+                },
+              }
+            : {})}
         />
       )}
       entityMapView={(entity) => (
@@ -56,6 +91,27 @@ export default function Bids({ loaderData }: Route.ComponentProps) {
           address={entity.address}
           duration={entity.duration}
           divider
+          {...(entity.status <= 2 &&
+          entity.duration.start &&
+          isBefore(new Date(), entity.duration.start)
+            ? {
+                buttonAction: {
+                  action: () => {
+                    fetcher.submit(
+                      JSON.stringify({
+                        bidId: entity.id,
+                      }),
+                      {
+                        method: "POST",
+                        encType: "application/json",
+                      },
+                    );
+                  },
+                  text: t("cancelBid"),
+                  variant: "text",
+                },
+              }
+            : {})}
         />
       )}
     />

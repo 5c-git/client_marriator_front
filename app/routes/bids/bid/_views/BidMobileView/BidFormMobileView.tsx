@@ -1560,7 +1560,7 @@ export function BidFormMobileView(props: BidFormMobileViewInterface) {
         >
           {t("saveBidButton")}
         </Button>
-        <Button
+        {/* <Button
           variant="outlined"
           startIcon={<CloseIcon />}
           onClick={() => {
@@ -1568,7 +1568,7 @@ export function BidFormMobileView(props: BidFormMobileViewInterface) {
           }}
         >
           {t("cancelBidButton")}
-        </Button>
+        </Button> */}
       </Box>
 
       <CheckboxSearchableDrawer

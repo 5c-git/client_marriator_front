@@ -1,8 +1,5 @@
 import { differenceInHours, isFuture } from "date-fns";
 
-const CANCEL_TIME_INTERVAL = 6;
-const REPEAT_TIME_INTERVAL = 6;
-
 export class ButtonActionMapper {
   static canCancelNewOrNotAccepted = (
     userId: number,
