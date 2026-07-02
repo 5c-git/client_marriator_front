@@ -36,5 +36,7 @@
   "newDateBeforeStart": "Selected date can not be earlier than previously set date",
   "newDateAfterFinish": "Selected date can not be later than previously set date",
   "earlierThanProject": "Earlier than project start",
-  "laterThanProject": "Later than project end"
+  "laterThanProject": "Later than project end",
+  "earlierThanDefaultError": "Earlier than default",
+  "laterThanDefaultError": "Later that default"
 }

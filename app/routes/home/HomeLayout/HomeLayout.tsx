@@ -13,36 +13,43 @@ import { withLocale } from "~/shared/withLocale";
 import { MapIcon } from "~/shared/icons/MapIcon";
 import { ListIcon } from "~/shared/ui/Menu/icons/ListIcon";
 
+import { appContainer } from "~/shared/container/container";
+import { appTokens } from "~/shared/container/container.tokens";
+
 export async function clientLoader() {
-  await loadNamespaces("HomeLayout");
+  await loadNamespaces("m_layout_home");
+
+  const appSerivce = appContainer.get(appTokens.appService);
+  const userRole = appSerivce.getUserRole();
 
   return {
+    userRole,
     tabsMap: {
       admin: [],
       manager: [
         <Tab
-          label={t("tabs.order", { ns: "HomeLayout" })}
+          label={t("tabs.order", { ns: "m_layout_home" })}
           to={withLocale("/orders")}
           value={withLocale("/orders")}
           component={Link}
           key={"orders"}
         />,
         <Tab
-          label={t("tabs.task", { ns: "HomeLayout" })}
+          label={t("tabs.task", { ns: "m_layout_home" })}
           to={withLocale("/tasks")}
           value={withLocale("/tasks")}
           component={Link}
           key={"tasks"}
         />,
         <Tab
-          label={t("tabs.bid", { ns: "HomeLayout" })}
+          label={t("tabs.bid", { ns: "m_layout_home" })}
           to={withLocale("/bids")}
           value={withLocale("/bids")}
           component={Link}
           key={"bids"}
         />,
         <Tab
-          label={t("tabs.job", { ns: "HomeLayout" })}
+          label={t("tabs.job", { ns: "m_layout_home" })}
           to={withLocale("/jobs")}
           value={withLocale("/jobs")}
           component={Link}
@@ -51,28 +58,28 @@ export async function clientLoader() {
       ],
       supervisor: [
         <Tab
-          label={t("tabs.order", { ns: "HomeLayout" })}
+          label={t("tabs.order", { ns: "m_layout_home" })}
           to={withLocale("/orders")}
           value={withLocale("/orders")}
           component={Link}
           key={"orders"}
         />,
         <Tab
-          label={t("tabs.task", { ns: "HomeLayout" })}
+          label={t("tabs.task", { ns: "m_layout_home" })}
           to={withLocale("/tasks")}
           value={withLocale("/tasks")}
           component={Link}
           key={"tasks"}
         />,
         <Tab
-          label={t("tabs.bid", { ns: "HomeLayout" })}
+          label={t("tabs.bid", { ns: "m_layout_home" })}
           to={withLocale("/bids")}
           value={withLocale("/bids")}
           component={Link}
           key={"bids"}
         />,
         <Tab
-          label={t("tabs.job", { ns: "HomeLayout" })}
+          label={t("tabs.job", { ns: "m_layout_home" })}
           to={withLocale("/jobs")}
           value={withLocale("/jobs")}
           component={Link}
@@ -81,7 +88,7 @@ export async function clientLoader() {
       ],
       client: [
         <Tab
-          label={t("tabs.order", { ns: "HomeLayout" })}
+          label={t("tabs.order", { ns: "m_layout_home" })}
           to={withLocale("/orders")}
           value={withLocale("/orders")}
           component={Link}
@@ -98,7 +105,6 @@ export async function clientLoader() {
 
 export default function HomeLayout({ loaderData }: Route.ComponentProps) {
   const { t } = useTranslation("m_layout_home");
-  const userRole = useStore.getState().userRole;
 
   const mapView = useStore((state) => state.mapView);
   const setMapView = useStore((state) => state.setMapView);
@@ -138,7 +144,7 @@ export default function HomeLayout({ loaderData }: Route.ComponentProps) {
         }}
       />
 
-      {loaderData.tabsMap[userRole].length > 0 ? (
+      {loaderData.tabsMap[loaderData.userRole].length > 0 ? (
         <Tabs
           value={location.pathname}
           sx={(theme) => ({
@@ -147,7 +153,7 @@ export default function HomeLayout({ loaderData }: Route.ComponentProps) {
             backgroundColor: theme.vars.palette["White"],
           })}
         >
-          {loaderData.tabsMap[userRole]}
+          {loaderData.tabsMap[loaderData.userRole]}
         </Tabs>
       ) : null}
 

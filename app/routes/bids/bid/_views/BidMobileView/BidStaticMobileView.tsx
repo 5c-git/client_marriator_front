@@ -25,7 +25,7 @@ import { LocationIcon } from "~/shared/icons/LocationIcon";
 import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
 
 export function BidStaticMobileView(props: BidMobileViewInterface) {
-  const { t } = useTranslation("BidMobileView");
+  const { t } = useTranslation("m_bids_bid");
 
   return (
     <>
@@ -319,7 +319,6 @@ export function BidStaticMobileView(props: BidMobileViewInterface) {
               {props.entity.radius}
             </Typography>
           </Box>
-
 
           <Box
             sx={{

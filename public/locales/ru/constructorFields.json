@@ -36,5 +36,7 @@
   "newDateBeforeStart": "Выбранная дата не может быть раньше изначальной",
   "newDateAfterFinish": "Выбранная дата не может быть позже изначальной",
   "earlierThanProject": "Дата раньше старта проекта",
-  "laterThanProject": "Дата позже конца проекта"
+  "laterThanProject": "Дата позже конца проекта",
+  "earlierThanDefaultError": "Время раньше изначального",
+  "laterThanDefaultError": "Время позже изначального"
 }

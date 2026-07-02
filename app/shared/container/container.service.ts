@@ -17,7 +17,9 @@ export class AppService {
   getToken(): string {
     const token = this.getAccessToken();
     if (!token) {
-      throw new Error("Токен авторизации не обнаружен!");
+      throw new Response("Unauthorized", {
+        status: 401,
+      });
     }
     return token;
   }

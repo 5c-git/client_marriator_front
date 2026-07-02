@@ -9,7 +9,8 @@ import { WalletIcon } from "~/shared/ui/Menu/icons/WalletIcon";
 import { ProfileIcon } from "~/shared/ui/Menu/icons/ProfileIcon";
 import { UsersIcon } from "~/shared/ui/Menu/icons/UsersIcon";
 
-import { useStore } from "~/store/store";
+import { appContainer } from "~/shared/container/container";
+import { appTokens } from "~/shared/container/container.tokens";
 
 const linksMap = {
   admin: [
@@ -109,15 +110,9 @@ const linksMap = {
 };
 
 export async function clientLoader() {
-  const accessToken = useStore.getState().accessToken;
-
-  if (accessToken) {
-    const userRole = useStore.getState().userRole;
-
-    return linksMap[userRole];
-  } else {
-    throw new Response("Токен авторизации не обнаружен!", { status: 401 });
-  }
+  const appSerivce = appContainer.get(appTokens.appService);
+  const userRole = appSerivce.getUserRole();
+  return linksMap[userRole];
 }
 
 export default function MenuLayout({ loaderData }: Route.ComponentProps) {

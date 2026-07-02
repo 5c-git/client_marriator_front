@@ -32,8 +32,6 @@
     "startTime": "Время начала",
     "endTime": "Время окончания",
     "addDayButton": "Добавить день",
-    "deleteDayButton": "Удалить день",
-    "earlierThanDefaultError": "Время раньше изначального",
-    "laterThanDefaultError": "Время позже изначального"
+    "deleteDayButton": "Удалить день"
   }
 }

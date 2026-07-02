@@ -183,8 +183,8 @@ const createActivityFormSchema = (
       ) {
         ctx.addIssue({
           code: "custom",
-          message: t("service.laterThanDefaultError", {
-            ns: "ServiceMobileView",
+          message: t("laterThanDefaultError", {
+            ns: "constructorFields",
           }),
           input: values.dateEnd,
           path: ["dateEnd"],
@@ -202,8 +202,8 @@ const createActivityFormSchema = (
       ) {
         ctx.addIssue({
           code: "custom",
-          message: t("service.earlierThanDefaultError", {
-            ns: "ServiceMobileView",
+          message: t("earlierThanDefaultError", {
+            ns: "constructorFields",
           }),
           input: values.dateStart,
           path: ["dateStart"],
@@ -247,8 +247,8 @@ const createActivityFormSchema = (
         ) {
           ctx.addIssue({
             code: "custom",
-            message: t("service.earlierThanDefaultError", {
-              ns: "ServiceMobileView",
+            message: t("earlierThanDefaultError", {
+              ns: "constructorFields",
             }),
             input: values.days[index],
             path: [`days.${index}.timeStart`],
@@ -265,8 +265,8 @@ const createActivityFormSchema = (
         ) {
           ctx.addIssue({
             code: "custom",
-            message: t("service.laterThanDefaultError", {
-              ns: "ServiceMobileView",
+            message: t("laterThanDefaultError", {
+              ns: "constructorFields",
             }),
             input: values.days[index],
             path: [`days.${index}.timeEnd`],
@@ -277,8 +277,8 @@ const createActivityFormSchema = (
           if (isBefore(day.timeStart, dateStart)) {
             ctx.addIssue({
               code: "custom",
-              message: t("service.earlierThanDefaultError", {
-                ns: "ServiceMobileView",
+              message: t("earlierThanDefaultError", {
+                ns: "constructorFields",
               }),
               input: values.days[index],
               path: [`days.${index}.timeStart`],
@@ -296,8 +296,8 @@ const createActivityFormSchema = (
           ) {
             ctx.addIssue({
               code: "custom",
-              message: t("service.laterThanDefaultError", {
-                ns: "ServiceMobileView",
+              message: t("laterThanDefaultError", {
+                ns: "constructorFields",
               }),
               input: values.days[index],
               path: [`days.${index}.timeEnd`],
@@ -307,8 +307,8 @@ const createActivityFormSchema = (
           if (isAfter(day.timeEnd, dateEnd)) {
             ctx.addIssue({
               code: "custom",
-              message: t("service.laterThanDefaultError", {
-                ns: "ServiceMobileView",
+              message: t("laterThanDefaultError", {
+                ns: "constructorFields",
               }),
               input: values.days[index],
               path: [`days.${index}.timeEnd`],
@@ -325,8 +325,8 @@ const createActivityFormSchema = (
           ) {
             ctx.addIssue({
               code: "custom",
-              message: t("service.earlierThanDefaultError", {
-                ns: "ServiceMobileView",
+              message: t("earlierThanDefaultError", {
+                ns: "constructorFields",
               }),
               input: values.days[index],
               path: [`days.${index}.timeStart`],
@@ -713,9 +713,23 @@ export function ActivityFormMobileView(props: ActivityFormMobileViewInterface) {
                       <Typography
                         component="p"
                         variant="Reg_14"
-                        sx={(theme) => ({
-                          color: theme.vars.palette["Black"],
-                        })}
+                        sx={(theme) => {
+                          const daysErrors = errors.days;
+
+                          if (daysErrors && daysErrors[index]) {
+                            return {
+                              color:
+                                daysErrors[index].timeStart ||
+                                daysErrors[index].timeEnd
+                                  ? theme.vars.palette["Red"]
+                                  : theme.vars.palette["Black"],
+                            };
+                          } else {
+                            return {
+                              color: theme.vars.palette["Black"],
+                            };
+                          }
+                        }}
                       >
                         {format(
                           new Date(watch(`days.${index}.timeStart`)),

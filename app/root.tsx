@@ -70,6 +70,8 @@ export function ErrorBoundary() {
   const access_token = useStore.getState().accessToken;
   const refresh_token = useStore.getState().refreshToken;
 
+  console.log(error);
+
   // 401 - WE THROW THIS STATUS CODE IF USER IS UNAUTHORIZED
 
   // логика обновления accessToken с сервера через refreshToken, если обновление неуспешно - значит ссессия протухла совсем, удяляем токены из хранилища и переводим пользователя на авторизацию
