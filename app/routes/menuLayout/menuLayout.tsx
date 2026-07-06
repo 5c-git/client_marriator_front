@@ -112,6 +112,7 @@ const linksMap = {
 export async function clientLoader() {
   const appSerivce = appContainer.get(appTokens.appService);
   const userRole = appSerivce.getUserRole();
+
   return linksMap[userRole];
 }
 

@@ -11,7 +11,7 @@ import {
   useNavigate,
   useNavigation,
 } from "react-router";
-// import type { Route } from "./+types/root";
+import type { Route } from "./+types/root";
 import { useEffect, useState } from "react";
 
 import { UnxpectedError } from "./shared/unexpectedError/unexpectedError";
@@ -43,6 +43,15 @@ import logoTurnOff from "./logo-turnoff.svg";
 
 import { postRefreshToken } from "./api/postRefreshToken/postRefreshToken";
 import { postSendError } from "./api/postSendError/postSendError";
+
+async function sizeMiddleware() {
+  const isDesktop = window.innerWidth > 786 ? true : false;
+  console.log(isDesktop);
+}
+
+export const clientMiddleware: Route.ClientMiddlewareFunction[] = [
+  sizeMiddleware,
+];
 
 export async function clientLoader({ params }: LoaderFunctionArgs) {
   const locale = params.lang ?? "ru";
