@@ -4,6 +4,7 @@ export const getOrdersSuccessSchema = z.object({
   data: z.array(
     z.object({
       id: z.number(),
+      createdAt: z.string(),
       place: z.object({
         id: z.number(),
         name: z.string(),

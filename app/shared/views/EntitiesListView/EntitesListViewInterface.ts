@@ -18,6 +18,7 @@ export type Entity = {
   coordinates: Coordinates;
   units: string;
   currency: string;
+  createdAt: string;
 };
 
 export type EntitiesListViewInterface = {
@@ -25,7 +26,7 @@ export type EntitiesListViewInterface = {
   mapView: boolean;
   entityType: "order" | "task" | "bid" | "job";
   entities: Entity[];
-  sorting: "ascending" | "descending",
+  sorting: "ascending" | "descending";
   entityListView: (entity: Entity) => React.ReactNode;
   entityMapView: (entity: Entity) => React.ReactNode;
 };

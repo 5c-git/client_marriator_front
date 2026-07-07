@@ -4,6 +4,7 @@ export const getJobsSuccessSchema = z.object({
   data: z.array(
     z.object({
       id: z.number(),
+      createdAt: z.string(),
       selfEmployed: z.boolean(),
       status: z.union([
         z.literal(1),
@@ -47,7 +48,7 @@ export const getJobsSuccessSchema = z.object({
           id: z.number(),
           coefficient: z.number(),
           name: z.string(),
-        })
+        }),
       }),
       dateStart: z.string(),
       dateEnd: z.string(),

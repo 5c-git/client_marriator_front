@@ -75,6 +75,7 @@ export class OrdersService {
         ],
         units: "",
         currency: "₽",
+        createdAt: item.createdAt,
       };
     });
   }

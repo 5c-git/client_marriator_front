@@ -46,6 +46,7 @@ export class JobsService {
       coordinates: [Number(item.place.latitude), Number(item.place.longitude)],
       units: item.viewActivity.standard.name,
       currency: "₽",
+      createdAt: item.createdAt,
     }));
   }
 }

@@ -18,10 +18,6 @@ managersContainer
   );
 
 managersContainer
-  .bind(managersPrivateTokens.getUserRole)
-  .toConstant(() => useStore.getState().userRole)
-
-managersContainer
   .bind(managersTokens.managersService)
   .toInstance(ManagersService)
   .inSingletonScope();

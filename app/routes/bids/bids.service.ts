@@ -1,6 +1,6 @@
 import { injected } from "brandi";
 
-import type { GetBids } from "./bids.private-tokens";
+import type { GetBids, GetUserInfo } from "./bids.private-tokens";
 import { bidsPrivateTokens } from "./bids.private-tokens";
 
 import { statusCodeMap } from "~/shared/status";
@@ -12,6 +12,7 @@ export class BidsService {
   constructor(
     private readonly appService: AppService,
     private readonly _getBids: GetBids,
+    private readonly loadUserInfo: GetUserInfo,
   ) {}
 
   async getBids() {
@@ -55,9 +56,32 @@ export class BidsService {
         ],
         units: item.viewActivity.standard.name,
         currency: "₽",
+        createdAt: item.createdAt,
       };
     });
   }
+
+  async getBidCancelInterval() {
+    const token = this.appService.getToken();
+
+    const userData = await this.loadUserInfo(token);
+
+    let cancel_bid_interval = 2;
+
+    if (userData.result.userData.repeat_bid) {
+      const date = new Date(
+        `2026-03-12T${userData.result.userData.repeat_bid.startsWith("0") ? userData.result.userData.repeat_bid : `0${userData.result.userData.repeat_bid}`}`,
+      );
+      cancel_bid_interval = date.getHours();
+    }
+
+    return cancel_bid_interval;
+  }
 }
 
-injected(BidsService, appTokens.appService, bidsPrivateTokens.getBids);
+injected(
+  BidsService,
+  appTokens.appService,
+  bidsPrivateTokens.getBids,
+  bidsPrivateTokens.getUserInfo,
+);

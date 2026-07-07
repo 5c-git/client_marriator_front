@@ -4,6 +4,7 @@ export const getBidsSuccessSchema = z.object({
   data: z.array(
     z.object({
       id: z.number(),
+      createdAt: z.string(),
       user: z.object({
         id: z.number(),
         phone: z.number(),
@@ -62,7 +63,7 @@ export const getBidsSuccessSchema = z.object({
           id: z.number(),
           coefficient: z.number(),
           name: z.string(),
-        })
+        }),
       }),
       dateStart: z.string(),
       dateEnd: z.string(),

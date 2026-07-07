@@ -1,4 +1,11 @@
 {
   "cardHeader": "Amount of services",
-  "cancelBid": "Cancel"
+  "cancelBid": "Cancel request",
+  "dialog": {
+    "cancel": "Cancel",
+    "repeat": "Repeat",
+    "title": "request",
+    "no": "No",
+    "yes": "Yes"
+  }
 }

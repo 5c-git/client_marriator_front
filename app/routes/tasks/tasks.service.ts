@@ -75,6 +75,7 @@ export class TasksService {
         ],
         units: "",
         currency: "₽",
+        createdAt: item.createdAt,
       };
     });
   }
