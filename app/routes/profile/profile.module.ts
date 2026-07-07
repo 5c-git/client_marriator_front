@@ -1,9 +1,5 @@
 import { Container } from "brandi";
 
-import {
-  getUserInfo,
-  getUserInfoKeys,
-} from "~/api/_personal/getUserInfo/getUserInfo";
 import { queryClient } from "~/shared/queryClient";
 import { useStore } from "~/store/store";
 
@@ -13,6 +9,12 @@ import { ProfileService } from "./profile.service";
 import { profilePrivateTokens } from "./profile.private-tokens";
 import { profileTokens } from "./profile.tokens";
 
+import {
+  getUserInfo,
+  getUserInfoKeys,
+} from "~/api/_personal/getUserInfo/getUserInfo";
+import { getData } from "~/api/_personal/getData/getData";
+
 export const profileContainer = new Container().extend(appContainer);
 
 profileContainer
@@ -20,7 +22,7 @@ profileContainer
   .toConstant((accessToken) =>
     queryClient.fetchQuery({
       queryKey: [getUserInfoKeys[0]],
-      queryFn: () => getUserInfo(accessToken),
+      queryFn: () => getData(accessToken),
       staleTime: 5000,
     }),
   );

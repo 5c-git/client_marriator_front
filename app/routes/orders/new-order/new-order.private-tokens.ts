@@ -39,10 +39,17 @@ export type CreateOrder = (
 
 export type UpdateOrder = (
   accessToken: string,
-  placeId: number,
-  orderId: number,
-  projectId: number,
-  selfEmployed: boolean,
+  {
+    selfEmployed,
+    orderId,
+    projectId,
+    placeId,
+  }: {
+    selfEmployed: boolean;
+    orderId?: number;
+    projectId?: number;
+    placeId?: number;
+  },
 ) => Promise<PostUpdateOrderSuccess>;
 
 export type CancelOrder = (

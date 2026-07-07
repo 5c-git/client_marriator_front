@@ -11,10 +11,17 @@ export const postUpdateOrderKeys = ["postUpdateOrder"];
 
 export const postUpdateOrder = async (
   accessToken: string,
-  placeId: number,
-  orderId: number,
-  projectId: number,
-  selfEmployed: boolean,
+  {
+    selfEmployed,
+    orderId,
+    projectId,
+    placeId,
+  }: {
+    selfEmployed: boolean;
+    orderId?: number;
+    projectId?: number;
+    placeId?: number;
+  },
 ): Promise<PostUpdateOrderSuccess> => {
   try {
     const url = new URL(import.meta.env.VITE_POST_UPDATE_ORDER);
@@ -26,10 +33,10 @@ export const postUpdateOrder = async (
         Authorization: `Bearer ${accessToken}`,
       },
       body: JSON.stringify({
-        placeId,
+        selfEmployed,
         orderId,
         projectId,
-        selfEmployed,
+        placeId,
       }),
     });
     const response = await request.json();

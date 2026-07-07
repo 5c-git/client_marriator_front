@@ -30,10 +30,6 @@ export class NewOrderService {
     private readonly _saveOrder: SaveOrder,
   ) {}
 
-  // getUserRole() {
-  //   return this.appService.getUserRole();
-  // }
-
   async getOrder(orderId: string) {
     const token = this.appService.getToken();
 
@@ -64,15 +60,25 @@ export class NewOrderService {
     return this._createOrder(token, placeId, projectId, selfEmployed);
   }
 
-  async updateOrder(
-    placeId: number,
-    orderId: number,
-    projectId: number,
-    selfEmployed: boolean,
-  ) {
+  async updateOrder({
+    selfEmployed,
+    orderId,
+    projectId,
+    placeId,
+  }: {
+    selfEmployed: boolean;
+    orderId?: number;
+    projectId?: number;
+    placeId?: number;
+  }) {
     const token = this.appService.getToken();
 
-    return this._updateOrder(token, placeId, orderId, projectId, selfEmployed);
+    return this._updateOrder(token, {
+      selfEmployed,
+      orderId,
+      projectId,
+      placeId,
+    });
   }
 
   async deleteActivity(orderId: string, orderActivityId: string) {

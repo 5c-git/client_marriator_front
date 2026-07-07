@@ -45,7 +45,14 @@ import { postRefreshToken } from "./api/postRefreshToken/postRefreshToken";
 import { postSendError } from "./api/postSendError/postSendError";
 
 async function sizeMiddleware() {
+  const location = window.location.pathname;
+
   const isDesktop = window.innerWidth > 786 ? true : false;
+
+  if (location.includes("dashboard") && isDesktop) {
+  } else if (location.includes("dashboard") && !isDesktop) {
+  }
+
   console.log(isDesktop);
 }
 

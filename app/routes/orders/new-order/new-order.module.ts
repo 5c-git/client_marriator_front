@@ -45,9 +45,7 @@ newOrderContainer
 
 newOrderContainer
   .bind(newOrderPrivateTokens.updateOrder)
-  .toConstant((accessToken, placeId, orderId, projectId, selfEmployed) =>
-    postUpdateOrder(accessToken, placeId, orderId, projectId, selfEmployed),
-  );
+  .toConstant((accessToken, values) => postUpdateOrder(accessToken, values));
 
 newOrderContainer
   .bind(newOrderPrivateTokens.cancelOrder)

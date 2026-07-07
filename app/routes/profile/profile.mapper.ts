@@ -1,4 +1,4 @@
-import type { GetUserInfoSuccess } from "~/api/_personal/getUserInfo/getUserInfoSuccess.schema";
+import type { GetDataSuccess } from "~/api/_personal/getData/getDataSuccess.schema";
 import { State } from "~/store/store";
 
 export type ProfileData = {
@@ -9,16 +9,19 @@ export type ProfileData = {
 };
 export class ProfileMapper {
   static toData(
-    data: GetUserInfoSuccess,
+    data: GetDataSuccess,
     userRole: ProfileData["userRole"],
   ): ProfileData {
-    const { userData } = data.result;
+    console.error(
+      'api:getData/file:profileMapper.ts - необходимо добавить поле "errorData" для сохранения функционала показа уведомлений',
+    );
 
     return {
-      avatarUrl: userData.img,
-      displayName: userData.name,
+      avatarUrl: data.data.logo ? data.data.logo : "",
+      displayName: data.data.name,
       userRole: userRole,
-      hasProfileErrors: Boolean(userData.errorData),
+      // hasProfileErrors: Boolean(data.data.errorData),
+      hasProfileErrors: false,
     };
   }
 }

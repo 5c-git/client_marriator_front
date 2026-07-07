@@ -7,11 +7,13 @@ export class NewOrderMapper {
     return {
       id: data.data.id.toString(),
       projectId: data.data.project ? data.data.project.id.toString() : null,
-      place: {
-        id: data.data.place.id.toString(),
-        name: data.data.place.name,
-        region: data.data.place.region.name,
-      },
+      place: data.data.place
+        ? {
+            id: data.data.place.id.toString(),
+            name: data.data.place.name,
+            region: data.data.place.region.name,
+          }
+        : null,
 
       selfEmployed: data.data.selfEmployed,
       isNewOrder: false,

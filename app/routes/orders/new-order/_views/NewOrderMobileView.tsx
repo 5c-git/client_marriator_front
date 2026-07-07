@@ -46,9 +46,9 @@ export default function NewOrderMobileView(props: NewOrderMobileViewInterface) {
     formState: { errors },
   } = useForm({
     defaultValues: {
-      location: props.order.place.id,
-      project: props.order.projectId ? props.order.projectId : "",
       selfEmployed: props.order.selfEmployed,
+      project: props.order.projectId ? props.order.projectId : "",
+      location: props.order.place ? props.order.place.id : "",
     },
     resolver: zodResolver(
       z.object({
@@ -86,12 +86,12 @@ export default function NewOrderMobileView(props: NewOrderMobileViewInterface) {
           }}
         >
           <Controller
-            name="location"
+            name="selfEmployed"
             control={control}
             render={({ field }) => (
-              <StyledSelect
-                inputType="select"
-                placeholder={t(`fields.locationPlaceholder`)}
+              <StyledCheckbox
+                inputType="checkbox"
+                label={t(`fields.selfEmployedPlaceholder`)}
                 onImmediateChange={() => {
                   props.submitAction(
                     getValues("location"),
@@ -100,8 +100,7 @@ export default function NewOrderMobileView(props: NewOrderMobileViewInterface) {
                   );
                 }}
                 validation="none"
-                error={errors.location?.message}
-                options={props.options}
+                error={errors.selfEmployed?.message}
                 {...field}
               />
             )}
@@ -133,14 +132,14 @@ export default function NewOrderMobileView(props: NewOrderMobileViewInterface) {
             }
           />
 
-          {!props.order.isNewOrder ? (
-            <Controller
-              name="selfEmployed"
-              control={control}
-              render={({ field }) => (
-                <StyledCheckbox
-                  inputType="checkbox"
-                  label={t(`fields.selfEmployedPlaceholder`)}
+          <Controller
+            name="location"
+            control={control}
+            render={({ field }) =>
+              props.options.length > 0 ? (
+                <StyledSelect
+                  inputType="select"
+                  placeholder={t(`fields.locationPlaceholder`)}
                   onImmediateChange={() => {
                     props.submitAction(
                       getValues("location"),
@@ -149,12 +148,15 @@ export default function NewOrderMobileView(props: NewOrderMobileViewInterface) {
                     );
                   }}
                   validation="none"
-                  error={errors.selfEmployed?.message}
+                  error={errors.location?.message}
+                  options={props.options}
                   {...field}
                 />
-              )}
-            />
-          ) : null}
+              ) : (
+                <></>
+              )
+            }
+          />
         </form>
 
         {props.order.orderServices.length > 0 ? (

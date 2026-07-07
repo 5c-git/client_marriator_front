@@ -25,22 +25,22 @@ export async function clientLoader({ request }: Route.ClientLoaderArgs) {
   let order: NewOrderMobileViewInterface["order"] = {
     id: "",
     projectId: null,
-    place: {
-      id: "",
-      name: "",
-      region: "",
-    },
+    place: null,
     selfEmployed: false,
     isNewOrder: true,
     orderServices: [],
   };
+
   let projectOptions: NewOrderMobileViewInterface["projectOptions"] = [];
-  const placesOptions: NewOrderMobileViewInterface["options"] =
-    await newOrderService.getPlaceOptions();
+  let placesOptions: NewOrderMobileViewInterface["options"] = [];
 
   if (orderId) {
     order = await newOrderService.getOrder(orderId);
     projectOptions = await newOrderService.getProjectOptions(orderId);
+
+    if (order.projectId) {
+      placesOptions = await newOrderService.getPlaceOptions();
+    }
   }
 
   return {
@@ -67,12 +67,7 @@ export async function clientAction({ request }: Route.ClientActionArgs) {
 
     throw redirect(currentURL.toString());
   } else if (_action === NEW_ORDER_ACTIONS.update && orderId) {
-    await newOrderService.updateOrder(
-      fields.placeId,
-      Number(orderId),
-      Number(fields.projectId),
-      fields.selfEmployed,
-    );
+    await newOrderService.updateOrder(fields);
   } else if (_action === NEW_ORDER_ACTIONS.delete && orderId) {
     await newOrderService.deleteActivity(orderId, fields.orderActivityId);
   } else if (_action === NEW_ORDER_ACTIONS.cancel && orderId) {
@@ -100,12 +95,12 @@ export default function NewOrder({ loaderData }: Route.ComponentProps) {
         });
       }}
       submitAction={(placeId, projectId, selfEmployed) => {
+        console.log(projectId);
+
         if (loaderData.order.isNewOrder) {
           fetcher.submit(
             JSON.stringify({
               _action: NEW_ORDER_ACTIONS.create,
-              placeId: placeId,
-              projectId: projectId,
               selfEmployed: selfEmployed,
             }),
             {
@@ -117,16 +112,27 @@ export default function NewOrder({ loaderData }: Route.ComponentProps) {
           fetcher.submit(
             JSON.stringify({
               _action: NEW_ORDER_ACTIONS.update,
-              orderId: fetcher.data,
-              placeId: placeId,
-              projectId: projectId,
               selfEmployed: selfEmployed,
+              orderId: loaderData.order.id,
+              ...(projectId !== "" && { projectId: projectId }),
+              ...(placeId !== "" && { placeId: projectId }),
+              // projectId: projectId,
+              // placeId: placeId,
             }),
             {
               method: "POST",
               encType: "application/json",
             },
           );
+          console.log({
+            _action: NEW_ORDER_ACTIONS.update,
+            orderId: loaderData.order.id,
+            selfEmployed: selfEmployed,
+            ...(projectId !== "" && { projectId: projectId }),
+            ...(placeId !== "" && { placeId: projectId }),
+            // projectId: projectId,
+            // placeId: placeId,
+          });
         }
       }}
       cancelAction={() => {

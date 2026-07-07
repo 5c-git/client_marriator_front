@@ -1,10 +1,10 @@
 import { token } from "brandi";
 
-import type { GetUserInfoSuccess } from "~/api/_personal/getUserInfo/getUserInfoSuccess.schema";
+import type { GetDataSuccess } from "~/api/_personal/getData/getDataSuccess.schema";
 
 export type FetchUserInfoCached = (
   accessToken: string,
-) => Promise<GetUserInfoSuccess>;
+) => Promise<GetDataSuccess>;
 
 export type ClearAppStore = () => void;
 

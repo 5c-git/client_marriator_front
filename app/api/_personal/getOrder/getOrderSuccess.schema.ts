@@ -11,29 +11,35 @@ export const getOrderSuccessSchema = z.object({
       z.literal(4),
       z.literal(5),
     ]),
-    place: z.object({
-      id: z.number(),
-      name: z.string(),
-      latitude: z.string(),
-      longitude: z.string(),
-      address_kladr: z.string(),
-      logo: z.string(),
-      region: z.object({ id: z.number(), name: z.string() }),
-      brand: z.object({
+    place: z.union([
+      z.null(),
+      z.object({
         id: z.number(),
         name: z.string(),
+        latitude: z.string(),
+        longitude: z.string(),
+        address_kladr: z.string(),
         logo: z.string(),
-        description: z.string(),
+        region: z.object({ id: z.number(), name: z.string() }),
+        brand: z.object({
+          id: z.number(),
+          name: z.string(),
+          logo: z.string(),
+          description: z.string(),
+        }),
       }),
-    }),
-    project: z.union([z.null(), z.object({
-      id: z.number(),
-      name: z.string(),
-      dateStart: z.string(),
-      dateEnd: z.string(),
-      timeStart: z.string(),
-      timeEnd: z.string()
-    })]),
+    ]),
+    project: z.union([
+      z.null(),
+      z.object({
+        id: z.number(),
+        name: z.string(),
+        dateStart: z.string(),
+        dateEnd: z.string(),
+        timeStart: z.string(),
+        timeEnd: z.string(),
+      }),
+    ]),
     user: z.object({
       id: z.number(),
       phone: z.number(),
