@@ -8,6 +8,7 @@ import type {
 
 import { requestsPrivateTokens } from "./requests.private-tokens";
 import { appTokens } from "~/shared/container/container.tokens";
+import { RequestsMapper } from "./requsets.mapper";
 
 export class RequestsService {
   constructor(
@@ -17,7 +18,11 @@ export class RequestsService {
   ) {}
 
   async getUserCompanies() {
-    return await this.fetchRequests(this.appService.getToken());
+    const token = this.appService.getToken();
+
+    const data = await this.fetchRequests(token);
+
+    return RequestsMapper.mapCompaniesToOptions(data);
   }
 
   async saveSelectedCompanies(value: number[]) {

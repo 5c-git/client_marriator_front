@@ -9,9 +9,11 @@ import { TopNavigation } from "~/shared/ui/TopNavigation/TopNavigation";
 import { StyledCheckbox } from "~/shared/ui/StyledCheckbox/StyledCheckbox";
 
 type Props = {
-  data: { label: string; value: boolean }[];
+  data: { id: number; label: string; value: boolean }[];
   backAction: () => void;
-  submitSelection: (values: { label: string; value: boolean }[]) => void;
+  submitSelection: (
+    values: { id: number; label: string; value: boolean }[],
+  ) => void;
 };
 
 export function RequestsView(props: Props) {
