@@ -10,6 +10,7 @@ import {
   isRouteErrorResponse,
   useNavigate,
   useNavigation,
+  redirect,
 } from "react-router";
 import type { Route } from "./+types/root";
 import { useEffect, useState } from "react";
@@ -44,16 +45,21 @@ import logoTurnOff from "./logo-turnoff.svg";
 import { postRefreshToken } from "./api/postRefreshToken/postRefreshToken";
 import { postSendError } from "./api/postSendError/postSendError";
 
-async function sizeMiddleware() {
-  const location = window.location.pathname;
+function sizeMiddleware({ request }: { request: Request }) {
+  const path = new URL(request.url).pathname;
+  const pathSegments = path.split("/");
+  const potentialLang = pathSegments[1];
 
+  const isLang = supportedLngs.includes(potentialLang);
   const isDesktop = window.innerWidth > 786 ? true : false;
 
-  if (location.includes("dashboard") && isDesktop) {
-  } else if (location.includes("dashboard") && !isDesktop) {
+  if (!path.includes("dashboard") && isDesktop) {
+    throw redirect(
+      `${isLang ? `/${potentialLang}` : ""}/dashboard${isLang ? path.slice(3) : path === "/" ? "" : path}`,
+    );
+  } else if (path.includes("dashboard") && !isDesktop) {
+    throw redirect(path.replace("dashboard/", ""));
   }
-
-  console.log(isDesktop);
 }
 
 export const clientMiddleware: Route.ClientMiddlewareFunction[] = [
@@ -62,6 +68,8 @@ export const clientMiddleware: Route.ClientMiddlewareFunction[] = [
 
 export async function clientLoader({ params }: LoaderFunctionArgs) {
   const locale = params.lang ?? "ru";
+
+  console.log(params.lang);
 
   if (!supportedLngs.includes(locale)) {
     throw new Response(null, {

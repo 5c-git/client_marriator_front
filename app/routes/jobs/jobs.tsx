@@ -13,11 +13,6 @@ import { EntityCard } from "~/shared/ui/EntityCard/EntityCard";
 import { jobsContainer } from "./jobs.module";
 import { jobsTokens } from "./jobs.tokens";
 
-type MobileModeData = {
-  mode: "mobile";
-  jobs: EntitiesListViewInterface["entities"];
-};
-
 export async function clientLoader() {
   const jobsService = jobsContainer.get(jobsTokens.jobsService);
 
