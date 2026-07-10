@@ -11,9 +11,12 @@ export const getPlaceForTaskKeys = ["getPlaceForTask"];
 
 export const getPlaceForTask = async (
   accessToken: string,
+  taskId: string,
 ): Promise<GetPlaceForTaskSuccess> => {
   try {
     const url = new URL(import.meta.env.VITE_GET_PLACE_FOR_TASK);
+
+    url.searchParams.append("taskId", taskId);
 
     const request = await fetch(url, {
       method: "GET",

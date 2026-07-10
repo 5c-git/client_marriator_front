@@ -11,9 +11,12 @@ export const getPlaceForOrderKeys = ["getPlaceForOrder"];
 
 export const getPlaceForOrder = async (
   accessToken: string,
+  orderId: string,
 ): Promise<GetPlaceForOrderSuccess> => {
   try {
     const url = new URL(import.meta.env.VITE_GET_PLACE_FOR_ORDER);
+
+    url.searchParams.append("orderId", orderId);
 
     const request = await fetch(url, {
       method: "GET",

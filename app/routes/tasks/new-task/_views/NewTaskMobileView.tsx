@@ -41,18 +41,20 @@ export function NewTaskMobileView(props: NewTaskMobileViewInterface) {
     control,
     handleSubmit,
     getValues,
+    setValue,
+    watch,
     formState: { errors },
   } = useForm({
     defaultValues: {
-      location: props.task.place.id,
-      project: props.task.projectId ? props.task.projectId : "",
       selfEmployed: props.task.selfEmployed,
+      project: props.task.projectId ? props.task.projectId : "",
+      location: props.task.place ? props.task.place.id : "",
     },
     resolver: zodResolver(
       z.object({
-        location: z.string(t("text", { ns: "constructorFields" })),
-        project: z.string(t("text", { ns: "constructorFields" })),
         selfEmployed: z.boolean(),
+        project: z.string(t("text", { ns: "constructorFields" })),
+        location: z.string(t("text", { ns: "constructorFields" })),
       }),
     ),
     mode: "onChange",
@@ -84,13 +86,16 @@ export function NewTaskMobileView(props: NewTaskMobileViewInterface) {
           }}
         >
           <Controller
-            name="location"
+            name="selfEmployed"
             control={control}
             render={({ field }) => (
-              <StyledSelect
-                inputType="select"
-                placeholder={t(`fields.locationPlaceholder`)}
+              <StyledCheckbox
+                inputType="checkbox"
+                label={t(`fields.selfEmployedPlaceholder`)}
                 onImmediateChange={() => {
+                  setValue("project", "");
+                  setValue("location", "");
+
                   props.submitAction(
                     getValues("location"),
                     getValues("project"),
@@ -98,8 +103,7 @@ export function NewTaskMobileView(props: NewTaskMobileViewInterface) {
                   );
                 }}
                 validation="none"
-                error={errors.location?.message}
-                options={props.placesOptions}
+                error={errors.selfEmployed?.message}
                 {...field}
               />
             )}
@@ -131,14 +135,14 @@ export function NewTaskMobileView(props: NewTaskMobileViewInterface) {
             }
           />
 
-          {!props.task.isNewTask ? (
-            <Controller
-              name="selfEmployed"
-              control={control}
-              render={({ field }) => (
-                <StyledCheckbox
-                  inputType="checkbox"
-                  label={t(`fields.selfEmployedPlaceholder`)}
+          <Controller
+            name="location"
+            control={control}
+            render={({ field }) =>
+              props.placesOptions.length > 0 ? (
+                <StyledSelect
+                  inputType="select"
+                  placeholder={t(`fields.locationPlaceholder`)}
                   onImmediateChange={() => {
                     props.submitAction(
                       getValues("location"),
@@ -147,12 +151,15 @@ export function NewTaskMobileView(props: NewTaskMobileViewInterface) {
                     );
                   }}
                   validation="none"
-                  error={errors.selfEmployed?.message}
+                  error={errors.location?.message}
+                  options={props.placesOptions}
                   {...field}
                 />
-              )}
-            />
-          ) : null}
+              ) : (
+                <></>
+              )
+            }
+          />
         </form>
 
         {props.task.taskServices.length > 0 ? (
@@ -235,7 +242,11 @@ export function NewTaskMobileView(props: NewTaskMobileViewInterface) {
           component={Link}
           to={withLocale(`/tasks/${props.task.id}/service?new=true`)}
           variant="outlined"
-          disabled={props.task.isNewTask}
+          disabled={
+            props.task.isNewTask ||
+            watch("project") === "" ||
+            watch("location") === ""
+          }
           startIcon={<AddIcon />}
         >
           {t(`activityButton`)}

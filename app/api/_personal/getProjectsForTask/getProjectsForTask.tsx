@@ -11,12 +11,12 @@ export const getProjectsForTaskKeys = ["getProjectsForTask"];
 
 export const getProjectsForTask = async (
   accessToken: string,
-  placeId: string,
+  taskId: string,
 ): Promise<GetProjectsForTaskSuccess> => {
   try {
     const url = new URL(import.meta.env.VITE_GET_PROJECTS_FOR_TASK);
 
-    url.searchParams.append("placeId", placeId);
+    url.searchParams.append("taskId", taskId);
 
     const request = await fetch(url, {
       method: "GET",

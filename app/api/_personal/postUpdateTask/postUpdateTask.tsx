@@ -11,10 +11,17 @@ export const postUpdateTaskKeys = ["postUpdateTask"];
 
 export const postUpdateTask = async (
   accessToken: string,
-  placeId: number,
-  taskId: number,
-  projectId: number,
-  selfEmployed: boolean,
+  {
+    selfEmployed,
+    taskId,
+    projectId,
+    placeId,
+  }: {
+    selfEmployed: boolean;
+    taskId?: number;
+    projectId?: number;
+    placeId?: number;
+  },
 ): Promise<PostUpdateTaskSuccess> => {
   try {
     const url = new URL(import.meta.env.VITE_POST_UPDATE_TASK);
@@ -26,10 +33,10 @@ export const postUpdateTask = async (
         Authorization: `Bearer ${accessToken}`,
       },
       body: JSON.stringify({
-        placeId,
+        selfEmployed,
         taskId,
         projectId,
-        selfEmployed,
+        placeId,
       }),
     });
     const response = await request.json();

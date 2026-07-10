@@ -39,7 +39,7 @@ export async function clientLoader({ request }: Route.ClientLoaderArgs) {
     projectOptions = await newOrderService.getProjectOptions(orderId);
 
     if (order.projectId) {
-      placesOptions = await newOrderService.getPlaceOptions();
+      placesOptions = await newOrderService.getPlaceOptions(orderId);
     }
   }
 
@@ -95,8 +95,6 @@ export default function NewOrder({ loaderData }: Route.ComponentProps) {
         });
       }}
       submitAction={(placeId, projectId, selfEmployed) => {
-        console.log(projectId);
-
         if (loaderData.order.isNewOrder) {
           fetcher.submit(
             JSON.stringify({
@@ -115,9 +113,7 @@ export default function NewOrder({ loaderData }: Route.ComponentProps) {
               selfEmployed: selfEmployed,
               orderId: loaderData.order.id,
               ...(projectId !== "" && { projectId: projectId }),
-              ...(placeId !== "" && { placeId: projectId }),
-              // projectId: projectId,
-              // placeId: placeId,
+              ...(placeId !== "" && { placeId: placeId }),
             }),
             {
               method: "POST",
@@ -129,9 +125,7 @@ export default function NewOrder({ loaderData }: Route.ComponentProps) {
             orderId: loaderData.order.id,
             selfEmployed: selfEmployed,
             ...(projectId !== "" && { projectId: projectId }),
-            ...(placeId !== "" && { placeId: projectId }),
-            // projectId: projectId,
-            // placeId: placeId,
+            ...(placeId !== "" && { placeId: placeId }),
           });
         }
       }}

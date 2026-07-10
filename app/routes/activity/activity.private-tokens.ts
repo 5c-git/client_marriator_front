@@ -31,6 +31,7 @@ export type GetViewActivitiesForEntity = (
 
 export type GetPlaceForEntity = (
   accessToken: string,
+  entityId: string,
 ) => Promise<GetPlaceForOrderSuccess>;
 
 export type GetSetting = (

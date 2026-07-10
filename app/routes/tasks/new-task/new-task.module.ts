@@ -24,13 +24,11 @@ newTaskContainer
 
 newTaskContainer
   .bind(newTaskPrivateTokens.getPlaceForTask)
-  .toConstant((accessToken) => getPlaceForTask(accessToken));
+  .toConstant((accessToken, taskId) => getPlaceForTask(accessToken, taskId));
 
 newTaskContainer
   .bind(newTaskPrivateTokens.getProjectsForTask)
-  .toConstant((accessToken, placeId) =>
-    getProjectsForTask(accessToken, placeId),
-  );
+  .toConstant((accessToken, taskId) => getProjectsForTask(accessToken, taskId));
 
 newTaskContainer
   .bind(newTaskPrivateTokens.getSupervisorsForTask)
@@ -46,9 +44,7 @@ newTaskContainer
 
 newTaskContainer
   .bind(newTaskPrivateTokens.updateTask)
-  .toConstant((accessToken, placeId, taskId, projectId, selfEmployed) =>
-    postUpdateTask(accessToken, placeId, taskId, projectId, selfEmployed),
-  );
+  .toConstant((accessToken, values) => postUpdateTask(accessToken, values));
 
 newTaskContainer
   .bind(newTaskPrivateTokens.cancelTask)

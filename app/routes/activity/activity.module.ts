@@ -58,7 +58,7 @@ activityContainer
 activityContainer
   .when(ACTIVITY_TAGS.order)
   .bind(activityPrivateTokens.getPlaceForEntity)
-  .toConstant((accessToken) => getPlaceForOrder(accessToken));
+  .toConstant((accessToken, orderId) => getPlaceForOrder(accessToken, orderId));
 activityContainer
   .when(ACTIVITY_TAGS.task)
   .bind(activityPrivateTokens.getPlaceForEntity)

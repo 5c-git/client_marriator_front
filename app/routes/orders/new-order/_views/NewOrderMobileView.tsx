@@ -40,9 +40,9 @@ export default function NewOrderMobileView(props: NewOrderMobileViewInterface) {
   const {
     control,
     handleSubmit,
-    reset,
     watch,
     getValues,
+    setValue,
     formState: { errors },
   } = useForm({
     defaultValues: {
@@ -52,9 +52,9 @@ export default function NewOrderMobileView(props: NewOrderMobileViewInterface) {
     },
     resolver: zodResolver(
       z.object({
-        location: z.string(t("text", { ns: "constructorFields" })),
-        project: z.string(t("text", { ns: "constructorFields" })),
         selfEmployed: z.boolean(),
+        project: z.string(t("text", { ns: "constructorFields" })),
+        location: z.string(t("text", { ns: "constructorFields" })),
       }),
     ),
     mode: "onChange",
@@ -93,6 +93,9 @@ export default function NewOrderMobileView(props: NewOrderMobileViewInterface) {
                 inputType="checkbox"
                 label={t(`fields.selfEmployedPlaceholder`)}
                 onImmediateChange={() => {
+                  setValue("project", "");
+                  setValue("location", "");
+
                   props.submitAction(
                     getValues("location"),
                     getValues("project"),
@@ -239,7 +242,11 @@ export default function NewOrderMobileView(props: NewOrderMobileViewInterface) {
           component={Link}
           to={withLocale(`/orders/${props.order.id}/service?new=true`)}
           variant="outlined"
-          disabled={props.order.isNewOrder || watch("project") === ""}
+          disabled={
+            props.order.isNewOrder ||
+            watch("project") === "" ||
+            watch("location") === ""
+          }
           startIcon={<AddIcon />}
         >
           {t(`serviceButton`)}

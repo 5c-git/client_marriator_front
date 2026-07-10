@@ -41,18 +41,18 @@ export class NewTaskService {
     return NewTaskMapper.mapDataToNewTask(data);
   }
 
-  async getPlaceOptions() {
+  async getPlaceOptions(taskId: string) {
     const token = this.appService.getToken();
 
-    const data = await this._getPlaceForTask(token);
+    const data = await this._getPlaceForTask(token, taskId);
 
     return NewTaskMapper.placesToSelectOptions(data);
   }
 
-  async getProjectOptions(placeId: string) {
+  async getProjectOptions(taskId: string) {
     const token = this.appService.getToken();
 
-    const data = await this._getProjectsForTask(token, placeId);
+    const data = await this._getProjectsForTask(token, taskId);
 
     return TaskMapper.dataToSelectOptions(data);
   }
@@ -71,15 +71,25 @@ export class NewTaskService {
     return this._createTask(token, placeId, projectId, selfEmployed);
   }
 
-  async updateTask(
-    placeId: number,
-    taskId: number,
-    projectId: number,
-    selfEmployed: boolean,
-  ) {
+  async updateTask({
+    selfEmployed,
+    taskId,
+    projectId,
+    placeId,
+  }: {
+    selfEmployed: boolean;
+    taskId?: number;
+    projectId?: number;
+    placeId?: number;
+  }) {
     const token = this.appService.getToken();
 
-    return this._updateTask(token, placeId, taskId, projectId, selfEmployed);
+    return this._updateTask(token, {
+      selfEmployed,
+      taskId,
+      projectId,
+      placeId,
+    });
   }
 
   async cancelTask(taskId: string) {

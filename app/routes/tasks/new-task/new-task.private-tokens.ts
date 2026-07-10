@@ -17,11 +17,12 @@ export type GetTask = (
 
 export type GetPlaceForTask = (
   accessToken: string,
+  taskId: string,
 ) => Promise<GetPlaceForTaskSuccess>;
 
 export type GetProjectsForTask = (
   accessToken: string,
-  placeId: string,
+  taskId: string,
 ) => Promise<GetProjectsForTaskSuccess>;
 
 export type GetSupervisorsForTask = (
@@ -38,10 +39,17 @@ export type CreateTask = (
 
 export type UpdateTask = (
   accessToken: string,
-  placeId: number,
-  taskId: number,
-  projectId: number,
-  selfEmployed: boolean,
+  {
+    selfEmployed,
+    taskId,
+    projectId,
+    placeId,
+  }: {
+    selfEmployed: boolean;
+    taskId?: number;
+    projectId?: number;
+    placeId?: number;
+  },
 ) => Promise<PostUpdateTaskSuccess>;
 
 export type CancelTask = (

@@ -47,22 +47,24 @@ export async function clientLoader({ request }: Route.ClientLoaderArgs) {
     invitedSupervisors: [],
     responsibleSupervisorId: null,
   };
+  let projectOptions: NewTaskMobileViewInterface["projectsOptions"] = [];
+  let placesOptions: NewTaskMobileViewInterface["placesOptions"] = [];
   let supervisorOptions: ComponentPropsWithoutRef<
     typeof StyledCheckboxMultiple
   >["options"] = [];
-  let placesOptions: NewTaskMobileViewInterface["placesOptions"] = [];
-  let projectOptions: NewTaskMobileViewInterface["projectsOptions"] = [];
 
   if (taskId) {
     task = await newTaskService.getTask(taskId);
-    supervisorOptions = await newTaskService.getSupervisorsOptions(taskId);
-  }
+    projectOptions = await newTaskService.getProjectOptions(taskId);
 
-  if (placeId) {
-    projectOptions = await newTaskService.getProjectOptions(placeId);
-  }
+    if (task.projectId) {
+      placesOptions = await newTaskService.getPlaceOptions(taskId);
+    }
 
-  placesOptions = await newTaskService.getPlaceOptions();
+    if (task.place) {
+      supervisorOptions = await newTaskService.getSupervisorsOptions(taskId);
+    }
+  }
 
   return {
     task,
@@ -89,12 +91,7 @@ export async function clientAction({ request }: Route.ClientActionArgs) {
     currentURL.searchParams.set("taskId", task.data.id.toString());
     throw redirect(currentURL.toString());
   } else if (_action === NEW_TASK_ACTIONS.update && taskId) {
-    await newTaskService.updateTask(
-      fields.placeId,
-      Number(taskId),
-      fields.projectId,
-      fields.selfEmployed,
-    );
+    await newTaskService.updateTask(fields);
   } else if (_action === NEW_TASK_ACTIONS.delete && taskId) {
     await newTaskService.deleteActivity(taskId, fields.orderActivityId);
   } else if (_action === NEW_TASK_ACTIONS.cancel && taskId) {
@@ -132,20 +129,18 @@ export default function NewTask({ loaderData }: Route.ComponentProps) {
           });
         }}
         submitAction={(placeId, projectId, selfEmployed) => {
-          const placeIdParam = searchParams.get("placeId");
+          // const placeIdParam = searchParams.get("placeId");
 
-          if (placeId !== placeIdParam) {
-            setSearchParams((prev) => {
-              prev.set("placeId", placeId);
-              return prev;
-            });
-          }
-          if (loaderData.task.isNewTask && projectId !== "") {
+          // if (placeId !== placeIdParam) {
+          //   setSearchParams((prev) => {
+          //     prev.set("placeId", placeId);
+          //     return prev;
+          //   });
+          // }
+          if (loaderData.task.isNewTask) {
             fetcher.submit(
               JSON.stringify({
                 _action: NEW_TASK_ACTIONS.create,
-                placeId: placeId,
-                projectId: projectId,
                 selfEmployed: selfEmployed,
               }),
               {
@@ -153,14 +148,14 @@ export default function NewTask({ loaderData }: Route.ComponentProps) {
                 encType: "application/json",
               },
             );
-          } else if (projectId !== "") {
+          } else {
             fetcher.submit(
               JSON.stringify({
                 _action: NEW_TASK_ACTIONS.update,
-                placeId: placeId,
-                taskId: loaderData.task.id,
-                projectId: projectId,
                 selfEmployed: selfEmployed,
+                taskId: loaderData.task.id,
+                ...(projectId !== "" && { projectId: projectId }),
+                ...(placeId !== "" && { placeId: placeId }),
               }),
               {
                 method: "POST",

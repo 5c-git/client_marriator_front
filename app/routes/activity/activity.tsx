@@ -78,7 +78,7 @@ export async function clientLoader({ params }: Route.ClientLoaderArgs) {
   }
 
   activities = await activityService.getActivitiesOptions(entityId);
-  locations = await activityService.getLocationsOptions();
+  locations = await activityService.getLocationsOptions(entityId);
 
   const intervalDayStart = await activityService.getSetting("intervalDayStart");
   const intervalDayEnd = await activityService.getSetting("intervalDayEnd");

@@ -23,7 +23,7 @@ newOrderContainer
 
 newOrderContainer
   .bind(newOrderPrivateTokens.getPlaceForOrder)
-  .toConstant((accessToken) => getPlaceForOrder(accessToken));
+  .toConstant((accessToken, orderId) => getPlaceForOrder(accessToken, orderId));
 
 newOrderContainer
   .bind(newOrderPrivateTokens.getProjectsForOrder)

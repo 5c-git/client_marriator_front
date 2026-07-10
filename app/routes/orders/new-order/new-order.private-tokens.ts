@@ -17,6 +17,7 @@ export type GetOrder = (
 
 export type GetPlaceForOrder = (
   accessToken: string,
+  orderId: string,
 ) => Promise<GetPlaceForOrderSuccess>;
 
 export type GetProjectsForOrder = (

@@ -50,9 +50,9 @@ export class ActivityService {
     return ActivityMapper.mapActivitiesToOptions(data);
   }
 
-  async getLocationsOptions() {
+  async getLocationsOptions(entityId: string) {
     const token = this.appSerivce.getToken();
-    const data = await this._getPlaceForEntity(token);
+    const data = await this._getPlaceForEntity(token, entityId);
 
     return ActivityMapper.mapLocationsToOptions(data);
   }

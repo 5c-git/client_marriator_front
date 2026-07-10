@@ -46,10 +46,10 @@ export class NewOrderService {
     return NewOrderMapper.mapProjectsToOptions(data);
   }
 
-  async getPlaceOptions() {
+  async getPlaceOptions(orderId: string) {
     const token = this.appService.getToken();
 
-    const data = await this._getPlaceForOrder(token);
+    const data = await this._getPlaceForOrder(token, orderId);
 
     return NewOrderMapper.mapPlacesToOptions(data);
   }
