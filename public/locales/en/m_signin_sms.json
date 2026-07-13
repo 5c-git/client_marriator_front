@@ -7,5 +7,6 @@
   "inputValidation_lenght": "Please provide correct value",
   "notification": "Sms code has been sent to provided phone number!",
   "errorNotifivation": "Wrong code!",
-  "wrongData": "Wrong data revieved!"
+  "wrongData": "Wrong data revieved!",
+  "goBack": "Go Back"
 }

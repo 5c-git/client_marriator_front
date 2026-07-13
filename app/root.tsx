@@ -47,18 +47,19 @@ import { postSendError } from "./api/postSendError/postSendError";
 
 function sizeMiddleware({ request }: { request: Request }) {
   const path = new URL(request.url).pathname;
+  const search = new URL(request.url).search;
   const pathSegments = path.split("/");
   const potentialLang = pathSegments[1];
 
   const isLang = supportedLngs.includes(potentialLang);
-  const isDesktop = window.innerWidth > 786 ? true : false;
+  const isDesktop = window.innerWidth >= 768 ? true : false;
 
   if (!path.includes("dashboard") && isDesktop) {
     throw redirect(
-      `${isLang ? `/${potentialLang}` : ""}/dashboard${isLang ? path.slice(3) : path === "/" ? "" : path}`,
+      `${isLang ? `/${potentialLang}` : ""}/dashboard${isLang ? path.slice(3) : path === "/" ? "" : `${path}${search}`}`,
     );
   } else if (path.includes("dashboard") && !isDesktop) {
-    throw redirect(path.replace("dashboard/", ""));
+    throw redirect(`${path.replace("dashboard/", "")}${search}`);
   }
 }
 
@@ -68,8 +69,6 @@ export const clientMiddleware: Route.ClientMiddlewareFunction[] = [
 
 export async function clientLoader({ params }: LoaderFunctionArgs) {
   const locale = params.lang ?? "ru";
-
-  console.log(params.lang);
 
   if (!supportedLngs.includes(locale)) {
     throw new Response(null, {

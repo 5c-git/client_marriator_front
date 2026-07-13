@@ -1,3 +1,4 @@
+import { CSSProperties } from "react";
 import { t } from "i18next";
 import { useTranslation } from "react-i18next";
 
@@ -15,8 +16,10 @@ type SmsViewProps = {
   phone: string;
   seconds: number;
   backAction: () => void;
+  backActionType: "header" | "button";
   submitSmsAction: (values: SubmitValues) => void;
   submitResendAction: () => void;
+  style?: CSSProperties;
 };
 
 type SubmitValues = z.output<ReturnType<typeof createFormSchema>>;
@@ -51,14 +54,16 @@ export function SmsView(props: SmsViewProps) {
   });
 
   return (
-    <Box>
-      <TopNavigation
-        header={{
-          text: t(`header`),
-          bold: false,
-        }}
-        backAction={props.backAction}
-      />
+    <Box sx={props.style}>
+      {props.backActionType === "header" ? (
+        <TopNavigation
+          header={{
+            text: t(`header`),
+            bold: false,
+          }}
+          backAction={props.backAction}
+        />
+      ) : null}
 
       <Box
         sx={{
@@ -126,6 +131,21 @@ export function SmsView(props: SmsViewProps) {
                 : props.seconds % 60}
             </Typography>
           </Typography>
+        ) : null}
+
+        {props.backActionType === "button" ? (
+          <Button
+            type="button"
+            variant="contained"
+            sx={{
+              fontSize: "1rem",
+              lineHeight: "1.25rem",
+              marginTop: "20px",
+            }}
+            onClick={props.backAction}
+          >
+            {t(`goBack`)}
+          </Button>
         ) : null}
       </Box>
     </Box>

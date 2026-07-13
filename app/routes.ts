@@ -204,15 +204,24 @@ export default [
   ),
 
   //signin
-  route(":lang?/dashboard/signin/phone", "routes/signin/phone/phone.tsx", {
-    id: "dashboard-signinPhone",
-  }),
-  route(":lang?/dashboard/signin/jobs", "routes/signin/jobs/jobs.tsx", {
-    id: "dashboard-signinJobs",
-  }),
-  route(":lang?/dashboard/signin/sms", "routes/signin/sms/sms.tsx", {
-    id: "dashboard-signinSms",
-  }),
+  layout("shared/layouts/SigninLayout/SigninLayout.tsx", [
+    route(
+      ":lang?/dashboard/signin/phone",
+      "routes/signin/phone/_dashboard/phone.tsx",
+    ),
+    route(
+      ":lang?/dashboard/signin/sms",
+      "routes/signin/sms/_dashboard/sms.tsx",
+    ),
+    route(
+      ":lang?/dashboard/signin/pin",
+      "routes/signin/pin/_dashboard/pin.tsx",
+    ),
+  ]),
+
+  // route(":lang?/dashboard/signin/jobs", "routes/signin/jobs/jobs.tsx", {
+  //   id: "dashboard-signinJobs",
+  // }),
   route(
     ":lang?/dashboard/signin/createPin",
     "routes/signin/createPin/createPin.tsx",
@@ -220,9 +229,7 @@ export default [
       id: "dashboard-createPin",
     },
   ),
-  route(":lang?/dashboard/signin/pin", "routes/signin/pin/pin.tsx", {
-    id: "dashboard-pin",
-  }),
+
   route(
     ":lang?/dashboard/signin/confirm-restore-pin",
     "routes/signin/confirm-restore-pin/confirm-restore-pin.tsx",

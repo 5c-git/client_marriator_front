@@ -1,5 +1,5 @@
 import { redirect, useNavigate } from "react-router";
-import type { Route } from "./+types/sms";
+import type { Route } from "../+types/sms";
 
 import { t, loadNamespaces } from "i18next";
 import { useTranslation } from "react-i18next";
@@ -7,10 +7,10 @@ import { withLocale } from "~/shared/withLocale";
 
 import { Alert, Snackbar } from "@mui/material";
 
-import { SmsView } from "./_views/SmsView";
-import { smsContainer } from "./sms.module";
-import { smsTokens } from "./sms.tokens";
-import { useSmsHooks } from "./sms.hooks";
+import { SmsView } from "../_views/SmsView";
+import { smsContainer } from "../sms.module";
+import { smsTokens } from "../sms.tokens";
+import { useSmsHooks } from "../sms.hooks";
 
 export const SMS_ACTIONS = {
   sendAgain: "sendAgain",
@@ -94,20 +94,26 @@ export default function Sms({ loaderData }: Route.ComponentProps) {
       <SmsView
         phone={loaderData.phone}
         seconds={seconds}
+        backActionType="button"
         backAction={() => {
           navigate(withLocale("/signin/phone"));
         }}
-        backActionType="header"
         submitSmsAction={(values) => {
           submitSms(values.sms);
         }}
         submitResendAction={submitResend}
+        style={{
+          width: "100%",
+          maxWidth: "425px",
+          margin: "0 auto",
+        }}
       />
 
       <Snackbar
         open={notificationOpen}
         autoHideDuration={3000}
         onClose={closeNotification}
+        anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
       >
         <Alert
           severity="info"
@@ -125,6 +131,7 @@ export default function Sms({ loaderData }: Route.ComponentProps) {
         open={error !== null}
         autoHideDuration={3000}
         onClose={clearError}
+        anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
       >
         <Alert
           severity="info"

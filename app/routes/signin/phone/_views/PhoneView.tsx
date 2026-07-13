@@ -1,3 +1,4 @@
+import { CSSProperties } from "react";
 import { t } from "i18next";
 import { useTranslation } from "react-i18next";
 
@@ -14,6 +15,8 @@ import { StyledPhoneField } from "~/shared/ui/StyledPhoneField/StyledPhoneField"
 import marriator from "./marriator.svg";
 
 type PhoneViewProps = {
+  showLogo?: boolean;
+  style?: CSSProperties;
   submitAction: (values: submitValues) => void;
 };
 
@@ -45,30 +48,26 @@ export function PhoneView(props: PhoneViewProps) {
   });
 
   return (
-    <Box
-      sx={{
-        paddingRight: "16px",
-        paddingLeft: "16px",
-        paddingTop: "60px",
-      }}
-    >
-      <Box
-        sx={{
-          width: "164px",
-          height: "78px",
-          margin: "0 auto",
-        }}
-      >
-        <img
-          src={marriator}
-          style={{
-            height: "100%",
-            width: "100%",
-            objectFit: "cover",
+    <Box sx={props.style}>
+      {props.showLogo ? (
+        <Box
+          sx={{
+            width: "164px",
+            height: "78px",
+            margin: "0 auto",
           }}
-          alt="marriator"
-        />
-      </Box>
+        >
+          <img
+            src={marriator}
+            style={{
+              height: "100%",
+              width: "100%",
+              objectFit: "cover",
+            }}
+            alt="marriator"
+          />
+        </Box>
+      ) : null}
 
       <form
         onSubmit={handleSubmit((values) => {
