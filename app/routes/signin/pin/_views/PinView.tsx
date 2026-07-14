@@ -1,3 +1,4 @@
+import { CSSProperties } from "react";
 import { useTranslation } from "react-i18next";
 
 import { z } from "zod";
@@ -12,6 +13,7 @@ import { StyledOptField } from "~/shared/ui/StyledOtpField/StyledOtpField";
 type PinViewProps = {
   submitPinAction: (pin: string) => void;
   submitRestorePinAction: () => void;
+  style?: CSSProperties;
 };
 
 const createFormSchema = () =>
@@ -38,13 +40,7 @@ export function PinView(props: PinViewProps) {
   });
 
   return (
-    <Box
-      sx={{
-        paddingTop: "38px",
-        paddingLeft: "16px",
-        paddingRight: "16px",
-      }}
-    >
+    <Box style={props.style}>
       <Typography
         component="p"
         variant="Bold_28"

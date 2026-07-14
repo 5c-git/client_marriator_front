@@ -2,21 +2,18 @@ import { type RouteConfig, route, layout } from "@react-router/dev/routes";
 
 export default [
   ///////////////////////////DASHBOARD///////////////////////////
-  route(":lang?/dashboard", "routes/home/home.tsx", {
-    id: "dashboard-home",
-  }),
-  route(":lang?/dashboard/orders", "routes/orders/orders.tsx", {
-    id: "dashboard-orders",
-  }),
-  route(":lang?/dashboard/tasks", "routes/tasks/tasks.tsx", {
-    id: "dashboard-tasks",
-  }),
-  route(":lang?/dashboard/bids", "routes/bids/bids.tsx", {
-    id: "dashboard-bids",
-  }),
-  route(":lang?/dashboard/jobs", "routes/jobs/jobs.tsx", {
-    id: "dashboard-jobs",
-  }),
+  layout("shared/layouts/DashboardMenu/DashboardMenu.tsx", [
+    route(":lang?/dashboard/orders", "routes/orders/_dashboard/orders.tsx"),
+    route(":lang?/dashboard/tasks", "routes/tasks/tasks.tsx", {
+      id: "dashboard-tasks",
+    }),
+    route(":lang?/dashboard/bids", "routes/bids/bids.tsx", {
+      id: "dashboard-bids",
+    }),
+    route(":lang?/dashboard/jobs", "routes/jobs/jobs.tsx", {
+      id: "dashboard-jobs",
+    }),
+  ]),
 
   route(
     ":lang?/dashboard/jobs/:jobId/:specialistId",
@@ -218,10 +215,6 @@ export default [
       "routes/signin/pin/_dashboard/pin.tsx",
     ),
   ]),
-
-  // route(":lang?/dashboard/signin/jobs", "routes/signin/jobs/jobs.tsx", {
-  //   id: "dashboard-signinJobs",
-  // }),
   route(
     ":lang?/dashboard/signin/createPin",
     "routes/signin/createPin/createPin.tsx",

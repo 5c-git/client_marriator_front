@@ -48,6 +48,11 @@ export default function Pin({ actionData }: Route.ComponentProps) {
       <PinView
         submitPinAction={submitPin}
         submitRestorePinAction={submitRestorePin}
+        style={{
+          width: "100%",
+          maxWidth: "425px",
+          margin: "0 auto",
+        }}
       />
 
       <Snackbar

@@ -48,6 +48,11 @@ export default function Pin({ actionData }: Route.ComponentProps) {
       <PinView
         submitPinAction={submitPin}
         submitRestorePinAction={submitRestorePin}
+        style={{
+          paddingTop: "38px",
+          paddingLeft: "16px",
+          paddingRight: "16px",
+        }}
       />
 
       <Snackbar open={actionData ? true : false} autoHideDuration={3000}>

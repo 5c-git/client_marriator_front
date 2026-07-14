@@ -7,5 +7,10 @@
     "task": "Tasks",
     "bid": "Requests",
     "job": "Jobs"
+  },
+  "menu": {
+    "moderation": "Moderation",
+    "profile": "Profile",
+    "wallet": "Wallet"
   }
 }
