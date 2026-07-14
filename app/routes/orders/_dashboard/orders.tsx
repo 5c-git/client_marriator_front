@@ -7,6 +7,9 @@ import { withLocale } from "~/shared/withLocale";
 
 import { EntitiesListView } from "~/shared/views/EntitiesListView/EntitiesListView";
 
+import { DashboardHeader } from "~/shared/ui/DashboardHeader/DashboardHeader";
+import { DashboardControlPanel } from "~/shared/ui/DashboardControlPanel/DashboardControlPanel";
+
 import { EntityCard } from "~/shared/ui/EntityCard/EntityCard";
 
 import { Button, Dialog, DialogActions, DialogTitle, Fab } from "@mui/material";
@@ -62,6 +65,9 @@ export default function Orders({ loaderData }: Route.ComponentProps) {
 
   return (
     <>
+      <DashboardHeader header={t("orders")} />
+      <DashboardControlPanel />
+
       <EntitiesListView
         translation="orders"
         mapView={showMap}

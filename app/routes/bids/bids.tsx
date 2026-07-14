@@ -8,6 +8,7 @@ import { useTranslation } from "react-i18next";
 import { withLocale } from "~/shared/withLocale";
 
 import { EntitiesListView } from "~/shared/views/EntitiesListView/EntitiesListView";
+import { DashboardHeader } from "~/shared/ui/DashboardHeader/DashboardHeader";
 
 import { Button, Dialog, DialogActions, DialogTitle } from "@mui/material";
 
@@ -45,8 +46,6 @@ export default function Bids({ loaderData }: Route.ComponentProps) {
   const fetcher = useFetcher();
 
   const [bidToAct, setBidToAct] = useState<number | null>(null);
-
-  console.log(loaderData.userCancelInterval);
 
   return (
     <>

@@ -827,5 +827,19 @@ export const theme = createTheme(baseTheme, {
         },
       },
     },
+    MuiToggleButton: {
+      styleOverrides: {
+        root: {
+          textTransform: "none",
+          padding: "7px 14px",
+          ...baseTheme.typography["Bold_12"],
+          "&.Mui-selected": {
+            color: baseTheme.palette["Corp_1"],
+            background:
+              "linear-gradient(135deg, rgb(248, 230, 243), rgb(239, 231, 250))",
+          },
+        },
+      },
+    },
   },
 });

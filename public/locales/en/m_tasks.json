@@ -1,4 +1,5 @@
 {
+  "tasks": "Tasks",
   "emptyHeader": "There are no tasks.",
   "cancelTaskButton": "Cancel task",
   "repeatTaskButton": "Repeat task",
