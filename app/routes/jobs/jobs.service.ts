@@ -47,6 +47,7 @@ export class JobsService {
       units: item.viewActivity.standard.name,
       currency: "₽",
       createdAt: item.createdAt,
+      placeName: item.place.brand ? item.place.brand.name : "",
     }));
   }
 }

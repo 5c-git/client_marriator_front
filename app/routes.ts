@@ -3,25 +3,42 @@ import { type RouteConfig, route, layout } from "@react-router/dev/routes";
 export default [
   ///////////////////////////DASHBOARD///////////////////////////
   layout("shared/layouts/DashboardMenu/DashboardMenu.tsx", [
-    route(":lang?/dashboard/orders", "routes/orders/_dashboard/orders.tsx"),
-    route(":lang?/dashboard/tasks", "routes/tasks/tasks.tsx", {
-      id: "dashboard-tasks",
-    }),
-    route(":lang?/dashboard/bids", "routes/bids/bids.tsx", {
-      id: "dashboard-bids",
-    }),
-    route(":lang?/dashboard/jobs", "routes/jobs/jobs.tsx", {
-      id: "dashboard-jobs",
-    }),
+    route(":lang?/dashboard/orders", "routes/orders/_dashboard/orders.tsx", [
+      route(":orderId", "routes/orders/order/order.tsx", {
+        id: "dashboard-order",
+      }),
+    ]),
+    route(":lang?/dashboard/tasks", "routes/tasks/_dashboard/tasks.tsx", [
+      route(":taskId", "routes/tasks/task/task.tsx", {
+        id: "dashboard-task",
+      }),
+      route(":taskId/service/:serviceId?", "routes/activity/activity.tsx", {
+        id: "dashboard-task-service",
+      }),
+      route("/new-task", "routes/tasks/new-task/new-task.tsx", {
+        id: "dashboard-new-task",
+      }),
+    ]),
+    route(":lang?/dashboard/bids", "routes/bids/_dashboard/bids.tsx", [
+      layout("routes/bids/bid/BidLayout/_dashboard/BidLayout.tsx", [
+        route(":bidId", "routes/bids/bid/bid.tsx", {
+          id: "dashboard-bid",
+        }),
+        route(":bidId/specialists", "routes/bids/specialists/specialists.tsx", {
+          id: "dashboard-bid-specialists",
+        }),
+      ]),
+      route(
+        ":bidId/specialists/:specialistId",
+        "routes/bids/specialist/specialist.tsx",
+        {
+          id: "dashboard-specialist",
+        },
+      ),
+    ]),
+    route(":lang?/dashboard/jobs", "routes/jobs/_dashboard/jobs.tsx"),
   ]),
 
-  route(
-    ":lang?/dashboard/jobs/:jobId/:specialistId",
-    "routes/jobs/job/job.tsx",
-    {
-      id: "dashboard-job",
-    },
-  ),
   route(
     ":lang?/dashboard/bids/:bidId/specialists/:specialistId/day-review/:reportId?",
     "routes/bids/day-review/day-review.tsx",
@@ -346,9 +363,6 @@ export default [
   ),
 
   //bid
-  route(":lang?/dashboard/bids/:bidId", "routes/bids/bid/bid.tsx", {
-    id: "dashboard-bid",
-  }),
   route(
     ":lang?/dashboard/bids/:bidId/specialists",
     "routes/bids/specialists/specialists.tsx",
@@ -356,18 +370,8 @@ export default [
       id: "dashboard-specialists",
     },
   ),
-  route(
-    ":lang?/dashboard/bids/:bidId/specialists/:specialistId",
-    "routes/bids/specialist/specialist.tsx",
-    {
-      id: "dashboard-specialist",
-    },
-  ),
 
   //order
-  route(":lang?/dashboard/orders/:orderId", "routes/orders/order/order.tsx", {
-    id: "dashboard-order",
-  }),
   route(
     ":lang?/dashboard/orders/new-order",
     "routes/orders/new-order/new-order.tsx",
@@ -382,22 +386,6 @@ export default [
   ),
   //order
 
-  //task
-  route(":lang?/dashboard/tasks/:taskId", "routes/tasks/task/task.tsx", {
-    id: "dashboard-task",
-  }),
-  route(
-    ":lang?/dashboard/tasks/new-task",
-    "routes/tasks/new-task/new-task.tsx",
-    {
-      id: "dashboard-new-task",
-    },
-  ),
-  route(
-    ":lang?/dashboard/tasks/:taskId/service/:serviceId?",
-    "routes/activity/activity.tsx",
-    { id: "dashboard-task-service" },
-  ),
   ///////////////////////////DASHBOARD///////////////////////////
 
   ///////////////////////////MOBILE///////////////////////////

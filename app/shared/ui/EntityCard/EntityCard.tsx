@@ -13,6 +13,7 @@ type EntityCardProps = {
   to?: string;
   header?: string;
   progress?: number;
+  isActive?: boolean;
   subHeader?: {
     text: string;
     bold: boolean;
@@ -68,12 +69,26 @@ type EntityCardProps = {
 export const EntityCard = (props: EntityCardProps) => (
   <Box
     style={{
+      borderRadius: "6px",
       ...(props.statusColor && {
         padding: "10px 14px",
         boxShadow: "0px 0px 10px 0px rgba(0, 0, 0, 0.25)",
-        borderRadius: "6px",
         borderLeft: `3px solid ${props.statusColor}`,
       }),
+      ...(props.isActive === true && props.statusColor
+        ? {
+            padding: "10px 14px",
+            borderTop: `1px solid var(--mui-palette-Corp_1)`,
+            borderRight: `1px solid var(--mui-palette-Corp_1)`,
+            borderBottom: `1px solid var(--mui-palette-Corp_1)`,
+          }
+        : {}),
+      ...(props.isActive === true && !props.statusColor
+        ? {
+            padding: "10px 14px",
+            border: `1px solid var(--mui-palette-Corp_1)`,
+          }
+        : {}),
     }}
   >
     <Box>

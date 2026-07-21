@@ -3,7 +3,7 @@ import React from "react";
 type Entity = {
   id: string;
   status: number;
-  place: {
+  place: null | {
     id: number;
     name: string;
     logo: string;

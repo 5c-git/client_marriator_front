@@ -15,7 +15,24 @@
       "7": "Approved",
       "8": "In work"
     },
-    "emptyHeader": "There are no orders."
+    "emptyHeader": "There are no orders.",
+    "dayMap": {
+      "0": "Sun",
+      "1": "Mon",
+      "2": "Tue",
+      "3": "Wed",
+      "4": "Thu",
+      "5": "Fru",
+      "6": "Sat"
+    },
+    "statusSelectPlaceholder": "Status",
+    "searchbarPlaceholder": "Search by address or id",
+    "toggleButtons": {
+      "list": "List",
+      "table": "Table",
+      "map": "Map"
+    },
+    "selectAllDays": "All dates"
   },
   "tasks": {
     "sorting": {
@@ -33,7 +50,24 @@
       "7": "Approved",
       "8": "In work"
     },
-    "emptyHeader": "There are no tasks."
+    "emptyHeader": "There are no tasks.",
+    "dayMap": {
+      "0": "Sun",
+      "1": "Mon",
+      "2": "Tue",
+      "3": "Wed",
+      "4": "Thu",
+      "5": "Fru",
+      "6": "Sat"
+    },
+    "statusSelectPlaceholder": "Status",
+    "searchbarPlaceholder": "Search by address or id",
+    "toggleButtons": {
+      "list": "List",
+      "table": "Table",
+      "map": "Map"
+    },
+    "selectAllDays": "All dates"
   },
   "jobs": {
     "sorting": {
@@ -51,6 +85,23 @@
       "7": "Archive",
       "8": "Placeholder"
     },
-    "emptyHeader": "There are no jobs."
+    "emptyHeader": "There are no jobs.",
+    "dayMap": {
+      "0": "Sun",
+      "1": "Mon",
+      "2": "Tue",
+      "3": "Wed",
+      "4": "Thu",
+      "5": "Fru",
+      "6": "Sat"
+    },
+    "statusSelectPlaceholder": "Status",
+    "searchbarPlaceholder": "Search by address or id",
+    "toggleButtons": {
+      "list": "List",
+      "table": "Table",
+      "map": "Map"
+    },
+    "selectAllDays": "All dates"
   }
 }

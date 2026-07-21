@@ -1,11 +1,5 @@
 import { useState, ComponentPropsWithoutRef } from "react";
-import {
-  useNavigate,
-  useFetcher,
-  redirect,
-  useSearchParams,
-  useSubmit,
-} from "react-router";
+import { useNavigate, useFetcher, redirect, useSubmit } from "react-router";
 import type { Route } from "./+types/new-task";
 
 import { withLocale } from "~/shared/withLocale";
@@ -31,7 +25,6 @@ export async function clientLoader({ request }: Route.ClientLoaderArgs) {
   const currentURL = new URL(request.url);
   const newTaskService = newTaskContainer.get(newTaskNewTokens.NewTaskService);
   const taskId = currentURL.searchParams.get("taskId");
-  const placeId = currentURL.searchParams.get("placeId");
 
   let task: NewTaskMobileViewInterface["task"] = {
     id: "",
@@ -105,7 +98,6 @@ export async function clientAction({ request }: Route.ClientActionArgs) {
 
 export default function NewTask({ loaderData }: Route.ComponentProps) {
   const navigate = useNavigate();
-  const [searchParams, setSearchParams] = useSearchParams();
 
   const fetcher = useFetcher();
   const submit = useSubmit();

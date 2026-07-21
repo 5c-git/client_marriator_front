@@ -15,7 +15,24 @@
       "7": "Одобрена",
       "8": "В работе"
     },
-    "emptyHeader": "Поручений пока нет."
+    "emptyHeader": "Поручений пока нет.",
+    "dayMap": {
+      "0": "Вc",
+      "1": "Пн",
+      "2": "Вт",
+      "3": "Ср",
+      "4": "Чт",
+      "5": "Пт",
+      "6": "Сб"
+    },
+    "statusSelectPlaceholder": "Статус",
+    "searchbarPlaceholder": "Поиск по адресу или коду",
+    "toggleButtons": {
+      "list": "Блоками",
+      "table": "Таблицей",
+      "map": "Картой"
+    },
+    "selectAllDays": "Все даты"
   },
   "tasks": {
     "sorting": {
@@ -33,7 +50,24 @@
       "7": "Одобрена",
       "8": "В работе"
     },
-    "emptyHeader": "Задач пока нет."
+    "emptyHeader": "Задач пока нет.",
+    "dayMap": {
+      "0": "Вc",
+      "1": "Пн",
+      "2": "Вт",
+      "3": "Ср",
+      "4": "Чт",
+      "5": "Пт",
+      "6": "Сб"
+    },
+    "statusSelectPlaceholder": "Статус",
+    "searchbarPlaceholder": "Поиск по адресу или коду",
+    "toggleButtons": {
+      "list": "Блоками",
+      "table": "Таблицей",
+      "map": "Картой"
+    },
+    "selectAllDays": "Все даты"
   },
   "jobs": {
     "sorting": {
@@ -51,6 +85,23 @@
       "7": "Архив",
       "8": "Заглушка"
     },
-    "emptyHeader": "Поручений пока нет."
+    "emptyHeader": "Поручений пока нет.",
+    "dayMap": {
+      "0": "Вc",
+      "1": "Пн",
+      "2": "Вт",
+      "3": "Ср",
+      "4": "Чт",
+      "5": "Пт",
+      "6": "Сб"
+    },
+    "statusSelectPlaceholder": "Статус",
+    "searchbarPlaceholder": "Поиск по адресу или коду",
+    "toggleButtons": {
+      "list": "Блоками",
+      "table": "Таблицей",
+      "map": "Картой"
+    },
+    "selectAllDays": "Все даты"
   }
 }

@@ -14,19 +14,23 @@ export class TaskMapper {
     return {
       id: data.data.id.toString(),
       status: data.data.status,
-      place: {
-        id: data.data.place.id,
-        name: data.data.place.name,
-        logo: data.data.place.logo,
-        region: data.data.place.region.name,
-      },
+      place: data.data.place
+        ? {
+            id: data.data.place.id,
+            name: data.data.place.name,
+            logo: data.data.place.logo,
+            region: data.data.place.region.name,
+          }
+        : null,
       selfEmployed: data.data.selfEmployed,
       route: 0,
-      project: {
-        id: data.data.project.id,
-        logo: data.data.project.brand[0].logo,
-        name: data.data.project.name,
-      },
+      project: data.data.project
+        ? {
+            id: data.data.project.id,
+            logo: data.data.project.brand[0].logo,
+            name: data.data.project.name,
+          }
+        : null,
       creatingPerson: data.data.user
         ? {
             id: data.data.user.id,

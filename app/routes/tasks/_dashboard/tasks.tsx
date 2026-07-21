@@ -1,6 +1,6 @@
-import { Link, useFetcher, useNavigate, useParams } from "react-router";
+import { Link, useFetcher, useParams, useNavigate } from "react-router";
+import type { Route } from "./+types/tasks";
 import { useState } from "react";
-import type { Route } from "./+types/orders";
 
 import { useTranslation } from "react-i18next";
 import { withLocale } from "~/shared/withLocale";
@@ -9,7 +9,6 @@ import { useStore } from "~/store/store";
 
 import { DashboardHeader } from "~/shared/ui/DashboardHeader/DashboardHeader";
 import { DashboardListView } from "~/shared/views/DashboardListView/DashboardListView";
-
 import { EntityCard } from "~/shared/ui/EntityCard/EntityCard";
 import { EntityCell } from "~/shared/ui/EntityCell/EntityCell";
 
@@ -18,43 +17,42 @@ import { Button, Dialog, DialogActions, DialogTitle, Fab } from "@mui/material";
 import LoopIcon from "@mui/icons-material/Loop";
 import AddIcon from "@mui/icons-material/Add";
 
-import { ordersContainer } from "../orders.module";
-import { ordersTokens } from "../orders.tokens";
+import { tasksContainer } from "../tasks.module";
+import { tasksTokens } from "../tasks.tokens";
 import { ButtonActionMapper } from "~/shared/mappers/buttonActionMapper";
 
-const ORDERS_ACTIONS = {
+const TASKS_ACTIONS = {
   repeat: "repeat",
   cancel: "cancel",
 } as const;
 
 export async function clientLoader() {
-  const ordersService = ordersContainer.get(ordersTokens.ordersService);
+  const tasksService = tasksContainer.get(tasksTokens.tasksService);
 
-  const orders = await ordersService.getOrders();
-  const intervals = await ordersService.getUserIntervals();
-  const userRole = ordersService.getUserRole();
+  const tasks = await tasksService.getTasks();
+  const intervals = await tasksService.getUserIntervals();
+  const userRole = tasksService.getUserRole();
 
   return {
-    orders,
+    tasks,
     intervals,
     userRole,
   };
 }
 
 export async function clientAction({ request }: Route.ClientActionArgs) {
-  const ordersService = ordersContainer.get(ordersTokens.ordersService);
-
   const { _action, ...fields } = await request.json();
+  const tasksService = tasksContainer.get(tasksTokens.tasksService);
 
-  if (_action === ORDERS_ACTIONS.repeat) {
-    await ordersService.repeatOrder(fields.orderId);
-  } else if (_action === ORDERS_ACTIONS.cancel) {
-    await ordersService.cancelOrder(fields.orderId);
+  if (_action === TASKS_ACTIONS.repeat) {
+    await tasksService.repeatTask(fields.taskId);
+  } else if (_action === TASKS_ACTIONS.cancel) {
+    await tasksService.cancelTask(fields.taskId);
   }
 }
 
-export default function Orders({ loaderData }: Route.ComponentProps) {
-  const { t } = useTranslation("m_orders");
+export default function Tasks({ loaderData }: Route.ComponentProps) {
+  const { t } = useTranslation("m_tasks");
 
   const navigate = useNavigate();
   const fetcher = useFetcher();
@@ -62,30 +60,30 @@ export default function Orders({ loaderData }: Route.ComponentProps) {
   const dashboardView = useStore((state) => state.dashboardView);
   const setDasboardView = useStore((state) => state.setDashboardView);
 
-  const [orderToAct, setOrderToAct] = useState<{
+  const [taskToAct, setTaskToAct] = useState<{
     action: "cancel" | "repeat";
     id: number;
   } | null>(null);
 
-  const { orderId } = useParams();
+  const { taskId } = useParams();
 
   return (
     <>
-      <DashboardHeader header={t("orders")} />
+      <DashboardHeader header={t("tasks")} />
 
       <DashboardListView
-        translation="orders"
+        translation="tasks"
         view={dashboardView}
         setView={setDasboardView}
-        entityType="order"
-        entities={loaderData.orders}
+        entityType="task"
+        entities={loaderData.tasks}
         sorting="ascending"
         entityListView={(entity) => (
           <EntityCard
             key={entity.id}
-            to={withLocale(`/dashboard/orders/${entity.id}`)}
+            to={withLocale(`/dashboard/tasks/${entity.id}`)}
             statusColor={entity.statusColor}
-            isActive={orderId && Number(orderId) === entity.id ? true : false}
+            isActive={taskId && Number(taskId) === entity.id ? true : false}
             header={`${t("cardHeader")} ${entity.header}`}
             subHeader={{
               text: entity.subHeader,
@@ -100,18 +98,18 @@ export default function Orders({ loaderData }: Route.ComponentProps) {
               loaderData.intervals.id,
               entity.userId,
               entity.status,
-              loaderData.intervals.cancel_order_interval,
+              loaderData.intervals.cancel_task_interval,
               entity.duration.start,
             )
               ? {
                   buttonAction: {
                     action: () => {
-                      setOrderToAct({
+                      setTaskToAct({
                         action: "cancel",
                         id: entity.id,
                       });
                     },
-                    text: t("cancelAssignmentButton"),
+                    text: t("cancelTaskButton"),
                     variant: "text",
                   },
                 }
@@ -126,12 +124,12 @@ export default function Orders({ loaderData }: Route.ComponentProps) {
               ? {
                   buttonAction: {
                     action: () => {
-                      setOrderToAct({
+                      setTaskToAct({
                         action: "cancel",
                         id: entity.id,
                       });
                     },
-                    text: t("cancelAssignmentButton"),
+                    text: t("cancelTaskButton"),
                     variant: "text",
                   },
                 }
@@ -141,18 +139,18 @@ export default function Orders({ loaderData }: Route.ComponentProps) {
               loaderData.intervals.id,
               entity.userId,
               entity.status,
-              loaderData.intervals.repeat_order_interval,
+              loaderData.intervals.repeat_task_interval,
               entity.duration.start,
             )
               ? {
                   buttonAction: {
                     action: () => {
-                      setOrderToAct({
+                      setTaskToAct({
                         action: "repeat",
                         id: entity.id,
                       });
                     },
-                    text: t("repeatAssignmentButton"),
+                    text: t("repeatTaskButton"),
                     variant: "contained",
                     icon: (
                       <LoopIcon
@@ -170,25 +168,26 @@ export default function Orders({ loaderData }: Route.ComponentProps) {
         entityTableView={(entity) => (
           <EntityCell
             key={entity.id}
-            to={withLocale(`/dashboard/orders/${entity.id}`)}
+            to={withLocale(`/dashboard/tasks/${entity.id}`)}
             id={entity.id.toString()}
             logo={entity.address.logo}
             name={entity.placeName}
             address={entity.address.text}
-            isActive={orderId && Number(orderId) === entity.id ? true : false}
+            isActive={taskId && Number(taskId) === entity.id ? true : false}
           />
         )}
         entityMapAction={(entity) => {
-          navigate(withLocale(`/dashboard/orders/${entity.id}`));
+          navigate(withLocale(`/dashboard/tasks/${entity.id}`));
         }}
       />
-      {(dashboardView !== "map" && loaderData.userRole === "client") ||
-      (loaderData.orders.length === 0 && loaderData.userRole === "client") ? (
+
+      {(dashboardView !== "map" && loaderData.userRole === "manager") ||
+      (loaderData.tasks.length === 0 && loaderData.userRole === "manager") ? (
         <Fab
           component={Link}
-          to={withLocale("/orders/new-order")}
+          to={withLocale("/tasks/new-task")}
           color="Corp_1"
-          aria-label="Create new order"
+          aria-label="Create new task"
           sx={{
             position: "fixed",
             bottom: "60px",
@@ -206,9 +205,9 @@ export default function Orders({ loaderData }: Route.ComponentProps) {
         </Fab>
       ) : null}
       <Dialog
-        open={orderToAct ? true : false}
+        open={taskToAct ? true : false}
         onClose={() => {
-          setOrderToAct(null);
+          setTaskToAct(null);
         }}
         sx={{
           "& .MuiDialog-paper": {
@@ -222,8 +221,8 @@ export default function Orders({ loaderData }: Route.ComponentProps) {
             fontSize: "1.125rem",
           }}
         >
-          {orderToAct
-            ? `${t(`dialog.${orderToAct.action}`)} ${t("dialog.title")} ?`
+          {taskToAct
+            ? `${t(`dialog.${taskToAct.action}`)} ${t("dialog.title")} ?`
             : null}
           {}
         </DialogTitle>
@@ -231,7 +230,7 @@ export default function Orders({ loaderData }: Route.ComponentProps) {
           <Button
             variant="outlined"
             onClick={() => {
-              setOrderToAct(null);
+              setTaskToAct(null);
             }}
           >
             {t("dialog.no")}
@@ -241,15 +240,15 @@ export default function Orders({ loaderData }: Route.ComponentProps) {
             onClick={() => {
               fetcher.submit(
                 JSON.stringify({
-                  _action: orderToAct?.action,
-                  orderId: orderToAct?.id,
+                  _action: taskToAct?.action,
+                  taskId: taskToAct?.id,
                 }),
                 {
                   method: "POST",
                   encType: "application/json",
                 },
               );
-              setOrderToAct(null);
+              setTaskToAct(null);
             }}
           >
             {t("dialog.yes")}

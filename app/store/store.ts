@@ -9,19 +9,20 @@ export type State = {
   userRole: "admin" | "manager" | "supervisor" | "client" | "specialist";
   userId: null | number;
   mapView: boolean;
+  dashboardView: "list" | "table" | "map";
 
   userManager: {
-    id: number,
-    name: string,
-    email: string,
-    phone: number
-  } | null
+    id: number;
+    name: string;
+    email: string;
+    phone: number;
+  } | null;
   userSupervisor: {
-    id: number,
-    name: string,
-    email: string,
-    phone: number
-  } | null
+    id: number;
+    name: string;
+    email: string;
+    phone: number;
+  } | null;
 
   setUserEmail: (newUserEmail: string) => void;
   setUserPhone: (newUserPhone: string) => void;
@@ -32,24 +33,29 @@ export type State = {
   setAccessToken: (accessToken: string) => void;
   setRefreshToken: (refreshToken: string) => void;
   setMapView: (mapView: boolean) => void;
+  setDashboardView: (view: "list" | "table" | "map") => void;
   removeUserEmail: () => void;
   removeUserPhone: () => void;
   removeUserId: () => void;
   removeAccessToken: () => void;
   removeRefreshToken: () => void;
 
-  setUserManager: (manager: {
-    id: number,
-    name: string,
-    email: string,
-    phone: number
-  }| null) => void;
-  setUserSupervisor: (manager: {
-    id: number,
-    name: string,
-    email: string,
-    phone: number
-  } | null) => void;
+  setUserManager: (
+    manager: {
+      id: number;
+      name: string;
+      email: string;
+      phone: number;
+    } | null,
+  ) => void;
+  setUserSupervisor: (
+    manager: {
+      id: number;
+      name: string;
+      email: string;
+      phone: number;
+    } | null,
+  ) => void;
 
   clearStore: () => void;
 };
@@ -64,6 +70,7 @@ export const useStore = create<State>()(
       userRole: "specialist",
       userId: null,
       mapView: true,
+      dashboardView: "list",
       userManager: null,
       userSupervisor: null,
 
@@ -75,6 +82,7 @@ export const useStore = create<State>()(
       setRefreshToken: (newRefreshToken) =>
         set({ refreshToken: newRefreshToken }),
       setMapView: (newMapView) => set({ mapView: newMapView }),
+      setDashboardView: (newView) => set({ dashboardView: newView }),
 
       removeUserEmail: () => set({ userEmail: null }),
       removeUserPhone: () => set({ userPhone: null }),

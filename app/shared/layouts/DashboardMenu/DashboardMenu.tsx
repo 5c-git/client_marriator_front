@@ -183,7 +183,7 @@ export default function DashboardMenu({ loaderData }: Route.ComponentProps) {
   const [open, setOpen] = useState(true);
 
   return (
-    <Box sx={{ display: "flex" }}>
+    <Box sx={{ display: "flex", height: "100%", flexGrow: 1 }}>
       <StyledDrawer variant="permanent" open={open}>
         <Box
           sx={{
@@ -331,7 +331,14 @@ export default function DashboardMenu({ loaderData }: Route.ComponentProps) {
           </>
         ) : null}
       </StyledDrawer>
-      <Box component="main" sx={{ flexGrow: 1 }}>
+      <Box
+        sx={{
+          display: "flex",
+          flexDirection: "column",
+          flexGrow: 1,
+          height: "100%",
+        }}
+      >
         <Outlet />
       </Box>
     </Box>
