@@ -14,20 +14,21 @@ import { newTaskContainer } from "./new-task.module";
 import { newTaskNewTokens } from "./new-task.tokens";
 
 const NEW_TASK_ACTIONS = {
-  create: "create",
   update: "update",
   delete: "delete",
   cancel: "cancel",
   inviteSupervisors: "inviteSupervisors",
 } as const;
 
-export async function clientLoader({ request }: Route.ClientLoaderArgs) {
-  const currentURL = new URL(request.url);
+export async function clientLoader({
+  request,
+  params,
+}: Route.ClientLoaderArgs) {
   const newTaskService = newTaskContainer.get(newTaskNewTokens.NewTaskService);
-  const taskId = currentURL.searchParams.get("taskId");
+  const taskId = params.taskId;
 
   let task: NewTaskMobileViewInterface["task"] = {
-    id: "",
+    id: taskId,
     projectId: null,
     place: {
       id: "",
@@ -35,7 +36,6 @@ export async function clientLoader({ request }: Route.ClientLoaderArgs) {
       region: "",
     },
     selfEmployed: false,
-    isNewTask: true,
     taskServices: [],
     invitedSupervisors: [],
     responsibleSupervisorId: null,
@@ -46,17 +46,13 @@ export async function clientLoader({ request }: Route.ClientLoaderArgs) {
     typeof StyledCheckboxMultiple
   >["options"] = [];
 
-  if (taskId) {
-    task = await newTaskService.getTask(taskId);
+  task = await newTaskService.getTask(taskId);
+  placesOptions = await newTaskService.getPlaceOptions(taskId);
+
+  if (task.place) {
     projectOptions = await newTaskService.getProjectOptions(taskId);
 
-    if (task.projectId) {
-      placesOptions = await newTaskService.getPlaceOptions(taskId);
-    }
-
-    if (task.place) {
-      supervisorOptions = await newTaskService.getSupervisorsOptions(taskId);
-    }
+    supervisorOptions = await newTaskService.getSupervisorsOptions(taskId);
   }
 
   return {
@@ -67,30 +63,24 @@ export async function clientLoader({ request }: Route.ClientLoaderArgs) {
   };
 }
 
-export async function clientAction({ request }: Route.ClientActionArgs) {
-  const currentURL = new URL(request.url);
+export async function clientAction({
+  request,
+  params,
+}: Route.ClientActionArgs) {
   const newTaskService = newTaskContainer.get(newTaskNewTokens.NewTaskService);
 
   const { _action, ...fields } = await request.json();
 
-  const taskId = currentURL.searchParams.get("taskId");
+  const taskId = params.taskId;
 
-  if (_action === NEW_TASK_ACTIONS.create) {
-    const task = await newTaskService.createTask(
-      fields.placeId,
-      fields.projectId,
-      fields.selfEmployed,
-    );
-    currentURL.searchParams.set("taskId", task.data.id.toString());
-    throw redirect(currentURL.toString());
-  } else if (_action === NEW_TASK_ACTIONS.update && taskId) {
+  if (_action === NEW_TASK_ACTIONS.update) {
     await newTaskService.updateTask(fields);
-  } else if (_action === NEW_TASK_ACTIONS.delete && taskId) {
+  } else if (_action === NEW_TASK_ACTIONS.delete) {
     await newTaskService.deleteActivity(taskId, fields.orderActivityId);
-  } else if (_action === NEW_TASK_ACTIONS.cancel && taskId) {
+  } else if (_action === NEW_TASK_ACTIONS.cancel) {
     await newTaskService.cancelTask(taskId);
     throw redirect(withLocale("/tasks"));
-  } else if (_action === NEW_TASK_ACTIONS.inviteSupervisors && taskId) {
+  } else if (_action === NEW_TASK_ACTIONS.inviteSupervisors) {
     await newTaskService.inviteSupervisors(taskId, fields.supervisors);
     throw redirect(withLocale(`/tasks/${taskId}`));
   }
@@ -121,40 +111,19 @@ export default function NewTask({ loaderData }: Route.ComponentProps) {
           });
         }}
         submitAction={(placeId, projectId, selfEmployed) => {
-          // const placeIdParam = searchParams.get("placeId");
-
-          // if (placeId !== placeIdParam) {
-          //   setSearchParams((prev) => {
-          //     prev.set("placeId", placeId);
-          //     return prev;
-          //   });
-          // }
-          if (loaderData.task.isNewTask) {
-            fetcher.submit(
-              JSON.stringify({
-                _action: NEW_TASK_ACTIONS.create,
-                selfEmployed: selfEmployed,
-              }),
-              {
-                method: "POST",
-                encType: "application/json",
-              },
-            );
-          } else {
-            fetcher.submit(
-              JSON.stringify({
-                _action: NEW_TASK_ACTIONS.update,
-                selfEmployed: selfEmployed,
-                taskId: loaderData.task.id,
-                ...(projectId !== "" && { projectId: projectId }),
-                ...(placeId !== "" && { placeId: placeId }),
-              }),
-              {
-                method: "POST",
-                encType: "application/json",
-              },
-            );
-          }
+          fetcher.submit(
+            JSON.stringify({
+              _action: NEW_TASK_ACTIONS.update,
+              selfEmployed: selfEmployed,
+              taskId: loaderData.task.id,
+              ...(projectId !== "" && { projectId: projectId }),
+              ...(placeId !== "" && { placeId: placeId }),
+            }),
+            {
+              method: "POST",
+              encType: "application/json",
+            },
+          );
         }}
         cancelAction={() => {
           submit(

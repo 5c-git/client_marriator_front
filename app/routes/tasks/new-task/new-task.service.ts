@@ -65,10 +65,14 @@ export class NewTaskService {
     return TaskMapper.dataToSelectOptions(data);
   }
 
-  async createTask(placeId: number, projectId: number, selfEmployed: boolean) {
+  async createTask(
+    selfEmployed: boolean,
+    placeId?: number,
+    projectId?: number,
+  ) {
     const token = this.appService.getToken();
 
-    return this._createTask(token, placeId, projectId, selfEmployed);
+    return this._createTask(token, selfEmployed, placeId, projectId);
   }
 
   async updateTask({

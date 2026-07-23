@@ -1,4 +1,9 @@
-import { Link, useOutletContext, useFetcher } from "react-router";
+import {
+  useOutletContext,
+  useFetcher,
+  useSubmit,
+  redirect,
+} from "react-router";
 import type { Route } from "./+types/orders";
 import { useState } from "react";
 
@@ -14,6 +19,9 @@ import { Button, Dialog, DialogActions, DialogTitle, Fab } from "@mui/material";
 import LoopIcon from "@mui/icons-material/Loop";
 import AddIcon from "@mui/icons-material/Add";
 
+import { newOrderContainer } from "./new-order/new-order.module";
+import { newOrderTokens } from "./new-order/new-order.tokens";
+
 import { ordersContainer } from "./orders.module";
 import { ordersTokens } from "./orders.tokens";
 import { ButtonActionMapper } from "~/shared/mappers/buttonActionMapper";
@@ -21,6 +29,7 @@ import { ButtonActionMapper } from "~/shared/mappers/buttonActionMapper";
 const ORDERS_ACTIONS = {
   repeat: "repeat",
   cancel: "cancel",
+  create: "create",
 } as const;
 
 export async function clientLoader() {
@@ -39,6 +48,7 @@ export async function clientLoader() {
 
 export async function clientAction({ request }: Route.ClientActionArgs) {
   const ordersService = ordersContainer.get(ordersTokens.ordersService);
+  const newOrderService = newOrderContainer.get(newOrderTokens.newOrderService);
 
   const { _action, ...fields } = await request.json();
 
@@ -46,6 +56,10 @@ export async function clientAction({ request }: Route.ClientActionArgs) {
     await ordersService.repeatOrder(fields.orderId);
   } else if (_action === ORDERS_ACTIONS.cancel) {
     await ordersService.cancelOrder(fields.orderId);
+  } else if (_action === ORDERS_ACTIONS.create) {
+    const order = await newOrderService.createOrder(false);
+
+    throw redirect(withLocale(`/orders/new-order/${order.data.id}`));
   }
 }
 
@@ -54,6 +68,7 @@ export default function Orders({ loaderData }: Route.ComponentProps) {
 
   const showMap = useOutletContext<boolean>();
   const fetcher = useFetcher();
+  const submit = useSubmit();
 
   const [orderToAct, setOrderToAct] = useState<{
     action: "cancel" | "repeat";
@@ -242,8 +257,17 @@ export default function Orders({ loaderData }: Route.ComponentProps) {
       {(!showMap && loaderData.userRole === "client") ||
       (loaderData.orders.length === 0 && loaderData.userRole === "client") ? (
         <Fab
-          component={Link}
-          to={withLocale("/orders/new-order")}
+          onClick={() => {
+            submit(
+              JSON.stringify({
+                _action: ORDERS_ACTIONS.create,
+              }),
+              {
+                method: "POST",
+                encType: "application/json",
+              },
+            );
+          }}
           color="Corp_1"
           aria-label="Create new order"
           sx={{

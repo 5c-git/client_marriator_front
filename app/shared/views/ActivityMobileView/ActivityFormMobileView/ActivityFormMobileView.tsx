@@ -1186,7 +1186,7 @@ export function ActivityFormMobileView(props: ActivityFormMobileViewInterface) {
             columnGap: "14px",
             padding: "10px",
             backgroundColor: theme.vars.palette["White"],
-            position: "fixed",
+            position: "absolute",
             zIndex: 1,
             width: "100%",
             bottom: "0",

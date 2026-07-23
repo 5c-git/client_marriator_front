@@ -1,4 +1,10 @@
-import { Link, useFetcher, useParams, useNavigate } from "react-router";
+import {
+  useSubmit,
+  useFetcher,
+  useParams,
+  useNavigate,
+  redirect,
+} from "react-router";
 import type { Route } from "./+types/tasks";
 import { useState } from "react";
 
@@ -17,6 +23,9 @@ import { Button, Dialog, DialogActions, DialogTitle, Fab } from "@mui/material";
 import LoopIcon from "@mui/icons-material/Loop";
 import AddIcon from "@mui/icons-material/Add";
 
+import { newTaskContainer } from "../new-task/new-task.module";
+import { newTaskNewTokens } from "../new-task/new-task.tokens";
+
 import { tasksContainer } from "../tasks.module";
 import { tasksTokens } from "../tasks.tokens";
 import { ButtonActionMapper } from "~/shared/mappers/buttonActionMapper";
@@ -24,6 +33,7 @@ import { ButtonActionMapper } from "~/shared/mappers/buttonActionMapper";
 const TASKS_ACTIONS = {
   repeat: "repeat",
   cancel: "cancel",
+  create: "create",
 } as const;
 
 export async function clientLoader() {
@@ -43,11 +53,16 @@ export async function clientLoader() {
 export async function clientAction({ request }: Route.ClientActionArgs) {
   const { _action, ...fields } = await request.json();
   const tasksService = tasksContainer.get(tasksTokens.tasksService);
+  const newTaskService = newTaskContainer.get(newTaskNewTokens.NewTaskService);
 
   if (_action === TASKS_ACTIONS.repeat) {
     await tasksService.repeatTask(fields.taskId);
   } else if (_action === TASKS_ACTIONS.cancel) {
     await tasksService.cancelTask(fields.taskId);
+  } else if (_action === TASKS_ACTIONS.create) {
+    const task = await newTaskService.createTask(false);
+
+    throw redirect(withLocale(`/dashboard/tasks/new-task/${task.data.id}`));
   }
 }
 
@@ -56,6 +71,7 @@ export default function Tasks({ loaderData }: Route.ComponentProps) {
 
   const navigate = useNavigate();
   const fetcher = useFetcher();
+  const submit = useSubmit();
 
   const dashboardView = useStore((state) => state.dashboardView);
   const setDasboardView = useStore((state) => state.setDashboardView);
@@ -184,10 +200,19 @@ export default function Tasks({ loaderData }: Route.ComponentProps) {
       {(dashboardView !== "map" && loaderData.userRole === "manager") ||
       (loaderData.tasks.length === 0 && loaderData.userRole === "manager") ? (
         <Fab
-          component={Link}
-          to={withLocale("/tasks/new-task")}
           color="Corp_1"
           aria-label="Create new task"
+          onClick={() => {
+            submit(
+              JSON.stringify({
+                _action: TASKS_ACTIONS.create,
+              }),
+              {
+                method: "POST",
+                encType: "application/json",
+              },
+            );
+          }}
           sx={{
             position: "fixed",
             bottom: "60px",

@@ -242,11 +242,7 @@ export default function NewOrderMobileView(props: NewOrderMobileViewInterface) {
           component={Link}
           to={withLocale(`/orders/${props.order.id}/service?new=true`)}
           variant="outlined"
-          disabled={
-            props.order.isNewOrder ||
-            watch("project") === "" ||
-            watch("location") === ""
-          }
+          disabled={watch("project") === "" || watch("location") === ""}
           startIcon={<AddIcon />}
         >
           {t(`serviceButton`)}
@@ -263,11 +259,7 @@ export default function NewOrderMobileView(props: NewOrderMobileViewInterface) {
             padding: "16px",
           }}
         >
-          <Button
-            variant="text"
-            disabled={props.order.isNewOrder}
-            onClick={props.cancelAction}
-          >
+          <Button variant="text" onClick={props.cancelAction}>
             {t(`cancelButton`)}
           </Button>
           <Button

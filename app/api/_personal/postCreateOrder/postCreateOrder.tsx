@@ -11,9 +11,9 @@ export const postCreateOrderKeys = ["postCreateOrder"];
 
 export const postCreateOrder = async (
   accessToken: string,
-  placeId: number,
-  projectId: number,
   selfEmployed: boolean,
+  placeId?: number,
+  projectId?: number,
 ): Promise<PostCreateOrderSuccess> => {
   try {
     const url = new URL(import.meta.env.VITE_POST_CREATE_ORDER);
@@ -25,9 +25,9 @@ export const postCreateOrder = async (
         Authorization: `Bearer ${accessToken}`,
       },
       body: JSON.stringify({
+        selfEmployed,
         placeId,
         projectId,
-        selfEmployed,
       }),
     });
     const response = await request.json();

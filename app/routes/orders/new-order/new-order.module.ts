@@ -39,8 +39,8 @@ newOrderContainer
 
 newOrderContainer
   .bind(newOrderPrivateTokens.createOrder)
-  .toConstant((accessToken, placeId, projectId, selfEmployed) =>
-    postCreateOrder(accessToken, placeId, projectId, selfEmployed),
+  .toConstant((accessToken, selfEmployed, placeId, projectId) =>
+    postCreateOrder(accessToken, selfEmployed, placeId, projectId),
   );
 
 newOrderContainer

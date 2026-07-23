@@ -10,37 +10,33 @@ import { newOrderContainer } from "./new-order.module";
 import { newOrderTokens } from "./new-order.tokens";
 
 const NEW_ORDER_ACTIONS = {
-  create: "create",
   update: "update",
   delete: "delete",
   cancel: "cancel",
   save: "save",
 } as const;
 
-export async function clientLoader({ request }: Route.ClientLoaderArgs) {
+export async function clientLoader({ params }: Route.ClientLoaderArgs) {
   const newOrderService = newOrderContainer.get(newOrderTokens.newOrderService);
-  const currentURL = new URL(request.url);
-  const orderId = currentURL.searchParams.get("orderId");
+
+  const orderId = params.orderId;
 
   let order: NewOrderMobileViewInterface["order"] = {
     id: "",
     projectId: null,
     place: null,
     selfEmployed: false,
-    isNewOrder: true,
     orderServices: [],
   };
 
   let projectOptions: NewOrderMobileViewInterface["projectOptions"] = [];
   let placesOptions: NewOrderMobileViewInterface["options"] = [];
 
-  if (orderId) {
-    order = await newOrderService.getOrder(orderId);
-    projectOptions = await newOrderService.getProjectOptions(orderId);
+  order = await newOrderService.getOrder(orderId);
+  placesOptions = await newOrderService.getPlaceOptions(orderId);
 
-    if (order.projectId) {
-      placesOptions = await newOrderService.getPlaceOptions(orderId);
-    }
+  if (order.place?.id) {
+    projectOptions = await newOrderService.getProjectOptions(orderId);
   }
 
   return {
@@ -50,23 +46,16 @@ export async function clientLoader({ request }: Route.ClientLoaderArgs) {
   };
 }
 
-export async function clientAction({ request }: Route.ClientActionArgs) {
-  const currentURL = new URL(request.url);
+export async function clientAction({
+  request,
+  params,
+}: Route.ClientActionArgs) {
   const newOrderService = newOrderContainer.get(newOrderTokens.newOrderService);
   const { _action, ...fields } = await request.json();
 
-  const orderId = currentURL.searchParams.get("orderId");
+  const orderId = params.orderId;
 
-  if (_action === NEW_ORDER_ACTIONS.create) {
-    const order = await newOrderService.createOrder(
-      fields.placeId,
-      fields.projectId,
-      fields.selfEmployed,
-    );
-    currentURL.searchParams.set("orderId", order.data.id.toString());
-
-    throw redirect(currentURL.toString());
-  } else if (_action === NEW_ORDER_ACTIONS.update && orderId) {
+  if (_action === NEW_ORDER_ACTIONS.update && orderId) {
     await newOrderService.updateOrder(fields);
   } else if (_action === NEW_ORDER_ACTIONS.delete && orderId) {
     await newOrderService.deleteActivity(orderId, fields.orderActivityId);
@@ -95,39 +84,19 @@ export default function NewOrder({ loaderData }: Route.ComponentProps) {
         });
       }}
       submitAction={(placeId, projectId, selfEmployed) => {
-        if (loaderData.order.isNewOrder) {
-          fetcher.submit(
-            JSON.stringify({
-              _action: NEW_ORDER_ACTIONS.create,
-              selfEmployed: selfEmployed,
-            }),
-            {
-              method: "POST",
-              encType: "application/json",
-            },
-          );
-        } else {
-          fetcher.submit(
-            JSON.stringify({
-              _action: NEW_ORDER_ACTIONS.update,
-              selfEmployed: selfEmployed,
-              orderId: loaderData.order.id,
-              ...(projectId !== "" && { projectId: projectId }),
-              ...(placeId !== "" && { placeId: placeId }),
-            }),
-            {
-              method: "POST",
-              encType: "application/json",
-            },
-          );
-          console.log({
+        fetcher.submit(
+          JSON.stringify({
             _action: NEW_ORDER_ACTIONS.update,
-            orderId: loaderData.order.id,
             selfEmployed: selfEmployed,
+            orderId: loaderData.order.id,
             ...(projectId !== "" && { projectId: projectId }),
             ...(placeId !== "" && { placeId: placeId }),
-          });
-        }
+          }),
+          {
+            method: "POST",
+            encType: "application/json",
+          },
+        );
       }}
       cancelAction={() => {
         submit(

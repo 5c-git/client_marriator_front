@@ -926,6 +926,7 @@ export function DashboardListView(props: DashboardListViewInterface) {
 
             <Box
               sx={{
+                position: "relative",
                 flexGrow: 1,
                 height: "100%",
                 overflowY: "auto",

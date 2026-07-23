@@ -11,9 +11,9 @@ export const postCreateTaskKeys = ["postCreateTask"];
 
 export const postCreateTask = async (
   accessToken: string,
-  placeId: number,
-  projectId: number,
   selfEmployed: boolean,
+  placeId?: number,
+  projectId?: number,
 ): Promise<PostCreateTaskSuccess> => {
   try {
     const url = new URL(import.meta.env.VITE_POST_CREATE_TASK);
@@ -25,9 +25,9 @@ export const postCreateTask = async (
         Authorization: `Bearer ${accessToken}`,
       },
       body: JSON.stringify({
+        selfEmployed,
         placeId,
         projectId,
-        selfEmployed,
       }),
     });
     const response = await request.json();

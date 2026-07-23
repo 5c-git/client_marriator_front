@@ -8,7 +8,6 @@ export type NewOrderMobileViewInterface = {
       region: string;
     } | null;
     selfEmployed: boolean;
-    isNewOrder: boolean;
     orderServices: {
       id: number;
       count: number;

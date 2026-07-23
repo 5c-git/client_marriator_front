@@ -38,8 +38,8 @@ newTaskContainer
 
 newTaskContainer
   .bind(newTaskPrivateTokens.createTask)
-  .toConstant((accessToken, placeId, projectId, selfEmployed) =>
-    postCreateTask(accessToken, placeId, projectId, selfEmployed),
+  .toConstant((accessToken, selfEmployed, placeId, projectId) =>
+    postCreateTask(accessToken, selfEmployed, placeId, projectId),
   );
 
 newTaskContainer

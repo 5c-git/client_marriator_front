@@ -8,7 +8,6 @@ export type NewTaskMobileViewInterface = {
       region: string;
     } | null;
     selfEmployed: boolean;
-    isNewTask: boolean;
     taskServices: {
       id: number;
       count: number;

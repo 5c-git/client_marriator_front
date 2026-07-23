@@ -53,7 +53,7 @@ const ORDER_ACTIONS = {
 } as const;
 
 export async function clientLoader({ params }: Route.ClientLoaderArgs) {
-  await loadNamespaces("m_order");
+  await loadNamespaces("m_orders_order");
 
   const orderService = orderContainer.get(orderTokens.orderService);
   const userRole = orderService.getUserRole();

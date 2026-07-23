@@ -7,6 +7,12 @@ export default [
       route(":orderId", "routes/orders/order/order.tsx", {
         id: "dashboard-order",
       }),
+      route(":orderId/service/:serviceId?", "routes/activity/activity.tsx", {
+        id: "dashboard-order-service",
+      }),
+      route("new-order/:orderId", "routes/orders/new-order/new-order.tsx", {
+        id: "dashboard-new-order",
+      }),
     ]),
     route(":lang?/dashboard/tasks", "routes/tasks/_dashboard/tasks.tsx", [
       route(":taskId", "routes/tasks/task/task.tsx", {
@@ -15,7 +21,7 @@ export default [
       route(":taskId/service/:serviceId?", "routes/activity/activity.tsx", {
         id: "dashboard-task-service",
       }),
-      route("/new-task", "routes/tasks/new-task/new-task.tsx", {
+      route("/new-task/:taskId", "routes/tasks/new-task/new-task.tsx", {
         id: "dashboard-new-task",
       }),
     ]),
@@ -371,21 +377,6 @@ export default [
     },
   ),
 
-  //order
-  route(
-    ":lang?/dashboard/orders/new-order",
-    "routes/orders/new-order/new-order.tsx",
-    {
-      id: "dashboard-new-order",
-    },
-  ),
-  route(
-    ":lang?/dashboard/orders/:orderId/service/:serviceId?",
-    "routes/activity/activity.tsx",
-    { id: "dashboard-order-service" },
-  ),
-  //order
-
   ///////////////////////////DASHBOARD///////////////////////////
 
   ///////////////////////////MOBILE///////////////////////////
@@ -565,7 +556,10 @@ export default [
 
   //order
   route(":lang?/orders/:orderId", "routes/orders/order/order.tsx"),
-  route(":lang?/orders/new-order", "routes/orders/new-order/new-order.tsx"),
+  route(
+    ":lang?/orders/new-order/:orderId",
+    "routes/orders/new-order/new-order.tsx",
+  ),
   route(
     ":lang?/orders/:orderId/service/:serviceId?",
     "routes/activity/activity.tsx",
@@ -575,7 +569,7 @@ export default [
 
   //task
   route(":lang?/tasks/:taskId", "routes/tasks/task/task.tsx"),
-  route(":lang?/tasks/new-task", "routes/tasks/new-task/new-task.tsx"),
+  route(":lang?/tasks/new-task/:taskId", "routes/tasks/new-task/new-task.tsx"),
   route(
     ":lang?/tasks/:taskId/service/:serviceId?",
     "routes/activity/activity.tsx",

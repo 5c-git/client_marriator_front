@@ -33,9 +33,9 @@ export type DeleteActivity = (
 
 export type CreateOrder = (
   accessToken: string,
-  placeId: number,
-  projectId: number,
   selfEmployed: boolean,
+  placeId?: number,
+  projectId?: number,
 ) => Promise<PostCreateOrderSuccess>;
 
 export type UpdateOrder = (

@@ -32,9 +32,9 @@ export type GetSupervisorsForTask = (
 
 export type CreateTask = (
   accessToken: string,
-  placeId: number,
-  projectId: number,
   selfEmployed: boolean,
+  placeId?: number,
+  projectId?: number,
 ) => Promise<PostCreateTaskSuccess>;
 
 export type UpdateTask = (

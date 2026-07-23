@@ -54,10 +54,14 @@ export class NewOrderService {
     return NewOrderMapper.mapPlacesToOptions(data);
   }
 
-  async createOrder(placeId: number, projectId: number, selfEmployed: boolean) {
+  async createOrder(
+    selfEmployed: boolean,
+    placeId?: number,
+    projectId?: number,
+  ) {
     const token = this.appService.getToken();
 
-    return this._createOrder(token, placeId, projectId, selfEmployed);
+    return this._createOrder(token, selfEmployed, placeId, projectId);
   }
 
   async updateOrder({
