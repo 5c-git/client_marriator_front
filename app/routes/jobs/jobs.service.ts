@@ -43,7 +43,10 @@ export class JobsService {
         start: item.dateStart,
         end: item.dateEnd,
       },
-      coordinates: [Number(item.place.latitude), Number(item.place.longitude)],
+      coordinates: [
+        Number(item.place.latitude),
+        Number(item.place.longitude),
+      ] as [lon: number, lat: number],
       units: item.viewActivity.standard.name,
       currency: "₽",
       createdAt: item.createdAt,

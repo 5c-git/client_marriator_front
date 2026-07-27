@@ -106,8 +106,8 @@ export async function clientLoader() {
 export default function HomeLayout({ loaderData }: Route.ComponentProps) {
   const { t } = useTranslation("m_layout_home");
 
-  const mapView = useStore((state) => state.mapView);
-  const setMapView = useStore((state) => state.setMapView);
+  const view = useStore((state) => state.entitiesView);
+  const setView = useStore((state) => state.setEntitiesView);
 
   return (
     <>
@@ -117,24 +117,34 @@ export default function HomeLayout({ loaderData }: Route.ComponentProps) {
           bold: false,
         }}
         buttonAction={{
-          text: mapView ? t("headerListAction") : t("headerMapAction"),
-          icon: mapView ? (
-            <ListIcon
-              sx={{
-                width: "15px",
-                height: "15px",
-              }}
-            />
-          ) : (
-            <MapIcon
-              sx={{
-                width: "15px",
-                height: "15px",
-              }}
-            />
-          ),
+          text:
+            view === "map" || view === "table"
+              ? t("headerListAction")
+              : t("headerMapAction"),
+          icon:
+            view === "map" || view === "table" ? (
+              <ListIcon
+                sx={{
+                  width: "15px",
+                  height: "15px",
+                }}
+              />
+            ) : (
+              <MapIcon
+                sx={{
+                  width: "15px",
+                  height: "15px",
+                }}
+              />
+            ),
           action: () => {
-            setMapView(!mapView);
+            if (view === "map") {
+              setView("list");
+            } else if (view === "list") {
+              setView("map");
+            } else if (view === "table") {
+              setView("map");
+            }
           },
         }}
         style={{
@@ -157,7 +167,7 @@ export default function HomeLayout({ loaderData }: Route.ComponentProps) {
         </Tabs>
       ) : null}
 
-      <Outlet context={mapView} />
+      <Outlet context={view} />
     </>
   );
 }

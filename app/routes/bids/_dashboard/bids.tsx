@@ -7,14 +7,15 @@ import { addHours, isBefore } from "date-fns";
 import { useTranslation } from "react-i18next";
 import { withLocale } from "~/shared/withLocale";
 
+import { useStore } from "~/store/store";
+
 import { DashboardHeader } from "~/shared/ui/DashboardHeader/DashboardHeader";
-import { DashboardListView } from "~/shared/views/DashboardListView/DashboardListView";
+import { DashboardView } from "~/shared/views/EntitiesList/DashboardView";
+
 import { EntityCard } from "~/shared/ui/EntityCard/EntityCard";
 import { EntityCell } from "~/shared/ui/EntityCell/EntityCell";
 
 import { Button, Dialog, DialogActions, DialogTitle } from "@mui/material";
-
-import { useStore } from "~/store/store";
 
 import { bidsContainer } from "../bids.module";
 import { bidsTokens } from "../bids.tokens";
@@ -48,8 +49,8 @@ export default function Bids({ loaderData }: Route.ComponentProps) {
   const navigate = useNavigate();
   const fetcher = useFetcher();
 
-  const dashboardView = useStore((state) => state.dashboardView);
-  const setDasboardView = useStore((state) => state.setDashboardView);
+  const view = useStore((state) => state.entitiesView);
+  const setView = useStore((state) => state.setEntitiesView);
 
   const [bidToAct, setBidToAct] = useState<number | null>(null);
 
@@ -59,10 +60,10 @@ export default function Bids({ loaderData }: Route.ComponentProps) {
     <>
       <DashboardHeader header={t("bids")} />
 
-      <DashboardListView
+      <DashboardView
         translation="tasks"
-        view={dashboardView}
-        setView={setDasboardView}
+        view={view}
+        setView={setView}
         entityType="bid"
         entities={loaderData.bids}
         sorting="ascending"
@@ -118,7 +119,7 @@ export default function Bids({ loaderData }: Route.ComponentProps) {
             isActive={bidId && Number(bidId) === entity.id ? true : false}
           />
         )}
-        entityMapAction={(entity) => {
+        entityMapView={(entity) => {
           navigate(withLocale(`/dashboard/bids/${entity.id}`));
         }}
       />

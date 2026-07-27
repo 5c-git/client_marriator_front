@@ -5,13 +5,13 @@ import {
   redirect,
 } from "react-router";
 import type { Route } from "./+types/orders";
+import { useStore, type State } from "~/store/store";
 import { useState } from "react";
 
 import { useTranslation } from "react-i18next";
 import { withLocale } from "~/shared/withLocale";
 
-import { EntitiesListView } from "~/shared/views/EntitiesListView/EntitiesListView";
-
+import { ListView } from "~/shared/views/EntitiesList/ListView";
 import { EntityCard } from "~/shared/ui/EntityCard/EntityCard";
 
 import { Button, Dialog, DialogActions, DialogTitle, Fab } from "@mui/material";
@@ -66,7 +66,9 @@ export async function clientAction({ request }: Route.ClientActionArgs) {
 export default function Orders({ loaderData }: Route.ComponentProps) {
   const { t } = useTranslation("m_orders");
 
-  const showMap = useOutletContext<boolean>();
+  const view = useOutletContext<State["entitiesView"]>();
+  const setView = useStore((state) => state.setEntitiesView);
+
   const fetcher = useFetcher();
   const submit = useSubmit();
 
@@ -77,9 +79,10 @@ export default function Orders({ loaderData }: Route.ComponentProps) {
 
   return (
     <>
-      <EntitiesListView
+      <ListView
         translation="orders"
-        mapView={showMap}
+        view={view}
+        setView={setView}
         entityType="order"
         entities={loaderData.orders}
         sorting="ascending"
@@ -253,8 +256,9 @@ export default function Orders({ loaderData }: Route.ComponentProps) {
               : null)}
           />
         )}
+        entityTableView={() => {}}
       />
-      {(!showMap && loaderData.userRole === "client") ||
+      {(view !== "map" && loaderData.userRole === "client") ||
       (loaderData.orders.length === 0 && loaderData.userRole === "client") ? (
         <Fab
           onClick={() => {

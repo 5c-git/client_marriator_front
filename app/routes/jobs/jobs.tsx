@@ -5,8 +5,9 @@ import type { Route } from "./+types/jobs";
 import { useTranslation } from "react-i18next";
 import { withLocale } from "~/shared/withLocale";
 
-import { EntitiesListView } from "~/shared/views/EntitiesListView/EntitiesListView";
-import { DashboardHeader } from "~/shared/ui/DashboardHeader/DashboardHeader";
+import { useStore, type State } from "~/store/store";
+
+import { ListView } from "~/shared/views/EntitiesList/ListView";
 
 import { EntityCard } from "~/shared/ui/EntityCard/EntityCard";
 
@@ -25,13 +26,15 @@ export async function clientLoader() {
 export default function Jobs({ loaderData }: Route.ComponentProps) {
   const { t } = useTranslation("m_jobs");
 
-  const showMap = useOutletContext<boolean>();
+  const view = useOutletContext<State["entitiesView"]>();
+  const setView = useStore((state) => state.setEntitiesView);
 
   return (
     <>
-      <EntitiesListView
+      <ListView
         translation="jobs"
-        mapView={showMap}
+        view={view}
+        setView={setView}
         entities={loaderData.jobs}
         entityType="job"
         sorting="ascending"
@@ -86,6 +89,7 @@ export default function Jobs({ loaderData }: Route.ComponentProps) {
             duration={entity.duration}
           />
         )}
+        entityTableView={() => {}}
       />
     </>
   );

@@ -7,8 +7,8 @@ import { addHours, isBefore } from "date-fns";
 import { useTranslation } from "react-i18next";
 import { withLocale } from "~/shared/withLocale";
 
-import { EntitiesListView } from "~/shared/views/EntitiesListView/EntitiesListView";
-import { DashboardHeader } from "~/shared/ui/DashboardHeader/DashboardHeader";
+import { useStore, type State } from "~/store/store";
+import { ListView } from "~/shared/views/EntitiesList/ListView";
 
 import { Button, Dialog, DialogActions, DialogTitle } from "@mui/material";
 
@@ -42,16 +42,19 @@ export async function clientAction({ request }: Route.ClientActionArgs) {
 
 export default function Bids({ loaderData }: Route.ComponentProps) {
   const { t } = useTranslation("m_bids");
-  const showMap = useOutletContext<boolean>();
+
+  const view = useOutletContext<State["entitiesView"]>();
+  const setView = useStore((state) => state.setEntitiesView);
   const fetcher = useFetcher();
 
   const [bidToAct, setBidToAct] = useState<number | null>(null);
 
   return (
     <>
-      <EntitiesListView
+      <ListView
         translation="tasks"
-        mapView={showMap}
+        view={view}
+        setView={setView}
         entityType="bid"
         entities={loaderData.bids}
         sorting="ascending"
@@ -133,6 +136,7 @@ export default function Bids({ loaderData }: Route.ComponentProps) {
               : {})}
           />
         )}
+        entityTableView={() => {}}
       />
       <Dialog
         open={bidToAct ? true : false}

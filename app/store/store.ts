@@ -8,8 +8,7 @@ export type State = {
   refreshToken: null | string;
   userRole: "admin" | "manager" | "supervisor" | "client" | "specialist";
   userId: null | number;
-  mapView: boolean;
-  dashboardView: "list" | "table" | "map";
+  entitiesView: "list" | "table" | "map";
 
   userManager: {
     id: number;
@@ -32,8 +31,7 @@ export type State = {
   setUserId: (newUserId: number) => void;
   setAccessToken: (accessToken: string) => void;
   setRefreshToken: (refreshToken: string) => void;
-  setMapView: (mapView: boolean) => void;
-  setDashboardView: (view: "list" | "table" | "map") => void;
+  setEntitiesView: (view: "list" | "table" | "map") => void;
   removeUserEmail: () => void;
   removeUserPhone: () => void;
   removeUserId: () => void;
@@ -69,8 +67,7 @@ export const useStore = create<State>()(
       refreshToken: null,
       userRole: "specialist",
       userId: null,
-      mapView: true,
-      dashboardView: "list",
+      entitiesView: "list",
       userManager: null,
       userSupervisor: null,
 
@@ -81,8 +78,7 @@ export const useStore = create<State>()(
       setAccessToken: (newAccessToken) => set({ accessToken: newAccessToken }),
       setRefreshToken: (newRefreshToken) =>
         set({ refreshToken: newRefreshToken }),
-      setMapView: (newMapView) => set({ mapView: newMapView }),
-      setDashboardView: (newView) => set({ dashboardView: newView }),
+      setEntitiesView: (newView) => set({ entitiesView: newView }),
 
       removeUserEmail: () => set({ userEmail: null }),
       removeUserPhone: () => set({ userPhone: null }),
@@ -101,7 +97,7 @@ export const useStore = create<State>()(
           userId: null,
           accessToken: null,
           refreshToken: null,
-          mapView: true,
+          entitiesView: "list",
           userManager: null,
           userSupervisor: null,
         }),

@@ -14,7 +14,7 @@ import { withLocale } from "~/shared/withLocale";
 import { useStore } from "~/store/store";
 
 import { DashboardHeader } from "~/shared/ui/DashboardHeader/DashboardHeader";
-import { DashboardListView } from "~/shared/views/DashboardListView/DashboardListView";
+import { DashboardView } from "~/shared/views/EntitiesList/DashboardView";
 
 import { EntityCard } from "~/shared/ui/EntityCard/EntityCard";
 import { EntityCell } from "~/shared/ui/EntityCell/EntityCell";
@@ -75,8 +75,8 @@ export default function Orders({ loaderData }: Route.ComponentProps) {
   const fetcher = useFetcher();
   const submit = useSubmit();
 
-  const dashboardView = useStore((state) => state.dashboardView);
-  const setDasboardView = useStore((state) => state.setDashboardView);
+  const view = useStore((state) => state.entitiesView);
+  const setView = useStore((state) => state.setEntitiesView);
 
   const [orderToAct, setOrderToAct] = useState<{
     action: "cancel" | "repeat";
@@ -89,10 +89,10 @@ export default function Orders({ loaderData }: Route.ComponentProps) {
     <>
       <DashboardHeader header={t("orders")} />
 
-      <DashboardListView
+      <DashboardView
         translation="orders"
-        view={dashboardView}
-        setView={setDasboardView}
+        view={view}
+        setView={setView}
         entityType="order"
         entities={loaderData.orders}
         sorting="ascending"
@@ -194,11 +194,11 @@ export default function Orders({ loaderData }: Route.ComponentProps) {
             isActive={orderId && Number(orderId) === entity.id ? true : false}
           />
         )}
-        entityMapAction={(entity) => {
+        entityMapView={(entity) => {
           navigate(withLocale(`/dashboard/orders/${entity.id}`));
         }}
       />
-      {(dashboardView !== "map" && loaderData.userRole === "client") ||
+      {(view !== "map" && loaderData.userRole === "client") ||
       (loaderData.orders.length === 0 && loaderData.userRole === "client") ? (
         <Fab
           onClick={() => {

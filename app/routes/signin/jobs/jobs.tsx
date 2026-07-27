@@ -3,7 +3,7 @@ import type { Route } from "./+types/jobs";
 import { useTranslation } from "react-i18next";
 import { loadNamespaces } from "i18next";
 
-import { EntitiesListView } from "~/shared/views/EntitiesListView/EntitiesListView";
+import { EntitiesListView } from "~/shared/views/EntitiesList/ListView";
 
 import { Dialog, Box, IconButton, Typography } from "@mui/material";
 import { EntityCard } from "~/shared/ui/EntityCard/EntityCard";
@@ -30,12 +30,7 @@ export async function clientLoader() {
 export default function SigninJobs({ loaderData }: Route.ComponentProps) {
   const { t } = useTranslation("m_signin_jobs");
 
-  const {
-    // mapView, setMapView,
-    activeCard,
-    openDialog,
-    closeDialog,
-  } = useSigninJobsHooks();
+  const { activeCard, openDialog, closeDialog } = useSigninJobsHooks();
 
   return (
     <>
@@ -44,27 +39,6 @@ export default function SigninJobs({ loaderData }: Route.ComponentProps) {
           text: t("header", { ns: "HomeLayout" }),
           bold: false,
         }}
-        // buttonAction={{
-        // text: mapView ? t("headerListAction",{ns: 'HomeLayout'}) : t("headerMapAction", {ns: 'HomeLayout'}),
-        // icon: mapView ? (
-        //     <ListIcon
-        //     sx={{
-        //         width: "15px",
-        //         height: "15px",
-        //     }}
-        //     />
-        // ) : (
-        //     <MapIcon
-        //     sx={{
-        //         width: "15px",
-        //         height: "15px",
-        //     }}
-        //     />
-        // ),
-        // action: () => {
-        //     setMapView(!mapView);
-        // },
-        // }}
         style={{
           position: "relative",
           boxShadow: "none",

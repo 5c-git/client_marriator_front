@@ -14,7 +14,8 @@ import { withLocale } from "~/shared/withLocale";
 import { useStore } from "~/store/store";
 
 import { DashboardHeader } from "~/shared/ui/DashboardHeader/DashboardHeader";
-import { DashboardListView } from "~/shared/views/DashboardListView/DashboardListView";
+import { DashboardView } from "~/shared/views/EntitiesList/DashboardView";
+
 import { EntityCard } from "~/shared/ui/EntityCard/EntityCard";
 import { EntityCell } from "~/shared/ui/EntityCell/EntityCell";
 
@@ -73,8 +74,8 @@ export default function Tasks({ loaderData }: Route.ComponentProps) {
   const fetcher = useFetcher();
   const submit = useSubmit();
 
-  const dashboardView = useStore((state) => state.dashboardView);
-  const setDasboardView = useStore((state) => state.setDashboardView);
+  const view = useStore((state) => state.entitiesView);
+  const setView = useStore((state) => state.setEntitiesView);
 
   const [taskToAct, setTaskToAct] = useState<{
     action: "cancel" | "repeat";
@@ -87,10 +88,10 @@ export default function Tasks({ loaderData }: Route.ComponentProps) {
     <>
       <DashboardHeader header={t("tasks")} />
 
-      <DashboardListView
+      <DashboardView
         translation="tasks"
-        view={dashboardView}
-        setView={setDasboardView}
+        view={view}
+        setView={setView}
         entityType="task"
         entities={loaderData.tasks}
         sorting="ascending"
@@ -192,12 +193,12 @@ export default function Tasks({ loaderData }: Route.ComponentProps) {
             isActive={taskId && Number(taskId) === entity.id ? true : false}
           />
         )}
-        entityMapAction={(entity) => {
+        entityMapView={(entity) => {
           navigate(withLocale(`/dashboard/tasks/${entity.id}`));
         }}
       />
 
-      {(dashboardView !== "map" && loaderData.userRole === "manager") ||
+      {(view !== "map" && loaderData.userRole === "manager") ||
       (loaderData.tasks.length === 0 && loaderData.userRole === "manager") ? (
         <Fab
           color="Corp_1"

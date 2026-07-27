@@ -8,7 +8,8 @@ import { withLocale } from "~/shared/withLocale";
 import { useStore } from "~/store/store";
 
 import { DashboardHeader } from "~/shared/ui/DashboardHeader/DashboardHeader";
-import { DashboardListView } from "~/shared/views/DashboardListView/DashboardListView";
+import { DashboardView } from "~/shared/views/EntitiesList/DashboardView";
+
 import { EntityCard } from "~/shared/ui/EntityCard/EntityCard";
 import { EntityCell } from "~/shared/ui/EntityCell/EntityCell";
 
@@ -28,8 +29,8 @@ export default function Jobs({ loaderData }: Route.ComponentProps) {
   const { t } = useTranslation("m_jobs");
   const navigate = useNavigate();
 
-  const dashboardView = useStore((state) => state.dashboardView);
-  const setDasboardView = useStore((state) => state.setDashboardView);
+  const view = useStore((state) => state.entitiesView);
+  const setView = useStore((state) => state.setEntitiesView);
 
   const { jobId } = useParams();
 
@@ -37,10 +38,10 @@ export default function Jobs({ loaderData }: Route.ComponentProps) {
     <>
       <DashboardHeader header={t("jobs")} />
 
-      <DashboardListView
+      <DashboardView
         translation="jobs"
-        view={dashboardView}
-        setView={setDasboardView}
+        view={view}
+        setView={setView}
         entityType="job"
         entities={loaderData.jobs}
         sorting="ascending"
@@ -79,7 +80,13 @@ export default function Jobs({ loaderData }: Route.ComponentProps) {
         entityTableView={(entity) => (
           <EntityCell
             key={entity.id}
-            to={withLocale(`/dashboard/jobs/${entity.id}`)}
+            to={
+              loaderData.userRole === "specialist"
+                ? withLocale(`/dashboard/jobs/${entity.id}/${entity.userId}`)
+                : withLocale(
+                    `/dashboard/bids/${entity.id}/specialists/${entity.userId}`,
+                  )
+            }
             id={entity.id.toString()}
             logo={entity.address.logo}
             name={entity.placeName}
@@ -87,7 +94,7 @@ export default function Jobs({ loaderData }: Route.ComponentProps) {
             isActive={jobId && Number(jobId) === entity.id ? true : false}
           />
         )}
-        entityMapAction={(entity) => {
+        entityMapView={(entity) => {
           navigate(withLocale(`/dashboard/jobs/${entity.id}`));
         }}
       />

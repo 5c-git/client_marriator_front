@@ -72,7 +72,7 @@ export class OrdersService {
         coordinates: [
           Number(item.place.latitude),
           Number(item.place.longitude),
-        ],
+        ] as [lon: number, lat: number],
         units: "",
         currency: "₽",
         createdAt: item.createdAt,

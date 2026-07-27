@@ -10,8 +10,10 @@ import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { withLocale } from "~/shared/withLocale";
 
-import { EntitiesListView } from "~/shared/views/EntitiesListView/EntitiesListView";
+import { ListView } from "~/shared/views/EntitiesList/ListView";
 import { EntityCard } from "~/shared/ui/EntityCard/EntityCard";
+
+import { useStore, type State } from "~/store/store";
 
 import { Button, Dialog, DialogActions, DialogTitle, Fab } from "@mui/material";
 
@@ -64,7 +66,8 @@ export async function clientAction({ request }: Route.ClientActionArgs) {
 export default function Tasks({ loaderData }: Route.ComponentProps) {
   const { t } = useTranslation("m_tasks");
 
-  const showMap = useOutletContext<boolean>();
+  const view = useOutletContext<State["entitiesView"]>();
+  const setView = useStore((state) => state.setEntitiesView);
   const fetcher = useFetcher();
   const submit = useSubmit();
 
@@ -75,9 +78,10 @@ export default function Tasks({ loaderData }: Route.ComponentProps) {
 
   return (
     <>
-      <EntitiesListView
+      <ListView
         translation="tasks"
-        mapView={showMap}
+        view={view}
+        setView={setView}
         entityType="task"
         entities={loaderData.tasks}
         sorting="ascending"
@@ -251,8 +255,9 @@ export default function Tasks({ loaderData }: Route.ComponentProps) {
               : null)}
           />
         )}
+        entityTableView={() => {}}
       />
-      {(!showMap && loaderData.userRole === "manager") ||
+      {(view !== "map" && loaderData.userRole === "manager") ||
       (loaderData.tasks.length === 0 && loaderData.userRole === "manager") ? (
         <Fab
           color="Corp_1"

@@ -1,5 +1,3 @@
-import type { Coordinates } from "~/shared/ymap/ymap";
-
 export type Entity = {
   id: number;
   userId: number;
@@ -15,18 +13,22 @@ export type Entity = {
     start: string | null;
     end: string | null;
   };
-  coordinates: Coordinates;
+  coordinates: [lon: number, lat: number];
   units: string;
   currency: string;
   createdAt: string;
+  placeName: string;
 };
 
-export type EntitiesListViewInterface = {
+export type EntitiesListInterface = {
   translation: "orders" | "tasks" | "jobs";
-  mapView: boolean;
+  view: "list" | "table" | "map";
+  setView: (view: "list" | "table" | "map") => void;
   entityType: "order" | "task" | "bid" | "job";
   entities: Entity[];
   sorting: "ascending" | "descending";
-  entityListView: (entity: Entity) => React.ReactNode;
-  entityMapView: (entity: Entity) => React.ReactNode;
+
+  entityListView: (entity: Entity) => undefined | React.ReactNode;
+  entityTableView: (entity: Entity) => undefined | React.ReactNode;
+  entityMapView: (entity: Entity) => undefined | React.ReactNode;
 };
