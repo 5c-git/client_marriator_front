@@ -25,7 +25,7 @@ export async function clientAction({
   request,
 }: Route.ClientActionArgs) {
   const payload = await request.json();
-  const result = await selectProjectsContainer
+  await selectProjectsContainer
     .get(selectProjectsTokens.selectProjectsService)
     .saveSelectedProjects(params.user, payload.projects);
   throw redirect(withLocale(payload.from));

@@ -1,5 +1,4 @@
 import { injected } from "brandi";
-import type { LngLat } from "ymaps3";
 
 import type { AppService } from "~/shared/container/container.service";
 import { appTokens } from "~/shared/container/container.tokens";
@@ -15,7 +14,7 @@ export type LocationOption = {
   value: string;
   name: string;
   icon: string;
-  coordinates: LngLat;
+  coordinates: [lon: number, lat: number];
   address: string;
   region: string;
   regionId: string;

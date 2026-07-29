@@ -43,6 +43,8 @@ export default function WorkRadius({ loaderData }: Route.ComponentProps) {
     <WorkRadiusView
       form={hooks.form}
       isMapGrayscale={hooks.isMapGrayscale}
+      isActive={hooks.isActive}
+      setIsActive={hooks.setIsActive}
       fetcherError={hooks.fetcherError}
       onBack={() => {
         navigate(withLocale("/profile/my-profile"));
@@ -50,6 +52,9 @@ export default function WorkRadius({ loaderData }: Route.ComponentProps) {
       onAddressChange={hooks.debouncedTextFieldSubmit}
       onRadiusChange={hooks.debouncedRadiusFieldSubmit}
       onSnackbarClose={hooks.resetFetcherError}
+      submitGeoData={hooks.submitGeoData}
+      coordinates={hooks.coordinates}
+      radius={hooks.radius}
     />
   );
 }

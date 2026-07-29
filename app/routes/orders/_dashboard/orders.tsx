@@ -198,7 +198,7 @@ export default function Orders({ loaderData }: Route.ComponentProps) {
           navigate(withLocale(`/dashboard/orders/${entity.id}`));
         }}
       />
-      {(view !== "map" && loaderData.userRole === "client") ||
+      {(!orderId && view !== "map" && loaderData.userRole === "client") ||
       (loaderData.orders.length === 0 && loaderData.userRole === "client") ? (
         <Fab
           onClick={() => {

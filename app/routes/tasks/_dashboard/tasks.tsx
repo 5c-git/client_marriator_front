@@ -198,7 +198,7 @@ export default function Tasks({ loaderData }: Route.ComponentProps) {
         }}
       />
 
-      {(view !== "map" && loaderData.userRole === "manager") ||
+      {(!taskId && view !== "map" && loaderData.userRole === "manager") ||
       (loaderData.tasks.length === 0 && loaderData.userRole === "manager") ? (
         <Fab
           color="Corp_1"

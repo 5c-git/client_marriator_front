@@ -1,5 +1,4 @@
 import { injected } from "brandi";
-import type { LngLat } from "ymaps3";
 
 import type { AppService } from "~/shared/container/container.service";
 import type {
@@ -12,17 +11,17 @@ import type {
 import { workRadiusPrivateTokens } from "./work-radius.private-tokens";
 import { appTokens } from "~/shared/container/container.tokens";
 
-const DEFAULT_COORDINATES: LngLat = [37.623082, 55.75254];
+const DEFAULT_COORDINATES: [lon: number, lat: number] = [37.623082, 55.75254];
 
 export type WorkRadiusLoaderData = {
   address: string;
-  coordinates: LngLat;
+  coordinates: [lon: number, lat: number];
   radius: string;
 };
 
 export type WorkRadiusFormValues = {
   address: string;
-  coordinates: LngLat;
+  coordinates: [lon: number, lat: number];
   radius: string;
 };
 
@@ -49,7 +48,7 @@ export class WorkRadiusService {
   async loadWorkRadiusData(): Promise<WorkRadiusLoaderData> {
     const accessToken = this.appService.getToken();
 
-    const geolocation = [] as unknown as LngLat;
+    const geolocation = [] as unknown as [lon: number, lat: number];
     navigator.geolocation.getCurrentPosition(
       (position) => {
         geolocation.push(position.coords.longitude);
@@ -67,7 +66,7 @@ export class WorkRadiusService {
     const mapData = await this.fetchMapField(accessToken);
     const settingsData = await this.fetchSettingsFromKey(accessToken, "radius");
 
-    const coordinates: LngLat =
+    const coordinates: [lon: number, lat: number] =
       mapData.result.latitude !== null && mapData.result.longitude !== null
         ? [Number(mapData.result.longitude), Number(mapData.result.latitude)]
         : geolocation;

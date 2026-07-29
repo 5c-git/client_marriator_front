@@ -11,6 +11,16 @@ import { MaskedField } from "~/shared/ui/MaskedField/MaskedField";
 
 import { MarkerIcon } from "../icons/MarkerIcon";
 
+import {
+  YMap,
+  YMapMarker,
+  YMapFeature,
+  YMapDefaultSchemeLayer,
+  YMapDefaultFeaturesLayer,
+  YMapListener,
+  getCircleGeoJSON,
+} from "~/shared/ymap/map";
+
 type WorkRadiusViewProps = {
   form: UseFormReturn<WorkRadiusFormValues>;
   isMapGrayscale: boolean;
@@ -23,6 +33,11 @@ type WorkRadiusViewProps = {
     event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
   ) => void;
   onSnackbarClose: () => void;
+  submitGeoData: (value: string, radius: string) => void;
+  isActive: boolean;
+  setIsActive: (value: boolean) => void;
+  coordinates: [lon: number, lat: number];
+  radius: string;
 };
 
 export function WorkRadiusView(props: WorkRadiusViewProps) {
@@ -151,7 +166,50 @@ export function WorkRadiusView(props: WorkRadiusViewProps) {
               overflow: "hidden",
               filter: "var(--filter)",
             }}
-          />
+          >
+            <YMap
+              location={{
+                center: props.coordinates,
+                zoom: 12,
+              }}
+            >
+              <YMapDefaultSchemeLayer />
+              <YMapDefaultFeaturesLayer />
+              <YMapListener
+                onTouchStart={() => {
+                  props.setIsActive(true);
+                }}
+                onClick={(_, event) => {
+                  props.submitGeoData(
+                    `${event.coordinates[0]},${event.coordinates[1]}`,
+                    props.radius,
+                  );
+                }}
+              />
+
+              <YMapMarker coordinates={props.coordinates}>
+                <MarkerIcon
+                  style={{
+                    position: "absolute",
+                    left: "-8.5px",
+                    top: "-20px",
+                    color: "var(--mui-palette-Corp_1)",
+                  }}
+                />
+              </YMapMarker>
+              <YMapFeature
+                geometry={getCircleGeoJSON(
+                  props.coordinates,
+                  Number(props.radius),
+                )}
+                style={{
+                  simplificationRate: 0,
+                  stroke: [{ color: "var(--mui-palette-Corp_1)", width: 3 }],
+                  fill: "rgba(56, 56, 219, 0)",
+                }}
+              />
+            </YMap>
+          </Box>
         </Box>
       </Box>
 

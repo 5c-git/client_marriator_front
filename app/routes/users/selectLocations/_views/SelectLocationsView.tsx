@@ -1,23 +1,18 @@
 import { Controller, useForm } from "react-hook-form";
-import { useState, useEffect, useEffectEvent } from "react";
+import { useState } from "react";
 import { useTranslation } from "react-i18next";
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 
 import {
-  YMap as YMapType,
-  type LngLat,
-  YMapMarker as YMapMarkerType,
-} from "ymaps3";
-import { renderIcon } from "~/shared/ymap/ymap";
-import {
+  reactify,
   YMap,
   YMapDefaultFeaturesLayer,
   YMapDefaultSchemeLayer,
-  YMapListener,
   YMapMarker,
 } from "~/shared/ymap/map";
+
 import type {
   LocationOption,
   SelectLocationsLoaderData,
@@ -42,10 +37,8 @@ export function SelectLocationsView(props: SelectLocationsViewProps) {
   const { t } = useTranslation("m_users_selectLocations");
 
   const [showMap, setShowMap] = useState(false);
-  const [selectedLocations, setSelectedLocations] = useState(
-    props.data.locations,
-  );
-  const [mapInstance, setMapInstance] = useState<YMapType | null>(null);
+  const [allLocations, setAllLocations] = useState(props.data.locations);
+  const [trigger, setTrigger] = useState(false);
 
   const form = useForm({
     defaultValues: {
@@ -63,124 +56,14 @@ export function SelectLocationsView(props: SelectLocationsViewProps) {
     mode: "onChange",
   });
 
-  const drawEmptyMap = useEffectEvent(() => {
-    const container = document.querySelector("#map") as HTMLElement;
-    const map = new YMap(container, {
-      location: { center: selectedLocations[0].coordinates, zoom: 12 },
-    });
-    map.addChild(new YMapDefaultSchemeLayer({}));
-    map.addChild(new YMapDefaultFeaturesLayer({}));
-    setMapInstance(map);
-    return map;
-  });
-
-  useEffect(() => {
-    let map: YMapType | null = null;
-    if (showMap) {
-      map = drawEmptyMap();
-    }
-    return () => {
-      map?.destroy();
-    };
-  }, [drawEmptyMap, showMap]);
-
-  useEffect(() => {
-    const markers: YMapMarkerType[] = [];
-
-    mapInstance?.children.forEach((child) => {
-      if ("coordinates" in child) {
-        markers.push(child as YMapMarkerType);
-      }
-    });
-
-    markers.forEach((marker) => {
-      mapInstance?.removeChild(marker);
-    });
-
-    selectedLocations.forEach((item) => {
-      const markerElement = document.createElement("div");
-      const isShopSelected =
-        form
-          .getValues("locations")
-          .findIndex((location) => location === item.value) !== -1;
-
-      const icon = renderIcon(
-        item.icon,
-        isShopSelected ? "var(--mui-palette-Corp_1)" : "transparent",
-      );
-
-      markerElement.innerHTML = icon;
-
-      const marker = new YMapMarker(
-        {
-          coordinates: item.coordinates as LngLat,
-          properties: {
-            id: item.value,
-            icon: item.icon,
-          },
-        },
-        markerElement,
-      );
-
-      mapInstance?.addChild(marker);
-    });
-  }, [mapInstance, selectedLocations, form]);
-
-  useEffect(() => {
-    const mapListener = new YMapListener({
-      layer: "any",
-      onClick: (object) => {
-        if (object?.type !== "marker" || !object.entity.properties) {
-          return;
-        }
-
-        const clickedLocation = object.entity.properties.id as string;
-        const clickedLocationIcon = object.entity.properties.icon as string;
-        const clickedLocationCoordinates = object.entity.coordinates;
-
-        const currentSelectedLocations = form.getValues("locations");
-        const isLocationSelected = currentSelectedLocations.findIndex(
-          (shop) => shop === clickedLocation,
-        );
-
-        if (isLocationSelected > -1) {
-          currentSelectedLocations.splice(isLocationSelected, 1);
-        } else {
-          currentSelectedLocations.push(clickedLocation);
-        }
-
-        mapInstance?.removeChild(object.entity);
-
-        const markerElement = document.createElement("div");
-        const icon = renderIcon(
-          clickedLocationIcon,
-          isLocationSelected > -1 ? "transparent" : "var(--mui-palette-Corp_1)",
-        );
-        markerElement.innerHTML = icon;
-
-        const marker = new YMapMarker(
-          {
-            coordinates: clickedLocationCoordinates,
-            properties: {
-              id: clickedLocation,
-              icon: clickedLocationIcon,
-            },
-          },
-          markerElement,
-        );
-
-        mapInstance?.addChild(marker);
-        form.setValue("locations", currentSelectedLocations);
-      },
-    });
-
-    if (mapInstance) {
-      mapInstance.addChild(mapListener);
-    }
-  }, [mapInstance, form]);
-
   return (
-    <Box>
+    <Box
+      sx={{
+        height: "100%",
+        display: "flex",
+        flexDirection: "column",
+      }}
+    >
       <TopNavigation
         header={{
           text: t("header"),
@@ -207,11 +90,17 @@ export function SelectLocationsView(props: SelectLocationsViewProps) {
         onSubmit={form.handleSubmit((values) => {
           props.onSubmit(values.locations);
         })}
+        style={{
+          height: "100%",
+          flexGrow: 1,
+        }}
       >
         <Box
           sx={{
+            height: "100%",
             position: "relative",
-            display: "grid",
+            display: "flex",
+            flexDirection: "column",
             rowGap: "14px",
             paddingTop: "20px",
             paddingLeft: "16px",
@@ -252,8 +141,11 @@ export function SelectLocationsView(props: SelectLocationsViewProps) {
                         : [...props.data.locations];
                   }
 
-                  setSelectedLocations(matchingLocations);
+                  setAllLocations(matchingLocations);
                   field.onChange(evt);
+                }}
+                style={{
+                  zIndex: 1,
                 }}
               />
             )}
@@ -288,8 +180,11 @@ export function SelectLocationsView(props: SelectLocationsViewProps) {
                     ),
                   ];
 
-                  setSelectedLocations(matchingLocations);
+                  setAllLocations(matchingLocations);
                   field.onChange(evt);
+                }}
+                style={{
+                  zIndex: 1,
                 }}
               />
             )}
@@ -300,10 +195,7 @@ export function SelectLocationsView(props: SelectLocationsViewProps) {
               name="locations"
               control={form.control}
               render={({ field }) => (
-                <LocationCheckboxMultiple
-                  options={selectedLocations}
-                  {...field}
-                />
+                <LocationCheckboxMultiple options={allLocations} {...field} />
               )}
             />
           ) : (
@@ -314,10 +206,83 @@ export function SelectLocationsView(props: SelectLocationsViewProps) {
                 top: "0",
                 left: "0",
                 width: "100%",
-                height: "calc(100vh - 60px)",
-                zIndex: "-1",
+                height: "100%",
               }}
-            ></Box>
+            >
+              <YMap
+                location={reactify.useDefault({
+                  center:
+                    allLocations.length > 0
+                      ? allLocations[0].coordinates
+                      : [37.588144, 55.733842],
+                  zoom: 12,
+                })}
+              >
+                <YMapDefaultSchemeLayer />
+                <YMapDefaultFeaturesLayer />
+
+                {allLocations.map((item, index) => {
+                  const isShopSelected =
+                    form
+                      .getValues("locations")
+                      .findIndex((location) => location === item.value) !== -1;
+
+                  return (
+                    <YMapMarker
+                      key={index}
+                      coordinates={item.coordinates}
+                      onClick={() => {
+                        const currentSelectedLocations =
+                          form.getValues("locations");
+
+                        const isLocationSelected =
+                          currentSelectedLocations.findIndex(
+                            (shop) => shop === item.value,
+                          );
+
+                        if (isLocationSelected > -1) {
+                          currentSelectedLocations.splice(
+                            isLocationSelected,
+                            1,
+                          );
+                        } else {
+                          currentSelectedLocations.push(item.value);
+                        }
+
+                        form.setValue("locations", currentSelectedLocations);
+                        setTrigger(!trigger);
+                      }}
+                    >
+                      <div
+                        style={{
+                          position: "absolute",
+                          left: "-50%",
+                          top: "-50%",
+                          width: "41px",
+                          height: "41px",
+                          border: "5px solid",
+                          borderRadius: "50%",
+                          overflow: "hidden",
+                          borderColor: isShopSelected
+                            ? "var(--mui-palette-Corp_1)"
+                            : "transparent",
+                        }}
+                      >
+                        <img
+                          src={item.icon}
+                          style={{
+                            height: "100%",
+                            width: "100%",
+                            objectFit: "cover",
+                          }}
+                          alt="shop logo"
+                        />
+                      </div>
+                    </YMapMarker>
+                  );
+                })}
+              </YMap>
+            </Box>
           )}
 
           <Box
@@ -327,7 +292,7 @@ export function SelectLocationsView(props: SelectLocationsViewProps) {
               padding: "10px",
               backgroundColor: theme.vars.palette["White"],
               position: "fixed",
-              zIndex: 1,
+              zIndex: 9000,
               width: "100%",
               bottom: "0",
               left: "0",
@@ -337,7 +302,7 @@ export function SelectLocationsView(props: SelectLocationsViewProps) {
               type="button"
               onClick={() => {
                 form.reset();
-                setSelectedLocations(props.data.locations);
+                setAllLocations(props.data.locations);
               }}
             >
               {t("cancelButton")}

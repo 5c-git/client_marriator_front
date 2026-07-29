@@ -1,18 +1,16 @@
-import { useState, useEffect, useEffectEvent } from "react";
+import { useState } from "react";
 import { useTranslation } from "react-i18next";
 
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm, Controller } from "react-hook-form";
 
-import { YMap as YMapType, LngLat, YMapMarker as YMapMarkerType } from "ymaps3";
-import { renderIcon } from "~/shared/ymap/ymap";
 import {
+  reactify,
   YMap,
-  YMapMarker,
-  YMapListener,
-  YMapDefaultSchemeLayer,
   YMapDefaultFeaturesLayer,
+  YMapDefaultSchemeLayer,
+  YMapMarker,
 } from "~/shared/ymap/map";
 
 import { Button } from "@mui/material";
@@ -40,7 +38,7 @@ export function LocationView(props: LocationViewProps) {
 
   const [showMap, setShowMap] = useState<boolean>(false);
   const [selectedShops, setSelectedShops] = useState(props.data.shops);
-  const [mapInstance, setMapInstance] = useState<YMapType | null>(null);
+  const [trigger, setTrigger] = useState(false);
 
   const { control, setValue, getValues, handleSubmit, reset, watch } = useForm<{
     searchbar: string;
@@ -61,129 +59,6 @@ export function LocationView(props: LocationViewProps) {
     ),
     mode: "onChange",
   });
-
-  const drawEmptyMap = useEffectEvent(() => {
-    const container = document.querySelector("#map") as HTMLElement;
-    const map = new YMap(container, {
-      location: { center: [37.588144, 55.733842], zoom: 12 },
-    });
-    map.addChild(new YMapDefaultSchemeLayer({}));
-    map.addChild(new YMapDefaultFeaturesLayer({}));
-    setMapInstance(map);
-    return map;
-  });
-
-  useEffect(() => {
-    let map: YMapType | null = null;
-
-    if (showMap) {
-      map = drawEmptyMap();
-    }
-
-    return () => {
-      map?.destroy();
-    };
-  }, [showMap]);
-
-  useEffect(() => {
-    const markers: YMapMarkerType[] = [];
-
-    mapInstance?.children.forEach((child) => {
-      if ("coordinates" in child) {
-        markers.push(child as YMapMarkerType);
-      }
-    });
-
-    markers.forEach((marker) => {
-      mapInstance?.removeChild(marker);
-    });
-
-    selectedShops.forEach((shop) => {
-      const markerElement = document.createElement("div");
-
-      const isShopSelected =
-        getValues("shops").findIndex((item) => item === shop.value) !== -1;
-
-      const icon = renderIcon(
-        shop.icon,
-        isShopSelected ? "var(--mui-palette-Corp_1)" : "transparent",
-      );
-
-      markerElement.innerHTML = icon;
-
-      const marker = new YMapMarker(
-        {
-          coordinates: shop.coordinates as LngLat,
-          properties: {
-            id: shop.value,
-            icon: shop.icon,
-          },
-        },
-        markerElement,
-      );
-
-      markers.push(marker);
-      mapInstance?.addChild(marker);
-    });
-
-    if (markers.length > 0) {
-      mapInstance?.setLocation({ center: markers[0].coordinates });
-    }
-  }, [mapInstance, selectedShops, getValues]);
-
-  useEffect(() => {
-    const mapListener = new YMapListener({
-      layer: "any",
-      onClick: (object) => {
-        if (object?.type === "marker") {
-          if (object.entity.properties) {
-            const clickedShop = object.entity.properties.id as string;
-            const clickedShopIcon = object.entity.properties.icon as string;
-            const clickedShopCoordinates = object.entity.coordinates;
-
-            const currentSelectedShops = getValues("shops");
-
-            const isShopSelected = currentSelectedShops.findIndex(
-              (shop) => shop === clickedShop,
-            );
-
-            if (isShopSelected > -1) {
-              currentSelectedShops.splice(isShopSelected, 1);
-            } else {
-              currentSelectedShops.push(clickedShop);
-            }
-
-            mapInstance?.removeChild(object.entity);
-
-            const markerElement = document.createElement("div");
-            const icon = renderIcon(
-              clickedShopIcon,
-              isShopSelected > -1 ? "transparent" : "var(--mui-palette-Corp_1)",
-            );
-            markerElement.innerHTML = icon;
-
-            const marker = new YMapMarker(
-              {
-                coordinates: clickedShopCoordinates,
-                properties: {
-                  id: clickedShop,
-                  icon: clickedShopIcon,
-                },
-              },
-              markerElement,
-            );
-
-            mapInstance?.addChild(marker);
-            setValue("shops", currentSelectedShops);
-          }
-        }
-      },
-    });
-
-    if (mapInstance) {
-      mapInstance.addChild(mapListener);
-    }
-  }, [mapInstance, getValues, setValue]);
 
   return (
     <Box>
@@ -320,10 +195,82 @@ export function LocationView(props: LocationViewProps) {
                 top: "0",
                 left: "0",
                 width: "100%",
-                height: "calc(100vh - 60px)",
-                zIndex: "-1",
+                height: "100%",
               }}
-            ></Box>
+            >
+              <YMap
+                location={reactify.useDefault({
+                  center:
+                    selectedShops.length > 0
+                      ? selectedShops[0].coordinates
+                      : [37.588144, 55.733842],
+                  zoom: 12,
+                })}
+              >
+                <YMapDefaultSchemeLayer />
+                <YMapDefaultFeaturesLayer />
+
+                {selectedShops.map((item, index) => {
+                  const isShopSelected =
+                    getValues("shops").findIndex(
+                      (location) => location === item.value,
+                    ) !== -1;
+
+                  return (
+                    <YMapMarker
+                      key={index}
+                      coordinates={item.coordinates}
+                      onClick={() => {
+                        const currentSelectedLocations = getValues("shops");
+
+                        const isLocationSelected =
+                          currentSelectedLocations.findIndex(
+                            (shop) => shop === item.value,
+                          );
+
+                        if (isLocationSelected > -1) {
+                          currentSelectedLocations.splice(
+                            isLocationSelected,
+                            1,
+                          );
+                        } else {
+                          currentSelectedLocations.push(item.value);
+                        }
+
+                        setValue("shops", currentSelectedLocations);
+                        setTrigger(!trigger);
+                      }}
+                    >
+                      <div
+                        style={{
+                          position: "absolute",
+                          left: "-50%",
+                          top: "-50%",
+                          width: "41px",
+                          height: "41px",
+                          border: "5px solid",
+                          borderRadius: "50%",
+                          overflow: "hidden",
+                          borderColor: isShopSelected
+                            ? "var(--mui-palette-Corp_1)"
+                            : "transparent",
+                        }}
+                      >
+                        <img
+                          src={item.icon}
+                          style={{
+                            height: "100%",
+                            width: "100%",
+                            objectFit: "cover",
+                          }}
+                          alt="shop logo"
+                        />
+                      </div>
+                    </YMapMarker>
+                  );
+                })}
+              </YMap>
+            </Box>
           )}
 
           <Box
@@ -333,7 +280,7 @@ export function LocationView(props: LocationViewProps) {
               padding: "10px",
               backgroundColor: theme.vars.palette["White"],
               position: "fixed",
-              zIndex: 1,
+              zIndex: 9000,
               width: "100%",
               bottom: "0",
               left: "0",

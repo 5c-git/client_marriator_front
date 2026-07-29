@@ -2,25 +2,36 @@ import React from "react";
 import ReactDom from "react-dom";
 import * as YMapClustererPackage from "@yandex/ymaps3-clusterer";
 
-// await ymaps3.ready;
+import type { PolygonGeometry } from "ymaps3";
+import { circle } from "@turf/turf";
 
-// export const {
-//   YMap,
-//   YMapMarker,
-//   YMapListener,
-//   YMapFeature,
-//   YMapDefaultSchemeLayer,
-//   YMapDefaultFeaturesLayer,
-//   YMapFeatureDataSource,
-//   YMapLayer,
-// } = ymaps3;
+declare global {
+  interface Window {
+    ymaps3: typeof ymaps3 | undefined;
+  }
+}
 
 const [ymaps3React] = await Promise.all([
   ymaps3.import("@yandex/ymaps3-reactify"),
   ymaps3.ready,
 ]);
 
-const reactify = ymaps3React.reactify.bindTo(React, ReactDom);
+export const langMap = {
+  ru: "ru_RU",
+  en: "en_RU",
+};
+
+export const reactify = ymaps3React.reactify.bindTo(React, ReactDom);
+
+export const getCircleGeoJSON = (
+  center: [lon: number, lat: number],
+  radiusMeters: number,
+): PolygonGeometry => {
+  const { geometry } = circle(center, radiusMeters, {
+    units: "kilometers",
+  });
+  return geometry as PolygonGeometry;
+};
 
 export const {
   YMap,

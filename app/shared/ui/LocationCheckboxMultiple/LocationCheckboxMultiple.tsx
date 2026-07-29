@@ -9,13 +9,11 @@ import {
 } from "@mui/material";
 import Box from "@mui/material/Box";
 
-import type { Coordinates } from "~/shared/ymap/ymap";
-
 type option = {
   value: string;
   name: string;
   icon: string;
-  coordinates: Coordinates;
+  coordinates: [lon: number, lat: number];
   address: string;
   region: string;
   disabled: boolean;
@@ -30,7 +28,7 @@ type LocationCheckboxMultipleProps = {
 };
 
 export const LocationCheckboxMultiple = (
-  props: LocationCheckboxMultipleProps
+  props: LocationCheckboxMultipleProps,
 ) => {
   return (
     <Box style={props.style}>
