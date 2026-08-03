@@ -11,6 +11,23 @@ export class TaskMapper {
   static mapDataToTask(
     data: GetTaskSuccess,
   ): EntityMobileViewInterface["entity"] {
+    const earliestStartDate: string[] = [];
+    const latestEndDate: string[] = [];
+
+    data.data.orderActivities.forEach((item) => {
+      earliestStartDate.push(item.dateStart);
+    });
+
+    data.data.orderActivities.forEach((item) => {
+      latestEndDate.push(item.dateEnd);
+    });
+
+    earliestStartDate.sort(
+      (a, b) => new Date(a).valueOf() - new Date(b).valueOf(),
+    );
+
+    latestEndDate.sort((a, b) => new Date(b).valueOf() - new Date(a).valueOf());
+
     return {
       id: data.data.id.toString(),
       status: data.data.status,
@@ -81,6 +98,11 @@ export class TaskMapper {
           logo: item.logo,
         };
       }),
+      duration: {
+        start: earliestStartDate.length > 0 ? earliestStartDate[0] : null,
+        end: latestEndDate.length > 0 ? latestEndDate[0] : null,
+      },
+      userId: data.data.user.id,
     };
   }
 

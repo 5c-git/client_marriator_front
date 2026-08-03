@@ -3,6 +3,7 @@ import { z } from "zod";
 export const getBidSuccessSchema = z.object({
   data: z.object({
     id: z.number(),
+    createdAt: z.string(),
     user: z.object({
       id: z.number(),
       phone: z.number(),
@@ -62,7 +63,7 @@ export const getBidSuccessSchema = z.object({
         id: z.number(),
         coefficient: z.number(),
         name: z.string(),
-      })
+      }),
     }),
     dateStart: z.string(),
     dateEnd: z.string(),

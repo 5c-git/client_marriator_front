@@ -37,9 +37,13 @@ import ClearIcon from "@mui/icons-material/Clear";
 import CheckIcon from "@mui/icons-material/Check";
 import { RouteIcon } from "~/shared/icons/RouteIcon";
 
+import { tasksContainer } from "../tasks.module";
+import { tasksTokens } from "../tasks.tokens";
+
 import { taskContainer } from "./task.module";
 import { taskTokens } from "./task.tokens";
 import { TaskMapper } from "./task.mapper";
+import { ButtonActionMapper } from "~/shared/mappers/buttonActionMapper";
 
 const TASK_ACTIONS = {
   deleteActivity: "deleteActivity",
@@ -49,13 +53,17 @@ const TASK_ACTIONS = {
   inviteSupervisors: "inviteSupervisors",
   makeResponsible: "makeResponsible",
   acceptTask: "acceptTask",
+  repeat: "repeat",
+  cancel: "cancel",
 } as const;
 
 export async function clientLoader({ params }: Route.ClientLoaderArgs) {
+  const tasksService = tasksContainer.get(tasksTokens.tasksService);
   const taskService = taskContainer.get(taskTokens.taskService);
   const userRole = taskService.getUserRole();
   const userId = taskService.getUserId();
 
+  const intervals = await tasksService.getUserIntervals();
   const task = await taskService.getTask(params.taskId);
   let locations: {
     value: string;
@@ -81,6 +89,7 @@ export async function clientLoader({ params }: Route.ClientLoaderArgs) {
     supervisorsToSelect,
     userId,
     userRole,
+    intervals,
   };
 }
 
@@ -89,6 +98,7 @@ export async function clientAction({
   params,
 }: Route.ClientActionArgs) {
   const { _action, ...fields } = await request.json();
+  const tasksService = tasksContainer.get(tasksTokens.tasksService);
   const taskService = taskContainer.get(taskTokens.taskService);
 
   if (_action === TASK_ACTIONS.deleteActivity) {
@@ -113,6 +123,10 @@ export async function clientAction({
     await taskService.instructTask(fields.taskId, fields.supervisorId);
   } else if (_action === TASK_ACTIONS.acceptTask) {
     await taskService.acceptTask(fields.taskId);
+  } else if (_action === TASK_ACTIONS.repeat) {
+    await tasksService.repeatTask(fields.taskId);
+  } else if (_action === TASK_ACTIONS.cancel) {
+    await tasksService.cancelTask(fields.taskId);
   }
 }
 
@@ -131,6 +145,8 @@ export default function Task({ loaderData }: Route.ComponentProps) {
     count: number;
     name: string;
   } | null>(null);
+
+  const isDesktop = window.innerWidth >= 768 ? true : false;
 
   return (
     <>
@@ -438,24 +454,27 @@ export default function Task({ loaderData }: Route.ComponentProps) {
               ) : null}
             </Box>
           )}
-          actionSlot={() => {
-            const match = loaderData.entity.invitedPersons.find(
-              (supervisor) => supervisor.id === loaderData.userId,
-            );
-
-            if (
-              match &&
-              loaderData.userRole === "supervisor" &&
-              loaderData.entity.status < 3
-            ) {
-              return (
+          actionSlot={() => (
+            <>
+              {isDesktop &&
+              loaderData.entity.duration.start &&
+              ButtonActionMapper.canCancelNewOrNotAccepted(
+                loaderData.intervals.id,
+                loaderData.entity.userId,
+                loaderData.entity.status,
+                loaderData.intervals.cancel_task_interval,
+                loaderData.entity.duration.start,
+              ) ? (
                 <Button
                   variant="contained"
+                  sx={{
+                    marginTop: "8px",
+                  }}
                   onClick={() => {
                     fetcher.submit(
                       JSON.stringify({
-                        _action: TASK_ACTIONS.acceptTask,
-                        taskId: loaderData.entity.id,
+                        _action: "cancel",
+                        orderId: loaderData.entity.id,
                       }),
                       {
                         method: "POST",
@@ -464,13 +483,106 @@ export default function Task({ loaderData }: Route.ComponentProps) {
                     );
                   }}
                 >
-                  {t("acceptButton")}
+                  {t("cancelTaskButton", { ns: "m_tasks" })}
                 </Button>
-              );
-            } else {
-              return <></>;
-            }
-          }}
+              ) : null}
+
+              {isDesktop &&
+              loaderData.entity.duration.end &&
+              ButtonActionMapper.canCancelAccepted(
+                loaderData.intervals.id,
+                loaderData.entity.userId,
+                loaderData.entity.status,
+                loaderData.entity.duration.end,
+              ) ? (
+                <Button
+                  variant="contained"
+                  sx={{
+                    marginTop: "8px",
+                  }}
+                  onClick={() => {
+                    fetcher.submit(
+                      JSON.stringify({
+                        _action: "cancel",
+                        orderId: loaderData.entity.id,
+                      }),
+                      {
+                        method: "POST",
+                        encType: "application/json",
+                      },
+                    );
+                  }}
+                >
+                  {t("cancelTaskButton", { ns: "m_tasks" })}
+                </Button>
+              ) : null}
+
+              {isDesktop &&
+              loaderData.entity.duration.start &&
+              ButtonActionMapper.canRepeatCancelled(
+                loaderData.intervals.id,
+                loaderData.entity.userId,
+                loaderData.entity.status,
+                loaderData.intervals.repeat_task_interval,
+                loaderData.entity.duration.start,
+              ) ? (
+                <Button
+                  variant="contained"
+                  sx={{
+                    marginTop: "8px",
+                  }}
+                  onClick={() => {
+                    fetcher.submit(
+                      JSON.stringify({
+                        _action: "repeat",
+                        orderId: loaderData.entity.id,
+                      }),
+                      {
+                        method: "POST",
+                        encType: "application/json",
+                      },
+                    );
+                  }}
+                >
+                  {t("repeatTaskButton", { ns: "m_tasks" })}
+                </Button>
+              ) : null}
+
+              {(() => {
+                const match = loaderData.entity.invitedPersons.find(
+                  (supervisor) => supervisor.id === loaderData.userId,
+                );
+
+                if (
+                  match &&
+                  loaderData.userRole === "supervisor" &&
+                  loaderData.entity.status < 3
+                ) {
+                  return (
+                    <Button
+                      variant="contained"
+                      onClick={() => {
+                        fetcher.submit(
+                          JSON.stringify({
+                            _action: TASK_ACTIONS.acceptTask,
+                            taskId: loaderData.entity.id,
+                          }),
+                          {
+                            method: "POST",
+                            encType: "application/json",
+                          },
+                        );
+                      }}
+                    >
+                      {t("acceptButton")}
+                    </Button>
+                  );
+                } else {
+                  return <></>;
+                }
+              })()}
+            </>
+          )}
         />
       )}
       {fetcher.data ? (

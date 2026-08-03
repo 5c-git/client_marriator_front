@@ -17,8 +17,6 @@ export const getProjectsForOrderSuccessSchema = z.object({
   ),
 });
 
-console.log(getProjectsForOrderSuccessSchema.toJSONSchema());
-
 export type GetProjectsForOrderSuccess = z.infer<
   typeof getProjectsForOrderSuccessSchema
 >;

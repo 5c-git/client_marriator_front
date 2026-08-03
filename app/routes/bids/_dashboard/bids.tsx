@@ -2,8 +2,6 @@ import { useFetcher, useNavigate, useParams } from "react-router";
 import { useState } from "react";
 import type { Route } from "./+types/bids";
 
-import { addHours, isBefore } from "date-fns";
-
 import { useTranslation } from "react-i18next";
 import { withLocale } from "~/shared/withLocale";
 
@@ -82,30 +80,6 @@ export default function Bids({ loaderData }: Route.ComponentProps) {
             address={entity.address}
             duration={entity.duration}
             divider
-            {...((entity.status == 1 || entity.status == 6) &&
-            entity.createdAt &&
-            isBefore(
-              new Date(),
-              addHours(entity.createdAt, loaderData.userCancelInterval),
-            )
-              ? {
-                  buttonAction: {
-                    action: () => {
-                      fetcher.submit(
-                        JSON.stringify({
-                          bidId: entity.id,
-                        }),
-                        {
-                          method: "POST",
-                          encType: "application/json",
-                        },
-                      );
-                    },
-                    text: t("cancelBid"),
-                    variant: "text",
-                  },
-                }
-              : {})}
           />
         )}
         entityTableView={(entity) => (

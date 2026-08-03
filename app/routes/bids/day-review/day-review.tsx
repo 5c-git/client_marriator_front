@@ -1,18 +1,11 @@
-import { useNavigation, useSubmit, redirect } from "react-router";
+import { useNavigate, useSubmit, redirect } from "react-router";
 import type { Route } from "./+types/day-review";
 
-import { useStore } from "~/store/store";
 import { withLocale } from "~/shared/withLocale";
 
 import { DayReviewMobileView } from "./DayReviewMobileView/DayReviewFormMobileView";
-import type { DayReviewMobileViewInterface } from "./DayReviewMobileView/DayReviewMobileViewInterface";
 
-import { Loader } from "~/shared/ui/Loader/Loader";
-
-import { getJob } from "~/api/_personal/getJob/getJob";
-import { getReasons } from "~/api/_personal/getReasons/getReasons";
 import { postAcceptReport } from "~/api/_personal/postAcceptReport/postAcceptReport";
-import { postUpdateReport } from "~/api/_personal/postUpdateReport/postUpdateReport";
 import { postAcceptAllReportJob } from "~/api/_personal/postAcceptAllReportJob/postAcceptAllReportJob";
 
 import { dayReviewContainer } from "./day-review.module";
@@ -142,6 +135,9 @@ export async function clientAction({
 
 export default function DayReview({ loaderData }: Route.ComponentProps) {
   const submit = useSubmit();
+  const navigate = useNavigate();
+
+  const isDesktop = window.innerWidth >= 768 ? true : false;
 
   return (
     <DayReviewMobileView
@@ -154,6 +150,29 @@ export default function DayReview({ loaderData }: Route.ComponentProps) {
           method: "POST",
           encType: "application/json",
         });
+      }}
+      backAction={() => {
+        if (isDesktop) {
+          navigate(
+            withLocale(
+              `/dashboard/jobs/${loaderData.bidId}/specialists/${loaderData.specialistId}`,
+            ),
+            {
+              viewTransition: true,
+              replace: true,
+            },
+          );
+        } else {
+          navigate(
+            withLocale(
+              `/bids/${loaderData.bidId}/specialists/${loaderData.specialistId}`,
+            ),
+            {
+              viewTransition: true,
+              replace: true,
+            },
+          );
+        }
       }}
     />
   );

@@ -127,7 +127,7 @@ export function ErrorBoundary() {
         }
       })();
     }
-  }, [error, refresh_token]);
+  }, [error, refresh_token, navigate]);
   //
 
   //logging unxpected errors to Sentry
@@ -302,6 +302,8 @@ export function Layout({ children }: { children: React.ReactNode }) {
       </head>
       <body
         style={{
+          display: "flex",
+          flexDirection: "column",
           height: "100%",
         }}
       >

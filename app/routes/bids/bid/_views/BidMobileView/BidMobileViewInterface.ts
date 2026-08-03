@@ -1,5 +1,6 @@
 export type BidMobileViewInterface = {
   entity: {
+    id: number;
     logo: string;
     status: 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8;
     place: {
@@ -43,6 +44,7 @@ export type BidMobileViewInterface = {
     }[];
     units: string;
     currency: string;
+    createdAt: string;
   };
   locations: {
     value: string;

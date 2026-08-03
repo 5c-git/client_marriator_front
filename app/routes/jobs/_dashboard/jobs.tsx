@@ -32,7 +32,9 @@ export default function Jobs({ loaderData }: Route.ComponentProps) {
   const view = useStore((state) => state.entitiesView);
   const setView = useStore((state) => state.setEntitiesView);
 
-  const { jobId } = useParams();
+  const { jobId, bidId } = useParams();
+
+  console.log(bidId);
 
   return (
     <>
@@ -48,12 +50,17 @@ export default function Jobs({ loaderData }: Route.ComponentProps) {
         entityListView={(entity) => (
           <EntityCard
             key={entity.id + entity.userId}
-            isActive={jobId && Number(jobId) === entity.id ? true : false}
+            isActive={
+              (jobId && Number(jobId)) === entity.id ||
+              (bidId && Number(bidId)) === entity.id
+                ? true
+                : false
+            }
             to={
               loaderData.userRole === "specialist"
                 ? withLocale(`/dashboard/jobs/${entity.id}/${entity.userId}`)
                 : withLocale(
-                    `/dashboard/bids/${entity.id}/specialists/${entity.userId}`,
+                    `/dashboard/jobs/${entity.id}/specialists/${entity.userId}`,
                   )
             }
             status={
@@ -84,18 +91,33 @@ export default function Jobs({ loaderData }: Route.ComponentProps) {
               loaderData.userRole === "specialist"
                 ? withLocale(`/dashboard/jobs/${entity.id}/${entity.userId}`)
                 : withLocale(
-                    `/dashboard/bids/${entity.id}/specialists/${entity.userId}`,
+                    `/dashboard/jobs/${entity.id}/specialists/${entity.userId}`,
                   )
             }
             id={entity.id.toString()}
             logo={entity.address.logo}
             name={entity.placeName}
             address={entity.address.text}
-            isActive={jobId && Number(jobId) === entity.id ? true : false}
+            isActive={
+              (jobId && Number(jobId)) === entity.id ||
+              (bidId && Number(bidId)) === entity.id
+                ? true
+                : false
+            }
           />
         )}
         entityMapView={(entity) => {
-          navigate(withLocale(`/dashboard/jobs/${entity.id}`));
+          if (loaderData.userRole === "specialist") {
+            navigate(
+              withLocale(`/dashboard/jobs/${entity.id}/${entity.userId}`),
+            );
+          } else {
+            navigate(
+              withLocale(
+                `/dashboard/jobs/${entity.id}/specialists/${entity.userId}`,
+              ),
+            );
+          }
         }}
       />
     </>

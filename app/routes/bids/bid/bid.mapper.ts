@@ -10,6 +10,7 @@ import { bidFormSubmitValues } from "./_views/BidMobileView/BidFormMobileView";
 export class BidMapper {
   static mapDataToBid(data: GetBidSuccess["data"]) {
     return {
+      id: data.id,
       logo: data.viewActivity.logo,
       status: data.status,
       place: {
@@ -80,6 +81,7 @@ export class BidMapper {
       }),
       units: data.viewActivity.standard.name,
       currency: "₽",
+      createdAt: data.createdAt,
     };
   }
 

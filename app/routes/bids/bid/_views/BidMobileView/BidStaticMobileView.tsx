@@ -31,7 +31,7 @@ export function BidStaticMobileView(props: BidMobileViewInterface) {
     <>
       <Box
         sx={{
-          height: "calc(100vh - 120px)",
+          // height: "calc(100vh - 120px)",
           overflow: "auto",
           display: "flex",
           flexDirection: "column",
@@ -39,6 +39,7 @@ export function BidStaticMobileView(props: BidMobileViewInterface) {
           paddingLeft: "16px",
           paddingRight: "16px",
           paddingTop: "20px",
+          paddingBottom: "20px",
         }}
       >
         <Avatar

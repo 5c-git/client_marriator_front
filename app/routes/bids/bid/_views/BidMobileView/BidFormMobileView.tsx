@@ -335,7 +335,7 @@ export type bidFormSubmitValues = z.output<
 
 type BidFormMobileViewInterface = BidMobileViewInterface & {
   submitAction: (values: bidFormSubmitValues) => void;
-  cancelAction: () => void;
+  cancelAction?: () => void;
 };
 
 export function BidFormMobileView(props: BidFormMobileViewInterface) {
@@ -384,7 +384,7 @@ export function BidFormMobileView(props: BidFormMobileViewInterface) {
     <>
       <Box
         sx={{
-          height: "calc(100vh - 120px)",
+          // height: "calc(100vh - 120px)",
           overflow: "auto",
           display: "flex",
           flexDirection: "column",
@@ -1560,15 +1560,19 @@ export function BidFormMobileView(props: BidFormMobileViewInterface) {
         >
           {t("saveBidButton")}
         </Button>
-        {/* <Button
-          variant="outlined"
-          startIcon={<CloseIcon />}
-          onClick={() => {
-            props.cancelAction();
-          }}
-        >
-          {t("cancelBidButton")}
-        </Button> */}
+        {props.cancelAction ? (
+          <Button
+            variant="outlined"
+            startIcon={<CloseIcon />}
+            onClick={() => {
+              if (props.cancelAction) {
+                props.cancelAction();
+              }
+            }}
+          >
+            {t("cancelBidButton")}
+          </Button>
+        ) : null}
       </Box>
 
       <CheckboxSearchableDrawer

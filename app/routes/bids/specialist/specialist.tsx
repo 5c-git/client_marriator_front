@@ -53,6 +53,8 @@ export default function SpecialistRequest({
   const fetcher = useFetcher();
   const { t } = useTranslation("m_jobs_job");
 
+  const isDesktop = window.innerWidth >= 768 ? true : false;
+
   return (
     <SpecialistMobileView
       entity={loaderData}
@@ -63,7 +65,11 @@ export default function SpecialistRequest({
           day.action === "notEnded" ? (
             <Button
               component={Link}
-              to={`/bids/${loaderData.id}/specialists/${loaderData.specialist.id}/day-review/${day.reportId}`}
+              to={
+                isDesktop
+                  ? `/dashboard/jobs/${loaderData.id}/specialists/${loaderData.specialist.id}/day-review/${day.reportId}`
+                  : `/bids/${loaderData.id}/specialists/${loaderData.specialist.id}/day-review/${day.reportId}`
+              }
               replace
               variant="outlined"
             >
@@ -74,7 +80,11 @@ export default function SpecialistRequest({
             <>
               <Button
                 component={Link}
-                to={`/bids/${loaderData.id}/specialists/${loaderData.specialist.id}/day-review/${day.reportId}?edit=true`}
+                to={
+                  isDesktop
+                    ? `/dashboard/jobs/${loaderData.id}/specialists/${loaderData.specialist.id}/day-review/${day.reportId}?edit=true`
+                    : `/bids/${loaderData.id}/specialists/${loaderData.specialist.id}/day-review/${day.reportId}?edit=true`
+                }
                 variant="outlined"
               >
                 {t("actions.edit")}
@@ -156,7 +166,11 @@ export default function SpecialistRequest({
           {entity.canCheckAll ? (
             <Button
               component={Link}
-              to={`/bids/${entity.id}/specialists/${entity.specialist.id}/day-review`}
+              to={
+                isDesktop
+                  ? `/dashboard/jobs/${entity.id}/specialists/${entity.specialist.id}/day-review`
+                  : `/bids/${entity.id}/specialists/${entity.specialist.id}/day-review`
+              }
               variant="outlined"
             >
               {t("actions.acceptAll")}
@@ -170,7 +184,11 @@ export default function SpecialistRequest({
               loaderData.oneDayJobAction === "notEnded" ? (
                 <Button
                   component={Link}
-                  to={`/bids/${loaderData.id}/specialists/${loaderData.specialist.id}/day-review/${loaderData.oneDayReportId}`}
+                  to={
+                    isDesktop
+                      ? `/dashboard/jobs/${loaderData.id}/specialists/${loaderData.specialist.id}/day-review/${loaderData.oneDayReportId}`
+                      : `/bids/${loaderData.id}/specialists/${loaderData.specialist.id}/day-review/${loaderData.oneDayReportId}`
+                  }
                   variant="outlined"
                 >
                   {t("actions.check")}
@@ -180,7 +198,11 @@ export default function SpecialistRequest({
                 <>
                   <Button
                     component={Link}
-                    to={`/bids/${loaderData.id}/specialists/${loaderData.specialist.id}/day-review/${loaderData.oneDayReportId}?edit=true`}
+                    to={
+                      isDesktop
+                        ? `/dashboard/jobs/${loaderData.id}/specialists/${loaderData.specialist.id}/day-review/${loaderData.oneDayReportId}?edit=true`
+                        : `/bids/${loaderData.id}/specialists/${loaderData.specialist.id}/day-review/${loaderData.oneDayReportId}?edit=true`
+                    }
                     variant="outlined"
                   >
                     {t("actions.edit")}

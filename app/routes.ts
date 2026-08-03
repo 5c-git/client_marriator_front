@@ -42,16 +42,27 @@ export default [
         },
       ),
     ]),
-    route(":lang?/dashboard/jobs", "routes/jobs/_dashboard/jobs.tsx"),
-  ]),
+    route(":lang?/dashboard/jobs", "routes/jobs/_dashboard/jobs.tsx", [
+      route(
+        ":bidId/specialists/:specialistId",
+        "routes/bids/specialist/specialist.tsx",
+        {
+          id: "dashboard-job-for-manager",
+        },
+      ),
+      route(
+        ":bidId/specialists/:specialistId/day-review/:reportId?",
+        "routes/bids/day-review/day-review.tsx",
+        {
+          id: "dashboard-dayReview",
+        },
+      ),
 
-  route(
-    ":lang?/dashboard/bids/:bidId/specialists/:specialistId/day-review/:reportId?",
-    "routes/bids/day-review/day-review.tsx",
-    {
-      id: "dashboard-dayReview",
-    },
-  ),
+      route(":jobId/:specialistId", "routes/jobs/job/job.tsx", {
+        id: "dashboard-job",
+      }),
+    ]),
+  ]),
 
   route(":lang?/dashboard/profile", "routes/profile/profile.tsx", {
     id: "dashboard-profile",

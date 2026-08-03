@@ -96,6 +96,7 @@ type submitValues = z.output<typeof dayReviewFormSchema>;
 
 export function DayReviewMobileView(
   props: DayReviewMobileViewInterface & {
+    backAction: () => void;
     submitAction: (values: submitValues) => void;
   },
 ) {
@@ -126,15 +127,7 @@ export function DayReviewMobileView(
           bold: false,
         }}
         backAction={() => {
-          navigate(
-            withLocale(
-              `/bids/${props.bidId}/specialists/${props.specialistId}`,
-            ),
-            {
-              viewTransition: true,
-              replace: true,
-            },
-          );
+          props.backAction();
         }}
       />
 

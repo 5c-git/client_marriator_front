@@ -389,14 +389,15 @@ export function ActivityFormMobileView(props: ActivityFormMobileViewInterface) {
       />
       <Box
         sx={{
-          height: "calc(100vh - 120px)",
           overflow: "auto",
           display: "flex",
+          flexGrow: 1,
           flexDirection: "column",
           rowGap: "14px",
           paddingLeft: "16px",
           paddingRight: "16px",
           paddingTop: "20px",
+          paddingBottom: "65px",
         }}
       >
         <form
@@ -706,6 +707,7 @@ export function ActivityFormMobileView(props: ActivityFormMobileViewInterface) {
                         {format(day.timeStart, "dd.MM")}
                         &nbsp;
                         {t(
+                          //@ts-expect-error type narrowing bug
                           `${props.translation}.dayMap.${getDay(day.timeStart)}`,
                         )}
                       </Typography>

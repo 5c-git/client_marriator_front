@@ -454,6 +454,8 @@ export function DashboardView(props: EntitiesListInterface) {
             <Box
               sx={{
                 position: "relative",
+                display: "flex",
+                flexDirection: "column",
                 flexGrow: 1,
                 height: "100%",
                 overflowY: "auto",

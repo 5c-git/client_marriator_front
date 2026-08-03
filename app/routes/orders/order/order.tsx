@@ -39,8 +39,12 @@ import CheckIcon from "@mui/icons-material/Check";
 import LogoutIcon from "@mui/icons-material/Logout";
 import { RouteIcon } from "~/shared/icons/RouteIcon";
 
+import { ordersContainer } from "../orders.module";
+import { ordersTokens } from "../orders.tokens";
+
 import { orderContainer } from "./order.module";
 import { orderTokens } from "./order.tokens";
+import { ButtonActionMapper } from "~/shared/mappers/buttonActionMapper";
 
 const ORDER_ACTIONS = {
   deleteActivity: "deleteActivity",
@@ -50,14 +54,18 @@ const ORDER_ACTIONS = {
   transformAssignmentToRequest: "transformAssignmentToRequest",
   acceptAssignment: "acceptAssignment",
   save: "save",
+  repeat: "repeat",
+  cancel: "cancel",
 } as const;
 
 export async function clientLoader({ params }: Route.ClientLoaderArgs) {
   await loadNamespaces("m_orders_order");
 
   const orderService = orderContainer.get(orderTokens.orderService);
+  const ordersService = ordersContainer.get(ordersTokens.ordersService);
   const userRole = orderService.getUserRole();
 
+  const intervals = await ordersService.getUserIntervals();
   const order = await orderService.getOrder(params.orderId);
   let locations: {
     value: string;
@@ -89,10 +97,11 @@ export async function clientLoader({ params }: Route.ClientLoaderArgs) {
     supervisorsToSelect = [...supervisorsToSelect, ...supervisersOptions];
   }
 
-  return { order, locations, supervisorsToSelect, userRole };
+  return { intervals, order, locations, supervisorsToSelect, userRole };
 }
 
 export async function clientAction({ request }: Route.ClientActionArgs) {
+  const ordersService = ordersContainer.get(ordersTokens.ordersService);
   const orderService = orderContainer.get(orderTokens.orderService);
   const { _action, ...fields } = await request.json();
 
@@ -122,6 +131,10 @@ export async function clientAction({ request }: Route.ClientActionArgs) {
     await orderService.acceptOrder(fields.orderId);
   } else if (_action === ORDER_ACTIONS.save) {
     await orderService.saveOrder(fields.orderId);
+  } else if (_action === ORDER_ACTIONS.repeat) {
+    await ordersService.repeatOrder(fields.orderId);
+  } else if (_action === ORDER_ACTIONS.cancel) {
+    await ordersService.cancelOrder(fields.orderId);
   }
 }
 
@@ -141,7 +154,7 @@ export default function Order({ loaderData }: Route.ComponentProps) {
 
   const [searchSupervisors, setSearchSupervisors] = useState<boolean>(false);
 
-  console.log(fetcher.data);
+  const isDesktop = window.innerWidth >= 768 ? true : false;
 
   return (
     <>
@@ -424,6 +437,98 @@ export default function Order({ loaderData }: Route.ComponentProps) {
           )}
           actionSlot={() => (
             <>
+              {isDesktop &&
+              loaderData.order.duration.start &&
+              ButtonActionMapper.canCancelNewOrNotAccepted(
+                loaderData.intervals.id,
+                loaderData.order.userId,
+                loaderData.order.status,
+                loaderData.intervals.cancel_order_interval,
+                loaderData.order.duration.start,
+              ) ? (
+                <Button
+                  variant="contained"
+                  sx={{
+                    marginTop: "8px",
+                  }}
+                  onClick={() => {
+                    fetcher.submit(
+                      JSON.stringify({
+                        _action: "cancel",
+                        orderId: loaderData.order.id,
+                      }),
+                      {
+                        method: "POST",
+                        encType: "application/json",
+                      },
+                    );
+                  }}
+                >
+                  {t("cancelAssignmentButton", { ns: "m_orders" })}
+                </Button>
+              ) : null}
+
+              {isDesktop &&
+              loaderData.order.duration.end &&
+              ButtonActionMapper.canCancelAccepted(
+                loaderData.intervals.id,
+                loaderData.order.userId,
+                loaderData.order.status,
+                loaderData.order.duration.end,
+              ) ? (
+                <Button
+                  variant="contained"
+                  sx={{
+                    marginTop: "8px",
+                  }}
+                  onClick={() => {
+                    fetcher.submit(
+                      JSON.stringify({
+                        _action: "cancel",
+                        orderId: loaderData.order.id,
+                      }),
+                      {
+                        method: "POST",
+                        encType: "application/json",
+                      },
+                    );
+                  }}
+                >
+                  {t("cancelAssignmentButton", { ns: "m_orders" })}
+                </Button>
+              ) : null}
+
+              {isDesktop &&
+              loaderData.order.duration.start &&
+              ButtonActionMapper.canRepeatCancelled(
+                loaderData.intervals.id,
+                loaderData.order.userId,
+                loaderData.order.status,
+                loaderData.intervals.repeat_order_interval,
+                loaderData.order.duration.start,
+              ) ? (
+                <Button
+                  variant="contained"
+                  sx={{
+                    marginTop: "8px",
+                  }}
+                  onClick={() => {
+                    fetcher.submit(
+                      JSON.stringify({
+                        _action: "repeat",
+                        orderId: loaderData.order.id,
+                      }),
+                      {
+                        method: "POST",
+                        encType: "application/json",
+                      },
+                    );
+                  }}
+                >
+                  {t("repeatAssignmentButton", { ns: "m_orders" })}
+                </Button>
+              ) : null}
+
               {loaderData.userRole === "manager" &&
               loaderData.order.status === 3 ? (
                 <Button

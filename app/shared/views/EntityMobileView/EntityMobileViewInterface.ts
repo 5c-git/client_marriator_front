@@ -51,6 +51,11 @@ type Entity = {
     email: string;
     logo: string;
   }[];
+  userId: number;
+  duration: {
+    start: string | null;
+    end: string | null;
+  };
 };
 
 export type EntityMobileViewInterface = {

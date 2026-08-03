@@ -8,15 +8,34 @@ import { RequestSearchDrawerInterface } from "~/shared/views/RequestSearchDrawer
 
 export class OrderMapper {
   static mapDataToOrder(data: GetOrderSuccess) {
+    const earliestStartDate: string[] = [];
+    const latestEndDate: string[] = [];
+
+    data.data.orderActivities.forEach((item) => {
+      earliestStartDate.push(item.dateStart);
+    });
+
+    data.data.orderActivities.forEach((item) => {
+      latestEndDate.push(item.dateEnd);
+    });
+
+    earliestStartDate.sort(
+      (a, b) => new Date(a).valueOf() - new Date(b).valueOf(),
+    );
+
+    latestEndDate.sort((a, b) => new Date(b).valueOf() - new Date(a).valueOf());
+
     return {
       id: data.data.id.toString(),
       status: data.data.status,
-      place: {
-        id: data.data.place.id,
-        name: data.data.place.name,
-        logo: data.data.place.logo,
-        region: data.data.place.region.name,
-      },
+      place: data.data.place
+        ? {
+            id: data.data.place.id,
+            name: data.data.place.name,
+            logo: data.data.place.logo,
+            region: data.data.place.region.name,
+          }
+        : null,
       selfEmployed: data.data.selfEmployed,
       route: 0,
       services: data.data.orderActivities.map((item) => {
@@ -61,6 +80,11 @@ export class OrderMapper {
           }
         : null,
       invitedPersons: [],
+      duration: {
+        start: earliestStartDate.length > 0 ? earliestStartDate[0] : null,
+        end: latestEndDate.length > 0 ? latestEndDate[0] : null,
+      },
+      userId: data.data.user.id,
     };
   }
 

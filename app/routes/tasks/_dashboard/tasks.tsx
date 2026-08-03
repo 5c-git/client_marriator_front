@@ -21,7 +21,6 @@ import { EntityCell } from "~/shared/ui/EntityCell/EntityCell";
 
 import { Button, Dialog, DialogActions, DialogTitle, Fab } from "@mui/material";
 
-import LoopIcon from "@mui/icons-material/Loop";
 import AddIcon from "@mui/icons-material/Add";
 
 import { newTaskContainer } from "../new-task/new-task.module";
@@ -29,7 +28,6 @@ import { newTaskNewTokens } from "../new-task/new-task.tokens";
 
 import { tasksContainer } from "../tasks.module";
 import { tasksTokens } from "../tasks.tokens";
-import { ButtonActionMapper } from "~/shared/mappers/buttonActionMapper";
 
 const TASKS_ACTIONS = {
   repeat: "repeat",
@@ -110,76 +108,6 @@ export default function Tasks({ loaderData }: Route.ComponentProps) {
             address={entity.address}
             duration={entity.duration}
             divider
-            {...(entity.duration.start &&
-            ButtonActionMapper.canCancelNewOrNotAccepted(
-              loaderData.intervals.id,
-              entity.userId,
-              entity.status,
-              loaderData.intervals.cancel_task_interval,
-              entity.duration.start,
-            )
-              ? {
-                  buttonAction: {
-                    action: () => {
-                      setTaskToAct({
-                        action: "cancel",
-                        id: entity.id,
-                      });
-                    },
-                    text: t("cancelTaskButton"),
-                    variant: "text",
-                  },
-                }
-              : {})}
-            {...(entity.duration.end &&
-            ButtonActionMapper.canCancelAccepted(
-              loaderData.intervals.id,
-              entity.userId,
-              entity.status,
-              entity.duration.end,
-            )
-              ? {
-                  buttonAction: {
-                    action: () => {
-                      setTaskToAct({
-                        action: "cancel",
-                        id: entity.id,
-                      });
-                    },
-                    text: t("cancelTaskButton"),
-                    variant: "text",
-                  },
-                }
-              : {})}
-            {...(entity.duration.start &&
-            ButtonActionMapper.canRepeatCancelled(
-              loaderData.intervals.id,
-              entity.userId,
-              entity.status,
-              loaderData.intervals.repeat_task_interval,
-              entity.duration.start,
-            )
-              ? {
-                  buttonAction: {
-                    action: () => {
-                      setTaskToAct({
-                        action: "repeat",
-                        id: entity.id,
-                      });
-                    },
-                    text: t("repeatTaskButton"),
-                    variant: "contained",
-                    icon: (
-                      <LoopIcon
-                        sx={{
-                          transform: "rotate(90deg)",
-                          marginRight: "8px",
-                        }}
-                      />
-                    ),
-                  },
-                }
-              : {})}
           />
         )}
         entityTableView={(entity) => (

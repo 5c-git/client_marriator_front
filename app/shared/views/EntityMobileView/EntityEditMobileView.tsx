@@ -23,7 +23,6 @@ export function EntityEditMobileView(props: EntityMobileViewInterface) {
 
       <Box
         sx={{
-          height: "calc(100vh - 120px)",
           overflow: "auto",
           display: "flex",
           flexDirection: "column",

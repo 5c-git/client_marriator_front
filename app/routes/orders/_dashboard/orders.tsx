@@ -21,7 +21,6 @@ import { EntityCell } from "~/shared/ui/EntityCell/EntityCell";
 
 import { Button, Dialog, DialogActions, DialogTitle, Fab } from "@mui/material";
 
-import LoopIcon from "@mui/icons-material/Loop";
 import AddIcon from "@mui/icons-material/Add";
 
 import { newOrderContainer } from "../new-order/new-order.module";
@@ -29,7 +28,6 @@ import { newOrderTokens } from "../new-order/new-order.tokens";
 
 import { ordersContainer } from "../orders.module";
 import { ordersTokens } from "../orders.tokens";
-import { ButtonActionMapper } from "~/shared/mappers/buttonActionMapper";
 
 const ORDERS_ACTIONS = {
   repeat: "repeat",
@@ -111,76 +109,6 @@ export default function Orders({ loaderData }: Route.ComponentProps) {
             address={entity.address}
             duration={entity.duration}
             divider
-            {...(entity.duration.start &&
-            ButtonActionMapper.canCancelNewOrNotAccepted(
-              loaderData.intervals.id,
-              entity.userId,
-              entity.status,
-              loaderData.intervals.cancel_order_interval,
-              entity.duration.start,
-            )
-              ? {
-                  buttonAction: {
-                    action: () => {
-                      setOrderToAct({
-                        action: "cancel",
-                        id: entity.id,
-                      });
-                    },
-                    text: t("cancelAssignmentButton"),
-                    variant: "text",
-                  },
-                }
-              : {})}
-            {...(entity.duration.end &&
-            ButtonActionMapper.canCancelAccepted(
-              loaderData.intervals.id,
-              entity.userId,
-              entity.status,
-              entity.duration.end,
-            )
-              ? {
-                  buttonAction: {
-                    action: () => {
-                      setOrderToAct({
-                        action: "cancel",
-                        id: entity.id,
-                      });
-                    },
-                    text: t("cancelAssignmentButton"),
-                    variant: "text",
-                  },
-                }
-              : {})}
-            {...(entity.duration.start &&
-            ButtonActionMapper.canRepeatCancelled(
-              loaderData.intervals.id,
-              entity.userId,
-              entity.status,
-              loaderData.intervals.repeat_order_interval,
-              entity.duration.start,
-            )
-              ? {
-                  buttonAction: {
-                    action: () => {
-                      setOrderToAct({
-                        action: "repeat",
-                        id: entity.id,
-                      });
-                    },
-                    text: t("repeatAssignmentButton"),
-                    variant: "contained",
-                    icon: (
-                      <LoopIcon
-                        sx={{
-                          transform: "rotate(90deg)",
-                          marginRight: "8px",
-                        }}
-                      />
-                    ),
-                  },
-                }
-              : {})}
           />
         )}
         entityTableView={(entity) => (

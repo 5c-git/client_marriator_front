@@ -7,9 +7,13 @@ import type { BidMobileViewInterface } from "./_views/BidMobileView/BidMobileVie
 import { BidFormMobileView } from "./_views/BidMobileView/BidFormMobileView";
 import { BidStaticMobileView } from "./_views/BidMobileView/BidStaticMobileView";
 
+import { bidsContainer } from "../bids.module";
+import { bidsTokens } from "../bids.tokens";
+
 import { bidContainer } from "./bid.module";
 import { bidTokens } from "./bid.tokens";
 import { BidMapper } from "./bid.mapper";
+import { addHours, isBefore } from "date-fns";
 
 const BID_ACTIONS = {
   update: "update",
@@ -17,13 +21,15 @@ const BID_ACTIONS = {
 } as const;
 
 export async function clientLoader() {
+  const bidsService = bidsContainer.get(bidsTokens.bidsService);
   const bidService = bidContainer.get(bidTokens.bidService);
 
   const locations = await bidService.getPlaceOptions();
   const radiuses = await bidService.getRadiusOptions();
   const defaultTimeRange = await bidService.getDefaultTimeRange();
+  const userCancelInterval = await bidsService.getBidCancelInterval();
 
-  return { locations, radiuses, defaultTimeRange };
+  return { locations, radiuses, defaultTimeRange, userCancelInterval };
 }
 
 export async function clientAction({
@@ -55,6 +61,8 @@ export default function Bid({ loaderData }: Route.ComponentProps) {
   const [bid] = useState<BidMobileViewInterface["entity"] | null>(
     BidMapper.mapDataToBid(bidMobileData),
   );
+
+  const isDesktop = window.innerWidth >= 768 ? true : false;
 
   return (
     <>
@@ -98,17 +106,27 @@ export default function Bid({ loaderData }: Route.ComponentProps) {
                   },
                 );
               }}
-              cancelAction={() => {
-                // fetcher.submit(
-                //   JSON.stringify({
-                //     _action: BID_ACTIONS.cancel,
-                //   }),
-                //   {
-                //     method: "POST",
-                //     encType: "application/json",
-                //   },
-                // );
-              }}
+              {...((bid.status == 1 || bid.status == 6) &&
+              bid.createdAt &&
+              isBefore(
+                new Date(),
+                addHours(bid.createdAt, loaderData.userCancelInterval),
+              ) &&
+              isDesktop
+                ? {
+                    cancelAction: () => {
+                      fetcher.submit(
+                        JSON.stringify({
+                          _action: BID_ACTIONS.cancel,
+                        }),
+                        {
+                          method: "POST",
+                          encType: "application/json",
+                        },
+                      );
+                    },
+                  }
+                : {})}
             />
           ) : (
             <BidStaticMobileView

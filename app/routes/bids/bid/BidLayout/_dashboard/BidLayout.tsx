@@ -21,8 +21,6 @@ export function shouldRevalidate() {
 }
 
 export async function clientLoader({ params }: Route.ClientLoaderArgs) {
-  console.log("HEEREE");
-
   const bidService = bidContainer.get(bidTokens.bidService);
 
   return await bidService.getBid(params.bidId);
@@ -32,8 +30,6 @@ export default function BidLayout({ loaderData }: Route.ComponentProps) {
   const navigate = useNavigate();
   const { t } = useTranslation("m_bids_bid");
   const [editMode, setEditMode] = useState<boolean>(false);
-
-  console.log(loaderData.data.id);
 
   return (
     <>
@@ -80,14 +76,16 @@ export default function BidLayout({ loaderData }: Route.ComponentProps) {
       >
         <Tab
           label={t("tabs.details")}
-          to={withLocale(`/bids/${loaderData.data.id}`)}
-          value={withLocale(`/bids/${loaderData.data.id}`)}
+          to={withLocale(`/dashboard/bids/${loaderData.data.id}`)}
+          value={withLocale(`/dashboard/bids/${loaderData.data.id}`)}
           component={Link}
         />
         <Tab
           label={t("tabs.specialists")}
-          to={withLocale(`/bids/${loaderData.data.id}/specialists`)}
-          value={withLocale(`/bids/${loaderData.data.id}/specialists`)}
+          to={withLocale(`/dashboard/bids/${loaderData.data.id}/specialists`)}
+          value={withLocale(
+            `/dashboard/bids/${loaderData.data.id}/specialists`,
+          )}
           component={Link}
         />
       </Tabs>
