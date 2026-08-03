@@ -3,7 +3,7 @@ import type { Route } from "./+types/jobs";
 import { useTranslation } from "react-i18next";
 import { loadNamespaces } from "i18next";
 
-import { EntitiesListView } from "~/shared/views/EntitiesList/ListView";
+import { ListView } from "~/shared/views/EntitiesList/ListView";
 
 import { Dialog, Box, IconButton, Typography } from "@mui/material";
 import { EntityCard } from "~/shared/ui/EntityCard/EntityCard";
@@ -36,7 +36,7 @@ export default function SigninJobs({ loaderData }: Route.ComponentProps) {
     <>
       <TopNavigation
         header={{
-          text: t("header", { ns: "HomeLayout" }),
+          text: t("header", { ns: "m_layout_home" }),
           bold: false,
         }}
         style={{
@@ -46,9 +46,10 @@ export default function SigninJobs({ loaderData }: Route.ComponentProps) {
         }}
       />
 
-      <EntitiesListView
+      <ListView
         translation="jobs"
-        mapView={false}
+        view={"list"}
+        setView={() => {}}
         entities={loaderData}
         entityType="job"
         sorting="descending"
@@ -81,6 +82,7 @@ export default function SigninJobs({ loaderData }: Route.ComponentProps) {
             />
           </Box>
         )}
+        entityTableView={() => null}
         entityMapView={(entity) => (
           <Box
             onClick={() => {
