@@ -62,177 +62,176 @@ export default [
         id: "dashboard-job",
       }),
     ]),
+
+    route(":lang?/dashboard/profile", "routes/profile/profile.tsx", {
+      id: "dashboard-profile",
+    }),
+    route(
+      ":lang?/dashboard/profile/my-profile",
+      "routes/profile/my-profile/my-profile.tsx",
+      {
+        id: "dashboard-myProfile",
+      },
+    ),
+    route(
+      ":lang?/dashboard/profile/my-profile/profile-edit",
+      "routes/profile/my-profile/profile-edit/profile-edit.tsx",
+      {
+        id: "dashboard-profileEdit",
+      },
+    ),
+    route(
+      ":lang?/dashboard/profile/my-profile/profile-meta",
+      "routes/profile/my-profile/profile-meta/profile-meta.tsx",
+      {
+        id: "dashboard-profileMeta",
+      },
+    ),
+    route(
+      ":lang?/dashboard/profile/my-profile/profile-meta/confirm-personal-email",
+      "routes/profile/my-profile/profile-meta/confirm-personal-email/confirm-personal-email.tsx",
+      {
+        id: "dashboard-confirmPersonalEmail",
+      },
+    ),
+    route(
+      ":lang?/dashboard/profile/my-profile/profile-meta/confirm-personal-phone",
+      "routes/profile/my-profile/profile-meta/confirm-personal-phone/confirm-personal-phone.tsx",
+      {
+        id: "dashboard-confirmPersonalPhone",
+      },
+    ),
+    route(
+      ":lang?/dashboard/profile/my-profile/user-activities",
+      "routes/profile/my-profile/user-activities/user-activities.tsx",
+      {
+        id: "dashboard-userActivities",
+      },
+    ),
+    route(
+      ":lang?/dashboard/profile/my-profile/billing",
+      "routes/profile/my-profile/billing/billing.tsx",
+      {
+        id: "dashboard-billing",
+      },
+    ),
+    route(
+      ":lang?/dashboard/profile/my-profile/billing/billing-add",
+      "routes/profile/my-profile/billing/billing-add/billing-add.tsx",
+      {
+        id: "dashboard-billingAdd",
+      },
+    ),
+    route(
+      ":lang?/dashboard/profile/my-profile/billing/billing-edit",
+      "routes/profile/my-profile/billing/billing-edit/billing-edit.tsx",
+      {
+        id: "dashboard-billingEdit",
+      },
+    ),
+    route(
+      ":lang?/dashboard/profile/my-profile/work-radius",
+      "routes/profile/my-profile/work-radius/work-radius.tsx",
+      {
+        id: "dashboard-workRadius",
+      },
+    ),
+    route(
+      ":lang?/dashboard/profile/documents",
+      "routes/profile/documents/documents.tsx",
+      {
+        id: "dashboard-documents",
+      },
+    ),
+    route(
+      ":lang?/dashboard/profile/requests",
+      "routes/profile/requests/requests.tsx",
+      {
+        id: "dashboard-requests",
+      },
+    ),
+    route(
+      ":lang?/dashboard/profile/settings",
+      "routes/profile/settings/settings.tsx",
+      {
+        id: "dashboard-settings",
+      },
+    ),
+    route(
+      ":lang?/dashboard/profile/documents/sign",
+      "routes/profile/documents/sign/sign.tsx",
+      {
+        id: "dashboard-sign",
+      },
+    ),
+    route(
+      ":lang?/dashboard/profile/documents/sign-a-deal",
+      "routes/profile/documents/sign-a-deal/sign-a-deal.tsx",
+      {
+        id: "dashboard-signADeal",
+      },
+    ),
+    route(
+      ":lang?/dashboard/profile/documents/terminate-a-deal",
+      "routes/profile/documents/terminate-a-deal/terminate-a-deal.tsx",
+      {
+        id: "dashboard-terminateADeal",
+      },
+    ),
+    route(
+      ":lang?/dashboard/profile/documents/archive",
+      "routes/profile/documents/archive/archive.tsx",
+      {
+        id: "dashboard-archive",
+      },
+    ),
+    route(
+      ":lang?/dashboard/profile/documents/certificates",
+      "routes/profile/documents/certificates/certificates.tsx",
+      {
+        id: "dashboard-certificates",
+      },
+    ),
+
+    route(":lang?/dashboard/users", "routes/users/clients/clients.tsx", {
+      id: "dashboard-users",
+    }),
+    route(
+      ":lang?/dashboard/users/managers",
+      "routes/users/managers/managers.tsx",
+      {
+        id: "dashboard-managers",
+      },
+    ),
+    route(
+      ":lang?/dashboard/users/supervisors",
+      "routes/users/supervisors/supervisors.tsx",
+      {
+        id: "dashboard-supervisors",
+      },
+    ),
+    route(
+      ":lang?/dashboard/users/client/:user",
+      "routes/users/clients/client/client.tsx",
+      {
+        id: "dashboard-client",
+      },
+    ),
+    route(
+      ":lang?/dashboard/users/manager/:user",
+      "routes/users/managers/manager/manager.tsx",
+      {
+        id: "dashboard-manager",
+      },
+    ),
+    route(
+      ":lang?/dashboard/users/supervisor/:user",
+      "routes/users/supervisors/supervisor/supervisor.tsx",
+      {
+        id: "dashboard-supervisor",
+      },
+    ),
   ]),
-
-  route(":lang?/dashboard/profile", "routes/profile/profile.tsx", {
-    id: "dashboard-profile",
-  }),
-  route(
-    ":lang?/dashboard/profile/my-profile",
-    "routes/profile/my-profile/my-profile.tsx",
-    {
-      id: "dashboard-myProfile",
-    },
-  ),
-  route(
-    ":lang?/dashboard/profile/my-profile/profile-edit",
-    "routes/profile/my-profile/profile-edit/profile-edit.tsx",
-    {
-      id: "dashboard-profileEdit",
-    },
-  ),
-  route(
-    ":lang?/dashboard/profile/my-profile/profile-meta",
-    "routes/profile/my-profile/profile-meta/profile-meta.tsx",
-    {
-      id: "dashboard-profileMeta",
-    },
-  ),
-  route(
-    ":lang?/dashboard/profile/my-profile/profile-meta/confirm-personal-email",
-    "routes/profile/my-profile/profile-meta/confirm-personal-email/confirm-personal-email.tsx",
-    {
-      id: "dashboard-confirmPersonalEmail",
-    },
-  ),
-  route(
-    ":lang?/dashboard/profile/my-profile/profile-meta/confirm-personal-phone",
-    "routes/profile/my-profile/profile-meta/confirm-personal-phone/confirm-personal-phone.tsx",
-    {
-      id: "dashboard-confirmPersonalPhone",
-    },
-  ),
-  route(
-    ":lang?/dashboard/profile/my-profile/user-activities",
-    "routes/profile/my-profile/user-activities/user-activities.tsx",
-    {
-      id: "dashboard-userActivities",
-    },
-  ),
-  route(
-    ":lang?/dashboard/profile/my-profile/billing",
-    "routes/profile/my-profile/billing/billing.tsx",
-    {
-      id: "dashboard-billing",
-    },
-  ),
-  route(
-    ":lang?/dashboard/profile/my-profile/billing/billing-add",
-    "routes/profile/my-profile/billing/billing-add/billing-add.tsx",
-    {
-      id: "dashboard-billingAdd",
-    },
-  ),
-  route(
-    ":lang?/dashboard/profile/my-profile/billing/billing-edit",
-    "routes/profile/my-profile/billing/billing-edit/billing-edit.tsx",
-    {
-      id: "dashboard-billingEdit",
-    },
-  ),
-  route(
-    ":lang?/dashboard/profile/my-profile/work-radius",
-    "routes/profile/my-profile/work-radius/work-radius.tsx",
-    {
-      id: "dashboard-workRadius",
-    },
-  ),
-  route(
-    ":lang?/dashboard/profile/documents",
-    "routes/profile/documents/documents.tsx",
-    {
-      id: "dashboard-documents",
-    },
-  ),
-  route(
-    ":lang?/dashboard/profile/requests",
-    "routes/profile/requests/requests.tsx",
-    {
-      id: "dashboard-requests",
-    },
-  ),
-  route(
-    ":lang?/dashboard/profile/settings",
-    "routes/profile/settings/settings.tsx",
-    {
-      id: "dashboard-settings",
-    },
-  ),
-  route(
-    ":lang?/dashboard/profile/documents/sign",
-    "routes/profile/documents/sign/sign.tsx",
-    {
-      id: "dashboard-sign",
-    },
-  ),
-  route(
-    ":lang?/dashboard/profile/documents/sign-a-deal",
-    "routes/profile/documents/sign-a-deal/sign-a-deal.tsx",
-    {
-      id: "dashboard-signADeal",
-    },
-  ),
-  route(
-    ":lang?/dashboard/profile/documents/terminate-a-deal",
-    "routes/profile/documents/terminate-a-deal/terminate-a-deal.tsx",
-    {
-      id: "dashboard-terminateADeal",
-    },
-  ),
-  route(
-    ":lang?/dashboard/profile/documents/archive",
-    "routes/profile/documents/archive/archive.tsx",
-    {
-      id: "dashboard-archive",
-    },
-  ),
-  route(
-    ":lang?/dashboard/profile/documents/certificates",
-    "routes/profile/documents/certificates/certificates.tsx",
-    {
-      id: "dashboard-certificates",
-    },
-  ),
-
-  route(":lang?/dashboard/users", "routes/users/clients/clients.tsx", {
-    id: "dashboard-users",
-  }),
-  route(
-    ":lang?/dashboard/users/managers",
-    "routes/users/managers/managers.tsx",
-    {
-      id: "dashboard-managers",
-    },
-  ),
-  route(
-    ":lang?/dashboard/users/supervisors",
-    "routes/users/supervisors/supervisors.tsx",
-    {
-      id: "dashboard-supervisors",
-    },
-  ),
-
-  route(
-    ":lang?/dashboard/users/client/:user",
-    "routes/users/clients/client/client.tsx",
-    {
-      id: "dashboard-client",
-    },
-  ),
-  route(
-    ":lang?/dashboard/users/manager/:user",
-    "routes/users/managers/manager/manager.tsx",
-    {
-      id: "dashboard-manager",
-    },
-  ),
-  route(
-    ":lang?/dashboard/users/supervisor/:user",
-    "routes/users/supervisors/supervisor/supervisor.tsx",
-    {
-      id: "dashboard-supervisor",
-    },
-  ),
 
   //signin
   layout("shared/layouts/SigninLayout/SigninLayout.tsx", [
