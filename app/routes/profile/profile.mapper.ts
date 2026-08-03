@@ -12,16 +12,11 @@ export class ProfileMapper {
     data: GetDataSuccess,
     userRole: ProfileData["userRole"],
   ): ProfileData {
-    console.error(
-      'api:getData/file:profileMapper.ts - необходимо добавить поле "errorData" для сохранения функционала показа уведомлений',
-    );
-
     return {
       avatarUrl: data.data.logo ? data.data.logo : "",
       displayName: data.data.name,
       userRole: userRole,
-      // hasProfileErrors: Boolean(data.data.errorData),
-      hasProfileErrors: false,
+      hasProfileErrors: Boolean(data.data.errorData),
     };
   }
 }

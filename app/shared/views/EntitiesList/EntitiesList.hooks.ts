@@ -3,14 +3,11 @@ import { useDebounce } from "~/shared/debounce";
 
 import { eachDayOfInterval, isWithinInterval } from "date-fns";
 
-import type {
-  DashboardListViewInterface,
-  Entity,
-} from "./EntitesListInterface";
+import type { EntitiesListInterface, Entity } from "./EntitesListInterface";
 
 export const useEntitiesList = (
   entities: Entity[],
-  sort: DashboardListViewInterface["sorting"],
+  sort: EntitiesListInterface["sorting"],
 ) => {
   const filteredEntities = useMemo(() => {
     //сортировка
@@ -51,7 +48,7 @@ export const useEntitiesList = (
     }
   });
   const [sorting, setSorting] =
-    useState<DashboardListViewInterface["sorting"]>(sort);
+    useState<EntitiesListInterface["sorting"]>(sort);
 
   const [search, setSearch] = useState<string>("");
   const [debouncedSearch, _setter] = useState<string>("");
@@ -65,115 +62,135 @@ export const useEntitiesList = (
   });
 
   //сортировки
-  if (sorting === "ascending") {
-    const emptyDurationEntities = filteredEntities[filter].filter(
-      (item) => item.duration.start === null && item.duration.end === null,
-    );
-    const notEmptyDurationEntities = filteredEntities[filter].filter(
-      (item) => item.duration.start !== null && item.duration.end !== null,
-    );
 
-    notEmptyDurationEntities.sort(
-      (a, b) =>
-        new Date(a.duration.start as string).valueOf() -
-        new Date(b.duration.start as string).valueOf(),
-    );
-
-    //составляем уникальные дни
-    if (notEmptyDurationEntities.length > 0) {
-      days.clear();
-
-      notEmptyDurationEntities.forEach((entity) => {
-        const interval = eachDayOfInterval({
-          start: new Date(entity.duration.start as string).setHours(0, 0, 0, 0),
-          end: new Date(entity.duration.end as string).setHours(0, 0, 0, 0),
-        });
-
-        interval.forEach((day) => {
-          days.add(day.toISOString());
-        });
-      });
-    }
-    //составляем уникальные дни
-
-    if (selectedDay !== "") {
-      activeEntities = notEmptyDurationEntities.filter((item) =>
-        isWithinInterval(selectedDay.setHours(0, 0, 0, 0), {
-          start: new Date(item.duration.start as string).setHours(0, 0, 0, 0),
-          end: new Date(item.duration.end as string).setHours(0, 0, 0, 0),
-        }),
+  if (filteredEntities[filter].length > 0) {
+    if (sorting === "ascending") {
+      const emptyDurationEntities = filteredEntities[filter].filter(
+        (item) => item.duration.start === null && item.duration.end === null,
       );
-    } else {
-      activeEntities = [...emptyDurationEntities, ...notEmptyDurationEntities];
-    }
-    if (debouncedSearch !== "") {
-      const currentFieldValue = new RegExp(`${debouncedSearch}`, "i");
-
-      activeEntities = [
-        ...activeEntities.filter(
-          (item) => item.id.toString() === debouncedSearch,
-        ),
-        ...activeEntities.filter((item) =>
-          currentFieldValue.test(item.address.text),
-        ),
-      ];
-    }
-  } else if (sorting === "descending") {
-    const emptyDurationEntities = filteredEntities[filter].filter(
-      (item) => item.duration.start === null && item.duration.end === null,
-    );
-
-    const notEmptyDurationEntities = filteredEntities[filter].filter(
-      (item) => item.duration.start !== null && item.duration.end !== null,
-    );
-
-    notEmptyDurationEntities.sort(
-      (a, b) =>
-        new Date(b.duration.start as string).valueOf() -
-        new Date(a.duration.start as string).valueOf(),
-    );
-
-    //составляем уникальные дни
-    if (notEmptyDurationEntities.length > 0) {
-      days.clear();
-
-      notEmptyDurationEntities.forEach((entity) => {
-        const interval = eachDayOfInterval({
-          start: new Date(entity.duration.start as string).setHours(0, 0, 0, 0),
-          end: new Date(entity.duration.end as string).setHours(0, 0, 0, 0),
-        });
-
-        interval.forEach((day) => {
-          days.add(day.toISOString());
-        });
-      });
-    }
-
-    //составляем уникальные дни
-
-    if (selectedDay !== "") {
-      activeEntities = notEmptyDurationEntities.filter((item) =>
-        isWithinInterval(selectedDay.setHours(0, 0, 0, 0), {
-          start: new Date(item.duration.start as string).setHours(0, 0, 0, 0),
-          end: new Date(item.duration.end as string).setHours(0, 0, 0, 0),
-        }),
+      const notEmptyDurationEntities = filteredEntities[filter].filter(
+        (item) => item.duration.start !== null && item.duration.end !== null,
       );
-    } else {
-      activeEntities = [...emptyDurationEntities, ...notEmptyDurationEntities];
-    }
-    if (debouncedSearch !== "") {
-      const currentFieldValue = new RegExp(`${debouncedSearch}`, "i");
 
-      activeEntities = [
-        ...activeEntities.filter(
-          (item) => item.id.toString() === debouncedSearch,
-        ),
-        ...activeEntities.filter((item) =>
-          currentFieldValue.test(item.address.text),
-        ),
-      ];
+      notEmptyDurationEntities.sort(
+        (a, b) =>
+          new Date(a.duration.start as string).valueOf() -
+          new Date(b.duration.start as string).valueOf(),
+      );
+
+      //составляем уникальные дни
+      if (notEmptyDurationEntities.length > 0) {
+        days.clear();
+
+        notEmptyDurationEntities.forEach((entity) => {
+          const interval = eachDayOfInterval({
+            start: new Date(entity.duration.start as string).setHours(
+              0,
+              0,
+              0,
+              0,
+            ),
+            end: new Date(entity.duration.end as string).setHours(0, 0, 0, 0),
+          });
+
+          interval.forEach((day) => {
+            days.add(day.toISOString());
+          });
+        });
+      }
+      //составляем уникальные дни
+
+      if (selectedDay !== "") {
+        activeEntities = notEmptyDurationEntities.filter((item) =>
+          isWithinInterval(selectedDay.setHours(0, 0, 0, 0), {
+            start: new Date(item.duration.start as string).setHours(0, 0, 0, 0),
+            end: new Date(item.duration.end as string).setHours(0, 0, 0, 0),
+          }),
+        );
+      } else {
+        activeEntities = [
+          ...emptyDurationEntities,
+          ...notEmptyDurationEntities,
+        ];
+      }
+      if (debouncedSearch !== "") {
+        const currentFieldValue = new RegExp(`${debouncedSearch}`, "i");
+
+        activeEntities = [
+          ...activeEntities.filter(
+            (item) => item.id.toString() === debouncedSearch,
+          ),
+          ...activeEntities.filter((item) =>
+            currentFieldValue.test(item.address.text),
+          ),
+        ];
+      }
+    } else if (sorting === "descending") {
+      const emptyDurationEntities = filteredEntities[filter].filter(
+        (item) => item.duration.start === null && item.duration.end === null,
+      );
+
+      const notEmptyDurationEntities = filteredEntities[filter].filter(
+        (item) => item.duration.start !== null && item.duration.end !== null,
+      );
+
+      notEmptyDurationEntities.sort(
+        (a, b) =>
+          new Date(b.duration.start as string).valueOf() -
+          new Date(a.duration.start as string).valueOf(),
+      );
+
+      //составляем уникальные дни
+      if (notEmptyDurationEntities.length > 0) {
+        days.clear();
+
+        notEmptyDurationEntities.forEach((entity) => {
+          const interval = eachDayOfInterval({
+            start: new Date(entity.duration.start as string).setHours(
+              0,
+              0,
+              0,
+              0,
+            ),
+            end: new Date(entity.duration.end as string).setHours(0, 0, 0, 0),
+          });
+
+          interval.forEach((day) => {
+            days.add(day.toISOString());
+          });
+        });
+      }
+
+      //составляем уникальные дни
+
+      if (selectedDay !== "") {
+        activeEntities = notEmptyDurationEntities.filter((item) =>
+          isWithinInterval(selectedDay.setHours(0, 0, 0, 0), {
+            start: new Date(item.duration.start as string).setHours(0, 0, 0, 0),
+            end: new Date(item.duration.end as string).setHours(0, 0, 0, 0),
+          }),
+        );
+      } else {
+        activeEntities = [
+          ...emptyDurationEntities,
+          ...notEmptyDurationEntities,
+        ];
+      }
+      if (debouncedSearch !== "") {
+        const currentFieldValue = new RegExp(`${debouncedSearch}`, "i");
+
+        activeEntities = [
+          ...activeEntities.filter(
+            (item) => item.id.toString() === debouncedSearch,
+          ),
+          ...activeEntities.filter((item) =>
+            currentFieldValue.test(item.address.text),
+          ),
+        ];
+      }
     }
   }
+
   //сортировки
 
   return {

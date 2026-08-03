@@ -114,44 +114,49 @@ export const getDataSuccessSchema = z.object({
     notification_start: z.number(),
     confirmRegister: z.boolean(),
     finishRegister: z.boolean(),
-    userManager: z.array(z.object({
-      id: z.number(),
-      email: z.string(),
-      phone: z.number(),
-      name: z.string(),
-      logo: z.string(),
-      roles: z.array(
-        z.object({
-          id: z.number().gte(1).lte(6),
-          name: z.enum([
-            "admin",
-            "manager",
-            "supervisor",
-            "client",
-            "specialist",
-          ]),
-        }),
-      ),
-    })),
-    userSupervisors: z.array(z.object({
-      id: z.number(),
-      email: z.string(),
-      phone: z.number(),
-      name: z.string(),
-      logo: z.string(),
-      roles: z.array(
-        z.object({
-          id: z.number().gte(1).lte(6),
-          name: z.enum([
-            "admin",
-            "manager",
-            "supervisor",
-            "client",
-            "specialist",
-          ]),
-        }),
-      ),
-    })),
+    userManager: z.array(
+      z.object({
+        id: z.number(),
+        email: z.string(),
+        phone: z.number(),
+        name: z.string(),
+        logo: z.string(),
+        roles: z.array(
+          z.object({
+            id: z.number().gte(1).lte(6),
+            name: z.enum([
+              "admin",
+              "manager",
+              "supervisor",
+              "client",
+              "specialist",
+            ]),
+          }),
+        ),
+      }),
+    ),
+    userSupervisors: z.array(
+      z.object({
+        id: z.number(),
+        email: z.string(),
+        phone: z.number(),
+        name: z.string(),
+        logo: z.string(),
+        roles: z.array(
+          z.object({
+            id: z.number().gte(1).lte(6),
+            name: z.enum([
+              "admin",
+              "manager",
+              "supervisor",
+              "client",
+              "specialist",
+            ]),
+          }),
+        ),
+      }),
+    ),
+    errorData: z.union([z.string(), z.null()]),
   }),
 });
 
