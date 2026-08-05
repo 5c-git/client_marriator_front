@@ -77,8 +77,10 @@ export async function clientLoader({ params }: Route.ClientLoaderArgs) {
     }
   }
 
-  activities = await activityService.getActivitiesOptions(entityId);
-  locations = await activityService.getLocationsOptions(entityId);
+  if (setting_canEdit == true) {
+    activities = await activityService.getActivitiesOptions(entityId);
+    locations = await activityService.getLocationsOptions(entityId);
+  }
 
   const intervalDayStart = await activityService.getSetting("intervalDayStart");
   const intervalDayEnd = await activityService.getSetting("intervalDayEnd");
