@@ -79,7 +79,7 @@ export default function NewOrderMobileView(props: NewOrderMobileViewInterface) {
         }}
       >
         <form
-          onSubmit={handleSubmit((values) => {})}
+          onSubmit={handleSubmit(() => {})}
           style={{
             display: "grid",
             rowGap: "14px",

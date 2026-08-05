@@ -156,7 +156,7 @@ export const getDataSuccessSchema = z.object({
         ),
       }),
     ),
-    errorData: z.union([z.string(), z.null()]),
+    errorData: z.array(z.unknown()),
   }),
 });
 

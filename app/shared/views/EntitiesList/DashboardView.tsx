@@ -468,17 +468,49 @@ export function DashboardView(props: EntitiesListInterface) {
           </Box>
         </>
       ) : (
-        <Typography
-          component="p"
-          variant="Reg_14"
-          sx={(theme) => ({
-            color: theme.vars.palette["Black"],
-            textAlign: "center",
-            marginTop: "100px",
-          })}
+        <Box
+          sx={{
+            display: "flex",
+            alignItems: "flex-start",
+            flexGrow: 1,
+            minHeight: "0px",
+          }}
         >
-          {t(`${props.translation}.emptyHeader`)}
-        </Typography>
+          <Box
+            sx={{
+              height: "100%",
+              width: "420px",
+              overflowY: "auto",
+              scrollbarWidth: "none",
+            }}
+          >
+            <Typography
+              component="p"
+              variant="Reg_14"
+              sx={(theme) => ({
+                color: theme.vars.palette["Black"],
+                textAlign: "center",
+                marginTop: "100px",
+              })}
+            >
+              {t(`${props.translation}.emptyHeader`)}
+            </Typography>
+          </Box>
+          <Box
+            sx={{
+              position: "relative",
+              display: "flex",
+              flexDirection: "column",
+              flexGrow: 1,
+              height: "100%",
+              overflowY: "auto",
+              maxWidth: "600px",
+              margin: "0 auto",
+            }}
+          >
+            <Outlet />
+          </Box>
+        </Box>
       )}
     </>
   );

@@ -32,7 +32,7 @@ export const useEntitiesList = (
 
       return filteredEntites;
     } else {
-      return [];
+      return {};
     }
   }, [entities]);
 
@@ -62,8 +62,10 @@ export const useEntitiesList = (
   });
 
   //сортировки
-
-  if (filteredEntities[filter].length > 0) {
+  if (
+    Object.keys(filteredEntities).length > 0 &&
+    filteredEntities[filter].length > 0
+  ) {
     if (sorting === "ascending") {
       const emptyDurationEntities = filteredEntities[filter].filter(
         (item) => item.duration.start === null && item.duration.end === null,

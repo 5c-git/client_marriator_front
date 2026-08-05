@@ -155,7 +155,7 @@ const createBidFormSchema = (
 
       //проверяем что дата конца не раньше даты старта
       const result = compareAsc(dateStart, dateEnd);
-      if (result >= 0) {
+      if (result > 0) {
         ctx.addIssue({
           code: "custom",
           message: t("lessThanStartDate", { ns: "constructorFields" }),
@@ -176,8 +176,8 @@ const createBidFormSchema = (
       ) {
         ctx.addIssue({
           code: "custom",
-          message: t("service.laterThanDefaultError", {
-            ns: "ServiceMobileView",
+          message: t("laterThanDefaultError", {
+            ns: "constructorFields",
           }),
           input: values.dateEnd,
           path: ["dateEnd"],
@@ -195,8 +195,8 @@ const createBidFormSchema = (
       ) {
         ctx.addIssue({
           code: "custom",
-          message: t("service.earlierThanDefaultError", {
-            ns: "ServiceMobileView",
+          message: t("earlierThanDefaultError", {
+            ns: "constructorFields",
           }),
           input: values.dateStart,
           path: ["dateStart"],
@@ -214,7 +214,7 @@ const createBidFormSchema = (
 
         //проверяем что дата конца не раньше даты старта
         const result = compareAsc(day.timeStart, day.timeEnd);
-        if (result >= 0) {
+        if (result > 0) {
           ctx.addIssue({
             code: "custom",
             message: t("moreThanEndDate", { ns: "constructorFields" }),
@@ -241,12 +241,13 @@ const createBidFormSchema = (
           ctx.addIssue({
             code: "custom",
             message: t("earlierThanDefaultError", {
-              ns: "BidMobileView",
+              ns: "constructorFields",
             }),
             input: values.days[index],
             path: [`days.${index}.timeStart`],
           });
-        } else if (
+        }
+        if (
           isAfter(
             day.timeEnd,
             set(day.timeEnd, {
@@ -258,7 +259,7 @@ const createBidFormSchema = (
           ctx.addIssue({
             code: "custom",
             message: t("laterThanDefaultError", {
-              ns: "BidMobileView",
+              ns: "constructorFields",
             }),
             input: values.days[index],
             path: [`days.${index}.timeEnd`],
@@ -266,11 +267,11 @@ const createBidFormSchema = (
         }
 
         if (isStartDay) {
-          if (isBefore(day.timeStart, startDate)) {
+          if (isBefore(day.timeStart, dateStart)) {
             ctx.addIssue({
               code: "custom",
               message: t("earlierThanDefaultError", {
-                ns: "BidMobileView",
+                ns: "constructorFields",
               }),
               input: values.days[index],
               path: [`days.${index}.timeStart`],
@@ -289,7 +290,7 @@ const createBidFormSchema = (
             ctx.addIssue({
               code: "custom",
               message: t("laterThanDefaultError", {
-                ns: "BidMobileView",
+                ns: "constructorFields",
               }),
               input: values.days[index],
               path: [`days.${index}.timeEnd`],
@@ -300,13 +301,12 @@ const createBidFormSchema = (
             ctx.addIssue({
               code: "custom",
               message: t("laterThanDefaultError", {
-                ns: "BidMobileView",
+                ns: "constructorFields",
               }),
               input: values.days[index],
               path: [`days.${index}.timeEnd`],
             });
           }
-
           if (
             isBefore(
               day.timeStart,
@@ -319,7 +319,7 @@ const createBidFormSchema = (
             ctx.addIssue({
               code: "custom",
               message: t("earlierThanDefaultError", {
-                ns: "BidMobileView",
+                ns: "constructorFields",
               }),
               input: values.days[index],
               path: [`days.${index}.timeStart`],
@@ -889,8 +889,8 @@ export function BidFormMobileView(props: BidFormMobileViewInterface) {
                     startIcon={<CalendarIcon />}
                     onClick={() => {
                       prepend({
-                        timeStart: props.entity.dateStart,
-                        timeEnd: set(props.entity.dateStart, {
+                        timeStart: startDate,
+                        timeEnd: set(startDate, {
                           hours: props.defaultTimeRange.end.getHours(),
                           minutes: 0,
                         }),
@@ -1010,10 +1010,6 @@ export function BidFormMobileView(props: BidFormMobileViewInterface) {
                             control={control}
                             render={({ field }) => (
                               <TimeField
-                                // minTime={field.value}
-                                // maxTime={set(field.value, {
-                                //   hours: 21,
-                                // })}
                                 placeholder={t("timeStartPlaceholder")}
                                 {...field}
                                 error={(() => {
@@ -1042,10 +1038,6 @@ export function BidFormMobileView(props: BidFormMobileViewInterface) {
                             control={control}
                             render={({ field }) => (
                               <TimeField
-                                // minTime={set(field.value, {
-                                //   hours: 9,
-                                // })}
-                                // maxTime={field.value}
                                 placeholder={t("timeEndPlaceholder")}
                                 error={(() => {
                                   const daysErrors = errors.days;
@@ -1084,6 +1076,13 @@ export function BidFormMobileView(props: BidFormMobileViewInterface) {
                                 onImmediateChange={() => {}}
                                 validation="none"
                                 value={field.value as boolean}
+                                onChange={(evt) => {
+                                  if (evt.target.value === "true") {
+                                    setValue(`days.${index}.locations`, []);
+                                  }
+
+                                  field.onChange(evt);
+                                }}
                               />
 
                               {errors.days ? (
@@ -1215,6 +1214,7 @@ export function BidFormMobileView(props: BidFormMobileViewInterface) {
                     </Box>
                   </S_AccordionDetails>
                 </S_Accordion>
+
                 {(() => {
                   const endDate = getValues("dateEnd") as Date;
 

@@ -13,7 +13,6 @@ import type { AppService } from "~/shared/container/container.service";
 
 import { PhoneMapper } from "./phone.mapper";
 
-
 export type PhoneData = {
   userPhone: string;
 };
@@ -33,7 +32,8 @@ export class PhoneService {
   ) {}
 
   async loadPhone(hash: string): Promise<PhoneData> {
-    const userData = await this.getUserByHash(this.appService.getToken(), hash);
+    // const userData = await this.getUserByHash(this.appService.getToken(), hash);
+    const userData = await this.getUserByHash("token", hash);
 
     if ("error" in userData) {
       throw new Error(userData.error);
@@ -48,13 +48,13 @@ export class PhoneService {
 
   async submitPhone(phone: string): Promise<SubmitPhoneResult> {
     this.setUserPhone(phone);
-  
+
     const data = await this.sendPhone(phone);
-  
+
     if (data.result.type === "moderation") {
       return { type: "moderation" };
     }
-  
+
     if (data.status === "error") {
       return {
         type: "sms",
@@ -62,7 +62,7 @@ export class PhoneService {
         smsType: data.result.type,
       };
     }
-  
+
     if (data.result.code.status === "success") {
       return {
         type: "sms",
@@ -70,7 +70,7 @@ export class PhoneService {
         smsType: data.result.type,
       };
     }
-  
+
     return { type: "error" };
   }
 }

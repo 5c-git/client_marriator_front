@@ -794,10 +794,6 @@ export function ActivityFormMobileView(props: ActivityFormMobileViewInterface) {
                           control={control}
                           render={({ field }) => (
                             <TimeField
-                              // minTime={field.value}
-                              // maxTime={set(field.value, {
-                              //   hours: 21,
-                              // })}
                               placeholder={t(
                                 `${props.translation}.fields.startClockPlaceholder`,
                               )}
@@ -827,10 +823,6 @@ export function ActivityFormMobileView(props: ActivityFormMobileViewInterface) {
                           control={control}
                           render={({ field }) => (
                             <TimeField
-                              // minTime={set(field.value, {
-                              //   hours: 9,
-                              // })}
-                              // maxTime={field.value}
                               placeholder={t(
                                 `${props.translation}.fields.endClockPlaceholder`,
                               )}
