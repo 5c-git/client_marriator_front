@@ -21,7 +21,7 @@ export default [
       route(":taskId/service/:serviceId?", "routes/activity/activity.tsx", {
         id: "dashboard-task-service",
       }),
-      route("/new-task/:taskId", "routes/tasks/new-task/new-task.tsx", {
+      route("new-task/:taskId", "routes/tasks/new-task/new-task.tsx", {
         id: "dashboard-new-task",
       }),
     ]),
