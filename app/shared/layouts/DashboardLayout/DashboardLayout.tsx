@@ -1,5 +1,5 @@
 import { Outlet } from "react-router";
-import type { Route } from "./+types/DashboardMenu";
+import type { Route } from "./+types/DashboardLayout";
 
 import { useState } from "react";
 import type { ComponentPropsWithoutRef } from "react";
@@ -15,7 +15,7 @@ import {
   BottomNavigation,
   BottomNavigationAction,
 } from "@mui/material";
-import { StyledDrawer } from "./DashboardMenu.styled";
+import { StyledDrawer } from "./DashboardLayout.styled";
 import { DashboardItem } from "./_components/DashboardItem";
 
 import ViewSidebarRoundedIcon from "@mui/icons-material/ViewSidebarRounded";
@@ -27,11 +27,14 @@ import { ProfileIcon } from "~/shared/ui/Menu/icons/ProfileIcon";
 
 import { appContainer } from "~/shared/container/container";
 import { appTokens } from "~/shared/container/container.tokens";
-import { UsersIcon } from "~/shared/ui/Menu/icons/UsersIcon";
 import { WalletIcon } from "~/shared/ui/Menu/icons/WalletIcon";
+import ArrowDropUpIcon from "@mui/icons-material/ArrowDropUp";
+import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
+import KeyboardDoubleArrowUpIcon from "@mui/icons-material/KeyboardDoubleArrowUp";
 
 export async function clientLoader() {
   await loadNamespaces("m_layout_home");
+  await loadNamespaces("m_layout_moderation");
 
   const appSerivce = appContainer.get(appTokens.appService);
   const userRole = appSerivce.getUserRole();
@@ -102,14 +105,56 @@ export async function clientLoader() {
       ],
       specialist: [],
     },
-    menu: {
+    moderationMenu: {
       admin: [
         {
-          icon: <UsersIcon style={{ width: "18px", height: "18px" }} />,
-          label: t("menu.moderation", { ns: "m_layout_home" }),
-          to: withLocale("/dashboard/users"),
-          key: "Moderation",
+          icon: (
+            <KeyboardDoubleArrowUpIcon sx={{ width: "18px", height: "18px" }} />
+          ),
+          label: t("tabs.manager", { ns: "m_layout_moderation" }),
+          to: withLocale("/dashboard/moderation/managers"),
+          key: "managers",
         },
+        {
+          icon: <KeyboardArrowUpIcon sx={{ width: "18px", height: "18px" }} />,
+          label: t("tabs.supervisor", { ns: "m_layout_moderation" }),
+          to: withLocale("/dashboard/moderation/supervisors"),
+          key: "supervisors",
+        },
+        {
+          icon: <ArrowDropUpIcon sx={{ width: "18px", height: "18px" }} />,
+          label: t("tabs.client", { ns: "m_layout_moderation" }),
+          to: withLocale("/dashboard/moderation/clients"),
+          key: "clients",
+        },
+      ],
+      manager: [
+        {
+          icon: <KeyboardArrowUpIcon sx={{ width: "18px", height: "18px" }} />,
+          label: t("tabs.supervisor", { ns: "m_layout_moderation" }),
+          to: withLocale("/dashboard/moderation/supervisors"),
+          key: "supervisors",
+        },
+        {
+          icon: <ArrowDropUpIcon sx={{ width: "18px", height: "18px" }} />,
+          label: t("tabs.client", { ns: "m_layout_moderation" }),
+          to: withLocale("/dashboard/moderation/clients"),
+          key: "clients",
+        },
+      ],
+      supervisor: [
+        {
+          icon: <ArrowDropUpIcon sx={{ width: "18px", height: "18px" }} />,
+          label: t("tabs.client", { ns: "m_layout_moderation" }),
+          to: withLocale("/dashboard/moderation/clients"),
+          key: "clients",
+        },
+      ],
+      client: [],
+      specialist: [],
+    },
+    menu: {
+      admin: [
         {
           icon: <ProfileIcon style={{ width: "18px", height: "18px" }} />,
           label: t("menu.profile", { ns: "m_layout_home" }),
@@ -119,12 +164,6 @@ export async function clientLoader() {
       ],
       manager: [
         {
-          icon: <UsersIcon style={{ width: "18px", height: "18px" }} />,
-          label: t("menu.moderation", { ns: "m_layout_home" }),
-          to: withLocale("/dashboard/users"),
-          key: "Moderation",
-        },
-        {
           icon: <ProfileIcon style={{ width: "18px", height: "18px" }} />,
           label: t("menu.profile", { ns: "m_layout_home" }),
           to: withLocale("/dashboard/profile"),
@@ -132,12 +171,6 @@ export async function clientLoader() {
         },
       ],
       supervisor: [
-        {
-          icon: <UsersIcon style={{ width: "18px", height: "18px" }} />,
-          label: t("menu.moderation", { ns: "m_layout_home" }),
-          to: withLocale("/dashboard/users"),
-          key: "Moderation",
-        },
         {
           icon: <ProfileIcon style={{ width: "18px", height: "18px" }} />,
           label: t("menu.profile", { ns: "m_layout_home" }),
@@ -179,7 +212,7 @@ export async function clientLoader() {
   };
 }
 
-export default function DashboardMenu({ loaderData }: Route.ComponentProps) {
+export default function DashboardLayout({ loaderData }: Route.ComponentProps) {
   const [open, setOpen] = useState(true);
 
   return (
@@ -260,6 +293,61 @@ export default function DashboardMenu({ loaderData }: Route.ComponentProps) {
               }}
             >
               {loaderData.entitiesMenu[loaderData["userRole"]].map(
+                (
+                  item: Omit<
+                    ComponentPropsWithoutRef<typeof DashboardItem>,
+                    "showDetails"
+                  >,
+                ) => (
+                  <BottomNavigationAction
+                    key={item.key}
+                    component={() => (
+                      <DashboardItem
+                        key={item.key}
+                        icon={item.icon}
+                        label={item.label}
+                        to={item.to}
+                        showDetails={open}
+                        {...(item.count ? { count: item.count } : {})}
+                        {...(item.notification
+                          ? { notification: item.notification }
+                          : {})}
+                        {...(item.disabled ? { disabled: item.disabled } : {})}
+                      />
+                    )}
+                  />
+                ),
+              )}
+            </BottomNavigation>
+            <Divider />
+          </>
+        ) : null}
+
+        {loaderData.moderationMenu[loaderData["userRole"]].length > 0 ? (
+          <>
+            <BottomNavigation
+              sx={{
+                justifyContent: "flex-start",
+                flexDirection: "column",
+                height: "unset",
+                padding: "10px",
+              }}
+            >
+              {open ? (
+                <Typography
+                  component="p"
+                  variant="Bold_12"
+                  sx={(theme) => ({
+                    paddingLeft: "12px",
+                    paddingRight: "12px",
+                    color: theme.vars.palette["Grey_1"],
+                  })}
+                >
+                  {t("header", { ns: "m_layout_moderation" })}
+                </Typography>
+              ) : null}
+
+              {loaderData.moderationMenu[loaderData["userRole"]].map(
                 (
                   item: Omit<
                     ComponentPropsWithoutRef<typeof DashboardItem>,

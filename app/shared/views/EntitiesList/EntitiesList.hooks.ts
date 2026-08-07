@@ -192,7 +192,6 @@ export const useEntitiesList = (
       }
     }
   }
-
   //сортировки
 
   return {

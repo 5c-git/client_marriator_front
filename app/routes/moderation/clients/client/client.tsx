@@ -39,7 +39,7 @@ export async function clientAction({ request }: Route.ClientActionArgs) {
     payload._action === CLIENT_ACTIONS.confirm ||
     payload._action === CLIENT_ACTIONS.decline
   ) {
-    throw redirect(withLocale("/users"));
+    throw redirect(withLocale("/moderation/clients"));
   }
 }
 
@@ -55,7 +55,7 @@ export default function Client({ loaderData }: Route.ComponentProps) {
       <ClientView
         data={loaderData}
         onBack={() => {
-          navigate(withLocale("/users"), { viewTransition: true });
+          navigate(withLocale("/moderation/clients"), { viewTransition: true });
         }}
         onSubmit={(values) => {
           submit(
@@ -93,11 +93,11 @@ export default function Client({ loaderData }: Route.ComponentProps) {
         }}
         onProjectSelect={() => {
           navigate(
-            withLocale(`/users/${loaderData.client.id}/select-projects`),
+            withLocale(`/moderation/${loaderData.client.id}/select-projects`),
             {
               viewTransition: true,
               state: {
-                from: `/users/client/${loaderData.client.id}`,
+                from: `/moderation/clients/${loaderData.client.id}`,
               },
             },
           );
@@ -113,11 +113,11 @@ export default function Client({ loaderData }: Route.ComponentProps) {
         }}
         onLocationSelect={() => {
           navigate(
-            withLocale(`/users/${loaderData.client.id}/select-locations`),
+            withLocale(`/moderation/${loaderData.client.id}/select-locations`),
             {
               viewTransition: true,
               state: {
-                from: `/users/client/${loaderData.client.id}`,
+                from: `/moderation/clients/${loaderData.client.id}`,
               },
             },
           );

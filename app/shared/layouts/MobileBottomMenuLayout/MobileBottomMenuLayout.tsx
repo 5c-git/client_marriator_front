@@ -1,5 +1,5 @@
 import { Outlet } from "react-router";
-import type { Route } from "./+types/MenuLayout";
+import type { Route } from "./+types/MobileBottomMenuLayout";
 
 import Stack from "@mui/material/Stack";
 import { Menu } from "~/shared/ui/Menu/Menu";
@@ -15,7 +15,7 @@ import { appTokens } from "~/shared/container/container.tokens";
 const linksMap = {
   admin: [
     {
-      to: "/users",
+      to: "/moderation/clients",
       notification: false,
       disabled: false,
       icon: <UsersIcon sx={{ width: "30px", height: "30px" }} />,
@@ -35,7 +35,7 @@ const linksMap = {
       icon: <ListIcon sx={{ width: "30px", height: "30px" }} />,
     },
     {
-      to: "/users",
+      to: "/moderation/clients",
       notification: false,
       disabled: false,
       icon: <UsersIcon sx={{ width: "30px", height: "30px" }} />,
@@ -55,7 +55,7 @@ const linksMap = {
       icon: <ListIcon sx={{ width: "30px", height: "30px" }} />,
     },
     {
-      to: "/users",
+      to: "/moderation/clients",
       notification: false,
       disabled: false,
       icon: <UsersIcon sx={{ width: "30px", height: "30px" }} />,
@@ -116,7 +116,9 @@ export async function clientLoader() {
   return linksMap[userRole];
 }
 
-export default function MenuLayout({ loaderData }: Route.ComponentProps) {
+export default function MobileBottomMenuLayout({
+  loaderData,
+}: Route.ComponentProps) {
   return (
     <Stack
       sx={{

@@ -3,9 +3,8 @@ import { useRef, useState } from "react";
 import type { Route } from "./+types/manager";
 import { withLocale } from "~/shared/withLocale";
 
-import { managerContainer } from "~/routes/users/managers/manager/manager.module";
-import { managerTokens } from "~/routes/users/managers/manager/manager.tokens";
-import type { ManagerActionPayload } from "~/routes/users/managers/manager/manager.service";
+import { managerContainer } from "~/routes/moderation/managers/manager/manager.module";
+import { managerTokens } from "~/routes/moderation/managers/manager/manager.tokens";
 import { ManagerView } from "./_views/ManagerView";
 import { useTranslation } from "react-i18next";
 
@@ -42,7 +41,7 @@ export async function clientAction({ request }: Route.ClientActionArgs) {
     payload._action === MANAGER_ACTIONS.confirm ||
     payload._action === MANAGER_ACTIONS.decline
   ) {
-    throw redirect(withLocale("/users"));
+    throw redirect(withLocale("/moderation/managers"));
   }
 }
 
@@ -62,7 +61,9 @@ export default function Manager({ loaderData }: Route.ComponentProps) {
         data={loaderData}
         ref={formRef}
         onBack={() => {
-          navigate(withLocale("/users/managers"), { viewTransition: true });
+          navigate(withLocale("/moderation/managers"), {
+            viewTransition: true,
+          });
         }}
         onSubmit={(values) => {
           submit(

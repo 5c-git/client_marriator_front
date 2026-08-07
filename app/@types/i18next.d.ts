@@ -73,7 +73,7 @@ import m_orders_order from "../../public/locales/ru/m_orders_order.json";
 import m_orders_newOrder from "../../public/locales/ru/m_orders_newOrder.json";
 
 //layout
-import m_layout_users from "../../public/locales/ru/m_layout_users.json";
+import m_layout_moderation from "../../public/locales/ru/m_layout_moderation.json";
 import m_layout_home from "../../public/locales/ru/m_layout_home.json";
 
 //shared
@@ -175,7 +175,7 @@ declare module "i18next" {
       m_orders_newOrder: typeof m_orders_newOrder;
 
       //layout
-      m_layout_users: typeof m_layout_users;
+      m_layout_moderation: typeof m_layout_moderation;
       m_layout_home: typeof m_layout_home;
 
       //shared

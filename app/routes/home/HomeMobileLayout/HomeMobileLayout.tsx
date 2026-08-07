@@ -1,5 +1,5 @@
 import { Link, Outlet } from "react-router";
-import type { Route } from "./+types/HomeLayout";
+import type { Route } from "./+types/HomeMobileLayout";
 
 import { useTranslation } from "react-i18next";
 import { t, loadNamespaces } from "i18next";
@@ -103,7 +103,7 @@ export async function clientLoader() {
   };
 }
 
-export default function HomeLayout({ loaderData }: Route.ComponentProps) {
+export default function HomeMobileLayout({ loaderData }: Route.ComponentProps) {
   const { t } = useTranslation("m_layout_home");
 
   const view = useStore((state) => state.entitiesView);

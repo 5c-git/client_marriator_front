@@ -2,7 +2,7 @@ import { type RouteConfig, route, layout } from "@react-router/dev/routes";
 
 export default [
   ///////////////////////////DASHBOARD///////////////////////////
-  layout("shared/layouts/DashboardMenu/DashboardMenu.tsx", [
+  layout("shared/layouts/DashboardLayout/DashboardLayout.tsx", [
     route(":lang?/dashboard/orders", "routes/orders/_dashboard/orders.tsx", [
       route(":orderId", "routes/orders/order/order.tsx", {
         id: "dashboard-order",
@@ -193,40 +193,44 @@ export default [
       },
     ),
 
-    route(":lang?/dashboard/users", "routes/users/clients/clients.tsx", {
-      id: "dashboard-users",
-    }),
     route(
-      ":lang?/dashboard/users/managers",
-      "routes/users/managers/managers.tsx",
+      ":lang?/dashboard/moderation/clients",
+      "routes/moderation/clients/clients.tsx",
+      {
+        id: "dashboard-users",
+      },
+    ),
+    route(
+      ":lang?/dashboard/moderation/managers",
+      "routes/moderation/managers/managers.tsx",
       {
         id: "dashboard-managers",
       },
     ),
     route(
-      ":lang?/dashboard/users/supervisors",
-      "routes/users/supervisors/supervisors.tsx",
+      ":lang?/dashboard/moderation/supervisors",
+      "routes/moderation/supervisors/supervisors.tsx",
       {
         id: "dashboard-supervisors",
       },
     ),
     route(
-      ":lang?/dashboard/users/client/:user",
-      "routes/users/clients/client/client.tsx",
+      ":lang?/dashboard/moderation/clients/:user",
+      "routes/moderation/clients/client/client.tsx",
       {
         id: "dashboard-client",
       },
     ),
     route(
-      ":lang?/dashboard/users/manager/:user",
-      "routes/users/managers/manager/manager.tsx",
+      ":lang?/dashboard/moderation/managers/:user",
+      "routes/moderation/managers/manager/manager.tsx",
       {
         id: "dashboard-manager",
       },
     ),
     route(
-      ":lang?/dashboard/users/supervisor/:user",
-      "routes/users/supervisors/supervisor/supervisor.tsx",
+      ":lang?/dashboard/moderation/supervisors/:user",
+      "routes/moderation/supervisors/supervisor/supervisor.tsx",
       {
         id: "dashboard-supervisor",
       },
@@ -364,15 +368,15 @@ export default [
 
   // internal pages without navigation menu
   route(
-    ":lang?/dashboard/users/:user/select-projects",
-    "routes/users/selectProjects/selectProjects.tsx",
+    ":lang?/dashboard/moderation/:user/select-projects",
+    "routes/moderation/selectProjects/selectProjects.tsx",
     {
       id: "dashboard-selectProjects",
     },
   ),
   route(
-    ":lang?/dashboard/users/:user/select-locations",
-    "routes/users/selectLocations/selectLocations.tsx",
+    ":lang?/dashboard/moderation/:user/select-locations",
+    "routes/moderation/selectLocations/selectLocations.tsx",
     {
       id: "dashboard-selectLocations",
     },
@@ -390,8 +394,8 @@ export default [
   ///////////////////////////DASHBOARD///////////////////////////
 
   ///////////////////////////MOBILE///////////////////////////
-  layout("routes/MenuLayout/MenuLayout.tsx", [
-    layout("routes/home/HomeLayout/HomeLayout.tsx", [
+  layout("shared/layouts/MobileBottomMenuLayout/MobileBottomMenuLayout.tsx", [
+    layout("routes/home/HomeMobileLayout/HomeMobileLayout.tsx", [
       route(":lang?/", "routes/home/home.tsx"),
       route(":lang?/orders", "routes/orders/orders.tsx"),
       route(":lang?/tasks", "routes/tasks/tasks.tsx"),
@@ -470,26 +474,35 @@ export default [
       "routes/profile/documents/certificates/certificates.tsx",
     ),
 
-    layout("routes/users/layout/layout.tsx", [
-      route(":lang?/users", "routes/users/clients/clients.tsx"),
-      route(":lang?/users/managers", "routes/users/managers/managers.tsx"),
-      route(
-        ":lang?/users/supervisors",
-        "routes/users/supervisors/supervisors.tsx",
-      ),
-    ]),
+    layout(
+      "routes/moderation/ModerationMobileLayout/ModerationMobileLayout.tsx",
+      [
+        route(
+          ":lang?/moderation/clients",
+          "routes/moderation/clients/clients.tsx",
+        ),
+        route(
+          ":lang?/moderation/managers",
+          "routes/moderation/managers/managers.tsx",
+        ),
+        route(
+          ":lang?/moderation/supervisors",
+          "routes/moderation/supervisors/supervisors.tsx",
+        ),
+      ],
+    ),
 
     route(
-      ":lang?/users/client/:user",
-      "routes/users/clients/client/client.tsx",
+      ":lang?/moderation/clients/:user",
+      "routes/moderation/clients/client/client.tsx",
     ),
     route(
-      ":lang?/users/manager/:user",
-      "routes/users/managers/manager/manager.tsx",
+      ":lang?/moderation/managers/:user",
+      "routes/moderation/managers/manager/manager.tsx",
     ),
     route(
-      ":lang?/users/supervisor/:user",
-      "routes/users/supervisors/supervisor/supervisor.tsx",
+      ":lang?/moderation/supervisors/:user",
+      "routes/moderation/supervisors/supervisor/supervisor.tsx",
     ),
   ]),
 
@@ -543,12 +556,12 @@ export default [
 
   // internal pages without navigation menu
   route(
-    ":lang?/users/:user/select-projects",
-    "routes/users/selectProjects/selectProjects.tsx",
+    ":lang?/moderation/:user/select-projects",
+    "routes/moderation/selectProjects/selectProjects.tsx",
   ),
   route(
-    ":lang?/users/:user/select-locations",
-    "routes/users/selectLocations/selectLocations.tsx",
+    ":lang?/moderation/:user/select-locations",
+    "routes/moderation/selectLocations/selectLocations.tsx",
   ),
 
   //bid

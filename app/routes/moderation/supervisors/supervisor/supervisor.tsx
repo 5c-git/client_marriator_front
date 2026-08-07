@@ -46,7 +46,7 @@ export async function clientAction({ request }: Route.ClientActionArgs) {
     payload._action === SUPERVISOR_ACTIONS.confirm ||
     payload._action === SUPERVISOR_ACTIONS.decline
   ) {
-    throw redirect(withLocale("/users"));
+    throw redirect(withLocale("/moderation/supervisors"));
   }
 }
 
@@ -63,7 +63,9 @@ export default function Supervisor({ loaderData }: Route.ComponentProps) {
       <SupervisorView
         data={loaderData}
         onBack={() => {
-          navigate(withLocale("/users/supervisors"), { viewTransition: true });
+          navigate(withLocale("/moderation/supervisors"), {
+            viewTransition: true,
+          });
         }}
         onSubmit={(values) => {
           submit(

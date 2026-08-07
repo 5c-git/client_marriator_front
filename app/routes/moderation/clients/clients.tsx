@@ -1,25 +1,25 @@
+import type { Route } from "./+types/clients";
 import { Link } from "react-router";
-import type { Route } from "./+types/managers";
-
-import { withLocale } from "~/shared/withLocale";
 
 import { Avatar, Box, Typography } from "@mui/material";
 
 import { UsersMobileView } from "~/shared/views/UsersMobileView/UsersMobileView";
 
-import { managersContainer } from "./managers.module";
-import { managersTokens } from "./managers.tokens";
+import { withLocale } from "~/shared/withLocale";
+
+import { clientsContainer } from "./clients.module";
+import { clientsTokens } from "./clients.tokens";
 
 export async function clientLoader() {
-  return await managersContainer
-    .get(managersTokens.managersService)
-    .getManagersMobileModeData();
+  return await clientsContainer
+    .get(clientsTokens.clientsService)
+    .getClientsMobileModeData();
 }
 
-export default function Managers({ loaderData }: Route.ComponentProps) {
+export default function Clients({ loaderData }: Route.ComponentProps) {
   return (
     <UsersMobileView
-      translation="managers"
+      translation="clients"
       users={loaderData.users}
       userSlot={(user) => (
         <Box
@@ -32,7 +32,7 @@ export default function Managers({ loaderData }: Route.ComponentProps) {
             color: theme.vars.palette["Black"],
           })}
           component={Link}
-          to={withLocale(`/users/manager/${user.id}`)}
+          to={withLocale(`/moderation/clients/${user.id}`)}
         >
           {user.logo ? (
             <Avatar src={user.logo} sx={{ width: "30px", height: "30px" }} />

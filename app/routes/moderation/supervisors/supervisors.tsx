@@ -32,7 +32,7 @@ export default function Supervisors({ loaderData }: Route.ComponentProps) {
             color: theme.vars.palette["Black"],
           })}
           component={Link}
-          to={withLocale(`/users/supervisor/${user.id}`)}
+          to={withLocale(`/moderation/supervisors/${user.id}`)}
         >
           {user.logo ? (
             <Avatar src={user.logo} sx={{ width: "30px", height: "30px" }} />
