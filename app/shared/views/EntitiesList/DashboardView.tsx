@@ -29,7 +29,7 @@ import {
 import { StyledSelect } from "~/shared/ui/StyledSelect/StyledSelect";
 import { StyledSearchBar } from "~/shared/ui/StyledSearchBar/StyledSearchBar";
 
-import { useEntitiesList } from "./EntitiesList.hooks";
+import { useEntities } from "./Entities.hooks";
 
 const statusObject = {
   order: statusCodeMap,
@@ -41,7 +41,7 @@ const statusObject = {
 export function DashboardView(props: EntitiesListInterface) {
   const { t } = useTranslation("EntitiesListView");
 
-  const listHooks = useEntitiesList(props.entities, props.sorting);
+  const listHooks = useEntities(props.entities, props.sorting);
 
   return (
     <>

@@ -1,5 +1,6 @@
 {
   "clients": {
+    "statusPlaceholder": "Status",
     "status": {
       "new": "New",
       "inProgress": "In progress",
@@ -8,11 +9,16 @@
     "sorting": {
       "new": "New",
       "old": "Old"
+    },
+    "toggleButtons": {
+      "list": "List",
+      "table": "Table"
     },
     "searchbar": "Search",
     "emptyHeader": "No clients so far"
   },
   "managers": {
+    "statusPlaceholder": "Status",
     "status": {
       "new": "New",
       "inProgress": "In progress",
@@ -21,11 +27,16 @@
     "sorting": {
       "new": "New",
       "old": "Old"
+    },
+    "toggleButtons": {
+      "list": "List",
+      "table": "Table"
     },
     "searchbar": "Search",
     "emptyHeader": "No managers so far"
   },
   "supervisors": {
+    "statusPlaceholder": "Status",
     "status": {
       "new": "New",
       "inProgress": "In progress",
@@ -34,6 +45,10 @@
     "sorting": {
       "new": "New",
       "old": "Old"
+    },
+    "toggleButtons": {
+      "list": "List",
+      "table": "Table"
     },
     "searchbar": "Search",
     "emptyHeader": "No supervisors so far"

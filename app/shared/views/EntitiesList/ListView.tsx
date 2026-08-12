@@ -1,7 +1,7 @@
 import { useState } from "react";
 
 import type { EntitiesListInterface, Entity } from "./EntitesListInterface";
-import { useEntitiesList } from "./EntitiesList.hooks";
+import { useEntities } from "./Entities.hooks";
 
 import { useTranslation } from "react-i18next";
 
@@ -35,7 +35,7 @@ const statusObject = {
 export function ListView(props: EntitiesListInterface) {
   const { t } = useTranslation("EntitiesListView");
 
-  const listHooks = useEntitiesList(props.entities, props.sorting);
+  const listHooks = useEntities(props.entities, props.sorting);
   const [selectedEntity, setSelectedEntity] = useState<Entity | null>(null);
 
   return (

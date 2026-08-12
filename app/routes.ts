@@ -63,6 +63,7 @@ export default [
       }),
     ]),
 
+    //profile
     route(":lang?/dashboard/profile", "routes/profile/profile.tsx", {
       id: "dashboard-profile",
     }),
@@ -192,49 +193,50 @@ export default [
         id: "dashboard-certificates",
       },
     ),
+    //profile
 
+    //moderation
     route(
       ":lang?/dashboard/moderation/clients",
-      "routes/moderation/clients/clients.tsx",
-      {
-        id: "dashboard-users",
-      },
+      "routes/moderation/clients/_dashboard/clients.tsx",
+      [
+        route(":user", "routes/moderation/clients/client/client.tsx", {
+          id: "dashboard-client",
+        }),
+
+        route(
+          ":user/select-projects",
+          "routes/moderation/selectProjects/selectProjects.tsx",
+          {
+            id: "dashboard-selectProjects",
+          },
+        ),
+      ],
     ),
     route(
       ":lang?/dashboard/moderation/managers",
-      "routes/moderation/managers/managers.tsx",
-      {
-        id: "dashboard-managers",
-      },
+      "routes/moderation/managers/_dashboard/managers.tsx",
+      [
+        route(":user", "routes/moderation/managers/manager/manager.tsx", {
+          id: "dashboard-manager",
+        }),
+      ],
     ),
     route(
       ":lang?/dashboard/moderation/supervisors",
-      "routes/moderation/supervisors/supervisors.tsx",
-      {
-        id: "dashboard-supervisors",
-      },
+      "routes/moderation/supervisors/_dashboard/supervisors.tsx",
+      [
+        route(
+          ":user",
+          "routes/moderation/supervisors/supervisor/supervisor.tsx",
+          {
+            id: "dashboard-supervisor",
+          },
+        ),
+      ],
     ),
-    route(
-      ":lang?/dashboard/moderation/clients/:user",
-      "routes/moderation/clients/client/client.tsx",
-      {
-        id: "dashboard-client",
-      },
-    ),
-    route(
-      ":lang?/dashboard/moderation/managers/:user",
-      "routes/moderation/managers/manager/manager.tsx",
-      {
-        id: "dashboard-manager",
-      },
-    ),
-    route(
-      ":lang?/dashboard/moderation/supervisors/:user",
-      "routes/moderation/supervisors/supervisor/supervisor.tsx",
-      {
-        id: "dashboard-supervisor",
-      },
-    ),
+
+    //moderation
   ]),
 
   //signin
@@ -367,13 +369,13 @@ export default [
   // registration
 
   // internal pages without navigation menu
-  route(
-    ":lang?/dashboard/moderation/:user/select-projects",
-    "routes/moderation/selectProjects/selectProjects.tsx",
-    {
-      id: "dashboard-selectProjects",
-    },
-  ),
+  // route(
+  //   ":lang?/dashboard/moderation/:user/select-projects",
+  //   "routes/moderation/selectProjects/selectProjects.tsx",
+  //   {
+  //     id: "dashboard-selectProjects",
+  //   },
+  // ),
   route(
     ":lang?/dashboard/moderation/:user/select-locations",
     "routes/moderation/selectLocations/selectLocations.tsx",

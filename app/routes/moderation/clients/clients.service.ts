@@ -2,7 +2,7 @@ import { injected } from "brandi";
 
 import type { AppService } from "~/shared/container/container.service";
 
-import type { UsersMobileViewInterface } from "~/shared/views/UsersMobileView/UsersMobileViewInterface";
+import type { UsersMobileViewInterface } from "~/shared/views/UsersList/UsersMobileViewInterface";
 
 import type { FetchModerationClients } from "./clients.private-tokens";
 
@@ -54,7 +54,8 @@ export class ClientsService {
         name: item.name,
         email: item.email,
         phone: item.phone.toString(),
-        address: item.place.length > 0 ? item.place[0].name : null,
+        address:
+          item.place.length > 0 ? item.place.map((item) => item.name) : null,
         logo: `${import.meta.env.VITE_ASSET_PATH}${item.logo}`,
       };
 

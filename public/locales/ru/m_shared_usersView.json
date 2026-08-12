@@ -1,19 +1,24 @@
 {
   "clients": {
+    "statusPlaceholder": "Статус",
     "status": {
       "new": "Новые",
       "inProgress": "В работе",
       "archive": "Архив"
     },
-
     "sorting": {
       "new": "Сначала новые",
       "old": "Сначала старые"
+    },
+    "toggleButtons": {
+      "list": "Блоками",
+      "table": "Таблицей"
     },
     "searchbar": "Поиск",
     "emptyHeader": "Клиентов пока нет"
   },
   "managers": {
+    "statusPlaceholder": "Статус",
     "status": {
       "new": "Новые",
       "inProgress": "В работе",
@@ -22,11 +27,16 @@
     "sorting": {
       "new": "Сначала новые",
       "old": "Сначала старые"
+    },
+    "toggleButtons": {
+      "list": "Блоками",
+      "table": "Таблицей"
     },
     "searchbar": "Поиск",
     "emptyHeader": "Менеджеров пока нет"
   },
   "supervisors": {
+    "statusPlaceholder": "Статус",
     "status": {
       "new": "Новые",
       "inProgress": "В работе",
@@ -35,6 +45,10 @@
     "sorting": {
       "new": "Сначала новые",
       "old": "Сначала старые"
+    },
+    "toggleButtons": {
+      "list": "Блоками",
+      "table": "Таблицей"
     },
     "searchbar": "Поиск",
     "emptyHeader": "Супервайзеров пока нет"

@@ -1,11 +1,9 @@
-import { Link } from "react-router";
 import type { Route } from "./+types/supervisors";
-
-import { Box, Avatar, Typography } from "@mui/material";
 
 import { withLocale } from "~/shared/withLocale";
 
-import { UsersMobileView } from "~/shared/views/UsersMobileView/UsersMobileView";
+import { UsersListView } from "~/shared/views/UsersList/UsersListView";
+import { UserLine } from "~/shared/ui/UserPreview/UserLine";
 
 import { supervisorsContainer } from "./supervisors.module";
 import { supervisorsTokens } from "./supervisors.tokens";
@@ -18,39 +16,17 @@ export async function clientLoader() {
 
 export default function Supervisors({ loaderData }: Route.ComponentProps) {
   return (
-    <UsersMobileView
+    <UsersListView
       translation="supervisors"
       users={loaderData.users}
-      userSlot={(user) => (
-        <Box
-          key={user.id}
-          sx={(theme) => ({
-            display: "flex",
-            columnGap: "12px",
-            alignItems: "center",
-            textDecoration: "none",
-            color: theme.vars.palette["Black"],
-          })}
-          component={Link}
+      usersListView={(user) => (
+        <UserLine
+          user={user}
           to={withLocale(`/moderation/supervisors/${user.id}`)}
-        >
-          {user.logo ? (
-            <Avatar src={user.logo} sx={{ width: "30px", height: "30px" }} />
-          ) : null}
-
-          <Box>
-            <Typography component="p" variant="Reg_14">
-              {user.name}
-            </Typography>
-
-            {user.address ? (
-              <Typography component="p" variant="Reg_12">
-                {user.address}
-              </Typography>
-            ) : null}
-          </Box>
-        </Box>
+          isActive={false}
+        />
       )}
+      usersTableView={() => {}}
     />
   );
 }

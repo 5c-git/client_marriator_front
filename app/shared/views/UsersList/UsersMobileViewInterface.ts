@@ -6,12 +6,13 @@ type User = {
   name: string | null;
   email: string;
   phone: string;
-  address: string | null;
+  address: string[] | null;
   logo: string | null;
 };
 
 export type UsersMobileViewInterface = {
   translation: "clients" | "managers" | "supervisors";
   users: User[];
-  userSlot: (user: User) => React.ReactNode;
+  usersListView: (user: User) => undefined | React.ReactNode;
+  usersTableView: (user: User) => undefined | React.ReactNode;
 };

@@ -41,13 +41,14 @@ export default function SelectProjects({ loaderData }: Route.ComponentProps) {
     <SelectProjectsView
       data={loaderData}
       onBack={() => {
-        navigate(withLocale(state.from), {
-          viewTransition: true,
-          state: {
-            status: state.status,
-            statusColor: state.statusColor,
-          },
-        });
+        // navigate(withLocale(state.from), {
+        //   viewTransition: true,
+        //   state: {
+        //     status: state.status,
+        //     statusColor: state.statusColor,
+        //   },
+        // });
+        navigate(-1);
       }}
       onSubmit={(values) => {
         submit(JSON.stringify({ from: state.from, projects: values }), {

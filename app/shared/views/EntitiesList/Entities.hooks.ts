@@ -5,7 +5,7 @@ import { eachDayOfInterval, isWithinInterval } from "date-fns";
 
 import type { EntitiesListInterface, Entity } from "./EntitesListInterface";
 
-export const useEntitiesList = (
+export const useEntities = (
   entities: Entity[],
   sort: EntitiesListInterface["sorting"],
 ) => {
