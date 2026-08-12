@@ -92,15 +92,9 @@ export default function Client({ loaderData }: Route.ComponentProps) {
           );
         }}
         onProjectSelect={() => {
-          navigate(
-            withLocale(`/moderation/${loaderData.client.id}/select-projects`),
-            {
-              viewTransition: true,
-              state: {
-                from: `/moderation/clients/${loaderData.client.id}`,
-              },
-            },
-          );
+          navigate(withLocale(`select-projects`), {
+            viewTransition: true,
+          });
         }}
         onDeleteProject={(values) => {
           submit(
@@ -112,15 +106,9 @@ export default function Client({ loaderData }: Route.ComponentProps) {
           );
         }}
         onLocationSelect={() => {
-          navigate(
-            withLocale(`/moderation/${loaderData.client.id}/select-locations`),
-            {
-              viewTransition: true,
-              state: {
-                from: `/moderation/clients/${loaderData.client.id}`,
-              },
-            },
-          );
+          navigate(withLocale(`select-locations`), {
+            viewTransition: true,
+          });
         }}
         onDeletePlace={(values) => {
           submit(

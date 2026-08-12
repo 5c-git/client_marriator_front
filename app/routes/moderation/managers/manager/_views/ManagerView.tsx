@@ -347,10 +347,7 @@ export function ManagerView(props: ManagerViewProps) {
 
             <Button
               component={Link}
-              to={withLocale(
-                `/moderation/${props.data.client.id}/select-projects`,
-              )}
-              state={{ from: `/moderation/managers/${props.data.client.id}` }}
+              to={withLocale(`select-projects`)}
               variant="outlined"
               startIcon={<FileIcon />}
             >
@@ -406,10 +403,7 @@ export function ManagerView(props: ManagerViewProps) {
 
             <Button
               component={Link}
-              to={withLocale(
-                `/moderation/${props.data.client.id}/select-locations`,
-              )}
-              state={{ from: `/moderation/managers/${props.data.client.id}` }}
+              to={withLocale(`select-locations`)}
               variant="outlined"
               startIcon={<PointerIcon />}
             >

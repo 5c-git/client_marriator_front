@@ -59,6 +59,7 @@ export function SelectLocationsView(props: SelectLocationsViewProps) {
   return (
     <Box
       sx={{
+        position: "relative",
         height: "100%",
         display: "flex",
         flexDirection: "column",
@@ -291,7 +292,7 @@ export function SelectLocationsView(props: SelectLocationsViewProps) {
               columnGap: "14px",
               padding: "10px",
               backgroundColor: theme.vars.palette["White"],
-              position: "fixed",
+              position: "absolute",
               zIndex: 9000,
               width: "100%",
               bottom: "0",

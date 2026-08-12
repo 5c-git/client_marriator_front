@@ -42,7 +42,14 @@ export function SelectProjectsView(props: SelectProjectsViewProps) {
   });
 
   return (
-    <Box>
+    <Box
+      sx={{
+        height: "100%",
+        display: "flex",
+        flexDirection: "column",
+        flexGrow: 1,
+      }}
+    >
       <TopNavigation
         header={{
           text: t("header"),
@@ -55,11 +62,18 @@ export function SelectProjectsView(props: SelectProjectsViewProps) {
         onSubmit={form.handleSubmit((values) => {
           props.onSubmit(values.projects);
         })}
+        style={{
+          display: "flex",
+          flexDirection: "column",
+          flexGrow: 1,
+        }}
       >
         <Box
           sx={{
             position: "relative",
-            display: "grid",
+            display: "flex",
+            flexDirection: "column",
+            flexGrow: 1,
             rowGap: "14px",
             paddingTop: "20px",
             paddingLeft: "16px",
@@ -116,7 +130,7 @@ export function SelectProjectsView(props: SelectProjectsViewProps) {
               columnGap: "14px",
               padding: "10px",
               backgroundColor: theme.vars.palette["White"],
-              position: "fixed",
+              position: "absolute",
               zIndex: 1,
               width: "100%",
               bottom: "0",

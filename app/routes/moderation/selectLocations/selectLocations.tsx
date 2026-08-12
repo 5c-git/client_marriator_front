@@ -6,12 +6,6 @@ import { selectLocationsContainer } from "./selectLocations.module";
 import { selectLocationsTokens } from "./selectLocations.tokens";
 import { SelectLocationsView } from "./_views/SelectLocationsView";
 
-type LocationState = {
-  from: string;
-  status: string;
-  statusColor: string;
-};
-
 export async function clientLoader({ params }: Route.ClientLoaderArgs) {
   return await selectLocationsContainer
     .get(selectLocationsTokens.selectLocationsService)
@@ -34,25 +28,23 @@ export default function SelectLocations({ loaderData }: Route.ComponentProps) {
   const navigate = useNavigate();
   const submit = useSubmit();
 
-  const { state } = location as { state: LocationState };
-
   return (
     <SelectLocationsView
       data={loaderData}
       onBack={() => {
-        navigate(withLocale(state.from), {
-          viewTransition: true,
-          state: {
-            status: state.status,
-            statusColor: state.statusColor,
-          },
-        });
+        navigate(location.pathname.replace("/select-locations", ""));
       }}
       onSubmit={(values) => {
-        submit(JSON.stringify({ from: state.from, locations: values }), {
-          method: "POST",
-          encType: "application/json",
-        });
+        submit(
+          JSON.stringify({
+            from: location.pathname.replace("/select-locations", ""),
+            locations: values,
+          }),
+          {
+            method: "POST",
+            encType: "application/json",
+          },
+        );
       }}
     />
   );

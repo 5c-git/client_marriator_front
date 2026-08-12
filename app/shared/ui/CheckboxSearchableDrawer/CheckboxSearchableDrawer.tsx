@@ -65,6 +65,8 @@ export function CheckboxSearchableDrawer(props: CheckboxDrawerProps) {
       sx={{
         "& .MuiDrawer-paper": {
           borderRadius: "6px",
+          maxWidth: "768px",
+          margin: "0 auto",
         },
       }}
     >
@@ -147,7 +149,7 @@ export function CheckboxSearchableDrawer(props: CheckboxDrawerProps) {
               columnGap: "14px",
               padding: "10px",
               backgroundColor: theme.vars.palette["White"],
-              position: "fixed",
+              position: "absolute",
               zIndex: 1,
               width: "100%",
               bottom: "0",

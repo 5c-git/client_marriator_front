@@ -8,12 +8,6 @@ import { selectProjectsTokens } from "./selectProjects.tokens";
 
 import { SelectProjectsView } from "./_views/SelectProjectsView";
 
-type LocationState = {
-  from: string;
-  status: string;
-  statusColor: string;
-};
-
 export async function clientLoader({ params }: Route.ClientLoaderArgs) {
   return await selectProjectsContainer
     .get(selectProjectsTokens.selectProjectsService)
@@ -35,26 +29,24 @@ export default function SelectProjects({ loaderData }: Route.ComponentProps) {
   const navigate = useNavigate();
   const location = useLocation();
   const submit = useSubmit();
-  const { state } = location as { state: LocationState };
 
   return (
     <SelectProjectsView
       data={loaderData}
       onBack={() => {
-        // navigate(withLocale(state.from), {
-        //   viewTransition: true,
-        //   state: {
-        //     status: state.status,
-        //     statusColor: state.statusColor,
-        //   },
-        // });
-        navigate(-1);
+        navigate(location.pathname.replace("/select-projects", ""));
       }}
       onSubmit={(values) => {
-        submit(JSON.stringify({ from: state.from, projects: values }), {
-          method: "POST",
-          encType: "application/json",
-        });
+        submit(
+          JSON.stringify({
+            from: location.pathname.replace("/select-projects", ""),
+            projects: values,
+          }),
+          {
+            method: "POST",
+            encType: "application/json",
+          },
+        );
       }}
     />
   );

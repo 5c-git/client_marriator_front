@@ -208,7 +208,14 @@ export default [
           ":user/select-projects",
           "routes/moderation/selectProjects/selectProjects.tsx",
           {
-            id: "dashboard-selectProjects",
+            id: "dashboard-client-selectProjects",
+          },
+        ),
+        route(
+          ":user/select-locations",
+          "routes/moderation/selectLocations/selectLocations.tsx",
+          {
+            id: "dashboard-client-selectLocations",
           },
         ),
       ],
@@ -220,6 +227,20 @@ export default [
         route(":user", "routes/moderation/managers/manager/manager.tsx", {
           id: "dashboard-manager",
         }),
+        route(
+          ":user/select-projects",
+          "routes/moderation/selectProjects/selectProjects.tsx",
+          {
+            id: "dashboard-manager-selectProjects",
+          },
+        ),
+        route(
+          ":user/select-locations",
+          "routes/moderation/selectLocations/selectLocations.tsx",
+          {
+            id: "dashboard-manager-selectLocations",
+          },
+        ),
       ],
     ),
     route(
@@ -231,6 +252,20 @@ export default [
           "routes/moderation/supervisors/supervisor/supervisor.tsx",
           {
             id: "dashboard-supervisor",
+          },
+        ),
+        route(
+          ":user/select-projects",
+          "routes/moderation/selectProjects/selectProjects.tsx",
+          {
+            id: "dashboard-supervisor-selectProjects",
+          },
+        ),
+        route(
+          ":user/select-locations",
+          "routes/moderation/selectLocations/selectLocations.tsx",
+          {
+            id: "dashboard-supervisor-selectLocations",
           },
         ),
       ],
@@ -558,12 +593,47 @@ export default [
 
   // internal pages without navigation menu
   route(
-    ":lang?/moderation/:user/select-projects",
+    ":lang?/moderation/clients/:user/select-projects",
     "routes/moderation/selectProjects/selectProjects.tsx",
+    {
+      id: "moderation-mobile-clients-project",
+    },
   ),
   route(
-    ":lang?/moderation/:user/select-locations",
+    ":lang?/moderation/managers/:user/select-projects",
+    "routes/moderation/selectProjects/selectProjects.tsx",
+    {
+      id: "moderation-mobile-managers-project",
+    },
+  ),
+  route(
+    ":lang?/moderation/supervisors/:user/select-projects",
+    "routes/moderation/selectProjects/selectProjects.tsx",
+    {
+      id: "moderation-mobile-supervisors-project",
+    },
+  ),
+
+  route(
+    ":lang?/moderation/clients/:user/select-locations",
     "routes/moderation/selectLocations/selectLocations.tsx",
+    {
+      id: "moderation-mobile-clients-locations",
+    },
+  ),
+  route(
+    ":lang?/moderation/managers/:user/select-locations",
+    "routes/moderation/selectLocations/selectLocations.tsx",
+    {
+      id: "moderation-mobile-clients-managers",
+    },
+  ),
+  route(
+    ":lang?/moderation/supervisors/:user/select-locations",
+    "routes/moderation/selectLocations/selectLocations.tsx",
+    {
+      id: "moderation-mobile-clients-supervisors",
+    },
   ),
 
   //bid

@@ -442,12 +442,7 @@ export function SupervisorView(props: SupervisorViewProps) {
 
             <Button
               component={Link}
-              to={withLocale(
-                `/moderation/${props.data.client.id}/select-projects`,
-              )}
-              state={{
-                from: `/moderation/supervisors/${props.data.client.id}`,
-              }}
+              to={withLocale(`select-projects`)}
               variant="outlined"
               startIcon={<FileIcon />}
             >
@@ -522,14 +517,7 @@ export function SupervisorView(props: SupervisorViewProps) {
 
             <Button
               component={Link}
-              to={withLocale(
-                `/moderation/${props.data.client.id}/select-locations`,
-              )}
-              state={{
-                from: `/moderation/supervisors/${props.data.client.id}`,
-                // status: state.status,
-                // statusColor: state.statusColor,
-              }}
+              to={withLocale(`select-locations`)}
               variant="outlined"
               startIcon={<PointerIcon />}
             >
