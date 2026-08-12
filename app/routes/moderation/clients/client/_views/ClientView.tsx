@@ -127,7 +127,7 @@ export function ClientView(props: ClientViewProps) {
       cancel_order: new Date(`2000-01-01T${props.data.client.cancel_order}`),
       live_order: new Date(`2000-01-01T${props.data.client.live_order}`),
     });
-  }, [props.data, form]);
+  }, [form, props.data]);
 
   return (
     <>
@@ -382,9 +382,9 @@ export function ClientView(props: ClientViewProps) {
             ) : null}
 
             <Stack sx={{ rowGap: "14px" }}>
-              {form.getValues("locations").map((location, index) => (
+              {form.getValues("locations").map((location) => (
                 <Box
-                  key={index}
+                  key={location.id}
                   sx={{
                     display: "flex",
                     columnGap: "12px",
