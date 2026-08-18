@@ -61,7 +61,13 @@ export function LocationView(props: LocationViewProps) {
   });
 
   return (
-    <Box>
+    <Box
+      sx={{
+        display: "flex",
+        flexDirection: "column",
+        flexGrow: 1,
+      }}
+    >
       <TopNavigation
         header={{
           text: t(`header`),
@@ -88,15 +94,23 @@ export function LocationView(props: LocationViewProps) {
         onSubmit={handleSubmit((values) => {
           props.submitShopsAction(values.shops);
         })}
+        style={{
+          display: "flex",
+          flexDirection: "column",
+          flexGrow: 1,
+        }}
       >
         <Box
           sx={{
             position: "relative",
-            display: "grid",
+            display: "flex",
+            flexDirection: "column",
+            flexGrow: 1,
             rowGap: "14px",
             paddingTop: "20px",
             paddingLeft: "16px",
             paddingRight: "16px",
+            paddingBottom: "80px",
           }}
         >
           <Controller
@@ -196,6 +210,7 @@ export function LocationView(props: LocationViewProps) {
                 left: "0",
                 width: "100%",
                 height: "100%",
+                flexGrow: 1,
               }}
             >
               <YMap
@@ -279,7 +294,7 @@ export function LocationView(props: LocationViewProps) {
               columnGap: "14px",
               padding: "10px",
               backgroundColor: theme.vars.palette["White"],
-              position: "fixed",
+              position: "absolute",
               zIndex: 9000,
               width: "100%",
               bottom: "0",

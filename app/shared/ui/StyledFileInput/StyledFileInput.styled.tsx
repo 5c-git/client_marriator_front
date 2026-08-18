@@ -44,9 +44,11 @@ export const S_ActivationButton = styled("button")({
 
 export const S_SwipeableDrawer = styled(SwipeableDrawer)((props) => ({
   "& > .MuiPaper-root": {
+    maxWidth: "600px",
     borderRadius: "6px 6px 0px 0px",
     padding: "0",
     backgroundColor: props.theme.vars.palette["White"],
+    margin: "0 auto",
   },
   "& .MuiDrawer-paper": {
     maxHeight: "calc(100dvh - 20px)",

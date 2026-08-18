@@ -2,9 +2,7 @@ import { Outlet } from "react-router";
 
 import { Box } from "@mui/material";
 
-import { Background } from "./_components/Background/Background";
-
-export default function SigninLayout() {
+export default function RegistrationLayout() {
   return (
     <>
       <Box
@@ -21,30 +19,23 @@ export default function SigninLayout() {
           paddingLeft: "60px",
         }}
       >
-        <Background />
         <Box
           sx={{
-            backgroundColor: "white",
-            padding: "5px",
-            borderRadius: "25px",
-            flex: 1,
             display: "flex",
-            alignItems: "center",
+            flexDirection: "column",
+            flexGrow: 1,
+            backgroundColor: "white",
+            borderRadius: "5px",
+            flex: 1,
+            width: "100%",
+            maxWidth: "768px",
+            height: "95vh",
+            margin: "0 auto",
+            overflow: "auto",
           }}
         >
-          <Box
-            sx={{
-              width: "100%",
-              display: "flex",
-              flexDirection: "column",
-              flexGrow: 1,
-              maxWidth: "425px",
-              margin: "0 auto",
-            }}
-          >
-            {" "}
-            <Outlet />
-          </Box>
+          {" "}
+          <Outlet />
         </Box>
       </Box>
     </>

@@ -288,119 +288,117 @@ export default [
       ":lang?/dashboard/signin/pin",
       "routes/signin/pin/_dashboard/pin.tsx",
     ),
+    route(
+      ":lang?/dashboard/signin/createPin",
+      "routes/signin/createPin/createPin.tsx",
+      {
+        id: "dashboard-createPin",
+      },
+    ),
+    route(
+      ":lang?/dashboard/signin/confirm-restore-pin",
+      "routes/signin/confirm-restore-pin/confirm-restore-pin.tsx",
+      {
+        id: "dashboard-confirm-restore-pin",
+      },
+    ),
+    route(
+      ":lang?/dashboard/signin/client/phone",
+      "routes/signin/client/phone/phone.tsx",
+      {
+        id: "dashboard-phone",
+      },
+    ),
+    route(
+      ":lang?/dashboard/signin/client/meta",
+      "routes/signin/client/meta/meta.tsx",
+      {
+        id: "dashboard-meta",
+      },
+    ),
+    route(
+      ":lang?/dashboard/signin/client/recruiter",
+      "routes/signin/client/recruiter/recruiter.tsx",
+      {
+        id: "dashboard-recruiter",
+      },
+    ),
+    route(
+      ":lang?/dashboard/signin/client/location",
+      "routes/signin/client/location/location.tsx",
+      {
+        id: "dashboard-location",
+      },
+    ),
+    route(
+      ":lang?/dashboard/signin/client/registration-complete",
+      "routes/signin/client/registration-complete/registration-complete.tsx",
+      {
+        id: "dashboard-client-registration-complete",
+      },
+    ),
   ]),
-  route(
-    ":lang?/dashboard/signin/createPin",
-    "routes/signin/createPin/createPin.tsx",
-    {
-      id: "dashboard-createPin",
-    },
-  ),
-
-  route(
-    ":lang?/dashboard/signin/confirm-restore-pin",
-    "routes/signin/confirm-restore-pin/confirm-restore-pin.tsx",
-    {
-      id: "dashboard-confirm-restore-pin",
-    },
-  ),
-
-  route(
-    ":lang?/dashboard/signin/client/phone",
-    "routes/signin/client/phone/phone.tsx",
-    {
-      id: "dashboard-phone",
-    },
-  ),
-  route(
-    ":lang?/dashboard/signin/client/meta",
-    "routes/signin/client/meta/meta.tsx",
-    {
-      id: "dashboard-meta",
-    },
-  ),
-  route(
-    ":lang?/dashboard/signin/client/recruiter",
-    "routes/signin/client/recruiter/recruiter.tsx",
-    {
-      id: "dashboard-recruiter",
-    },
-  ),
-  route(
-    ":lang?/dashboard/signin/client/location",
-    "routes/signin/client/location/location.tsx",
-    {
-      id: "dashboard-location",
-    },
-  ),
-  route(
-    ":lang?/dashboard/signin/client/registration-complete",
-    "routes/signin/client/registration-complete/registration-complete.tsx",
-    {
-      id: "dashboard-client-registration-complete",
-    },
-  ),
-
   // signin
 
   // registration
-  route(
-    ":lang?/dashboard/registration/step1",
-    "routes/registration/step1/step1.tsx",
-    {
-      id: "dashboard-step1",
-    },
-  ),
-  route(
-    ":lang?/dashboard/registration/step2",
-    "routes/registration/step2/step2.tsx",
-    {
-      id: "dashboard-step2",
-    },
-  ),
-  route(
-    ":lang?/dashboard/registration/step3",
-    "routes/registration/step3/step3.tsx",
-    {
-      id: "dashboard-step3",
-    },
-  ),
-  route(
-    ":lang?/dashboard/registration/step4",
-    "routes/registration/step4/step4.tsx",
-    {
-      id: "dashboard-step4",
-    },
-  ),
-  route(
-    ":lang?/dashboard/registration/step5",
-    "routes/registration/step5/step5.tsx",
-    {
-      id: "dashboard-step5",
-    },
-  ),
-  route(
-    ":lang?/dashboard/registration/step6",
-    "routes/registration/step6/step6.tsx",
-    {
-      id: "dashboard-step6",
-    },
-  ),
-
-  route(
-    ":lang?/dashboard/registration/confirm-email",
-    "routes/registration/confirm-email/confirm-email.tsx",
-    {
-      id: "dashboard-confirm-email",
-    },
-  ),
-  route(
-    ":lang?/dashboard/registration/registration-complete",
-    "routes/registration/registration-complete/registration-complete.tsx",
-    {
-      id: "dashboard-registration-complete",
-    },
-  ),
+  layout("shared/layouts/RegistrationLayout/RegistrationLayout.tsx", [
+    route(
+      ":lang?/dashboard/registration/step1",
+      "routes/registration/step1/step1.tsx",
+      {
+        id: "dashboard-step1",
+      },
+    ),
+    route(
+      ":lang?/dashboard/registration/step2",
+      "routes/registration/step2/step2.tsx",
+      {
+        id: "dashboard-step2",
+      },
+    ),
+    route(
+      ":lang?/dashboard/registration/step3",
+      "routes/registration/step3/step3.tsx",
+      {
+        id: "dashboard-step3",
+      },
+    ),
+    route(
+      ":lang?/dashboard/registration/step4",
+      "routes/registration/step4/step4.tsx",
+      {
+        id: "dashboard-step4",
+      },
+    ),
+    route(
+      ":lang?/dashboard/registration/step5",
+      "routes/registration/step5/step5.tsx",
+      {
+        id: "dashboard-step5",
+      },
+    ),
+    route(
+      ":lang?/dashboard/registration/step6",
+      "routes/registration/step6/step6.tsx",
+      {
+        id: "dashboard-step6",
+      },
+    ),
+    route(
+      ":lang?/dashboard/registration/confirm-email",
+      "routes/registration/confirm-email/confirm-email.tsx",
+      {
+        id: "dashboard-confirm-email",
+      },
+    ),
+    route(
+      ":lang?/dashboard/registration/registration-complete",
+      "routes/registration/registration-complete/registration-complete.tsx",
+      {
+        id: "dashboard-registration-complete",
+      },
+    ),
+  ]),
   // registration
 
   // internal pages without navigation menu

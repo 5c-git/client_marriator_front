@@ -159,6 +159,8 @@ export default function Step4({ loaderData }: Route.ComponentProps) {
       <Box
         sx={{
           paddingBottom: "220px",
+          position: "relative",
+          flexGrow: 1,
         }}
       >
         <TopNavigation
@@ -287,7 +289,7 @@ export default function Step4({ loaderData }: Route.ComponentProps) {
 
           <Box
             sx={(theme) => ({
-              position: "fixed",
+              position: "absolute",
               display: "grid",
               rowGap: "14px",
               zIndex: 1,

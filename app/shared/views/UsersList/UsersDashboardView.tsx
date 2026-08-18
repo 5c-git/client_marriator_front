@@ -184,18 +184,29 @@ export function UsersDashboardView(
             </Box>
 
             <Box
-              sx={{
+              sx={(theme) => ({
                 position: "relative",
                 display: "flex",
                 flexDirection: "column",
                 flexGrow: 1,
                 height: "100%",
-                overflowY: "auto",
-                maxWidth: "600px",
-                margin: "0 auto",
-              }}
+                backgroundColor: theme.vars.palette["Grey_5"],
+                borderRadius: "5px 0 0 0",
+              })}
             >
-              <Outlet />
+              <Box
+                sx={(theme) => ({
+                  width: "100%",
+                  maxWidth: "600px",
+                  margin: "0 auto",
+                  backgroundColor: theme.vars.palette["White"],
+                  marginTop: "20px",
+                  marginBottom: "20px",
+                  overflowY: "auto",
+                })}
+              >
+                <Outlet />
+              </Box>
             </Box>
           </Box>
         </>
@@ -229,18 +240,30 @@ export function UsersDashboardView(
             </Typography>
           </Box>
           <Box
-            sx={{
+            sx={(theme) => ({
               position: "relative",
               display: "flex",
               flexDirection: "column",
               flexGrow: 1,
               height: "100%",
               overflowY: "auto",
-              maxWidth: "600px",
-              margin: "0 auto",
-            }}
+              backgroundColor: theme.vars.palette["Grey_5"],
+              borderRadius: "5px 0 0 0",
+            })}
           >
-            <Outlet />
+            <Box
+              sx={(theme) => ({
+                width: "100%",
+                maxWidth: "600px",
+                margin: "0 auto",
+                backgroundColor: theme.vars.palette["White"],
+                marginTop: "20px",
+                marginBottom: "20px",
+                overflowY: "auto",
+              })}
+            >
+              <Outlet />
+            </Box>
           </Box>
         </Box>
       )}

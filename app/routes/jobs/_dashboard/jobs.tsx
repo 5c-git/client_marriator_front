@@ -7,7 +7,6 @@ import { withLocale } from "~/shared/withLocale";
 
 import { useStore } from "~/store/store";
 
-import { DashboardHeader } from "~/shared/ui/DashboardHeader/DashboardHeader";
 import { DashboardView } from "~/shared/views/EntitiesList/DashboardView";
 
 import { EntityCard } from "~/shared/ui/EntityCard/EntityCard";
@@ -38,8 +37,6 @@ export default function Jobs({ loaderData }: Route.ComponentProps) {
 
   return (
     <>
-      <DashboardHeader header={t("jobs")} />
-
       <DashboardView
         translation="jobs"
         view={view}

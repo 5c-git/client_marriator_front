@@ -85,6 +85,7 @@ export function MetaView(props: MetaViewProps) {
   return (
     <Box
       sx={{
+        position: "relative",
         paddingBottom: "105px",
       }}
     >
@@ -299,7 +300,7 @@ export function MetaView(props: MetaViewProps) {
 
         <Box
           sx={{
-            position: "fixed",
+            position: "absolute",
             zIndex: 1,
             width: "100%",
             bottom: "0",

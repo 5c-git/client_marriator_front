@@ -76,7 +76,9 @@ export default function Step2({ loaderData }: Route.ComponentProps) {
   return (
     <Box
       sx={{
+        position: "relative",
         paddingBottom: "80px",
+        flexGrow: 1,
       }}
     >
       <TopNavigation
@@ -139,7 +141,7 @@ export default function Step2({ loaderData }: Route.ComponentProps) {
 
         <Box
           sx={(theme) => ({
-            position: "fixed",
+            position: "absolute",
             zIndex: 1,
             width: "100%",
             bottom: "0",
