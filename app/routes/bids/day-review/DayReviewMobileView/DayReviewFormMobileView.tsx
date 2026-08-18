@@ -120,7 +120,13 @@ export function DayReviewMobileView(
   const formValues = watch();
 
   return (
-    <>
+    <Box
+      sx={(theme) => ({
+        position: "relative",
+        backgroundColor: theme.vars.palette["White"],
+        flexGrow: 1,
+      })}
+    >
       <TopNavigation
         header={{
           text: t("header"),
@@ -561,6 +567,6 @@ export function DayReviewMobileView(
           </Button>
         </Box>
       </form>
-    </>
+    </Box>
   );
 }

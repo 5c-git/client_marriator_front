@@ -31,7 +31,13 @@ export function SpecialistMobileView(
   const navigate = useNavigate();
   const { t } = useTranslation("m_bids_bid_specialists_specialist");
   return (
-    <>
+    <Box
+      sx={(theme) => ({
+        position: "relative",
+        backgroundColor: theme.vars.palette["White"],
+        flexGrow: 1,
+      })}
+    >
       <TopNavigation
         header={{
           text: `${t("job")} ${props.entity.id}`,
@@ -498,6 +504,6 @@ export function SpecialistMobileView(
       </Box>
 
       {props.actionsSlot(props.entity)}
-    </>
+    </Box>
   );
 }

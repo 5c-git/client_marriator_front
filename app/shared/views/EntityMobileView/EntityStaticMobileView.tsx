@@ -16,7 +16,13 @@ export function EntityStaticMobileView(props: EntityMobileViewInterface) {
   const { t } = useTranslation("EntityMobileView");
 
   return (
-    <>
+    <Box
+      sx={(theme) => ({
+        position: "relative",
+        backgroundColor: theme.vars.palette["White"],
+        flexGrow: 1,
+      })}
+    >
       <TopNavigation
         header={{
           text: `${t(`${props.translation}.header`)} ${props.entity.id}`,
@@ -415,6 +421,6 @@ export function EntityStaticMobileView(props: EntityMobileViewInterface) {
 
         {props.actionSlot()}
       </Box>
-    </>
+    </Box>
   );
 }

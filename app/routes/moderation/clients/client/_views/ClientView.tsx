@@ -131,7 +131,14 @@ export function ClientView(props: ClientViewProps) {
 
   return (
     <>
-      <Box sx={{ paddingBottom: "54px" }}>
+      <Box
+        sx={(theme) => ({
+          position: "relative",
+          backgroundColor: theme.vars.palette["White"],
+          flexGrow: 1,
+          paddingBottom: "54px",
+        })}
+      >
         <TopNavigation
           header={{ text: t("header"), bold: false }}
           backAction={props.onBack}

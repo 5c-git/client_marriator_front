@@ -58,12 +58,14 @@ export function SelectLocationsView(props: SelectLocationsViewProps) {
 
   return (
     <Box
-      sx={{
+      sx={(theme) => ({
         position: "relative",
+        backgroundColor: theme.vars.palette["White"],
+        flexGrow: 1,
         height: "100%",
         display: "flex",
         flexDirection: "column",
-      }}
+      })}
     >
       <TopNavigation
         header={{

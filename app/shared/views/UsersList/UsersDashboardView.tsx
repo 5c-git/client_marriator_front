@@ -192,18 +192,19 @@ export function UsersDashboardView(
                 height: "100%",
                 backgroundColor: theme.vars.palette["Grey_5"],
                 borderRadius: "5px 0 0 0",
+                padding: "20px",
               })}
             >
               <Box
-                sx={(theme) => ({
+                sx={{
                   width: "100%",
+                  display: "flex",
+                  flexDirection: "column",
                   maxWidth: "600px",
                   margin: "0 auto",
-                  backgroundColor: theme.vars.palette["White"],
-                  marginTop: "20px",
-                  marginBottom: "20px",
+                  flexGrow: 1,
                   overflowY: "auto",
-                })}
+                }}
               >
                 <Outlet />
               </Box>
@@ -249,18 +250,19 @@ export function UsersDashboardView(
               overflowY: "auto",
               backgroundColor: theme.vars.palette["Grey_5"],
               borderRadius: "5px 0 0 0",
+              padding: "20px",
             })}
           >
             <Box
-              sx={(theme) => ({
+              sx={{
                 width: "100%",
+                display: "flex",
+                flexDirection: "column",
                 maxWidth: "600px",
                 margin: "0 auto",
-                backgroundColor: theme.vars.palette["White"],
-                marginTop: "20px",
-                marginBottom: "20px",
+                flexGrow: 1,
                 overflowY: "auto",
-              })}
+              }}
             >
               <Outlet />
             </Box>

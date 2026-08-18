@@ -153,9 +153,12 @@ export function SupervisorView(props: SupervisorViewProps) {
   return (
     <>
       <Box
-        sx={{
+        sx={(theme) => ({
           paddingBottom: "54px",
-        }}
+          position: "relative",
+          backgroundColor: theme.vars.palette["White"],
+          flexGrow: 1,
+        })}
       >
         <TopNavigation
           header={{

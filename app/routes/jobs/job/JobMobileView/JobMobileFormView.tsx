@@ -400,7 +400,11 @@ export function JobMobileFormView({
   return (
     <>
       <Box
-        sx={{
+        sx={(theme) => ({
+          position: "relative",
+          backgroundColor: theme.vars.palette["White"],
+          flexGrow: 1,
+
           display: "flex",
           flexDirection: "column",
           rowGap: "14px",
@@ -408,7 +412,7 @@ export function JobMobileFormView({
           paddingRight: "16px",
           paddingTop: "20px",
           paddingBottom: "20px",
-        }}
+        })}
       >
         <Avatar
           src={`${import.meta.env.VITE_ASSET_PATH}${entity.logo}`}

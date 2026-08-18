@@ -379,7 +379,13 @@ export function ActivityFormMobileView(props: ActivityFormMobileViewInterface) {
   });
 
   return (
-    <>
+    <Box
+      sx={(theme) => ({
+        position: "relative",
+        backgroundColor: theme.vars.palette["White"],
+        flexGrow: 1,
+      })}
+    >
       <TopNavigation
         header={{
           text: t(`${props.translation}.header`),
@@ -1236,6 +1242,6 @@ export function ActivityFormMobileView(props: ActivityFormMobileViewInterface) {
         items={props.locations}
         value={[]}
       />
-    </>
+    </Box>
   );
 }

@@ -43,12 +43,15 @@ export function SelectProjectsView(props: SelectProjectsViewProps) {
 
   return (
     <Box
-      sx={{
+      sx={(theme) => ({
         height: "100%",
         display: "flex",
         flexDirection: "column",
         flexGrow: 1,
-      }}
+        position: "relative",
+        backgroundColor: theme.vars.palette["White"],
+        flexGrow: 1,
+      })}
     >
       <TopNavigation
         header={{

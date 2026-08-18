@@ -383,7 +383,11 @@ export function BidFormMobileView(props: BidFormMobileViewInterface) {
   return (
     <>
       <Box
-        sx={{
+        sx={(theme) => ({
+          position: "relative",
+          backgroundColor: theme.vars.palette["White"],
+          flexGrow: 1,
+
           // height: "calc(100vh - 120px)",
           overflow: "auto",
           display: "flex",
@@ -392,7 +396,7 @@ export function BidFormMobileView(props: BidFormMobileViewInterface) {
           paddingLeft: "16px",
           paddingRight: "16px",
           paddingTop: "20px",
-        }}
+        })}
       >
         <Avatar
           src={`${import.meta.env.VITE_ASSET_PATH}${props.entity.logo}`}

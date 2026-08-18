@@ -61,7 +61,13 @@ export default function NewOrderMobileView(props: NewOrderMobileViewInterface) {
   });
 
   return (
-    <>
+    <Box
+      sx={(theme) => ({
+        position: "relative",
+        backgroundColor: theme.vars.palette["White"],
+        flexGrow: 1,
+      })}
+    >
       <TopNavigation
         header={{
           text: t(`header`),
@@ -110,32 +116,6 @@ export default function NewOrderMobileView(props: NewOrderMobileViewInterface) {
           />
 
           <Controller
-            name="project"
-            control={control}
-            render={({ field }) =>
-              props.projectOptions.length > 0 ? (
-                <StyledSelect
-                  inputType="select"
-                  placeholder={t(`fields.projectPlaceholder`)}
-                  onImmediateChange={() => {
-                    props.submitAction(
-                      getValues("location"),
-                      getValues("project"),
-                      getValues("selfEmployed"),
-                    );
-                  }}
-                  validation="none"
-                  error={errors.project?.message}
-                  options={props.projectOptions}
-                  {...field}
-                />
-              ) : (
-                <></>
-              )
-            }
-          />
-
-          <Controller
             name="location"
             control={control}
             render={({ field }) =>
@@ -153,6 +133,32 @@ export default function NewOrderMobileView(props: NewOrderMobileViewInterface) {
                   validation="none"
                   error={errors.location?.message}
                   options={props.options}
+                  {...field}
+                />
+              ) : (
+                <></>
+              )
+            }
+          />
+
+          <Controller
+            name="project"
+            control={control}
+            render={({ field }) =>
+              props.projectOptions.length > 0 ? (
+                <StyledSelect
+                  inputType="select"
+                  placeholder={t(`fields.projectPlaceholder`)}
+                  onImmediateChange={() => {
+                    props.submitAction(
+                      getValues("location"),
+                      getValues("project"),
+                      getValues("selfEmployed"),
+                    );
+                  }}
+                  validation="none"
+                  error={errors.project?.message}
+                  options={props.projectOptions}
                   {...field}
                 />
               ) : (
@@ -319,6 +325,6 @@ export default function NewOrderMobileView(props: NewOrderMobileViewInterface) {
           </Button>
         </DialogActions>
       </Dialog>
-    </>
+    </Box>
   );
 }
