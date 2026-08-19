@@ -399,6 +399,7 @@ export default [
       },
     ),
   ]),
+
   // registration
 
   // internal pages without navigation menu

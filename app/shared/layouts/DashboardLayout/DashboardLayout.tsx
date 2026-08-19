@@ -325,11 +325,8 @@ export default function DashboardLayout({ loaderData }: Route.ComponentProps) {
 
         {loaderData.moderationMenu[loaderData["userRole"]].length > 0 ? (
           <>
-            <BottomNavigation
+            <Box
               sx={{
-                justifyContent: "flex-start",
-                flexDirection: "column",
-                height: "unset",
                 padding: "10px",
               }}
             >
@@ -346,34 +343,43 @@ export default function DashboardLayout({ loaderData }: Route.ComponentProps) {
                   {t("header", { ns: "m_layout_moderation" })}
                 </Typography>
               ) : null}
-
-              {loaderData.moderationMenu[loaderData["userRole"]].map(
-                (
-                  item: Omit<
-                    ComponentPropsWithoutRef<typeof DashboardItem>,
-                    "showDetails"
-                  >,
-                ) => (
-                  <BottomNavigationAction
-                    key={item.key}
-                    component={() => (
-                      <DashboardItem
-                        key={item.key}
-                        icon={item.icon}
-                        label={item.label}
-                        to={item.to}
-                        showDetails={open}
-                        {...(item.count ? { count: item.count } : {})}
-                        {...(item.notification
-                          ? { notification: item.notification }
-                          : {})}
-                        {...(item.disabled ? { disabled: item.disabled } : {})}
-                      />
-                    )}
-                  />
-                ),
-              )}
-            </BottomNavigation>
+              <BottomNavigation
+                sx={{
+                  justifyContent: "flex-start",
+                  flexDirection: "column",
+                  height: "unset",
+                }}
+              >
+                {loaderData.moderationMenu[loaderData["userRole"]].map(
+                  (
+                    item: Omit<
+                      ComponentPropsWithoutRef<typeof DashboardItem>,
+                      "showDetails"
+                    >,
+                  ) => (
+                    <BottomNavigationAction
+                      key={item.key}
+                      component={() => (
+                        <DashboardItem
+                          key={item.key}
+                          icon={item.icon}
+                          label={item.label}
+                          to={item.to}
+                          showDetails={open}
+                          {...(item.count ? { count: item.count } : {})}
+                          {...(item.notification
+                            ? { notification: item.notification }
+                            : {})}
+                          {...(item.disabled
+                            ? { disabled: item.disabled }
+                            : {})}
+                        />
+                      )}
+                    />
+                  ),
+                )}
+              </BottomNavigation>
+            </Box>
             <Divider />
           </>
         ) : null}

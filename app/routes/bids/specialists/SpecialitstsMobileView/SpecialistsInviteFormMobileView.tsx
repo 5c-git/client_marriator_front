@@ -1,4 +1,4 @@
-import { ComponentPropsWithoutRef, useState } from "react";
+import { ComponentPropsWithoutRef } from "react";
 
 import type { SpecialistsMobileViewInterface } from "./SpecialistsMobileViewInterface";
 
@@ -22,15 +22,16 @@ type SpecialistsInviteFormMobileViewInterface = Pick<
   SpecialistsMobileViewInterface,
   "activeService" | "startingRadius" | "specialists" | "radiuses"
 > & {
+  submitRadiusAction: (value: string) => void;
   submitAction: (values: string[]) => void;
 };
 
 export function SpecialistsInviteFormMobileView(
   props: SpecialistsInviteFormMobileViewInterface,
 ) {
-  const { t } = useTranslation("SpecialistsMobileView");
+  const { t } = useTranslation("m_bids_bid_specialists");
 
-  const { control, getValues, setValue, handleSubmit } = useForm<{
+  const { control, getValues, setValue, handleSubmit, watch } = useForm<{
     searchbar: string;
     selectAll: boolean;
     onlyAccurate: boolean;
@@ -55,23 +56,47 @@ export function SpecialistsInviteFormMobileView(
     ),
   });
 
-  const startingSpecialists = props.specialists.filter((item) => item.viewActivitiesAccurate === true).filter(
-    (item) => Number(item.radius) <= props.startingRadius,
-  );
+  let matchingSpecialists: SpecialistsInviteFormMobileViewInterface["specialists"] =
+    [];
 
-  const [selectedSpecialists, setSelectedSpecialists] =
-    useState(startingSpecialists);
+  // обрататываем поиск
+  if (watch("searchbar") !== "") {
+    const currentSearchbarValue = new RegExp(`${watch("searchbar")}`, "i");
+
+    matchingSpecialists = [
+      ...props.specialists.filter((item) =>
+        currentSearchbarValue.test(item.name),
+      ),
+      ...props.specialists.filter((item) =>
+        currentSearchbarValue.test(item.phone.toString()),
+      ),
+    ];
+  } else {
+    matchingSpecialists = [...props.specialists];
+  }
+  //обрабатываем радиус
+  const sortedSpecialists = matchingSpecialists.filter(
+    (item) => Number(item.radius) <= Number(watch("radius")),
+  );
+  //обрабатываем "только подходящие специалисты"
+  if (watch("onlyAccurate")) {
+    matchingSpecialists = sortedSpecialists.filter(
+      (item) => item.viewActivitiesAccurate === true,
+    );
+  }
 
   return (
     <form
       onSubmit={handleSubmit((values) => {
-        props.submitAction(values.specialists);
+        // props.submitAction(values.specialists);
+        console.log(values.specialists);
       })}
       style={{
         display: "flex",
         flexDirection: "column",
         flexGrow: 1,
         padding: "20px 16px",
+        backgroundColor: "var(--mui-palette-White)",
       }}
     >
       <Box
@@ -89,56 +114,6 @@ export function SpecialistsInviteFormMobileView(
             <StyledSearchBar
               placeholder={t("searchbarPlaceholder")}
               {...field}
-              onChange={(evt) => {
-                const currentFieldValue = new RegExp(
-                  `${evt.target.value}`,
-                  "i",
-                );
-
-                let matchingSpecialists: SpecialistsInviteFormMobileViewInterface["specialists"] =
-                  [];
-
-                // обрататываем поиск
-                if (evt.target.value !== "") {
-                  matchingSpecialists = [
-                    ...props.specialists.filter((item) =>
-                      currentFieldValue.test(item.name),
-                    ),
-                    ...props.specialists.filter((item) =>
-                      currentFieldValue.test(item.phone.toString()),
-                    ),
-                  ];
-                } else {
-                  matchingSpecialists = [...props.specialists];
-                }
-
-                //обрабатываем радиус
-                let sortedSpecialists = matchingSpecialists.filter(
-                  (item) => Number(item.radius) <= Number(getValues("radius")),
-                );
-
-                //обрабатываем "только подходящие специалисты"
-                if(getValues("onlyAccurate")) {
-                  sortedSpecialists = sortedSpecialists.filter(
-                    (item) => item.viewActivitiesAccurate === true,
-                  );
-                }
-
-                //обрабатываем "выбрать всё"
-                if (getValues("selectAll")) {
-                  const newValues: string[] = [];
-
-                  sortedSpecialists.forEach((item) => {
-                    newValues.push(item.id.toString());
-                  });
-
-                  setValue("specialists", newValues);
-                }
-
-                setSelectedSpecialists(sortedSpecialists);
-
-                field.onChange(evt);
-              }}
             />
           )}
         />
@@ -168,7 +143,7 @@ export function SpecialistsInviteFormMobileView(
                   const newValues: string[] = [];
 
                   if (isChecked) {
-                    selectedSpecialists.forEach((item) => {
+                    matchingSpecialists.forEach((item) => {
                       newValues.push(item.id.toString());
                     });
                   }
@@ -189,21 +164,9 @@ export function SpecialistsInviteFormMobileView(
                 value={field.value.toString()}
                 onChange={(evt) => {
                   field.onChange(evt);
-
-                  const selectedValue: number = Number(evt.target.value);
-
-                  let sortedSpecialists = props.specialists.filter(
-                    (item) => Number(item.radius) <= selectedValue,
-                  );
-
-                  //обрабатываем "только подходящие специалисты"
-                  if(getValues("onlyAccurate")) {
-                    sortedSpecialists = sortedSpecialists.filter(
-                      (item) => item.viewActivitiesAccurate === true,
-                    );
-                  }
-
-                  setSelectedSpecialists(sortedSpecialists);
+                  props.submitRadiusAction(evt.target.value);
+                  setValue("specialists", []);
+                  setValue("selectAll", false);
                 }}
               />
             )}
@@ -211,51 +174,23 @@ export function SpecialistsInviteFormMobileView(
         </Box>
 
         <Controller
-            name="onlyAccurate"
-            control={control}
-            render={({ field }) => (
-              <StyledCheckbox
-                {...field}
-                inputType="checkbox"
-                label={t("onlyAccuratePlaceholder")}
-                onImmediateChange={() => {}}
-                validation="none"
-                disabled={props.specialists.filter((item) => item.viewActivitiesAccurate === false).length === 0}
-                onChange={(evt) => {
-                  field.onChange(evt);
-
-                  let matchingSpecialists: SpecialistsInviteFormMobileViewInterface["specialists"] =
-                  [...props.specialists];
-
-
-                  //обрабатываем радиус
-                  matchingSpecialists = matchingSpecialists.filter(
-                    (item) => Number(item.radius) <= Number(getValues("radius")),
-                  );
-
-                  //обрабатываем "только подходящие специалисты"
-                  if(getValues("onlyAccurate")) {
-                    matchingSpecialists = matchingSpecialists.filter(
-                      (item) => item.viewActivitiesAccurate === true,
-                    );
-                  }
-  
-                  // //обрабатываем "выбрать всё"
-                  if (getValues("selectAll")) {
-                    const newValues: string[] = [];
-  
-                    matchingSpecialists.forEach((item) => {
-                      newValues.push(item.id.toString());
-                    });
-  
-                    setValue("specialists", newValues);
-                  }
-
-                  setSelectedSpecialists(matchingSpecialists);
-                }}
-              />
-            )}
-          />
+          name="onlyAccurate"
+          control={control}
+          render={({ field }) => (
+            <StyledCheckbox
+              {...field}
+              inputType="checkbox"
+              label={t("onlyAccuratePlaceholder")}
+              onImmediateChange={() => {}}
+              validation="none"
+              disabled={
+                props.specialists.filter(
+                  (item) => item.viewActivitiesAccurate === false,
+                ).length === 0
+              }
+            />
+          )}
+        />
 
         <Controller
           name="specialists"
@@ -269,7 +204,7 @@ export function SpecialistsInviteFormMobileView(
                   typeof StyledCheckboxMultiple
                 >["options"] = [];
 
-                selectedSpecialists.forEach((item) => {
+                matchingSpecialists.forEach((item) => {
                   options.push({
                     value: item.id.toString(),
                     label: item.name,
@@ -290,7 +225,7 @@ export function SpecialistsInviteFormMobileView(
           )}
         />
 
-        {selectedSpecialists.length === 0 ? (
+        {matchingSpecialists.length === 0 ? (
           <Typography
             component="p"
             variant="Reg_14"

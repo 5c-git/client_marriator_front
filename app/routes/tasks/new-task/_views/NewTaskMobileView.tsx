@@ -61,7 +61,13 @@ export function NewTaskMobileView(props: NewTaskMobileViewInterface) {
   });
 
   return (
-    <>
+    <Box
+      sx={(theme) => ({
+        position: "relative",
+        backgroundColor: theme.vars.palette["White"],
+        flexGrow: 1,
+      })}
+    >
       <TopNavigation
         header={{
           text: t(`header`),
@@ -110,32 +116,6 @@ export function NewTaskMobileView(props: NewTaskMobileViewInterface) {
           />
 
           <Controller
-            name="project"
-            control={control}
-            render={({ field }) =>
-              props.projectsOptions.length > 0 ? (
-                <StyledSelect
-                  inputType="select"
-                  placeholder={t(`fields.projectPlaceholder`)}
-                  onImmediateChange={() => {
-                    props.submitAction(
-                      getValues("location"),
-                      getValues("project"),
-                      getValues("selfEmployed"),
-                    );
-                  }}
-                  validation="none"
-                  error={errors.project?.message}
-                  options={props.projectsOptions}
-                  {...field}
-                />
-              ) : (
-                <></>
-              )
-            }
-          />
-
-          <Controller
             name="location"
             control={control}
             render={({ field }) =>
@@ -153,6 +133,32 @@ export function NewTaskMobileView(props: NewTaskMobileViewInterface) {
                   validation="none"
                   error={errors.location?.message}
                   options={props.placesOptions}
+                  {...field}
+                />
+              ) : (
+                <></>
+              )
+            }
+          />
+
+          <Controller
+            name="project"
+            control={control}
+            render={({ field }) =>
+              props.projectsOptions.length > 0 ? (
+                <StyledSelect
+                  inputType="select"
+                  placeholder={t(`fields.projectPlaceholder`)}
+                  onImmediateChange={() => {
+                    props.submitAction(
+                      getValues("location"),
+                      getValues("project"),
+                      getValues("selfEmployed"),
+                    );
+                  }}
+                  validation="none"
+                  error={errors.project?.message}
+                  options={props.projectsOptions}
                   {...field}
                 />
               ) : (
@@ -374,6 +380,6 @@ export function NewTaskMobileView(props: NewTaskMobileViewInterface) {
           </Button>
         </DialogActions>
       </Dialog>
-    </>
+    </Box>
   );
 }

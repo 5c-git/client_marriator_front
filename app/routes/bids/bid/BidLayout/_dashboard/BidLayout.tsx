@@ -70,9 +70,10 @@ export default function BidLayout({ loaderData }: Route.ComponentProps) {
       />
       <Tabs
         value={location.pathname}
-        sx={{
+        sx={(theme) => ({
           width: "100%",
-        }}
+          backgroundColor: theme.vars.palette["White"],
+        })}
       >
         <Tab
           label={t("tabs.details")}

@@ -7,6 +7,7 @@ import { PostInvoiceBidSuccess } from "~/api/_personal/postInvoiceBid/postInvoic
 export type GetSpecialistForBid = (
   accessToken: string,
   bidId: string,
+  radius?: string,
 ) => Promise<GetSpecialistForBidSuccess>;
 
 export type GetRadiusSelect = (

@@ -14,7 +14,9 @@ import { postInvoiceBid } from "~/api/_personal/postInvoiceBid/postInvoiceBid";
 
 specialistsContainer
   .bind(specialistsPrivateTokens.getSpecialistForBid)
-  .toConstant((accessToken, bidId) => getSpecialistForBid(accessToken, bidId));
+  .toConstant((accessToken, bidId, radius) =>
+    getSpecialistForBid(accessToken, bidId, radius),
+  );
 
 specialistsContainer
   .bind(specialistsPrivateTokens.getRadiusSelect)

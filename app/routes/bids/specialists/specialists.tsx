@@ -1,4 +1,9 @@
-import { useSubmit, redirect, useOutletContext } from "react-router";
+import {
+  useSubmit,
+  redirect,
+  useOutletContext,
+  useSearchParams,
+} from "react-router";
 import type { Route } from "./+types/specialists";
 import type { GetBidSuccess } from "~/api/_personal/getBid/getBidSuccess.schema";
 
@@ -10,12 +15,21 @@ import { SpecialistsStaticMobileView } from "./SpecialitstsMobileView/Specialist
 import { specialistsContainer } from "./specialists.module";
 import { specialistsTokens } from "./specialists.tokens";
 
-export async function clientLoader({ params }: Route.ClientLoaderArgs) {
+export async function clientLoader({
+  request,
+  params,
+}: Route.ClientLoaderArgs) {
+  const currentURL = new URL(request.url);
+  const radius = currentURL.searchParams.get("radius");
+
   const specialistsService = specialistsContainer.get(
     specialistsTokens.specialistsService,
   );
 
-  const specialists = await specialistsService.getSpecialists(params.bidId);
+  const specialists = await specialistsService.getSpecialists(
+    params.bidId,
+    radius ? radius : undefined,
+  );
   const { radiusOptions, defaultRadius } =
     await specialistsService.getRadiusOptions();
 
@@ -39,6 +53,10 @@ export async function clientAction({
 export default function Specialists({ loaderData }: Route.ComponentProps) {
   const submit = useSubmit();
 
+  const [searchParams, setSearchParams] = useSearchParams();
+
+  const currentRadius = searchParams.get("radius");
+
   const { bidMobileData } = useOutletContext<{
     bidMobileData: GetBidSuccess["data"];
     editMode: boolean;
@@ -48,13 +66,18 @@ export default function Specialists({ loaderData }: Route.ComponentProps) {
     <SpecialistsInviteFormMobileView
       specialists={loaderData.specialists}
       radiuses={loaderData.radiusOptions}
-      startingRadius={loaderData.defaultRadius}
+      startingRadius={
+        currentRadius ? Number(currentRadius) : loaderData.defaultRadius
+      }
       activeService={bidMobileData.viewActivity.name}
       submitAction={(values) => {
         submit(JSON.stringify(values), {
           method: "POST",
           encType: "application/json",
         });
+      }}
+      submitRadiusAction={(value) => {
+        setSearchParams({ radius: value });
       }}
     />
   ) : (

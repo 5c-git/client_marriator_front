@@ -30,7 +30,13 @@ export function ActivityStaticMobileView(
   const { t } = useTranslation("ActivityMobileView");
 
   return (
-    <>
+    <Box
+      sx={(theme) => ({
+        position: "relative",
+        backgroundColor: theme.vars.palette["White"],
+        flexGrow: 1,
+      })}
+    >
       <TopNavigation
         header={{
           text: t(`${props.translation}.header`),
@@ -409,6 +415,6 @@ export function ActivityStaticMobileView(
           validation="none"
         />
       </Box>
-    </>
+    </Box>
   );
 }

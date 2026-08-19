@@ -89,18 +89,21 @@ export const getTasksSuccessSchema = z.object({
           ),
         }),
       ),
-      project: z.object({
-        id: z.number(),
-        name: z.string(),
-        brand: z.array(
-          z.object({
-            id: z.number(),
-            name: z.string(),
-            logo: z.string(),
-            description: z.string(),
-          }),
-        ),
-      }),
+      project: z.union([
+        z.null(),
+        z.object({
+          id: z.number(),
+          name: z.string(),
+          brand: z.array(
+            z.object({
+              id: z.number(),
+              name: z.string(),
+              logo: z.string(),
+              description: z.string(),
+            }),
+          ),
+        }),
+      ]),
       acceptUser: z.union([
         z.null(),
         z.object({

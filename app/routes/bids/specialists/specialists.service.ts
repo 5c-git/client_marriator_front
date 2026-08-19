@@ -19,9 +19,9 @@ export class SpecialistsService {
     private readonly _invoiceBid: InvoiceBid,
   ) {}
 
-  async getSpecialists(bidId: string) {
+  async getSpecialists(bidId: string, radius?: string) {
     const token = this.appService.getToken();
-    const data = await this._getSpecialistForBid(token, bidId);
+    const data = await this._getSpecialistForBid(token, bidId, radius);
 
     return SpecialistsMapper.mapDataToSpecialists(data);
   }

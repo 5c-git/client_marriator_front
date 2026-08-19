@@ -62,25 +62,25 @@ export async function clientLoader({ params }: Route.ClientLoaderArgs) {
       activity = ActivityMapper.mapEntityToActivity(activityMatch);
 
       setting_logo = activityMatch.viewActivity.logo;
-
-      setting_canEdit =
-        (params.serviceId &&
-          userRole === "manager" &&
-          entityData.data.status === 1) ||
-        (params.serviceId &&
-          userRole === "manager" &&
-          entityData.data.status === 2)
-          ? true
-          : false;
     } else {
       throw redirect(withLocale(`/${vocabulary.single}/${entityId}`));
     }
   }
 
+  setting_canEdit =
+    (userRole === "manager" && entityData.data.status === 1) ||
+    (userRole === "manager" && entityData.data.status === 2) ||
+    (userRole === "client" && entityData.data.status === 1) ||
+    (userRole === "client" && entityData.data.status === 2)
+      ? true
+      : false;
+
   if (setting_canEdit == true) {
     activities = await activityService.getActivitiesOptions(entityId);
     locations = await activityService.getLocationsOptions(entityId);
   }
+
+  console.log(setting_canEdit);
 
   const intervalDayStart = await activityService.getSetting("intervalDayStart");
   const intervalDayEnd = await activityService.getSetting("intervalDayEnd");
@@ -135,9 +135,7 @@ export async function clientAction({
   if (_action === ACTIVITY_ACTIONS.createService) {
     await activityService.createEntityActivity(fields.payload);
     if (isNew) {
-      throw redirect(
-        `/${vocabulary.plural}/${vocabulary.new}?${vocabulary.entity}=${entityId}`,
-      );
+      throw redirect(`/${vocabulary.plural}/${vocabulary.new}/${entityId}`);
     } else {
       throw redirect(withLocale(`/${vocabulary.plural}/${entityId}`));
     }

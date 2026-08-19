@@ -3,7 +3,7 @@ import { defineConfig } from "orval";
 export default defineConfig({
   spec: {
     input: {
-      target: "./petstore.yaml",
+      target: "./spec.yaml",
     },
     output: {
       mode: "tags-split",
