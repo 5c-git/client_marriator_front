@@ -30,9 +30,9 @@ import { appContainer } from "~/shared/container/container";
 import { appTokens } from "~/shared/container/container.tokens";
 import { WalletIcon } from "~/shared/ui/Menu/icons/WalletIcon";
 
-import ArrowDropUpIcon from "@mui/icons-material/ArrowDropUp";
-import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
-import KeyboardDoubleArrowUpIcon from "@mui/icons-material/KeyboardDoubleArrowUp";
+import { ManagerIcon } from "./icons/ManagerIcon";
+import { SupervisorIcon } from "./icons/SupervisorIcon";
+import { ClientIcon } from "./icons/ClientIcon";
 
 export async function clientLoader() {
   await loadNamespaces("m_layout_home");
@@ -110,21 +110,19 @@ export async function clientLoader() {
     moderationMenu: {
       admin: [
         {
-          icon: (
-            <KeyboardDoubleArrowUpIcon sx={{ width: "18px", height: "18px" }} />
-          ),
+          icon: <ManagerIcon sx={{ width: "18px", height: "18px" }} />,
           label: t("tabs.manager", { ns: "m_layout_moderation" }),
           to: withLocale("/dashboard/moderation/managers"),
           key: "managers",
         },
         {
-          icon: <KeyboardArrowUpIcon sx={{ width: "18px", height: "18px" }} />,
+          icon: <SupervisorIcon sx={{ width: "18px", height: "18px" }} />,
           label: t("tabs.supervisor", { ns: "m_layout_moderation" }),
           to: withLocale("/dashboard/moderation/supervisors"),
           key: "supervisors",
         },
         {
-          icon: <ArrowDropUpIcon sx={{ width: "18px", height: "18px" }} />,
+          icon: <ClientIcon sx={{ width: "18px", height: "18px" }} />,
           label: t("tabs.client", { ns: "m_layout_moderation" }),
           to: withLocale("/dashboard/moderation/clients"),
           key: "clients",
@@ -132,13 +130,13 @@ export async function clientLoader() {
       ],
       manager: [
         {
-          icon: <KeyboardArrowUpIcon sx={{ width: "18px", height: "18px" }} />,
+          icon: <SupervisorIcon sx={{ width: "18px", height: "18px" }} />,
           label: t("tabs.supervisor", { ns: "m_layout_moderation" }),
           to: withLocale("/dashboard/moderation/supervisors"),
           key: "supervisors",
         },
         {
-          icon: <ArrowDropUpIcon sx={{ width: "18px", height: "18px" }} />,
+          icon: <ClientIcon sx={{ width: "18px", height: "18px" }} />,
           label: t("tabs.client", { ns: "m_layout_moderation" }),
           to: withLocale("/dashboard/moderation/clients"),
           key: "clients",
@@ -146,7 +144,7 @@ export async function clientLoader() {
       ],
       supervisor: [
         {
-          icon: <ArrowDropUpIcon sx={{ width: "18px", height: "18px" }} />,
+          icon: <ClientIcon sx={{ width: "18px", height: "18px" }} />,
           label: t("tabs.client", { ns: "m_layout_moderation" }),
           to: withLocale("/dashboard/moderation/clients"),
           key: "clients",
