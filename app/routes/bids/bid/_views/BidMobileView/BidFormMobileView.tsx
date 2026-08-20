@@ -955,9 +955,26 @@ export function BidFormMobileView(props: BidFormMobileViewInterface) {
                       <Typography
                         component="p"
                         variant="Reg_14"
-                        sx={(theme) => ({
-                          color: theme.vars.palette["Black"],
-                        })}
+                        // sx={(theme) => ({
+                        //   color: theme.vars.palette["Black"],
+                        // })}
+                        sx={(theme) => {
+                          const daysErrors = errors.days;
+
+                          if (daysErrors && daysErrors[index]) {
+                            return {
+                              color:
+                                daysErrors[index].timeStart ||
+                                daysErrors[index].timeEnd
+                                  ? theme.vars.palette["Red"]
+                                  : theme.vars.palette["Black"],
+                            };
+                          } else {
+                            return {
+                              color: theme.vars.palette["Black"],
+                            };
+                          }
+                        }}
                       >
                         {format(watch(`days.${index}.timeStart`), "kk:mm")}-
                         {format(watch(`days.${index}.timeEnd`), "kk:mm")}

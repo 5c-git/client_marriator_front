@@ -58,7 +58,10 @@ import { PointerIcon } from "~/shared/icons/PointerIcon";
 // import CloseIcon from "@mui/icons-material/Close";
 import { CalendarIcon } from "~/shared/icons/CalendarIcon";
 
-const requestSearchFormSchema = (defaultStartDate: Date, defaultEndDate: Date) =>
+const requestSearchFormSchema = (
+  defaultStartDate: Date,
+  defaultEndDate: Date,
+) =>
   z
     .object({
       place: z.number({ error: t("text", { ns: "constructorFields" }) }),
@@ -141,10 +144,15 @@ const requestSearchFormSchema = (defaultStartDate: Date, defaultEndDate: Date) =
       }
 
       //проверяем что дата старта и дата конца не выходят за заданные временные рамки
-      if(isAfter(dateEnd, set(dateEnd, {
-        hours: defaultEndDate.getHours(),
-        minutes: defaultEndDate.getMinutes(),
-      }))) {
+      if (
+        isAfter(
+          dateEnd,
+          set(dateEnd, {
+            hours: defaultEndDate.getHours(),
+            minutes: defaultEndDate.getMinutes(),
+          }),
+        )
+      ) {
         ctx.addIssue({
           code: "custom",
           message: t("service.laterThanDefaultError", {
@@ -155,10 +163,15 @@ const requestSearchFormSchema = (defaultStartDate: Date, defaultEndDate: Date) =
         });
       }
 
-      if(isBefore(dateStart, set(dateStart, {
-        hours: defaultStartDate.getHours(),
-        minutes: defaultStartDate.getMinutes(),
-      }))) {
+      if (
+        isBefore(
+          dateStart,
+          set(dateStart, {
+            hours: defaultStartDate.getHours(),
+            minutes: defaultStartDate.getMinutes(),
+          }),
+        )
+      ) {
         ctx.addIssue({
           code: "custom",
           message: t("service.earlierThanDefaultError", {
@@ -168,8 +181,6 @@ const requestSearchFormSchema = (defaultStartDate: Date, defaultEndDate: Date) =
           path: ["dateStart"],
         });
       }
-
-
     });
 
 type submitValues = z.output<ReturnType<typeof requestSearchFormSchema>>;
@@ -232,6 +243,8 @@ export function RequestSearchDrawer(props: RequestSearchDrawerProps) {
         sx={{
           "& .MuiDrawer-paper": {
             borderRadius: "6px",
+            maxWidth: "768px",
+            margin: "0 auto",
           },
         }}
       >
@@ -710,9 +723,23 @@ export function RequestSearchDrawer(props: RequestSearchDrawerProps) {
                         <Typography
                           component="p"
                           variant="Reg_14"
-                          sx={(theme) => ({
-                            color: theme.vars.palette["Black"],
-                          })}
+                          sx={(theme) => {
+                            const daysErrors = errors.days;
+
+                            if (daysErrors && daysErrors[index]) {
+                              return {
+                                color:
+                                  daysErrors[index].timeStart ||
+                                  daysErrors[index].timeEnd
+                                    ? theme.vars.palette["Red"]
+                                    : theme.vars.palette["Black"],
+                              };
+                            } else {
+                              return {
+                                color: theme.vars.palette["Black"],
+                              };
+                            }
+                          }}
                         >
                           {format(
                             getValues(`days.${index}.timeStart`),

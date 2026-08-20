@@ -345,6 +345,8 @@ export function ActivityFormMobileView(props: ActivityFormMobileViewInterface) {
 
   const [dayIndex, setDayIndex] = useState<number>(-1);
 
+  console.log(props);
+
   const {
     control,
     handleSubmit,

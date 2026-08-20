@@ -80,8 +80,6 @@ export async function clientLoader({ params }: Route.ClientLoaderArgs) {
     locations = await activityService.getLocationsOptions(entityId);
   }
 
-  console.log(setting_canEdit);
-
   const intervalDayStart = await activityService.getSetting("intervalDayStart");
   const intervalDayEnd = await activityService.getSetting("intervalDayEnd");
 
@@ -107,8 +105,18 @@ export async function clientLoader({ params }: Route.ClientLoaderArgs) {
     },
     projectTimeRange: {
       // "as string" because at this point there is no way we can create service if there is no order or task with project
-      start: new Date(entityData.data.project?.dateStart as string),
-      end: new Date(entityData.data.project?.dateEnd as string),
+      start: new Date(
+        entityData.data.project?.dateStart.replace(
+          /T\d{2}:\d{2}/,
+          `T${entityData.data.project?.timeStart}`,
+        ) as string,
+      ),
+      end: new Date(
+        entityData.data.project?.dateEnd.replace(
+          /T\d{2}:\d{2}/,
+          `T${entityData.data.project?.timeEnd}`,
+        ) as string,
+      ),
     },
   };
 }
