@@ -19,6 +19,7 @@ import { StyledDrawer } from "./DashboardLayout.styled";
 import { DashboardItem } from "./_components/DashboardItem";
 
 import ViewSidebarRoundedIcon from "@mui/icons-material/ViewSidebarRounded";
+
 import { OrderIcon } from "./icons/OrderIcon";
 import { TaskIcon } from "./icons/TaskIcon";
 import { BidIcon } from "./icons/BidIcon";
@@ -28,6 +29,7 @@ import { ProfileIcon } from "~/shared/ui/Menu/icons/ProfileIcon";
 import { appContainer } from "~/shared/container/container";
 import { appTokens } from "~/shared/container/container.tokens";
 import { WalletIcon } from "~/shared/ui/Menu/icons/WalletIcon";
+
 import ArrowDropUpIcon from "@mui/icons-material/ArrowDropUp";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import KeyboardDoubleArrowUpIcon from "@mui/icons-material/KeyboardDoubleArrowUp";
