@@ -7,5 +7,10 @@
   "exit": "Выход",
   "dialog_title": "Вы уверены, что хотите выйте из приложения?",
   "dialog_no": "Нет",
-  "dialog_yes": "Да"
+  "dialog_yes": "Да",
+  "change_role": {
+    "header": "Доступные роли для работы:",
+    "supervisor": "Супервайзер",
+    "specialist": "Специалист"
+  }
 }

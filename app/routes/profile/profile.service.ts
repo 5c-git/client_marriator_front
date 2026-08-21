@@ -2,6 +2,7 @@ import { injected } from "brandi";
 
 import type {
   FetchUserInfoCached,
+  ChangeUserRole,
   ClearAppStore,
   InvalidateUserInfoQueries,
 } from "./profile.private-tokens";
@@ -15,6 +16,7 @@ import { ProfileMapper, ProfileData } from "./profile.mapper";
 export class ProfileService {
   constructor(
     private readonly fetchUserInfoCached: FetchUserInfoCached,
+    private readonly _changeUserRole: ChangeUserRole,
     private readonly clearAppStore: ClearAppStore,
     private readonly invalidateUserInfoQueries: InvalidateUserInfoQueries,
     private readonly appService: AppService,
@@ -28,6 +30,11 @@ export class ProfileService {
     return ProfileMapper.toData(data, userRole);
   }
 
+  changeUserRole(newRole: "supervisor" | "specialist") {
+    this._changeUserRole(newRole);
+    window.location.reload();
+  }
+
   logout() {
     this.clearAppStore();
     this.invalidateUserInfoQueries();
@@ -39,6 +46,7 @@ export class ProfileService {
 injected(
   ProfileService,
   profilePrivateTokens.fetchUserInfoCached,
+  profilePrivateTokens.changeUserRole,
   profilePrivateTokens.clearAppStore,
   profilePrivateTokens.invalidateUserInfoQueries,
   appTokens.appService,

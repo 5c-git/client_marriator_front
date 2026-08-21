@@ -8,6 +8,8 @@ import {
   DialogActions,
   DialogTitle,
   Button,
+  ToggleButtonGroup,
+  ToggleButton,
 } from "@mui/material";
 import Box from "@mui/material/Box";
 import Stack from "@mui/material/Stack";
@@ -29,6 +31,7 @@ type ProfileViewProps = {
   data: ProfileData;
   userRole: State["userRole"];
   openDialog: boolean;
+  onUserRoleChange: (newRole: "supervisor" | "specialist") => void;
   onOpenLogoutDialog: () => void;
   onCloseDialog: () => void;
   onConfirmLogout: () => void;
@@ -102,6 +105,38 @@ export function ProfileView(props: ProfileViewProps) {
             onClick={props.onOpenLogoutDialog}
           />
         </List>
+
+        {props.data.canChangeRole &&
+        props.data.availableRoles.includes("supervisor") &&
+        props.data.availableRoles.includes("specialist") ? (
+          <Box
+            sx={{
+              display: "grid",
+              padding: "16px",
+              rowGap: "16px",
+            }}
+          >
+            <Typography> {t("change_role.header")}</Typography>
+            <ToggleButtonGroup
+              color="primary"
+              value={props.userRole}
+              exclusive
+              onChange={(_, newValue: "supervisor" | "specialist") => {
+                props.onUserRoleChange(newValue);
+              }}
+              sx={{
+                width: "100%",
+              }}
+            >
+              <ToggleButton value="supervisor" sx={{ flexGrow: 1 }}>
+                {t("change_role.supervisor")}
+              </ToggleButton>
+              <ToggleButton value="specialist" sx={{ flexGrow: 1 }}>
+                {t("change_role.specialist")}
+              </ToggleButton>
+            </ToggleButtonGroup>
+          </Box>
+        ) : null}
       </Box>
 
       <Dialog

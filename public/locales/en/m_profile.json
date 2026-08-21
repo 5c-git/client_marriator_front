@@ -7,5 +7,10 @@
   "exit": "Log out",
   "dialog_title": "Are you sure you want to log out?",
   "dialog_no": "No",
-  "dialog_yes": "Yes"
+  "dialog_yes": "Yes",
+  "change_role": {
+    "header": "Available roles:",
+    "supervisor": "Supervisor",
+    "specialist": "Specialist"
+  }
 }

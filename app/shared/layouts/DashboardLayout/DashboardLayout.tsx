@@ -105,7 +105,14 @@ export async function clientLoader() {
           key: "orders",
         },
       ],
-      specialist: [],
+      specialist: [
+        {
+          icon: <JobIcon style={{ width: "18px", height: "18px" }} />,
+          label: t("tabs.job", { ns: "m_layout_home" }),
+          to: withLocale("/dashboard/jobs"),
+          key: "jobs",
+        },
+      ],
     },
     moderationMenu: {
       admin: [
