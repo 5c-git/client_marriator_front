@@ -97,7 +97,7 @@ export async function clientLoader({ params }: Route.ClientLoaderArgs) {
 
     defaultTimeRange: {
       start: new Date(
-        `2026-03-12T${entityData.data.project?.timeStart ? (entityData.data.project.timeStart.startsWith("0") ? entityData.data.project.timeStart : `0${entityData.data.project.timeStart}`) : intervalDayStart.data.value.startsWith("0") ? intervalDayStart.data.value : `0${intervalDayStart.data.value}`}:00`,
+        `2026-03-12T${entityData.data.project?.timeStart ? entityData.data.project.timeStart : intervalDayStart.data.value}:00`,
       ),
       end: new Date(
         `2026-03-12T${entityData.data.project?.timeEnd ? entityData.data.project.timeEnd : intervalDayEnd.data.value}:00`,
