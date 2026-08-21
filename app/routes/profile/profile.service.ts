@@ -32,7 +32,6 @@ export class ProfileService {
 
   changeUserRole(newRole: "supervisor" | "specialist") {
     this._changeUserRole(newRole);
-    window.location.reload();
   }
 
   logout() {
