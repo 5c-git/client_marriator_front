@@ -2,6 +2,7 @@ import { type RouteConfig, route, layout } from "@react-router/dev/routes";
 
 export default [
   ///////////////////////////DASHBOARD///////////////////////////
+
   layout("shared/layouts/DashboardLayout/DashboardLayout.tsx", [
     route(":lang?/dashboard/orders", "routes/orders/_dashboard/orders.tsx", [
       route(":orderId", "routes/orders/order/order.tsx", {

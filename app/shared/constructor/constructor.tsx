@@ -17,6 +17,8 @@ import {
 
 import { t } from "i18next";
 
+import { isPast } from "date-fns";
+
 import { phoneRegExp, emailRegExp } from "../validators";
 
 import { StyledSelect } from "../ui/StyledSelect/StyledSelect";
@@ -199,6 +201,13 @@ const validationMap: Record<string, Record<string, z.ZodSchema<unknown>>> = {
       .string()
       .trim()
       .min(1, { error: t("data", { ns: "constructorFields" }) }),
+    birthday: z
+      .string()
+      .trim()
+      .min(1, { error: t("data", { ns: "constructorFields" }) })
+      .refine((val) => isPast(val), {
+        error: t("birthday", { ns: "constructorFields" }),
+      }),
   },
   card: {
     none: z.string().default("").optional(),

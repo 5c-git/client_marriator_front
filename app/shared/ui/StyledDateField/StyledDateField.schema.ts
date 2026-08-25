@@ -5,7 +5,7 @@ export const date = z.object({
   name: z.string(),
   value: z.union([z.string(), z.null()]),
   placeholder: z.string(),
-  validation: z.enum(["none", "default", "16years"]),
+  validation: z.enum(["none", "default", "16years", "birthday"]),
   disabled: z.boolean().optional(),
   heading: z.string().optional(),
   error: z.string().optional(),

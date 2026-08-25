@@ -38,5 +38,6 @@
   "earlierThanProject": "Earlier than project start",
   "laterThanProject": "Later than project end",
   "earlierThanDefaultError": "Earlier than default",
-  "laterThanDefaultError": "Later that default"
+  "laterThanDefaultError": "Later that default",
+  "birthday": "Please select a date in past"
 }

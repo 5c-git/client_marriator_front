@@ -2,12 +2,9 @@ import { defineConfig } from "vite";
 import { reactRouter } from "@react-router/dev/vite";
 
 export default defineConfig({
-  resolve: {tsconfigPaths: true},
-  plugins: [
-    reactRouter(),
-  ],
+  resolve: { tsconfigPaths: true },
+  plugins: [reactRouter()],
   build: {
     target: "esnext",
   },
-  
 });

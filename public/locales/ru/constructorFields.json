@@ -38,5 +38,6 @@
   "earlierThanProject": "Дата раньше старта проекта",
   "laterThanProject": "Дата позже конца проекта",
   "earlierThanDefaultError": "Время раньше изначального",
-  "laterThanDefaultError": "Время позже изначального"
+  "laterThanDefaultError": "Время позже изначального",
+  "birthday": "Укажите дату в прошлом"
 }

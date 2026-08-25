@@ -36,7 +36,7 @@ type StyledDateFieldProps = {
   heading?: string;
   error?: string;
   status?: "warning";
-  validation?: "default" | "none" | "16years";
+  validation?: "default" | "none" | "16years" | "birthday";
 
   helperInfo?: {
     text?: string;
@@ -84,7 +84,6 @@ export const StyledDateField = (props: StyledDateFieldProps) => {
         >
           <LocalizationProvider dateAdapter={AdapterDateFns} adapterLocale={ru}>
             <MobileDatePicker
-              enableAccessibleFieldDOMStructure={false}
               label={props.placeholder}
               name={props.name}
               value={props.value !== null ? toDate(props.value) : props.value}
@@ -95,14 +94,16 @@ export const StyledDateField = (props: StyledDateFieldProps) => {
                   ? sub(new Date(), {
                       years: 16,
                     })
-                  : undefined
+                  : props.validation === "birthday"
+                    ? new Date()
+                    : undefined
               }
               onChange={(newValue) => {
                 if (newValue) {
                   props.onChange(
                     formatISO(new Date(newValue), {
                       representation: "date",
-                    })
+                    }),
                   );
                   props.onImmediateChange();
                 }
