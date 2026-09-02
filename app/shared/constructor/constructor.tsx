@@ -32,6 +32,7 @@ import { StyledTextField } from "../ui/StyledTextField/StyledTextField";
 import { StyledPhotoInput } from "../ui/StyledPhotoInput/StyledPhotoInput";
 import { StyledPhoneField } from "../ui/StyledPhoneField/StyledPhoneField";
 import { StyledDateField } from "../ui/StyledDateField/StyledDateField";
+import { StyledBirthDayField } from "../ui/StyledBirthDayField/StyledBirthDayField";
 import { StyledCardField } from "../ui/StyledCardField/StyledCardField";
 import { StyledMonthField } from "../ui/StyledMonthField/StyledMonthField";
 import { StyledEmailField } from "../ui/StyledEmailField/StyledEmailField";
@@ -107,6 +108,7 @@ const inputMap = {
   photo: StyledPhotoInput,
   phone: StyledPhoneField,
   date: StyledDateField,
+  beforeDate: StyledBirthDayField,
   card: StyledCardField,
   month: StyledMonthField,
   email: StyledEmailField,
@@ -202,6 +204,15 @@ const validationMap: Record<string, Record<string, z.ZodSchema<unknown>>> = {
       .trim()
       .min(1, { error: t("data", { ns: "constructorFields" }) }),
     birthday: z
+      .string()
+      .trim()
+      .min(1, { error: t("data", { ns: "constructorFields" }) })
+      .refine((val) => isPast(val), {
+        error: t("birthday", { ns: "constructorFields" }),
+      }),
+  },
+  beforeDate: {
+    default: z
       .string()
       .trim()
       .min(1, { error: t("data", { ns: "constructorFields" }) })

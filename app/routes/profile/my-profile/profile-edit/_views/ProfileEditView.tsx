@@ -40,9 +40,12 @@ export function ProfileEditView(props: ProfileEditViewProps) {
 
   useEffect(() => {
     setTimeout(() => {
-      form.reset(generateDefaultValues(props.formFields));
+      form.reset(generateDefaultValues(props.formFields), {
+        keepDirty: true,
+        keepErrors: true,
+      });
     });
-  }, [props.formFields, form.reset]);
+  }, [props.formFields, form]);
 
   return (
     <Box
@@ -75,7 +78,9 @@ export function ProfileEditView(props: ProfileEditViewProps) {
             form.control,
             form.setValue,
             form.trigger,
-            () => {},
+            () => {
+              props.onSubmit(form.getValues());
+            },
             props.accessToken,
           )}
 
@@ -85,7 +90,7 @@ export function ProfileEditView(props: ProfileEditViewProps) {
               "--pointerEvents": form.formState.isDirty ? "auto" : "none",
             }}
             sx={(theme) => ({
-              position: "fixed",
+              // position: "absolute",
               display: "flex",
               columnGap: "8px",
               zIndex: 1,

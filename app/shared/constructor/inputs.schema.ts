@@ -13,6 +13,7 @@ import { inn } from "../ui/StyledInnField/StyledInnField.schema";
 import { file } from "../ui/StyledFileInput/StyledFileInput.schema";
 import { email } from "../ui/StyledEmailField/StyledEmailField.schema";
 import { date } from "../ui/StyledDateField/StyledDateField.schema";
+import { birthday } from "../ui/StyledBirthDayField/StyledBirthDayField.schema";
 import { checkboxMultiple } from "../ui/StyledCheckboxMultiple/StyledCheckboxMultiple.schema";
 import { checkbox } from "../ui/StyledCheckbox/StyledCheckbox.schema";
 import { card } from "../ui/StyledCardField/StyledCardField.schema";
@@ -37,6 +38,7 @@ export const inputs = z
       file,
       email,
       date,
+      birthday,
       checkboxMultiple,
       checkbox,
       card,
