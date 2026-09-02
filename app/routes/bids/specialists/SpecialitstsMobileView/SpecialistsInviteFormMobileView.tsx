@@ -88,8 +88,7 @@ export function SpecialistsInviteFormMobileView(
   return (
     <form
       onSubmit={handleSubmit((values) => {
-        // props.submitAction(values.specialists);
-        console.log(values.specialists);
+        props.submitAction(values.specialists);
       })}
       style={{
         display: "flex",
