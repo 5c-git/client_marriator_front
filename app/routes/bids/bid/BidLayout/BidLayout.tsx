@@ -88,8 +88,18 @@ export default function BidLayout({ loaderData }: Route.ComponentProps) {
           bidMobileData: loaderData.data,
           editMode,
           projectTimeRange: {
-            start: loaderData.data.project.dateStart,
-            end: loaderData.data.project.dateEnd,
+            start: new Date(
+              loaderData.data.project.dateStart.replace(
+                /T\d{2}:\d{2}/,
+                `T${loaderData.data.project.timeStart}`,
+              ),
+            ),
+            end: new Date(
+              loaderData.data.project.dateEnd.replace(
+                /T\d{2}:\d{2}/,
+                `T${loaderData.data.project.timeEnd}`,
+              ),
+            ),
           },
         }}
       />

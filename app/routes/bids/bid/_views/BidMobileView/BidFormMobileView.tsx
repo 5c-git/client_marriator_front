@@ -375,6 +375,8 @@ export function BidFormMobileView(props: BidFormMobileViewInterface) {
     ),
   });
 
+  console.log(props);
+
   const { fields, append, prepend, insert, remove } = useFieldArray({
     control,
     name: "days",
