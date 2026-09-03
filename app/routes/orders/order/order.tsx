@@ -281,8 +281,7 @@ export default function Order({ loaderData }: Route.ComponentProps) {
               viewTransition: true,
             });
           }}
-          {...(loaderData.userRole === "client" &&
-          (loaderData.order.status === 1 || loaderData.order.status === 2)
+          {...(loaderData.userRole === "client" && loaderData.order.status === 1
             ? {
                 headerButtonAction: () => {
                   setEditMode(true);

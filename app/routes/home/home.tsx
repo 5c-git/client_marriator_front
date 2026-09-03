@@ -10,7 +10,7 @@ export async function clientLoader() {
   const userRole = appSerivce.getUserRole();
 
   if (userRole === "admin") {
-    throw redirect(withLocale("/users"));
+    throw redirect(withLocale("/moderation/supervisors"));
   } else if (
     userRole === "supervisor" ||
     userRole === "manager" ||
