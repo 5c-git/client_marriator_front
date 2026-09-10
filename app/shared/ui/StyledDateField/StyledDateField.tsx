@@ -129,7 +129,6 @@ export const StyledDateField = (props: StyledDateFieldProps) => {
               localeText={localeActionsText}
               slots={{
                 toolbar: () => undefined,
-                calendarHeader: () => undefined,
               }}
               slotProps={{
                 textField: {

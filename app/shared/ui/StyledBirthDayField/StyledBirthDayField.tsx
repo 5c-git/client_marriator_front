@@ -127,7 +127,6 @@ export const StyledBirthDayField = (props: StyledBirthDayFieldProps) => {
               localeText={localeActionsText}
               slots={{
                 toolbar: () => undefined,
-                calendarHeader: () => undefined,
               }}
               slotProps={{
                 textField: {

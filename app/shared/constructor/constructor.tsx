@@ -213,7 +213,7 @@ const validationMap: Record<string, Record<string, z.ZodSchema<unknown>>> = {
   },
   beforeDate: {
     default: z
-      .string()
+      .string(t("text", { ns: "constructorFields" }))
       .trim()
       .min(1, { error: t("data", { ns: "constructorFields" }) })
       .refine((val) => isPast(val), {

@@ -9,7 +9,7 @@ export const autocomplete = z.object({
     .array(
       z.object({
         value: z.string(),
-        bic: z.string(),
+        // bic: z.string(),
         label: z.string().min(1),
         disabled: z.boolean(),
       }),
