@@ -62,12 +62,18 @@ export default function Specialists({ loaderData }: Route.ComponentProps) {
     editMode: boolean;
   }>();
 
+  console.log(loaderData.radiusOptions);
+
   return bidMobileData.acceptingUsers.length === 0 ? (
     <SpecialistsInviteFormMobileView
       specialists={loaderData.specialists}
       radiuses={loaderData.radiusOptions}
       startingRadius={
-        currentRadius ? Number(currentRadius) : loaderData.defaultRadius
+        currentRadius
+          ? Number(currentRadius)
+          : bidMobileData.radius
+            ? bidMobileData.radius
+            : loaderData.defaultRadius
       }
       activeService={bidMobileData.viewActivity.name}
       submitAction={(values) => {
