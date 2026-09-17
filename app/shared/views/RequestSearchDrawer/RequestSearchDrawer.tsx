@@ -188,6 +188,7 @@ type submitValues = z.output<ReturnType<typeof requestSearchFormSchema>>;
 type RequestSearchDrawerProps = RequestSearchDrawerInterface & {
   open: boolean;
   submitAction: (values: submitValues) => void;
+  isSubmitting: boolean;
   closeAction: () => void;
 };
 
@@ -1342,6 +1343,7 @@ export function RequestSearchDrawer(props: RequestSearchDrawerProps) {
               paddingTop: "15px",
               paddingBottom: "15px",
             }}
+            disabled={props.isSubmitting}
           >
             {t("saveBidButton")}
           </Button>

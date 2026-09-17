@@ -81,15 +81,7 @@ export default function Bids({ loaderData }: Route.ComponentProps) {
               ? {
                   buttonAction: {
                     action: () => {
-                      fetcher.submit(
-                        JSON.stringify({
-                          bidId: entity.id,
-                        }),
-                        {
-                          method: "POST",
-                          encType: "application/json",
-                        },
-                      );
+                      setBidToAct(entity.id);
                     },
                     text: t("cancelBid"),
                     variant: "text",

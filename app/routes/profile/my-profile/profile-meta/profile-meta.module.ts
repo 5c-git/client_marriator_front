@@ -6,7 +6,7 @@ import { ProfileMetaService } from "./profile-meta.service";
 import { profileMetaPrivateTokens } from "./profile-meta.private-tokens";
 import { profileMetaTokens } from "./profile-meta.tokens";
 
-import { getUserInfo } from "~/api/_personal/getUserInfo/getUserInfo";
+import { getData } from "~/api/_personal/getData/getData";
 import { postChangeUserPhone } from "~/api/_personal/postChangeUserPhone/postChangeUserPhone";
 import { postPersonalSetUserEmail } from "~/api/postPersonalSetUserEmail/postPersonalSetUserEmail";
 import { useStore } from "~/store/store";
@@ -15,7 +15,7 @@ export const profileMetaContainer = new Container().extend(appContainer);
 
 profileMetaContainer
   .bind(profileMetaPrivateTokens.fetchUserInfo)
-  .toConstant((accessToken) => getUserInfo(accessToken));
+  .toConstant((accessToken) => getData(accessToken));
 
 profileMetaContainer
   .bind(profileMetaPrivateTokens.changeUserPhone)

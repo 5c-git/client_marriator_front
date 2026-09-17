@@ -62,19 +62,31 @@ export default function Specialists({ loaderData }: Route.ComponentProps) {
     editMode: boolean;
   }>();
 
-  console.log(loaderData.radiusOptions);
+  const startingRadius = currentRadius
+    ? Number(currentRadius)
+    : bidMobileData.radius
+      ? bidMobileData.radius
+      : loaderData.defaultRadius;
+
+  const radiuses =
+    loaderData.radiusOptions.find(
+      (item) => Number(item.value) === startingRadius,
+    ) === undefined
+      ? [
+          {
+            value: startingRadius.toString(),
+            label: `${startingRadius} км`,
+            disabled: false,
+          },
+          ...loaderData.radiusOptions,
+        ]
+      : loaderData.radiusOptions;
 
   return bidMobileData.acceptingUsers.length === 0 ? (
     <SpecialistsInviteFormMobileView
       specialists={loaderData.specialists}
-      radiuses={loaderData.radiusOptions}
-      startingRadius={
-        currentRadius
-          ? Number(currentRadius)
-          : bidMobileData.radius
-            ? bidMobileData.radius
-            : loaderData.defaultRadius
-      }
+      radiuses={radiuses}
+      startingRadius={startingRadius}
       activeService={bidMobileData.viewActivity.name}
       submitAction={(values) => {
         submit(JSON.stringify(values), {

@@ -8,7 +8,7 @@ import { ordersTokens } from "./orders.tokens";
 export const ordersContainer = new Container().extend(appContainer);
 
 import { getOrders } from "~/api/_personal/getOrders/getOrders";
-import { getUserInfo } from "~/api/_personal/getUserInfo/getUserInfo";
+import { getData } from "~/api/_personal/getData/getData";
 import { postRepeatOrder } from "~/api/_personal/postRepeatOrder/postRepeatOrder";
 import { postCancelOrder } from "~/api/_personal/postCancelOrder/postCancelOrder";
 import { OrdersService } from "./orders.service";
@@ -19,7 +19,7 @@ ordersContainer
 
 ordersContainer
   .bind(ordersPrivateTokens.getUserInfo)
-  .toConstant((accessToken) => getUserInfo(accessToken));
+  .toConstant((accessToken) => getData(accessToken));
 
 ordersContainer
   .bind(ordersPrivateTokens.repeatOrder)

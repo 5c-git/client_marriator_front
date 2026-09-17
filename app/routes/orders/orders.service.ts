@@ -89,21 +89,21 @@ export class OrdersService {
     let cancel_order_interval = 6;
     let repeat_order_interval = 6;
 
-    if (userData.result.userData.cancel_order) {
+    if (userData.data.cancel_order) {
       const date = new Date(
-        `2026-03-12T${userData.result.userData.cancel_order.startsWith("0") ? userData.result.userData.cancel_order : `0${userData.result.userData.cancel_order}`}`,
+        `2026-03-12T${userData.data.cancel_order.startsWith("0") ? userData.data.cancel_order : `0${userData.data.cancel_order}`}`,
       );
       cancel_order_interval = date.getHours();
     }
-    if (userData.result.userData.change_order) {
+    if (userData.data.cancel_order) {
       const date = new Date(
-        `2026-03-12T${userData.result.userData.change_order.startsWith("0") ? userData.result.userData.change_order : `0${userData.result.userData.change_order}`}`,
+        `2026-03-12T${userData.data.cancel_order.startsWith("0") ? userData.data.cancel_order : `0${userData.data.cancel_order}`}`,
       );
       repeat_order_interval = date.getHours();
     }
 
     return {
-      id: userData.result.userData.id,
+      id: userData.data.id,
       cancel_order_interval,
       repeat_order_interval,
     };

@@ -61,11 +61,17 @@ export const useEntities = (
     _setter(search);
   });
 
-  //сортировки
+  //if our selected filter had ONE element and now has NONE --- resetting the filter(can happen when only card with some status changes its status)
   if (
+    Object.keys(filteredEntities).length > 0 &&
+    filteredEntities[filter] === undefined
+  ) {
+    setFilter(Number(Object.keys(filteredEntities)[0]));
+  } else if (
     Object.keys(filteredEntities).length > 0 &&
     filteredEntities[filter].length > 0
   ) {
+    // cортировки
     if (sorting === "ascending") {
       const emptyDurationEntities = filteredEntities[filter].filter(
         (item) => item.duration.start === null && item.duration.end === null,

@@ -24,7 +24,7 @@ export class SpecialistsMapper {
 
   static mapRadiusDataToOptions(data: GetRadiusSelectSuccess) {
     return data.data.map((item) => ({
-      value: item.id.toString(),
+      value: item.value.toString(),
       label: `${item.value.toString()} км`,
       disabled: false,
     }));

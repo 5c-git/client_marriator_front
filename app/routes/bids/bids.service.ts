@@ -69,9 +69,9 @@ export class BidsService {
 
     let cancel_bid_interval = 2;
 
-    if (userData.result.userData.repeat_bid) {
+    if (userData.data.repeat_bid) {
       const date = new Date(
-        `2026-03-12T${userData.result.userData.repeat_bid.startsWith("0") ? userData.result.userData.repeat_bid : `0${userData.result.userData.repeat_bid}`}`,
+        `2026-03-12T${userData.data.repeat_bid.startsWith("0") ? userData.data.repeat_bid : `0${userData.data.repeat_bid}`}`,
       );
       cancel_bid_interval = date.getHours();
     }

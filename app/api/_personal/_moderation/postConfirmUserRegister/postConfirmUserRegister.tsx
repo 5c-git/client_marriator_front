@@ -24,7 +24,6 @@ export const postConfirmUserRegister = async (
 
     if (fields) {
       for (const [key, value] of Object.entries(fields.fields)) {
-        console.log(typeof value);
         if (typeof value === "object") {
           formData.append(key, JSON.stringify(value));
         } else {

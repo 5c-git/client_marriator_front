@@ -444,6 +444,7 @@ export default function Task({ loaderData }: Route.ComponentProps) {
                       },
                     );
                   }}
+                  disabled={fetcher.state !== "idle"}
                 >
                   {t("searchRequest")}{" "}
                   <span>
@@ -641,6 +642,7 @@ export default function Task({ loaderData }: Route.ComponentProps) {
               },
             );
           }}
+          isSubmitting={fetcher.state !== "idle" ? true : false}
           closeAction={() => {
             fetcher.reset();
           }}

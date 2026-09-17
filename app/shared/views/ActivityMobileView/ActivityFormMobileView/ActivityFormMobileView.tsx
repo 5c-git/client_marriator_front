@@ -10,7 +10,7 @@ import { z } from "zod";
 import { useForm, Controller, useFieldArray } from "react-hook-form";
 
 import {
-  intervalToDuration,
+  // intervalToDuration,
   eachDayOfInterval,
   set,
   getDay,
@@ -20,6 +20,7 @@ import {
   isSameDay,
   isBefore,
   isAfter,
+  differenceInHours,
 } from "date-fns";
 
 import { LocalizationProvider, DateTimeField } from "@mui/x-date-pickers";
@@ -55,6 +56,8 @@ import { LocationIcon } from "~/shared/icons/LocationIcon";
 import { PointerIcon } from "~/shared/icons/PointerIcon";
 import { ExpandIcon } from "~/shared/icons/ExpandIcon";
 import { DeleteIcon } from "~/shared/icons/DeleteIcon";
+
+import type { IntervalToDurationOptions } from "date-fns";
 
 type ActivityFormMobileViewInterface = Omit<
   ActivityMobileViewInterface,
@@ -345,8 +348,6 @@ export function ActivityFormMobileView(props: ActivityFormMobileViewInterface) {
 
   const [dayIndex, setDayIndex] = useState<number>(-1);
 
-  console.log(props);
-
   const {
     control,
     handleSubmit,
@@ -532,12 +533,16 @@ export function ActivityFormMobileView(props: ActivityFormMobileViewInterface) {
                   const end = watch("dateEnd");
 
                   if (start && end) {
-                    const interval = intervalToDuration({
-                      start: start,
-                      end: end,
-                    }).days;
+                    // const interval = intervalToDuration({
+                    //   start: start,
+                    //   end: end,
 
-                    return watch("activity") !== "" && interval && interval > 0
+                    // }).days;
+
+                    const interval =
+                      Math.trunc(differenceInHours(end, start) / 24) | 0;
+
+                    return watch("activity") !== "" && interval > 0
                       ? false
                       : true;
                   }

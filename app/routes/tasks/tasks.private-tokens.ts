@@ -1,12 +1,12 @@
 import { token } from "brandi";
 
 import type { GetTasksSuccess } from "~/api/_personal/getTasks/getTasksSuccess.schema";
-import type { GetUserInfoSuccess } from "~/api/_personal/getUserInfo/getUserInfoSuccess.schema";
+import type { GetDataSuccess } from "~/api/_personal/getData/getDataSuccess.schema";
 import type { PostCancelTaskSuccess } from "~/api/_personal/postCancelTask/postCancelTaskSuccess.schema";
 import type { PostRepeatTaskSuccess } from "~/api/_personal/postRepeatTask/postRepeatTaskSuccess.schema";
 
 export type GetTasks = (accessToken: string) => Promise<GetTasksSuccess>;
-export type GetUserInfo = (accessToken: string) => Promise<GetUserInfoSuccess>;
+export type GetUserInfo = (accessToken: string) => Promise<GetDataSuccess>;
 export type CancelTask = (
   accessToken: string,
   taskId: string,

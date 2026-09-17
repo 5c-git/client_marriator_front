@@ -8,7 +8,7 @@ import { tasksTokens } from "./tasks.tokens";
 export const tasksContainer = new Container().extend(appContainer);
 
 import { getTasks } from "~/api/_personal/getTasks/getTasks";
-import { getUserInfo } from "~/api/_personal/getUserInfo/getUserInfo";
+import { getData } from "~/api/_personal/getData/getData";
 import { postRepeatTask } from "~/api/_personal/postRepeatTask/postRepeatTask";
 import { postCancelTask } from "~/api/_personal/postCancelTask/postCancelTask";
 import { TasksService } from "./tasks.service";
@@ -19,7 +19,7 @@ tasksContainer
 
 tasksContainer
   .bind(tasksPrivateTokens.getUserInfo)
-  .toConstant((accessToken) => getUserInfo(accessToken));
+  .toConstant((accessToken) => getData(accessToken));
 
 tasksContainer
   .bind(tasksPrivateTokens.repeatTask)

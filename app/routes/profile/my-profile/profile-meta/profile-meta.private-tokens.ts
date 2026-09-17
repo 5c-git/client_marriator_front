@@ -1,14 +1,12 @@
 import { token } from "brandi";
 
-import type { GetUserInfoSuccess } from "~/api/_personal/getUserInfo/getUserInfoSuccess.schema";
+import type { GetDataSuccess } from "~/api/_personal/getData/getDataSuccess.schema";
 import type { PostChangeUserPhoneSuccess } from "~/api/_personal/postChangeUserPhone/postChangeUserPhoneSuccess.schema";
 import type { PostChangeUserPhoneError } from "~/api/_personal/postChangeUserPhone/postChangeUserPhoneError.schema";
 import type { PostPersonalSetUserEmailSuccess } from "~/api/postPersonalSetUserEmail/postPersonalSetUserEmailSuccess.schema";
 import type { PostPersonalSetUserEmailError } from "~/api/postPersonalSetUserEmail/postPersonalSetUserEmailError.schema";
 
-export type FetchUserInfo = (
-  accessToken: string,
-) => Promise<GetUserInfoSuccess>;
+export type FetchUserInfo = (accessToken: string) => Promise<GetDataSuccess>;
 
 export type ChangeUserPhone = (
   accessToken: string,
@@ -24,9 +22,7 @@ export type SetUserEmail = (email: string) => void;
 export type SetUserPhone = (phone: string) => void;
 
 export const profileMetaPrivateTokens = {
-  fetchUserInfo: token<FetchUserInfo>(
-    "profile-meta-private:fetchUserInfo",
-  ),
+  fetchUserInfo: token<FetchUserInfo>("profile-meta-private:fetchUserInfo"),
   changeUserPhone: token<ChangeUserPhone>(
     "profile-meta-private:changeUserPhone",
   ),

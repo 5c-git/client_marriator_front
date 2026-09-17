@@ -144,7 +144,7 @@ export function ManagerView(props: ManagerViewProps) {
           onSubmit={form.handleSubmit((values) => {
             props.onSubmit(values);
           })}
-          // ref={props.ref}
+          ref={props.ref}
         >
           <Box sx={{ display: "grid", rowGap: "14px", pt: "20px", px: "16px" }}>
             <Avatar

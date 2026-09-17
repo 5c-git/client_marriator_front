@@ -9,7 +9,7 @@ export const bidsContainer = new Container().extend(appContainer);
 import { BidsService } from "./bids.service";
 
 import { getBids } from "~/api/_personal/getBids/getBids";
-import { getUserInfo } from "~/api/_personal/getUserInfo/getUserInfo";
+import { getData } from "~/api/_personal/getData/getData";
 
 bidsContainer
   .bind(bidsPrivateTokens.getBids)
@@ -17,7 +17,7 @@ bidsContainer
 
 bidsContainer
   .bind(bidsPrivateTokens.getUserInfo)
-  .toConstant((accessToken) => getUserInfo(accessToken));
+  .toConstant((accessToken) => getData(accessToken));
 
 bidsContainer
   .bind(bidsTokens.bidsService)

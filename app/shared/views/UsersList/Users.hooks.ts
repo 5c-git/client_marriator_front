@@ -57,7 +57,12 @@ export const useUsers = (users: UsersMobileViewInterface["users"]) => {
         .filter((item) => currentFieldValue.test(item.name as string)),
     ];
   } else {
-    if (sorting === "new") {
+    if (
+      Object.keys(filteredUsers).length > 0 &&
+      filteredUsers[filter] === undefined
+    ) {
+      setFilter(Number(Object.keys(filteredUsers)[0]));
+    } else if (sorting === "new") {
       const sortedUsers = [
         ...filteredUsers[filter].sort((a, b) => b.id - a.id),
       ];

@@ -45,6 +45,7 @@ import { ordersTokens } from "../orders.tokens";
 import { orderContainer } from "./order.module";
 import { orderTokens } from "./order.tokens";
 import { ButtonActionMapper } from "~/shared/mappers/buttonActionMapper";
+// import { OrderMapper } from "./order.mapper";
 
 const ORDER_ACTIONS = {
   deleteActivity: "deleteActivity",
@@ -115,10 +116,12 @@ export async function clientAction({ request }: Route.ClientActionArgs) {
 
     throw redirect(withLocale(`/tasks/${taskData.data.id}`));
   } else if (_action === ORDER_ACTIONS.requestSearch) {
-    await orderService.makeSearchRequest(
+    const data = await orderService.makeSearchRequest(
       fields.orderId,
       fields.orderActivityId,
     );
+
+    return data;
   } else if (_action === ORDER_ACTIONS.updateSearchRequest) {
     await orderService.updateSearchRequest(fields.searchId, fields.payload);
   } else if (_action === ORDER_ACTIONS.transformAssignmentToRequest) {
@@ -424,6 +427,7 @@ export default function Order({ loaderData }: Route.ComponentProps) {
                       },
                     );
                   }}
+                  disabled={fetcher.state !== "idle"}
                 >
                   {t("searchRequest")}{" "}
                   <span>
@@ -657,6 +661,7 @@ export default function Order({ loaderData }: Route.ComponentProps) {
               },
             );
           }}
+          isSubmitting={fetcher.state !== "idle" ? true : false}
           closeAction={() => {
             fetcher.reset();
           }}

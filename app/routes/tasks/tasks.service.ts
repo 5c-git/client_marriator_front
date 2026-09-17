@@ -89,21 +89,21 @@ export class TasksService {
     let cancel_task_interval = 6;
     let repeat_task_interval = 6;
 
-    if (userData.result.userData.cancel_task) {
+    if (userData.data.cancel_task) {
       const date = new Date(
-        `2026-03-12T${userData.result.userData.cancel_task.startsWith("0") ? userData.result.userData.cancel_task : `0${userData.result.userData.cancel_task}`}`,
+        `2026-03-12T${userData.data.cancel_task.startsWith("0") ? userData.data.cancel_task : `0${userData.data.cancel_task}`}`,
       );
       cancel_task_interval = date.getHours();
     }
-    if (userData.result.userData.change_order) {
+    if (userData.data.change_order) {
       const date = new Date(
-        `2026-03-12T${userData.result.userData.change_order.startsWith("0") ? userData.result.userData.change_order : `0${userData.result.userData.change_order}`}`,
+        `2026-03-12T${userData.data.change_order.startsWith("0") ? userData.data.change_order : `0${userData.data.change_order}`}`,
       );
       repeat_task_interval = date.getHours();
     }
 
     return {
-      id: userData.result.userData.id,
+      id: userData.data.id,
       cancel_task_interval,
       repeat_task_interval,
     };

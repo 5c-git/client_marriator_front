@@ -1,12 +1,12 @@
 import { token } from "brandi";
 
 import type { GetOrdersSuccess } from "~/api/_personal/getOrders/getOrdersSuccess.schema";
-import type { GetUserInfoSuccess } from "~/api/_personal/getUserInfo/getUserInfoSuccess.schema";
+import type { GetDataSuccess } from "~/api/_personal/getData/getDataSuccess.schema";
 import type { PostCancelOrderSuccess } from "~/api/_personal/postCancelOrder/postCancelOrderSuccess.schema";
 import type { PostRepeatOrderSuccess } from "~/api/_personal/postRepeatOrder/postRepeatOrderSuccess.schema";
 
 export type GetOrders = (accessToken: string) => Promise<GetOrdersSuccess>;
-export type GetUserInfo = (accessToken: string) => Promise<GetUserInfoSuccess>;
+export type GetUserInfo = (accessToken: string) => Promise<GetDataSuccess>;
 export type CancelOrder = (
   accessToken: string,
   orderId: string,
