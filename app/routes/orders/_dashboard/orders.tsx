@@ -39,12 +39,14 @@ export async function clientLoader() {
 
   const orders = await ordersService.getOrders();
   const intervals = await ordersService.getUserIntervals();
+  const userProjects = await ordersService.getUserProjects();
   const userRole = ordersService.getUserRole();
 
   return {
     orders,
     intervals,
     userRole,
+    userProjects,
   };
 }
 
@@ -123,8 +125,13 @@ export default function Orders({ loaderData }: Route.ComponentProps) {
           navigate(withLocale(`/dashboard/orders/${entity.id}`));
         }}
       />
-      {(!orderId && view !== "map" && loaderData.userRole === "client") ||
-      (loaderData.orders.length === 0 && loaderData.userRole === "client") ? (
+      {(!orderId &&
+        view !== "map" &&
+        loaderData.userRole === "client" &&
+        loaderData.userProjects.length > 0) ||
+      (loaderData.orders.length === 0 &&
+        loaderData.userRole === "client" &&
+        loaderData.userProjects.length > 0) ? (
         <Fab
           onClick={() => {
             submit(

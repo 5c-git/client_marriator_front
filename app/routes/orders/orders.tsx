@@ -37,12 +37,14 @@ export async function clientLoader() {
 
   const orders = await ordersService.getOrders();
   const intervals = await ordersService.getUserIntervals();
+  const userProjects = await ordersService.getUserProjects();
   const userRole = ordersService.getUserRole();
 
   return {
     orders,
     intervals,
     userRole,
+    userProjects,
   };
 }
 
@@ -258,8 +260,12 @@ export default function Orders({ loaderData }: Route.ComponentProps) {
         )}
         entityTableView={() => {}}
       />
-      {(view !== "map" && loaderData.userRole === "client") ||
-      (loaderData.orders.length === 0 && loaderData.userRole === "client") ? (
+      {(view !== "map" &&
+        loaderData.userRole === "client" &&
+        loaderData.userProjects.length > 0) ||
+      (loaderData.orders.length === 0 &&
+        loaderData.userRole === "client" &&
+        loaderData.userProjects.length > 0) ? (
         <Fab
           onClick={() => {
             submit(

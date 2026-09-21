@@ -23,15 +23,14 @@ type RadioDrawerProps = {
 export function RadioSearchableDrawer(props: RadioDrawerProps) {
   const { t } = useTranslation("RadioSearchableDrawer");
 
-  const [selectedItems, setSelectedItems] = useState<typeof props.items>(
-    props.items,
-  );
+  // const [selectedItems, setSelectedItems] = useState<typeof props.items>([]);
 
   const {
     control,
     getValues,
     reset,
     handleSubmit,
+    watch,
     formState: { errors },
   } = useForm<{
     searchbar: string;
@@ -48,6 +47,18 @@ export function RadioSearchableDrawer(props: RadioDrawerProps) {
       }),
     ),
   });
+
+  //sorting
+  let matchingItems: typeof props.items = [];
+  const currentFieldValue = new RegExp(`${watch("searchbar")}`, "i");
+  if (watch("searchbar") !== "") {
+    matchingItems = [
+      ...props.items.filter((item) => currentFieldValue.test(item.label)),
+    ];
+  } else {
+    matchingItems = [...props.items];
+  }
+  //sorting
 
   return (
     <SwipeableDrawer
@@ -103,24 +114,24 @@ export function RadioSearchableDrawer(props: RadioDrawerProps) {
                 placeholder={t(`${props.translation}.searchbar`)}
                 {...field}
                 onChange={(evt) => {
-                  const currentFieldValue = new RegExp(
-                    `${evt.target.value}`,
-                    "i",
-                  );
+                  // const currentFieldValue = new RegExp(
+                  //   `${evt.target.value}`,
+                  //   "i",
+                  // );
 
-                  let matchingItems: typeof props.items = [];
+                  // let matchingItems: typeof props.items = [];
 
-                  if (evt.target.value !== "") {
-                    matchingItems = [
-                      ...props.items.filter((item) =>
-                        currentFieldValue.test(item.label),
-                      ),
-                    ];
-                  } else {
-                    matchingItems = [...props.items];
-                  }
+                  // if (evt.target.value !== "") {
+                  //   matchingItems = [
+                  //     ...props.items.filter((item) =>
+                  //       currentFieldValue.test(item.label),
+                  //     ),
+                  //   ];
+                  // } else {
+                  //   matchingItems = [...props.items];
+                  // }
 
-                  setSelectedItems(matchingItems);
+                  // setSelectedItems(matchingItems);
 
                   field.onChange(evt);
                 }}
@@ -136,7 +147,7 @@ export function RadioSearchableDrawer(props: RadioDrawerProps) {
                 inputType="radio"
                 validation="none"
                 onImmediateChange={() => {}}
-                options={selectedItems}
+                options={matchingItems}
                 error={errors.selectedItem?.message}
                 {...field}
               />

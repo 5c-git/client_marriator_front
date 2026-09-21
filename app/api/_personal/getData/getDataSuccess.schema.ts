@@ -11,6 +11,10 @@ export const getDataSuccessSchema = z.object({
       z.object({
         id: z.number(),
         name: z.string(),
+        dateStart: z.string(),
+        dateEnd: z.string(),
+        timeStart: z.string(),
+        timeEnd: z.string(),
         brand: z.array(
           z.object({
             description: z.string(),

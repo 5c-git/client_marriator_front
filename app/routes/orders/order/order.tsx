@@ -45,7 +45,6 @@ import { ordersTokens } from "../orders.tokens";
 import { orderContainer } from "./order.module";
 import { orderTokens } from "./order.tokens";
 import { ButtonActionMapper } from "~/shared/mappers/buttonActionMapper";
-// import { OrderMapper } from "./order.mapper";
 
 const ORDER_ACTIONS = {
   deleteActivity: "deleteActivity",
@@ -81,7 +80,7 @@ export async function clientLoader({ params }: Route.ClientLoaderArgs) {
   if (order.acceptingPerson) {
     supervisorsToSelect.push({
       value: order.acceptingPerson.id.toString(),
-      label: t("yourselfOption", { ns: "m_order" }),
+      label: t("yourselfOption", { ns: "m_orders_order" }),
       disabled: false,
     });
   }
@@ -158,6 +157,8 @@ export default function Order({ loaderData }: Route.ComponentProps) {
   const [searchSupervisors, setSearchSupervisors] = useState<boolean>(false);
 
   const isDesktop = window.innerWidth >= 768 ? true : false;
+
+  console.log(loaderData.supervisorsToSelect);
 
   return (
     <>

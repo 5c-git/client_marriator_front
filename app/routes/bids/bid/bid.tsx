@@ -106,27 +106,6 @@ export default function Bid({ loaderData }: Route.ComponentProps) {
                   },
                 );
               }}
-              {...((bid.status == 1 || bid.status == 6) &&
-              bid.createdAt &&
-              isBefore(
-                new Date(),
-                addHours(bid.createdAt, loaderData.userCancelInterval),
-              ) &&
-              isDesktop
-                ? {
-                    cancelAction: () => {
-                      fetcher.submit(
-                        JSON.stringify({
-                          _action: BID_ACTIONS.cancel,
-                        }),
-                        {
-                          method: "POST",
-                          encType: "application/json",
-                        },
-                      );
-                    },
-                  }
-                : {})}
             />
           ) : (
             <BidStaticMobileView
@@ -149,6 +128,27 @@ export default function Bid({ loaderData }: Route.ComponentProps) {
                 start: new Date(projectTimeRange.start),
                 end: new Date(projectTimeRange.end),
               }}
+              {...((bid.status == 1 || bid.status == 6) &&
+              bid.createdAt &&
+              isBefore(
+                new Date(),
+                addHours(bid.createdAt, loaderData.userCancelInterval),
+              ) &&
+              isDesktop
+                ? {
+                    cancelAction: () => {
+                      fetcher.submit(
+                        JSON.stringify({
+                          _action: BID_ACTIONS.cancel,
+                        }),
+                        {
+                          method: "POST",
+                          encType: "application/json",
+                        },
+                      );
+                    },
+                  }
+                : {})}
             />
           )}
         </>

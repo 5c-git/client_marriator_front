@@ -32,6 +32,8 @@ export class OrdersService {
 
     const ordersData = await this.loadOrders(token);
 
+    console.log(ordersData);
+
     return ordersData.data.map((item) => {
       const earliestStartDate: string[] = [];
       const latestEndDate: string[] = [];
@@ -107,6 +109,14 @@ export class OrdersService {
       cancel_order_interval,
       repeat_order_interval,
     };
+  }
+
+  async getUserProjects() {
+    const token = this.appService.getToken();
+
+    const userData = await this.loadUserInfo(token);
+
+    return userData.data.project;
   }
 
   async repeatOrder(orderId: string) {

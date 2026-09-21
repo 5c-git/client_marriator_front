@@ -12,7 +12,7 @@ import { determineRole } from "~/shared/determineRole";
 import { format, getDay } from "date-fns";
 
 import Box from "@mui/material/Box";
-import { Avatar, Divider, Typography } from "@mui/material";
+import { Avatar, Button, Divider, Typography } from "@mui/material";
 import {
   S_Accordion,
   S_AccordionSummary,
@@ -23,8 +23,13 @@ import { StyledCheckbox } from "~/shared/ui/StyledCheckbox/StyledCheckbox";
 import { ExpandIcon } from "~/shared/icons/ExpandIcon";
 import { LocationIcon } from "~/shared/icons/LocationIcon";
 import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
+import CloseIcon from "@mui/icons-material/Close";
 
-export function BidStaticMobileView(props: BidMobileViewInterface) {
+type BidStaticMobileViewInterface = BidMobileViewInterface & {
+  cancelAction?: () => void;
+};
+
+export function BidStaticMobileView(props: BidStaticMobileViewInterface) {
   const { t } = useTranslation("m_bids_bid");
 
   return (
@@ -710,6 +715,20 @@ export function BidStaticMobileView(props: BidMobileViewInterface) {
           </Box>
         </Box>
       </Box>
+
+      {props.cancelAction ? (
+        <Button
+          variant="outlined"
+          startIcon={<CloseIcon />}
+          onClick={() => {
+            if (props.cancelAction) {
+              props.cancelAction();
+            }
+          }}
+        >
+          {t("cancelBidButton")}
+        </Button>
+      ) : null}
     </Box>
   );
 }

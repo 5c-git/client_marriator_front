@@ -79,8 +79,12 @@ export default function Specialists({ loaderData }: Route.ComponentProps) {
             disabled: false,
           },
           ...loaderData.radiusOptions,
-        ]
-      : loaderData.radiusOptions;
+        ].sort((a, b) => Number(a.value) - Number(b.value))
+      : loaderData.radiusOptions.sort(
+          (a, b) => Number(a.value) - Number(b.value),
+        );
+
+  console.log(radiuses);
 
   return bidMobileData.acceptingUsers.length === 0 ? (
     <SpecialistsInviteFormMobileView
