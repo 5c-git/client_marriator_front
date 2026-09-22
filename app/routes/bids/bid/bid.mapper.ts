@@ -106,11 +106,13 @@ export class BidMapper {
       default: boolean;
     }[];
   }) {
-    return data.data.map((item) => ({
-      value: item.value.toString(),
-      label: item.value.toString(),
-      disabled: false,
-    }));
+    return data.data
+      .map((item) => ({
+        value: item.value.toString(),
+        label: item.value.toString(),
+        disabled: false,
+      }))
+      .sort((a, b) => Number(a.value) - Number(b.value));
   }
 
   static mapFormValuesToPayload(bidId: number, values: bidFormSubmitValues) {
