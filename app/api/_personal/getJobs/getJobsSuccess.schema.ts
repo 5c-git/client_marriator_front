@@ -5,7 +5,6 @@ export const getJobsSuccessSchema = z.object({
     z.object({
       id: z.number(),
       createdAt: z.string(),
-      selfEmployed: z.boolean(),
       status: z.union([
         z.literal(1),
         z.literal(2),
@@ -30,15 +29,9 @@ export const getJobsSuccessSchema = z.object({
       }),
       user: z.object({
         id: z.number(),
-        phone: z.number(),
-        email: z.string(),
-        logo: z.string(),
       }),
-      radius: z.number(),
+      // radius: z.number(),
       price: z.number(),
-      priceResult: z.number(),
-      income: z.number(),
-      forPay: z.number(),
       viewActivity: z.object({
         name: z.string(),
         detailName: z.string(),
@@ -50,85 +43,10 @@ export const getJobsSuccessSchema = z.object({
           name: z.string(),
         }),
       }),
+
       dateStart: z.string(),
       dateEnd: z.string(),
-      needFoto: z.boolean(),
-      dateActivity: z.array(
-        z.object({
-          id: z.number(),
-          timeStart: z.string(),
-          timeEnd: z.string(),
-          places: z.array(
-            z.object({
-              id: z.number(),
-              name: z.string(),
-              latitude: z.string(),
-              longitude: z.string(),
-              address_kladr: z.string(),
-              logo: z.string().optional(),
-              region: z.object({ id: z.number(), name: z.string() }),
-              brand: z.object({
-                id: z.number(),
-                name: z.string(),
-                logo: z.string().optional(),
-                description: z.string(),
-              }),
-            }),
-          ),
-        }),
-      ),
-      order: z.union([
-        z.null(),
-        z.object({
-          id: z.number(),
-          selfEmployed: z.boolean(),
-          status: z.number(),
-          user: z.object({
-            id: z.number(),
-            phone: z.number(),
-            email: z.string(),
-            logo: z.string(),
-            roles: z.array(
-              z.object({
-                id: z.number().gte(1).lte(6),
-                name: z.enum([
-                  "admin",
-                  "manager",
-                  "supervisor",
-                  "client",
-                  "specialist",
-                ]),
-              }),
-            ),
-          }),
-        }),
-      ]),
-      task: z.union([
-        z.null(),
-        z.object({
-          id: z.number(),
-          selfEmployed: z.boolean(),
-          status: z.number(),
-          user: z.object({
-            id: z.number(),
-            phone: z.number(),
-            email: z.string(),
-            logo: z.string(),
-            roles: z.array(
-              z.object({
-                id: z.number().gte(1).lte(6),
-                name: z.enum([
-                  "admin",
-                  "manager",
-                  "supervisor",
-                  "client",
-                  "specialist",
-                ]),
-              }),
-            ),
-          }),
-        }),
-      ]),
+
       acceptingUser: z.object({
         id: z.number(),
         phone: z.number(),
@@ -160,15 +78,6 @@ export const getJobsSuccessSchema = z.object({
           z.literal(6),
         ]),
       }),
-      reports: z.array(
-        z.object({
-          dateStart: z.union([z.null(), z.string()]),
-          dateEnd: z.union([z.null(), z.string()]),
-          report: z.union([z.null(), z.array(z.string())]),
-          dayActivityId: z.union([z.null(), z.number()]),
-          status: z.number(),
-        }),
-      ),
     }),
   ),
 });

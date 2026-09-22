@@ -7,21 +7,6 @@ export const getBidsSuccessSchema = z.object({
       createdAt: z.string(),
       user: z.object({
         id: z.number(),
-        phone: z.number(),
-        email: z.string(),
-        logo: z.string(),
-        roles: z.array(
-          z.object({
-            id: z.number().gte(1).lte(6),
-            name: z.enum([
-              "admin",
-              "manager",
-              "supervisor",
-              "client",
-              "specialist",
-            ]),
-          }),
-        ),
       }),
       status: z.union([
         z.literal(1),
@@ -33,7 +18,6 @@ export const getBidsSuccessSchema = z.object({
         z.literal(7),
         z.literal(8),
       ]),
-      selfEmployed: z.boolean(),
       place: z.object({
         id: z.number(),
         name: z.string(),
@@ -49,9 +33,6 @@ export const getBidsSuccessSchema = z.object({
           description: z.string(),
         }),
       }),
-      radius: z.union([z.null(), z.number()]),
-      price: z.union([z.null(), z.number()]),
-      priceResult: z.number(),
       viewActivity: z.object({
         id: z.number(),
         name: z.string(),
@@ -67,8 +48,6 @@ export const getBidsSuccessSchema = z.object({
       }),
       dateStart: z.string(),
       dateEnd: z.string(),
-      needFoto: z.boolean(),
-      dateActivity: z.array(z.any()),
     }),
   ),
 });

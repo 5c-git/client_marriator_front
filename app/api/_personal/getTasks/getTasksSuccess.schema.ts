@@ -23,7 +23,6 @@ export const getTasksSuccessSchema = z.object({
           }),
         ]),
       }),
-      selfEmployed: z.boolean(),
       status: z.union([
         z.literal(1),
         z.literal(2),
@@ -33,21 +32,6 @@ export const getTasksSuccessSchema = z.object({
       ]),
       user: z.object({
         id: z.number(),
-        email: z.string(),
-        logo: z.string(),
-        phone: z.number(),
-        roles: z.array(
-          z.object({
-            id: z.number().gte(1).lte(6),
-            name: z.enum([
-              "admin",
-              "manager",
-              "supervisor",
-              "client",
-              "specialist",
-            ]),
-          }),
-        ),
       }),
       orderActivities: z.array(
         z.object({
@@ -58,6 +42,11 @@ export const getTasksSuccessSchema = z.object({
             previewText: z.string(),
             logo: z.string(),
             traveling: z.boolean(),
+            standard: z.object({
+              id: z.number(),
+              name: z.string(),
+              coefficient: z.number(),
+            }),
           }),
           id: z.number(),
           count: z.number(),
@@ -89,81 +78,8 @@ export const getTasksSuccessSchema = z.object({
           ),
         }),
       ),
-      project: z.union([
-        z.null(),
-        z.object({
-          id: z.number(),
-          name: z.string(),
-          brand: z.array(
-            z.object({
-              id: z.number(),
-              name: z.string(),
-              logo: z.string(),
-              description: z.string(),
-            }),
-          ),
-        }),
-      ]),
-      acceptUser: z.union([
-        z.null(),
-        z.object({
-          id: z.number(),
-          phone: z.number(),
-          email: z.string(),
-          logo: z.string(),
-          roles: z.array(
-            z.object({
-              id: z.number(),
-              name: z.enum([
-                "admin",
-                "manager",
-                "supervisor",
-                "client",
-                "specialist",
-              ]),
-            }),
-          ),
-        }),
-      ]),
-      acceptedUser: z.array(
-        z.object({
-          id: z.number(),
-          phone: z.number(),
-          email: z.string(),
-          logo: z.string(),
-          roles: z.array(
-            z.object({
-              id: z.number(),
-              name: z.enum([
-                "admin",
-                "manager",
-                "supervisor",
-                "client",
-                "specialist",
-              ]),
-            }),
-          ),
-        }),
-      ),
     }),
   ),
-  links: z
-    .object({
-      first: z.union([z.null(), z.string()]),
-      last: z.union([z.null(), z.string()]),
-      prev: z.union([z.null(), z.string()]),
-      next: z.union([z.null(), z.string()]),
-    })
-    .optional(),
-  meta: z
-    .object({
-      current_page: z.number(),
-      from: z.number(),
-      path: z.string(),
-      per_page: z.number(),
-      to: z.number(),
-    })
-    .optional(),
 });
 
 export type GetTasksSuccess = z.infer<typeof getTasksSuccessSchema>;
