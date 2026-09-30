@@ -21,6 +21,7 @@ i18next
     fallbackLng: "ru",
     ns: ["constructor", "rootErrorBoundry"],
     backend: {
+      loadPath: "/client_marriator_front/locales/{{lng}}/{{ns}}.json",
       backends: [HttpBackend],
     },
   });

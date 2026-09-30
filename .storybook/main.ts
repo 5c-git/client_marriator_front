@@ -2,6 +2,9 @@ import { defineMain } from "@storybook/react-vite/node";
 
 export default defineMain({
   framework: "@storybook/react-vite",
+  staticDirs: [
+    { from: "../public/client_marriator_front/mockImg/", to: "/mockImg/" },
+  ],
   core: {
     builder: {
       name: "@storybook/builder-vite",
