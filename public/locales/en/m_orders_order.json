@@ -15,5 +15,7 @@
     "title": "Delete",
     "no": "No",
     "yes": "Yes"
-  }
+  },
+  "cancelErrorAlert": "Failed to cancel the order. Please try again",
+  "cancelExpiredAlert": "The time to cancel the order has expired"
 }

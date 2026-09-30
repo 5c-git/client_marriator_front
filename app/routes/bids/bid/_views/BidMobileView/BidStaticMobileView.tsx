@@ -27,6 +27,7 @@ import CloseIcon from "@mui/icons-material/Close";
 
 type BidStaticMobileViewInterface = BidMobileViewInterface & {
   cancelAction?: () => void;
+  cancelDisabled?: boolean;
 };
 
 export function BidStaticMobileView(props: BidStaticMobileViewInterface) {
@@ -720,6 +721,7 @@ export function BidStaticMobileView(props: BidStaticMobileViewInterface) {
         <Button
           variant="outlined"
           startIcon={<CloseIcon />}
+          disabled={props.cancelDisabled}
           onClick={() => {
             if (props.cancelAction) {
               props.cancelAction();

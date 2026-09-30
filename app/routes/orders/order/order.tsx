@@ -17,12 +17,14 @@ import { withLocale } from "~/shared/withLocale";
 
 import Box from "@mui/material/Box";
 import {
+  Alert,
   Button,
   Dialog,
   DialogActions,
   DialogTitle,
   Divider,
   IconButton,
+  Snackbar,
   Typography,
 } from "@mui/material";
 
@@ -136,18 +138,37 @@ export async function clientAction({ request }: Route.ClientActionArgs) {
   } else if (_action === ORDER_ACTIONS.repeat) {
     await ordersService.repeatOrder(fields.orderId);
   } else if (_action === ORDER_ACTIONS.cancel) {
-    await ordersService.cancelOrder(fields.orderId);
+    // ошибка отмены не должна уводить на страницу ошибки — показываем её в карточке
+    try {
+      const data = await ordersService.cancelOrder(fields.orderId);
+
+      if (!data.data.success) {
+        return { cancelError: true };
+      }
+    } catch (error) {
+      if (error instanceof Response && error.status === 401) {
+        throw error;
+      }
+
+      return { cancelError: true };
+    }
   }
 }
 
 export default function Order({ loaderData }: Route.ComponentProps) {
   const navigate = useNavigate();
-  const { t } = useTranslation("m_orders_order");
+  const { t } = useTranslation(["m_orders_order", "m_orders"]);
 
   const submit = useSubmit();
   const fetcher = useFetcher<RequestSearchDrawerInterface["entity"]>();
+  // отдельный fetcher: ответ отмены в общем fetcher.data открыл бы RequestSearchDrawer
+  const cancelFetcher = useFetcher<{ cancelError?: boolean }>();
 
   const [editMode, setEditMode] = useState<boolean>(false);
+  const [orderToCancel, setOrderToCancel] = useState<
+    "newOrNotAccepted" | "accepted" | null
+  >(null);
+  const [cancelExpired, setCancelExpired] = useState<boolean>(false);
   const [serviceToDelete, setServiceToDelete] = useState<{
     id: number;
     count: number;
@@ -157,6 +178,32 @@ export default function Order({ loaderData }: Route.ComponentProps) {
   const [searchSupervisors, setSearchSupervisors] = useState<boolean>(false);
 
   const isDesktop = window.innerWidth >= 768 ? true : false;
+
+  // одно условие и для показа кнопки, и для повторной проверки на «Да»
+  const canCancelOrder = (kind: "newOrNotAccepted" | "accepted") => {
+    if (kind === "newOrNotAccepted") {
+      return loaderData.order.duration.start &&
+        ButtonActionMapper.canCancelNewOrNotAccepted(
+          loaderData.intervals.id,
+          loaderData.order.userId,
+          loaderData.order.status,
+          loaderData.intervals.cancel_order_interval,
+          loaderData.order.duration.start,
+        )
+        ? true
+        : false;
+    }
+
+    return loaderData.order.duration.end &&
+      ButtonActionMapper.canCancelAccepted(
+        loaderData.intervals.id,
+        loaderData.order.userId,
+        loaderData.order.status,
+        loaderData.order.duration.end,
+      )
+      ? true
+      : false;
+  };
 
   return (
     <>
@@ -439,61 +486,30 @@ export default function Order({ loaderData }: Route.ComponentProps) {
           )}
           actionSlot={() => (
             <>
-              {isDesktop &&
-              loaderData.order.duration.start &&
-              ButtonActionMapper.canCancelNewOrNotAccepted(
-                loaderData.intervals.id,
-                loaderData.order.userId,
-                loaderData.order.status,
-                loaderData.intervals.cancel_order_interval,
-                loaderData.order.duration.start,
-              ) ? (
+              {isDesktop && canCancelOrder("newOrNotAccepted") ? (
                 <Button
                   variant="contained"
                   sx={{
                     marginTop: "8px",
                   }}
+                  disabled={cancelFetcher.state !== "idle"}
                   onClick={() => {
-                    fetcher.submit(
-                      JSON.stringify({
-                        _action: "cancel",
-                        orderId: loaderData.order.id,
-                      }),
-                      {
-                        method: "POST",
-                        encType: "application/json",
-                      },
-                    );
+                    setOrderToCancel("newOrNotAccepted");
                   }}
                 >
                   {t("cancelAssignmentButton", { ns: "m_orders" })}
                 </Button>
               ) : null}
 
-              {isDesktop &&
-              loaderData.order.duration.end &&
-              ButtonActionMapper.canCancelAccepted(
-                loaderData.intervals.id,
-                loaderData.order.userId,
-                loaderData.order.status,
-                loaderData.order.duration.end,
-              ) ? (
+              {isDesktop && canCancelOrder("accepted") ? (
                 <Button
                   variant="contained"
                   sx={{
                     marginTop: "8px",
                   }}
+                  disabled={cancelFetcher.state !== "idle"}
                   onClick={() => {
-                    fetcher.submit(
-                      JSON.stringify({
-                        _action: "cancel",
-                        orderId: loaderData.order.id,
-                      }),
-                      {
-                        method: "POST",
-                        encType: "application/json",
-                      },
-                    );
+                    setOrderToCancel("accepted");
                   }}
                 >
                   {t("cancelAssignmentButton", { ns: "m_orders" })}
@@ -737,6 +753,88 @@ export default function Order({ loaderData }: Route.ComponentProps) {
           </Button>
         </DialogActions>
       </Dialog>
+      <Dialog
+        open={orderToCancel ? true : false}
+        onClose={() => {
+          setOrderToCancel(null);
+        }}
+        sx={{
+          "& .MuiDialog-paper": {
+            borderRadius: "8px",
+          },
+        }}
+      >
+        <DialogTitle
+          sx={{
+            fontWeight: "400",
+            fontSize: "1.125rem",
+          }}
+        >
+          {`${t("dialog.cancel", { ns: "m_orders" })} ${t("dialog.title", { ns: "m_orders" })} ?`}
+        </DialogTitle>
+        <DialogActions>
+          <Button
+            variant="outlined"
+            onClick={() => {
+              setOrderToCancel(null);
+            }}
+          >
+            {t("dialog.no", { ns: "m_orders" })}
+          </Button>
+          <Button
+            variant="contained"
+            onClick={() => {
+              const kind = orderToCancel;
+              setOrderToCancel(null);
+
+              // интервал мог истечь, пока открыта модалка — тогда на сервер не идём
+              if (!kind || !canCancelOrder(kind)) {
+                setCancelExpired(true);
+                return;
+              }
+
+              cancelFetcher.submit(
+                JSON.stringify({
+                  _action: ORDER_ACTIONS.cancel,
+                  orderId: loaderData.order.id,
+                }),
+                {
+                  method: "POST",
+                  encType: "application/json",
+                },
+              );
+            }}
+          >
+            {t("dialog.yes", { ns: "m_orders" })}
+          </Button>
+        </DialogActions>
+      </Dialog>
+      <Snackbar
+        // пока идёт повторный запрос — скрыт; иначе reset по таймеру сбросил бы state в idle посреди запроса
+        open={
+          (cancelFetcher.state === "idle" && cancelFetcher.data?.cancelError) ||
+          cancelExpired
+            ? true
+            : false
+        }
+        autoHideDuration={3000}
+        onClose={() => {
+          if (cancelFetcher.state === "idle") {
+            cancelFetcher.reset();
+          }
+          setCancelExpired(false);
+        }}
+      >
+        <Alert
+          severity="error"
+          variant="small"
+          sx={{
+            width: "100%",
+          }}
+        >
+          {cancelExpired ? t("cancelExpiredAlert") : t("cancelErrorAlert")}
+        </Alert>
+      </Snackbar>
     </>
   );
 }
