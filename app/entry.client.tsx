@@ -9,6 +9,9 @@ import HttpBackend from "i18next-http-backend";
 
 export const supportedLngs = ["ru", "en"];
 
+const localeBasePath = (import.meta.env.BASE_URL || "/").replace(/\/?$/, "/");
+const localeLoadPath = `${localeBasePath}locales/{{lng}}/{{ns}}.json`;
+
 async function enableMocking() {
   if (process.env.NODE_ENV !== "development") {
     return;
@@ -36,6 +39,7 @@ async function hydrate() {
       ns: ["rootErrorBoundry", "constructorFields"],
       partialBundledLanguages: true,
       backend: {
+        loadPath: localeLoadPath,
         backends: [HttpBackend],
       },
     });
