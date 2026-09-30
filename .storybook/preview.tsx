@@ -11,6 +11,9 @@ import { theme } from "../app/theme/theme";
 import { ThemeProvider } from "@mui/material/styles";
 import { CssBaseline } from "@mui/material";
 
+const localeBasePath = (import.meta.env.BASE_URL || "/").replace(/\/?$/, "/");
+const localeLoadPath = `${localeBasePath}locales/{{lng}}/{{ns}}.json`;
+
 i18next
   .use(HttpBackend)
   .use(LanguageDetector)
@@ -21,7 +24,7 @@ i18next
     fallbackLng: "ru",
     ns: ["constructor", "rootErrorBoundry"],
     backend: {
-      loadPath: "/client_marriator_front/locales/{{lng}}/{{ns}}.json",
+      loadPath: localeLoadPath,
       backends: [HttpBackend],
     },
   });
