@@ -13,6 +13,7 @@ import { postRejectBid } from "~/api/_personal/postRejectBid/postRejectBid";
 import { postEndDay } from "~/api/_personal/postEndDay/postEndDay";
 import { postPayReport } from "~/api/_personal/postPayReport/postPayReport";
 import { getSettingsFromKey } from "~/api/_settings/getSettingsFromKey/getSettingsFromKey";
+import { getData } from "~/api/_personal/getData/getData";
 
 export const jobContainer = new Container().extend(appContainer);
 
@@ -49,6 +50,10 @@ jobContainer
   .toConstant((accessToken, setting) =>
     getSettingsFromKey(accessToken, setting),
   );
+
+jobContainer
+  .bind(jobPrivateTokens.getUserData)
+  .toConstant((accessToken) => getData(accessToken));
 
 jobContainer
   .bind(jobTokens.jobService)

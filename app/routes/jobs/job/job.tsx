@@ -7,7 +7,7 @@ import { useTranslation } from "react-i18next";
 
 import { withLocale } from "~/shared/withLocale";
 
-import { isWithinInterval, subHours, isAfter } from "date-fns";
+import { isWithinInterval, subHours, isAfter, isFuture } from "date-fns";
 
 // import { JobMobileFormView } from "./JobMobileView/JobMobileFormView";
 import { JobMobileStaticView } from "./JobMobileView/JobMobileStaticView";
@@ -42,9 +42,11 @@ export async function clientLoader({ params }: Route.ClientLoaderArgs) {
 
   const intervalDayStart = await jobService.getSettings("intervalDayStart");
   const intervalDayEnd = await jobService.getSettings("intervalDayEnd");
+  const intervals = await jobService.getUserIntervals();
 
   return {
     job,
+    intervals,
     defaultTimeRange: {
       start: new Date(
         `2026-03-12T${jobData.data.project.timeStart ? (jobData.data.project.timeStart.startsWith("0") ? jobData.data.project.timeStart : `0${jobData.data.project.timeStart}`) : intervalDayStart.data.value.startsWith("0") ? intervalDayStart.data.value : `0${intervalDayStart.data.value}`}:00`,
@@ -329,23 +331,31 @@ export default function Job({ loaderData }: Route.ComponentProps) {
             >
               {t("actions.accept")}
             </Button>
-            <Button
-              variant="text"
-              onClick={() => {
-                fetcher.submit(
-                  JSON.stringify({
-                    _action: JOB_ACTIONS.deny,
-                    bidId: loaderData.job.id,
-                  }),
-                  {
-                    method: "POST",
-                    encType: "application/json",
-                  },
-                );
-              }}
-            >
-              {t("actions.cancel")}
-            </Button>
+
+            {isFuture(
+              subHours(
+                loaderData.job.dateEnd,
+                loaderData.intervals.refuse_job_interval,
+              ),
+            ) ? (
+              <Button
+                variant="text"
+                onClick={() => {
+                  fetcher.submit(
+                    JSON.stringify({
+                      _action: JOB_ACTIONS.deny,
+                      bidId: loaderData.job.id,
+                    }),
+                    {
+                      method: "POST",
+                      encType: "application/json",
+                    },
+                  );
+                }}
+              >
+                {t("actions.cancel")}
+              </Button>
+            ) : null}
           </>
         ) : null}
 
@@ -479,12 +489,20 @@ export default function Job({ loaderData }: Route.ComponentProps) {
           </>
         ) : null}
 
-        {loaderData.job.status === 2 || loaderData.job.status === 5 ? (
+        {loaderData.job.status === 2 ||
+        (loaderData.job.status === 5 &&
+          isFuture(
+            subHours(
+              loaderData.job.dateEnd,
+              loaderData.intervals.refuse_job_interval,
+            ),
+          )) ? (
           <Button
             variant="text"
             onClick={() => {
               fetcher.submit(
                 JSON.stringify({
+                  _action: JOB_ACTIONS.deny,
                   bidId: loaderData.job.id,
                 }),
                 {
