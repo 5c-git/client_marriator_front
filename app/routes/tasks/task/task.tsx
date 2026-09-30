@@ -44,6 +44,7 @@ import { taskContainer } from "./task.module";
 import { taskTokens } from "./task.tokens";
 import { TaskMapper } from "./task.mapper";
 import { ButtonActionMapper } from "~/shared/mappers/buttonActionMapper";
+import { isFuture, subHours } from "date-fns";
 
 const TASK_ACTIONS = {
   deleteActivity: "deleteActivity",
@@ -397,7 +398,13 @@ export default function Task({ loaderData }: Route.ComponentProps) {
                 service.buttonBidNeed) ||
               (loaderData.userRole === "supervisor" &&
                 loaderData.entity.status === 3 &&
-                service.buttonBidNeed) ? (
+                service.buttonBidNeed &&
+                isFuture(
+                  subHours(
+                    service.dateStart,
+                    loaderData.intervals.create_bid_interval,
+                  ),
+                )) ? (
                 <Button
                   variant="contained"
                   sx={{

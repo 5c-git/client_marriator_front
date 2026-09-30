@@ -86,6 +86,11 @@ export class TasksService {
 
     const userData = await this.loadUserInfo(token);
 
+    const date_create_bid = new Date(
+      `2026-03-12T${userData.data.leave_bid.startsWith("0") ? userData.data.leave_bid : `0${userData.data.leave_bid}`}`,
+    );
+    const create_bid_interval = date_create_bid.getHours();
+
     const date_cancel = new Date(
       `2026-03-12T${userData.data.cancel_task.startsWith("0") ? userData.data.cancel_task : `0${userData.data.cancel_task}`}`,
     );
@@ -98,6 +103,7 @@ export class TasksService {
 
     return {
       id: userData.data.id,
+      create_bid_interval,
       cancel_task_interval,
       repeat_task_interval,
     };
