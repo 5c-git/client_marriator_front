@@ -14,7 +14,7 @@ async function enableMocking() {
     return;
   }
 
-  return;
+  // return;
 
   const { worker } = await import("./mockWorker/mockWorker");
 
