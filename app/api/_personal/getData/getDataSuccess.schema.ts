@@ -61,7 +61,7 @@ export const getDataSuccessSchema = z.object({
     cancel_task: z.string(),
     live_task: z.union([z.null(), z.string()]),
     repeat_bid: z.union([z.null(), z.string()]),
-    leave_bid: z.union([z.null(), z.string()]),
+    leave_bid: z.string(),
     refusal_task: z.union([z.null(), z.string()]),
     waiting_task: z.union([z.null(), z.number()]),
     supervisors: z.array(

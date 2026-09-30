@@ -26,6 +26,8 @@ import {
   Typography,
 } from "@mui/material";
 
+import { isFuture, subHours } from "date-fns";
+
 import { StyledRadioButton } from "~/shared/ui/StyledRadioButton/StyledRadioButton";
 import { RadioSearchableDrawer } from "../../../shared/ui/RadioSearchableDrawer/RadioSearchableDrawer";
 import { RequestSearchDrawer } from "~/shared/views/RequestSearchDrawer/RequestSearchDrawer";
@@ -379,7 +381,13 @@ export default function Order({ loaderData }: Route.ComponentProps) {
               {(loaderData.userRole === "manager" ||
                 loaderData.userRole === "supervisor") &&
               loaderData.order.status === 3 &&
-              service.buttonBidNeed ? (
+              service.buttonBidNeed &&
+              isFuture(
+                subHours(
+                  service.dateStart,
+                  loaderData.intervals.create_bid_interval,
+                ),
+              ) ? (
                 <Button
                   variant="contained"
                   sx={{

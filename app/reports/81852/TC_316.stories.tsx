@@ -1,39 +1,54 @@
-import preview from "../../../../.storybook/preview";
+import preview from "../../../.storybook/preview";
 
 // import { reactRouterParameters } from "storybook-addon-remix-react-router";
 
-import Task from "./task";
+import Order from "~/routes/orders/order/order";
 
 const meta = preview.meta({
-  component: Task,
+  component: Order,
 });
 
 // @ts-expect-error: `matches` won't align between test code and app code
-export const PrimaryEditable = meta.story({
+export const TC_316 = meta.story({
   args: {
     loaderData: {
-      entity: {
-        id: "725",
-        status: 4,
+      intervals: {
+        id: 526,
+        create_bid_interval: 2,
+        cancel_order_interval: 2,
+        repeat_order_interval: 2,
+      },
+      order: {
+        id: "854",
+        status: 3,
         place: {
-          id: 4,
-          name: "Пятёрочка Аметьевская ул, д. 24, г. Казань",
+          id: 3,
+          name: "«Пятёрочка» на Арбате д. 24  г.Москва",
           logo: "/storage/source/directory/brand/1-logo/Лого Пятерочка.png",
-          region: "Татарстан Респ",
+          region: "Москва",
         },
         selfEmployed: false,
         route: 0,
-        project: {
-          id: 12,
-          logo: "/storage/source/directory/brand/1-logo/Лого Пятерочка.png",
-          name: "78412552 Пятерочка",
-        },
+        services: [
+          {
+            id: 568,
+            count: 1,
+            name: "Пекарь (Физическое лицо)",
+            route: 0,
+            dateStart: "2026-10-01T07:00:00.000000Z",
+            dateEnd: "2026-10-04T16:00:00.000000Z",
+            countSearch: 0,
+            buttonBidNeed: true,
+            buttonSearchNeed: false,
+          },
+        ],
+        project: null,
         creatingPerson: {
-          id: 526,
-          role: "manager",
-          name: "ЮЛИЯ МЕНЕДЖЕР ПЯТЕРОЧКА",
-          phone: 79128444444,
-          email: "yulmanpet4@mail.ru",
+          id: 913,
+          role: "client",
+          name: "Клиент Для Теста",
+          phone: 79128491111,
+          email: "testclientmar@mail.ru",
           logo: "/storage/source/directory/brand/1-logo/Лого Пятерочка.png",
         },
         acceptingPerson: {
@@ -44,34 +59,12 @@ export const PrimaryEditable = meta.story({
           email: "yulmanpet4@mail.ru",
           logo: "/storage/source/directory/brand/1-logo/Лого Пятерочка.png",
         },
-        services: [
-          {
-            id: 624,
-            count: 1,
-            name: "Пекарь (Физическое лицо)",
-            route: 0,
-            dateStart: "2026-10-19T07:00:00.000000Z",
-            dateEnd: "2026-10-21T16:00:00.000000Z",
-            countSearch: 0,
-            buttonBidNeed: true,
-            buttonSearchNeed: false,
-          },
-        ],
-        invitedPersons: [
-          {
-            id: 527,
-            role: "supervisor",
-            name: "ЮЛИЯ СУПЕРВАЙЗЕР ПЯТЕРОЧКА",
-            phone: 79128455555,
-            email: "yulsyppet5@mail.ru",
-            logo: "/storage/source/directory/brand/1-logo/Лого Пятерочка.png",
-          },
-        ],
+        invitedPersons: [],
         duration: {
-          start: "2026-10-19T07:00:00.000000Z",
-          end: "2026-10-21T16:00:00.000000Z",
+          start: "2026-09-01T17:00:00.000000Z",
+          end: "2026-10-04T16:00:00.000000Z",
         },
-        userId: 526,
+        userId: 913,
       },
       locations: [
         {
@@ -101,6 +94,11 @@ export const PrimaryEditable = meta.story({
       ],
       supervisorsToSelect: [
         {
+          value: "526",
+          label: "Назначить себя",
+          disabled: false,
+        },
+        {
           value: "527",
           label: "ЮЛИЯ СУПЕРВАЙЗЕР ПЯТЕРОЧКА",
           disabled: false,
@@ -111,13 +109,27 @@ export const PrimaryEditable = meta.story({
           disabled: false,
         },
       ],
-      userId: 526,
       userRole: "manager",
-      intervals: {
-        id: 526,
-        cancel_task_interval: 2,
-        repeat_task_interval: 2,
-      },
     },
   },
+  decorators: [
+    (Story) => (
+      <div>
+        <p>
+          TC-316 Кнопка "Создать заявку" в поручении активна при нарушении
+          временного интервала (менее 2 часов до начала услуги) Факт: Кнопка
+          "Создать заявку" отображается активной
+        </p>
+        <p>Результат</p>
+        <p>
+          Интервал leave_bid(в запросе)(create_bid_interval в приложении) теперь
+          отнимается от даты начала услуги и проверятся что полученная дата
+          находится в будущем, если в будущем кнопку показываем, нет - не
+          показываем
+        </p>
+        <div></div>
+        <Story />
+      </div>
+    ),
+  ],
 });
