@@ -1,0 +1,18 @@
+{
+  "serviceAmount": "Amount:",
+  "route": "Route: {{count}} locations",
+  "serviceButton": "Add activity",
+  "cancelButton": "Cancel",
+  "inviteSupervisorsButton": "Invite supervisors",
+  "makeSupervisorResponsibleButton": "Assign responsible supervisor",
+  "becomeResponsible": "Become responsible",
+  "sendButton": "Send",
+  "saveButton": "Save",
+  "convertToBid": "Create request",
+  "acceptButton": "Accept task",
+  "dialog": {
+    "title": "Delete",
+    "no": "No",
+    "yes": "Yes"
+  }
+}

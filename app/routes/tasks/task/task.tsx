@@ -1,19 +1,28 @@
-import { useState } from "react";
+import { useState, ComponentPropsWithoutRef } from "react";
 import {
-  useNavigation,
   useNavigate,
   useFetcher,
   Link,
   redirect,
+  useSubmit,
 } from "react-router";
 import type { Route } from "./+types/task";
+import type { RequestSearchDrawerInterface } from "~/shared/views/RequestSearchDrawer/RequestSearchDrawerInterface";
+import type { PostUpdateSearchPayload } from "~/api/_personal/postUpdateSearch/postUpdateSearch";
 
 import { useTranslation } from "react-i18next";
 import { withLocale } from "~/shared/withLocale";
 
+import { EntityStaticMobileView } from "../../../shared/views/EntityMobileView/EntityStaticMobileView";
+import { EntityEditMobileView } from "../../../shared/views/EntityMobileView/EntityEditMobileView";
+import { CheckboxSearchableDrawer } from "~/shared/ui/CheckboxSearchableDrawer/CheckboxSearchableDrawer";
+import { RadioSearchableDrawer } from "~/shared/ui/RadioSearchableDrawer/RadioSearchableDrawer";
+import { RequestSearchDrawer } from "~/shared/views/RequestSearchDrawer/RequestSearchDrawer";
+
+import { StyledCheckboxMultiple } from "~/shared/ui/StyledCheckboxMultiple/StyledCheckboxMultiple";
+
 import Box from "@mui/material/Box";
 import {
-  Avatar,
   Button,
   Dialog,
   DialogActions,
@@ -23,571 +32,679 @@ import {
   Typography,
 } from "@mui/material";
 
-import { Loader } from "~/shared/ui/Loader/Loader";
-import { TopNavigation } from "~/shared/ui/TopNavigation/TopNavigation";
-
 import AddIcon from "@mui/icons-material/Add";
 import ClearIcon from "@mui/icons-material/Clear";
 import CheckIcon from "@mui/icons-material/Check";
-import { EditIcon } from "~/shared/icons/EditIcon";
-
-import { useStore } from "~/store/store";
-
-import { statusCodeMap } from "~/shared/status";
-
 import { RouteIcon } from "~/shared/icons/RouteIcon";
 
-import { getTask } from "~/requests/_personal/getTask/getTask";
-import { postDeleteTaskActivity } from "~/requests/_personal/postDeleteTaskActivity/postDeleteTaskActivity";
-import { postCreateBidFromTask } from "~/requests/_personal/postCreateBidFromTask/postCreateBidFromTask";
+import { tasksContainer } from "../tasks.module";
+import { tasksTokens } from "../tasks.tokens";
+
+import { taskContainer } from "./task.module";
+import { taskTokens } from "./task.tokens";
+import { TaskMapper } from "./task.mapper";
+import { ButtonActionMapper } from "~/shared/mappers/buttonActionMapper";
+
+const TASK_ACTIONS = {
+  deleteActivity: "deleteActivity",
+  transformActivity: "transformActivity",
+  requestSearch: "requestSearch",
+  updateSearchRequest: "updateSearchRequest",
+  inviteSupervisors: "inviteSupervisors",
+  makeResponsible: "makeResponsible",
+  acceptTask: "acceptTask",
+  repeat: "repeat",
+  cancel: "cancel",
+} as const;
 
 export async function clientLoader({ params }: Route.ClientLoaderArgs) {
-  const accessToken = useStore.getState().accessToken;
+  const tasksService = tasksContainer.get(tasksTokens.tasksService);
+  const taskService = taskContainer.get(taskTokens.taskService);
+  const userRole = taskService.getUserRole();
+  const userId = taskService.getUserId();
 
-  const task: {
-    id: string;
-    status: number;
-    place: {
-      id: number;
-      name: string;
-      logo: string;
-      region: string;
-    };
-    project: {
-      id: number;
-      name: string;
-    };
-    selfEmployed: boolean;
-    orderActivities: {
-      id: number;
-      count: number;
-      name: string;
-      route: number;
-    }[];
-    route: number;
-    acceptUser: null | {
-      id: number;
-      phone: number;
-      email: string;
-      logo: string;
-    };
-  } = {
-    id: params.taskId,
-    status: -1,
-    place: {
-      id: -1,
-      name: "",
-      logo: "",
-      region: "",
-    },
-    project: {
-      id: -1,
-      name: "",
-    },
-    selfEmployed: false,
-    orderActivities: [],
-    route: 0,
-    acceptUser: null,
-  };
+  const intervals = await tasksService.getUserIntervals();
+  const task = await taskService.getTask(params.taskId);
+  let locations: {
+    value: string;
+    label: string;
+    logo: string | null;
+    disabled: boolean;
+  }[] = [];
+  let supervisorsToSelect: ComponentPropsWithoutRef<
+    typeof StyledCheckboxMultiple
+  >["options"] = [];
 
-  if (accessToken) {
-    const taskData = await getTask(accessToken, params.taskId);
-
-    task.status = taskData.data.status;
-    task.place.name = taskData.data.place.name;
-    task.place.logo = taskData.data.place.logo;
-    task.place.region = taskData.data.place.region.name;
-    task.project.id = taskData.data.project.id;
-    task.project.name = taskData.data.project.name;
-    task.selfEmployed = taskData.data.selfEmployed;
-    task.acceptUser = taskData.data.acceptUser
-      ? taskData.data.acceptUser
-      : null;
-
-    taskData.data.orderActivities.forEach((item) => {
-      let routeCount = 0;
-      // считаем количество точек в маршруте
-      item.dateActivity.forEach((t) => {
-        routeCount = routeCount + t.places.length;
-      });
-      // считаем количество точек в маршруте
-
-      task.orderActivities.push({
-        id: item.id,
-        count: item.count,
-        name: item.viewActivity.name,
-        route: routeCount,
-      });
-    });
-
-    return { task, orderActivities: taskData.data.orderActivities };
-  } else {
-    throw new Response("Токен авторизации не обнаружен!", { status: 401 });
+  if (userRole === "manager" || userRole === "supervisor") {
+    locations = await taskService.getPlaceForBid();
   }
+
+  if (userRole === "manager") {
+    supervisorsToSelect = await taskService.getSupervisors(params.taskId);
+  }
+
+  return {
+    entity: task,
+    locations,
+    supervisorsToSelect,
+    userId,
+    userRole,
+    intervals,
+  };
 }
 
-export async function clientAction({ request }: Route.ClientActionArgs) {
-  // const currentURL = new URL(request.url);
+export async function clientAction({
+  request,
+  params,
+}: Route.ClientActionArgs) {
   const { _action, ...fields } = await request.json();
-  const accessToken = useStore.getState().accessToken;
-  if (accessToken) {
-    if (_action === "deleteActivity") {
-      await postDeleteTaskActivity(
-        accessToken,
-        fields.taskId,
-        fields.taskActivityId,
-      );
-    } else if (_action === "transformActivity") {
-      const transformedRequestData = await postCreateBidFromTask(
-        accessToken,
-        fields.taskId,
-        fields.taskActivityId,
-      );
-      throw redirect(withLocale(`/requests/${transformedRequestData.data.id}`));
-    }
-  } else {
-    throw new Response("Токен авторизации не обнаружен!", { status: 401 });
+  const tasksService = tasksContainer.get(tasksTokens.tasksService);
+  const taskService = taskContainer.get(taskTokens.taskService);
+
+  if (_action === TASK_ACTIONS.deleteActivity) {
+    await taskService.deleteTaskActivity(fields.taskId, fields.taskActivityId);
+  } else if (_action === TASK_ACTIONS.transformActivity) {
+    const data = await taskService.createBidFromTask(
+      fields.taskId,
+      fields.taskActivityId,
+    );
+    throw redirect(withLocale(`/bids/${data.data.id}`));
+  } else if (_action === TASK_ACTIONS.requestSearch) {
+    const data = await taskService.makeSearchRequest(
+      fields.taskId,
+      fields.taskActivityId,
+    );
+    return TaskMapper.mapDataToSearchRequest(data);
+  } else if (_action === TASK_ACTIONS.updateSearchRequest) {
+    await taskService.updateSearchRequest(fields.searchId, fields.payload);
+  } else if (_action === TASK_ACTIONS.inviteSupervisors) {
+    await taskService.invoiceTask(params.taskId, fields.supervisors);
+  } else if (_action === TASK_ACTIONS.makeResponsible) {
+    await taskService.instructTask(fields.taskId, fields.supervisorId);
+  } else if (_action === TASK_ACTIONS.acceptTask) {
+    await taskService.acceptTask(fields.taskId);
+  } else if (_action === TASK_ACTIONS.repeat) {
+    await tasksService.repeatTask(fields.taskId);
+  } else if (_action === TASK_ACTIONS.cancel) {
+    await tasksService.cancelTask(fields.taskId);
   }
 }
 
 export default function Task({ loaderData }: Route.ComponentProps) {
+  const { t } = useTranslation(["m_tasks_task", "m_tasks"]);
   const navigate = useNavigate();
-  const navigation = useNavigation();
-  const { t } = useTranslation("task");
-  const userRole = useStore.getState().userRole;
-
-  const fetcher = useFetcher();
+  const submit = useSubmit();
+  const fetcher = useFetcher<RequestSearchDrawerInterface["entity"]>();
 
   const [editMode, setEditMode] = useState<boolean>(false);
-  const [taskToDelete, setTaskToDelete] = useState<{
+  const [searchSupervisors, setSearchSupervisors] = useState<boolean>(false);
+  const [searchResponsibleSupervisors, setSearchResponsibleSupervisors] =
+    useState<boolean>(false);
+  const [serviceToDelete, setServiceToDelete] = useState<{
     id: number;
     count: number;
     name: string;
   } | null>(null);
 
+  const isDesktop = window.innerWidth >= 768 ? true : false;
+
   return (
     <>
-      {navigation.state !== "idle" ? <Loader /> : null}
-
-      <TopNavigation
-        header={{
-          text: `${t("header")} ${loaderData.task.id}`,
-          bold: false,
-        }}
-        backAction={() => {
-          navigate(withLocale("/tasks"), {
-            viewTransition: true,
-          });
-        }}
-        {...(!editMode
-          ? {
-              buttonAction: {
-                text: "",
-                icon: (
-                  <EditIcon
-                    sx={{
-                      width: "16px",
-                      height: "16px",
-                    }}
-                  />
-                ),
-                action: () => {
-                  setEditMode(true);
-                },
-              },
-            }
-          : {})}
-      />
-
-      <Box
-        sx={{
-          height: "calc(100vh - 120px)",
-          overflow: "auto",
-          display: "flex",
-          flexDirection: "column",
-          rowGap: "14px",
-          paddingLeft: "16px",
-          paddingRight: "16px",
-          paddingTop: "20px",
-        }}
-      >
-        {!editMode ? (
-          <Avatar
-            src={`${import.meta.env.VITE_ASSET_PATH}${loaderData.task.place.logo}`}
-            sx={{ width: "100px", height: "100px", margin: "0 auto" }}
-          />
-        ) : null}
-
-        <Box
-          sx={{
-            display: "grid",
-            rowGap: "4px",
+      {editMode ? (
+        <EntityEditMobileView
+          translation={"task"}
+          entity={loaderData.entity}
+          headerBackAction={() => {
+            navigate(withLocale("/tasks"), {
+              viewTransition: true,
+            });
           }}
-        >
-          <Typography
-            component="p"
-            variant="Reg_12"
-            sx={(theme) => ({
-              color: theme.vars.palette["Grey_2"],
-            })}
-          >
-            {t("statusPlaceholder")}
-          </Typography>
-          <Box
-            sx={{
-              display: "flex",
-              columnGap: "8px",
-              alignItems: "center",
-            }}
-          >
+          serviceSlot={(service) => (
             <Box
-              sx={{
-                width: "14px",
-                height: "14px",
-                borderRadius: "50px",
-              }}
-              style={{
-                backgroundColor:
-                  statusCodeMap[
-                    loaderData.task.status as keyof typeof statusCodeMap
-                  ].color,
-              }}
-            ></Box>
-            <Typography
-              component="p"
-              variant="Reg_14"
+              key={service.id}
               sx={(theme) => ({
-                color: theme.vars.palette["Black"],
+                padding: "10px 14px",
+                border: "1px solid",
+                borderColor: theme.vars.palette["Grey_3"],
+                borderRadius: "6px",
               })}
             >
-              {t(
-                `status.${
-                  statusCodeMap[
-                    loaderData.task.status as keyof typeof statusCodeMap
-                  ].value
-                }`,
-              )}
-            </Typography>
-          </Box>
-        </Box>
-
-        <Box
-          sx={{
-            display: "grid",
-            rowGap: "4px",
-          }}
-        >
-          <Typography
-            component="p"
-            variant="Reg_12"
-            sx={(theme) => ({
-              color: theme.vars.palette["Grey_2"],
-            })}
-          >
-            {t("locationPlaceholder")}
-          </Typography>
-          <Box
-            sx={{
-              display: "flex",
-              columnGap: "8px",
-              alignItems: "center",
-            }}
-          >
-            <Avatar
-              src={`${import.meta.env.VITE_ASSET_PATH}${loaderData.task.place.logo}`}
-              sx={{ width: "30px", height: "30px" }}
-            />
-            <Typography
-              component="p"
-              variant="Reg_14"
-              sx={(theme) => ({ color: theme.vars.palette["Black"] })}
-            >
-              {loaderData.task.place.name}
-            </Typography>
-          </Box>
-        </Box>
-
-        <Box
-          sx={{
-            display: "grid",
-            rowGap: "4px",
-          }}
-        >
-          <Typography
-            component="p"
-            variant="Reg_12"
-            sx={(theme) => ({
-              color: theme.vars.palette["Grey_2"],
-            })}
-          >
-            {t("projectPlaceholder")}
-          </Typography>
-          <Typography
-            component="p"
-            variant="Reg_14"
-            sx={(theme) => ({ color: theme.vars.palette["Black"] })}
-          >
-            {loaderData.task.project.name}
-          </Typography>
-        </Box>
-
-        {loaderData.task.acceptUser ? (
-          <>
-            <Box>
-              <Typography
-                component="p"
-                variant="Reg_12"
-                sx={(theme) => ({
-                  color: theme.vars.palette["Grey_2"],
-                })}
-              >
-                {t("responsiblePlaceholder")}
-              </Typography>
               <Box
                 sx={{
                   display: "flex",
-                  columnGap: "8px",
-                  alignItems: "center",
+                  justifyContent: "space-between",
+                  alignItems: "flex-start",
+                  columnGap: "10px",
                 }}
               >
-                <Avatar
-                  src={`${import.meta.env.VITE_ASSET_PATH}${loaderData.task.acceptUser.logo}`}
-                  sx={{ width: "30px", height: "30px" }}
-                />
-                <Typography
-                  component="p"
-                  variant="Reg_14"
-                  sx={(theme) => ({ color: theme.vars.palette["Black"] })}
-                >
-                  {loaderData.task.acceptUser.email}
-                </Typography>
-              </Box>
-            </Box>
-            <Box>
-              <Typography
-                component="p"
-                variant="Reg_12"
-                sx={(theme) => ({
-                  color: theme.vars.palette["Grey_2"],
-                })}
-              >
-                {t("responsiblePhonePlaceholder")}
-              </Typography>
-              <Typography
-                component="a"
-                variant="Reg_14"
-                href={`tel:${loaderData.task.acceptUser.phone}`}
-                sx={(theme) => ({
-                  color: theme.vars.palette["Black"],
-                  textDecoration: "none",
-                })}
-              >
-                {loaderData.task.acceptUser.phone}
-              </Typography>
-            </Box>
-          </>
-        ) : null}
-
-        {loaderData.task.orderActivities.length > 0 ? (
-          <Box
-            sx={{
-              display: "grid",
-              rowGap: "14px",
-            }}
-          >
-            <Typography
-              component="p"
-              variant="Bold_14"
-              sx={(theme) => ({
-                color: theme.vars.palette["Black"],
-              })}
-            >
-              {t("activities")}
-            </Typography>
-            {loaderData.task.orderActivities.map((item) => (
-              <Box
-                key={item.id}
-                sx={(theme) => ({
-                  padding: "10px 14px",
-                  border: "1px solid",
-                  borderColor: theme.vars.palette["Grey_3"],
-                  borderRadius: "6px",
-                })}
-              >
                 <Box
+                  component={Link}
+                  to={withLocale(
+                    `/tasks/${loaderData.entity.id}/service/${service.id}`,
+                  )}
                   sx={{
-                    display: "flex",
-                    justifyContent: "space-between",
-                    alignItems: "flex-start",
-                    columnGap: "10px",
+                    display: "grid",
+                    rowGap: "4px",
+                    textDecoration: "none",
                   }}
                 >
-                  <Box
-                    component={Link}
-                    to={withLocale(
-                      `/tasks/${loaderData.task.id}/edit-service/${item.id}`,
-                    )}
-                    state={{
-                      service: loaderData.orderActivities.find(
-                        (service) => service.id === item.id,
-                      ),
-                    }}
+                  <Typography
+                    component="p"
+                    variant="Reg_16"
+                    sx={(theme) => ({
+                      color: theme.vars.palette["Black"],
+                    })}
+                  >
+                    {service.name}
+                  </Typography>
+                  <Typography
+                    component="p"
+                    variant="Reg_12"
+                    sx={(theme) => ({
+                      color: theme.vars.palette["Grey_1"],
+                    })}
+                  >
+                    {t("serviceAmount")} {service.count}
+                  </Typography>
+                </Box>
+
+                <IconButton
+                  sx={{
+                    padding: 0,
+                  }}
+                  onClick={() => {
+                    setServiceToDelete(service);
+                  }}
+                >
+                  <ClearIcon />
+                </IconButton>
+              </Box>
+            </Box>
+          )}
+          actionSlot={() => (
+            <>
+              <Button
+                component={Link}
+                to={withLocale(`/tasks/${loaderData.entity.id}/service`)}
+                variant="outlined"
+                startIcon={<AddIcon />}
+              >
+                {t("serviceButton")}
+              </Button>
+
+              {loaderData.entity.status === 1 &&
+              loaderData.entity.invitedPersons.length < 1 ? (
+                <Button
+                  variant="outlined"
+                  startIcon={<AddIcon />}
+                  disabled={
+                    loaderData.entity.services.length < 1 ? true : false
+                  }
+                  onClick={() => {
+                    setSearchSupervisors(true);
+                  }}
+                >
+                  {t("inviteSupervisorsButton")}
+                </Button>
+              ) : null}
+              {loaderData.entity.status === 2 &&
+              loaderData.entity.acceptingPerson === null ? (
+                <Button
+                  variant="outlined"
+                  startIcon={<AddIcon />}
+                  onClick={() => {
+                    setSearchResponsibleSupervisors(true);
+                  }}
+                >
+                  {t("makeSupervisorResponsibleButton")}
+                </Button>
+              ) : null}
+              <Box
+                sx={(theme) => ({
+                  display: "flex",
+                  rowGap: "14px",
+                  position: "absolute",
+                  width: "100%",
+                  bottom: 0,
+                  left: 0,
+                  padding: "8px 16px",
+
+                  zIndex: 2,
+                  backgroundColor: theme.vars.palette["White"],
+                })}
+              >
+                <Button
+                  variant="text"
+                  onClick={() => {
+                    setEditMode(false);
+                  }}
+                >
+                  {t("cancelButton")}
+                </Button>
+              </Box>
+            </>
+          )}
+        />
+      ) : (
+        <EntityStaticMobileView
+          translation={"task"}
+          entity={loaderData.entity}
+          headerBackAction={() => {
+            navigate(withLocale("/tasks"), {
+              viewTransition: true,
+            });
+          }}
+          {...((loaderData.userRole === "manager" &&
+            loaderData.entity.status === 1) ||
+          loaderData.entity.status === 2 ||
+          (loaderData.userRole === "supervisor" &&
+            loaderData.entity.status === 1) ||
+          loaderData.entity.status === 2
+            ? {
+                headerButtonAction: () => {
+                  setEditMode(true);
+                },
+              }
+            : null)}
+          serviceSlot={(service) => (
+            <Box
+              key={service.id}
+              sx={(theme) => ({
+                padding: "10px 14px",
+                border: "1px solid",
+                borderColor: theme.vars.palette["Grey_3"],
+                borderRadius: "6px",
+              })}
+            >
+              <Box
+                sx={{
+                  display: "flex",
+                  justifyContent: "space-between",
+                  alignItems: "flex-start",
+                  columnGap: "10px",
+                }}
+              >
+                <Box
+                  component={Link}
+                  to={withLocale(
+                    `/tasks/${loaderData.entity.id}/service/${service.id}`,
+                  )}
+                  sx={{
+                    display: "grid",
+                    rowGap: "4px",
+                    textDecoration: "none",
+                  }}
+                >
+                  <Typography
+                    component="p"
+                    variant="Reg_16"
+                    sx={(theme) => ({
+                      color: theme.vars.palette["Black"],
+                    })}
+                  >
+                    {service.name}
+                  </Typography>
+                  <Typography
+                    component="p"
+                    variant="Reg_12"
+                    sx={(theme) => ({
+                      color: theme.vars.palette["Grey_1"],
+                    })}
+                  >
+                    {t("serviceAmount")} {service.count}
+                  </Typography>
+                </Box>
+              </Box>
+
+              {service.route > 0 ? (
+                <>
+                  <Divider
                     sx={{
-                      display: "grid",
-                      rowGap: "4px",
-                      textDecoration: "none",
+                      marginTop: "8px",
+                      marginBottom: "8px",
+                    }}
+                  />
+                  <Box
+                    sx={{
+                      display: "flex",
+                      columnGap: "8px",
+                      alignItems: "center",
                     }}
                   >
-                    <Typography
-                      component="p"
-                      variant="Reg_16"
+                    <RouteIcon
                       sx={(theme) => ({
-                        color: theme.vars.palette["Black"],
+                        color: theme.vars.palette["Grey_2"],
+                        padding: "6px",
+                        backgroundColor: theme.vars.palette["Grey_4"],
+                        borderRadius: "4px",
                       })}
-                    >
-                      {item.name}
-                    </Typography>
+                    />
                     <Typography
                       component="p"
                       variant="Reg_12"
                       sx={(theme) => ({
-                        color: theme.vars.palette["Grey_1"],
+                        color: theme.vars.palette["Black"],
                       })}
                     >
-                      {t("activityAmount")} {item.count}
+                      {t("route", { count: service.route })}
                     </Typography>
                   </Box>
+                </>
+              ) : null}
 
-                  {editMode ? (
-                    <IconButton
-                      sx={{
-                        padding: 0,
-                      }}
+              {(loaderData.userRole === "manager" &&
+                loaderData.entity.status === 3 &&
+                service.buttonBidNeed) ||
+              (loaderData.userRole === "supervisor" &&
+                loaderData.entity.status === 3 &&
+                service.buttonBidNeed) ? (
+                <Button
+                  variant="contained"
+                  sx={{
+                    marginTop: "8px",
+                  }}
+                  startIcon={<CheckIcon />}
+                  onClick={() => {
+                    submit(
+                      JSON.stringify({
+                        _action: TASK_ACTIONS.transformActivity,
+                        taskId: loaderData.entity.id,
+                        taskActivityId: service.id,
+                      }),
+                      {
+                        method: "POST",
+                        encType: "application/json",
+                      },
+                    );
+                  }}
+                >
+                  {t("convertToBid")}
+                </Button>
+              ) : null}
+
+              {(loaderData.userRole === "manager" ||
+                loaderData.userRole === "supervisor") &&
+              service.buttonSearchNeed ? (
+                <Button
+                  variant="contained"
+                  sx={{
+                    flexDirection: "column",
+                    marginTop: "8px",
+                  }}
+                  onClick={() => {
+                    fetcher.submit(
+                      JSON.stringify({
+                        _action: TASK_ACTIONS.requestSearch,
+                        taskId: loaderData.entity.id,
+                        taskActivityId: service.id,
+                      }),
+                      {
+                        method: "POST",
+                        encType: "application/json",
+                      },
+                    );
+                  }}
+                  disabled={fetcher.state !== "idle"}
+                >
+                  {t("searchRequest")}{" "}
+                  <span>
+                    {t("searchRequestCount")}
+                    {service.countSearch}
+                  </span>
+                </Button>
+              ) : null}
+            </Box>
+          )}
+          actionSlot={() => (
+            <>
+              {isDesktop &&
+              loaderData.entity.duration.start &&
+              ButtonActionMapper.canCancelNewOrNotAccepted(
+                loaderData.intervals.id,
+                loaderData.entity.userId,
+                loaderData.entity.status,
+                loaderData.intervals.cancel_task_interval,
+                loaderData.entity.duration.start,
+              ) ? (
+                <Button
+                  variant="contained"
+                  sx={{
+                    marginTop: "8px",
+                  }}
+                  onClick={() => {
+                    fetcher.submit(
+                      JSON.stringify({
+                        _action: "cancel",
+                        orderId: loaderData.entity.id,
+                      }),
+                      {
+                        method: "POST",
+                        encType: "application/json",
+                      },
+                    );
+                  }}
+                >
+                  {t("cancelTaskButton", { ns: "m_tasks" })}
+                </Button>
+              ) : null}
+
+              {isDesktop &&
+              loaderData.entity.duration.end &&
+              ButtonActionMapper.canCancelAccepted(
+                loaderData.intervals.id,
+                loaderData.entity.userId,
+                loaderData.entity.status,
+                loaderData.entity.duration.end,
+              ) ? (
+                <Button
+                  variant="contained"
+                  sx={{
+                    marginTop: "8px",
+                  }}
+                  onClick={() => {
+                    fetcher.submit(
+                      JSON.stringify({
+                        _action: "cancel",
+                        orderId: loaderData.entity.id,
+                      }),
+                      {
+                        method: "POST",
+                        encType: "application/json",
+                      },
+                    );
+                  }}
+                >
+                  {t("cancelTaskButton", { ns: "m_tasks" })}
+                </Button>
+              ) : null}
+
+              {isDesktop &&
+              loaderData.entity.duration.start &&
+              ButtonActionMapper.canRepeatCancelled(
+                loaderData.intervals.id,
+                loaderData.entity.userId,
+                loaderData.entity.status,
+                loaderData.intervals.repeat_task_interval,
+                loaderData.entity.duration.start,
+              ) ? (
+                <Button
+                  variant="contained"
+                  sx={{
+                    marginTop: "8px",
+                  }}
+                  onClick={() => {
+                    fetcher.submit(
+                      JSON.stringify({
+                        _action: "repeat",
+                        orderId: loaderData.entity.id,
+                      }),
+                      {
+                        method: "POST",
+                        encType: "application/json",
+                      },
+                    );
+                  }}
+                >
+                  {t("repeatTaskButton", { ns: "m_tasks" })}
+                </Button>
+              ) : null}
+
+              {(() => {
+                const match = loaderData.entity.invitedPersons.find(
+                  (supervisor) => supervisor.id === loaderData.userId,
+                );
+
+                if (
+                  match &&
+                  loaderData.userRole === "supervisor" &&
+                  loaderData.entity.status < 3
+                ) {
+                  return (
+                    <Button
+                      variant="contained"
                       onClick={() => {
-                        setTaskToDelete(item);
+                        fetcher.submit(
+                          JSON.stringify({
+                            _action: TASK_ACTIONS.acceptTask,
+                            taskId: loaderData.entity.id,
+                          }),
+                          {
+                            method: "POST",
+                            encType: "application/json",
+                          },
+                        );
                       }}
                     >
-                      <ClearIcon />
-                    </IconButton>
-                  ) : null}
-                </Box>
+                      {t("acceptButton")}
+                    </Button>
+                  );
+                } else {
+                  return <></>;
+                }
+              })()}
+            </>
+          )}
+        />
+      )}
+      {fetcher.data ? (
+        <RequestSearchDrawer
+          open={fetcher.data ? true : false}
+          entity={fetcher.data}
+          locations={loaderData.locations}
+          submitAction={(values) => {
+            const payload: PostUpdateSearchPayload = {
+              place: values.place,
+              activity: values.activity,
+              amount: Number(values.amount),
+              unitPrice: Number(values.unitPrice),
+              radius: Number(values.radius),
+              dateStart: values.dateStart.toISOString(),
+              dateEnd: values.dateEnd.toISOString(),
+              needDays: values.needDays,
+              needFoto: values.needFoto,
+              ...(values.days &&
+                values.days.length > 0 && {
+                  dateActivity: (() => {
+                    const days: {
+                      timeStart: string;
+                      timeEnd: string;
+                      placeIds?: number[];
+                    }[] = [];
 
-                {item.route > 0 && !editMode ? (
-                  <>
-                    <Divider
-                      sx={{
-                        marginTop: "8px",
-                        marginBottom: "8px",
-                      }}
-                    />
-                    <Box
-                      sx={{
-                        display: "flex",
-                        columnGap: "8px",
-                        alignItems: "center",
-                      }}
-                    >
-                      <RouteIcon
-                        sx={(theme) => ({
-                          color: theme.vars.palette["Grey_2"],
-                          padding: "6px",
-                          backgroundColor: theme.vars.palette["Grey_4"],
-                          borderRadius: "4px",
-                        })}
-                      />
-                      <Typography
-                        component="p"
-                        variant="Reg_12"
-                        sx={(theme) => ({
-                          color: theme.vars.palette["Black"],
-                        })}
-                      >
-                        {t("route", { count: item.route })}
-                      </Typography>
-                    </Box>
-                  </>
-                ) : null}
+                    values.days?.forEach((day) => {
+                      const places: number[] = [];
 
-                {(!editMode && userRole === "admin") ||
-                (!editMode && userRole === "manager") ? (
-                  <Button
-                    variant="contained"
-                    sx={{
-                      marginTop: "8px",
-                    }}
-                    startIcon={<CheckIcon />}
-                    onClick={() => {
-                      fetcher.submit(
-                        JSON.stringify({
-                          _action: "transformActivity",
-                          taskId: loaderData.task.id,
-                          taskActivityId: item.id,
-                        }),
-                        {
-                          method: "POST",
-                          encType: "application/json",
-                        },
-                      );
-                    }}
-                  >
-                    {t("convertToRequest")}
-                  </Button>
-                ) : null}
-              </Box>
-            ))}
-          </Box>
-        ) : null}
+                      day.locations?.forEach((location) => {
+                        places.push(Number(location.id));
+                      });
 
-        {editMode ? (
-          <Button
-            component={Link}
-            to={withLocale(
-              `/new-task/${loaderData.task.id}/new-service?edit=true`,
-            )}
-            variant="outlined"
-            startIcon={<AddIcon />}
-          >
-            {t("serviceButton")}
-          </Button>
-        ) : null}
+                      days.push({
+                        timeStart: new Date(day.timeStart).toISOString(),
+                        timeEnd: new Date(day.timeEnd).toISOString(),
+                        ...(places.length > 0 && { placeIds: places }),
+                      });
+                    });
 
-        {editMode ? (
-          <Box
-            sx={(theme) => ({
-              display: "flex",
-              rowGap: "14px",
-              position: "absolute",
-              width: "100%",
-              bottom: 0,
-              left: 0,
-              padding: "8px 16px",
-              zIndex: 2,
-              backgroundColor: theme.vars.palette["White"],
-            })}
-          >
-            <Button
-              variant="text"
-              onClick={() => {
-                setEditMode(false);
-              }}
-            >
-              {t("cancelButton")}
-            </Button>
-            <Button
-              component={Link}
-              to={withLocale(`/tasks`)}
-              variant="contained"
-            >
-              {t("sendButton")}
-            </Button>
-          </Box>
-        ) : null}
-      </Box>
+                    return days;
+                  })(),
+                }),
+            };
 
-      <Dialog
-        open={taskToDelete ? true : false}
+            fetcher.submit(
+              JSON.stringify({
+                _action: TASK_ACTIONS.updateSearchRequest,
+                searchId: fetcher.data?.id,
+                payload,
+              }),
+              {
+                method: "POST",
+                encType: "application/json",
+              },
+            );
+          }}
+          isSubmitting={fetcher.state !== "idle" ? true : false}
+          closeAction={() => {
+            fetcher.reset();
+          }}
+        />
+      ) : null}
+      <CheckboxSearchableDrawer
+        translation="supervisor"
+        open={searchSupervisors}
         onClose={() => {
-          setTaskToDelete(null);
+          setSearchSupervisors(false);
+        }}
+        onSubmit={(values) => {
+          fetcher.submit(
+            JSON.stringify({
+              _action: TASK_ACTIONS.inviteSupervisors,
+              supervisors: values,
+            }),
+            {
+              method: "POST",
+              encType: "application/json",
+            },
+          );
+        }}
+        items={loaderData.supervisorsToSelect}
+        value={[]}
+      />
+      <RadioSearchableDrawer
+        translation="responsible-task"
+        onClose={() => {
+          setSearchResponsibleSupervisors(false);
+        }}
+        open={searchResponsibleSupervisors}
+        onSubmit={(value) => {
+          fetcher.submit(
+            JSON.stringify({
+              _action: TASK_ACTIONS.makeResponsible,
+              taskId: loaderData.entity.id,
+              supervisorId: value,
+            }),
+            {
+              method: "POST",
+              encType: "application/json",
+            },
+          );
+        }}
+        items={[
+          ...(loaderData.entity.creatingPerson
+            ? [
+                {
+                  value: loaderData.entity.creatingPerson.id.toString(),
+                  label: t("becomeResponsible"),
+                  disabled: false,
+                },
+              ]
+            : []),
+          ...loaderData.supervisorsToSelect,
+        ]}
+      />
+      <Dialog
+        open={serviceToDelete ? true : false}
+        onClose={() => {
+          setServiceToDelete(null);
         }}
         sx={{
           "& .MuiDialog-paper": {
@@ -601,13 +718,14 @@ export default function Task({ loaderData }: Route.ComponentProps) {
             fontSize: "1.125rem",
           }}
         >
-          {t("dialog.title")}&nbsp;&quot;{taskToDelete?.name}&quot;&nbsp;?
+          {t("dialog.title")}&nbsp;&quot;{serviceToDelete?.name}
+          &quot;&nbsp;?
         </DialogTitle>
         <DialogActions>
           <Button
             variant="outlined"
             onClick={() => {
-              setTaskToDelete(null);
+              setServiceToDelete(null);
             }}
           >
             {t("dialog.no")}
@@ -617,16 +735,16 @@ export default function Task({ loaderData }: Route.ComponentProps) {
             onClick={() => {
               fetcher.submit(
                 JSON.stringify({
-                  _action: "deleteActivity",
-                  taskId: loaderData.task.id,
-                  taskActivityId: taskToDelete?.id,
+                  _action: TASK_ACTIONS.deleteActivity,
+                  taskId: loaderData.entity.id,
+                  taskActivityId: serviceToDelete?.id,
                 }),
                 {
                   method: "POST",
                   encType: "application/json",
                 },
               );
-              setTaskToDelete(null);
+              setServiceToDelete(null);
             }}
           >
             {t("dialog.yes")}

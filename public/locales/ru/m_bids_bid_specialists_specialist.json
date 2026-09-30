@@ -1,0 +1,48 @@
+{
+  "components": {
+    "FilesPopup": {
+      "header": "Приложите не менее 4-х фотографии для отчета",
+      "submitButton": "Завершить",
+      "cancelButton": "Отменить"
+    }
+  },
+  "status": {
+    "notAccepted": "Новая",
+    "accepted": "Одобрена",
+    "declined": "Отклонена",
+    "consideration": "На рассмотрении",
+    "work": "В работе",
+    "canceled": "Отменена",
+    "archive": "Архив"
+  },
+  "role": {
+    "admin": "Администратор",
+    "manager": "Менеджер",
+    "supervisor": "Супервайзер",
+    "client": "Клиент",
+    "specialist": "Специалист"
+  },
+  "dayMap": {
+    "0": "ВС",
+    "1": "ПН",
+    "2": "ВТ",
+    "3": "СР",
+    "4": "ЧТ",
+    "5": "ПТ",
+    "6": "СБ"
+  },
+  "bid": "Заявка",
+  "job": "Задание",
+  "statusText": "Статус",
+  "locationText": "Место оказания услуг",
+  "serviceTypeText": "Вид услуги",
+  "pricePerUnitText": "Цена за ",
+  "dateStartText": "Дата начала",
+  "dateEndText": "Дата окончания",
+  "timeStartText": "Время начала",
+  "timeEndText": "Время окончания",
+  "route": "Маршрут дня",
+  "photoCheckbox": "Фотоотчёт",
+  "executor": "Исполнитель",
+  "executorPhone": "Телефон исполнителя"
+}

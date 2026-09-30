@@ -1,0 +1,19 @@
+{
+  "serviceAmount": "Количество:",
+  "route": "Маршрут: {{count}} точек",
+  "serviceButton": "Добавить услугу",
+  "cancelButton": "Отмена",
+  "sendButton": "Сохранить",
+  "saveButton": "Отправить поручение",
+  "convertToTask": "Создать задачу",
+  "convertToBid": "Создать заявку",
+  "acceptButton": "Принять",
+  "yourselfOption": "Назначить себя",
+  "searchRequest": "Заказ на поиск",
+  "searchRequestCount": "Осталось попыток: ",
+  "dialog": {
+    "title": "Удалить",
+    "no": "Нет",
+    "yes": "Да"
+  }
+}

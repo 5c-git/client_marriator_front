@@ -11,11 +11,7 @@
   ],
   "compilerOptions": {
     "lib": ["DOM", "DOM.Iterable", "ES2022"],
-    "types": [
-      "@react-router/node",
-      "vite/client",
-      "@hawk.so/vite-plugin/global"
-    ],
+    "types": ["@react-router/node", "vite/client"],
     "rootDirs": [".", "./.react-router/types"],
     "isolatedModules": true,
     "esModuleInterop": true,
@@ -25,10 +21,10 @@
     "resolveJsonModule": true,
     "target": "ES2022",
     "strict": true,
+    "strictNullChecks": true,
     "allowJs": true,
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
-    "baseUrl": ".",
     "paths": {
       "~/*": ["./app/*"],
       "ymaps3": ["./node_modules/@yandex/ymaps3-types"]

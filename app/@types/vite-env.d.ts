@@ -115,6 +115,28 @@ interface ImportMetaEnv {
   readonly VITE_POST_ACCEPT_ALL_REPORT_JOB: string;
   readonly VITE_POST_ACCEPT_REPORT: string;
   readonly VITE_POST_PAY_REPORT_FOR_MANAGER: string;
+  readonly VITE_GET_REASONS: string;
+  readonly VITE_POST_UPDATE_REPORT: string;
+  readonly VITE_POST_CREATE_BID_FROM_ORDER: string;
+  readonly VITE_POST_ACCEPT_TASK: string;
+  readonly VITE_POST_SIGNED_DOCUMENT: string;
+  readonly VITE_POST_RETRIES_SMS: string;
+  readonly VITE_POST_SEND_CODE: string;
+  readonly VITE_SIGNED_DOCUMENT: string;
+  readonly VITE_POST_CANCEL_BID: string;
+  readonly VITE_GET_COUNTERPARTY: string;
+  readonly VITE_POST_SET_COUNTERPARTY: string;
+  readonly VITE_POST_DELETE_COUNTERPARTY: string;
+  readonly VITE_GET_DATA: string;
+  readonly VITE_POST_CREATE_SEARCH_FROM_TASK: string;
+  readonly VITE_POST_CREATE_SEARCH_FROM_ORDER: string;
+  readonly VITE_POST_UPDATE_SEARCH: string;
+  readonly VITE_POST_SEND_ERROR: string;
+  readonly VITE_GET_USER_SETTINGS: string;
+  readonly VITE_POST_SET_USER_SETTINGS: string;
+  readonly VITE_GET_SIGNIN_JOBS: string;
+  readonly VITE_GET_PROJECTS_FOR_ORDER: string;
+  readonly VITE_POST_SET_COUNTERPARTY_FOR_ORDER: string;
   // more env variables...
 }
 

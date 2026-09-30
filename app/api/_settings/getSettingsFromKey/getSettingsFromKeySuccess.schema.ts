@@ -1,0 +1,14 @@
+import { z } from "zod";
+
+export const getSettingsFromKeySuccessSchema = z.object({
+  data: z.object({
+    key: z.string(),
+    value: z.string(),
+  }),
+});
+
+export type Setting = "radius" | "intervalDayStart" | "intervalDayEnd";
+
+export type GetSettingsFromKeySuccess = z.infer<
+  typeof getSettingsFromKeySuccessSchema
+>;

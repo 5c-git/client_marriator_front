@@ -1,0 +1,22 @@
+{
+  "address": {
+    "header": "Add locations",
+    "searchbar": "Search location",
+    "submit": "Add selected"
+  },
+  "supervisor": {
+    "header": "Invite supervisors",
+    "searchbar": "Search supervisors",
+    "submit": "Add selected"
+  },
+  "manager": {
+    "header": "Invite managers",
+    "searchbar": "Search managers",
+    "submit": "Add selected"
+  },
+  "counterparty": {
+    "header": "Choose counterparty",
+    "searchbar": "Search",
+    "submit": "Select"
+  }
+}

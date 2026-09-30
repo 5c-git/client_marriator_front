@@ -1,9 +1,10 @@
 import { useEffect } from "react";
-import { useFetcher, useNavigate, useNavigation } from "react-router";
+import { useFetcher, useNavigate, redirect, useSubmit } from "react-router";
 import type { Route } from "./+types/step6";
-import * as Yup from "yup";
-import { yupResolver } from "@hookform/resolvers/yup";
-import { useForm } from "react-hook-form";
+
+import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { Controller, useForm } from "react-hook-form";
 
 import { useTranslation } from "react-i18next";
 import { withLocale } from "~/shared/withLocale";
@@ -18,51 +19,50 @@ import { Typography, Button } from "@mui/material";
 import Box from "@mui/material/Box";
 
 import { TopNavigation } from "~/shared/ui/TopNavigation/TopNavigation";
-import { Loader } from "~/shared/ui/Loader/Loader";
+import { StyledCheckbox } from "~/shared/ui/StyledCheckbox/StyledCheckbox";
 
-import { getForm } from "~/requests/getForm/getForm";
-import { transformBikOptions } from "~/requests/getForm/getFormHooks";
-import { postSaveForm } from "~/requests/postSaveForm/postSaveForm";
+import { registrationContainer } from "../registration.module";
+import { registrationTokens } from "../registration.tokens";
 
-import { useStore } from "~/store/store";
+const REGISTRATION_STEP_6_ACTIONS = {
+  finishRegister: "finishRegister",
+} as const;
 
 export async function clientLoader() {
-  const accessToken = useStore.getState().accessToken;
+  const RegistrationService = registrationContainer.get(
+    registrationTokens.registrationService,
+  );
 
-  if (accessToken) {
-    const rawData = await getForm(accessToken, 6);
+  const accessToken = RegistrationService.getUserToken();
+  const data = await RegistrationService.getFieldsForRegistrationStep(6);
 
-    const data = transformBikOptions(rawData);
-
-    return {
-      accessToken,
-      formFields: data.result.formData,
-      formStatus: data.result.type,
-    };
-  } else {
-    throw new Response("Токен авторизации не обнаружен!", { status: 401 });
-  }
+  return {
+    accessToken,
+    formFields: data.result.formData,
+    formStatus: data.result.type,
+  };
 }
 
 export async function clientAction({ request }: Route.ClientActionArgs) {
-  const accessToken = useStore.getState().accessToken;
-  const fields = await request.json();
+  const { _action, ...fields } = await request.json();
+  const RegistrationService = registrationContainer.get(
+    registrationTokens.registrationService,
+  );
 
-  if (accessToken) {
-    const data = await postSaveForm(accessToken, 6, fields);
-
-    return data;
+  if (_action === REGISTRATION_STEP_6_ACTIONS.finishRegister) {
+    await RegistrationService.finishRegistration();
+    await RegistrationService.logout();
+    throw redirect(withLocale("/registration/registration-complete"));
   } else {
-    throw new Response("Токен авторизации не обнаружен!", { status: 401 });
+    await RegistrationService.sendFields(6, fields);
   }
 }
 
 export default function Step6({ loaderData }: Route.ComponentProps) {
-  const { t } = useTranslation("registrationStep6");
-
+  const { t } = useTranslation("m_registration_step6");
+  const submit = useSubmit();
   const fetcher = useFetcher();
   const navigate = useNavigate();
-  const navigation = useNavigation();
 
   const {
     control,
@@ -72,10 +72,17 @@ export default function Step6({ loaderData }: Route.ComponentProps) {
     handleSubmit,
     formState: { errors },
     reset,
+    watch,
   } = useForm({
-    defaultValues: generateDefaultValues(loaderData.formFields),
-    resolver: yupResolver(
-      Yup.object(generateValidationSchema(loaderData.formFields))
+    defaultValues: {
+      isTermsAccepted: false,
+      ...generateDefaultValues(loaderData.formFields),
+    },
+    resolver: zodResolver(
+      z.object({
+        isTermsAccepted: z.boolean().refine((value) => value === true),
+        ...generateValidationSchema(loaderData.formFields).shape,
+      }),
     ),
     mode: "onChange",
     shouldUnregister: true,
@@ -83,102 +90,156 @@ export default function Step6({ loaderData }: Route.ComponentProps) {
 
   useEffect(() => {
     setTimeout(() => {
-      reset(generateDefaultValues(loaderData.formFields));
+      reset({
+        isTermsAccepted: false,
+        ...generateDefaultValues(loaderData.formFields),
+      });
     });
   }, [loaderData.formFields, reset]);
 
   return (
-    <>
-      {navigation.state !== "idle" ? <Loader /> : null}
+    <Box
+      sx={{
+        paddingBottom: "180px",
+        position: "relative",
+        flexGrow: 1,
+      }}
+    >
+      <TopNavigation
+        header={{
+          text: t("header"),
+          bold: false,
+        }}
+        label={t("step")}
+        backAction={() => {
+          navigate(withLocale("/registration/step5"), {
+            viewTransition: true,
+          });
+        }}
+      />
 
       <Box
         sx={{
-          paddingBottom: "80px",
+          padding: "24px 16px",
         }}
       >
-        <TopNavigation
-          header={{
-            text: t("header"),
-            bold: false,
-          }}
-          label={t("step")}
-          backAction={() => {
-            navigate(withLocale("/registration/step5"), {
-              viewTransition: true,
+        <Typography
+          component="p"
+          variant="Reg_18"
+          sx={(theme) => ({
+            color: theme.vars.palette["Black"],
+            paddingBottom: "14px",
+          })}
+        >
+          {t("intro")}
+        </Typography>
+      </Box>
+
+      <form
+        style={{
+          display: "grid",
+          rowGap: "16px",
+        }}
+        onSubmit={handleSubmit(() => {
+          submit(
+            JSON.stringify({
+              _action: REGISTRATION_STEP_6_ACTIONS.finishRegister,
+            }),
+            {
+              method: "POST",
+              encType: "application/json",
+            },
+          );
+        })}
+      >
+        {generateInputsMarkup(
+          loaderData.formFields,
+          errors,
+          // @ts-expect-error wrong automatic type narroing
+          control,
+          setValue,
+          trigger,
+          () => {
+            fetcher.submit(JSON.stringify(getValues()), {
+              method: "POST",
+              encType: "application/json",
             });
-          }}
-        />
+          },
+          loaderData.accessToken,
+        )}
 
         <Box
-          sx={{
-            padding: "24px 16px",
-          }}
-        >
-          <Typography
-            component="p"
-            variant="Reg_18"
-            sx={(theme) => ({
-              color: theme.vars.palette["Black"],
-              paddingBottom: "14px",
-            })}
-          >
-            {t("intro")}
-          </Typography>
-        </Box>
-
-        <form
-          style={{
+          sx={(theme) => ({
+            position: "absolute",
             display: "grid",
-            rowGap: "16px",
-          }}
-          onSubmit={(evt) => {
-            evt.preventDefault();
-          }}
+            rowGap: "14px",
+            zIndex: 1,
+            width: "100%",
+            bottom: "0",
+            left: "0",
+            padding: "10px 16px 24px 16px",
+            backgroundColor: theme.vars.palette["White"],
+          })}
         >
-          {generateInputsMarkup(
-            loaderData.formFields,
-            errors,
-            control,
-            setValue,
-            trigger,
-            () => {
-              fetcher.submit(JSON.stringify(getValues()), {
-                method: "POST",
-                encType: "application/json",
-              });
-            },
-            loaderData.accessToken
-          )}
-
           <Box
-            sx={(theme) => ({
-              position: "fixed",
-              zIndex: 1,
-              width: "100%",
-              bottom: "0",
-              left: "0",
-              padding: "10px 16px 24px 16px",
-              backgroundColor: theme.vars.palette["White"],
-            })}
+            sx={{
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+            }}
           >
-            <Button
-              variant="contained"
-              onClick={() => {
-                trigger();
-                handleSubmit(() => {
-                  if (loaderData.formStatus === "allowedNewStep") {
-                    navigate(withLocale("/registration/step7"), {
-                      viewTransition: true,
-                    });
-                  }
-                })();
-              }}
+            <Typography
+              sx={{ textAlign: "center" }}
+              variant="Reg_14"
+              color="Black"
             >
-              {t("finishButton")}
-            </Button>
+              {t("terms_start")}
+              <Typography
+                variant="Reg_14"
+                color="Corp_1"
+                component="a"
+                href="../../public/client_marriator_front/file-sample_150kB.pdf"
+                target="_blank"
+                rel="noreferrer"
+              >
+                {t("terms_personal")}
+              </Typography>
+              {t("terms_and")}
+              <Typography
+                sx={{ textAlign: "center" }}
+                variant="Reg_14"
+                color="Corp_1"
+                component="a"
+                href="../../public/client_marriator_front/file-sample_150kB.pdf"
+                target="_blank"
+                rel="noreferrer"
+              >
+                {t("terms_security")}
+              </Typography>
+            </Typography>
+            <Controller
+              name="isTermsAccepted"
+              control={control}
+              render={({ field }) => (
+                <StyledCheckbox
+                  inputType="checkbox"
+                  {...field}
+                  validation="none"
+                  label={t("terms_button")}
+                  onImmediateChange={() => {}}
+                />
+              )}
+            />
           </Box>
-        </form>
-      </Box>
-    </>
+          <Button
+            variant="contained"
+            type="submit"
+            disabled={watch("isTermsAccepted") === false}
+          >
+            {t("finishButton")}
+          </Button>
+        </Box>
+      </form>
+    </Box>
   );
 }

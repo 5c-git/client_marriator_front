@@ -1,0 +1,43 @@
+{
+  "role": {
+    "manager": "Manager",
+    "supervisor": "Supervisor",
+    "client": "Client",
+    "specialist": "Specialist"
+  },
+  "dayMap": {
+    "0": "SUN",
+    "1": "MON",
+    "2": "TUE",
+    "3": "WED",
+    "4": "THU",
+    "5": "FRI",
+    "6": "SAT"
+  },
+  "needDaysPlaceholder": "By day",
+  "locationPlaceholder": "Location",
+  "serviceTypePlaceholder": "Service type",
+  "amountPlaceholder": "Amount",
+  "unitPricePlaceholder": "Price (per unit) *",
+  "paxPricePlaceholder": "Taxed price",
+  "finalPricePlaceholder": "Final price",
+  "radiusPlaceholder": "Radius",
+  "dayStartPlaceholder": "Start date",
+  "dayEndPlaceholder": "End date",
+  "timeStartPlaceholder": "Start time",
+  "timeEndPlaceholder": "End time",
+  "routePlaceholder": "Day route",
+  "addressButton": "Add address",
+  "removeDayButton": "Remove day",
+  "needPhotoPlaceholder": "Photos",
+  "parentTask": "Parent task",
+  "parentOrder": "Parent assignment",
+  "responsible": "Responsible",
+  "saveBidButton": "Save",
+  "cancelBidButton": "Close",
+  "selfEmployed": "Self-employment",
+  "notSelfEmployed": "Hired worker",
+  "addDayButton": "Add day",
+  "earlierThanDefaultError": "Earlier than default",
+  "laterThanDefaultError": "Later that default"
+}

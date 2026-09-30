@@ -4,6 +4,9 @@ export const statusCodeMap = {
   3: { value: "accepted", color: "var(--mui-palette-Blue)" },
   4: { value: "canceled", color: "var(--mui-palette-Red)" },
   5: { value: "archive", color: "var(--mui-palette-Grey_2)" },
+  6: { value: "review", color: "var(--mui-palette-Corp_2)" },
+  7: { value: "approved", color: "var(--mui-palette-WhatsApp)" },
+  8: { value: "work", color: "var(--mui-palette-Green)" },
 } as const;
 
 export const statusValueMap = {

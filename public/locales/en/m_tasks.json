@@ -1,0 +1,13 @@
+{
+  "tasks": "Tasks",
+  "emptyHeader": "There are no tasks.",
+  "cancelTaskButton": "Cancel task",
+  "repeatTaskButton": "Repeat task",
+  "dialog": {
+    "cancel": "Cancel",
+    "repeat": "Repeat",
+    "title": "task",
+    "no": "No",
+    "yes": "Yes"
+  }
+}

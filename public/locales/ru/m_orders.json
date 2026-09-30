@@ -1,0 +1,13 @@
+{
+  "orders": "Поручения",
+  "cardHeader": "Услуг",
+  "cancelAssignmentButton": "Отменить поручение",
+  "repeatAssignmentButton": "Повторить поручение",
+  "dialog": {
+    "cancel": "Отменить",
+    "repeat": "Повторить",
+    "title": "поручение",
+    "no": "Нет",
+    "yes": "Да"
+  }
+}

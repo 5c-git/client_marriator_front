@@ -1,87 +1,100 @@
 //meta
 import constructorFields from "../../public/locales/ru/constructorFields.json";
 import rootErrorBoundry from "../../public/locales/ru/rootErrorBoundry.json";
-import offline from "../../public/locales/ru/offline.json";
 //meta
 
 //auth
-import phone from "../../public/locales/ru/phone.json";
-import sms from "../../public/locales/ru/sms.json";
-import pin from "../../public/locales/ru/pin.json";
-import createPin from "../../public/locales/ru/createPin.json";
-import confirmRestorePin from "../../public/locales/ru/confirmRestorePin.json";
-
-import signin_client_phone from "../../public/locales/ru/signin_client_phone.json";
-import signin_client_meta from "../../public/locales/ru/signin_client_meta.json";
-import signin_client_location from "../../public/locales/ru/signin_client_location.json";
-import signin_client_recruiter from "../../public/locales/ru/signin_client_recruiter.json";
-import signin_client_registration_complete from "../../public/locales/ru/signin_client_registration_complete.json";
-//auth
+import m_signin_phone from "../../public/locales/ru/m_signin_phone.json";
+import m_signin_sms from "../../public/locales/ru/m_signin_sms.json";
+import m_signin_pin from "../../public/locales/ru/pin.json";
+import m_signin_createPin from "../../public/locales/ru/m_signin_createPin.json";
+import m_signin_confirmRestorePin from "../../public/locales/ru/m_signin_confirmRestorePin.json";
+import m_signin_jobs from "../../public/locales/ru/m_signin_jobs.json";
+import m_signin_client_phone from "../../public/locales/ru/m_signin_client_phone.json";
+import m_signin_client_location from "../../public/locales/ru/m_signin_client_location.json";
+import m_signin_client_meta from "../../public/locales/ru/m_signin_client_meta.json";
+import m_signin_client_recruiter from "../../public/locales/ru/m_signin_client_recruiter.json";
+import m_signin_client_registrationComplete from "../../public/locales/ru/m_signin_client_registrationComplete.json";
 
 //registration
-import confirmEmail from "../../public/locales/ru/confirmEmail.json";
-import registrationStep1 from "../../public/locales/ru/registrationStep1.json";
-import registrationStep2 from "../../public/locales/ru/registrationStep2.json";
-import registrationStep3 from "../../public/locales/ru/registrationStep3.json";
-import registrationStep4 from "../../public/locales/ru/registrationStep4.json";
-import registrationStep5 from "../../public/locales/ru/registrationStep5.json";
-import registrationStep6 from "../../public/locales/ru/registrationStep6.json";
-import registrationStep7 from "../../public/locales/ru/registrationStep7.json";
-import registrationComplete from "../../public/locales/ru/registrationComplete.json";
-//registration
+import m_registration_step1 from "../../public/locales/ru/m_registration_step1.json";
+import m_registration_step2 from "../../public/locales/ru/m_registration_step2.json";
+import m_registration_step3 from "../../public/locales/ru/m_registration_step3.json";
+import m_registration_step4 from "../../public/locales/ru/m_registration_step4.json";
+import m_registration_step5 from "../../public/locales/ru/m_registration_step5.json";
+import m_registration_step6 from "../../public/locales/ru/m_registration_step6.json";
+import m_registration_confirmEmail from "../../public/locales/ru/m_registration_confirmEmail.json";
+import m_registration_registrationComplete from "../../public/locales/ru/m_registration_registrationComplete.json";
 
-//internal
-import home from "../../public/locales/ru/home.json";
-import profile from "../../public/locales/ru/profile.json";
-import myProfile from "../../public/locales/ru/myProfile.json";
-import profileEdit from "../../public/locales/ru/profileEdit.json";
-import profileMeta from "../../public/locales/ru/profileMeta.json";
-import userActivities from "../../public/locales/ru/userActivities.json";
-import workRadius from "../../public/locales/ru/workRadius.json";
-import confirmPersonalPhone from "../../public/locales/ru/confirmPersonalPhone.json";
-import confirmPersonalEmail from "../../public/locales/ru/confirmPersonalEmail.json";
-import billing from "../../public/locales/ru/billing.json";
-import billingAdd from "../../public/locales/ru/billingAdd.json";
-import billingEdit from "../../public/locales/ru/billingEdit.json";
-import documents from "../../public/locales/ru/documents.json";
-import sign from "../../public/locales/ru/sign.json";
-import signADeal from "../../public/locales/ru/signADeal.json";
-import terminateADeal from "../../public/locales/ru/terminateADeal.json";
-import documentsArchive from "../../public/locales/ru/documentsArchive.json";
-import certificates from "../../public/locales/ru/certificates.json";
-import users_clients from "../../public/locales/ru/users_clients.json";
-import users_client from "../../public/locales/ru/users_client.json";
-import users_manager from "../../public/locales/ru/users_manager.json";
-import users_supervisor from "../../public/locales/ru/users_supervisor.json";
-import users_recruiter from "../../public/locales/ru/users_recruiter.json";
-import users_select_projects from "../../public/locales/ru/users_select_projects.json";
-import users_select_locations from "../../public/locales/ru/users_select_locations.json";
-import assignments from "../../public/locales/ru/assignments.json";
-import new_assignment from "../../public/locales/ru/new_assignment.json";
-import new_service from "../../public/locales/ru/new_service.json";
-import tasks from "../../public/locales/ru/tasks.json";
-import new_task from "../../public/locales/ru/new_task.json";
-import assignment from "../../public/locales/ru/assignment.json";
-import task from "../../public/locales/ru/task.json";
-import requests from "../../public/locales/ru/requests.json";
-import request_layout from "../../public/locales/ru/request_layout.json";
-import request_index from "../../public/locales/ru/request_index.json";
-import request_specialists from "../../public/locales/ru/request_specialists.json";
-import missions from "../../public/locales/ru/missions.json";
-import mission from "../../public/locales/ru/mission.json";
-import request_specialists_specialistRequest_dayReview from "../../public/locales/ru/request_specialists_specialistRequest_dayReview.json";
+//profile
+import m_profile from "../../public/locales/ru/m_profile.json";
+import m_profile_myProfile from "../../public/locales/ru/m_profile_myProfile.json";
+import m_profile_myProfile_billing from "../../public/locales/ru/m_profile_myProfile_billing.json";
+import m_profile_myProfile_billing_billingAdd from "../../public/locales/ru/m_profile_myProfile_billing_billingAdd.json";
+import m_profile_myProfile_billing_billingEdit from "../../public/locales/ru/m_profile_myProfile_billing_billingEdit.json";
+import m_profile_myProfile_profileEdit from "../../public/locales/ru/m_profile_myProfile_profileEdit.json";
+import m_profile_myProfile_profileMeta_confirmPersonalEmail from "../../public/locales/ru/m_profile_myProfile_profileMeta_confirmPersonalEmail.json";
+import m_profile_myProfile_profileMeta_confirmPersonalPhone from "../../public/locales/ru/m_profile_myProfile_profileMeta_confirmPersonalPhone.json";
+import m_profile_myProfile_userActivities from "../../public/locales/ru/m_profile_myProfile_userActivities.json";
+import m_profile_myProfile_workRadius from "../../public/locales/ru/m_profile_myProfile_workRadius.json";
+import m_profile_settings from "../../public/locales/ru/m_profile_settings.json";
+import m_profile_requests from "../../public/locales/ru/m_profile_requests.json";
+import m_profile_documents from "../../public/locales/ru/m_profile_documents.json";
+import m_profile_documents_archive from "../../public/locales/ru/m_profile_documents_archive.json";
+import m_profile_documents_certificates from "../../public/locales/ru/m_profile_documents_certificates.json";
+import m_profile_documents_sign from "../../public/locales/ru/m_profile_documents_sign.json";
+import m_profile_documents_signAdeal from "../../public/locales/ru/m_profile_documents_signAdeal.json";
+import m_profile_documents_terminateADeal from "../../public/locales/ru/m_profile_documents_terminateADeal.json";
+import m_profile_myProfile_profileMeta from "../../public/locales/ru/m_profile_myProfile_profileMeta.json";
 
-//internal
+//users
+import m_users_selectProjects from "../../public/locales/ru/m_users_selectProjects.json";
+import m_users_selectLocations from "../../public/locales/ru/m_users_selectLocations.json";
+import m_users_client from "../../public/locales/ru/m_users_client.json";
+import m_users_manager from "../../public/locales/ru/m_users_manager.json";
+import m_users_supervisor from "../../public/locales/ru/m_users_supervisor.json";
+
+//enitities
+import m_jobs from "../../public/locales/ru/m_jobs.json";
+import m_jobs_job from "../../public/locales/ru/m_jobs_job.json";
+
+import m_bids from "../../public/locales/ru/m_bids.json";
+import m_bids_bid from "../../public/locales/ru/m_bids_bid.json";
+import m_bids_bid_specialists from "../../public/locales/ru/m_bids_bid_specialists.json";
+import m_bids_bid_specialists_specialist from "../../public/locales/ru/m_bids_bid_specialists_specialist.json";
+import m_bids_bid_specialists_specialist_dayReview from "../../public/locales/ru/m_bids_bid_specialists_specialist_dayReview.json";
+
+import m_tasks from "../../public/locales/ru/m_tasks.json";
+import m_tasks_task from "../../public/locales/ru/m_tasks_task.json";
+import m_tasks_newTask from "../../public/locales/ru/m_tasks_newTask.json";
+
+import m_orders from "../../public/locales/ru/m_orders.json";
+import m_orders_order from "../../public/locales/ru/m_orders_order.json";
+import m_orders_newOrder from "../../public/locales/ru/m_orders_newOrder.json";
+
+//layout
+import m_layout_moderation from "../../public/locales/ru/m_layout_moderation.json";
+import m_layout_home from "../../public/locales/ru/m_layout_home.json";
+
+//shared
+import m_shared_usersView from "../../public/locales/ru/m_shared_usersView.json";
+
+/////////////////////////////////////DESKTOP/////////////////////////////////////
+/////////////////////////////////////DESKTOP/////////////////////////////////////
+
+//views
+import ActivityMobileView from "../../public/locales/ru/ActivityMobileView.json";
+import EntityMobileView from "../../public/locales/ru/EntityMobileView.json";
+import EntitiesListView from "../../public/locales/ru/EntitiesListView.json";
 
 //components
 import styledPhotoCheckbox from "../../public/locales/ru/styledPhotoCheckbox.json";
 import styledFileInput from "../../public/locales/ru/styledFileInput.json";
 import styledPhotoInput from "../../public/locales/ru/styledPhotoInput.json";
 import styledAutocomplete from "../../public/locales/ru/styledAutocomplete.json";
-
-//dev
-import moderationLayout from "../../public/locales/ru/moderationLayout.json";
-//dev
+import RadioSearchableDrawer from "../../public/locales/ru/RadioSearchableDrawer.json";
+import CheckboxSearchableDrawer from "../../public/locales/ru/CheckboxSearchableDrawer.json";
+import RequestSearchDrawer from "../../public/locales/ru/RequestSearchDrawer.json";
 
 import "i18next";
 declare module "i18next" {
@@ -91,88 +104,100 @@ declare module "i18next" {
       //meta
       constructorFields: typeof constructorFields;
       rootErrorBoundry: typeof rootErrorBoundry;
-      offline: typeof offline;
-      //meta
 
       //auth
-      phone: typeof phone;
-      sms: typeof sms;
-      pin: typeof pin;
-      createPin: typeof createPin;
-      confirmRestorePin: typeof confirmRestorePin;
-
-      signin_client_phone: typeof signin_client_phone;
-      signin_client_meta: typeof signin_client_meta;
-      signin_client_location: typeof signin_client_location;
-      signin_client_recruiter: typeof signin_client_recruiter;
-      signin_client_registration_complete: typeof signin_client_registration_complete;
-      //auth
+      m_signin_phone: typeof m_signin_phone;
+      m_signin_sms: typeof m_signin_sms;
+      m_signin_pin: typeof m_signin_pin;
+      m_signin_createPin: typeof m_signin_createPin;
+      m_signin_confirmRestorePin: typeof m_signin_confirmRestorePin;
+      m_signin_jobs: typeof m_signin_jobs;
+      m_signin_client_phone: typeof m_signin_client_phone;
+      m_signin_client_location: typeof m_signin_client_location;
+      m_signin_client_meta: typeof m_signin_client_meta;
+      m_signin_client_recruiter: typeof m_signin_client_recruiter;
+      m_signin_client_registrationComplete: typeof m_signin_client_registrationComplete;
 
       //registration
-      confirmEmail: typeof confirmEmail;
-      registrationStep1: typeof registrationStep1;
-      registrationStep2: typeof registrationStep2;
-      registrationStep3: typeof registrationStep3;
-      registrationStep4: typeof registrationStep4;
-      registrationStep5: typeof registrationStep5;
-      registrationStep6: typeof registrationStep6;
-      registrationStep7: typeof registrationStep7;
-      registrationComplete: typeof registrationComplete;
-      //registration
+      m_registration_step1: typeof m_registration_step1;
+      m_registration_step2: typeof m_registration_step2;
+      m_registration_step3: typeof m_registration_step3;
+      m_registration_step4: typeof m_registration_step4;
+      m_registration_step5: typeof m_registration_step5;
+      m_registration_step6: typeof m_registration_step6;
+      m_registration_confirmEmail: typeof m_registration_confirmEmail;
+      m_registration_registrationComplete: typeof m_registration_registrationComplete;
 
-      //internal
-      home: typeof home;
-      profile: typeof profile;
-      myProfile: typeof myProfile;
-      profileEdit: typeof profileEdit;
-      profileMeta: typeof profileMeta;
-      userActivities: typeof userActivities;
-      workRadius: typeof workRadius;
-      confirmPersonalPhone: typeof confirmPersonalPhone;
-      confirmPersonalEmail: typeof confirmPersonalEmail;
-      billing: typeof billing;
-      billingAdd: typeof billingAdd;
-      billingEdit: typeof billingEdit;
-      documents: typeof documents;
-      sign: typeof sign;
-      signADeal: typeof signADeal;
-      terminateADeal: typeof terminateADeal;
-      documentsArchive: typeof documentsArchive;
-      certificates: typeof certificates;
-      users_clients: typeof users_clients;
-      users_client: typeof users_client;
-      users_manager: typeof users_manager;
-      users_supervisor: typeof users_supervisor;
-      users_recruiter: typeof users_recruiter;
-      users_select_projects: typeof users_select_projects;
-      users_select_locations: typeof users_select_locations;
-      request_layout: typeof request_layout;
+      //profile
+      m_profile: typeof m_profile;
+      m_profile_myProfile: typeof m_profile_myProfile;
+      m_profile_myProfile_billing: typeof m_profile_myProfile_billing;
+      m_profile_myProfile_billing_billingAdd: typeof m_profile_myProfile_billing_billingAdd;
+      m_profile_myProfile_billing_billingEdit: typeof m_profile_myProfile_billing_billingEdit;
+      m_profile_myProfile_profileEdit: typeof m_profile_myProfile_profileEdit;
+      m_profile_myProfile_profileMeta: typeof m_profile_myProfile_profileMeta;
+      m_profile_myProfile_profileMeta_confirmPersonalEmail: typeof m_profile_myProfile_profileMeta_confirmPersonalEmail;
+      m_profile_myProfile_profileMeta_confirmPersonalPhone: typeof m_profile_myProfile_profileMeta_confirmPersonalPhone;
+      m_profile_myProfile_userActivities: typeof m_profile_myProfile_userActivities;
+      m_profile_myProfile_workRadius: typeof m_profile_myProfile_workRadius;
+      m_profile_settings: typeof m_profile_settings;
+      m_profile_requests: typeof m_profile_requests;
+      m_profile_documents: typeof m_profile_documents;
+      m_profile_documents_archive: typeof m_profile_documents_archive;
+      m_profile_documents_certificates: typeof m_profile_documents_certificates;
+      m_profile_documents_sign: typeof m_profile_documents_sign;
+      m_profile_documents_signAdeal: typeof m_profile_documents_signAdeal;
+      m_profile_documents_terminateADeal: typeof m_profile_documents_terminateADeal;
 
-      assignments: typeof assignments;
-      assignment: typeof assignment;
-      new_assignment: typeof new_assignment;
-      new_service: typeof new_service;
-      task: typeof task;
+      //users
+      m_users_selectProjects: typeof m_users_selectProjects;
+      m_users_selectLocations: typeof m_users_selectLocations;
+      m_users_client: typeof m_users_client;
+      m_users_manager: typeof m_users_manager;
+      m_users_supervisor: typeof m_users_supervisor;
 
-      tasks: typeof tasks;
-      new_task: typeof new_task;
-      requests: typeof requests;
-      request_index: typeof request_index;
-      request_specialists: typeof request_specialists;
-      missions: typeof missions;
-      mission: typeof mission;
-      request_specialists_specialistRequest_dayReview: typeof request_specialists_specialistRequest_dayReview;
-      //internal
+      //enitities
+      m_jobs: typeof m_jobs;
+      m_jobs_job: typeof m_jobs_job;
+
+      m_bids: typeof m_bids;
+      m_bids_bid: typeof m_bids_bid;
+      m_bids_bid_specialists: typeof m_bids_bid_specialists;
+      m_bids_bid_specialists_specialist: typeof m_bids_bid_specialists_specialist;
+      m_bids_bid_specialists_specialist_dayReview: typeof m_bids_bid_specialists_specialist_dayReview;
+
+      m_tasks: typeof m_tasks;
+      m_tasks_task: typeof m_tasks_task;
+      m_tasks_newTask: typeof m_tasks_newTask;
+
+      m_orders: typeof m_orders;
+      m_orders_order: typeof m_orders_order;
+      m_orders_newOrder: typeof m_orders_newOrder;
+
+      //layout
+      m_layout_moderation: typeof m_layout_moderation;
+      m_layout_home: typeof m_layout_home;
+
+      //shared
+      m_shared_usersView: typeof m_shared_usersView;
+
+      /////////////////////////////////////DESKTOP/////////////////////////////////////
+      /////////////////////////////////////DESKTOP/////////////////////////////////////
+
+      //views
+      ProfileView: typeof ProfileView;
+      EntityMobileView: typeof EntityMobileView;
+      EntitiesListView: typeof EntitiesListView;
+      ActivityMobileView: typeof ActivityMobileView;
 
       //components
       styledPhotoCheckbox: typeof styledPhotoCheckbox;
       styledFileInput: typeof styledFileInput;
       styledPhotoInput: typeof styledPhotoInput;
       styledAutocomplete: typeof styledAutocomplete;
-
-      //dev
-      moderationLayout: typeof moderationLayout;
-      //dev
+      RadioSearchableDrawer: typeof RadioSearchableDrawer;
+      CheckboxSearchableDrawer: typeof CheckboxSearchableDrawer;
+      RequestSearchDrawer: typeof RequestSearchDrawer;
     };
   }
 }

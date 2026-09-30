@@ -1,0 +1,36 @@
+{
+  "header": "Супервайзер",
+  "avatar": "Логотип",
+  "status": {
+    "new": "Новая",
+    "inProgress": "В работе",
+    "archive": "Архив"
+  },
+  "fields": {
+    "avatarPlaceholder": "Аватар *",
+    "avatarValue": "Выберите",
+    "agentPlaceholder": "Контрагент *",
+    "phonePlaceholder": "Телефон",
+    "name": "ФИО",
+    "applicationFrequencyPlaceholder": "Периодичность повторения заявки *",
+    "applicationCountdownPlaceholder": "Минимальное время до выхода по заявке *",
+    "taskCountdownCancelPlaceholder": "Минимальное время отказа от задания *",
+    "taskCountdownCancelDurationPlaceholder": "Максимально время ожидания Заданий специалистом (дней)",
+    "managerSearchPlaceholder": "Поиск",
+    "refusalTaskPlaceholder": "Минимальное время отказа от задания"
+  },
+  "counterparty": "Контрагенты",
+  "counterpartySelector": "Выбрать контрагента",
+  "project": "Проект",
+  "statusText": "Статус",
+  "projectSelector": "Выбрать проект",
+  "location": "Места проведения",
+  "locationSelector": "Выбрать места проведения",
+  "user_id": "Идентификатор пользователя",
+  "confirmButton": "Подтвердить",
+  "saveButton": "Сохранить",
+  "excludeButton": "Заблокировать",
+  "manager": "Менеджеры",
+  "managerInviteButton": "Привязать менеджеров",
+  "managerHeader": "Выбор менеджеров"
+}

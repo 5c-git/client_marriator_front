@@ -1,0 +1,126 @@
+import { injected } from "brandi";
+
+import type {
+  GetUserInfo,
+  GetTasks,
+  RepeatTask,
+  CancelTask,
+} from "./tasks.private-tokens";
+
+import { tasksPrivateTokens } from "./tasks.private-tokens";
+
+import { AppService } from "~/shared/container/container.service";
+import { appTokens } from "~/shared/container/container.tokens";
+
+import { statusCodeMap } from "~/shared/status";
+
+export class TasksService {
+  constructor(
+    private readonly appService: AppService,
+    private readonly loadTasks: GetTasks,
+    private readonly loadUserInfo: GetUserInfo,
+    private readonly _repeatTask: RepeatTask,
+    private readonly _cancelTask: CancelTask,
+  ) {}
+
+  getUserRole() {
+    return this.appService.getUserRole();
+  }
+
+  async getTasks() {
+    const token = this.appService.getToken();
+
+    const tasksData = await this.loadTasks(token);
+
+    return tasksData.data.map((item) => {
+      const earliestStartDate: string[] = [];
+      const latestEndDate: string[] = [];
+
+      item.orderActivities.forEach((item) => {
+        earliestStartDate.push(item.dateStart);
+      });
+
+      item.orderActivities.forEach((item) => {
+        latestEndDate.push(item.dateEnd);
+      });
+
+      earliestStartDate.sort(
+        (a, b) => new Date(a).valueOf() - new Date(b).valueOf(),
+      );
+
+      latestEndDate.sort(
+        (a, b) => new Date(b).valueOf() - new Date(a).valueOf(),
+      );
+
+      return {
+        id: item.id,
+        userId: item.user.id,
+        status: item.status,
+        statusColor: statusCodeMap[item.status].color,
+        header: item.orderActivities.length.toString(),
+        subHeader: item.orderActivities
+          .map((activity) => `${activity.viewActivity.name}`)
+          .join(", "),
+        address: {
+          logo: `${import.meta.env.VITE_ASSET_PATH}${item.place.logo}`,
+          text: item.place.address_kladr,
+        },
+        duration: {
+          start: earliestStartDate.length > 0 ? earliestStartDate[0] : null,
+          end: latestEndDate.length > 0 ? latestEndDate[0] : null,
+        },
+        coordinates: [
+          Number(item.place.latitude),
+          Number(item.place.longitude),
+        ] as [lon: number, lat: number],
+        units: "",
+        currency: "₽",
+        createdAt: item.createdAt,
+        placeName: item.place.brand ? item.place.brand.name : "",
+      };
+    });
+  }
+
+  async getUserIntervals() {
+    const token = this.appService.getToken();
+
+    const userData = await this.loadUserInfo(token);
+
+    const date_cancel = new Date(
+      `2026-03-12T${userData.data.cancel_task.startsWith("0") ? userData.data.cancel_task : `0${userData.data.cancel_task}`}`,
+    );
+    const cancel_task_interval = date_cancel.getHours();
+
+    const date_repeat = new Date(
+      `2026-03-12T${userData.data.change_task.startsWith("0") ? userData.data.change_task : `0${userData.data.change_task}`}`,
+    );
+    const repeat_task_interval = date_repeat.getHours();
+
+    return {
+      id: userData.data.id,
+      cancel_task_interval,
+      repeat_task_interval,
+    };
+  }
+
+  async repeatTask(taskId: string) {
+    const token = this.appService.getToken();
+
+    return this._repeatTask(token, taskId);
+  }
+
+  async cancelTask(taskId: string) {
+    const token = this.appService.getToken();
+
+    return this._cancelTask(token, taskId);
+  }
+}
+
+injected(
+  TasksService,
+  appTokens.appService,
+  tasksPrivateTokens.getTasks,
+  tasksPrivateTokens.getUserInfo,
+  tasksPrivateTokens.repeatTask,
+  tasksPrivateTokens.cancelTask,
+);

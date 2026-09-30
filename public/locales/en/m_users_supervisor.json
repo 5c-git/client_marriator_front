@@ -1,0 +1,32 @@
+{
+  "header": "Supervisor",
+  "avatar": "Avatar",
+  "status": {
+    "new": "New",
+    "inProgress": "In progress",
+    "archive": "Archive"
+  },
+  "fields": {
+    "avatarPlaceholder": "Avatar *",
+    "avatarValue": "Choose",
+    "agentPlaceholder": "Counteragent *",
+    "phonePlaceholder": "Phone",
+    "name": "Full name",
+    "applicationFrequencyPlaceholder": "Frequency of application repetition *",
+    "applicationCountdownPlaceholder": "Minimum time until request exit *",
+    "taskCountdownCancelPlaceholder": "Minimum task abandonment time",
+    "taskCountdownCancelDurationPlaceholder": "Minimum task abandonment time *",
+    "refusalTaskPlaceholder": "Minimum task abandonment time"
+  },
+  "counterparty": "Counterparty",
+  "counterpartySelector": "Choose counterparty",
+  "project": "Project",
+  "statusText": "Status",
+  "projectSelector": "Choose project",
+  "location": "Locations",
+  "locationSelector": "Choose locations",
+  "user_id": "User ID",
+  "confirmButton": "Confirm",
+  "saveButton": "Save",
+  "excludeButton": "Block"
+}

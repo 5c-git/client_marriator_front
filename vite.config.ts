@@ -1,47 +1,49 @@
+/// <reference types="vitest/config" />
 import { defineConfig } from "vite";
-import tsconfigPaths from "vite-tsconfig-paths";
 import { reactRouter } from "@react-router/dev/vite";
-import hawkVitePlugin from "@hawk.so/vite-plugin";
+import path from "node:path";
+import { fileURLToPath } from "node:url";
+import { storybookTest } from "@storybook/addon-vitest/vitest-plugin";
+import { playwright } from "@vitest/browser-playwright";
+const dirname =
+  typeof import.meta.dirname !== "undefined"
+    ? import.meta.dirname
+    : path.dirname(fileURLToPath(import.meta.url));
 
-// import { pigment } from "@pigment-css/vite-plugin";
-// import { pigmentTheme } from "./app/theme/themePigment";
-
-// /**
-//  * @type {import('@pigment-css/vite-plugin').PigmentOptions}
-//  */
-// const pigmentConfig = {
-//   transformLibraries: ["@mui/material"],
-//   theme: pigmentTheme,
-// };
-
+// More info at: https://storybook.js.org/docs/next/writing-tests/integrations/vitest-addon
 export default defineConfig({
-  // ssr: {
-  //   // Bundle `problematic-dependency` into the server build
-  //   // noExternal: [/^@mui\//, /^@pigment-css\//, /^@emotion\//],
-  //   noExternal: [/^@mui\//],
-  // },
-
-  plugins: [
-    reactRouter(),
-    tsconfigPaths(),
-    // pigment(pigmentConfig),
-
-    // hawkVitePlugin({
-    //   token:
-    //     "eyJpbnRlZ3JhdGlvbklkIjoiZTFhZWNhMzgtOGNiOC00YzQzLThmODctNzc2MzY5NGYwMzY4Iiwic2VjcmV0IjoiMDEwMDdjYjEtNzRhNC00MDcxLTg3YzktNGMzMjU5YWJhMDM2In0=",
-    // }),
-  ],
-  ssr: {
-    // Workaround for resolving dependencies in the server bundle
-    // Without this, the React context will be different between direct import and transitive imports in development environment
-    // For more information, see https://github.com/mui/material-ui/issues/45878#issuecomment-2987441663
-    optimizeDeps: {
-      include: ["@emotion/*", "@mui/*"],
-    },
-    noExternal: ["@emotion/*", "@mui/*"],
+  resolve: {
+    tsconfigPaths: true,
   },
-
-  // build: {
-  //   sourcemap: true,
-  // },
+  plugins: [reactRouter()],
+  build: {
+    target: "esnext",
+  },
+  test: {
+    projects: [
+      {
+        extends: true,
+        plugins: [
+          // The plugin will run tests for the stories defined in your Storybook config
+          // See options at: https://storybook.js.org/docs/next/writing-tests/integrations/vitest-addon#storybooktest
+          storybookTest({
+            configDir: path.join(dirname, ".storybook"),
+          }),
+        ],
+        test: {
+          name: "storybook",
+          browser: {
+            enabled: true,
+            headless: true,
+            provider: playwright({}),
+            instances: [
+              {
+                browser: "chromium",
+              },
+            ],
+          },
+        },
+      },
+    ],
+  },
 });

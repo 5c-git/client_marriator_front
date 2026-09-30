@@ -1,0 +1,37 @@
+{
+  "header": "Проект-менеджер",
+  "avatar": "Логотип",
+  "status": {
+    "new": "Новая",
+    "inProgress": "В работе",
+    "archive": "Архив"
+  },
+  "fields": {
+    "statusPlaceholder": "Статус",
+    "avatarPlaceholder": "Аватар *",
+    "avatarValue": "Выберите",
+    "agentPlaceholder": "Контрагент *",
+    "phonePlaceholder": "Телефон",
+    "name": "ФИО",
+    "editIntervalPlaceholder": "Интервал редактирования задачи *",
+    "cancelIntervalPlaceholder": "Интервал отмены задачи *",
+    "durationIntervalPlaceholder": "Срок действия задачи *",
+    "applicationFrequencyPlaceholder": "Периодичность повторения заявки *",
+    "applicationCountdownPlaceholder": "Минимальное время до выхода по заявке *",
+    "supervisorSearchPlaceholder": "Поиск",
+    "specialistTimerPlaceholder": "Срок уведомления проект-менеджера о неоказании услуг специалистом"
+  },
+  "counterparty": "Контрагенты",
+  "counterpartySelector": "Выбрать контрагента",
+  "project": "Проект",
+  "projectSelector": "Выбрать проект",
+  "location": "Места проведения",
+  "locationSelector": "Выбрать места проведения",
+  "supervisor": "Супервайзеры",
+  "user_id": "Идентификатор пользователя",
+  "confirmButton": "Подтвердить",
+  "saveButton": "Сохранить",
+  "excludeButton": "Заблокировать",
+  "supervisorInviteButton": "Привязать супервайзеров",
+  "supervisorHeader": "Выбор супервайзеров"
+}

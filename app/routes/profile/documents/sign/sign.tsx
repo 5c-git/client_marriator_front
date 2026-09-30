@@ -1,100 +1,133 @@
-import { useNavigation, useNavigate } from "react-router";
+import { redirect, useFetcher, useNavigate } from "react-router";
 import type { Route } from "./+types/sign";
-
-import { useTranslation } from "react-i18next";
 
 import { withLocale } from "~/shared/withLocale";
 
-import { Button, Typography } from "@mui/material";
-import Box from "@mui/material/Box";
+import { useSignHooks } from "./sign.hooks";
+import type { SignActionData } from "./_views/SignView";
+import { SignView } from "./_views/SignView";
+import { signContainer } from "./sign.module";
+import { signTokens } from "./sign.tokens";
+import { Alert, Snackbar } from "@mui/material";
 
-import { TopNavigation } from "~/shared/ui/TopNavigation/TopNavigation";
-import { S_OrderedList, S_OrderedItem } from "./sign.styled";
-
-import { Loader } from "~/shared/ui/Loader/Loader";
-
-import { useStore } from "~/store/store";
-import { getDocumentSigned } from "~/requests/_personal/_documents/getDocumentSigned/getDocumentSigned";
+export const SIGN_ACTIONS = {
+  sign: "sign",
+  sendAgain: "sendAgain",
+  sendCode: "sendCode",
+  test: "test",
+} as const;
 
 export async function clientLoader() {
-  const accessToken = useStore.getState().accessToken;
+  return await signContainer
+    .get(signTokens.signService)
+    .loadUnsignedDocuments();
+}
 
-  if (accessToken) {
-    const data = await getDocumentSigned(accessToken);
+export async function clientAction({ request }: Route.ClientActionArgs) {
+  const { _action, ...fields } = await request.json();
+  const signService = signContainer.get(signTokens.signService);
 
-    return data.result;
-  } else {
-    throw new Response("Токен авторизации не обнаружен!", { status: 401 });
+  if (_action === SIGN_ACTIONS.sign) {
+    const data = await signService.signAllDocuments();
+
+    if ("success" in data.data) {
+      return { data: null, isError: false, error: "" };
+    }
+    if ("error" in data.data) {
+      return {
+        data: null,
+        isError: true,
+        error: "Возникла ошибка! Попробуйще повторно позже.",
+      };
+    }
+  }
+  if (_action === SIGN_ACTIONS.sendAgain) {
+    const data = await signService.resendSms();
+
+    if ("success" in data.data) {
+      return { data: null, isError: false, error: "" };
+    }
+    if ("error" in data.data) {
+      return { data: null, isError: true, error: data.data.error };
+    }
+  }
+  if (_action === SIGN_ACTIONS.sendCode) {
+    const data = await signService.submitSmsCode(fields.code);
+
+    if ("success" in data.data) {
+      throw redirect(withLocale("/profile/documents/archive"));
+    }
+    if ("error" in data.data) {
+      return { data: null, isError: true, error: data.data.error };
+    }
+  }
+  if (_action === SIGN_ACTIONS.test) {
+    await signService.createTestDoc();
   }
 }
 
 export default function Sign({ loaderData }: Route.ComponentProps) {
-  const { t } = useTranslation("sign");
-  const navigation = useNavigation();
   const navigate = useNavigate();
+  const fetcher = useFetcher<SignActionData>();
+
+  const { seconds, popup, setPopup } = useSignHooks(fetcher.data);
 
   return (
     <>
-      {navigation.state !== "idle" ? <Loader /> : null}
+      <SignView
+        data={loaderData}
+        popupOpen={popup}
+        seconds={seconds}
+        backAction={() => {
+          navigate(withLocale("/profile/documents"), {
+            viewTransition: true,
+          });
+        }}
+        signAction={() => {
+          fetcher.submit(JSON.stringify({ _action: SIGN_ACTIONS.sign }), {
+            method: "POST",
+            encType: "application/json",
+          });
+        }}
+        sendAgainAction={() => {
+          fetcher.submit(JSON.stringify({ _action: SIGN_ACTIONS.sendAgain }), {
+            method: "POST",
+            encType: "application/json",
+          });
+        }}
+        sendCodeAction={(code) => {
+          fetcher.submit(
+            JSON.stringify({ _action: SIGN_ACTIONS.sendCode, code }),
+            {
+              method: "POST",
+              encType: "application/json",
+            },
+          );
+        }}
+        closePopupAction={() => {
+          fetcher.reset();
+          setPopup(false);
+        }}
+      />
 
-      <Box
-        sx={{
-          height: "100%",
+      <Snackbar
+        open={fetcher.data && fetcher.data.isError === true ? true : false}
+        autoHideDuration={3000}
+        onClose={() => {
+          fetcher.reset();
         }}
       >
-        <TopNavigation
-          header={{
-            text: t("header"),
-            bold: false,
-          }}
-          backAction={() => {
-            navigate(withLocale("/profile/documents"), {
-              viewTransition: true,
-            });
-          }}
-        />
-
-        <Box
+        <Alert
+          severity="info"
+          variant="small"
+          color="Banner_Error"
           sx={{
-            display: "grid",
-            paddingTop: "20px",
-            paddingBottom: "20px",
-            paddingRight: "16px",
-            paddingLeft: "16px",
-            height: "calc(100% - 56px)",
+            width: "100%",
           }}
         >
-          {loaderData.length === 0 ? (
-            <Typography
-              component="h1"
-              variant="Reg_18"
-              sx={(theme) => ({
-                color: theme.vars.palette["Black"],
-                paddingBottom: "8px",
-              })}
-            >
-              {t("sign_header")}
-            </Typography>
-          ) : (
-            <S_OrderedList>
-              {loaderData.map((item) => (
-                <S_OrderedItem key={item.uuid}>{item.name}</S_OrderedItem>
-              ))}
-            </S_OrderedList>
-          )}
-
-          {loaderData.length > 0 ? (
-            <Button
-              sx={{
-                marginTop: "auto",
-              }}
-              variant="contained"
-            >
-              {t("button_action")}
-            </Button>
-          ) : null}
-        </Box>
-      </Box>
+          {fetcher.data?.error}
+        </Alert>
+      </Snackbar>
     </>
   );
 }

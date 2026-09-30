@@ -300,6 +300,7 @@ export const theme = createTheme(baseTheme, {
         },
         shrink: {
           transform: "translate(14px, 8px) scale(1)",
+          width: "calc(100% - 32px)",
 
           "&.Mui-error": {
             color: baseTheme.vars.palette["Grey_2"],
@@ -356,14 +357,14 @@ export const theme = createTheme(baseTheme, {
     MuiRadio: {
       styleOverrides: {
         root: {
-          padding: "8px",
+          padding: "9px",
         },
       },
     },
     MuiCheckbox: {
       styleOverrides: {
         root: {
-          padding: "8px",
+          padding: "9px",
         },
       },
     },
@@ -649,6 +650,7 @@ export const theme = createTheme(baseTheme, {
           flexGrow: 1,
           // цвет не выбранного таба
           textTransform: "none",
+          maxWidth: "unset",
           color: baseTheme.vars.palette["Grey_1"],
           "&.Mui-selected": {
             // цвет выбранного таба
@@ -821,6 +823,20 @@ export const theme = createTheme(baseTheme, {
             "&.Mui-disabled": {
               opacity: "0.6",
             },
+          },
+        },
+      },
+    },
+    MuiToggleButton: {
+      styleOverrides: {
+        root: {
+          textTransform: "none",
+          padding: "7px 14px",
+          ...baseTheme.typography["Bold_12"],
+          "&.Mui-selected": {
+            color: baseTheme.palette["Corp_1"],
+            background:
+              "linear-gradient(135deg, rgb(248, 230, 243), rgb(239, 231, 250))",
           },
         },
       },

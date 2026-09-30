@@ -55,7 +55,7 @@ export const StyledAutocomplete = (props: StyledAutocompleteProps) => {
   const [inputValue, setInputValue] = useState<string>(props.value);
 
   const valueMatch = props.options.find(
-    (option) => option.value === props.value
+    (option) => option.value === props.value,
   );
 
   return (
@@ -89,7 +89,7 @@ export const StyledAutocomplete = (props: StyledAutocompleteProps) => {
             value={valueMatch ? valueMatch.label : null}
             onChange={(_: unknown, label: string | null) => {
               const match = props.options.find(
-                (option) => option.label === label
+                (option) => option.label === label,
               );
 
               if (match) {
@@ -97,7 +97,7 @@ export const StyledAutocomplete = (props: StyledAutocompleteProps) => {
                 props.onImmediateChange();
               } else {
                 props.onChange("");
-                props.onImmediateChange();
+                // props.onImmediateChange();
               }
             }}
             inputValue={inputValue}
@@ -107,7 +107,7 @@ export const StyledAutocomplete = (props: StyledAutocompleteProps) => {
             options={props.options.map((item) => item.label)}
             getOptionDisabled={(label) => {
               const match = props.options.find(
-                (option) => option.label === label
+                (option) => option.label === label,
               );
 
               return match ? match.disabled : false;

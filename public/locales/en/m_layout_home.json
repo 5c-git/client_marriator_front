@@ -1,0 +1,16 @@
+{
+  "header": "Workspace",
+  "headerListAction": "List",
+  "headerMapAction": "Map",
+  "tabs": {
+    "order": "Assignments",
+    "task": "Tasks",
+    "bid": "Requests",
+    "job": "Jobs"
+  },
+  "menu": {
+    "moderation": "Moderation",
+    "profile": "Profile",
+    "wallet": "Wallet"
+  }
+}

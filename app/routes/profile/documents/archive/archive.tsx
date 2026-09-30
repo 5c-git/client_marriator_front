@@ -1,133 +1,71 @@
-import { useNavigation, useNavigate } from "react-router";
+import { useFetcher, useNavigate } from "react-router";
 import type { Route } from "./+types/archive";
-
-import { useTranslation } from "react-i18next";
 
 import { withLocale } from "~/shared/withLocale";
 
-import { Typography, List, ListItem, IconButton } from "@mui/material";
-import Box from "@mui/material/Box";
-import { TopNavigation } from "~/shared/ui/TopNavigation/TopNavigation";
+import { useTranslation } from "react-i18next";
 
-import { Loader } from "~/shared/ui/Loader/Loader";
-
-import { useStore } from "~/store/store";
-import { getDocumentArchive } from "~/requests/_personal/_documents/getDocumentArchive/getDocumentArchive";
-
-import FileDownloadOutlinedIcon from "@mui/icons-material/FileDownloadOutlined";
+import type { ArchiveActionData } from "./_views/ArchiveView";
+import { ArchiveView } from "./_views/ArchiveView";
+import { archiveContainer } from "./archive.module";
+import { archiveTokens } from "./archive.tokens";
+import { Alert, Snackbar } from "@mui/material";
 
 export async function clientLoader() {
-  const accessToken = useStore.getState().accessToken;
+  return await archiveContainer.get(archiveTokens.archiveService).loadArchive();
+}
 
-  if (accessToken) {
-    const data = await getDocumentArchive(accessToken);
+export async function clientAction({ request }: Route.ClientActionArgs) {
+  const documentId = await request.json();
+  const archiveService = archiveContainer.get(archiveTokens.archiveService);
+  const filePath = await archiveService.getSignedFilePath(documentId);
 
-    return data.result;
-  } else {
-    throw new Response("Токен авторизации не обнаружен!", { status: 401 });
+  if (filePath) {
+    window.open(`${import.meta.env.VITE_ASSET_PATH}${filePath}`, "_blank");
+    return null;
   }
+
+  return { data: null, isError: true, error: "error" };
 }
 
 export default function Archive({ loaderData }: Route.ComponentProps) {
-  const { t } = useTranslation("documentsArchive");
-  const navigation = useNavigation();
+  const { t } = useTranslation("m_profile_documents_archive");
   const navigate = useNavigate();
+  const fetcher = useFetcher<ArchiveActionData>();
 
   return (
     <>
-      {navigation.state !== "idle" ? <Loader /> : null}
-
-      <TopNavigation
-        header={{
-          text: t("header"),
-          bold: false,
-        }}
+      <ArchiveView
+        data={loaderData}
         backAction={() => {
           navigate(withLocale("/profile/documents"), { viewTransition: true });
         }}
+        assetBasePath={import.meta.env.VITE_ASSET_PATH}
+        downloadRequestAction={(id) => {
+          fetcher.submit(id, {
+            method: "POST",
+            encType: "application/json",
+          });
+        }}
       />
-
-      <Box
-        sx={{
-          display: "flex",
-          flexDirection: "column",
-          paddingTop: "20px",
-          paddingBottom: "20px",
-          paddingRight: "16px",
-          paddingLeft: "16px",
-          height: "calc(100% - 56px)",
+      <Snackbar
+        open={fetcher.data && fetcher.data.isError === true ? true : false}
+        autoHideDuration={3000}
+        onClose={() => {
+          fetcher.reset();
         }}
       >
-        <Typography
-          component="h1"
-          variant="Reg_18"
-          sx={(theme) => ({
-            color: theme.vars.palette["Black"],
-            paddingBottom: "8px",
-          })}
-        >
-          {t("archive_header")}
-        </Typography>
-
-        <Typography
-          component="p"
-          variant="Reg_14"
-          sx={(theme) => ({
-            color: theme.vars.palette["Grey_2"],
-            paddingBottom: "18px",
-          })}
-        >
-          {t("archive_text")}
-        </Typography>
-
-        <List
+        <Alert
+          severity="info"
+          variant="small"
+          color="Banner_Error"
           sx={{
-            padding: 0,
-            display: "grid",
-            rowGap: "4px",
+            width: "100%",
           }}
         >
-          {loaderData.length !== 0 ? (
-            loaderData.map((item) => (
-              <ListItem
-                key={item.uuid}
-                secondaryAction={
-                  <IconButton
-                    LinkComponent="a"
-                    href={item.path}
-                    target="_blank"
-                    rel="noreferrer"
-                    edge="end"
-                    aria-label="download file"
-                  >
-                    <FileDownloadOutlinedIcon
-                      sx={(theme) => ({
-                        color: theme.vars.palette["Black"],
-                      })}
-                    />
-                  </IconButton>
-                }
-                disablePadding
-                sx={{
-                  "& .MuiListItemSecondaryAction-root": {
-                    right: 0,
-                  },
-                }}
-              >
-                {item.name}
-              </ListItem>
-            ))
-          ) : (
-            <ListItem
-              sx={{
-                justifyContent: "center",
-              }}
-            >
-              {t("archive_nothing")}
-            </ListItem>
-          )}
-        </List>
-      </Box>
+          {t("error")}
+        </Alert>
+      </Snackbar>
     </>
   );
 }

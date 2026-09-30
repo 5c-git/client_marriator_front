@@ -1,0 +1,13 @@
+{
+  "tasks": "Задачи",
+  "cardHeader": "Услуг",
+  "cancelTaskButton": "Отменить задачу",
+  "repeatTaskButton": "Повторить задачу",
+  "dialog": {
+    "cancel": "Отменить",
+    "repeat": "Повторить",
+    "title": "задачу",
+    "no": "Нет",
+    "yes": "Да"
+  }
+}

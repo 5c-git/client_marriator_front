@@ -14,7 +14,7 @@ type MenuProps = {
   }[];
 };
 
-const rootMatchExeptions = ["assignments", "missions", "requests", "tasks"];
+const rootMatchExeptions = ["orders", "tasks", "bids", "jobs"];
 
 const checkIfRootMatchExeption = (location: string, to: string) => {
   let isRootMatchExeption = false;
@@ -47,6 +47,7 @@ export const Menu = ({ style, links }: MenuProps) => {
         <BottomNavigationAction
           key={index}
           disabled={item.disabled}
+          nativeButton={false}
           component={forwardRef<
             HTMLAnchorElement,
             {
@@ -56,7 +57,6 @@ export const Menu = ({ style, links }: MenuProps) => {
             return (
               <NavLink
                 viewTransition
-                // end={item.to === "/" ? true : false}
                 ref={ref}
                 to={withLocale(item.to)}
                 style={({ isActive }) => ({

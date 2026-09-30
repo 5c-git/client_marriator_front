@@ -1,4 +1,14 @@
 {
   "error": "Error occurred!",
-  "refresh": "Go back"
+  "refresh": "Go back",
+  "refreshButton": "Refresh",
+  "offlineTitle": "No internet connection",
+  "offlineText": "Waiting for connection...",
+  "offlineSuperior": {
+    "manager": "Your manager contact info",
+    "supervisor": "Your supervisor contact info",
+    "name": "Full name: ",
+    "id": "ID: ",
+    "phone": "Phone: "
+  }
 }

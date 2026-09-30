@@ -1,0 +1,16 @@
+{
+  "header": "Рабочий стол",
+  "headerListAction": "Списком",
+  "headerMapAction": "Картой",
+  "tabs": {
+    "order": "Поручения",
+    "task": "Задачи",
+    "bid": "Заявки",
+    "job": "Задания"
+  },
+  "menu": {
+    "moderation": "Модерация",
+    "profile": "Профиль",
+    "wallet": "Кошелек"
+  }
+}

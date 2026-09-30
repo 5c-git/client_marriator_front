@@ -1,0 +1,73 @@
+{
+  "bid": "Request",
+  "job": "Job",
+  "actions": {
+    "accept": "Accept",
+    "acceptAll": "Accept all",
+    "cancel": "Cancel",
+    "start": "Start",
+    "end": "End",
+    "forPay": "For payment",
+    "report": "Report"
+  },
+  "dayStatus": {
+    "start": "Stared",
+    "end": "Ended",
+    "reported": "Report has been sent",
+    "accept": "Accepted",
+    "forPay": "To be paid",
+    "forPayManager": "Payment approved",
+    "paid": "Paid",
+    "notEnded": "Not ended",
+    "check": "Check"
+  },
+  "components": {
+    "FilesPopup": {
+      "header": "Please attach at least 4 photographs for your report",
+      "submitButton": "Submit",
+      "cancelButton": "Cancel"
+    }
+  },
+  "acceptAlertText": "Ваша кандидатура на рассмотрении у супервайзера. Ожидайте подтверждения",
+  "statusText": "Status",
+  "locationText": "Location",
+  "serviceTypeText": "Service type",
+  "forPayText": "For pay",
+  "incomeText": "Income",
+  "pricePerUnitText": "Price per unit",
+  "dateStartText": "Start date",
+  "dateEndText": "End date",
+  "needDaysPlaceholder": "Need days",
+  "timeStartPlaceholder": "Time start",
+  "timeEndPlaceholder": "Time end",
+  "routePlaceholder": "Route",
+  "photoCheckbox": "Photos",
+  "addressButton": "Add address",
+  "removeDayButton": "Remove day",
+  "addDayButton": "Add day",
+  "status": {
+    "notAccepted": "New",
+    "accepted": "Accepted",
+    "declined": "Declined",
+    "consideration": "In consideration",
+    "work": "Work",
+    "canceled": "Cancelled",
+    "archive": "Архив",
+    "placeholder": "Placeholder"
+  },
+  "dayMap": {
+    "0": "SUN",
+    "1": "MON",
+    "2": "TUE",
+    "3": "WED",
+    "4": "THU",
+    "5": "FRI",
+    "6": "SAT"
+  },
+  "role": {
+    "manager": "Manager",
+    "supervisor": "Supervisor",
+    "client": "Client",
+    "specialist": "Specialist"
+  }
+}

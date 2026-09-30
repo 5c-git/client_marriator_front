@@ -1,0 +1,107 @@
+{
+  "orders": {
+    "sorting": {
+      "placeholder": "Sorting",
+      "ascending": "In ascending order of the start of services",
+      "descending": "In descending order of the start of services"
+    },
+    "status": {
+      "1": "New",
+      "2": "Not accepted",
+      "3": "Accepted",
+      "4": "Cancelled",
+      "5": "Archived",
+      "6": "In review",
+      "7": "Approved",
+      "8": "In work"
+    },
+    "emptyHeader": "There are no orders.",
+    "dayMap": {
+      "0": "Sun",
+      "1": "Mon",
+      "2": "Tue",
+      "3": "Wed",
+      "4": "Thu",
+      "5": "Fru",
+      "6": "Sat"
+    },
+    "statusSelectPlaceholder": "Status",
+    "searchbarPlaceholder": "Search by address or id",
+    "toggleButtons": {
+      "list": "List",
+      "table": "Table",
+      "map": "Map"
+    },
+    "selectAllDays": "All dates"
+  },
+  "tasks": {
+    "sorting": {
+      "placeholder": "Sorting",
+      "ascending": "In ascending order of the start of services",
+      "descending": "In descending order of the start of services"
+    },
+    "status": {
+      "1": "New",
+      "2": "Not accepted",
+      "3": "Accepted",
+      "4": "Cancelled",
+      "5": "Archived",
+      "6": "In review",
+      "7": "Approved",
+      "8": "In work"
+    },
+    "emptyHeader": "There are no tasks.",
+    "dayMap": {
+      "0": "Sun",
+      "1": "Mon",
+      "2": "Tue",
+      "3": "Wed",
+      "4": "Thu",
+      "5": "Fru",
+      "6": "Sat"
+    },
+    "statusSelectPlaceholder": "Status",
+    "searchbarPlaceholder": "Search by address or id",
+    "toggleButtons": {
+      "list": "List",
+      "table": "Table",
+      "map": "Map"
+    },
+    "selectAllDays": "All dates"
+  },
+  "jobs": {
+    "sorting": {
+      "placeholder": "Sorting",
+      "ascending": "In ascending order of the start of services",
+      "descending": "In descending order of the start of services"
+    },
+    "status": {
+      "1": "Not accepted",
+      "2": "Accepted",
+      "3": "Declined",
+      "4": "Consideration",
+      "5": "In work",
+      "6": "Cancelled",
+      "7": "Archive",
+      "8": "Placeholder"
+    },
+    "emptyHeader": "There are no jobs.",
+    "dayMap": {
+      "0": "Sun",
+      "1": "Mon",
+      "2": "Tue",
+      "3": "Wed",
+      "4": "Thu",
+      "5": "Fru",
+      "6": "Sat"
+    },
+    "statusSelectPlaceholder": "Status",
+    "searchbarPlaceholder": "Search by address or id",
+    "toggleButtons": {
+      "list": "List",
+      "table": "Table",
+      "map": "Map"
+    },
+    "selectAllDays": "All dates"
+  }
+}

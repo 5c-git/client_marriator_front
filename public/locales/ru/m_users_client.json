@@ -1,0 +1,30 @@
+{
+  "header": "Клиент",
+  "avatar": "Логотип",
+  "status": {
+    "new": "Новая",
+    "inProgress": "В работе",
+    "archive": "Архив"
+  },
+  "fields": {
+    "statusPlaceholder": "Статус",
+    "avatarPlaceholder": "Аватар *",
+    "avatarValue": "Выберите",
+    "agentPlaceholder": "Контрагент *",
+    "phonePlaceholder": "Телефон",
+    "name": "ФИО",
+    "editIntervalPlaceholder": "Интервал редактирования поручения *",
+    "cancelIntervalPlaceholder": "Интервал отмены поручения *",
+    "durationIntervalPlaceholder": "Срок действия поручения *"
+  },
+  "counterparty": "Контрагенты",
+  "counterpartySelector": "Выбрать контрагента",
+  "project": "Проект",
+  "projectSelector": "Выбрать проект",
+  "location": "Места проведения",
+  "locationSelector": "Выбрать места проведения",
+  "user_id": "Идентификатор пользователя",
+  "confirmButton": "Подтвердить",
+  "saveButton": "Сохранить",
+  "excludeButton": "Заблокировать"
+}

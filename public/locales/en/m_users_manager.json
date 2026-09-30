@@ -1,0 +1,37 @@
+{
+  "header": "Project-manager",
+  "avatar": "Avatar",
+  "status": {
+    "new": "New",
+    "inProgress": "In progress",
+    "archive": "Archive"
+  },
+  "fields": {
+    "statusPlaceholder": "Status",
+    "avatarPlaceholder": "Avatar *",
+    "avatarValue": "Choose",
+    "agentPlaceholder": "Counteragent *",
+    "phonePlaceholder": "Phone",
+    "name": "Full name",
+    "editIntervalPlaceholder": "Task editing interval *",
+    "cancelIntervalPlaceholder": "Task cancellation interval *",
+    "durationIntervalPlaceholder": "Validity period of the task *",
+    "applicationFrequencyPlaceholder": "Frequency of application repetition *",
+    "applicationCountdownPlaceholder": "Minimum time until request exit *",
+    "supervisorSearchPlaceholder": "Search",
+    "specialistTimerPlaceholder": "The period for notifying the manager about the failure of a specialist to provide services"
+  },
+  "counterparty": "Counterparty",
+  "counterpartySelector": "Choose counterparty",
+  "project": "Project",
+  "projectSelector": "Choose project",
+  "location": "Locations",
+  "locationSelector": "Choose locations",
+  "supervisor": "Supervisors",
+  "user_id": "User ID",
+  "confirmButton": "Confirm",
+  "saveButton": "Save",
+  "excludeButton": "Block",
+  "supervisorInviteButton": "Add supervisors",
+  "supervisorHeader": "Select supervisers"
+}
