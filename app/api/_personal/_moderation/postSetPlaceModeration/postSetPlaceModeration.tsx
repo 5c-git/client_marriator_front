@@ -9,7 +9,7 @@ export const postSetPlaceModerationKeys = ["postSetPlaceModeration"];
 export const postSetPlaceModeration = async (
   accessToken: string,
   userId: string,
-  places: string[]
+  places: string[],
 ) => {
   try {
     const url = new URL(import.meta.env.VITE_POST_SET_PLACE_MODERATION);
@@ -47,7 +47,7 @@ export const postSetPlaceModeration = async (
     } else {
       console.log(parsed.error);
       throw new Response(
-        `Данные запроса PostSetPlaceModeration не валидны схеме`
+        `Данные запроса PostSetPlaceModeration не валидны схеме`,
       );
     }
 
@@ -78,5 +78,5 @@ export const postSetPlaceModerationMockResponse = http.post(
   async () => {
     await delay(2000);
     return HttpResponse.json(mockResponseSuccess);
-  }
+  },
 );

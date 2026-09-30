@@ -21,7 +21,8 @@ export const getModerationClientKeys = ["getModerationClient"];
 export const getModerationClient = async (
   accessToken: string,
   perPage: number,
-  role: // | "admin"
+  role:
+    // | "admin"
     | "client"
     | "manager"
     // | "recruiter"

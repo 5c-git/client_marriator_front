@@ -10,7 +10,7 @@ import { UnxpectedError } from "~/shared/unexpectedError/unexpectedError";
 export const getDocumentInquiriesKeys = ["getDocumentInquiries"];
 
 export const getDocumentInquiries = async (
-  accessToken: string
+  accessToken: string,
 ): Promise<GetDocumentInquiriesSuccess> => {
   try {
     const url = new URL(import.meta.env.VITE_GET_DOCUMENTS_INQUIRIES);
@@ -39,7 +39,7 @@ export const getDocumentInquiries = async (
     } else {
       console.log(parsed.error);
       throw new Response(
-        `Данные запроса getDocumentInquiries не валидны схеме`
+        `Данные запроса getDocumentInquiries не валидны схеме`,
       );
     }
 
@@ -81,5 +81,5 @@ export const getDocumentInquiriesMockResponse = http.get(
   async () => {
     await delay(2000);
     return HttpResponse.json(mockResponseSuccess);
-  }
+  },
 );

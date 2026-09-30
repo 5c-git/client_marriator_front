@@ -9,7 +9,7 @@ export const getJobKeys = ["getJob"];
 export const getJob = async (
   accessToken: string,
   specialistId: string,
-  bidId: string
+  bidId: string,
 ): Promise<GetJobSuccess> => {
   try {
     const url = new URL(import.meta.env.VITE_GET_JOB);
@@ -250,5 +250,5 @@ export const getJobMockResponse = http.get(
   async () => {
     await delay(2000);
     return HttpResponse.json(mockResponseSuccess);
-  }
+  },
 );

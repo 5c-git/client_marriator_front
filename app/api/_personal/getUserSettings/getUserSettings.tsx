@@ -1,11 +1,13 @@
 import { http, delay, HttpResponse } from "msw";
 
-import { getUserSettingsSuccessSchema, GetUserSettingsSuccess } from "./getUserSettingsSuccess.schema";
+import {
+  getUserSettingsSuccessSchema,
+  GetUserSettingsSuccess,
+} from "./getUserSettingsSuccess.schema";
 
 import { UnxpectedError } from "~/shared/unexpectedError/unexpectedError";
 
 export const getUserSettingsKeys = ["getUserSettings"];
-
 
 export const getUserSettings = async (
   accessToken: string,
@@ -29,8 +31,6 @@ export const getUserSettings = async (
         status: 401,
       });
     }
-
-
 
     const parsed = getUserSettingsSuccessSchema.safeParse(response);
 
@@ -57,10 +57,10 @@ export const getUserSettings = async (
 
 // MOCKS
 export const mockResponseSuccess: GetUserSettingsSuccess = {
-  "data": {
-      "notificationNewBids": 1
-  }
-}
+  data: {
+    notificationNewBids: 1,
+  },
+};
 
 export const mockResponseError = {};
 

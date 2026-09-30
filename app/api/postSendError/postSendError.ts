@@ -7,7 +7,11 @@ import { UnxpectedError } from "~/shared/unexpectedError/unexpectedError";
 
 export const postSendErrorKeys = ["postSendError"];
 
-export const postSendError = async (accessToken: string, requestUrl: string, errorMessage: string ) => {
+export const postSendError = async (
+  accessToken: string,
+  requestUrl: string,
+  errorMessage: string,
+) => {
   try {
     const url = new URL(import.meta.env.VITE_POST_SEND_ERROR);
 

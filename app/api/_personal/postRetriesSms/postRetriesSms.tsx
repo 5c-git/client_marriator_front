@@ -93,5 +93,5 @@ export const postRetriesSmsMockResponse = http.post(
   async () => {
     await delay(2000);
     return HttpResponse.json(mockResponseSuccess);
-  }
+  },
 );

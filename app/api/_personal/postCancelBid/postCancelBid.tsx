@@ -11,7 +11,7 @@ export const postCancelBidKeys = ["postCancelBid"];
 
 export const postCancelBid = async (
   accessToken: string,
-  bidId: string
+  bidId: string,
 ): Promise<PostCancelBidSucces> => {
   try {
     const url = new URL(import.meta.env.VITE_POST_CANCEL_BID);
@@ -78,5 +78,5 @@ export const postCancelBidMockResponse = http.post(
   async () => {
     await delay(2000);
     return HttpResponse.json(mockResponseSuccess);
-  }
+  },
 );

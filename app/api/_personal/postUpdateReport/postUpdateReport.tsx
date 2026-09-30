@@ -17,7 +17,7 @@ export const postUpdateReport = async (
       reasonId: number;
       count: number;
     }[];
-  }
+  },
 ): Promise<PostUpdateReportSuccess> => {
   try {
     const url = new URL(import.meta.env.VITE_POST_UPDATE_REPORT);
@@ -75,5 +75,5 @@ export const postUpdateReportMockResponse = http.post(
   async () => {
     await delay(2000);
     return HttpResponse.json(mockResponseSuccess);
-  }
+  },
 );

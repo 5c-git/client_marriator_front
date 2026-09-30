@@ -32,10 +32,6 @@ export default function Documents() {
           label: t("item_archive"),
         },
         {
-          path: withLocale("/profile/documents/archive"),
-          label: t("item_archive"),
-        },
-        {
           path: withLocale("/profile/documents/certificates"),
           label: t("item_certificates"),
         },

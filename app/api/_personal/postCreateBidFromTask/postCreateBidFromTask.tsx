@@ -251,10 +251,10 @@ export const mockResponseSuccessEmpty = {
 
 export const mockResponseError = {};
 
-export const postCreateBidFromTaskMockResponse = http.post(
-  `${import.meta.env.VITE_POST_CREATE_BID_FROM_TASK}`,
-  async () => {
-    await delay(2000);
-    return HttpResponse.json(mockResponseSuccess);
-  },
-);
+// export const postCreateBidFromTaskMockResponse = http.post(
+//   `${import.meta.env.VITE_POST_CREATE_BID_FROM_TASK}`,
+//   async () => {
+//     await delay(2000);
+//     return HttpResponse.json(mockResponseSuccess);
+//   },
+// );

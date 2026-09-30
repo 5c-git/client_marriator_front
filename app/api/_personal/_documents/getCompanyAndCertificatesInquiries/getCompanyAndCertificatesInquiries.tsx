@@ -11,11 +11,11 @@ export const getCompanyAndCertificatesInquiriesKeys = [
 ];
 
 export const getCompanyAndCertificatesInquiries = async (
-  accessToken: string
+  accessToken: string,
 ): Promise<GetCompanyAndCertificatesInquiriesSuccess> => {
   try {
     const url = new URL(
-      import.meta.env.VITE_GET_COMPANY_AND_CERTIFICATES_INQUIRIES
+      import.meta.env.VITE_GET_COMPANY_AND_CERTIFICATES_INQUIRIES,
     );
 
     const request = await fetch(url, {
@@ -43,7 +43,7 @@ export const getCompanyAndCertificatesInquiries = async (
     } else {
       console.log(parsed.error);
       throw new Response(
-        `Данные запроса getCompanyAndCertificatesInquiries не валидны схеме`
+        `Данные запроса getCompanyAndCertificatesInquiries не валидны схеме`,
       );
     }
 
@@ -100,5 +100,5 @@ export const getCompanyAndCertificatesInquiriesMockResponse = http.get(
   async () => {
     await delay(2000);
     return HttpResponse.json(mockResponseSuccess);
-  }
+  },
 );

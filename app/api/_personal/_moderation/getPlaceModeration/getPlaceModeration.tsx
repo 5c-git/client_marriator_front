@@ -11,7 +11,7 @@ export const getPlaceModerationKeys = ["getPlaceModeration"];
 
 export const getPlaceModeration = async (
   accessToken: string,
-  userId: number
+  userId: number,
 ): Promise<GetPlaceModerationSuccess> => {
   try {
     const url = new URL(import.meta.env.VITE_GET_PLACE_MODERATION);
@@ -96,5 +96,5 @@ export const getPlaceModerationMockResponse = http.get(
 
     await delay(2000);
     return HttpResponse.json(mockResponseSuccess);
-  }
+  },
 );

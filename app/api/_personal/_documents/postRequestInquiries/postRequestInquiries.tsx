@@ -11,7 +11,7 @@ export const postRequestInquiriesKeys = ["postRequestInquiries"];
 export const postRequestInquiries = async (
   accessToken: string,
   uuid: string,
-  certificates: string
+  certificates: string,
 ): Promise<PostRequestInquiriesSuccess> => {
   try {
     const url = new URL(import.meta.env.VITE_REQUEST_INQUIRIES);
@@ -44,7 +44,7 @@ export const postRequestInquiries = async (
     } else {
       console.log(parsed.error);
       throw new Response(
-        `Данные запроса postRequestInquiries не валидны схеме`
+        `Данные запроса postRequestInquiries не валидны схеме`,
       );
     }
 
@@ -73,5 +73,5 @@ export const postRequestInquiriesMockResponse = http.get(
   async () => {
     await delay(2000);
     return HttpResponse.json(mockResponseSuccess);
-  }
+  },
 );

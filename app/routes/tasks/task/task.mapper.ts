@@ -83,9 +83,9 @@ export class TaskMapper {
           route: routeCount,
           dateStart: item.dateStart,
           dateEnd: item.dateEnd,
-          countSearch: item.countSearch,
+          countSearch: 0,
           buttonBidNeed: item.buttonBidNeed,
-          buttonSearchNeed: item.buttonSearchNeed,
+          buttonSearchNeed: false,
         };
       }),
       invitedPersons: data.data.acceptedUser.map((item) => {

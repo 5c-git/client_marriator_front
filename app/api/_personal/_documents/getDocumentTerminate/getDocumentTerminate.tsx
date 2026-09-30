@@ -10,7 +10,7 @@ import { UnxpectedError } from "~/shared/unexpectedError/unexpectedError";
 export const getDocumentTerminateKeys = ["getDocumentTerminate"];
 
 export const getDocumentTerminate = async (
-  accessToken: string
+  accessToken: string,
 ): Promise<GetDocumentTerminateSuccess> => {
   try {
     const url = new URL(import.meta.env.VITE_GET_DOCUMENT_TERMINATE);
@@ -39,7 +39,7 @@ export const getDocumentTerminate = async (
     } else {
       console.log(parsed.error);
       throw new Response(
-        `Данные запроса getDocumentTerminate не валидны схеме`
+        `Данные запроса getDocumentTerminate не валидны схеме`,
       );
     }
 
@@ -81,5 +81,5 @@ export const getDocumentTerminateMockResponse = http.get(
   async () => {
     await delay(2000);
     return HttpResponse.json(mockResponseSuccess);
-  }
+  },
 );

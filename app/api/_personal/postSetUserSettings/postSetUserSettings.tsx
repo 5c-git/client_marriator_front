@@ -1,6 +1,9 @@
 import { http, delay, HttpResponse } from "msw";
 
-import { postSetUserSettingsSuccessSchema, PostSetUserSettingsSuccess } from "./postSetUserSettingsSuccess.schema";
+import {
+  postSetUserSettingsSuccessSchema,
+  PostSetUserSettingsSuccess,
+} from "./postSetUserSettingsSuccess.schema";
 
 import { UnxpectedError } from "~/shared/unexpectedError/unexpectedError";
 

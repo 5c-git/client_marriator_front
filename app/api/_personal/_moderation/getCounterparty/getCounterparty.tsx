@@ -9,7 +9,7 @@ import { UnxpectedError } from "~/shared/unexpectedError/unexpectedError";
 export const getCounterpartyKeys = ["getCounterparty"];
 
 export const getCounterparty = async (
-  accessToken: string
+  accessToken: string,
 ): Promise<GetCounterpartySuccess> => {
   try {
     const url = new URL(import.meta.env.VITE_GET_COUNTERPARTY);
@@ -95,5 +95,5 @@ export const getCounterpartyMockResponse = http.get(
   async () => {
     await delay(2000);
     return HttpResponse.json(mockResponseSuccess);
-  }
+  },
 );

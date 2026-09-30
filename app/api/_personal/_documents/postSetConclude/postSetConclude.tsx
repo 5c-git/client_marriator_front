@@ -11,7 +11,7 @@ export const postSetConcludeKeys = ["postSetConclude"];
 
 export const postSetConclude = async (
   accessToken: string,
-  uuid: string[]
+  uuid: string[],
 ): Promise<PostSetConcludeSuccess> => {
   try {
     const url = new URL(import.meta.env.VITE_SET_CONCLUDE);
@@ -71,5 +71,5 @@ export const postSetConcludeMockResponse = http.get(
   async () => {
     await delay(2000);
     return HttpResponse.json(mockResponseSuccess);
-  }
+  },
 );

@@ -16,7 +16,7 @@ export const postDeleteCounterpartyKeys = ["postDeleteCounterparty"];
 export const postDeleteCounterparty = async (
   accessToken: string,
   userId: string,
-  counterpartyId: string
+  counterpartyId: string,
 ) => {
   try {
     const url = new URL(import.meta.env.VITE_POST_DELETE_COUNTERPARTY);
@@ -54,7 +54,7 @@ export const postDeleteCounterparty = async (
       data = parsedError.data;
     } else {
       throw new Response(
-        `Данные запроса postDeleteCounterparty не валидны схеме`
+        `Данные запроса postDeleteCounterparty не валидны схеме`,
       );
     }
 
@@ -89,5 +89,5 @@ export const postDeleteCounterpartyMockResponse = http.post(
   async () => {
     await delay(2000);
     return HttpResponse.json(mockResponseSuccess);
-  }
+  },
 );

@@ -10,7 +10,7 @@ import { UnxpectedError } from "~/shared/unexpectedError/unexpectedError";
 export const getDocumentConcludeKeys = ["getDocumentConclude"];
 
 export const getDocumentConclude = async (
-  accessToken: string
+  accessToken: string,
 ): Promise<GetDocumentConcludeSuccess> => {
   try {
     const url = new URL(import.meta.env.VITE_GET_DOCUMENT_CONCLUDE);
@@ -79,5 +79,5 @@ export const getDocumentConcludeMockResponse = http.get(
   async () => {
     await delay(2000);
     return HttpResponse.json(mockResponseSuccess);
-  }
+  },
 );

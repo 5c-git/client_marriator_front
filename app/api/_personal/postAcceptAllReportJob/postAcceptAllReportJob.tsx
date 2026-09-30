@@ -23,7 +23,7 @@ export const postAcceptAllReportJob = async (
         amount: number;
       }[];
     }[];
-  }
+  },
 ): Promise<PostAcceptAllReportJobSuccess> => {
   try {
     const url = new URL(import.meta.env.VITE_POST_ACCEPT_ALL_REPORT_JOB);
@@ -53,7 +53,7 @@ export const postAcceptAllReportJob = async (
     } else {
       console.log(parsed.error);
       throw new Response(
-        `Данные запроса postAcceptAllReportJob не валидны схеме`
+        `Данные запроса postAcceptAllReportJob не валидны схеме`,
       );
     }
 
@@ -84,5 +84,5 @@ export const postAcceptAllReportJobMockResponse = http.post(
   async () => {
     await delay(2000);
     return HttpResponse.json(mockResponseSuccess);
-  }
+  },
 );

@@ -178,10 +178,10 @@ export const mockResponseSuccess: PostCreateSearchFromTaskSuccess = {
 
 export const mockResponseError = {};
 
-export const postCreateSearchFromTaskMockResponse = http.post(
-  `${import.meta.env.VITE_POST_CREATE_SEARCH_FROM_TASK}`,
-  async () => {
-    await delay(2000);
-    return HttpResponse.json(mockResponseSuccess);
-  },
-);
+// export const postCreateSearchFromTaskMockResponse = http.post(
+//   `${import.meta.env.VITE_POST_CREATE_SEARCH_FROM_TASK}`,
+//   async () => {
+//     await delay(2000);
+//     return HttpResponse.json(mockResponseSuccess);
+//   },
+// );

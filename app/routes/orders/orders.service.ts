@@ -32,8 +32,6 @@ export class OrdersService {
 
     const ordersData = await this.loadOrders(token);
 
-    console.log(ordersData);
-
     return ordersData.data.map((item) => {
       const earliestStartDate: string[] = [];
       const latestEndDate: string[] = [];
@@ -88,35 +86,21 @@ export class OrdersService {
 
     const userData = await this.loadUserInfo(token);
 
-    let cancel_order_interval = 6;
-    let repeat_order_interval = 6;
+    const date_cancel = new Date(
+      `2026-03-12T${userData.data.cancel_order.startsWith("0") ? userData.data.cancel_order : `0${userData.data.cancel_order}`}`,
+    );
+    const cancel_order_interval = date_cancel.getHours();
 
-    if (userData.data.cancel_order) {
-      const date = new Date(
-        `2026-03-12T${userData.data.cancel_order.startsWith("0") ? userData.data.cancel_order : `0${userData.data.cancel_order}`}`,
-      );
-      cancel_order_interval = date.getHours();
-    }
-    if (userData.data.cancel_order) {
-      const date = new Date(
-        `2026-03-12T${userData.data.cancel_order.startsWith("0") ? userData.data.cancel_order : `0${userData.data.cancel_order}`}`,
-      );
-      repeat_order_interval = date.getHours();
-    }
+    const date_repeat = new Date(
+      `2026-03-12T${userData.data.change_order.startsWith("0") ? userData.data.change_order : `0${userData.data.change_order}`}`,
+    );
+    const repeat_order_interval = date_repeat.getHours();
 
     return {
       id: userData.data.id,
       cancel_order_interval,
       repeat_order_interval,
     };
-  }
-
-  async getUserProjects() {
-    const token = this.appService.getToken();
-
-    const userData = await this.loadUserInfo(token);
-
-    return userData.data.project;
   }
 
   async repeatOrder(orderId: string) {

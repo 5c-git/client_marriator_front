@@ -69,10 +69,10 @@ export const mockResponseSuccess = {
 };
 export const mockResponseError = {};
 
-export const postCancelTaskMockResponse = http.post(
-  `${import.meta.env.VITE_POST_CANCEL_TASK}`,
-  async () => {
-    await delay(2000);
-    return HttpResponse.json(mockResponseSuccess);
-  },
-);
+// export const postCancelTaskMockResponse = http.post(
+//   `${import.meta.env.VITE_POST_CANCEL_TASK}`,
+//   async () => {
+//     await delay(2000);
+//     return HttpResponse.json(mockResponseSuccess);
+//   },
+// );

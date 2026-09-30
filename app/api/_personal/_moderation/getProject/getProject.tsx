@@ -10,7 +10,7 @@ export const getProjectKeys = ["getProject"];
 
 export const getProject = async (
   accessToken: string,
-  userId: number
+  userId: number,
 ): Promise<GetProjectSuccess> => {
   try {
     const url = new URL(import.meta.env.VITE_GET_PROJECT);
@@ -139,5 +139,5 @@ export const getProjectMockResponse = http.get(
 
       await delay(2000);
       return HttpResponse.json(mockResponseSuccess);
-    }
+    },
 );

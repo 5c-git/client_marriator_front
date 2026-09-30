@@ -9,7 +9,7 @@ export const postSetProjectKeys = ["postSetProject"];
 export const postSetProject = async (
   accessToken: string,
   userId: string,
-  projects: string[]
+  projects: string[],
 ) => {
   try {
     const url = new URL(import.meta.env.VITE_POST_SET_PROJECT);
@@ -76,5 +76,5 @@ export const postSetProjectMockResponse = http.post(
   async () => {
     await delay(2000);
     return HttpResponse.json(mockResponseSuccess);
-  }
+  },
 );

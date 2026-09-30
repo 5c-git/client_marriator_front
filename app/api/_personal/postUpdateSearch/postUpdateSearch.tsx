@@ -236,10 +236,10 @@ export const mockResponseSuccess = {
 };
 export const mockResponseError = {};
 
-export const postUpdateSearchMockResponse = http.post(
-  `${import.meta.env.VITE_POST_UPDATE_SEARCH}`,
-  async () => {
-    await delay(2000);
-    return HttpResponse.json(mockResponseSuccess);
-  },
-);
+// export const postUpdateSearchMockResponse = http.post(
+//   `${import.meta.env.VITE_POST_UPDATE_SEARCH}`,
+//   async () => {
+//     await delay(2000);
+//     return HttpResponse.json(mockResponseSuccess);
+//   },
+// );

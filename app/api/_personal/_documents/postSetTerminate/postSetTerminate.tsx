@@ -11,7 +11,7 @@ export const postSetTerminateKeys = ["postSetTerminate"];
 
 export const postSetTerminate = async (
   accessToken: string,
-  uuid: string[]
+  uuid: string[],
 ): Promise<PostSetTerminateSuccess> => {
   try {
     const url = new URL(import.meta.env.VITE_SET_TERMINATE);
@@ -71,5 +71,5 @@ export const postSetTerminateMockResponse = http.get(
   async () => {
     await delay(2000);
     return HttpResponse.json(mockResponseSuccess);
-  }
+  },
 );

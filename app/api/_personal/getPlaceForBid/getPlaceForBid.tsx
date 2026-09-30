@@ -101,10 +101,10 @@ export const mockResponseSuccess: GetPlaceForBidSuccess = {
 
 export const mockResponseError = {};
 
-export const getPlaceForBidMockResponse = http.get(
-  `${import.meta.env.VITE_GET_PLACE_FOR_BID}`,
-  async () => {
-    await delay(2000);
-    return HttpResponse.json(mockResponseSuccess);
-  },
-);
+// export const getPlaceForBidMockResponse = http.get(
+//   `${import.meta.env.VITE_GET_PLACE_FOR_BID}`,
+//   async () => {
+//     await delay(2000);
+//     return HttpResponse.json(mockResponseSuccess);
+//   },
+// );

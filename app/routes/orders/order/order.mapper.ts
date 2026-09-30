@@ -53,9 +53,9 @@ export class OrderMapper {
           route: routeCount,
           dateStart: item.dateStart,
           dateEnd: item.dateEnd,
-          countSearch: item.countSearch,
+          countSearch: 0,
           buttonBidNeed: item.buttonBidNeed,
-          buttonSearchNeed: item.buttonSearchNeed,
+          buttonSearchNeed: false,
         };
       }),
       project: null,

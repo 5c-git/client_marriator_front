@@ -131,7 +131,7 @@ export async function clientAction({
 }
 
 export default function Task({ loaderData }: Route.ComponentProps) {
-  const { t } = useTranslation("m_tasks_task");
+  const { t } = useTranslation(["m_tasks_task", "m_tasks"]);
   const navigate = useNavigate();
   const submit = useSubmit();
   const fetcher = useFetcher<RequestSearchDrawerInterface["entity"]>();

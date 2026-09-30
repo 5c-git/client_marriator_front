@@ -16,7 +16,7 @@ export const postSetCounterpartyKeys = ["postSetCounterparty"];
 export const postSetCounterparty = async (
   accessToken: string,
   userId: string,
-  counterparties: string[]
+  counterparties: string[],
 ) => {
   try {
     const url = new URL(import.meta.env.VITE_POST_SET_COUNTERPARTY);
@@ -26,7 +26,7 @@ export const postSetCounterparty = async (
     formData.append("userId", userId);
 
     counterparties.forEach((counterparty, index) =>
-      formData.append(`counterpartyIds[${index}]`, counterparty)
+      formData.append(`counterpartyIds[${index}]`, counterparty),
     );
 
     const request = await fetch(url, {
@@ -89,5 +89,5 @@ export const postSetCounterpartyMockResponse = http.post(
   async () => {
     await delay(2000);
     return HttpResponse.json(mockResponseSuccess);
-  }
+  },
 );

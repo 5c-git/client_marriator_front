@@ -158,8 +158,6 @@ export default function Order({ loaderData }: Route.ComponentProps) {
 
   const isDesktop = window.innerWidth >= 768 ? true : false;
 
-  console.log(loaderData.supervisorsToSelect);
-
   return (
     <>
       {editMode ? (

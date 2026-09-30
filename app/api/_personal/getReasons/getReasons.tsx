@@ -10,7 +10,7 @@ import {
 export const getReasonsKeys = ["getReasons"];
 
 export const getReasons = async (
-  accessToken: string
+  accessToken: string,
 ): Promise<GetReasonsSuccess> => {
   try {
     const url = new URL(import.meta.env.VITE_GET_REASONS);
@@ -87,5 +87,5 @@ export const getReasonsMockResponse = http.get(
   async () => {
     await delay(2000);
     return HttpResponse.json(mockResponseSuccess);
-  }
+  },
 );

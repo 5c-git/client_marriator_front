@@ -29,11 +29,11 @@ export default function MyProfile({ loaderData }: Route.ComponentProps) {
       value: withLocale("/profile/my-profile/user-activities?step=1"),
       hasNotification: false,
     },
-    {
-      name: t(`billing`),
-      value: withLocale("/profile/my-profile/billing"),
-      hasNotification: false,
-    },
+    // {
+    //   name: t(`billing`),
+    //   value: withLocale("/profile/my-profile/billing"),
+    //   hasNotification: false,
+    // },
     {
       name: t(`work-radius`),
       value: withLocale("/profile/my-profile/work-radius"),
