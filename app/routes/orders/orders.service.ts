@@ -103,6 +103,14 @@ export class OrdersService {
     };
   }
 
+  async getUserProjects() {
+    const token = this.appService.getToken();
+
+    const userData = await this.loadUserInfo(token);
+
+    return userData.data.project;
+  }
+
   async repeatOrder(orderId: string) {
     const token = this.appService.getToken();
 
