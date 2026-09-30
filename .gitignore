@@ -17,3 +17,6 @@ storybook-static
 /blob-report/
 /playwright/.cache/
 /playwright/.auth/
+
+# Черновики задач (task-start)
+docs/tasks/*/notes/

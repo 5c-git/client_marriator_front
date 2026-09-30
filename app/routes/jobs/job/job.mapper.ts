@@ -106,7 +106,7 @@ export class JobMapper {
 
           const canStart = isWithinInterval(now, {
             start: subHours(new Date(data.data.dateStart), 1),
-            end: new Date(data.data.dateEnd),
+            end: subHours(new Date(data.data.dateEnd), 1),
           });
 
           if (canStart && !actedDay && data.data.acceptingUser.status === 5) {

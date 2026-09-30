@@ -86,6 +86,11 @@ export class OrdersService {
 
     const userData = await this.loadUserInfo(token);
 
+    const date_create_bid = new Date(
+      `2026-03-12T${userData.data.leave_bid.startsWith("0") ? userData.data.leave_bid : `0${userData.data.leave_bid}`}`,
+    );
+    const create_bid_interval = date_create_bid.getHours();
+
     const date_cancel = new Date(
       `2026-03-12T${userData.data.cancel_order.startsWith("0") ? userData.data.cancel_order : `0${userData.data.cancel_order}`}`,
     );
@@ -98,9 +103,18 @@ export class OrdersService {
 
     return {
       id: userData.data.id,
+      create_bid_interval,
       cancel_order_interval,
       repeat_order_interval,
     };
+  }
+
+  async getUserProjects() {
+    const token = this.appService.getToken();
+
+    const userData = await this.loadUserInfo(token);
+
+    return userData.data.project;
   }
 
   async repeatOrder(orderId: string) {

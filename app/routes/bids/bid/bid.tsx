@@ -1,8 +1,19 @@
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { useOutletContext, useFetcher } from "react-router";
 import type { Route } from "./+types/bid";
 import type { GetBidSuccess } from "~/api/_personal/getBid/getBidSuccess.schema";
 import type { BidMobileViewInterface } from "./_views/BidMobileView/BidMobileViewInterface";
+
+import { useTranslation } from "react-i18next";
+
+import {
+  Alert,
+  Button,
+  Dialog,
+  DialogActions,
+  DialogTitle,
+  Snackbar,
+} from "@mui/material";
 
 import { BidFormMobileView } from "./_views/BidMobileView/BidFormMobileView";
 import { BidStaticMobileView } from "./_views/BidMobileView/BidStaticMobileView";
@@ -43,12 +54,26 @@ export async function clientAction({
   if (_action === BID_ACTIONS.update) {
     await bidService.updateBid(fields.payload);
   } else if (_action === BID_ACTIONS.cancel) {
-    await bidService.cancelBid(params.bidId);
+    // ошибка отмены не должна уводить на страницу ошибки — показываем её в карточке
+    try {
+      const data = await bidService.cancelBid(params.bidId);
+
+      if (!data.data.success) {
+        return { cancelError: true };
+      }
+    } catch (error) {
+      if (error instanceof Response && error.status === 401) {
+        throw error;
+      }
+
+      return { cancelError: true };
+    }
   }
 }
 
 export default function Bid({ loaderData }: Route.ComponentProps) {
-  const fetcher = useFetcher();
+  const { t } = useTranslation(["m_bids_bid", "m_bids"]);
+  const fetcher = useFetcher<{ cancelError?: boolean }>();
   const { bidMobileData, editMode, projectTimeRange } = useOutletContext<{
     bidMobileData: GetBidSuccess["data"];
     editMode: boolean;
@@ -58,11 +83,24 @@ export default function Bid({ loaderData }: Route.ComponentProps) {
     };
   }>();
 
-  const [bid] = useState<BidMobileViewInterface["entity"] | null>(
-    BidMapper.mapDataToBid(bidMobileData),
+  // пересчитываем после перезагрузки loader'а, иначе после отмены карточка показывает старый статус
+  const bid = useMemo<BidMobileViewInterface["entity"] | null>(
+    () => BidMapper.mapDataToBid(bidMobileData),
+    [bidMobileData],
   );
 
+  const [cancelDialogOpen, setCancelDialogOpen] = useState<boolean>(false);
+  const [cancelExpired, setCancelExpired] = useState<boolean>(false);
+
   const isDesktop = window.innerWidth >= 768 ? true : false;
+
+  const canCancelBid = () =>
+    bid &&
+    (bid.status == 1 || bid.status == 6) &&
+    bid.createdAt &&
+    isBefore(new Date(), addHours(bid.createdAt, loaderData.userCancelInterval))
+      ? true
+      : false;
 
   return (
     <>
@@ -128,31 +166,100 @@ export default function Bid({ loaderData }: Route.ComponentProps) {
                 start: new Date(projectTimeRange.start),
                 end: new Date(projectTimeRange.end),
               }}
-              {...((bid.status == 1 || bid.status == 6) &&
-              bid.createdAt &&
-              isBefore(
-                new Date(),
-                addHours(bid.createdAt, loaderData.userCancelInterval),
-              ) &&
-              isDesktop
+              {...(canCancelBid() && isDesktop
                 ? {
                     cancelAction: () => {
-                      fetcher.submit(
-                        JSON.stringify({
-                          _action: BID_ACTIONS.cancel,
-                        }),
-                        {
-                          method: "POST",
-                          encType: "application/json",
-                        },
-                      );
+                      setCancelDialogOpen(true);
                     },
+                    cancelDisabled: fetcher.state !== "idle",
                   }
                 : {})}
             />
           )}
         </>
       ) : null}
+
+      <Dialog
+        open={cancelDialogOpen}
+        onClose={() => {
+          setCancelDialogOpen(false);
+        }}
+        sx={{
+          "& .MuiDialog-paper": {
+            borderRadius: "8px",
+          },
+        }}
+      >
+        <DialogTitle
+          sx={{
+            fontWeight: "400",
+            fontSize: "1.125rem",
+          }}
+        >
+          {`${t("dialog.cancel", { ns: "m_bids" })} ${t("dialog.title", { ns: "m_bids" })} ?`}
+        </DialogTitle>
+        <DialogActions>
+          <Button
+            variant="outlined"
+            onClick={() => {
+              setCancelDialogOpen(false);
+            }}
+          >
+            {t("dialog.no", { ns: "m_bids" })}
+          </Button>
+          <Button
+            variant="contained"
+            onClick={() => {
+              setCancelDialogOpen(false);
+
+              // интервал мог истечь, пока открыта модалка — тогда на сервер не идём
+              if (!canCancelBid()) {
+                setCancelExpired(true);
+                return;
+              }
+
+              fetcher.submit(
+                JSON.stringify({
+                  _action: BID_ACTIONS.cancel,
+                }),
+                {
+                  method: "POST",
+                  encType: "application/json",
+                },
+              );
+            }}
+          >
+            {t("dialog.yes", { ns: "m_bids" })}
+          </Button>
+        </DialogActions>
+      </Dialog>
+
+      <Snackbar
+        // пока идёт повторный запрос — скрыт; иначе reset по таймеру сбросил бы state в idle посреди запроса
+        open={
+          (fetcher.state === "idle" && fetcher.data?.cancelError) ||
+          cancelExpired
+            ? true
+            : false
+        }
+        autoHideDuration={3000}
+        onClose={() => {
+          if (fetcher.state === "idle") {
+            fetcher.reset();
+          }
+          setCancelExpired(false);
+        }}
+      >
+        <Alert
+          severity="error"
+          variant="small"
+          sx={{
+            width: "100%",
+          }}
+        >
+          {cancelExpired ? t("cancelExpiredAlert") : t("cancelErrorAlert")}
+        </Alert>
+      </Snackbar>
     </>
   );
 }

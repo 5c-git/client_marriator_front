@@ -23,12 +23,14 @@ import { StyledCheckboxMultiple } from "~/shared/ui/StyledCheckboxMultiple/Style
 
 import Box from "@mui/material/Box";
 import {
+  Alert,
   Button,
   Dialog,
   DialogActions,
   DialogTitle,
   Divider,
   IconButton,
+  Snackbar,
   Typography,
 } from "@mui/material";
 
@@ -44,6 +46,7 @@ import { taskContainer } from "./task.module";
 import { taskTokens } from "./task.tokens";
 import { TaskMapper } from "./task.mapper";
 import { ButtonActionMapper } from "~/shared/mappers/buttonActionMapper";
+import { isFuture, subHours } from "date-fns";
 
 const TASK_ACTIONS = {
   deleteActivity: "deleteActivity",
@@ -126,7 +129,20 @@ export async function clientAction({
   } else if (_action === TASK_ACTIONS.repeat) {
     await tasksService.repeatTask(fields.taskId);
   } else if (_action === TASK_ACTIONS.cancel) {
-    await tasksService.cancelTask(fields.taskId);
+    // ошибка отмены не должна уводить на страницу ошибки — показываем её в карточке
+    try {
+      const data = await tasksService.cancelTask(fields.taskId);
+
+      if (!data.data.success) {
+        return { cancelError: true };
+      }
+    } catch (error) {
+      if (error instanceof Response && error.status === 401) {
+        throw error;
+      }
+
+      return { cancelError: true };
+    }
   }
 }
 
@@ -135,8 +151,14 @@ export default function Task({ loaderData }: Route.ComponentProps) {
   const navigate = useNavigate();
   const submit = useSubmit();
   const fetcher = useFetcher<RequestSearchDrawerInterface["entity"]>();
+  // отдельный fetcher: ответ отмены в общем fetcher.data открыл бы RequestSearchDrawer
+  const cancelFetcher = useFetcher<{ cancelError?: boolean }>();
 
   const [editMode, setEditMode] = useState<boolean>(false);
+  const [taskToCancel, setTaskToCancel] = useState<
+    "newOrNotAccepted" | "accepted" | null
+  >(null);
+  const [cancelExpired, setCancelExpired] = useState<boolean>(false);
   const [searchSupervisors, setSearchSupervisors] = useState<boolean>(false);
   const [searchResponsibleSupervisors, setSearchResponsibleSupervisors] =
     useState<boolean>(false);
@@ -147,6 +169,32 @@ export default function Task({ loaderData }: Route.ComponentProps) {
   } | null>(null);
 
   const isDesktop = window.innerWidth >= 768 ? true : false;
+
+  // одно условие и для показа кнопки, и для повторной проверки на «Да»
+  const canCancelTask = (kind: "newOrNotAccepted" | "accepted") => {
+    if (kind === "newOrNotAccepted") {
+      return loaderData.entity.duration.start &&
+        ButtonActionMapper.canCancelNewOrNotAccepted(
+          loaderData.intervals.id,
+          loaderData.entity.userId,
+          loaderData.entity.status,
+          loaderData.intervals.cancel_task_interval,
+          loaderData.entity.duration.start,
+        )
+        ? true
+        : false;
+    }
+
+    return loaderData.entity.duration.end &&
+      ButtonActionMapper.canCancelAccepted(
+        loaderData.intervals.id,
+        loaderData.entity.userId,
+        loaderData.entity.status,
+        loaderData.entity.duration.end,
+      )
+      ? true
+      : false;
+  };
 
   return (
     <>
@@ -397,7 +445,13 @@ export default function Task({ loaderData }: Route.ComponentProps) {
                 service.buttonBidNeed) ||
               (loaderData.userRole === "supervisor" &&
                 loaderData.entity.status === 3 &&
-                service.buttonBidNeed) ? (
+                service.buttonBidNeed &&
+                isFuture(
+                  subHours(
+                    service.dateStart,
+                    loaderData.intervals.create_bid_interval,
+                  ),
+                )) ? (
                 <Button
                   variant="contained"
                   sx={{
@@ -457,61 +511,30 @@ export default function Task({ loaderData }: Route.ComponentProps) {
           )}
           actionSlot={() => (
             <>
-              {isDesktop &&
-              loaderData.entity.duration.start &&
-              ButtonActionMapper.canCancelNewOrNotAccepted(
-                loaderData.intervals.id,
-                loaderData.entity.userId,
-                loaderData.entity.status,
-                loaderData.intervals.cancel_task_interval,
-                loaderData.entity.duration.start,
-              ) ? (
+              {isDesktop && canCancelTask("newOrNotAccepted") ? (
                 <Button
                   variant="contained"
                   sx={{
                     marginTop: "8px",
                   }}
+                  disabled={cancelFetcher.state !== "idle"}
                   onClick={() => {
-                    fetcher.submit(
-                      JSON.stringify({
-                        _action: "cancel",
-                        orderId: loaderData.entity.id,
-                      }),
-                      {
-                        method: "POST",
-                        encType: "application/json",
-                      },
-                    );
+                    setTaskToCancel("newOrNotAccepted");
                   }}
                 >
                   {t("cancelTaskButton", { ns: "m_tasks" })}
                 </Button>
               ) : null}
 
-              {isDesktop &&
-              loaderData.entity.duration.end &&
-              ButtonActionMapper.canCancelAccepted(
-                loaderData.intervals.id,
-                loaderData.entity.userId,
-                loaderData.entity.status,
-                loaderData.entity.duration.end,
-              ) ? (
+              {isDesktop && canCancelTask("accepted") ? (
                 <Button
                   variant="contained"
                   sx={{
                     marginTop: "8px",
                   }}
+                  disabled={cancelFetcher.state !== "idle"}
                   onClick={() => {
-                    fetcher.submit(
-                      JSON.stringify({
-                        _action: "cancel",
-                        orderId: loaderData.entity.id,
-                      }),
-                      {
-                        method: "POST",
-                        encType: "application/json",
-                      },
-                    );
+                    setTaskToCancel("accepted");
                   }}
                 >
                   {t("cancelTaskButton", { ns: "m_tasks" })}
@@ -536,7 +559,7 @@ export default function Task({ loaderData }: Route.ComponentProps) {
                     fetcher.submit(
                       JSON.stringify({
                         _action: "repeat",
-                        orderId: loaderData.entity.id,
+                        taskId: loaderData.entity.id,
                       }),
                       {
                         method: "POST",
@@ -751,6 +774,88 @@ export default function Task({ loaderData }: Route.ComponentProps) {
           </Button>
         </DialogActions>
       </Dialog>
+      <Dialog
+        open={taskToCancel ? true : false}
+        onClose={() => {
+          setTaskToCancel(null);
+        }}
+        sx={{
+          "& .MuiDialog-paper": {
+            borderRadius: "8px",
+          },
+        }}
+      >
+        <DialogTitle
+          sx={{
+            fontWeight: "400",
+            fontSize: "1.125rem",
+          }}
+        >
+          {`${t("dialog.cancel", { ns: "m_tasks" })} ${t("dialog.title", { ns: "m_tasks" })} ?`}
+        </DialogTitle>
+        <DialogActions>
+          <Button
+            variant="outlined"
+            onClick={() => {
+              setTaskToCancel(null);
+            }}
+          >
+            {t("dialog.no", { ns: "m_tasks" })}
+          </Button>
+          <Button
+            variant="contained"
+            onClick={() => {
+              const kind = taskToCancel;
+              setTaskToCancel(null);
+
+              // интервал мог истечь, пока открыта модалка — тогда на сервер не идём
+              if (!kind || !canCancelTask(kind)) {
+                setCancelExpired(true);
+                return;
+              }
+
+              cancelFetcher.submit(
+                JSON.stringify({
+                  _action: TASK_ACTIONS.cancel,
+                  taskId: loaderData.entity.id,
+                }),
+                {
+                  method: "POST",
+                  encType: "application/json",
+                },
+              );
+            }}
+          >
+            {t("dialog.yes", { ns: "m_tasks" })}
+          </Button>
+        </DialogActions>
+      </Dialog>
+      <Snackbar
+        // пока идёт повторный запрос — скрыт; иначе reset по таймеру сбросил бы state в idle посреди запроса
+        open={
+          (cancelFetcher.state === "idle" && cancelFetcher.data?.cancelError) ||
+          cancelExpired
+            ? true
+            : false
+        }
+        autoHideDuration={3000}
+        onClose={() => {
+          if (cancelFetcher.state === "idle") {
+            cancelFetcher.reset();
+          }
+          setCancelExpired(false);
+        }}
+      >
+        <Alert
+          severity="error"
+          variant="small"
+          sx={{
+            width: "100%",
+          }}
+        >
+          {cancelExpired ? t("cancelExpiredAlert") : t("cancelErrorAlert")}
+        </Alert>
+      </Snackbar>
     </>
   );
 }

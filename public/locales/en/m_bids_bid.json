@@ -60,5 +60,7 @@
   "notSelfEmployed": "Hired worker",
   "addDayButton": "Add day",
   "earlierThanDefaultError": "Earlier than default",
-  "laterThanDefaultError": "Later that default"
+  "laterThanDefaultError": "Later that default",
+  "cancelErrorAlert": "Failed to cancel the request. Please try again",
+  "cancelExpiredAlert": "The time to cancel the request has expired"
 }

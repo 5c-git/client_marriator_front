@@ -11,6 +11,7 @@ import {
   type EndDay,
   type PayReport,
   type GetSettings,
+  type GetUserData,
 } from "./job.private-tokens";
 import { Setting } from "~/api/_settings/getSettingsFromKey/getSettingsFromKeySuccess.schema";
 
@@ -24,6 +25,7 @@ export class JobService {
     private readonly _endDay: EndDay,
     private readonly _payReport: PayReport,
     private readonly _getSettings: GetSettings,
+    private readonly _getUserData: GetUserData,
   ) {}
 
   async getJob(specialistId: string, bidId: string) {
@@ -67,6 +69,22 @@ export class JobService {
 
     return this._endDay(token, bidId, files);
   }
+
+  async getUserIntervals() {
+    const token = this.appSerivice.getToken();
+
+    const userData = await this._getUserData(token);
+
+    const date_refuse_job = new Date(
+      `2026-03-12T${userData.data.refusal_task.startsWith("0") ? userData.data.refusal_task : `0${userData.data.refusal_task}`}`,
+    );
+    const refuse_job_interval = date_refuse_job.getHours();
+
+    return {
+      id: userData.data.id,
+      refuse_job_interval,
+    };
+  }
 }
 
 injected(
@@ -79,4 +97,5 @@ injected(
   jobPrivateTokens.endDay,
   jobPrivateTokens.payReport,
   jobPrivateTokens.getSettings,
+  jobPrivateTokens.getUserData,
 );

@@ -21,7 +21,6 @@ i18next
     fallbackLng: "ru",
     ns: ["constructor", "rootErrorBoundry"],
     backend: {
-      loadPath: "/locales/{{lng}}/{{ns}}.json",
       backends: [HttpBackend],
     },
   });

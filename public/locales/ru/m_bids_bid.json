@@ -60,5 +60,7 @@
   "notSelfEmployed": "Наемный",
   "addDayButton": "Добавить день",
   "earlierThanDefaultError": "Время раньше изначального",
-  "laterThanDefaultError": "Время позже изначального"
+  "laterThanDefaultError": "Время позже изначального",
+  "cancelErrorAlert": "Не удалось отменить заявку. Попробуйте ещё раз",
+  "cancelExpiredAlert": "Время для отмены заявки истекло"
 }

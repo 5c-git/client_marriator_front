@@ -10,6 +10,7 @@ import type {
   GetSettingsFromKeySuccess,
   Setting,
 } from "~/api/_settings/getSettingsFromKey/getSettingsFromKeySuccess.schema";
+import type { GetDataSuccess } from "~/api/_personal/getData/getDataSuccess.schema";
 
 export type GetJob = (
   accessToken: string,
@@ -48,6 +49,8 @@ export type GetSettings = (
   setting: Setting,
 ) => Promise<GetSettingsFromKeySuccess>;
 
+export type GetUserData = (accessToken: string) => Promise<GetDataSuccess>;
+
 export const jobPrivateTokens = {
   getJob: token<GetJob>("job-private:getJob"),
   acceptBid: token<AcceptBid>("job-private:acceptBid"),
@@ -56,4 +59,5 @@ export const jobPrivateTokens = {
   endDay: token<EndDay>("job-private:endBid"),
   payReport: token<PayReport>("job-private:payReport"),
   getSettings: token<GetSettings>("job-private:getSettings"),
+  getUserData: token<GetUserData>("job-private:getUserData"),
 };
