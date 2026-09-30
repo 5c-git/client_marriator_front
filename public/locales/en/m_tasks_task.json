@@ -14,5 +14,7 @@
     "title": "Delete",
     "no": "No",
     "yes": "Yes"
-  }
+  },
+  "cancelErrorAlert": "Failed to cancel the task. Please try again",
+  "cancelExpiredAlert": "The time to cancel the task has expired"
 }
