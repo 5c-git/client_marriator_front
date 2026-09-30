@@ -25,7 +25,7 @@ export const FilesPopup = ({
   onSubmit: (files: File[]) => void;
   // onSubmit: (files: string[]) => void;
 }) => {
-  const { t } = useTranslation("job");
+  const { t } = useTranslation("m_jobs_job");
 
   const {
     control,
