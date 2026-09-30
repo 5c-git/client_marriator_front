@@ -31,5 +31,5 @@ jobs:
         with:
           install_command: npm ci # default: npm ci
           build_command: NODE_ENV=development npm run build-storybook
-          path: storybook-static # default: dist/storybook
+          path: client_marriator_front # default: dist/storybook
           checkout: false # default: true
