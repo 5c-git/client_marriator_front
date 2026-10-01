@@ -6,6 +6,7 @@ import {
 } from "@mui/material";
 
 export const S_Accordion = styled(Accordion)(() => ({
+  overflowX: "hidden",
   boxShadow: "none",
   "&:before": {
     position: "initial",
@@ -16,7 +17,7 @@ export const S_Accordion = styled(Accordion)(() => ({
   },
 }));
 
-export const S_AccordionSummary = styled(AccordionSummary)((props) => ({
+export const S_AccordionSummary = styled(AccordionSummary)(() => ({
   padding: 0,
   margin: 0,
   minHeight: "unset",
@@ -38,6 +39,7 @@ export const S_AccordionSummary = styled(AccordionSummary)((props) => ({
   },
 }));
 
-export const S_AccordionDetails = styled(AccordionDetails)((props) => ({
+export const S_AccordionDetails = styled(AccordionDetails)(() => ({
+  overflowX: "hidden",
   padding: 0,
 }));
