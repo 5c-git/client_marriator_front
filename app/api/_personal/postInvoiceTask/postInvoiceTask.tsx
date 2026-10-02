@@ -74,10 +74,10 @@ export const mockResponseSuccess = {
 };
 export const mockResponseError = {};
 
-// export const postInvoiceTaskMockResponse = http.post(
-//   `${import.meta.env.VITE_POST_INVOICE_TASK}`,
-//   async () => {
-//     await delay(2000);
-//     return HttpResponse.json(mockResponseSuccess);
-//   },
-// );
+export const postInvoiceTaskMockResponse = http.post(
+  `${import.meta.env.VITE_POST_INVOICE_TASK}`,
+  async () => {
+    await delay(2000);
+    return HttpResponse.json(mockResponseSuccess);
+  },
+);

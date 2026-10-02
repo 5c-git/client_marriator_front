@@ -69,10 +69,10 @@ export const mockResponseSuccess: PostAcceptTaskSuccess = {
 };
 export const mockResponseError = {};
 
-// export const postAcceptTaskMockResponse = http.post(
-//   `${import.meta.env.VITE_POST_ACCEPT_TASK}`,
-//   async () => {
-//     await delay(2000);
-//     return HttpResponse.json(mockResponseSuccess);
-//   },
-// );
+export const postAcceptTaskMockResponse = http.post(
+  `${import.meta.env.VITE_POST_ACCEPT_TASK}`,
+  async () => {
+    await delay(2000);
+    return HttpResponse.json(mockResponseSuccess);
+  },
+);

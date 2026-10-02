@@ -646,10 +646,10 @@ export const mockResponseSuccessEmpty = {
 
 export const mockResponseError = {};
 
-// export const getTasksMockResponse = http.get(
-//   `${import.meta.env.VITE_GET_TASKS}`,
-//   async () => {
-//     await delay(2000);
-//     return HttpResponse.json(mockResponseBug);
-//   },
-// );
+export const getTasksMockResponse = http.get(
+  `${import.meta.env.VITE_GET_TASKS}`,
+  async () => {
+    await delay(2000);
+    return HttpResponse.json(mockResponseBug);
+  },
+);
