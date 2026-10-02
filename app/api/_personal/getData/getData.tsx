@@ -60,14 +60,14 @@ export const mockResponseSuccess = {};
 
 export const mockResponseEmpty = {};
 
-// export const getDataMockResponse = http.get(
-//   `${import.meta.env.VITE_GET_DATA}`,
-//   async () =>
-//     // { request }
-//     {
-//       // const url = new URL(request.url);
+export const getDataMockResponse = http.get(
+  `${import.meta.env.VITE_GET_DATA}`,
+  async () =>
+    // { request }
+    {
+      // const url = new URL(request.url);
 
-//       await delay(2000);
-//       return HttpResponse.json(mockResponseSuccess);
-//     },
-// );
+      await delay(2000);
+      return HttpResponse.json(mockResponseSuccess);
+    },
+);

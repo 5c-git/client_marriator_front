@@ -1,11 +1,9 @@
 import type { DayReviewMobileViewInterface } from "./DayReviewMobileViewInterface";
 
-import { useNavigate } from "react-router";
 import { Fragment, useState } from "react";
 
 import { t } from "i18next";
 import { useTranslation } from "react-i18next";
-import { withLocale } from "~/shared/withLocale";
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
@@ -100,7 +98,6 @@ export function DayReviewMobileView(
     submitAction: (values: submitValues) => void;
   },
 ) {
-  const navigate = useNavigate();
   const { t } = useTranslation("m_bids_bid_specialists_specialist_dayReview");
 
   const [expanded, setExpanded] = useState<number>(0);
@@ -148,6 +145,7 @@ export function DayReviewMobileView(
           width: "100%",
           paddingTop: "20px",
           paddingBottom: "20px",
+          containerType: "inline-size",
         }}
       >
         {fields.map((day, index) => (
@@ -232,7 +230,7 @@ export function DayReviewMobileView(
                     <Box
                       key={index}
                       sx={{
-                        minWidth: "calc(100vw - 45px)",
+                        minWidth: "calc(100cqi - 45px)",
                         height: "465px",
                         borderRadius: "6px",
                         overflow: "hidden",

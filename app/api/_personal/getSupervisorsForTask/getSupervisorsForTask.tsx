@@ -152,10 +152,10 @@ export const mockResponseSuccess = {
 
 export const mockResponseError = {};
 
-// export const getSupervisorsForTaskMockResponse = http.get(
-//   `${import.meta.env.VITE_GET_SUPERVISORS_FOR_TASK}`,
-//   async () => {
-//     await delay(2000);
-//     return HttpResponse.json(mockResponseSuccess);
-//   },
-// );
+export const getSupervisorsForTaskMockResponse = http.get(
+  `${import.meta.env.VITE_GET_SUPERVISORS_FOR_TASK}`,
+  async () => {
+    await delay(2000);
+    return HttpResponse.json(mockResponseSuccess);
+  },
+);

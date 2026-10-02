@@ -108,10 +108,10 @@ export const mockResponseSuccess = {
 };
 export const mockResponseError = {};
 
-// export const postDeleteTaskActivityMockResponse = http.post(
-//   `${import.meta.env.VITE_POST_DELETE_TASK_ACTIVITY}`,
-//   async () => {
-//     await delay(2000);
-//     return HttpResponse.json(mockResponseSuccess);
-//   },
-// );
+export const postDeleteTaskActivityMockResponse = http.post(
+  `${import.meta.env.VITE_POST_DELETE_TASK_ACTIVITY}`,
+  async () => {
+    await delay(2000);
+    return HttpResponse.json(mockResponseSuccess);
+  },
+);
