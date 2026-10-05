@@ -326,6 +326,8 @@ export default function App() {
   const manager = useStore((state) => state.userManager);
   const supervisor = useStore((state) => state.userSupervisor);
 
+  const storage = localStorage.getItem("store");
+
   useEffect(() => {
     const handleOnline = () => {
       setIsOnline(true);

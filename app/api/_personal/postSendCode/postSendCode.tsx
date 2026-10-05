@@ -53,7 +53,7 @@ export const postSendCode = async (accessToken: string, code: number) => {
     } else if (parsedNoPaperError.success) {
       data = {
         data: {
-          error: parsedNoPaperError.data.data.description,
+          error: parsedNoPaperError.data.data.message.description,
         },
       };
     } else {
