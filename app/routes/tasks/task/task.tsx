@@ -501,10 +501,10 @@ export default function Task({ loaderData }: Route.ComponentProps) {
                   disabled={fetcher.state !== "idle"}
                 >
                   {t("searchRequest")}{" "}
-                  <span>
+                  {/* <span>
                     {t("searchRequestCount")}
                     {service.countSearch}
-                  </span>
+                  </span> */}
                 </Button>
               ) : null}
             </Box>
