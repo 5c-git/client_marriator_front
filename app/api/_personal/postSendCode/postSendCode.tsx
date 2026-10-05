@@ -49,7 +49,11 @@ export const postSendCode = async (accessToken: string, code: number) => {
     if (parsed.success) {
       data = parsed.data;
     } else if (parsedError.success) {
-      data = parsedError.data;
+      data = {
+        data: {
+          error: "Произошла ошибка! Повторите попытку",
+        },
+      };
     } else if (parsedNoPaperError.success) {
       data = {
         data: {

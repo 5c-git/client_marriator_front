@@ -78,6 +78,7 @@ export default function Sign({ loaderData }: Route.ComponentProps) {
         data={loaderData}
         popupOpen={popup}
         seconds={seconds}
+        fetcherState={fetcher.state}
         backAction={() => {
           navigate(withLocale("/profile/documents"), {
             viewTransition: true,

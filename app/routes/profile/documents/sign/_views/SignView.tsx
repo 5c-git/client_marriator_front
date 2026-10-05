@@ -28,6 +28,7 @@ type Props = {
   data: SignDocument[];
   popupOpen: boolean;
   seconds: number;
+  fetcherState: "idle" | "loading" | "submitting";
 
   backAction: () => void;
   signAction: () => void;
@@ -103,6 +104,7 @@ export function SignView(props: Props) {
               }}
               variant="contained"
               onClick={props.signAction}
+              disabled={props.fetcherState !== "idle"}
             >
               {t("button_action")}
             </Button>
