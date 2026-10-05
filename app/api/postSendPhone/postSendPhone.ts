@@ -114,15 +114,19 @@ export const mockResponseError = {
 };
 
 export const postSendPhoneMockResponse = http.post(
-  `${import.meta.env.VITE_SEND_PHONE}`,
+  "http://preprod.marriator-api.fivecorners.ru/api/sendPhone",
   async ({ request }) => {
     const url = new URL(`${request.url}?scenario=auth`);
     const scenario = url.searchParams.get("scenario");
 
-    if (scenario === "reg") {
-      await delay(2000);
-      return HttpResponse.json(mockPostSendPhoneResponseRegister);
-    }
+    // "http://preprod.marriator-api.fivecorners.ru/api/sendPhone"
+
+    return HttpResponse.json(mockPostSendPhoneResponseRegister);
+
+    // if (scenario === "reg") {
+    //   await delay(2000);
+    //   return HttpResponse.json(mockPostSendPhoneResponseRegister);
+    // }
     // else if (scenario === "auth") {
     //   await delay(2000);
     //   return HttpResponse.json(mockPostSendPhoneResponseAuth);
