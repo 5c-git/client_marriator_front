@@ -375,11 +375,3 @@ test("login as client desktop", async ({ page, network }) => {
   await expect(page).toHaveURL("http://localhost:5173/dashboard/orders");
   await expect(page.getByText("Поручения")).toBeVisible();
 });
-
-test("orders desktop page test", async ({ page, isMobile }) => {
-  test.skip(isMobile);
-
-  await page.goto("http://localhost:5173/dashboard/orders");
-
-  await expect(page.getByText("Поручения")).toBeVisible();
-});
