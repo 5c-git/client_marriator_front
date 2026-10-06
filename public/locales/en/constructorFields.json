@@ -35,6 +35,7 @@
   "locationsNeeded": "Please provide route locations",
   "newDateBeforeStart": "Selected date can not be earlier than previously set date",
   "newDateAfterFinish": "Selected date can not be later than previously set date",
+  "moreThanManager": "Date can not widen manager's range",
   "earlierThanProject": "Earlier than project start",
   "laterThanProject": "Later than project end",
   "earlierThanDefaultError": "Earlier than default",

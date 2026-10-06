@@ -63,7 +63,7 @@ export const getOrderSuccessSchema = z.object({
       z.object({
         id: z.number(),
         buttonBidNeed: z.boolean(),
-        // buttonSearchNeed: z.boolean(),
+        buttonSearchNeed: z.boolean(),
         count: z.number(),
         // countSearch: z.number(),
         viewActivity: z.object({
