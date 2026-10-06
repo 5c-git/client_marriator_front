@@ -22,8 +22,8 @@ const Slot = (props: SlotPropsWithError) => {
         "--borderColor": props.error
           ? "var(--mui-palette-Red)"
           : props.char
-          ? "var(--mui-palette-Grey_1)"
-          : "var(--mui-palette-Grey_3)",
+            ? "var(--mui-palette-Grey_1)"
+            : "var(--mui-palette-Grey_3)",
       }}
       sx={(theme) => ({
         position: "relative",
@@ -54,6 +54,7 @@ export const StyledOptField = (props: StyledOptField) => (
       onChange={props.onChange}
       onComplete={props.onComplete}
       disabled={props.disabled}
+      data-testid="test_otp-input"
       render={({ slots }) => (
         <Box
           style={{
