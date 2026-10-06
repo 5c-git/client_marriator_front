@@ -344,11 +344,11 @@ export default function Task({ loaderData }: Route.ComponentProps) {
           }}
           {...((loaderData.userRole === "manager" &&
             loaderData.entity.status === 1) ||
-          loaderData.entity.status === 2 ||
-          (loaderData.userRole === "supervisor" &&
-            loaderData.entity.status === 1) ||
-          loaderData.entity.status === 2
-            ? {
+          (loaderData.userRole === "manager" && loaderData.entity.status === 2)
+            ? // (loaderData.userRole === "supervisor" &&
+              //   loaderData.entity.status === 1) ||
+              // loaderData.entity.status === 2
+              {
                 headerButtonAction: () => {
                   setEditMode(true);
                 },

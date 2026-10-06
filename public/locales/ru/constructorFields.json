@@ -35,6 +35,7 @@
   "locationsNeeded": "Укажите точки маршрута",
   "newDateBeforeStart": "Выбранная дата не может быть раньше изначальной",
   "newDateAfterFinish": "Выбранная дата не может быть позже изначальной",
+  "moreThanManager": "Дата не может расширять значения менеджера",
   "earlierThanProject": "Дата раньше старта проекта",
   "laterThanProject": "Дата позже конца проекта",
   "earlierThanDefaultError": "Время раньше изначального",

@@ -70,12 +70,15 @@ export async function clientLoader({ params }: Route.ClientLoaderArgs) {
   setting_canEdit =
     (userRole === "manager" && entityData.data.status === 1 && params.taskId) ||
     (userRole === "manager" && entityData.data.status === 2 && params.taskId) ||
+    (userRole === "supervisor" &&
+      entityData.data.status === 2 &&
+      params.taskId) ||
     (userRole === "client" && entityData.data.status === 1) ||
     (userRole === "client" && entityData.data.status === 2)
       ? true
       : false;
 
-  if (setting_canEdit == true) {
+  if (setting_canEdit == true && userRole === "manager") {
     activities = await activityService.getActivitiesOptions(entityId);
     locations = await activityService.getLocationsOptions(entityId);
   }
@@ -118,6 +121,7 @@ export async function clientLoader({ params }: Route.ClientLoaderArgs) {
         ) as string,
       ),
     },
+    validateByActivityRange: userRole === "supervisor" ? true : false,
   };
 }
 
@@ -176,6 +180,7 @@ export default function Activity({ loaderData }: Route.ComponentProps) {
           locations={loaderData.locations}
           defaultTimeRange={loaderData.defaultTimeRange}
           projectTimeRange={loaderData.projectTimeRange}
+          validateByActivityRange={loaderData.validateByActivityRange}
           headerBackAction={() => {
             navigate(-1);
           }}
@@ -232,7 +237,9 @@ export default function Activity({ loaderData }: Route.ComponentProps) {
             } else {
               const updatePayload = {
                 [loaderData.vocabulary.entity]: Number(loaderData.entityId),
-                taskActivity: Number(loaderData.serviceId),
+                [`${loaderData.vocabulary.single}Activity`]: Number(
+                  loaderData.serviceId,
+                ),
                 viewActivityId: Number(values.activity),
                 count: Number(values.amount),
                 dateStart: values.dateStart.toISOString(),

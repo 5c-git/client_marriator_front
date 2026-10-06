@@ -62,13 +62,20 @@ import type { IntervalToDurationOptions } from "date-fns";
 type ActivityFormMobileViewInterface = Omit<
   ActivityMobileViewInterface,
   "headerButtonAction" | "logo"
->;
+> & {
+  validateByActivityRange: boolean;
+};
 
 const createActivityFormSchema = (
   defaultStartDate: Date,
   defaultEndDate: Date,
+
   projectStartDate: Date,
   projectEndDate: Date,
+
+  activityStartDate: Date,
+  activityEndDate: Date,
+  validateByActivityRange: boolean,
 ) =>
   z
     .object({
@@ -95,7 +102,21 @@ const createActivityFormSchema = (
             }),
           z.null(),
         ])
-        .pipe(z.date({ message: t("text", { ns: "constructorFields" }) })),
+        .pipe(z.date({ message: t("text", { ns: "constructorFields" }) }))
+        .refine(
+          (value) => {
+            if (validateByActivityRange) {
+              const result = compareAsc(value, activityStartDate);
+
+              return result < 0 ? false : true;
+            }
+
+            return true;
+          },
+          {
+            error: t("moreThanManager", { ns: "constructorFields" }),
+          },
+        ),
       dateEnd: z
         .union([
           z
@@ -111,7 +132,21 @@ const createActivityFormSchema = (
             }),
           z.null(),
         ])
-        .pipe(z.date({ message: t("text", { ns: "constructorFields" }) })),
+        .pipe(z.date({ message: t("text", { ns: "constructorFields" }) }))
+        .refine(
+          (value) => {
+            if (validateByActivityRange) {
+              const result = compareAsc(value, activityEndDate);
+
+              return result > 0 ? false : true;
+            }
+
+            return true;
+          },
+          {
+            error: t("moreThanManager", { ns: "constructorFields" }),
+          },
+        ),
       needDays: z.boolean(),
       needFoto: z.boolean(),
       days: z
@@ -371,8 +406,13 @@ export function ActivityFormMobileView(props: ActivityFormMobileViewInterface) {
       createActivityFormSchema(
         props.defaultTimeRange.start,
         props.defaultTimeRange.end,
+
         props.projectTimeRange.start,
         props.projectTimeRange.end,
+
+        props.entity.dateStart as Date,
+        props.entity.dateEnd as Date,
+        props.validateByActivityRange,
       ),
     ),
   });
@@ -420,28 +460,30 @@ export function ActivityFormMobileView(props: ActivityFormMobileViewInterface) {
             width: "100%",
           }}
         >
-          <Controller
-            name="activity"
-            control={control}
-            render={({ field }) => (
-              <StyledSelect
-                inputType="select"
-                placeholder={t(
-                  `${props.translation}.fields.servicePlaceholder`,
-                )}
-                onImmediateChange={() => {}}
-                validation="none"
-                error={errors.activity?.message}
-                options={props.activities}
-                {...field}
-                onChange={(evt) => {
-                  field.onChange(evt);
-                  remove();
-                  setValue("needDays", false);
-                }}
-              />
-            )}
-          />
+          {!props.validateByActivityRange ? (
+            <Controller
+              name="activity"
+              control={control}
+              render={({ field }) => (
+                <StyledSelect
+                  inputType="select"
+                  placeholder={t(
+                    `${props.translation}.fields.servicePlaceholder`,
+                  )}
+                  onImmediateChange={() => {}}
+                  validation="none"
+                  error={errors.activity?.message}
+                  options={props.activities}
+                  {...field}
+                  onChange={(evt) => {
+                    field.onChange(evt);
+                    remove();
+                    setValue("needDays", false);
+                  }}
+                />
+              )}
+            />
+          ) : null}
 
           <Controller
             name="amount"

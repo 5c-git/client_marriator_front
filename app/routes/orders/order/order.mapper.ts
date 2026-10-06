@@ -55,7 +55,7 @@ export class OrderMapper {
           dateEnd: item.dateEnd,
           countSearch: 0,
           buttonBidNeed: item.buttonBidNeed,
-          buttonSearchNeed: false,
+          buttonSearchNeed: item.buttonSearchNeed,
         };
       }),
       project: null,

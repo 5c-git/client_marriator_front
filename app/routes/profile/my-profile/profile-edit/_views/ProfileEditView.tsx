@@ -112,15 +112,7 @@ export function ProfileEditView(props: ProfileEditViewProps) {
             >
               {t("button_cancel")}
             </Button>
-            <Button
-              variant="contained"
-              onClick={() => {
-                form.trigger();
-                form.handleSubmit((values) => {
-                  props.onSubmit(values);
-                });
-              }}
-            >
+            <Button variant="contained" type="submit">
               {t("button_confirm")}
             </Button>
           </Box>
