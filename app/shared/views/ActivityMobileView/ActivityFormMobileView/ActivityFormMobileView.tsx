@@ -460,30 +460,29 @@ export function ActivityFormMobileView(props: ActivityFormMobileViewInterface) {
             width: "100%",
           }}
         >
-          {!props.validateByActivityRange ? (
-            <Controller
-              name="activity"
-              control={control}
-              render={({ field }) => (
-                <StyledSelect
-                  inputType="select"
-                  placeholder={t(
-                    `${props.translation}.fields.servicePlaceholder`,
-                  )}
-                  onImmediateChange={() => {}}
-                  validation="none"
-                  error={errors.activity?.message}
-                  options={props.activities}
-                  {...field}
-                  onChange={(evt) => {
-                    field.onChange(evt);
-                    remove();
-                    setValue("needDays", false);
-                  }}
-                />
-              )}
-            />
-          ) : null}
+          <Controller
+            name="activity"
+            control={control}
+            render={({ field }) => (
+              <StyledSelect
+                inputType="select"
+                placeholder={t(
+                  `${props.translation}.fields.servicePlaceholder`,
+                )}
+                onImmediateChange={() => {}}
+                validation="none"
+                error={errors.activity?.message}
+                options={props.activities}
+                {...field}
+                onChange={(evt) => {
+                  field.onChange(evt);
+                  remove();
+                  setValue("needDays", false);
+                }}
+                disabled={props.validateByActivityRange}
+              />
+            )}
+          />
 
           <Controller
             name="amount"
@@ -504,6 +503,7 @@ export function ActivityFormMobileView(props: ActivityFormMobileViewInterface) {
                     type: "tel",
                   },
                 }}
+                disabled={props.validateByActivityRange}
               />
             )}
           />
@@ -528,6 +528,7 @@ export function ActivityFormMobileView(props: ActivityFormMobileViewInterface) {
                     remove();
                     setValue("needDays", false);
                   }}
+                  disabled={props.validateByActivityRange}
                 />
               </LocalizationProvider>
             )}
@@ -554,6 +555,7 @@ export function ActivityFormMobileView(props: ActivityFormMobileViewInterface) {
                     remove();
                     setValue("needDays", false);
                   }}
+                  disabled={props.validateByActivityRange}
                 />
               </LocalizationProvider>
             )}
@@ -1225,6 +1227,7 @@ export function ActivityFormMobileView(props: ActivityFormMobileViewInterface) {
               label={t(`${props.translation}.fields.needPhotosPlaceholder`)}
               onImmediateChange={() => {}}
               validation="none"
+              disabled={props.validateByActivityRange}
             />
           )}
         />

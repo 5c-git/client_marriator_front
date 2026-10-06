@@ -71,15 +71,17 @@ export async function clientLoader({ params }: Route.ClientLoaderArgs) {
     (userRole === "manager" && entityData.data.status === 1 && params.taskId) ||
     (userRole === "manager" && entityData.data.status === 2 && params.taskId) ||
     (userRole === "supervisor" &&
-      entityData.data.status === 2 &&
+      entityData.data.status === 3 &&
       params.taskId) ||
     (userRole === "client" && entityData.data.status === 1) ||
     (userRole === "client" && entityData.data.status === 2)
       ? true
       : false;
 
-  if (setting_canEdit == true && userRole === "manager") {
-    activities = await activityService.getActivitiesOptions(entityId);
+  if (setting_canEdit == true) {
+    if (userRole === "manager") {
+      activities = await activityService.getActivitiesOptions(entityId);
+    }
     locations = await activityService.getLocationsOptions(entityId);
   }
 

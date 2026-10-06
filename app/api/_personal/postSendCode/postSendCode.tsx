@@ -57,7 +57,8 @@ export const postSendCode = async (accessToken: string, code: number) => {
     } else if (parsedNoPaperError.success) {
       data = {
         data: {
-          error: parsedNoPaperError.data.data.message.description,
+          // error: parsedNoPaperError.data.data.message.description,
+          error: "Произошла ошибка! Повторите попытку",
         },
       };
     } else {

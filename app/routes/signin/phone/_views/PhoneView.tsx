@@ -80,7 +80,6 @@ export function PhoneView(props: PhoneViewProps) {
           render={({ field }) => (
             <StyledPhoneField
               inputType="phone"
-
               error={errors.phone?.message}
               placeholder={t(`inputPlaceholder`)}
               onImmediateChange={() => {}}
