@@ -79,7 +79,7 @@ export async function clientLoader({ params }: Route.ClientLoaderArgs) {
       : false;
 
   if (setting_canEdit == true) {
-    if (userRole === "manager") {
+    if (userRole === "manager" || userRole === "client") {
       activities = await activityService.getActivitiesOptions(entityId);
     }
     locations = await activityService.getLocationsOptions(entityId);
