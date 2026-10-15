@@ -16,7 +16,7 @@ import { useUsers } from "./Users.hooks";
 export function UsersListView(props: UsersMobileViewInterface) {
   const { t } = useTranslation("m_shared_usersView");
 
-  const usersHooks = useUsers(props.users);
+  const usersHooks = useUsers(props.users, props.translation);
 
   return (
     <>
@@ -34,7 +34,7 @@ export function UsersListView(props: UsersMobileViewInterface) {
             <StatusSelect
               value={usersHooks.filter.toString()}
               onChange={(value) => {
-                usersHooks.setFilter(Number(value));
+                    usersHooks.selectStatus(Number(value));
               }}
               options={(() => {
                 const options: {

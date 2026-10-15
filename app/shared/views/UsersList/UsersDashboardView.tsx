@@ -32,7 +32,7 @@ export function UsersDashboardView(
 ) {
   const { t } = useTranslation("m_shared_usersView");
 
-  const usersHooks = useUsers(props.users);
+  const usersHooks = useUsers(props.users, props.translation);
 
   const [openFilters, setOpenFilters] = useState<boolean>(false);
 
@@ -82,7 +82,7 @@ export function UsersDashboardView(
                     onImmediateChange={() => {}}
                     value={usersHooks.filter.toString()}
                     onChange={(evt) => {
-                      usersHooks.setFilter(Number(evt.target.value));
+                      usersHooks.selectStatus(Number(evt.target.value));
                     }}
                     options={(() => {
                       const options: {
@@ -96,7 +96,7 @@ export function UsersDashboardView(
                           value: key,
                           label: `${t(
                             `${props.translation}.status.${statusCodeMap[Number(key) as keyof typeof statusCodeMap].value}`,
-                          )}(${usersHooks.users.filteredUsers[usersHooks.filter].length})`,
+                          )}(${usersHooks.users.filteredUsers[Number(key)].length})`,
                           disabled: false,
                         });
                       }

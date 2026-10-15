@@ -5,11 +5,16 @@ import { eachDayOfInterval, isWithinInterval } from "date-fns";
 
 import type { EntitiesListInterface, Entity } from "./EntitesListInterface";
 
+import { useStore } from "~/store/store";
+
 export const useEntities = (
   entities: Entity[],
   sort: EntitiesListInterface["sorting"],
+  section: EntitiesListInterface["entityType"],
 ) => {
-  const filteredEntities = useMemo(() => {
+  const setSectionStatus = useStore((state) => state.setSectionStatus);
+
+  const entitiesByStatus = useMemo(() => {
     //сортировка
     if (entities.length > 0) {
       const allFilters = [
@@ -38,15 +43,36 @@ export const useEntities = (
 
   const [filter, setFilter] = useState<number>(() => {
     if (entities.length > 0) {
-      const allFilters = [
-        ...new Set(entities.map((entity) => entity["status"])),
-      ].sort((a, b) => a - b);
+      const statuses = Object.keys(entitiesByStatus).map(Number);
+      const saved =
+        useStore.getState().sectionStatuses[
+          useStore.getState().userId ?? 0
+        ]?.[section];
 
-      return allFilters[0];
+      //восстанавливаем сохранённый статус, только если он ещё есть в данных (#88620)
+      return saved !== undefined && statuses.includes(saved)
+        ? saved
+        : statuses[0];
     } else {
-      return 0;
+      return -1;
     }
   });
+
+  //выбранный пользователем статус остаётся в списке даже пустым (#88620)
+  const filteredEntities = useMemo(() => {
+    if (entities.length === 0 || filter === -1 || filter in entitiesByStatus) {
+      return entitiesByStatus;
+    }
+
+    return { ...entitiesByStatus, [filter]: [] };
+  }, [entitiesByStatus, entities.length, filter]);
+
+  //сохраняем статус в момент выбора пользователем (#88620)
+  const selectStatus = (newStatus: number) => {
+    setFilter(newStatus);
+    setSectionStatus(section, newStatus);
+  };
+
   const [sorting, setSorting] =
     useState<EntitiesListInterface["sorting"]>(sort);
 
@@ -61,11 +87,8 @@ export const useEntities = (
     _setter(search);
   });
 
-  //if our selected filter had ONE element and now has NONE --- resetting the filter(can happen when only card with some status changes its status)
-  if (
-    Object.keys(filteredEntities).length > 0 &&
-    filteredEntities[filter] === undefined
-  ) {
+  //данные пришли после пустого маунта — берём первый статус, выбора пользователя ещё не было (#88620)
+  if (Object.keys(filteredEntities).length > 0 && filter === -1) {
     setFilter(Number(Object.keys(filteredEntities)[0]));
   } else if (
     Object.keys(filteredEntities).length > 0 &&
@@ -207,7 +230,7 @@ export const useEntities = (
     },
     days,
     filter,
-    setFilter,
+    selectStatus,
     sorting,
     setSorting,
     search,
