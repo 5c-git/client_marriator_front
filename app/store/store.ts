@@ -10,6 +10,9 @@ export type State = {
   userId: null | number;
   entitiesView: "list" | "table" | "map";
 
+  //выбранный пользователем статус списка по разделам, отдельно на каждого пользователя (#88620)
+  sectionStatuses: Record<number, Partial<Record<string, number>>>;
+
   userManager: {
     id: number;
     name: string;
@@ -32,6 +35,7 @@ export type State = {
   setAccessToken: (accessToken: string) => void;
   setRefreshToken: (refreshToken: string) => void;
   setEntitiesView: (view: "list" | "table" | "map") => void;
+  setSectionStatus: (section: string, status: number) => void;
   removeUserEmail: () => void;
   removeUserPhone: () => void;
   removeUserId: () => void;
@@ -68,6 +72,7 @@ export const useStore = create<State>()(
       userRole: "specialist",
       userId: null,
       entitiesView: "list",
+      sectionStatuses: {},
       userManager: null,
       userSupervisor: null,
 
@@ -79,6 +84,20 @@ export const useStore = create<State>()(
       setRefreshToken: (newRefreshToken) =>
         set({ refreshToken: newRefreshToken }),
       setEntitiesView: (newView) => set({ entitiesView: newView }),
+      setSectionStatus: (section, status) =>
+        set((state) => {
+          const userId = state.userId ?? 0;
+
+          return {
+            sectionStatuses: {
+              ...state.sectionStatuses,
+              [userId]: {
+                ...state.sectionStatuses[userId],
+                [section]: status,
+              },
+            },
+          };
+        }),
 
       removeUserEmail: () => set({ userEmail: null }),
       removeUserPhone: () => set({ userPhone: null }),
@@ -98,6 +117,7 @@ export const useStore = create<State>()(
           accessToken: null,
           refreshToken: null,
           entitiesView: "list",
+          sectionStatuses: {},
           userManager: null,
           userSupervisor: null,
         }),
