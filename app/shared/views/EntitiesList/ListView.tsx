@@ -35,7 +35,11 @@ const statusObject = {
 export function ListView(props: EntitiesListInterface) {
   const { t } = useTranslation("EntitiesListView");
 
-  const listHooks = useEntities(props.entities, props.sorting);
+  const listHooks = useEntities(
+    props.entities,
+    props.sorting,
+    props.entityType,
+  );
   const [selectedEntity, setSelectedEntity] = useState<Entity | null>(null);
 
   return (
@@ -55,7 +59,7 @@ export function ListView(props: EntitiesListInterface) {
               <StatusSelect
                 value={listHooks.filter.toString()}
                 onChange={(value) => {
-                  listHooks.setFilter(Number(value));
+                  listHooks.selectStatus(Number(value));
                 }}
                 options={(() => {
                   const options: {
