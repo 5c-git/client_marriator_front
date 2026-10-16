@@ -36,9 +36,9 @@ export const useUsers = (
     if (users.length > 0) {
       const statuses = Object.keys(usersByStatus).map(Number);
       const saved =
-        useStore.getState().sectionStatuses[
-          useStore.getState().userId ?? 0
-        ]?.[section];
+        useStore.getState().sectionStatuses[useStore.getState().userId ?? 0]?.[
+          section
+        ];
 
       //восстанавливаем сохранённый статус, только если он ещё есть в данных (#88620)
       return saved !== undefined && statuses.includes(saved)
@@ -89,28 +89,6 @@ export const useUsers = (
     if (debouncedSearch !== "") {
       const currentFieldValue = new RegExp(`${debouncedSearch}`, "i");
 
-    activeUsers = [
-      ...filteredUsers[filter]
-        .filter((item) => item.name !== null)
-        .filter((item) => currentFieldValue.test(item.name as string)),
-    ];
-  } else {
-    //данные пришли после пустого маунта — берём первый статус, выбора пользователя ещё не было (#88620)
-    if (Object.keys(filteredUsers).length > 0 && filter === -1) {
-      setFilter(Number(Object.keys(filteredUsers)[0]));
-    } else if (sorting === "new") {
-      const sortedUsers = [
-        ...filteredUsers[filter].sort((a, b) => b.id - a.id),
-      ];
-      activeUsers = sortedUsers;
-    } else if (sorting === "old") {
-      const sortedUsers = [
-        ...filteredUsers[filter].sort((a, b) => a.id - b.id),
-      ];
-      activeUsers = sortedUsers;
-    }
-  }
-  //сортировки
       activeUsers = [
         ...filteredUsers[filter]
           .filter((item) => item.name !== null)
