@@ -47,34 +47,45 @@ export const useUsers = (users: UsersMobileViewInterface["users"]) => {
     _setter(search);
   });
 
-  //сортировки
-  if (debouncedSearch !== "") {
-    const currentFieldValue = new RegExp(`${debouncedSearch}`, "i");
+  //if our selected filter had ONE element and now has NONE --- resetting the filter(can happen when only card with some status changes its status)
+  if (
+    Object.keys(filteredUsers).length > 0 &&
+    filteredUsers[filter] === undefined
+  ) {
+    setFilter(Number(Object.keys(filteredUsers)[0]));
+  } else if (
+    Object.keys(filteredUsers).length > 0 &&
+    filteredUsers[filter].length > 0
+  ) {
+    //сортировки
+    if (debouncedSearch !== "") {
+      const currentFieldValue = new RegExp(`${debouncedSearch}`, "i");
 
-    activeUsers = [
-      ...filteredUsers[filter]
-        .filter((item) => item.name !== null)
-        .filter((item) => currentFieldValue.test(item.name as string)),
-    ];
-  } else {
-    if (
-      Object.keys(filteredUsers).length > 0 &&
-      filteredUsers[filter] === undefined
-    ) {
-      setFilter(Number(Object.keys(filteredUsers)[0]));
-    } else if (sorting === "new") {
-      const sortedUsers = [
-        ...filteredUsers[filter].sort((a, b) => b.id - a.id),
+      activeUsers = [
+        ...filteredUsers[filter]
+          .filter((item) => item.name !== null)
+          .filter((item) => currentFieldValue.test(item.name as string)),
       ];
-      activeUsers = sortedUsers;
-    } else if (sorting === "old") {
-      const sortedUsers = [
-        ...filteredUsers[filter].sort((a, b) => a.id - b.id),
-      ];
-      activeUsers = sortedUsers;
+    } else {
+      if (
+        Object.keys(filteredUsers).length > 0 &&
+        filteredUsers[filter] === undefined
+      ) {
+        setFilter(Number(Object.keys(filteredUsers)[0]));
+      } else if (sorting === "new") {
+        const sortedUsers = [
+          ...filteredUsers[filter].sort((a, b) => b.id - a.id),
+        ];
+        activeUsers = sortedUsers;
+      } else if (sorting === "old") {
+        const sortedUsers = [
+          ...filteredUsers[filter].sort((a, b) => a.id - b.id),
+        ];
+        activeUsers = sortedUsers;
+      }
     }
+    //сортировки
   }
-  //сортировки
 
   return {
     users: {

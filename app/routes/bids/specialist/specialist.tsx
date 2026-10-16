@@ -43,7 +43,11 @@ export async function clientAction({
   } else if (_action === SPECIALIST_ACTIONS.end) {
     await specialistService.endSpecialistJob(fields.bidId, params.specialistId);
   } else if (_action === SPECIALIST_ACTIONS.forPay) {
-    await specialistService.payReportForManager(fields.reportId);
+    await specialistService.payReportForManager(
+      fields.reportId,
+      fields.bidId,
+      params.specialistId,
+    );
   }
 }
 
@@ -96,6 +100,8 @@ export default function SpecialistRequest({
                     JSON.stringify({
                       _action: SPECIALIST_ACTIONS.forPay,
                       reportId: day.reportId,
+                      bidId: loaderData.id,
+                      specialistId: loaderData.specialist.id,
                     }),
                     {
                       method: "POST",
@@ -214,6 +220,8 @@ export default function SpecialistRequest({
                         JSON.stringify({
                           _action: SPECIALIST_ACTIONS.forPay,
                           reportId: loaderData.oneDayReportId,
+                          bidId: loaderData.id,
+                          specialistId: loaderData.specialist.id,
                         }),
                         {
                           method: "POST",

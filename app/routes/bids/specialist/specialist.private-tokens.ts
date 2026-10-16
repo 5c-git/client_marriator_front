@@ -26,6 +26,8 @@ export type EndSpecialistJob = (
 export type PayReportForManager = (
   accessToken: string,
   reportId: string,
+  bidId: string,
+  specialistId: string,
 ) => Promise<PostPayReportForManagerSuccess>;
 
 export const specialistPrivateTokens = {

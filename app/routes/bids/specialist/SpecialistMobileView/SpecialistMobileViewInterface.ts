@@ -62,6 +62,7 @@ export type SpecialistMobileViewInterface = {
       | "none";
     oneDayReportId: number | null;
     units: string;
+    forPay: number;
     currency: string;
   };
 };

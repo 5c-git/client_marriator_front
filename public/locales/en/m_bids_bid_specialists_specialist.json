@@ -38,6 +38,7 @@
   "locationText": "Location",
   "serviceTypeText": "Service type",
   "pricePerUnitText": "Price per unit",
+  "forPayText": "For pay",
   "dateStartText": "Start date",
   "dateEndText": "End date",
   "timeStartText": "Start time",

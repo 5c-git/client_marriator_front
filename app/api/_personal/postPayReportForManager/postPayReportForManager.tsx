@@ -12,6 +12,8 @@ export const PostPayReportForManagerKeys = ["PostPayReportForManager"];
 export const postPayReportForManager = async (
   accessToken: string,
   reportId: string,
+  bidId: string,
+  specialistId: string,
 ): Promise<PostPayReportForManagerSuccess> => {
   try {
     const url = new URL(import.meta.env.VITE_POST_PAY_REPORT_FOR_MANAGER);
@@ -19,6 +21,8 @@ export const postPayReportForManager = async (
     const formData = new FormData();
 
     formData.append("reportId", reportId);
+    formData.append("bidId", bidId);
+    formData.append("specialistId", specialistId);
 
     const request = await fetch(url, {
       method: "POST",

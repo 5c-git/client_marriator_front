@@ -140,6 +140,7 @@ export class SpecialistMapper {
       oneDayReportId:
         data.data.reports.length > 0 ? data.data.reports[0].id : null,
       units: data.data.viewActivity.standard.name,
+      forPay: data.data.forPay,
       currency: "₽",
     };
   }
