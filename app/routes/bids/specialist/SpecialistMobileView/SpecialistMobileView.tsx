@@ -203,6 +203,30 @@ export function SpecialistMobileView(
                 color: theme.vars.palette["Grey_2"],
               })}
             >
+              {t("forPayText")}
+            </Typography>
+            <Typography
+              component="p"
+              variant="Reg_14"
+              sx={(theme) => ({ color: theme.vars.palette["Corp_1"] })}
+            >
+              {props.entity.forPay}
+            </Typography>
+          </Box>
+
+          <Box
+            sx={{
+              display: "grid",
+              rowGap: "4px",
+            }}
+          >
+            <Typography
+              component="p"
+              variant="Reg_12"
+              sx={(theme) => ({
+                color: theme.vars.palette["Grey_2"],
+              })}
+            >
               {t("pricePerUnitText")} {props.entity.units}
             </Typography>
             <Typography

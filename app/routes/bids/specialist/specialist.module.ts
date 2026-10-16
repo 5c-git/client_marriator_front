@@ -33,8 +33,8 @@ specialistContainer
 
 specialistContainer
   .bind(specialistPrivateTokens.payReportForManager)
-  .toConstant((accessToken, reportId) =>
-    postPayReportForManager(accessToken, reportId),
+  .toConstant((accessToken, reportId, bidId, specialistId) =>
+    postPayReportForManager(accessToken, reportId, bidId, specialistId),
   );
 
 specialistContainer

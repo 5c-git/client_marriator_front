@@ -48,7 +48,11 @@ const statusObject = {
 export function DashboardView(props: EntitiesListInterface) {
   const { t } = useTranslation("EntitiesListView");
 
-  const listHooks = useEntities(props.entities, props.sorting);
+  const listHooks = useEntities(
+    props.entities,
+    props.sorting,
+    props.entityType,
+  );
 
   const [openFilters, setOpenFilters] = useState<boolean>(false);
 
@@ -100,7 +104,7 @@ export function DashboardView(props: EntitiesListInterface) {
                     onImmediateChange={() => {}}
                     value={listHooks.filter.toString()}
                     onChange={(evt) => {
-                      listHooks.setFilter(Number(evt.target.value));
+                      listHooks.selectStatus(Number(evt.target.value));
                       listHooks.setSelectedDay("");
                     }}
                     options={(() => {

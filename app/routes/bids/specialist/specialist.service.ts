@@ -41,10 +41,14 @@ export class SpecialistService {
     return this._endSpecialistJob(token, bidId, specialistId);
   }
 
-  async payReportForManager(reportId: string) {
+  async payReportForManager(
+    reportId: string,
+    bidId: string,
+    specialistId: string,
+  ) {
     const token = this.appService.getToken();
 
-    return this._payReportForManager(token, reportId);
+    return this._payReportForManager(token, reportId, bidId, specialistId);
   }
 }
 

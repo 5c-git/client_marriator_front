@@ -59,7 +59,7 @@ export function JobMobileStaticView({
       })}
     >
       <Avatar
-        src={entity.logo}
+        src={entity.place.logo}
         sx={{
           width: "100px",
           height: "100px",
@@ -345,6 +345,7 @@ export function JobMobileStaticView({
                       })}
                     />
                   }
+                  data-testid={`AccordionSummary-${index}`}
                 >
                   <Box
                     sx={{

@@ -33,8 +33,6 @@ export default function Jobs({ loaderData }: Route.ComponentProps) {
 
   const { jobId, bidId } = useParams();
 
-  console.log(loaderData.jobs);
-
   return (
     <>
       <DashboardView

@@ -194,7 +194,7 @@ export function DayReviewMobileView(
                   })}
                 >
                   {formValues.days
-                    ? calculatePrice(formValues.days?.[index])
+                    ? calculatePrice(formValues.days?.[index]).toFixed(2)
                     : ""}
                   ₽
                 </Typography>
@@ -297,7 +297,15 @@ export function DayReviewMobileView(
                     input: {
                       inputComponent: MaskedField as never,
                       inputProps: {
-                        mask: "0000000000",
+                        // mask: "0000000000",
+                        mask: Number,
+                        scale: 2, // Max number of digits after the decimal point
+                        signed: false, // true allows negative numbers, false prevents them
+                        padFractionalZeros: false, // false allows whole numbers (doesn't force .00)
+                        normalizeZeros: true, // Cleans up leading zeros
+                        radix: ".", // Fractional delimiter
+                        mapToRadix: ["."], // Symbols to treat as radix
+                        unmask: true,
                       },
                       inputMode: "numeric",
                       type: "tel",
@@ -316,7 +324,15 @@ export function DayReviewMobileView(
                         input: {
                           inputComponent: MaskedField as never,
                           inputProps: {
-                            mask: "0000000000",
+                            // mask: "0000000000",
+                            mask: Number,
+                            scale: 2, // Max number of digits after the decimal point
+                            signed: false, // true allows negative numbers, false prevents them
+                            padFractionalZeros: false, // false allows whole numbers (doesn't force .00)
+                            normalizeZeros: true, // Cleans up leading zeros
+                            radix: ".", // Fractional delimiter
+                            mapToRadix: ["."], // Symbols to treat as radix
+                            unmask: true,
                           },
                           inputMode: "numeric",
                           type: "tel",
@@ -351,7 +367,7 @@ export function DayReviewMobileView(
                     })}
                   >
                     {formValues.days
-                      ? calculatePrice(formValues.days?.[index])
+                      ? calculatePrice(formValues.days?.[index]).toFixed(2)
                       : ""}
                     ₽
                   </Typography>
@@ -553,7 +569,7 @@ export function DayReviewMobileView(
                       totalPrice += dayPrice;
                     });
 
-                    return totalPrice;
+                    return totalPrice.toFixed(2);
                   })()
                 : ""}
               ₽

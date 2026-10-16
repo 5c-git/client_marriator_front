@@ -47,7 +47,7 @@ export class BidService {
     const token = this.appSerivice.getToken();
 
     const intervalDayStart = await this._getSetting(token, "intervalDayStart");
-    const intervalDayEnd = await this._getSetting(token, "intervalDayStart");
+    const intervalDayEnd = await this._getSetting(token, "intervalDayEnd");
 
     return {
       start: new Date(

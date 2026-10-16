@@ -37,6 +37,7 @@
   "locationText": "Место оказания услуг",
   "serviceTypeText": "Вид услуги",
   "pricePerUnitText": "Цена за ",
+  "forPayText": "К выплате на руке",
   "dateStartText": "Дата начала",
   "dateEndText": "Дата окончания",
   "timeStartText": "Время начала",

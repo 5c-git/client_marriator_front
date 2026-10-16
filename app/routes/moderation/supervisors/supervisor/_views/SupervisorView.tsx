@@ -48,6 +48,11 @@ const getRadioButtons = (list: { id: number; name: string; logo: string }[]) =>
     image: `${import.meta.env.VITE_ASSET_PATH}${item.logo}`,
   }));
 
+// эти 4 поля скрыл по багу bug-255 16/10/2026
+// live_task;
+// time_answer_bid;
+// notification_start;
+// count_wait_bid;
 export type SupervisorFormValues = {
   logo: string;
   phone: string;
@@ -604,7 +609,7 @@ export function SupervisorView(props: SupervisorViewProps) {
                 />
               )}
             />
-            <Controller
+            {/* <Controller
               name="live_task"
               control={form.control}
               render={({ field }) => (
@@ -618,7 +623,7 @@ export function SupervisorView(props: SupervisorViewProps) {
                   }}
                 />
               )}
-            />
+            /> */}
 
             <Controller
               name="waiting_task"
@@ -657,7 +662,7 @@ export function SupervisorView(props: SupervisorViewProps) {
               )}
             />
 
-            <Controller
+            {/* <Controller
               name="count_wait_bid"
               control={form.control}
               render={({ field }) => (
@@ -677,9 +682,9 @@ export function SupervisorView(props: SupervisorViewProps) {
                   {...field}
                 />
               )}
-            />
+            /> */}
 
-            <Controller
+            {/* <Controller
               name="time_answer_bid"
               control={form.control}
               render={({ field }) => (
@@ -699,9 +704,9 @@ export function SupervisorView(props: SupervisorViewProps) {
                   {...field}
                 />
               )}
-            />
+            /> */}
 
-            <Controller
+            {/* <Controller
               name="notification_start"
               control={form.control}
               render={({ field }) => (
@@ -721,7 +726,7 @@ export function SupervisorView(props: SupervisorViewProps) {
                   {...field}
                 />
               )}
-            />
+            /> */}
 
             <Box>
               <Typography

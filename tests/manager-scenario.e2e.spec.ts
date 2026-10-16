@@ -3089,20 +3089,110 @@ test.describe("Через конвертацию ПМ", () => {
     });
   });
 
-  test("Специалист приступает к работе после одобрения супервайзером", async ({
-    page,
-    network,
-    loginAs,
-  }) => {
-    const today = new Date();
-    let jobs = {
-      data: [
-        {
+  test(
+    "Специалист приступает к работе после одобрения супервайзером",
+    {
+      annotation: {
+        type: "bug",
+        description: "test",
+      },
+    },
+    async ({ page, network, loginAs }) => {
+      const today = new Date();
+      let jobs = {
+        data: [
+          {
+            id: 400,
+            user: {
+              id: 800,
+            },
+            status: 3,
+            place: {
+              id: 3,
+              name: "«Пятёрочка» на Арбате д. 24  г.Москва",
+              latitude: "55.75007900",
+              longitude: "37.59217700",
+              address_kladr: "ул. Арбат д. 24  г.Москва",
+              logo: "/storage/source/directory/brand/1-logo/Лого Пятерочка.png",
+              region: {
+                id: 2,
+                name: "Москва",
+              },
+              brand: {
+                id: 1,
+                name: "Пятёрочка",
+                logo: "/storage/source/directory/brand/1-logo/Лого Пятерочка.png",
+                description:
+                  "«Пятёрочка» — крупнейшая торговая сеть магазинов «у дома» в России.",
+              },
+            },
+            price: 0,
+            viewActivity: {
+              id: 3,
+              name: "Пекарь (Физическое лицо)",
+              logo: "/storage/source/directory/view_activities/3-img/1661081678_53-pofoto-club-p-beloborodii-pekari-65.jpg",
+              previewText:
+                "Помощник повара,Пиццмейкер розничной сети,Пиццмейкер,Тестомес,Тестомес розничной сети,Пекарь розничной сети",
+              detailName: "Пекарь  (Физическое лицо)",
+              detailText:
+                "Помощник повара,Пиццмейкер розничной сети,Пиццмейкер,Тестомес,Тестомес розничной сети,Пекарь розничной сети",
+              detailImg:
+                "/storage/source/directory/view_activities/3-imgDetail/1661081678_53-pofoto-club-p-beloborodii-pekari-65.jpg",
+              linkText: "Пройти тест",
+              link: null,
+              traveling: false,
+              standard: {
+                id: 2,
+                name: "Трудосмена",
+                coefficient: 1,
+              },
+            },
+            dateStart: `2026-${(today.getMonth() + 1).toString().padStart(2, "0")}-${today.getDate().toString().padStart(2, "0")}T07:00:00.000Z`,
+            dateEnd: `2026-${(today.getMonth() + 1).toString().padStart(2, "0")}-${(today.getDate() + 4).toString().padStart(2, "0")}T16:00:00.000000Z`,
+            acceptingUser: {
+              id: 600,
+              phone: 76666666666,
+              email: "specialist-test@mail.ru",
+              logo: "",
+              roles: [
+                {
+                  id: 5,
+                  name: "specialist",
+                },
+              ],
+              radius: "5",
+              name: "Тестовый специалист",
+              age: "23",
+              country: "РОССИЯ",
+              viewActivities: [
+                "Продавец  (Физическое лицо)",
+                "Пекарь (Физическое лицо)",
+                "Курьер  (Физическое лицо)",
+              ],
+              status: 5,
+            },
+            createdAt: "2026-10-13T08:31:23.000000Z",
+          },
+        ],
+      };
+      let job = {
+        data: {
           id: 400,
           user: {
             id: 800,
+            phone: 78888888888,
+            email: "supertest@mail.ru",
+            logo: "",
+            roles: [
+              {
+                id: 6,
+                name: "supervisor",
+              },
+            ],
+            name: "Тестовый супервайзер",
           },
           status: 3,
+          selfEmployed: false,
           place: {
             id: 3,
             name: "«Пятёрочка» на Арбате д. 24  г.Москва",
@@ -3122,7 +3212,11 @@ test.describe("Через конвертацию ПМ", () => {
                 "«Пятёрочка» — крупнейшая торговая сеть магазинов «у дома» в России.",
             },
           },
+          radius: 5,
           price: 0,
+          priceResult: 0,
+          income: 0,
+          forPay: 0,
           viewActivity: {
             id: 3,
             name: "Пекарь (Физическое лицо)",
@@ -3145,6 +3239,84 @@ test.describe("Через конвертацию ПМ", () => {
           },
           dateStart: `2026-${(today.getMonth() + 1).toString().padStart(2, "0")}-${today.getDate().toString().padStart(2, "0")}T07:00:00.000Z`,
           dateEnd: `2026-${(today.getMonth() + 1).toString().padStart(2, "0")}-${(today.getDate() + 4).toString().padStart(2, "0")}T16:00:00.000000Z`,
+          needFoto: false,
+          dateActivity: [
+            {
+              id: 1,
+              timeStart: `2026-${(today.getMonth() + 1).toString().padStart(2, "0")}-${today.getDate().toString().padStart(2, "0")}T07:00:00.000Z`,
+              timeEnd: `2026-${(today.getMonth() + 1).toString().padStart(2, "0")}-${today.getDate().toString().padStart(2, "0")}T18:00:00.000Z`,
+
+              places: [],
+            },
+            {
+              id: 2,
+              timeStart: `2026-${(today.getMonth() + 1).toString().padStart(2, "0")}-${(today.getDate() + 1).toString().padStart(2, "0")}T07:00:00.000Z`,
+              timeEnd: `2026-${(today.getMonth() + 1).toString().padStart(2, "0")}-${(today.getDate() + 1).toString().padStart(2, "0")}T18:00:00.000Z`,
+              places: [],
+            },
+            {
+              id: 3,
+              timeStart: `2026-${(today.getMonth() + 1).toString().padStart(2, "0")}-${(today.getDate() + 2).toString().padStart(2, "0")}T06:00:00.000Z`,
+              timeEnd: `2026-${(today.getMonth() + 1).toString().padStart(2, "0")}-${(today.getDate() + 2).toString().padStart(2, "0")}T18:00:00.000Z`,
+              places: [],
+            },
+            {
+              id: 4,
+              timeStart: `2026-${(today.getMonth() + 1).toString().padStart(2, "0")}-${(today.getDate() + 3).toString().padStart(2, "0")}T06:00:00.000Z`,
+              timeEnd: `2026-${(today.getMonth() + 1).toString().padStart(2, "0")}-${(today.getDate() + 3).toString().padStart(2, "0")}T16:00:00.000Z`,
+              places: [],
+            },
+          ],
+          order: {
+            id: 100,
+            selfEmployed: false,
+            status: 3,
+            user: {
+              id: 700,
+              phone: 77777777777,
+              email: "testclient@mail.ru",
+              logo: "",
+              roles: [
+                {
+                  id: 2,
+                  name: "client",
+                },
+              ],
+              name: "Тестировочный клиент",
+            },
+            statistic: [
+              {
+                accepted: 5,
+                count: 1,
+              },
+            ],
+            createdAt: "2026-10-13T08:28:50.000000Z",
+          },
+          task: {
+            id: 200,
+            selfEmployed: false,
+            status: 3,
+            user: {
+              id: 900,
+              phone: 79999999999,
+              email: "test31318@bk.ru",
+              logo: "/storage/source/directory/brand/6-logo/Скриншот 21-01-2026 120205.jpg",
+              roles: [
+                {
+                  id: 3,
+                  name: "manager",
+                },
+              ],
+              name: "Менеджер ТАТА",
+            },
+            statistic: [
+              {
+                accepted: 5,
+                count: 1,
+              },
+            ],
+            createdAt: "2026-10-13T08:30:44.000000Z",
+          },
           acceptingUser: {
             id: 600,
             phone: 76666666666,
@@ -3167,263 +3339,101 @@ test.describe("Через конвертацию ПМ", () => {
             ],
             status: 5,
           },
+          reports: [],
+          project: {
+            id: 0,
+            name: "78412552 Пятерочка",
+            dateStart: `2026-${(today.getMonth() - 3).toString().padStart(2, "0")}-${today.getDate().toString().padStart(2, "0")}T00:00:00.000000Z`,
+            dateEnd: `2026-${(today.getMonth() + 3).toString().padStart(2, "0")}-${today.getDate().toString().padStart(2, "0")}T00:00:00.000000Z`,
+            timeStart: "06:00",
+            timeEnd: "18:00",
+            brand: [
+              {
+                id: 1,
+                name: "Пятёрочка",
+                logo: "/storage/source/directory/brand/1-logo/Лого Пятерочка.png",
+                description:
+                  "«Пятёрочка» — крупнейшая торговая сеть магазинов «у дома» в России.",
+              },
+            ],
+          },
           createdAt: "2026-10-13T08:31:23.000000Z",
         },
-      ],
-    };
-    let job = {
-      data: {
-        id: 400,
-        user: {
-          id: 800,
-          phone: 78888888888,
-          email: "supertest@mail.ru",
-          logo: "",
-          roles: [
-            {
-              id: 6,
-              name: "supervisor",
-            },
-          ],
-          name: "Тестовый супервайзер",
-        },
-        status: 3,
-        selfEmployed: false,
-        place: {
-          id: 3,
-          name: "«Пятёрочка» на Арбате д. 24  г.Москва",
-          latitude: "55.75007900",
-          longitude: "37.59217700",
-          address_kladr: "ул. Арбат д. 24  г.Москва",
-          logo: "/storage/source/directory/brand/1-logo/Лого Пятерочка.png",
-          region: {
-            id: 2,
-            name: "Москва",
-          },
-          brand: {
-            id: 1,
-            name: "Пятёрочка",
-            logo: "/storage/source/directory/brand/1-logo/Лого Пятерочка.png",
-            description:
-              "«Пятёрочка» — крупнейшая торговая сеть магазинов «у дома» в России.",
-          },
-        },
-        radius: 5,
-        price: 0,
-        priceResult: 0,
-        income: 0,
-        forPay: 0,
-        viewActivity: {
-          id: 3,
-          name: "Пекарь (Физическое лицо)",
-          logo: "/storage/source/directory/view_activities/3-img/1661081678_53-pofoto-club-p-beloborodii-pekari-65.jpg",
-          previewText:
-            "Помощник повара,Пиццмейкер розничной сети,Пиццмейкер,Тестомес,Тестомес розничной сети,Пекарь розничной сети",
-          detailName: "Пекарь  (Физическое лицо)",
-          detailText:
-            "Помощник повара,Пиццмейкер розничной сети,Пиццмейкер,Тестомес,Тестомес розничной сети,Пекарь розничной сети",
-          detailImg:
-            "/storage/source/directory/view_activities/3-imgDetail/1661081678_53-pofoto-club-p-beloborodii-pekari-65.jpg",
-          linkText: "Пройти тест",
-          link: null,
-          traveling: false,
-          standard: {
-            id: 2,
-            name: "Трудосмена",
-            coefficient: 1,
-          },
-        },
-        dateStart: `2026-${(today.getMonth() + 1).toString().padStart(2, "0")}-${today.getDate().toString().padStart(2, "0")}T07:00:00.000Z`,
-        dateEnd: `2026-${(today.getMonth() + 1).toString().padStart(2, "0")}-${(today.getDate() + 4).toString().padStart(2, "0")}T16:00:00.000000Z`,
-        needFoto: false,
-        dateActivity: [
-          {
-            id: 1,
-            timeStart: `2026-${(today.getMonth() + 1).toString().padStart(2, "0")}-${today.getDate().toString().padStart(2, "0")}T07:00:00.000Z`,
-            timeEnd: `2026-${(today.getMonth() + 1).toString().padStart(2, "0")}-${today.getDate().toString().padStart(2, "0")}T18:00:00.000Z`,
-            places: [],
-          },
-          {
-            id: 2,
-            timeStart: `2026-${(today.getMonth() + 1).toString().padStart(2, "0")}-${(today.getDate() + 1).toString().padStart(2, "0")}T07:00:00.000Z`,
-            timeEnd: `2026-${(today.getMonth() + 1).toString().padStart(2, "0")}-${(today.getDate() + 1).toString().padStart(2, "0")}T18:00:00.000Z`,
-            places: [],
-          },
-          {
-            id: 3,
-            timeStart: `2026-${(today.getMonth() + 1).toString().padStart(2, "0")}-${(today.getDate() + 2).toString().padStart(2, "0")}T06:00:00.000Z`,
-            timeEnd: `2026-${(today.getMonth() + 1).toString().padStart(2, "0")}-${(today.getDate() + 2).toString().padStart(2, "0")}T18:00:00.000Z`,
-            places: [],
-          },
-          {
-            id: 4,
-            timeStart: `2026-${(today.getMonth() + 1).toString().padStart(2, "0")}-${(today.getDate() + 3).toString().padStart(2, "0")}T06:00:00.000Z`,
-            timeEnd: `2026-${(today.getMonth() + 1).toString().padStart(2, "0")}-${(today.getDate() + 3).toString().padStart(2, "0")}T16:00:00.000Z`,
-            places: [],
-          },
-        ],
-        order: {
-          id: 100,
-          selfEmployed: false,
-          status: 3,
-          user: {
-            id: 700,
-            phone: 77777777777,
-            email: "testclient@mail.ru",
-            logo: "",
-            roles: [
-              {
-                id: 2,
-                name: "client",
-              },
-            ],
-            name: "Тестировочный клиент",
-          },
-          statistic: [
-            {
-              accepted: 5,
-              count: 1,
-            },
-          ],
-          createdAt: "2026-10-13T08:28:50.000000Z",
-        },
-        task: {
-          id: 200,
-          selfEmployed: false,
-          status: 3,
-          user: {
-            id: 900,
-            phone: 79999999999,
-            email: "test31318@bk.ru",
-            logo: "/storage/source/directory/brand/6-logo/Скриншот 21-01-2026 120205.jpg",
-            roles: [
-              {
-                id: 3,
-                name: "manager",
-              },
-            ],
-            name: "Менеджер ТАТА",
-          },
-          statistic: [
-            {
-              accepted: 5,
-              count: 1,
-            },
-          ],
-          createdAt: "2026-10-13T08:30:44.000000Z",
-        },
-        acceptingUser: {
-          id: 600,
-          phone: 76666666666,
-          email: "specialist-test@mail.ru",
-          logo: "",
-          roles: [
-            {
-              id: 5,
-              name: "specialist",
-            },
-          ],
-          radius: "5",
-          name: "Тестовый специалист",
-          age: "23",
-          country: "РОССИЯ",
-          viewActivities: [
-            "Продавец  (Физическое лицо)",
-            "Пекарь (Физическое лицо)",
-            "Курьер  (Физическое лицо)",
-          ],
-          status: 5,
-        },
-        reports: [],
-        project: {
-          id: 0,
-          name: "78412552 Пятерочка",
-          dateStart: `2026-${(today.getMonth() - 3).toString().padStart(2, "0")}-${today.getDate().toString().padStart(2, "0")}T00:00:00.000000Z`,
-          dateEnd: `2026-${(today.getMonth() + 3).toString().padStart(2, "0")}-${today.getDate().toString().padStart(2, "0")}T00:00:00.000000Z`,
-          timeStart: "06:00",
-          timeEnd: "18:00",
-          brand: [
-            {
-              id: 1,
-              name: "Пятёрочка",
-              logo: "/storage/source/directory/brand/1-logo/Лого Пятерочка.png",
-              description:
-                "«Пятёрочка» — крупнейшая торговая сеть магазинов «у дома» в России.",
-            },
-          ],
-        },
-        createdAt: "2026-10-13T08:31:23.000000Z",
-      },
-    };
+      };
 
-    await test.step("Авторизуемся за специалиста", async () => {
-      network.use(
-        http.get(process.env.VITE_GET_JOBS, () => {
-          return HttpResponse.json(jobs);
-        }),
-        http.get(process.env.VITE_GET_JOB, () => {
-          return HttpResponse.json(job);
-        }),
-        http.get(process.env.VITE_SETTINGS_FROM_KEY, ({ request }) => {
-          const url = new URL(request.url);
-          const key = url.searchParams.get("key");
+      await test.step("Авторизуемся за специалиста", async () => {
+        network.use(
+          http.get(process.env.VITE_GET_JOBS, () => {
+            return HttpResponse.json(jobs);
+          }),
+          http.get(process.env.VITE_GET_JOB, () => {
+            return HttpResponse.json(job);
+          }),
+          http.get(process.env.VITE_SETTINGS_FROM_KEY, ({ request }) => {
+            const url = new URL(request.url);
+            const key = url.searchParams.get("key");
 
-          if (key === "intervalDayStart") {
+            if (key === "intervalDayStart") {
+              return HttpResponse.json({
+                data: {
+                  key: "intervalDayStart",
+                  value: "9:00",
+                },
+              });
+            }
             return HttpResponse.json({
               data: {
-                key: "intervalDayStart",
-                value: "9:00",
+                key: "intervalDayEnd",
+                value: "21:00",
               },
             });
-          }
-          return HttpResponse.json({
-            data: {
-              key: "intervalDayEnd",
-              value: "21:00",
-            },
-          });
-        }),
-      );
-      await loginAs("specialist");
-      await expect(page.getByText("Задания")).toBeVisible();
-    });
+          }),
+        );
+        await loginAs("specialist");
+        await expect(page.getByText("Задания")).toBeVisible();
+      });
 
-    await test.step("Стартуем рабочий день за специалиста", async () => {
-      network.use(
-        http.post(process.env.VITE_POST_START_DAY, () => {
-          job.data.reports.push({
-            id: 10,
-            dateStart: `2026-${(today.getMonth() + 1).toString().padStart(2, "0")}-${today.getDate().toString().padStart(2, "0")}T07:00:00.000Z`,
-            dateEnd: `2026-${(today.getMonth() + 1).toString().padStart(2, "0")}-${today.getDate().toString().padStart(2, "0")}T18:00:00.000Z`,
-            report: null,
-            dayActivityId: 1,
-            status: 1,
-            hours: "1.00",
-            reasons: [],
-          });
-          return HttpResponse.json({
-            data: {
-              success: true,
-            },
-          });
-        }),
-      );
+      await test.step("Стартуем рабочий день за специалиста", async () => {
+        network.use(
+          http.post(process.env.VITE_POST_START_DAY, () => {
+            job.data.reports.push({
+              id: 10,
+              dateStart: `2026-${(today.getMonth() + 1).toString().padStart(2, "0")}-${today.getDate().toString().padStart(2, "0")}T07:00:00.000Z`,
+              dateEnd: `2026-${(today.getMonth() + 1).toString().padStart(2, "0")}-${today.getDate().toString().padStart(2, "0")}T18:00:00.000Z`,
+              report: null,
+              dayActivityId: 1,
+              status: 1,
+              hours: "1.00",
+              reasons: [],
+            });
+            return HttpResponse.json({
+              data: {
+                success: true,
+              },
+            });
+          }),
+        );
 
-      await page
-        .getByRole("link", {
-          name: "Задание Пекарь (Физическое лицо) 400 0 ₽ / Трудосмена ул. Арбат д. 24 г.Москва",
-        })
-        .click();
+        await page
+          .getByRole("link", {
+            name: "Задание Пекарь (Физическое лицо) 400 0 ₽ / Трудосмена ул. Арбат д. 24 г.Москва",
+          })
+          .click();
 
-      await page.getByRole("button", { name: "ВТ 10:00-21:00" }).click();
+        await page.getByRole("button", { name: "ВТ 10:00-21:00" }).click();
 
-      await page.getByRole("button", { name: "Приступить" }).click();
+        await expect(
+          page.getByRole("button", { name: "Приступить" }),
+        ).toBeVisible();
 
-      await expect(
-        page.getByRole("button", { name: "Приступить" }),
-      ).not.toBeVisible();
-    });
-  });
+        await page.getByRole("button", { name: "Приступить" }).click();
+
+        await expect(
+          page.getByRole("button", { name: "Приступить" }),
+        ).not.toBeVisible();
+      });
+    },
+  );
 
   test("Специалист заканчивает рабочий день", async ({
     page,

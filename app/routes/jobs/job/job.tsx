@@ -311,7 +311,7 @@ export default function Job({ loaderData }: Route.ComponentProps) {
           rowGap: "8px",
         }}
       >
-        {loaderData.job.status === 1 ? (
+        {loaderData.job.status === 1 && isFuture(loaderData.job.dateEnd) ? (
           <>
             <Button
               startIcon={<CheckIcon />}

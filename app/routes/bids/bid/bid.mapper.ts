@@ -51,7 +51,7 @@ export class BidMapper {
       counters: data.statistic.map((item) => ({
         label: t(
           `status.${statusCodeMap[item.accepted as keyof typeof statusCodeMap].value}`,
-          { ns: "SpecialistMobileView" },
+          { ns: "m_bids_bid" },
         ),
         count: item.count,
         color: statusCodeMap[item.accepted as keyof typeof statusCodeMap].color,
