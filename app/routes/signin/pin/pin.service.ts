@@ -11,10 +11,13 @@ import type {
   DetermineUserRole,
   SetUserManager,
   SetUserSupervisor,
+  PostSetTimeZone,
 } from "./pin.private-tokens";
 import { pinPrivateTokens } from "./pin.private-tokens";
 import { appTokens } from "~/shared/container/container.tokens";
 import type { AppService } from "~/shared/container/container.service";
+
+import { formatISO } from "date-fns";
 
 export class PinService {
   constructor(
@@ -28,6 +31,7 @@ export class PinService {
     private readonly setUserManager: SetUserManager,
     private readonly setUserSupervisor: SetUserSupervisor,
     private readonly determineUserRole: DetermineUserRole,
+    private readonly postSetTimeZone: PostSetTimeZone,
     private readonly appService: AppService,
   ) {}
 
@@ -85,6 +89,13 @@ export class PinService {
         data.result.token.refresh_token,
       );
 
+      const userDate = new Date();
+      const userDateFormatted = formatISO(userDate, {
+        representation: "complete",
+      });
+
+      await this.postSetTimeZone(accessToken, userDateFormatted);
+
       await this.getAndSaveUserSuperiors();
       await this.loadUserProfile();
     }
@@ -117,5 +128,6 @@ injected(
   pinPrivateTokens.setUserManager,
   pinPrivateTokens.setUserSupervisor,
   pinPrivateTokens.determineUserRole,
+  pinPrivateTokens.setTimeZone,
   appTokens.appService,
 );

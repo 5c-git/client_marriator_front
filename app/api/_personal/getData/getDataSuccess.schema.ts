@@ -160,6 +160,7 @@ export const getDataSuccessSchema = z.object({
         ),
       }),
     ),
+    timezone: z.string(),
   }),
 });
 

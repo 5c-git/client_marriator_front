@@ -7,6 +7,7 @@ import type { PostStartRestorePinSuccess } from "~/api/postStartRestorePin/postS
 import type { PostStartRestorePinError } from "~/api/postStartRestorePin/postStartRestorePinError.schema";
 // import type { GetUserInfoSuccess } from "~/api/_personal/getUserInfo/getUserInfoSuccess.schema";
 import type { GetDataSuccess } from "~/api/_personal/getData/getDataSuccess.schema";
+import type { PostSetTimeZoneSuccess } from "~/api/_personal/postSetTimeZone/postSetTimeZone.schema";
 import type { determineRole } from "~/shared/determineRole";
 
 export type CheckPin = (
@@ -19,6 +20,11 @@ export type StartRestorePin = (
 ) => Promise<PostStartRestorePinSuccess | PostStartRestorePinError>;
 
 export type GetUserData = (accessToken: string) => Promise<GetDataSuccess>;
+
+export type PostSetTimeZone = (
+  accessToken: string,
+  code: string,
+) => Promise<PostSetTimeZoneSuccess>;
 
 export type RememberAccessToken = (token: string) => void;
 export type RememberRefreshToken = (token: string) => void;
@@ -49,4 +55,5 @@ export const pinPrivateTokens = {
   setUserManager: token<SetUserManager>("pin-private:setUserManager"),
   setUserSupervisor: token<SetUserSupervisor>("pin-private:setUserSupervisor"),
   determineUserRole: token<DetermineUserRole>("pin-private:determineUserRole"),
+  setTimeZone: token<PostSetTimeZone>("pin-private:setTimeZoneSuccess"),
 };

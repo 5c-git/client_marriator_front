@@ -6,6 +6,8 @@ import { profileContainer } from "./profile.module";
 import { profileTokens } from "./profile.tokens";
 import { useProfileHooks } from "./profile.hooks";
 
+import { formatISO } from "date-fns";
+
 export const PROFILE_ACTIONS = {
   logout: "logout",
   changeRole: "changeRole",
@@ -35,6 +37,12 @@ export default function Profile({ loaderData }: Route.ComponentProps) {
     confirmLogout,
     changeUserRole,
   } = useProfileHooks();
+
+  const date = new Date();
+
+  const test = formatISO(date, { representation: "complete" });
+
+  console.log(test);
 
   return (
     <ProfileView

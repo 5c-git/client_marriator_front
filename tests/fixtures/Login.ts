@@ -46,10 +46,16 @@ const sendPinAuth = {
   },
   status: "success",
 };
+const setTimeZone = {
+  data: {
+    success: true,
+  },
+};
 
 const getManagerData = {
   data: {
     id: 900,
+    timezone: "UTC",
     name: "Менеджер ТАТА",
     phone: 79999999999,
     email: "test31318@bk.ru",
@@ -412,6 +418,7 @@ const getManagerData = {
 const getSupervisorData = {
   data: {
     id: 800,
+    timezone: "UTC",
     name: "Тестовый супервайзер",
     phone: 78888888888,
     email: "supertest@mail.ru",
@@ -592,6 +599,7 @@ const getSupervisorData = {
 const getClientData = {
   data: {
     id: 700,
+    timezone: "UTC",
     name: "Клиент Для Теста",
     phone: 77777777777,
     email: "testclientmar@mail.ru",
@@ -713,6 +721,7 @@ const getClientData = {
 const getSpecialistData = {
   data: {
     id: 600,
+    timezone: "UTC",
     name: "Тестовый специалист",
     phone: 76666666666,
     email: "specialist-test@mail.ru",
@@ -774,6 +783,9 @@ export const LoginHandlers = [
   }),
   http.post(process.env.VITE_CHECK_PIN, () => {
     return HttpResponse.json(sendPinAuth);
+  }),
+  http.post(process.env.VITE_POST_SET_TIME_ZONE, () => {
+    return HttpResponse.json(setTimeZone);
   }),
 ];
 
