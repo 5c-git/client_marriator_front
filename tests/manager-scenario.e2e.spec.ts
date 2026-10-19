@@ -5,6 +5,8 @@ import { http, HttpResponse } from "msw";
 
 test.describe("Через конвертацию ПМ", () => {
   test("Клиент создаёт поручение", async ({ page, network, loginAs }) => {
+    test.setTimeout(300000);
+
     // TO-DO IMPLEMENT TYPES FOR MOCK DATA AFTER API HAVE MOVED TO ORVAL
     //mock data
     const today = new Date();
@@ -452,6 +454,8 @@ test.describe("Через конвертацию ПМ", () => {
   });
 
   test("Менеджер принимает поручение", async ({ page, network, loginAs }) => {
+    test.setTimeout(300000);
+
     const today = new Date();
     const orders = {
       data: [
@@ -899,6 +903,8 @@ test.describe("Через конвертацию ПМ", () => {
     network,
     loginAs,
   }) => {
+    test.setTimeout(300000);
+
     const today = new Date();
     const orders = {
       data: [],
@@ -1601,6 +1607,8 @@ test.describe("Через конвертацию ПМ", () => {
   });
 
   test("Специалист принимает задание", async ({ page, network, loginAs }) => {
+    test.setTimeout(300000);
+
     const today = new Date();
     const jobs = {
       data: [
@@ -1927,6 +1935,8 @@ test.describe("Через конвертацию ПМ", () => {
     network,
     loginAs,
   }) => {
+    test.setTimeout(300000);
+
     const today = new Date();
     const orders = {
       data: [],
@@ -2677,6 +2687,8 @@ test.describe("Через конвертацию ПМ", () => {
       },
     },
     async ({ page, network, loginAs }) => {
+      test.setTimeout(300000);
+
       const today = new Date();
       let jobs = {
         data: [
@@ -3019,6 +3031,8 @@ test.describe("Через конвертацию ПМ", () => {
     network,
     loginAs,
   }) => {
+    test.setTimeout(300000);
+
     const today = new Date();
     let jobs = {
       data: [
@@ -3356,6 +3370,8 @@ test.describe("Через конвертацию ПМ", () => {
     network,
     loginAs,
   }) => {
+    test.setTimeout(300000);
+
     const today = new Date();
     const orders = {
       data: [],
@@ -3755,6 +3771,8 @@ test.describe("Через конвертацию ПМ", () => {
   });
 
   test("Специалист получает оплату", async ({ page, network, loginAs }) => {
+    test.setTimeout(300000);
+
     const today = new Date();
 
     let jobs = {
