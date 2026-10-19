@@ -3,6 +3,7 @@ import { Container } from "brandi";
 import { getData } from "~/api/_personal/getData/getData";
 import { postCheckPin } from "~/api/postCheckPin/postCheckPin";
 import { postStartRestorePin } from "~/api/postStartRestorePin/postStartRestorePin";
+import { postSetTimeZone } from "~/api/_personal/postSetTimeZone/postSetTimeZone";
 import { useStore } from "~/store/store";
 import { determineRole } from "~/shared/determineRole";
 
@@ -39,6 +40,8 @@ pinContainer
   .toConstant(useStore.getState().setUserSupervisor);
 
 pinContainer.bind(pinPrivateTokens.getUserData).toConstant(getData);
+
+pinContainer.bind(pinPrivateTokens.setTimeZone).toConstant(postSetTimeZone);
 
 pinContainer
   .bind(pinTokens.pinService)

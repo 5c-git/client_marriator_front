@@ -16,11 +16,14 @@ import { EntityCard } from "~/shared/ui/EntityCard/EntityCard";
 
 import { PhoneIcon } from "~/shared/icons/PhoneIcon";
 
-type Specialist = Omit<SpecialistsMobileViewInterface["specialists"][0], 'viewActivitiesAccurate'>;  
+type Specialist = Omit<
+  SpecialistsMobileViewInterface["specialists"][0],
+  "viewActivitiesAccurate"
+>;
 
 type SpecialistsStaticMobileViewInterface = Pick<
   SpecialistsMobileViewInterface,
-  "bid" |"activeService"
+  "bid" | "activeService"
 > & {
   specialists: Specialist[];
 };
@@ -30,7 +33,8 @@ export function SpecialistsStaticMobileView(
 ) {
   const setup = useRef<boolean>(null);
 
-  const { t } = useTranslation("SpecialistsMobileView");
+  // const { t } = useTranslation("SpecialistsMobileView");
+  const { t } = useTranslation("m_bids_bid");
 
   // const daysRange = eachDayOfInterval({
   //   start: props.bid.dateStart,
@@ -105,7 +109,12 @@ export function SpecialistsStaticMobileView(
             for (const key in filteredSpecialists) {
               options.push({
                 id: key,
-                label: t(`status.${Number(key) as keyof typeof statusCodeMap}`),
+                label: t(
+                  `status.${
+                    statusCodeMap[Number(key) as keyof typeof statusCodeMap]
+                      .value
+                  }`,
+                ),
                 count: filteredSpecialists[Number(key)].length,
                 color:
                   statusCodeMap[Number(key) as keyof typeof statusCodeMap]
