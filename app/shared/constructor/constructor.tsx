@@ -504,18 +504,20 @@ export const generateInputsMarkup = (
           )}
         />
       );
-    } else if (item.inputType === "text") {
-      return (
-        <ConstructorTextField
-          key={item.name}
-          name={item.name}
-          control={control}
-          errors={errors}
-          onImmediateChange={onImmediateChange}
-          {...item}
-        />
-      );
-    } else {
+    }
+    // else if (item.inputType === "text") {
+    //   return (
+    //     <ConstructorTextField
+    //       key={item.name}
+    //       name={item.name}
+    //       control={control}
+    //       errors={errors}
+    //       onImmediateChange={onImmediateChange}
+    //       {...item}
+    //     />
+    //   );
+    // }
+    else {
       const Input = inputMap[item.inputType as keyof typeof inputMap];
 
       return (
