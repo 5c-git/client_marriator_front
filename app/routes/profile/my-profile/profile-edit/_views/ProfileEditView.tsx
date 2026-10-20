@@ -78,13 +78,13 @@ export function ProfileEditView(props: ProfileEditViewProps) {
             form.control,
             form.setValue,
             form.trigger,
-            () => {
-              props.onSubmit(form.getValues());
-            },
+            form.handleSubmit((values) => {
+              props.onSubmit(values);
+            }),
             props.accessToken,
           )}
 
-          <Box
+          {/* <Box
             style={{
               "--opacity": form.formState.isDirty ? 1 : 0,
               "--pointerEvents": form.formState.isDirty ? "auto" : "none",
@@ -115,7 +115,7 @@ export function ProfileEditView(props: ProfileEditViewProps) {
             <Button variant="contained" type="submit">
               {t("button_confirm")}
             </Button>
-          </Box>
+          </Box> */}
         </form>
       ) : (
         <Typography
