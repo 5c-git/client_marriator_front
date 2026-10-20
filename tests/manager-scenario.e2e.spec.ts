@@ -3,7 +3,7 @@ import { test } from "../playwright.setup";
 
 import { http, HttpResponse } from "msw";
 
-test.describe("Через конвертацию ПМ", () => {
+test.describe("Сценарий менеджера", () => {
   test("Клиент создаёт поручение", async ({ page, network, loginAs }) => {
     test.setTimeout(300000);
 
