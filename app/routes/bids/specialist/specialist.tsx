@@ -69,11 +69,12 @@ export default function SpecialistRequest({
           day.action === "notEnded" ? (
             <Button
               component={Link}
-              to={
-                isDesktop
-                  ? `/dashboard/jobs/${loaderData.id}/specialists/${loaderData.specialist.id}/day-review/${day.reportId}`
-                  : `/bids/${loaderData.id}/specialists/${loaderData.specialist.id}/day-review/${day.reportId}`
-              }
+              // to={
+              //   isDesktop
+              //     ? `/dashboard/jobs/${loaderData.id}/specialists/${loaderData.specialist.id}/day-review/${day.reportId}`
+              //     : `/bids/${loaderData.id}/specialists/${loaderData.specialist.id}/day-review/${day.reportId}`
+              // }
+              to={`/dashboard/jobs/${loaderData.id}/specialists/${loaderData.specialist.id}/day-review/${day.reportId}`}
               replace
               variant="outlined"
             >
