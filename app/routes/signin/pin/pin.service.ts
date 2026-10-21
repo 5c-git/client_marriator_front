@@ -94,7 +94,10 @@ export class PinService {
         representation: "complete",
       });
 
-      await this.postSetTimeZone(accessToken, userDateFormatted);
+      await this.postSetTimeZone(
+        data.result.token.access_token,
+        userDateFormatted,
+      );
 
       await this.getAndSaveUserSuperiors();
       await this.loadUserProfile();

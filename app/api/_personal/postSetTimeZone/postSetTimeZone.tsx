@@ -23,6 +23,7 @@ export const postSetTimeZone = async (
     const request = await fetch(url, {
       method: "POST",
       headers: {
+        Accept: "application/json",
         // "Content-Type": "application/json",
         Authorization: `Bearer ${accessToken}`,
       },
