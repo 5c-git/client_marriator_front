@@ -196,6 +196,8 @@ export default function Task({ loaderData }: Route.ComponentProps) {
       : false;
   };
 
+  console.log(loaderData.userRole);
+
   return (
     <>
       {editMode ? (
