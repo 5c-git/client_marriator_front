@@ -85,7 +85,7 @@ export class TaskMapper {
           dateEnd: item.dateEnd,
           countSearch: 0,
           buttonBidNeed: item.buttonBidNeed,
-          buttonSearchNeed: false,
+          buttonSearchNeed: item.buttonSearchNeed,
         };
       }),
       invitedPersons: data.data.acceptedUser.map((item) => {
