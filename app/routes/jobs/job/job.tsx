@@ -79,7 +79,7 @@ export async function clientAction({ request }: Route.ClientActionArgs) {
     } else if (_action === JOB_ACTIONS.start) {
       await jobService.startDay(fields.bidId);
     } else if (_action === JOB_ACTIONS.forPay) {
-      await jobService.payReport(fields.reportId);
+      await jobService.payReport(fields.bidId);
     }
   } else {
     const formData = await request.formData();
@@ -247,6 +247,7 @@ export default function Job({ loaderData }: Route.ComponentProps) {
                         fetcher.submit(
                           JSON.stringify({
                             _action: JOB_ACTIONS.forPay,
+                            bidId: loaderData.job.id,
                             reportId: day.reportId,
                           }),
                           {
@@ -460,6 +461,7 @@ export default function Job({ loaderData }: Route.ComponentProps) {
                   fetcher.submit(
                     JSON.stringify({
                       _action: JOB_ACTIONS.forPay,
+                      bidId: loaderData.job.id,
                       reportId: loaderData.job.oneDayReportId,
                     }),
                     {
