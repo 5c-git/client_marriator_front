@@ -43,7 +43,7 @@ jobContainer
 
 jobContainer
   .bind(jobPrivateTokens.payReport)
-  .toConstant((accessToken, reportId) => postPayReport(accessToken, reportId));
+  .toConstant((accessToken, bidId) => postPayReport(accessToken, bidId));
 
 jobContainer
   .bind(jobPrivateTokens.getSettings)
