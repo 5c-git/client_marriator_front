@@ -58,10 +58,10 @@ export class JobService {
     return this._startDay(token, bidId);
   }
 
-  async payReport(reportId: string) {
+  async payReport(bidId: string) {
     const token = this.appSerivice.getToken();
 
-    return this._payReport(token, reportId);
+    return this._payReport(token, bidId);
   }
 
   async endDay(bidId: string, files?: File[]) {

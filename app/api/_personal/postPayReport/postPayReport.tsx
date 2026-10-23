@@ -11,14 +11,14 @@ export const postPayReportKeys = ["postPayReport"];
 
 export const postPayReport = async (
   accessToken: string,
-  reportId: string,
+  bidId: string,
 ): Promise<PostPayReportSuccess> => {
   try {
     const url = new URL(import.meta.env.VITE_POST_PAY_REPORT);
 
     const formData = new FormData();
 
-    formData.append("reportId", reportId);
+    formData.append("bidId", bidId);
 
     const request = await fetch(url, {
       method: "POST",

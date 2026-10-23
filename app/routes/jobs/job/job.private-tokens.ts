@@ -41,7 +41,7 @@ export type EndDay = (
 
 export type PayReport = (
   accessToken: string,
-  reportId: string,
+  bidId: string,
 ) => Promise<PostPayReportSuccess>;
 
 export type GetSettings = (
