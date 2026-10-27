@@ -8,7 +8,7 @@ export class JobMapper {
   static mapDataToJob(data: GetJobSuccess) {
     return {
       id: data.data.id,
-      logo: `${import.meta.env.VITE_ASSET_PATH}${data.data.viewActivity.logo}`,
+      logo: `${import.meta.env.VITE_ASSET_PATH}${data.data.place.logo}`,
       status: data.data.acceptingUser.status,
       place: {
         id: data.data.place.id,
