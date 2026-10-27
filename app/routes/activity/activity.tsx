@@ -73,9 +73,9 @@ export async function clientLoader({ params }: Route.ClientLoaderArgs) {
     (userRole === "supervisor" &&
       entityData.data.status === 3 &&
       params.taskId) ||
-    (userRole === "client" && entityData.data.status === 1) ||
-    (userRole === "client" && entityData.data.status === 2)
-      ? true
+    (userRole === "client" && entityData.data.status === 1)
+      ? // || (userRole === "client" && entityData.data.status === 2)
+        true
       : false;
 
   if (setting_canEdit == true) {

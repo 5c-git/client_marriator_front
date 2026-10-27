@@ -11,7 +11,7 @@ export class BidMapper {
   static mapDataToBid(data: GetBidSuccess["data"]) {
     return {
       id: data.id,
-      logo: data.viewActivity.logo,
+      logo: data.place.logo,
       status: data.status,
       place: {
         id: data.place.id,
