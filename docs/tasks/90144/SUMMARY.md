@@ -2,6 +2,7 @@
 
 - **Ссылка:** https://portal.5corners.ru/workgroups/group/534/tasks/task/view/90144/
 - **Ветка:** bugfix/task-90144-422-new-task-redirect (база: main)
+- **Слито в main:** `b36ce94` (2026-10-28; фикс — merge `2fbf942`, итоги — merge `b36ce94`)
 - **Период:** 2026-10-28 — 2026-10-28
 - **Статус:** ✅ закрыта
 
