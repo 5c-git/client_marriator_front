@@ -51,9 +51,9 @@ export class BidService {
 
     return {
       start: new Date(
-        `2026-03-12T${intervalDayStart.data.value.startsWith("0") ? intervalDayStart.data.value : `0${intervalDayStart.data.value}`}:00`,
+        `2026-03-12T${intervalDayStart.data.value}:00Z`,
       ),
-      end: new Date(`2026-03-12T${intervalDayEnd.data.value}:00`),
+      end: new Date(`2026-03-12T${intervalDayEnd.data.value}:00Z`),
     };
   }
 

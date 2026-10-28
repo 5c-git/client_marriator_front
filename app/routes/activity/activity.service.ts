@@ -7,6 +7,7 @@ import type {
   GetEntity,
   GetViewActivitiesForEntity,
   GetPlaceForEntity,
+  GetPlaceForAcceptedTask,
   GetSetting,
   CreateEntityActivity,
   UpdateEntityActivity,
@@ -28,6 +29,7 @@ export class ActivityService {
     private readonly _getEntity: GetEntity,
     private readonly _getViewActivities: GetViewActivitiesForEntity,
     private readonly _getPlaceForEntity: GetPlaceForEntity,
+    private readonly _getPlaceForAcceptedTask: GetPlaceForAcceptedTask,
     private readonly _getSetting: GetSetting,
     private readonly _createEntityActivity: CreateEntityActivity,
     private readonly _updateEntityActivity: UpdateEntityActivity,
@@ -53,6 +55,13 @@ export class ActivityService {
   async getLocationsOptions(entityId: string) {
     const token = this.appSerivce.getToken();
     const data = await this._getPlaceForEntity(token, entityId);
+
+    return ActivityMapper.mapLocationsToOptions(data);
+  }
+
+  async getAcceptedTaskLocationsOptions(taskId: string) {
+    const token = this.appSerivce.getToken();
+    const data = await this._getPlaceForAcceptedTask(token, taskId);
 
     return ActivityMapper.mapLocationsToOptions(data);
   }
@@ -87,6 +96,7 @@ injected(
   activityPrivateTokens.getEntity,
   activityPrivateTokens.getViewActivitiesForEntity,
   activityPrivateTokens.getPlaceForEntity,
+  activityPrivateTokens.getPlaceForAcceptedTask,
   activityPrivateTokens.getSetting,
   activityPrivateTokens.createEntityActivity,
   activityPrivateTokens.updateEntityActivity,
