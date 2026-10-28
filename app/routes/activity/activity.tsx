@@ -146,19 +146,24 @@ export async function clientAction({
 
   const isNew = searchParams.get("new");
 
+  const entityIdNumber = Number(entityId);
+  const entityIdIsReal =
+    Number.isInteger(entityIdNumber) && entityIdNumber > 0;
+  const newEntityPath = entityIdIsReal
+    ? `/${vocabulary.plural}/${vocabulary.new}/${entityId}`
+    : withLocale(`/${vocabulary.plural}`);
+
   if (_action === ACTIVITY_ACTIONS.createService) {
     await activityService.createEntityActivity(fields.payload);
     if (isNew) {
-      throw redirect(`/${vocabulary.plural}/${vocabulary.new}/${entityId}`);
+      throw redirect(newEntityPath);
     } else {
       throw redirect(withLocale(`/${vocabulary.plural}/${entityId}`));
     }
   } else if (_action === ACTIVITY_ACTIONS.updateService) {
     await activityService.updateEntityActivity(fields.payload);
     if (isNew) {
-      throw redirect(
-        `/${vocabulary.plural}/${vocabulary.new}?${vocabulary.entity}=${entityId}`,
-      );
+      throw redirect(newEntityPath);
     } else {
       throw redirect(withLocale(`/${vocabulary.plural}/${entityId}`));
     }
