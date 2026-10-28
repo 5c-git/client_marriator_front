@@ -15,6 +15,7 @@ import { getSettingsFromKey } from "~/api/_settings/getSettingsFromKey/getSettin
 import { getTask } from "~/api/_personal/getTask/getTask";
 import { getViewActivitiesForTask } from "~/api/_personal/getViewActivitiesForTask/getViewActivitiesForTask";
 import { getPlaceForTask } from "~/api/_personal/getPlaceForTask/getPlaceForTask";
+import { getPlaceForAcceptedTask } from "~/api/_personal/getPlaceForAcceptedTask/getPlaceForAcceptedTask";
 import { postCreateTaskActivity } from "~/api/_personal/postCreateTaskActivity/postCreateTaskActivity";
 import { postUpdateTaskActivity } from "~/api/_personal/postUpdateTaskActivity/postUpdateTaskActivity";
 
@@ -63,6 +64,12 @@ activityContainer
   .when(ACTIVITY_TAGS.task)
   .bind(activityPrivateTokens.getPlaceForEntity)
   .toConstant((accessToken, taskId) => getPlaceForTask(accessToken, taskId));
+
+activityContainer
+  .bind(activityPrivateTokens.getPlaceForAcceptedTask)
+  .toConstant((accessToken, taskId) =>
+    getPlaceForAcceptedTask(accessToken, taskId),
+  );
 
 activityContainer
   .when(ACTIVITY_TAGS.order)

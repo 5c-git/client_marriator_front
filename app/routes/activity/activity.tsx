@@ -82,7 +82,12 @@ export async function clientLoader({ params }: Route.ClientLoaderArgs) {
     if (userRole === "manager" || userRole === "client") {
       activities = await activityService.getActivitiesOptions(entityId);
     }
-    locations = await activityService.getLocationsOptions(entityId);
+    // Супервайзер правит услугу принятой Задачи — площадки отдают отдельным
+    // эндпоинтом: getPlaceForTask задачу в статусе 3 не пропускает
+    locations =
+      userRole === "supervisor" && params.taskId && entityData.data.status === 3
+        ? await activityService.getAcceptedTaskLocationsOptions(entityId)
+        : await activityService.getLocationsOptions(entityId);
   }
 
   const intervalDayStart = await activityService.getSetting("intervalDayStart");

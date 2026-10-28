@@ -115,10 +115,10 @@ export default function Bid({ loaderData }: Route.ComponentProps) {
                 bidMobileData.project.timeStart && bidMobileData.project.timeEnd
                   ? {
                       start: new Date(
-                        `2026-03-12T${bidMobileData.project.timeStart}:00`,
+                        `2026-03-12T${bidMobileData.project.timeStart}:00Z`,
                       ),
                       end: new Date(
-                        `2026-03-12T${bidMobileData.project.timeEnd}:00`,
+                        `2026-03-12T${bidMobileData.project.timeEnd}:00Z`,
                       ),
                     }
                   : loaderData.defaultTimeRange
@@ -154,10 +154,10 @@ export default function Bid({ loaderData }: Route.ComponentProps) {
                 bidMobileData.project.timeStart && bidMobileData.project.timeEnd
                   ? {
                       start: new Date(
-                        `2026-03-12T${bidMobileData.project.timeStart.startsWith("0") ? bidMobileData.project.timeStart : `0${bidMobileData.project.timeStart}`}:00`,
+                        `2026-03-12T${bidMobileData.project.timeStart}:00Z`,
                       ),
                       end: new Date(
-                        `2026-03-12T${bidMobileData.project.timeEnd.startsWith("0") ? bidMobileData.project.timeEnd : `0${bidMobileData.project.timeEnd}`}:00`,
+                        `2026-03-12T${bidMobileData.project.timeEnd}:00Z`,
                       ),
                     }
                   : loaderData.defaultTimeRange

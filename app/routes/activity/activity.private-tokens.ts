@@ -10,6 +10,7 @@ import type { GetOrderSuccess } from "~/api/_personal/getOrder/getOrderSuccess.s
 import type { GetViewActivitiesForTaskSuccess } from "~/api/_personal/getViewActivitiesForTask/getViewActivitiesForTaskSuccess.schema";
 import type { GetViewActivitiesForOrderSuccess } from "~/api/_personal/getViewActivitiesForOrder/getViewActivitiesForOrderSuccess.schema";
 import type { GetPlaceForTaskSuccess } from "~/api/_personal/getPlaceForTask/getPlaceForTaskSuccess.schema";
+import type { GetPlaceForAcceptedTaskSuccess } from "~/api/_personal/getPlaceForAcceptedTask/getPlaceForAcceptedTaskSuccess.schema";
 import type { GetPlaceForOrderSuccess } from "~/api/_personal/getPlaceForOrder/getPlaceForOrderSuccess.schema";
 import type { GetSettingsFromKeySuccess } from "~/api/_settings/getSettingsFromKey/getSettingsFromKeySuccess.schema";
 import type { Setting } from "~/api/_settings/getSettingsFromKey/getSettingsFromKeySuccess.schema";
@@ -33,6 +34,11 @@ export type GetPlaceForEntity = (
   accessToken: string,
   entityId: string,
 ) => Promise<GetPlaceForOrderSuccess>;
+
+export type GetPlaceForAcceptedTask = (
+  accessToken: string,
+  taskId: string,
+) => Promise<GetPlaceForAcceptedTaskSuccess>;
 
 export type GetSetting = (
   accessToken: string,
@@ -63,6 +69,9 @@ export const activityPrivateTokens = {
   ),
   getPlaceForEntity: token<GetPlaceForEntity>(
     "activity-private:getPlaceForEntity",
+  ),
+  getPlaceForAcceptedTask: token<GetPlaceForAcceptedTask>(
+    "activity-private:getPlaceForAcceptedTask",
   ),
   getSetting: token<GetSetting>("activity-private:getSetting"),
   createEntityActivity: token<CreateEntityActivity>(
