@@ -2,6 +2,7 @@
 
 - **Ссылка:** https://portal.5corners.ru/workgroups/group/534/tasks/task/view/90145/
 - **Ветка:** bugfix/task-90145-block-service-edit-after-send (база: main)
+- **Слито в main:** `bcc0786` (2026-10-28)
 - **Период:** 2026-10-28 — 2026-10-28
 - **Статус:** ✅ закрыта
 
