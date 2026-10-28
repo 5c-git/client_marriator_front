@@ -2,6 +2,7 @@
 
 - **Ссылка:** https://portal.5corners.ru/workgroups/group/534/tasks/task/view/90172/
 - **Ветка:** bugfix/task-90172-bid-time-utc-shift (база: main)
+- **Слито в main:** `ce6ec86` (2026-10-28)
 - **Период:** 2026-10-28 — 2026-10-28
 - **Статус:** ✅ закрыта
 
