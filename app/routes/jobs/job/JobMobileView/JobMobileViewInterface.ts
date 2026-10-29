@@ -16,6 +16,16 @@ export type JobMobileViewInterface = {
     days: {
       id: number;
       reportId?: number;
+      hours?: string | null | undefined;
+      reasons?:
+        | {
+            id: number;
+            value: string;
+            amount: number;
+            count: number;
+          }[]
+        | undefined;
+
       timeStart: Date;
       timeEnd: Date;
       needRoute: boolean;

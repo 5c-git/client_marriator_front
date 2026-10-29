@@ -40,7 +40,13 @@ export class JobMapper {
 
         return {
           id: day.id,
-          ...(actedDay ? { reportId: actedDay.id } : {}),
+          ...(actedDay
+            ? {
+                reportId: actedDay.id,
+                hours: actedDay.hours,
+                reasons: actedDay.reasons,
+              }
+            : {}),
           timeStart: new Date(day.timeStart),
           timeEnd: new Date(day.timeEnd),
           locations: locations,

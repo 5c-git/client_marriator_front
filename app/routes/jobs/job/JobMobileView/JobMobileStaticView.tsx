@@ -526,6 +526,60 @@ export function JobMobileStaticView({
                             </Box>
                           ))
                         : null}
+
+                      {day.hours ? (
+                        <Box>
+                          <Typography component="p" variant="Bold_12">
+                            Отработанные часы
+                          </Typography>
+                          <Typography component="p" variant="Reg_14">
+                            {day.hours}
+                          </Typography>
+                        </Box>
+                      ) : null}
+
+                      {day.reasons && day.reasons.length > 0 ? (
+                        <Box
+                          sx={{
+                            display: "grid",
+                            rowGap: "14px",
+                          }}
+                        >
+                          {day.reasons.map((reason) => (
+                            <Box>
+                              <Typography component="p" variant="Bold_12">
+                                {reason.value}
+                              </Typography>
+                              <Box
+                                sx={{
+                                  display: "flex",
+                                  justifyContent: "space-between",
+                                }}
+                              >
+                                <Typography component="p" variant="Reg_14">
+                                  {t("dayReason.measurementUnit")}
+                                </Typography>
+                                <Typography component="p" variant="Reg_14">
+                                  {reason.amount}
+                                </Typography>
+                              </Box>
+                              <Box
+                                sx={{
+                                  display: "flex",
+                                  justifyContent: "space-between",
+                                }}
+                              >
+                                <Typography component="p" variant="Reg_14">
+                                  {t("dayReason.amount")}
+                                </Typography>
+                                <Typography component="p" variant="Reg_14">
+                                  {reason.count}
+                                </Typography>
+                              </Box>
+                            </Box>
+                          ))}
+                        </Box>
+                      ) : null}
                       {actions.map((action) => action(day, day.action))}
                     </Box>
 
