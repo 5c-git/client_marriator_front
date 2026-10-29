@@ -8,7 +8,9 @@
     "start": "Start",
     "end": "End",
     "forPay": "For payment",
-    "report": "Report"
+    "report": "Report",
+    "check": "Check days worked",
+    "edit": "Edit"
   },
   "dayStatus": {
     "start": "Stared",
@@ -28,7 +30,9 @@
       "cancelButton": "Cancel"
     }
   },
-  "acceptAlertText": "Ваша кандидатура на рассмотрении у супервайзера. Ожидайте подтверждения",
+  "checkAvaliable": "Сheck available",
+  "paymentAvaliable": "Request payment",
+  "acceptAlertText": "Your application is under review by a supervisor. Please await confirmation.",
   "statusText": "Status",
   "locationText": "Location",
   "serviceTypeText": "Service type",
@@ -69,5 +73,9 @@
     "supervisor": "Supervisor",
     "client": "Client",
     "specialist": "Specialist"
+  },
+  "dayReason": {
+    "measurementUnit": "Unit of measurement",
+    "amount": "Amount"
   }
 }

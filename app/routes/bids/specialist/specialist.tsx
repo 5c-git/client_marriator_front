@@ -67,19 +67,28 @@ export default function SpecialistRequest({
           {day.action === "end" ||
           day.action === "reported" ||
           day.action === "notEnded" ? (
-            <Button
-              component={Link}
-              // to={
-              //   isDesktop
-              //     ? `/dashboard/jobs/${loaderData.id}/specialists/${loaderData.specialist.id}/day-review/${day.reportId}`
-              //     : `/bids/${loaderData.id}/specialists/${loaderData.specialist.id}/day-review/${day.reportId}`
-              // }
-              to={`/dashboard/jobs/${loaderData.id}/specialists/${loaderData.specialist.id}/day-review/${day.reportId}`}
-              replace
-              variant="outlined"
+            // <Button
+            //   component={Link}
+            //   // to={
+            //   //   isDesktop
+            //   //     ? `/dashboard/jobs/${loaderData.id}/specialists/${loaderData.specialist.id}/day-review/${day.reportId}`
+            //   //     : `/bids/${loaderData.id}/specialists/${loaderData.specialist.id}/day-review/${day.reportId}`
+            //   // }
+            //   to={`/dashboard/jobs/${loaderData.id}/specialists/${loaderData.specialist.id}/day-review/${day.reportId}`}
+            //   replace
+            //   variant="outlined"
+            // >
+            //   {t("actions.check")}
+            // </Button>
+            <Typography
+              component={"p"}
+              variant="Bold_14"
+              sx={(theme) => ({
+                color: theme.vars.palette["Corp_1"],
+              })}
             >
-              {t("actions.check")}
-            </Button>
+              {t("checkAvaliable")}
+            </Typography>
           ) : null}
           {day.action === "accept" ? (
             <>
@@ -184,72 +193,64 @@ export default function SpecialistRequest({
             </Button>
           ) : null}
 
-          {loaderData.oneDayJob ? (
-            <>
-              {loaderData.oneDayJobAction === "end" ||
-              loaderData.oneDayJobAction === "reported" ||
-              loaderData.oneDayJobAction === "notEnded" ? (
+          <>
+            {loaderData.oneDayJobAction === "end" ||
+            loaderData.oneDayJobAction === "reported" ||
+            loaderData.oneDayJobAction === "notEnded" ||
+            loaderData.days.findIndex(
+              (day) =>
+                day.action === "end" || day.action === "reported" || "notEnded",
+            ) > -1 ? (
+              <Button
+                component={Link}
+                to={
+                  isDesktop
+                    ? // ? `/dashboard/jobs/${loaderData.id}/specialists/${loaderData.specialist.id}/day-review/${loaderData.oneDayReportId}`
+                      // : `/bids/${loaderData.id}/specialists/${loaderData.specialist.id}/day-review/${loaderData.oneDayReportId}`
+                      `/dashboard/jobs/${loaderData.id}/specialists/${loaderData.specialist.id}/day-review`
+                    : `/bids/${loaderData.id}/specialists/${loaderData.specialist.id}/day-review`
+                }
+                variant="outlined"
+              >
+                {t("actions.check")}
+              </Button>
+            ) : null}
+            {loaderData.oneDayJobAction === "accept" ? (
+              <>
                 <Button
                   component={Link}
                   to={
                     isDesktop
-                      ? `/dashboard/jobs/${loaderData.id}/specialists/${loaderData.specialist.id}/day-review/${loaderData.oneDayReportId}`
-                      : `/bids/${loaderData.id}/specialists/${loaderData.specialist.id}/day-review/${loaderData.oneDayReportId}`
+                      ? `/dashboard/jobs/${loaderData.id}/specialists/${loaderData.specialist.id}/day-review/${loaderData.oneDayReportId}?edit=true`
+                      : `/bids/${loaderData.id}/specialists/${loaderData.specialist.id}/day-review/${loaderData.oneDayReportId}?edit=true`
                   }
                   variant="outlined"
                 >
-                  {t("actions.check")}
+                  {t("actions.edit")}
                 </Button>
-              ) : null}
-              {loaderData.oneDayJobAction === "accept" ? (
-                <>
-                  <Button
-                    component={Link}
-                    to={
-                      isDesktop
-                        ? `/dashboard/jobs/${loaderData.id}/specialists/${loaderData.specialist.id}/day-review/${loaderData.oneDayReportId}?edit=true`
-                        : `/bids/${loaderData.id}/specialists/${loaderData.specialist.id}/day-review/${loaderData.oneDayReportId}?edit=true`
-                    }
-                    variant="outlined"
-                  >
-                    {t("actions.edit")}
-                  </Button>
-                  <Button
-                    variant="contained"
-                    onClick={() => {
-                      fetcher.submit(
-                        JSON.stringify({
-                          _action: SPECIALIST_ACTIONS.forPay,
-                          reportId: loaderData.oneDayReportId,
-                          bidId: loaderData.id,
-                          specialistId: loaderData.specialist.id,
-                        }),
-                        {
-                          method: "POST",
-                          encType: "application/json",
-                        },
-                      );
-                    }}
-                  >
-                    {t("actions.forPay")}
-                  </Button>
-                </>
-              ) : null}
-              {loaderData.oneDayJobAction === "forPay" ? (
-                <>
-                  <Typography
-                    component={"p"}
-                    variant="Bold_18"
-                    sx={(theme) => ({
-                      color: theme.vars.palette["Corp_1"],
-                      textAlign: "center",
-                    })}
-                  >
-                    {t("dayStatus.forPayManager")}
-                  </Typography>
-                </>
-              ) : null}
-              {loaderData.oneDayJobAction === "paid" ? (
+                <Button
+                  variant="contained"
+                  onClick={() => {
+                    fetcher.submit(
+                      JSON.stringify({
+                        _action: SPECIALIST_ACTIONS.forPay,
+                        reportId: loaderData.oneDayReportId,
+                        bidId: loaderData.id,
+                        specialistId: loaderData.specialist.id,
+                      }),
+                      {
+                        method: "POST",
+                        encType: "application/json",
+                      },
+                    );
+                  }}
+                >
+                  {t("actions.forPay")}
+                </Button>
+              </>
+            ) : null}
+            {loaderData.oneDayJobAction === "forPay" ? (
+              <>
                 <Typography
                   component={"p"}
                   variant="Bold_18"
@@ -258,11 +259,23 @@ export default function SpecialistRequest({
                     textAlign: "center",
                   })}
                 >
-                  {t("dayStatus.paid")}
+                  {t("dayStatus.forPayManager")}
                 </Typography>
-              ) : null}
-            </>
-          ) : null}
+              </>
+            ) : null}
+            {loaderData.oneDayJobAction === "paid" ? (
+              <Typography
+                component={"p"}
+                variant="Bold_18"
+                sx={(theme) => ({
+                  color: theme.vars.palette["Corp_1"],
+                  textAlign: "center",
+                })}
+              >
+                {t("dayStatus.paid")}
+              </Typography>
+            ) : null}
+          </>
 
           {entity.status === 1 ||
           entity.status === 2 ||
