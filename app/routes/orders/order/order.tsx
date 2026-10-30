@@ -567,6 +567,9 @@ export default function Order({ loaderData }: Route.ComponentProps) {
               {loaderData.order.status === 1 ? (
                 <Button
                   variant="contained"
+                  disabled={
+                    loaderData.order.services.length < 1 ? true : false
+                  }
                   onClick={() => {
                     fetcher.submit(
                       JSON.stringify({
