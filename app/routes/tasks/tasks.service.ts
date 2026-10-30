@@ -56,6 +56,7 @@ export class TasksService {
         id: item.id,
         userId: item.user.id,
         status: item.status,
+        canCancel: item.canCancel,
         statusColor: statusCodeMap[item.status].color,
         header: item.orderActivities.length.toString(),
         subHeader: item.orderActivities
@@ -91,11 +92,6 @@ export class TasksService {
     );
     const create_bid_interval = date_create_bid.getHours();
 
-    const date_cancel = new Date(
-      `2026-03-12T${userData.data.cancel_task.startsWith("0") ? userData.data.cancel_task : `0${userData.data.cancel_task}`}`,
-    );
-    const cancel_task_interval = date_cancel.getHours();
-
     const date_repeat = new Date(
       `2026-03-12T${userData.data.change_task.startsWith("0") ? userData.data.change_task : `0${userData.data.change_task}`}`,
     );
@@ -104,7 +100,6 @@ export class TasksService {
     return {
       id: userData.data.id,
       create_bid_interval,
-      cancel_task_interval,
       repeat_task_interval,
     };
   }

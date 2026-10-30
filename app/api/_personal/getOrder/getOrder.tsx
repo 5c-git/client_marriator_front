@@ -64,6 +64,7 @@ export const mockResponseSuccess = {
     id: 206,
     selfEmployed: false,
     status: 2,
+    canCancel: true,
     place: {
       id: 3,
       name: "Пятёрочка МСК ул. Арбат д. 24",

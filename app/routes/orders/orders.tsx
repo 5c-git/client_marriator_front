@@ -14,7 +14,7 @@ import { withLocale } from "~/shared/withLocale";
 import { ListView } from "~/shared/views/EntitiesList/ListView";
 import { EntityCard } from "~/shared/ui/EntityCard/EntityCard";
 
-import { Button, Dialog, DialogActions, DialogTitle, Fab } from "@mui/material";
+import { Alert, Button, Dialog, DialogActions, DialogTitle, Fab, Snackbar } from "@mui/material";
 
 import LoopIcon from "@mui/icons-material/Loop";
 import AddIcon from "@mui/icons-material/Add";
@@ -24,6 +24,8 @@ import { newOrderTokens } from "./new-order/new-order.tokens";
 
 import { ordersContainer } from "./orders.module";
 import { ordersTokens } from "./orders.tokens";
+import { orderContainer } from "./order/order.module";
+import { orderTokens } from "./order/order.tokens";
 import { ButtonActionMapper } from "~/shared/mappers/buttonActionMapper";
 
 const ORDERS_ACTIONS = {
@@ -57,6 +59,14 @@ export async function clientAction({ request }: Route.ClientActionArgs) {
   if (_action === ORDERS_ACTIONS.repeat) {
     await ordersService.repeatOrder(fields.orderId);
   } else if (_action === ORDERS_ACTIONS.cancel) {
+    // окно отмены могло истечь, пока список был открыт, — перезапрашиваем карточку
+    const orderService = orderContainer.get(orderTokens.orderService);
+    const order = await orderService.getOrder(fields.orderId);
+
+    if (!order.canCancel) {
+      return { cancelExpired: true };
+    }
+
     await ordersService.cancelOrder(fields.orderId);
   } else if (_action === ORDERS_ACTIONS.create) {
     const order = await newOrderService.createOrder(false);
@@ -71,7 +81,7 @@ export default function Orders({ loaderData }: Route.ComponentProps) {
   const view = useOutletContext<State["entitiesView"]>();
   const setView = useStore((state) => state.setEntitiesView);
 
-  const fetcher = useFetcher();
+  const fetcher = useFetcher<{ cancelExpired?: boolean }>();
   const submit = useSubmit();
 
   const [orderToAct, setOrderToAct] = useState<{
@@ -102,34 +112,7 @@ export default function Orders({ loaderData }: Route.ComponentProps) {
             address={entity.address}
             duration={entity.duration}
             divider
-            {...(entity.duration.start &&
-            ButtonActionMapper.canCancelNewOrNotAccepted(
-              loaderData.intervals.id,
-              entity.userId,
-              entity.status,
-              loaderData.intervals.cancel_order_interval,
-              entity.duration.start,
-            )
-              ? {
-                  buttonAction: {
-                    action: () => {
-                      setOrderToAct({
-                        action: "cancel",
-                        id: entity.id,
-                      });
-                    },
-                    text: t("cancelAssignmentButton"),
-                    variant: "text",
-                  },
-                }
-              : {})}
-            {...(entity.duration.end &&
-            ButtonActionMapper.canCancelAccepted(
-              loaderData.intervals.id,
-              entity.userId,
-              entity.status,
-              entity.duration.end,
-            )
+            {...(entity.canCancel
               ? {
                   buttonAction: {
                     action: () => {
@@ -186,34 +169,7 @@ export default function Orders({ loaderData }: Route.ComponentProps) {
             address={entity.address}
             duration={entity.duration}
             divider
-            {...(entity.duration.start &&
-            ButtonActionMapper.canCancelNewOrNotAccepted(
-              loaderData.intervals.id,
-              entity.userId,
-              entity.status,
-              loaderData.intervals.cancel_order_interval,
-              entity.duration.start,
-            )
-              ? {
-                  buttonAction: {
-                    action: () => {
-                      setOrderToAct({
-                        action: "cancel",
-                        id: entity.id,
-                      });
-                    },
-                    text: t("cancelAssignmentButton"),
-                    variant: "text",
-                  },
-                }
-              : null)}
-            {...(entity.duration.end &&
-            ButtonActionMapper.canCancelAccepted(
-              loaderData.intervals.id,
-              entity.userId,
-              entity.status,
-              entity.duration.end,
-            )
+            {...(entity.canCancel
               ? {
                   buttonAction: {
                     action: () => {
@@ -347,6 +303,29 @@ export default function Orders({ loaderData }: Route.ComponentProps) {
           </Button>
         </DialogActions>
       </Dialog>
+      <Snackbar
+        open={
+          fetcher.state === "idle" && fetcher.data?.cancelExpired
+            ? true
+            : false
+        }
+        autoHideDuration={3000}
+        onClose={() => {
+          if (fetcher.state === "idle") {
+            fetcher.reset();
+          }
+        }}
+      >
+        <Alert
+          severity="error"
+          variant="small"
+          sx={{
+            width: "100%",
+          }}
+        >
+          {t("cancelExpiredAlert")}
+        </Alert>
+      </Snackbar>
     </>
   );
 }

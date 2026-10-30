@@ -28,6 +28,7 @@ export class OrderMapper {
     return {
       id: data.data.id.toString(),
       status: data.data.status,
+      canCancel: data.data.canCancel,
       place: data.data.place
         ? {
             id: data.data.place.id,

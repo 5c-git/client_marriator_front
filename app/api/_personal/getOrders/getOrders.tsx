@@ -72,6 +72,7 @@ export const mockResponseSuccess: GetOrdersSuccess = {
       id: 206,
       selfEmployed: false,
       status: 1,
+      canCancel: true,
       place: {
         id: 3,
         name: "Пятёрочка МСК ул. Арбат д. 24",
@@ -139,6 +140,7 @@ export const mockResponseSuccess: GetOrdersSuccess = {
       id: 208,
       selfEmployed: false,
       status: 1,
+      canCancel: true,
       place: {
         id: 3,
         name: "Пятёрочка МСК ул. Арбат д. 24",
@@ -210,6 +212,7 @@ export const mockResponseSuccess: GetOrdersSuccess = {
       id: 208,
       selfEmployed: false,
       status: 1,
+      canCancel: true,
       place: {
         id: 3,
         name: "Пятёрочка МСК ул. Арбат д. 24",
@@ -281,6 +284,7 @@ export const mockResponseSuccess: GetOrdersSuccess = {
       id: 208,
       selfEmployed: false,
       status: 1,
+      canCancel: true,
       place: {
         id: 3,
         name: "Пятёрочка МСК ул. Арбат д. 24",
@@ -352,6 +356,7 @@ export const mockResponseSuccess: GetOrdersSuccess = {
       id: 208,
       selfEmployed: false,
       status: 1,
+      canCancel: true,
       place: {
         id: 3,
         name: "Пятёрочка МСК ул. Арбат д. 24",
@@ -423,6 +428,7 @@ export const mockResponseSuccess: GetOrdersSuccess = {
       id: 208,
       selfEmployed: false,
       status: 1,
+      canCancel: true,
       place: {
         id: 3,
         name: "Пятёрочка МСК ул. Арбат д. 24",
@@ -494,6 +500,7 @@ export const mockResponseSuccess: GetOrdersSuccess = {
       id: 208,
       selfEmployed: false,
       status: 2,
+      canCancel: true,
       place: {
         id: 3,
         name: "Пятёрочка МСК ул. Арбат д. 24",
@@ -565,6 +572,7 @@ export const mockResponseSuccess: GetOrdersSuccess = {
       id: 208,
       selfEmployed: false,
       status: 2,
+      canCancel: true,
       place: {
         id: 3,
         name: "Пятёрочка МСК ул. Арбат д. 24",
@@ -636,6 +644,7 @@ export const mockResponseSuccess: GetOrdersSuccess = {
       id: 208,
       selfEmployed: false,
       status: 2,
+      canCancel: true,
       place: {
         id: 3,
         name: "Пятёрочка МСК ул. Арбат д. 24",
@@ -707,6 +716,7 @@ export const mockResponseSuccess: GetOrdersSuccess = {
       id: 208,
       selfEmployed: false,
       status: 2,
+      canCancel: true,
       place: {
         id: 3,
         name: "Пятёрочка МСК ул. Арбат д. 24",
