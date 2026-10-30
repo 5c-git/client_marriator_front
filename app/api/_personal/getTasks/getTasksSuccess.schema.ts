@@ -30,6 +30,7 @@ export const getTasksSuccessSchema = z.object({
         z.literal(4),
         z.literal(5),
       ]),
+      canCancel: z.boolean(),
       user: z.object({
         id: z.number(),
       }),

@@ -2,6 +2,7 @@ export type Entity = {
   id: number;
   userId: number;
   status: number;
+  canCancel?: boolean;
   statusColor: string;
   header: string;
   subHeader: string;

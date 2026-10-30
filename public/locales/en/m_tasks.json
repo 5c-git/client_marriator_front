@@ -9,5 +9,6 @@
     "title": "task",
     "no": "No",
     "yes": "Yes"
-  }
+  },
+  "cancelExpiredAlert": "The time to cancel the task has expired"
 }

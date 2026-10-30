@@ -156,6 +156,7 @@ test.describe("Сценарий супервайзера", () => {
               id: 100,
               selfEmployed: false,
               status: 1,
+              canCancel: true,
               place: null,
               user: {
                 id: 700,
@@ -342,6 +343,7 @@ test.describe("Сценарий супервайзера", () => {
           orders.data.push({
             id: 100,
             status: 2,
+            canCancel: true,
             place: {
               id: 3,
               name: "«Пятёрочка» на Арбате д. 24  г.Москва",
@@ -467,6 +469,7 @@ test.describe("Сценарий супервайзера", () => {
         {
           id: 100,
           status: 2,
+          canCancel: true,
           place: {
             id: 3,
             name: "«Пятёрочка» на Арбате д. 24  г.Москва",
@@ -522,6 +525,7 @@ test.describe("Сценарий супервайзера", () => {
         id: 100,
         selfEmployed: false,
         status: 2,
+        canCancel: true,
         place: {
           id: 0,
           name: "«Семёрочка»",
@@ -628,6 +632,7 @@ test.describe("Сценарий супервайзера", () => {
             id: 999,
           },
           status: 1,
+          canCancel: true,
           place: {
             id: 3,
             name: "«Пятёрочка» на Арбате д. 24  г.Москва",
@@ -1197,6 +1202,7 @@ test.describe("Сценарий супервайзера", () => {
                 "Курьер  (Физическое лицо)",
               ],
               status: 1,
+              canCancel: true,
             },
           ];
 
@@ -1237,6 +1243,7 @@ test.describe("Сценарий супервайзера", () => {
             id: 800,
           },
           status: 2,
+          canCancel: true,
           place: {
             id: 3,
             name: "«Пятёрочка» на Арбате д. 24  г.Москва",
@@ -1300,6 +1307,7 @@ test.describe("Сценарий супервайзера", () => {
               "Курьер  (Физическое лицо)",
             ],
             status: 1,
+            canCancel: true,
           },
           createdAt: "2026-10-12T15:55:24.000000Z",
         },
@@ -1322,6 +1330,7 @@ test.describe("Сценарий супервайзера", () => {
           name: "Тестовый супервайзер",
         },
         status: 2,
+        canCancel: true,
         selfEmployed: false,
         place: {
           id: 0,
@@ -1422,6 +1431,7 @@ test.describe("Сценарий супервайзера", () => {
           id: 200,
           selfEmployed: false,
           status: 3,
+          canCancel: true,
           user: {
             id: 900,
             phone: 79999999999,
@@ -1464,6 +1474,7 @@ test.describe("Сценарий супервайзера", () => {
             "Курьер  (Физическое лицо)",
           ],
           status: 1,
+          canCancel: true,
         },
         reports: [],
         project: {
@@ -1568,6 +1579,7 @@ test.describe("Сценарий супервайзера", () => {
             id: 800,
           },
           status: 7,
+          canCancel: true,
           place: {
             id: 3,
             name: "«Пятёрочка» на Арбате д. 24  г.Москва",
@@ -1624,6 +1636,7 @@ test.describe("Сценарий супервайзера", () => {
           name: "Тестовый супервайзер",
         },
         status: 7,
+        canCancel: true,
         selfEmployed: false,
         place: {
           id: 0,
@@ -1724,6 +1737,7 @@ test.describe("Сценарий супервайзера", () => {
           id: 200,
           selfEmployed: false,
           status: 3,
+          canCancel: true,
           user: {
             id: 900,
             phone: 79999999999,
@@ -1767,6 +1781,7 @@ test.describe("Сценарий супервайзера", () => {
               "Курьер  (Физическое лицо)",
             ],
             status: 4,
+            canCancel: true,
           },
         ],
 
@@ -1814,6 +1829,7 @@ test.describe("Сценарий супервайзера", () => {
           name: "Тестовый супервайзер",
         },
         status: 2,
+        canCancel: true,
         selfEmployed: false,
         place: {
           id: 3,
@@ -1917,6 +1933,7 @@ test.describe("Сценарий супервайзера", () => {
           id: 200,
           selfEmployed: false,
           status: 3,
+          canCancel: true,
           user: {
             id: 900,
             phone: 79999999999,
@@ -1959,6 +1976,7 @@ test.describe("Сценарий супервайзера", () => {
             "Курьер  (Физическое лицо)",
           ],
           status: 4,
+          canCancel: true,
         },
         reports: [],
         project: {
@@ -2317,6 +2335,7 @@ test.describe("Сценарий супервайзера", () => {
               id: 800,
             },
             status: 3,
+            canCancel: true,
             place: {
               id: 3,
               name: "«Пятёрочка» на Арбате д. 24  г.Москва",
@@ -2380,6 +2399,7 @@ test.describe("Сценарий супервайзера", () => {
                 "Курьер  (Физическое лицо)",
               ],
               status: 5,
+              canCancel: true,
             },
             createdAt: "2026-10-13T08:31:23.000000Z",
           },
@@ -2402,6 +2422,7 @@ test.describe("Сценарий супервайзера", () => {
             name: "Тестовый супервайзер",
           },
           status: 3,
+          canCancel: true,
           selfEmployed: false,
           place: {
             id: 3,
@@ -2481,6 +2502,7 @@ test.describe("Сценарий супервайзера", () => {
             id: 100,
             selfEmployed: false,
             status: 3,
+            canCancel: true,
             user: {
               id: 700,
               phone: 77777777777,
@@ -2506,6 +2528,7 @@ test.describe("Сценарий супервайзера", () => {
             id: 200,
             selfEmployed: false,
             status: 3,
+            canCancel: true,
             user: {
               id: 900,
               phone: 79999999999,
@@ -2548,6 +2571,7 @@ test.describe("Сценарий супервайзера", () => {
               "Курьер  (Физическое лицо)",
             ],
             status: 5,
+            canCancel: true,
           },
           reports: [],
           project: {
@@ -2613,6 +2637,7 @@ test.describe("Сценарий супервайзера", () => {
               report: null,
               dayActivityId: 1,
               status: 1,
+              canCancel: true,
               hours: "1.00",
               reasons: [],
             });
@@ -2661,6 +2686,7 @@ test.describe("Сценарий супервайзера", () => {
             id: 800,
           },
           status: 3,
+          canCancel: true,
           place: {
             id: 3,
             name: "«Пятёрочка» на Арбате д. 24  г.Москва",
@@ -2724,6 +2750,7 @@ test.describe("Сценарий супервайзера", () => {
               "Курьер  (Физическое лицо)",
             ],
             status: 5,
+            canCancel: true,
           },
           createdAt: "2026-10-13T08:31:23.000000Z",
         },
@@ -2746,6 +2773,7 @@ test.describe("Сценарий супервайзера", () => {
           name: "Тестовый супервайзер",
         },
         status: 3,
+        canCancel: true,
         selfEmployed: false,
         place: {
           id: 3,
@@ -2849,6 +2877,7 @@ test.describe("Сценарий супервайзера", () => {
           id: 200,
           selfEmployed: false,
           status: 3,
+          canCancel: true,
           user: {
             id: 900,
             phone: 79999999999,
@@ -2891,6 +2920,7 @@ test.describe("Сценарий супервайзера", () => {
             "Курьер  (Физическое лицо)",
           ],
           status: 5,
+          canCancel: true,
         },
         reports: [
           {
@@ -2900,6 +2930,7 @@ test.describe("Сценарий супервайзера", () => {
             report: null,
             dayActivityId: 1,
             status: 1,
+            canCancel: true,
             hours: "1.00",
             reasons: [],
           },
@@ -3004,6 +3035,7 @@ test.describe("Сценарий супервайзера", () => {
             id: 800,
           },
           status: 3,
+          canCancel: true,
           place: {
             id: 3,
             name: "«Пятёрочка» на Арбате д. 24  г.Москва",
@@ -3067,6 +3099,7 @@ test.describe("Сценарий супервайзера", () => {
               "Курьер  (Физическое лицо)",
             ],
             status: 5,
+            canCancel: true,
           },
           createdAt: "2026-10-13T08:31:23.000000Z",
         },
@@ -3089,6 +3122,7 @@ test.describe("Сценарий супервайзера", () => {
           name: "Тестовый супервайзер",
         },
         status: 3,
+        canCancel: true,
         selfEmployed: false,
         place: {
           id: 3,
@@ -3191,6 +3225,7 @@ test.describe("Сценарий супервайзера", () => {
           id: 200,
           selfEmployed: false,
           status: 3,
+          canCancel: true,
           user: {
             id: 900,
             phone: 79999999999,
@@ -3233,6 +3268,7 @@ test.describe("Сценарий супервайзера", () => {
             "Курьер  (Физическое лицо)",
           ],
           status: 5,
+          canCancel: true,
         },
         reports: [
           {
@@ -3242,6 +3278,7 @@ test.describe("Сценарий супервайзера", () => {
             report: null,
             dayActivityId: 1,
             status: 2,
+            canCancel: true,
             hours: "1.00",
             reasons: [],
           },
@@ -3402,6 +3439,7 @@ test.describe("Сценарий супервайзера", () => {
             id: 800,
           },
           status: 3,
+          canCancel: true,
           place: {
             id: 3,
             name: "«Пятёрочка» на Арбате д. 24  г.Москва",
@@ -3465,6 +3503,7 @@ test.describe("Сценарий супервайзера", () => {
               "Курьер  (Физическое лицо)",
             ],
             status: 5,
+            canCancel: true,
           },
           createdAt: "2026-10-13T08:31:23.000000Z",
         },
@@ -3487,6 +3526,7 @@ test.describe("Сценарий супервайзера", () => {
           name: "Тестовый супервайзер",
         },
         status: 3,
+        canCancel: true,
         selfEmployed: false,
         place: {
           id: 3,
@@ -3590,6 +3630,7 @@ test.describe("Сценарий супервайзера", () => {
           id: 200,
           selfEmployed: false,
           status: 3,
+          canCancel: true,
           user: {
             id: 900,
             phone: 79999999999,
@@ -3632,6 +3673,7 @@ test.describe("Сценарий супервайзера", () => {
             "Курьер  (Физическое лицо)",
           ],
           status: 5,
+          canCancel: true,
         },
         reports: [
           {
@@ -3641,6 +3683,7 @@ test.describe("Сценарий супервайзера", () => {
             report: null,
             dayActivityId: 1,
             status: 5,
+            canCancel: true,
             hours: "1.00",
             reasons: [],
           },

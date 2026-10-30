@@ -72,6 +72,7 @@ export const mockResponseSuccess = {
       id: 30,
       selfEmployed: true,
       status: 3,
+      canCancel: true,
       place: {
         id: 3,
         name: "Пятёрочка МСК ул. Арбат д. 24",
@@ -208,6 +209,7 @@ export const mockResponseSuccess = {
       id: 31,
       selfEmployed: false,
       status: 1,
+      canCancel: true,
       place: {
         id: 3,
         name: "Пятёрочка МСК ул. Арбат д. 24",
@@ -264,6 +266,7 @@ export const mockResponseSuccess = {
       id: 32,
       selfEmployed: false,
       status: 1,
+      canCancel: true,
       place: {
         id: 3,
         name: "Пятёрочка МСК ул. Арбат д. 24",

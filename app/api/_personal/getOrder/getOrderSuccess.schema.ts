@@ -11,6 +11,7 @@ export const getOrderSuccessSchema = z.object({
       z.literal(4),
       z.literal(5),
     ]),
+    canCancel: z.boolean(),
     place: z.union([
       z.null(),
       z.object({

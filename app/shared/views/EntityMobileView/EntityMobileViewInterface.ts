@@ -3,6 +3,7 @@ import React from "react";
 type Entity = {
   id: string;
   status: number;
+  canCancel?: boolean;
   place: null | {
     id: number;
     name: string;

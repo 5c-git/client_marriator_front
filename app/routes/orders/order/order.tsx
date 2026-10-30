@@ -142,6 +142,13 @@ export async function clientAction({ request }: Route.ClientActionArgs) {
   } else if (_action === ORDER_ACTIONS.cancel) {
     // ошибка отмены не должна уводить на страницу ошибки — показываем её в карточке
     try {
+      // окно отмены могло истечь, пока модалка была открыта, — перезапрашиваем карточку
+      const order = await orderService.getOrder(fields.orderId);
+
+      if (!order.canCancel) {
+        return { cancelExpired: true };
+      }
+
       const data = await ordersService.cancelOrder(fields.orderId);
 
       if (!data.data.success) {
@@ -164,13 +171,13 @@ export default function Order({ loaderData }: Route.ComponentProps) {
   const submit = useSubmit();
   const fetcher = useFetcher<RequestSearchDrawerInterface["entity"]>();
   // отдельный fetcher: ответ отмены в общем fetcher.data открыл бы RequestSearchDrawer
-  const cancelFetcher = useFetcher<{ cancelError?: boolean }>();
+  const cancelFetcher = useFetcher<{
+    cancelError?: boolean;
+    cancelExpired?: boolean;
+  }>();
 
   const [editMode, setEditMode] = useState<boolean>(false);
-  const [orderToCancel, setOrderToCancel] = useState<
-    "newOrNotAccepted" | "accepted" | null
-  >(null);
-  const [cancelExpired, setCancelExpired] = useState<boolean>(false);
+  const [orderToCancel, setOrderToCancel] = useState<boolean>(false);
   const [serviceToDelete, setServiceToDelete] = useState<{
     id: number;
     count: number;
@@ -180,32 +187,6 @@ export default function Order({ loaderData }: Route.ComponentProps) {
   const [searchSupervisors, setSearchSupervisors] = useState<boolean>(false);
 
   const isDesktop = window.innerWidth >= 768 ? true : false;
-
-  // одно условие и для показа кнопки, и для повторной проверки на «Да»
-  const canCancelOrder = (kind: "newOrNotAccepted" | "accepted") => {
-    if (kind === "newOrNotAccepted") {
-      return loaderData.order.duration.start &&
-        ButtonActionMapper.canCancelNewOrNotAccepted(
-          loaderData.intervals.id,
-          loaderData.order.userId,
-          loaderData.order.status,
-          loaderData.intervals.cancel_order_interval,
-          loaderData.order.duration.start,
-        )
-        ? true
-        : false;
-    }
-
-    return loaderData.order.duration.end &&
-      ButtonActionMapper.canCancelAccepted(
-        loaderData.intervals.id,
-        loaderData.order.userId,
-        loaderData.order.status,
-        loaderData.order.duration.end,
-      )
-      ? true
-      : false;
-  };
 
   return (
     <>
@@ -494,7 +475,7 @@ export default function Order({ loaderData }: Route.ComponentProps) {
           )}
           actionSlot={() => (
             <>
-              {isDesktop && canCancelOrder("newOrNotAccepted") ? (
+              {isDesktop && loaderData.order.canCancel ? (
                 <Button
                   variant="contained"
                   sx={{
@@ -502,22 +483,7 @@ export default function Order({ loaderData }: Route.ComponentProps) {
                   }}
                   disabled={cancelFetcher.state !== "idle"}
                   onClick={() => {
-                    setOrderToCancel("newOrNotAccepted");
-                  }}
-                >
-                  {t("cancelAssignmentButton", { ns: "m_orders" })}
-                </Button>
-              ) : null}
-
-              {isDesktop && canCancelOrder("accepted") ? (
-                <Button
-                  variant="contained"
-                  sx={{
-                    marginTop: "8px",
-                  }}
-                  disabled={cancelFetcher.state !== "idle"}
-                  onClick={() => {
-                    setOrderToCancel("accepted");
+                    setOrderToCancel(true);
                   }}
                 >
                   {t("cancelAssignmentButton", { ns: "m_orders" })}
@@ -762,9 +728,9 @@ export default function Order({ loaderData }: Route.ComponentProps) {
         </DialogActions>
       </Dialog>
       <Dialog
-        open={orderToCancel ? true : false}
+        open={orderToCancel}
         onClose={() => {
-          setOrderToCancel(null);
+          setOrderToCancel(false);
         }}
         sx={{
           "& .MuiDialog-paper": {
@@ -784,7 +750,7 @@ export default function Order({ loaderData }: Route.ComponentProps) {
           <Button
             variant="outlined"
             onClick={() => {
-              setOrderToCancel(null);
+              setOrderToCancel(false);
             }}
           >
             {t("dialog.no", { ns: "m_orders" })}
@@ -792,15 +758,9 @@ export default function Order({ loaderData }: Route.ComponentProps) {
           <Button
             variant="contained"
             onClick={() => {
-              const kind = orderToCancel;
-              setOrderToCancel(null);
+              setOrderToCancel(false);
 
-              // интервал мог истечь, пока открыта модалка — тогда на сервер не идём
-              if (!kind || !canCancelOrder(kind)) {
-                setCancelExpired(true);
-                return;
-              }
-
+              // окно могло истечь, пока модалка была открыта, — перезапрос и guard в clientAction
               cancelFetcher.submit(
                 JSON.stringify({
                   _action: ORDER_ACTIONS.cancel,
@@ -820,8 +780,8 @@ export default function Order({ loaderData }: Route.ComponentProps) {
       <Snackbar
         // пока идёт повторный запрос — скрыт; иначе reset по таймеру сбросил бы state в idle посреди запроса
         open={
-          (cancelFetcher.state === "idle" && cancelFetcher.data?.cancelError) ||
-          cancelExpired
+          cancelFetcher.state === "idle" &&
+          (cancelFetcher.data?.cancelError || cancelFetcher.data?.cancelExpired)
             ? true
             : false
         }
@@ -830,7 +790,6 @@ export default function Order({ loaderData }: Route.ComponentProps) {
           if (cancelFetcher.state === "idle") {
             cancelFetcher.reset();
           }
-          setCancelExpired(false);
         }}
       >
         <Alert
@@ -840,7 +799,9 @@ export default function Order({ loaderData }: Route.ComponentProps) {
             width: "100%",
           }}
         >
-          {cancelExpired ? t("cancelExpiredAlert") : t("cancelErrorAlert")}
+          {cancelFetcher.data?.cancelExpired
+            ? t("cancelExpiredAlert")
+            : t("cancelErrorAlert")}
         </Alert>
       </Snackbar>
     </>

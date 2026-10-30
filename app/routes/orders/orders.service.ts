@@ -56,6 +56,7 @@ export class OrdersService {
         id: item.id,
         userId: item.user.id,
         status: item.status,
+        canCancel: item.canCancel,
         statusColor: statusCodeMap[item.status].color,
         header: item.orderActivities.length.toString(),
         subHeader: item.orderActivities
@@ -91,11 +92,6 @@ export class OrdersService {
     );
     const create_bid_interval = date_create_bid.getHours();
 
-    const date_cancel = new Date(
-      `2026-03-12T${userData.data.cancel_order.startsWith("0") ? userData.data.cancel_order : `0${userData.data.cancel_order}`}`,
-    );
-    const cancel_order_interval = date_cancel.getHours();
-
     const date_repeat = new Date(
       `2026-03-12T${userData.data.change_order.startsWith("0") ? userData.data.change_order : `0${userData.data.change_order}`}`,
     );
@@ -104,7 +100,6 @@ export class OrdersService {
     return {
       id: userData.data.id,
       create_bid_interval,
-      cancel_order_interval,
       repeat_order_interval,
     };
   }
