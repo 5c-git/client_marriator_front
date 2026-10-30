@@ -2,6 +2,7 @@
 
 - **Ссылка:** https://portal.5corners.ru/workgroups/group/534/tasks/task/view/90304/
 - **Ветка:** feature/task-90304-cancel-button-can-cancel (база: main)
+- **Слито в main:** `d2f05bd` (2026-10-30)
 - **Период:** 2026-10-30
 - **Статус:** ✅ закрыта
 
