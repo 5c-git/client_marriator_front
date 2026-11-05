@@ -145,7 +145,7 @@ export default function Orders({ loaderData }: Route.ComponentProps) {
             );
           }}
           color="Corp_1"
-          aria-label="Create new order"
+          aria-label={t("createNewOrder")}
           sx={{
             position: "fixed",
             bottom: "60px",

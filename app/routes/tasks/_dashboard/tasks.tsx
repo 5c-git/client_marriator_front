@@ -127,7 +127,7 @@ export default function Tasks({ loaderData }: Route.ComponentProps) {
       (loaderData.tasks.length === 0 && loaderData.userRole === "manager") ? (
         <Fab
           color="Corp_1"
-          aria-label="Create new task"
+          aria-label={t("createNewTask")}
           onClick={() => {
             submit(
               JSON.stringify({

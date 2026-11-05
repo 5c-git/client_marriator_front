@@ -10,5 +10,6 @@
     "no": "No",
     "yes": "Yes"
   },
-  "cancelExpiredAlert": "The time to cancel the task has expired"
+  "cancelExpiredAlert": "The time to cancel the task has expired",
+  "createNewTask": "Create new task"
 }

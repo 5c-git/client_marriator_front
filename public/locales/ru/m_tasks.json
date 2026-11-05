@@ -10,5 +10,6 @@
     "no": "Нет",
     "yes": "Да"
   },
-  "cancelExpiredAlert": "Время для отмены задачи истекло"
+  "cancelExpiredAlert": "Время для отмены задачи истекло",
+  "createNewTask": "Создать новую задачу"
 }

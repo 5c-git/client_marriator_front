@@ -4,5 +4,6 @@
   "button_action": "Request certificate",
   "input_organization": "Select organization",
   "input_certificate": "Select certificate",
-  "done_documents": "Ready certificates"
+  "done_documents": "Ready certificates",
+  "download_file": "Download file"
 }

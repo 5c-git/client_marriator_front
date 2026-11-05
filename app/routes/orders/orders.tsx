@@ -14,7 +14,15 @@ import { withLocale } from "~/shared/withLocale";
 import { ListView } from "~/shared/views/EntitiesList/ListView";
 import { EntityCard } from "~/shared/ui/EntityCard/EntityCard";
 
-import { Alert, Button, Dialog, DialogActions, DialogTitle, Fab, Snackbar } from "@mui/material";
+import {
+  Alert,
+  Button,
+  Dialog,
+  DialogActions,
+  DialogTitle,
+  Fab,
+  Snackbar,
+} from "@mui/material";
 
 import LoopIcon from "@mui/icons-material/Loop";
 import AddIcon from "@mui/icons-material/Add";
@@ -235,7 +243,7 @@ export default function Orders({ loaderData }: Route.ComponentProps) {
             );
           }}
           color="Corp_1"
-          aria-label="Create new order"
+          aria-label={t("createNewOrder")}
           sx={{
             position: "fixed",
             bottom: "60px",
@@ -305,9 +313,7 @@ export default function Orders({ loaderData }: Route.ComponentProps) {
       </Dialog>
       <Snackbar
         open={
-          fetcher.state === "idle" && fetcher.data?.cancelExpired
-            ? true
-            : false
+          fetcher.state === "idle" && fetcher.data?.cancelExpired ? true : false
         }
         autoHideDuration={3000}
         onClose={() => {

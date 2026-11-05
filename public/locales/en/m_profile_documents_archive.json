@@ -4,5 +4,6 @@
   "archive_nothing": "No archived documents found",
   "archive_text": "All documents are always at hand",
   "error": "Unable to load file, please try again later",
-  "signed": "Signed"
+  "signed": "Signed",
+  "download_file": "Download file"
 }

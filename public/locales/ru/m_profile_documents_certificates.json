@@ -4,5 +4,6 @@
   "button_action": "Запросить справку",
   "input_organization": "Выбрать организацию",
   "input_certificate": "Выбери справку",
-  "done_documents": "Готовые справки"
+  "done_documents": "Готовые справки",
+  "download_file": "Скачать файл"
 }
