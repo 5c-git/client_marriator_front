@@ -15,7 +15,15 @@ import { EntityCard } from "~/shared/ui/EntityCard/EntityCard";
 
 import { useStore, type State } from "~/store/store";
 
-import { Alert, Button, Dialog, DialogActions, DialogTitle, Fab, Snackbar } from "@mui/material";
+import {
+  Alert,
+  Button,
+  Dialog,
+  DialogActions,
+  DialogTitle,
+  Fab,
+  Snackbar,
+} from "@mui/material";
 
 import LoopIcon from "@mui/icons-material/Loop";
 import AddIcon from "@mui/icons-material/Add";
@@ -217,7 +225,7 @@ export default function Tasks({ loaderData }: Route.ComponentProps) {
       (loaderData.tasks.length === 0 && loaderData.userRole === "manager") ? (
         <Fab
           color="Corp_1"
-          aria-label="Create new task"
+          aria-label={t("createNewTask")}
           onClick={() => {
             submit(
               JSON.stringify({
@@ -298,9 +306,7 @@ export default function Tasks({ loaderData }: Route.ComponentProps) {
       </Dialog>
       <Snackbar
         open={
-          fetcher.state === "idle" && fetcher.data?.cancelExpired
-            ? true
-            : false
+          fetcher.state === "idle" && fetcher.data?.cancelExpired ? true : false
         }
         autoHideDuration={3000}
         onClose={() => {

@@ -10,5 +10,6 @@
     "no": "No",
     "yes": "Yes"
   },
-  "cancelExpiredAlert": "The time to cancel the order has expired"
+  "cancelExpiredAlert": "The time to cancel the order has expired",
+  "createNewOrder": "Create new order"
 }

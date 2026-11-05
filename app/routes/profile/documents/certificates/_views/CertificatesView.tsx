@@ -193,7 +193,7 @@ export function CertificatesView(props: Props) {
                   target="_blank"
                   rel="noreferrer"
                   edge="end"
-                  aria-label="download file"
+                  aria-label={t("download_file")}
                 >
                   <FileDownloadOutlinedIcon
                     sx={(theme) => ({
