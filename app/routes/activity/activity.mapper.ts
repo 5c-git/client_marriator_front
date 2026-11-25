@@ -31,7 +31,7 @@ export class ActivityMapper {
         return {
           timeStart: new Date(item.timeStart),
           timeEnd: new Date(item.timeEnd),
-          needRoute: locations.length > 0 ? true : false,
+          needRoute: data.viewActivity.traveling,
           locations: locations,
         };
       }),
